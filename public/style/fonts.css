@@ -7,3 +7,8 @@
     font-family: 'berkshire';
     src: url(../fonts/berkshire-swash/BerkshireSwash-Regular.ttf);
 }
+
+@font-face {
+    font-family: 'open-sans';
+    src: url(../fonts/open-sans/OpenSans-VariableFont_wdth\,wght.ttf);
+}
