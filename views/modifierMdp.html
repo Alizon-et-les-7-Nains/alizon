@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        <body>
+            <h1>Modification de votre mot de passe</h1>
+            <main>
+            <section>
+                <div class="formulaireMdp">
+                    <form action="">
+                        <input type="text" placeholder="Ancien mot de passe">
+                        <input type="text" placeholder="Nouveau mot de passe">
+                        <input type="text" placeholder="Confirmer le nouveau mot de passe">
+                    
+                        <article>
+                            <div class="croix">
+                                <div></div>
+                                <div></div>
+                            </div> 
+                            <p>Longueur minimale de 12 charactères</p>
+                        </article>
+
+                        <article>
+                            <div class="croix">
+                                <div></div>
+                                <div></div>
+                            </div> 
+                            <p>Au moins une minuscule / majuscule</p>
+                        </article>
+
+                        <article>
+                            <div class="croix">
+                                <div></div>
+                                <div></div>
+                            </div> 
+                            <p>Au moins un chiffre</p>
+                        </article>
+
+                        <article>
+                            <div class="croix">
+                                <div></div>
+                                <div></div>
+                            </div>  
+                            <p>Au moins un charactères spéciale</p>
+                        </article>
+                    </div>
+                        <button type="button" onclick="fermerFenetre()">Valider</button>
+                    </form>
+                </section>
+            </main>
+        </body>
+        <style>
+            h1{
+            font-style: normal;
+            font-weight: normal;
+            font-size: 48px;
+            color: #273469;
+            text-align: center;
+            }
+
+            form{
+                display: flex;
+                flex-direction: column;
+
+            }
+
+            input{
+                width: 450px;
+                height: auto;
+                padding: 10px;
+                margin-bottom: 5px;
+                color: #6E6E6E;
+                font-size: 16px;
+                border: 2px solid #273469;
+                border-radius: 8px ;
+            }
+
+            button{
+                width: 200px;
+                color : #273469;
+                background-color: #E4D9FF;
+                border-radius: 32px;
+                padding: 10px;
+                border: none;
+                border-radius: 32px ;
+                font-size: 18px;
+                font-family: 'lora';
+                text-align: center;
+                margin-top: 20px;
+                cursor: pointer;
+            }
+
+            .croix {
+                position: relative;   
+            }
+
+            .croix div {
+                position: absolute; 
+                top: 50%;             
+                left: 50%;            
+                width: 20px;           
+                height: 2px;           
+                background-color: #BABABA;
+            }
+
+            .croix div:first-of-type {
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+
+            .croix div:last-of-type {
+                transform: translate(-50%, -50%) rotate(-45deg);
+            }
+
+            section{
+                display:flex ;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            section article{
+                display: flex;
+                flex-direction: row;
+                gap: 20px;
+                padding-left: 10px;
+            }
+
+            p{
+                margin: 5px;
+            }
+
+            .formulaireMdp{
+                display: flex;
+                flex-direction: column;
+            }
+        </style>
+
+        <script>
+            function fermerFenetre(){
+                window.close();
+            }
+        </script>
+</html>
