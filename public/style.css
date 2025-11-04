@@ -272,8 +272,6 @@ footer p {
   position: relative;
   overflow: hidden;
   background-color: transparent;
-}
-.page404 main {
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -281,20 +279,20 @@ footer p {
   align-items: center;
   height: 100vh;
 }
-.page404 main h1,
-.page404 main h2,
-.page404 main a {
+.page404 h1,
+.page404 h2,
+.page404 a {
   color: #273469;
   font-family: "berkshire", serif;
   font-style: normal;
 }
-.page404 main h1 {
+.page404 h1 {
   font-size: 150px;
 }
-.page404 main h2 {
+.page404 h2 {
   font-size: 80px;
 }
-.page404 main a {
+.page404 a {
   color: #fffefa;
   background-color: #273469;
   border: 5px solid #273469;
@@ -303,59 +301,60 @@ footer p {
   padding: 10px 50px;
   transition: 0.3s;
 }
-.page404 main a:hover {
+.page404 a:hover {
   color: #273469;
   background-color: #fffefa;
   transition: 0.3s;
 }
-.page404 main img {
+.page404 img {
   width: 525px;
 }
-.page404 main div {
+.page404 div {
   margin: 50px;
 }
 @media (max-width: 1300px) {
-  .page404 main h1 {
+  .page404 h1 {
     font-size: 60px;
   }
-  .page404 main h2 {
+  .page404 h2 {
     font-size: 30px;
   }
-  .page404 main a {
+  .page404 a {
     font-size: 30px;
     padding: 5px 15px;
   }
-  .page404 main img {
+  .page404 img {
     width: 525px;
   }
-  .page404 main div {
+  .page404 div {
     margin: 50px;
   }
 }
-.page404 .bgImgs {
+
+.bgImgs {
   position: absolute;
   opacity: 0.3;
   z-index: -1;
   pointer-events: none;
 }
-.page404 .bgImgs.bleu {
+.bgImgs.bleu {
   bottom: -250px;
   left: -150px;
   width: 1052px;
 }
-.page404 .bgImgs.rose {
+.bgImgs.rose {
   top: -200px;
   right: -150px;
   width: 1052px;
   transform: rotate(180deg);
 }
 @media (max-width: 1300px) {
-  .page404 .bgImgs.bleu {
+  .bgImgs.bleu {
     bottom: -150px;
     left: -150px;
     width: 600px;
   }
-  .page404 .bgImgs.rose {
+  .bgImgs.rose {
     top: -100px;
     right: -150px;
     width: 600px;
