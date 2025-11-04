@@ -11,14 +11,14 @@
     <body class="acceuiBackoffice">
         <header>
             <div>
-                <img src="../../public/images/backoffice/panier.svg" alt="icon">
+                <img src="../../public/images/logoBackoffice.svg" alt="icon">
                 <h1>Alizon</h1>
             </div>
             
             <nav>
                 <figure>
                     <figcaption>Nouveau Produit</figcaption>
-                    <img src="../../public/images/backoffice/panierPlusLight.svg">
+                    <img src="../../public/images/panierPlusLight.svg">
                 </figure>
                 <button onclick=""></button>
                 <button onclick=""></button>
