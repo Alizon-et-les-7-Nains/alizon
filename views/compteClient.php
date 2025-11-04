@@ -63,9 +63,10 @@
             tousRemplis = false;
             break;
         }
-        // if(champs[].value.chaine.match("")){
-
-        // }
+        
+        if(champs[].value.chaine.match("^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$")){
+            tousRemplis = false;
+        }
 
         bouton.disabled = !tousRemplis;
     }
