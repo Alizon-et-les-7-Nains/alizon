@@ -1,10 +1,10 @@
 @use "../colors" as *;
 @use "../fonts" as *;
+
 .page404 {
   position: relative;
   overflow: hidden;
   background-color: transparent;
-  main {
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -105,6 +105,3 @@
     }
   }
 }
-
-}
-
