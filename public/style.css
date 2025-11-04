@@ -1,18 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap");
 /* Font stack variables for consistent usage across SCSS files */
 @font-face {
   font-family: "lora";
-  src: url(../fonts/lora/Lora-VariableFont_wght.ttf);
+  src: url(../../public/fonts/lora/Lora-VariableFont_wght.ttf);
 }
 @font-face {
   font-family: "berkshire";
-  src: url(../fonts/berkshire-swash/BerkshireSwash-Regular.ttf);
+  src: url(../../public/fonts/berkshire-swash/BerkshireSwash-Regular.ttf);
 }
 @font-face {
   font-family: "open-sans";
-  src: url(../fonts/open-sans/OpenSans-VariableFont_wdthwght.ttf);
+  src: url(../../public/fonts/open-sans/OpenSans-VariableFont_wdthwght.ttf);
 }
 html,
 body {
@@ -25,7 +22,7 @@ body {
 header a,
 footer a {
   text-decoration: none;
-  color: #E3F2FE;
+  color: #e3f2fe;
 }
 
 header p,
@@ -34,14 +31,14 @@ footer p {
 }
 
 header h1 {
-  color: #E3F2FE;
+  color: #e3f2fe;
   font-family: "berkshire", serif;
   font-weight: 200;
   font-style: normal;
 }
 
 header h1 a b {
-  color: #E3F2FE;
+  color: #e3f2fe;
 }
 
 header {
@@ -132,7 +129,7 @@ header img {
 header .categorie {
   flex: 0 0 5em;
   text-decoration: none;
-  background-color: #E3F2FE;
+  background-color: #e3f2fe;
   color: #273469;
   border-radius: 30px;
   font-family: "lora", serif;
@@ -233,14 +230,14 @@ footer p {
   }
   .footerTel a:focus {
     transition: 0.2s;
-    background-color: #E3F2FE;
+    background-color: #e3f2fe;
   }
   .footerTel a {
     padding: 20px;
   }
 }
 /* -------------------------------------------- FIN FOOTER -------------------------------------------- */
-main h1 {
+.legalesMain main h1 {
   color: #273469;
   font-family: "lora", serif;
   font-size: 48px;
@@ -249,38 +246,32 @@ main h1 {
   text-align: center;
   margin: 50px 0px;
 }
-
-section {
+.legalesMain section {
   margin: 0px 80px;
 }
-
-.titreSection {
+.legalesMain .titreSection {
   font-family: "lora", serif;
   font-size: 20px;
   font-weight: bold;
 }
-
-.texteSection {
+.legalesMain .texteSection {
   font-family: "open-sans", sans-serif;
   font-size: 14px;
 }
-
 @media (max-width: 1300px) {
-  main h1 {
+  .legalesMain main h1 {
     font-size: 32px;
     margin: 20px 0px;
   }
-  section {
+  .legalesMain section {
     margin: 0px 40px;
   }
 }
-body {
+
+.page404 {
   position: relative;
   overflow: hidden;
   background-color: transparent;
-}
-
-main {
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -288,20 +279,20 @@ main {
   align-items: center;
   height: 100vh;
 }
-main h1,
-main h2,
-main a {
+.page404 h1,
+.page404 h2,
+.page404 a {
   color: #273469;
   font-family: "berkshire", serif;
   font-style: normal;
 }
-main h1 {
+.page404 h1 {
   font-size: 150px;
 }
-main h2 {
+.page404 h2 {
   font-size: 80px;
 }
-main a {
+.page404 a {
   color: #fffefa;
   background-color: #273469;
   border: 5px solid #273469;
@@ -310,32 +301,32 @@ main a {
   padding: 10px 50px;
   transition: 0.3s;
 }
-main a:hover {
+.page404 a:hover {
   color: #273469;
   background-color: #fffefa;
   transition: 0.3s;
 }
-main img {
+.page404 img {
   width: 525px;
 }
-main div {
+.page404 div {
   margin: 50px;
 }
 @media (max-width: 1300px) {
-  main h1 {
+  .page404 h1 {
     font-size: 60px;
   }
-  main h2 {
+  .page404 h2 {
     font-size: 30px;
   }
-  main a {
+  .page404 a {
     font-size: 30px;
     padding: 5px 15px;
   }
-  main img {
+  .page404 img {
     width: 525px;
   }
-  main div {
+  .page404 div {
     margin: 50px;
   }
 }
@@ -369,6 +360,65 @@ main div {
     width: 600px;
     transform: rotate(180deg);
   }
+}
+
+.headerBackoffice {
+  display: flex;
+  background-color: #e4d9ff;
+  border-bottom: solid #273469 5px;
+  padding: 1em;
+  align-items: center;
+  justify-content: space-between;
+}
+.headerBackoffice * {
+  margin: 0;
+}
+.headerBackoffice img, .headerBackoffice figure {
+  user-select: none;
+}
+.headerBackoffice figure {
+  display: flex;
+  align-items: center;
+  background-color: #273469;
+  color: #e3f2fe;
+  padding: 0.5em;
+  height: 55px;
+  width: 250px;
+  border-radius: 16px;
+  justify-content: space-between;
+  font-family: "lora";
+  font-size: 25px;
+  font-weight: bold;
+  font-style: italic;
+}
+.headerBackoffice figure:hover {
+  background-color: #e3f2fe;
+  color: #273469;
+  outline-width: 3px;
+  outline-offset: inset;
+  outline-style: solid;
+  outline-color: #273469;
+}
+.headerBackoffice figure:hover img {
+  content: url(../../images/backoffice/panierPlusDark.svg);
+}
+.headerBackoffice div {
+  display: flex;
+  align-items: center;
+}
+.headerBackoffice div img {
+  width: 50px;
+  height: 60px;
+  margin-right: 1em;
+}
+.headerBackoffice div h1 {
+  font-family: "berkshire";
+  font-size: 45px;
+  font-weight: normal;
+  color: #273469;
+}
+.headerBackoffice nav {
+  display: flex;
 }
 
 /*# sourceMappingURL=style.css.map */

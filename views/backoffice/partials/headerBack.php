@@ -8,7 +8,7 @@
     <title>header Back</title>
 </head>
 <body>
-    <header>
+    <header class="headerBackoffice">
         <div class="headerMain">
         <div class="logoNom">
 
