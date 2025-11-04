@@ -1,0 +1,77 @@
+@use '../colors.scss' as *;
+@use '../fonts.scss';
+
+* {
+    margin: 0;
+}
+
+img, figure {
+    user-select: none;
+}
+
+header {
+    display: flex;
+    background-color: $color-pastel-purple;
+    border-bottom: solid $color-blue 5px;
+    padding: 1em;
+    align-items: center;
+    justify-content: space-between;
+    
+    div {
+        display: flex;
+        align-items: center;
+        
+        img {
+            width: 50px;
+            height: 60px;
+            margin-right: 1em;
+        }
+        
+        h1 {
+            font: {
+                family: 'berkshire';
+                size: 45px;
+                weight: normal;
+            }
+            color: $color-blue;
+            
+        }
+    }
+    
+    nav {
+        display: flex;
+    }
+}
+
+figure {
+    display: flex;
+    align-items: center;
+    background-color: $color-blue;
+    color: $color-pastel-blue;
+    padding: 0.5em;
+    height: 55px;
+    width: 250px;
+    border-radius: 16px;
+    justify-content: space-between;
+    font: {
+        family: 'lora';
+        size: 25px;
+        weight: bold;
+        style: italic;
+    }
+
+    &:hover {
+        background-color: $color-pastel-blue;
+        color: $color-blue;
+        outline: {
+            width: 3px;
+            offset: inset;
+            style: solid;
+            color: $color-blue;
+        }
+
+        img {
+            content: url(../../images/backoffice/panierPlusDark.svg);
+        }
+    }
+}
