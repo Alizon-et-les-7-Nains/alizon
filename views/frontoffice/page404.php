@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="../public/css/style404.css">
   <title>Alizon - Acceuil</title>
 </head>
-<body>
+<body class="page404">
 
     <img class="bgImgs bleu" src="../public/images/symboleBleu.png" alt="symboleBleu">
     <img class="bgImgs rose" src="../public/images/symboleRose.png" alt="symboleRose">

@@ -48,7 +48,7 @@
 
   </header>
   <!-- -------------------------------------------- FIN HEADER -------------------------------------------- -->
-  <main>
+  <main class="legalesMain">
     <h1>Conditions générales de ventes</h1>
 
     <section>

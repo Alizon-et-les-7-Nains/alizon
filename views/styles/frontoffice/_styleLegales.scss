@@ -1,37 +1,40 @@
 @use "../colors" as *;
 @use "../fonts" as *;
 
-main h1 {
-  color: $color-blue;
-  font-family: $font-lora;
-  font-size: 48px;
-  font-weight: bold;
-  font-style: italic;
-  text-align: center;
-  margin: 50px 0px;
-}
-
-section {
-  margin: 0px 80px;
-}
-
-.titreSection {
-  font-family: $font-lora;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.texteSection {
-  font-family: $font-open-sans;
-  font-size: 14px;
-}
-
-@media (max-width: 1300px) {
+.legalesMain{
   main h1 {
-    font-size: 32px;
-    margin: 20px 0px;
+    color: $color-blue;
+    font-family: $font-lora;
+    font-size: 48px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    margin: 50px 0px;
   }
+
   section {
-    margin: 0px 40px;
+    margin: 0px 80px;
   }
+
+  .titreSection {
+    font-family: $font-lora;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .texteSection {
+    font-family: $font-open-sans;
+    font-size: 14px;
+  }
+
+  @media (max-width: 1300px) {
+    main h1 {
+      font-size: 32px;
+      margin: 20px 0px;
+    }
+    section {
+      margin: 0px 40px;
+    }
+  }
+
 }
