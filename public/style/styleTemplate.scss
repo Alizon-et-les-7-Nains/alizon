@@ -10,7 +10,7 @@ html, body {
 
 /* -------------------------------------------- DEBUT HEADER -------------------------------------------- */
 
-header a, footer a {
+header a, footer a, header p {
     text-decoration: none;
     color: #E3F2FE;
 }
@@ -61,6 +61,10 @@ header .logoNom h1 {
 
 header img {
     width: 50px;
+}
+
+header .seConnecter img {
+    height: 40px;
 }
 
 .search-wrapper {
@@ -125,6 +129,14 @@ header .categorie {
     font-size: 15px;
     font-weight: 700;
     padding: 15px 40px;
+}
+
+.seConnecter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
 }
 
 @media (max-width: 1300px) { 
@@ -219,6 +231,7 @@ footer a, footer p {
 
     .footerTel img {
         width: 41px;
+        height: 41px;
     }
 
     .footerTel a:focus {
