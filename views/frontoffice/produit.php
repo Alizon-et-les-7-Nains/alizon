@@ -73,5 +73,43 @@
         </div>
     </article>
 </section>
+<hr>
+<section>
+    <h2>Plus d'informations sur l'article</h2>
+    <p>
+        📌 Titre du produit
+
+        Cidre brut artisanal – 75 cl – Fermentation naturelle
+
+        📝 Description courte
+
+        Cidre brut traditionnel, issu de pommes récoltées en Bretagne, fermenté naturellement, goût fruité et légèrement acidulé.
+
+        📂 Rubriques de la fiche produit
+
+        Caractéristiques principales :
+        Type : Cidre brut
+        Contenance : 75 cl
+        Alcool : 5 % vol.
+        Origine : Bretagne, France
+        Fabrication : fermentation naturelle, sans additif chimique
+
+        Notes de dégustation :
+        Robe dorée et pétillante
+        Arômes fruités de pomme fraîche
+        Légère acidité équilibrée par une pointe de douceur
+        Fines bulles, rafraîchissant en bouche
+
+        Accords mets & boissons :
+        Idéal avec crêpes, galettes de sarrasin, fromages affinés
+        Se consomme frais, entre 8 et 10 °C
+
+        Informations logistiques :
+        Dimensions bouteille : 32 × 7,5 cm
+        Poids : 1,2 kg
+        Conservation : à l’abri de la chaleur et de la lumière
+        DLC : 24 mois après mise en bouteille
+    </p>
+</section>
 </main>
 </html>
