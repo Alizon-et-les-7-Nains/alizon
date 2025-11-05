@@ -1,0 +1,54 @@
+@use '../fonts';
+@use '../colors' as *;
+
+footer.backoffice {
+    display: flex;
+    background-color: $color-pastel-purple;
+    color: $color-blue;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: {
+        top: 1em; bottom: 1em;
+    }
+    font: {
+        family: 'lora';
+        weight: bold;
+        style: italic;
+    }
+    border-top: {
+        style: solid;
+        color: $color-blue;
+        width: 5px;
+    }
+
+    img, copy {
+        user-select: none;
+    }
+    
+    ul {
+        display: flex;
+        list-style: none;
+        align-items: center;
+        
+        li {
+            margin-right: 1em;
+        }
+    }
+    
+    figure {
+        display: flex;
+        align-items: center;
+        
+        figcaption {
+            margin-right: 1em;
+        }
+    }
+    
+    a {
+        text-decoration: none;
+        color: $color-blue;
+    }
+}
