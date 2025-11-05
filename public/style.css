@@ -1,0 +1,452 @@
+/* Font stack variables for consistent usage across SCSS files */
+@font-face {
+  font-family: "lora";
+  src: url(../../public/fonts/lora/Lora-VariableFont_wght.ttf);
+}
+@font-face {
+  font-family: "berkshire";
+  src: url(../../public/fonts/berkshire-swash/BerkshireSwash-Regular.ttf);
+}
+@font-face {
+  font-family: "open-sans";
+  src: url(../../public/fonts/open-sans/OpenSans-VariableFont_wdthwght.ttf);
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fffefa;
+}
+
+/* -------------------------------------------- DEBUT HEADER -------------------------------------------- */
+header a,
+footer a {
+  text-decoration: none;
+  color: #e3f2fe;
+}
+
+header p,
+footer p {
+  margin-bottom: 0;
+}
+
+header h1 {
+  color: #e3f2fe;
+  font-family: "berkshire", serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+header h1 a b {
+  color: #e3f2fe;
+}
+
+header {
+  background-color: #273469;
+  padding: 20px 0px 20px 0px;
+  position: sticky;
+  top: 0;
+}
+
+header .headerMain {
+  padding: 10px 25px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+}
+
+header .logoNom {
+  display: flex;
+  align-items: end;
+}
+
+header .headerMain div *,
+.categorie {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+header .logoNom h1 {
+  line-height: 1;
+  margin: 0;
+}
+
+header img {
+  width: 50px;
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-wrapper i {
+  position: absolute;
+  right: 15px;
+  color: #273469;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.search-wrapper input[type=search] {
+  padding: 10px 450px 10px 20px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  background-color: #fffefa;
+  color: #273469;
+  font-family: "lora", serif;
+  font-size: 20px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.search-wrapper input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.carousel {
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  display: flex;
+  overflow-x: auto;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+  visibility: hidden;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header .categorie {
+  flex: 0 0 5em;
+  text-decoration: none;
+  background-color: #e3f2fe;
+  color: #273469;
+  border-radius: 30px;
+  font-family: "lora", serif;
+  font-optical-sizing: auto;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 15px 40px;
+}
+
+@media (max-width: 1300px) {
+  .search-wrapper input[type=search] {
+    padding: 10px 0px 10px 10px;
+  }
+  header .headerMain {
+    justify-content: space-between;
+  }
+  header .headerMain div * {
+    margin-left: 1.5px;
+    margin-right: 1.5px;
+  }
+  header .categorie {
+    padding: 8px 20px;
+  }
+}
+@media (max-width: 600px) {
+  .icons {
+    display: none;
+    visibility: hidden;
+  }
+}
+@media (max-width: 428px) {
+  header b {
+    display: none;
+    visibility: hidden;
+  }
+}
+/* -------------------------------------------- FIN HEADER -------------------------------------------- */
+/* -------------------------------------------- DEBUT FOOTER -------------------------------------------- */
+footer .footerTel {
+  display: none;
+  visibility: hidden;
+}
+
+footer {
+  margin-top: 50px;
+}
+
+footer,
+footer div {
+  background-color: #273469;
+  color: #fffefa;
+  font-style: italic;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  font-family: "lora", serif;
+  font-size: 13px;
+  font-weight: bold;
+  font-style: italic;
+  align-items: center;
+}
+
+footer a,
+footer p {
+  padding: 10px 10px;
+}
+
+.homeDarkBlue,
+.searchDarkBlue,
+.cartDarkBlue,
+.burgerDarkBlue {
+  display: none;
+  visibility: hidden;
+}
+
+@media (max-width: 1300px) {
+  footer {
+    position: sticky;
+    width: 100%;
+    bottom: 0px;
+    padding: 0;
+    justify-content: space-around;
+  }
+  footer .footerPC {
+    display: none;
+    visibility: hidden;
+  }
+  footer .footerTel {
+    display: contents;
+    visibility: visible;
+  }
+  .footerTel {
+    display: flex;
+    justify-content: space-between;
+  }
+  .footerTel img {
+    width: 41px;
+  }
+  .footerTel a:focus {
+    transition: 0.2s;
+    background-color: #e3f2fe;
+  }
+  .footerTel a {
+    padding: 20px;
+  }
+}
+/* -------------------------------------------- FIN FOOTER -------------------------------------------- */
+.legalesMain main h1 {
+  color: #273469;
+  font-family: "lora", serif;
+  font-size: 48px;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+  margin: 50px 0px;
+}
+.legalesMain section {
+  margin: 0px 80px;
+}
+.legalesMain .titreSection {
+  font-family: "lora", serif;
+  font-size: 20px;
+  font-weight: bold;
+}
+.legalesMain .texteSection {
+  font-family: "open-sans", sans-serif;
+  font-size: 14px;
+}
+@media (max-width: 1300px) {
+  .legalesMain main h1 {
+    font-size: 32px;
+    margin: 20px 0px;
+  }
+  .legalesMain section {
+    margin: 0px 40px;
+  }
+}
+
+.page404 {
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.page404 h1,
+.page404 h2,
+.page404 a {
+  color: #273469;
+  font-family: "berkshire", serif;
+  font-style: normal;
+}
+.page404 h1 {
+  font-size: 150px;
+}
+.page404 h2 {
+  font-size: 80px;
+}
+.page404 a {
+  color: #fffefa;
+  background-color: #273469;
+  border: 5px solid #273469;
+  border-radius: 64px;
+  font-size: 50px;
+  padding: 10px 50px;
+  transition: 0.3s;
+}
+.page404 a:hover {
+  color: #273469;
+  background-color: #fffefa;
+  transition: 0.3s;
+}
+.page404 img {
+  width: 525px;
+}
+.page404 div {
+  margin: 50px;
+}
+@media (max-width: 1300px) {
+  .page404 h1 {
+    font-size: 60px;
+  }
+  .page404 h2 {
+    font-size: 30px;
+  }
+  .page404 a {
+    font-size: 30px;
+    padding: 5px 15px;
+  }
+  .page404 img {
+    width: 525px;
+  }
+  .page404 div {
+    margin: 50px;
+  }
+}
+
+.bgImgs {
+  position: absolute;
+  opacity: 0.3;
+  z-index: -1;
+  pointer-events: none;
+}
+.bgImgs.bleu {
+  bottom: -250px;
+  left: -150px;
+  width: 1052px;
+}
+.bgImgs.rose {
+  top: -200px;
+  right: -150px;
+  width: 1052px;
+  transform: rotate(180deg);
+}
+@media (max-width: 1300px) {
+  .bgImgs.bleu {
+    bottom: -150px;
+    left: -150px;
+    width: 600px;
+  }
+  .bgImgs.rose {
+    top: -100px;
+    right: -150px;
+    width: 600px;
+    transform: rotate(180deg);
+  }
+}
+
+.headerBackoffice {
+  display: flex;
+  background-color: #e4d9ff;
+  border-bottom: solid #273469 5px;
+  padding: 1em;
+  align-items: center;
+  justify-content: space-between;
+}
+.headerBackoffice * {
+  margin: 0;
+}
+.headerBackoffice img, .headerBackoffice figure {
+  user-select: none;
+}
+.headerBackoffice figure {
+  display: flex;
+  align-items: center;
+  background-color: #273469;
+  color: #e3f2fe;
+  padding: 0.5em;
+  height: 55px;
+  width: 250px;
+  border-radius: 16px;
+  justify-content: space-between;
+  font-family: "lora";
+  font-size: 25px;
+  font-weight: bold;
+  font-style: italic;
+}
+.headerBackoffice figure:hover {
+  background-color: #e3f2fe;
+  color: #273469;
+  outline-width: 3px;
+  outline-offset: inset;
+  outline-style: solid;
+  outline-color: #273469;
+}
+.headerBackoffice figure:hover img {
+  content: url(../../images/backoffice/panierPlusDark.svg);
+}
+.headerBackoffice div {
+  display: flex;
+  align-items: center;
+}
+.headerBackoffice div img {
+  width: 50px;
+  height: 60px;
+  margin-right: 1em;
+}
+.headerBackoffice div h1 {
+  font-family: "berkshire";
+  font-size: 45px;
+  font-weight: normal;
+  color: #273469;
+}
+.headerBackoffice nav {
+  display: flex;
+}
+
+.pageConnexionCLient {
+  position: relative;
+}
+.pageConnexionCLient::before {
+  content: "";
+  position: absolute;
+  left: -200px;
+  top: 50px;
+  width: 900px;
+  height: 900px;
+  background: url("../../public/images/symboleRose.png") no-repeat center center;
+  background-size: contain;
+  transform: rotate(-180deg);
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+}
+.pageConnexionCLient {
+  /* s'assurer que le contenu est au-dessus */
+}
+.pageConnexionCLient > * {
+  position: relative;
+  z-index: 1;
+}
+.pageConnexionCLient main {
+  height: 100vh;
+}
+
+/*# sourceMappingURL=style.css.map */

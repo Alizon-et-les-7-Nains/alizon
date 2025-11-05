@@ -1,0 +1,107 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.page404 {
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  h1,
+  h2,
+  a {
+    color: $color-blue;
+    font-family: $font-berkshire;
+    font-style: normal;
+  }
+
+  h1 {
+    font-size: 150px;
+  }
+
+  h2 {
+    font-size: 80px;
+  }
+
+  a {
+    color: $color-white;
+    background-color: $color-blue;
+    border: 5px solid $color-blue;
+    border-radius: 64px;
+    font-size: 50px;
+    padding: 10px 50px;
+    transition: 0.3s;
+
+    &:hover {
+      color: $color-blue;
+      background-color: $color-white;
+      transition: 0.3s;
+    }
+  }
+
+  img {
+    width: 525px;
+  }
+
+  div {
+    margin: 50px;
+  }
+
+  @media (max-width: 1300px) {
+    h1 {
+      font-size: 60px;
+    }
+    h2 {
+      font-size: 30px;
+    }
+    a {
+      font-size: 30px;
+      padding: 5px 15px;
+    }
+    img {
+      width: 525px;
+    }
+    div {
+      margin: 50px;
+    }
+  }
+}
+
+.bgImgs {
+  position: absolute;
+  opacity: 0.3;
+  z-index: -1;
+  pointer-events: none;
+
+  &.bleu {
+    bottom: -250px;
+    left: -150px;
+    width: 1052px;
+  }
+
+  &.rose {
+    top: -200px;
+    right: -150px;
+    width: 1052px;
+    transform: rotate(180deg);
+  }
+
+  @media (max-width: 1300px) {
+    &.bleu {
+      bottom: -150px;
+      left: -150px;
+      width: 600px;
+    }
+    &.rose {
+      top: -100px;
+      right: -150px;
+      width: 600px;
+      transform: rotate(180deg);
+    }
+  }
+}

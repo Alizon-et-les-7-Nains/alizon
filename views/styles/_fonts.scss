@@ -1,0 +1,19 @@
+/* Font stack variables for consistent usage across SCSS files */
+$font-lora: "lora", serif;
+$font-berkshire: "berkshire", serif;
+$font-open-sans: "open-sans", sans-serif;
+
+@font-face {
+  font-family: "lora";
+  src: url(../../public/fonts/lora/Lora-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: "berkshire";
+  src: url(../../public/fonts/berkshire-swash/BerkshireSwash-Regular.ttf);
+}
+
+@font-face {
+  font-family: "open-sans";
+  src: url(../../public/fonts/open-sans/OpenSans-VariableFont_wdth\wght.ttf);
+}

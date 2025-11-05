@@ -1,0 +1,32 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.pageConnexionCLient {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -200px;
+    top: 50px;
+    width: 900px;
+    height: 900px;
+    background: url("../../public/images/symboleRose.png") no-repeat center
+      center;
+    background-size: contain;
+    transform: rotate(-180deg);
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* s'assurer que le contenu est au-dessus */
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  main {
+    height: 100vh;
+  }
+}
