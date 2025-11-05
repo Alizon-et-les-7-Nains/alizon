@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "target": "esnext",                     // Set the ECMAScript target version
-    "module": "amd",                     // Use AMD or System for some cases, or 'none' if using bundlers
-    "outFile": "./public/script.js",     // Specify the output file for all compiled JS
-    "rootDir": "./views/scripts",        // Set the root directory containing TS files
-    "sourceMap": true,                   // Generate source maps for debugging
-    "declaration": false,                 // Don't generate declaration files
-    "strict": true                       // Enable all strict type-checking options
+    "target": "esnext",                 
+    "module": "amd",                   
+    "outFile": "./public/script.js",    
+    "rootDir": "./views/scripts",      
+    "sourceMap": true,               
+    "declaration": false,         
+    "strict": true                     
   },
   "include": [
-    "./views/scripts/**/*.ts"             // Include all TS files in the specified folder
+    "./views/scripts/**/*.ts"           
   ],
   "exclude": [
-    "node_modules"                        // Exclude node_modules
+    "node_modules"   
   ]
 }
