@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
 
                     <p class="code_vendeur"> Code vendeur : <strong>VD640</strong> </p>
-                    <a href="ConnexionVendeur.php">Déjà vendeur ? Connectez vous ici</a>
+                    <a class="connexion_lien" href="#">Déjà vendeur ? Connectez vous ici</a>
                     
                     <button type="submit" id="btn_inscription" class="btn_inscription" disabled>S'inscrire</button>
 
@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
             </form>
         </div>
-        <p>
+        <p class="text-footer">
             Alizon, en tant que responsable de traitement, traite les données recueillies à des fins de gestion de la relation client, gestion des commandes et des livraisons, 
             personnalisation des services, prévention de la fraude, marketing et publicité ciblée. 
             Pour en savoir plus, reportez-vous à la Politique de protection de vos données personnelles

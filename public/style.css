@@ -496,6 +496,9 @@ header.backoffice nav figure:nth-child(4) img {
 }
 
 .CreerCompteVendeur {
+  font-family: "lora", "Serif";
+  font-weight: bold;
+  font-style: italic;
   background-color: #fffefa;
   color: #273469;
   min-height: 100vh;
@@ -510,9 +513,9 @@ header.backoffice nav figure:nth-child(4) img {
 .CreerCompteVendeur h1 {
   margin-top: 10px;
   margin-bottom: 30px;
+  margin-left: 30px;
   text-align: left;
   font-weight: 600;
-  margin-left: 30px;
 }
 .CreerCompteVendeur .triskiel {
   position: absolute;
@@ -530,10 +533,10 @@ header.backoffice nav figure:nth-child(4) img {
   padding: 0 20px;
   margin-top: 50px;
   margin-bottom: 30px;
-  display: flex;
-  align-items: center;
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  align-items: center;
 }
 .CreerCompteVendeur > img[alt="photo de profil"] {
   width: 150px;
@@ -572,6 +575,61 @@ header.backoffice nav figure:nth-child(4) img {
 }
 .CreerCompteVendeur .container .form-vendeur .form-group input[type=text] input[type=password], .CreerCompteVendeur .container .form-vendeur .form-group input[type=email] input[type=password], .CreerCompteVendeur .container .form-vendeur .form-group input[type=password] input[type=password], .CreerCompteVendeur .container .form-vendeur .form-group input[type=date] input[type=password] {
   border-color: #f14e4e;
+}
+.CreerCompteVendeur .container .form-vendeur .btn_inscription {
+  background-color: #e4d9ff;
+  max-width: 300px;
+  width: 100%;
+  border-radius: 24px;
+  color: #273469;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: center;
+  border: 0;
+  cursor: pointer;
+  margin-top: 0;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
+.CreerCompteVendeur .container .form-vendeur .btn_inscription:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.CreerCompteVendeur .container .form-vendeur p, .CreerCompteVendeur .container .form-vendeur .connexion_lien {
+  font-weight: normal;
+  font-style: normal;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.CreerCompteVendeur .container .form-vendeur .inscriptions_autres {
+  text-align: center;
+  color: #6e6e6e;
+  margin-top: 15px;
+}
+.CreerCompteVendeur .container .form-vendeur .inscriptions_autres .logos {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.CreerCompteVendeur .container .form-vendeur .inscriptions_autres .logos a {
+  text-decoration: none;
+  display: flex;
+}
+.CreerCompteVendeur .container .form-vendeur .inscriptions_autres .logos a img {
+  padding: 5px;
+}
+.CreerCompteVendeur .text-footer {
+  max-width: 1000px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #6e6e6e;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
 }
 
 /*# sourceMappingURL=style.css.map */
