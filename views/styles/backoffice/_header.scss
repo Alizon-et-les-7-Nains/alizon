@@ -1,7 +1,8 @@
 @use '../colors.scss' as *;
 @use '../fonts.scss';
 
-body.acceuilBackoffice {
+/* ---- Header ---- */
+body.backoffice {
     * {
         margin: 0;
     }
@@ -41,66 +42,123 @@ body.acceuilBackoffice {
         
         nav {
             display: flex;
-        }
-    }
-    
-    figure {
-        display: flex;
-        align-items: center;
-        background-color: $color-blue;
-        color: $color-pastel-blue;
-        padding: 0.5em;
-        height: 55px;
-        width: 250px;
-        border-radius: 16px;
-        justify-content: space-between;
-        font: {
-            family: 'lora';
-            size: 25px;
-            weight: bold;
-            style: italic;
-        }
-        
-        &:hover {
-            background-color: $color-pastel-blue;
-            color: $color-blue;
-            outline: {
-                width: 3px;
-                offset: inset;
-                style: solid;
-                color: $color-blue;
-            }
             
-            img {
-                content: url(../../images/cartPlusDark.svg);
+            figure {
+                margin-left: 5em;
+                display: flex;
+                align-items: center;
+                
+                &:hover {
+                    cursor: pointer;
+                }
+                
+                &:nth-child(1) {
+                    background-color: $color-blue;
+                    color: $color-pastel-blue;
+                    height: 50px;
+                    border-radius: 16px;
+                    justify-content: center;
+                    transition: all 0.2s;
+                    padding: {
+                        top: 0.25em; bottom: 0.25em;
+                        left: 0.5em; right: 0.5em;
+                    }
+                    font: {
+                        family: 'lora';
+                        size: 25px;
+                        weight: bold;
+                        style: italic;
+                    }
+                    
+                    &:hover {
+                        background-color: $color-pastel-blue;
+                        color: $color-blue;
+                        outline: {
+                            width: 3px;
+                            offset: inset;
+                            style: solid;
+                            color: $color-blue;
+                        }
+                        
+                        img {
+                            content: url(../../../public/images/cartPlusDark.svg);
+                        }
+                    }
+                    
+                    figcaption {
+                        margin-right: 0.5em;
+                    }
+                    
+                    img {
+                        height: 40px;
+                    }
+                }
+                
+                &:nth-child(2) {
+                    position: relative;
+                    width: 50px;
+                    height: 50px;
+                    
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        top: 5px;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-image: url(../../../public/images/bellDark.svg);
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        transition: opacity 0.2s ease;
+                        opacity: 1;
+                    }
+                    
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-image: url(../../../public/images/bellRingDark.svg);
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        transition: opacity 0.2s ease;
+                        opacity: 0;
+                    }
+                    
+                    &:hover {
+                        &::before {
+                            opacity: 0;
+                        }
+                        
+                        &::after {
+                            opacity: 1;
+                        }
+                    }
+                }
+
+                &:nth-child(3) {
+                    flex-direction: column;
+                    align-items: center;
+
+                    img {
+                        height: 40px;
+                    }
+
+                    figcaption {
+                        color: $color-blue;
+                        font: {
+                            family: 'lora';
+                            size: 20px;
+                            weight: bold;
+                            style: italic;
+                        }
+                    }
+                }
             }
         }
-    }
-    }
-    
-    div {
-        display: flex;
-        align-items: center;
-        
-        img {
-            width: 50px;
-            height: 60px;
-            margin-right: 1em;
-        }
-        
-        h1 {
-            font: {
-                family: 'berkshire';
-                size: 45px;
-                weight: normal;
-            }
-            color: $color-blue;
-            
-        }
-    }
-    
-    nav {
-        display: flex;
     }
 }
-

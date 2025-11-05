@@ -367,7 +367,9 @@ body.backoffice * {
   margin: 0;
 }
 body.backoffice img, body.backoffice figure {
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 body.backoffice header {
   display: flex;
@@ -488,6 +490,4 @@ body.backoffice header nav figure:nth-child(3) figcaption {
   font-size: 20px;
   font-weight: bold;
   font-style: italic;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=main.css.map */

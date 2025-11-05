@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="../../public/style.css">
     </head>
 
-    <body class="acceuiBackoffice">
+    <body class="backoffice acceuiBackoffice">
         <header>
             <div>
                 <img src="../../public/images/logoBackoffice.svg" alt="icon">
@@ -18,11 +18,16 @@
             <nav>
                 <figure>
                     <figcaption>Nouveau Produit</figcaption>
-                    <img src="../../public/images/panierPlusLight.svg">
+                    <img src="../../public/images/cartPlusLight.svg">
                 </figure>
-                <button onclick=""></button>
-                <button onclick=""></button>
-                <button onclick=""></button> 
+                <figure></figure>
+                <figure>
+                    <img src="../../public/images/deconnexion.svg">
+                    <figcaption>Déconnexion</figcaption>
+                </figure>
+                <figure>
+                    
+                </figure> 
             </nav>
         </header>
     </body>
