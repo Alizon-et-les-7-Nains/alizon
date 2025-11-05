@@ -495,8 +495,83 @@ header.backoffice nav figure:nth-child(4) img {
   height: 35px;
 }
 
-.CreerCompteVendeur h1 {
+.CreerCompteVendeur {
+  background-color: #fffefa;
   color: #273469;
+  min-height: 100vh;
+  padding-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: initial;
+  position: relative;
+  overflow-x: hidden;
+  z-index: 1;
+}
+.CreerCompteVendeur h1 {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  text-align: left;
+  font-weight: 600;
+  margin-left: 30px;
+}
+.CreerCompteVendeur .triskiel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1100px;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+.CreerCompteVendeur .haut_de_page {
+  width: 100%;
+  max-width: 900px;
+  padding: 0 20px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.CreerCompteVendeur > img[alt="photo de profil"] {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+.CreerCompteVendeur .container {
+  width: 100%;
+  max-width: 900px;
+  padding: 0 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.CreerCompteVendeur .container .form-vendeur {
+  display: flex;
+  flex-direction: column;
+}
+.CreerCompteVendeur .container .form-vendeur .form-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.CreerCompteVendeur .container .form-vendeur .form-group input[type=text], .CreerCompteVendeur .container .form-vendeur .form-group input[type=email], .CreerCompteVendeur .container .form-vendeur .form-group input[type=password], .CreerCompteVendeur .container .form-vendeur .form-group input[type=date] {
+  flex: 1;
+  padding: 10px 15px;
+  border: 2px solid #273469;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #273469;
+  max-width: 32%;
+}
+.CreerCompteVendeur .container .form-vendeur .form-group input[type=text]::placeholder, .CreerCompteVendeur .container .form-vendeur .form-group input[type=email]::placeholder, .CreerCompteVendeur .container .form-vendeur .form-group input[type=password]::placeholder, .CreerCompteVendeur .container .form-vendeur .form-group input[type=date]::placeholder {
+  color: #6e6e6e;
+}
+.CreerCompteVendeur .container .form-vendeur .form-group input[type=text] input[type=password], .CreerCompteVendeur .container .form-vendeur .form-group input[type=email] input[type=password], .CreerCompteVendeur .container .form-vendeur .form-group input[type=password] input[type=password], .CreerCompteVendeur .container .form-vendeur .form-group input[type=date] input[type=password] {
+  border-color: #f14e4e;
 }
 
 /*# sourceMappingURL=style.css.map */
