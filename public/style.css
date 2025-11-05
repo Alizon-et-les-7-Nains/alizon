@@ -365,13 +365,7 @@ body {
 }
 
 /* ---- Header ---- */
-body.backoffice * {
-  margin: 0;
-}
-body.backoffice img, body.backoffice figure {
-  user-select: none;
-}
-body.backoffice header {
+header.backoffice {
   display: flex;
   background-color: #e4d9ff;
   border-bottom: solid #273469 5px;
@@ -379,33 +373,39 @@ body.backoffice header {
   align-items: center;
   justify-content: space-between;
 }
-body.backoffice header div {
+header.backoffice * {
+  margin: 0;
+}
+header.backoffice img, header.backoffice figure {
+  user-select: none;
+}
+header.backoffice div {
   display: flex;
   align-items: center;
 }
-body.backoffice header div img {
+header.backoffice div img {
   width: 50px;
   height: 60px;
   margin-right: 1em;
 }
-body.backoffice header div h1 {
+header.backoffice div h1 {
   font-family: "berkshire";
   font-size: 45px;
   font-weight: normal;
   color: #273469;
 }
-body.backoffice header nav {
+header.backoffice nav {
   display: flex;
 }
-body.backoffice header nav figure {
+header.backoffice nav figure {
   margin-left: 5em;
   display: flex;
   align-items: center;
 }
-body.backoffice header nav figure:hover {
+header.backoffice nav figure:hover {
   cursor: pointer;
 }
-body.backoffice header nav figure:nth-child(1) {
+header.backoffice nav figure:nth-child(1) {
   background-color: #273469;
   color: #e3f2fe;
   height: 50px;
@@ -421,7 +421,7 @@ body.backoffice header nav figure:nth-child(1) {
   font-weight: bold;
   font-style: italic;
 }
-body.backoffice header nav figure:nth-child(1):hover {
+header.backoffice nav figure:nth-child(1):hover {
   background-color: #e3f2fe;
   color: #273469;
   outline-width: 3px;
@@ -429,21 +429,21 @@ body.backoffice header nav figure:nth-child(1):hover {
   outline-style: solid;
   outline-color: #273469;
 }
-body.backoffice header nav figure:nth-child(1):hover img {
+header.backoffice nav figure:nth-child(1):hover img {
   content: url(../../../public/images/cartPlusDark.svg);
 }
-body.backoffice header nav figure:nth-child(1) figcaption {
+header.backoffice nav figure:nth-child(1) figcaption {
   margin-right: 0.5em;
 }
-body.backoffice header nav figure:nth-child(1) img {
+header.backoffice nav figure:nth-child(1) img {
   height: 40px;
 }
-body.backoffice header nav figure:nth-child(2) {
+header.backoffice nav figure:nth-child(2) {
   position: relative;
   width: 50px;
   height: 50px;
 }
-body.backoffice header nav figure:nth-child(2)::before {
+header.backoffice nav figure:nth-child(2)::before {
   content: "";
   position: absolute;
   top: 5px;
@@ -457,7 +457,7 @@ body.backoffice header nav figure:nth-child(2)::before {
   transition: opacity 0.2s ease;
   opacity: 1;
 }
-body.backoffice header nav figure:nth-child(2)::after {
+header.backoffice nav figure:nth-child(2)::after {
   content: "";
   position: absolute;
   top: 5px;
@@ -471,27 +471,27 @@ body.backoffice header nav figure:nth-child(2)::after {
   transition: opacity 0.2s ease;
   opacity: 0;
 }
-body.backoffice header nav figure:nth-child(2):hover::before {
+header.backoffice nav figure:nth-child(2):hover::before {
   opacity: 0;
 }
-body.backoffice header nav figure:nth-child(2):hover::after {
+header.backoffice nav figure:nth-child(2):hover::after {
   opacity: 1;
 }
-body.backoffice header nav figure:nth-child(3), body.backoffice header nav figure:nth-child(4) {
+header.backoffice nav figure:nth-child(3), header.backoffice nav figure:nth-child(4) {
   flex-direction: column;
   align-items: center;
 }
-body.backoffice header nav figure:nth-child(3) img, body.backoffice header nav figure:nth-child(4) img {
+header.backoffice nav figure:nth-child(3) img, header.backoffice nav figure:nth-child(4) img {
   height: 40px;
 }
-body.backoffice header nav figure:nth-child(3) figcaption, body.backoffice header nav figure:nth-child(4) figcaption {
+header.backoffice nav figure:nth-child(3) figcaption, header.backoffice nav figure:nth-child(4) figcaption {
   color: #273469;
   font-family: "lora";
   font-size: 20px;
   font-weight: bold;
   font-style: italic;
 }
-body.backoffice header nav figure:nth-child(4) img {
+header.backoffice nav figure:nth-child(4) img {
   height: 35px;
 }
 
