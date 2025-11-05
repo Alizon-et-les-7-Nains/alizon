@@ -1,6 +1,6 @@
 <header class="backoffice">
     <div>
-        <img src="../../public/images/logoBackoffice.svg" alt="icon">
+        <img src="../../public/images/logoBackoffice.svg">
         <h1>Alizon</h1>
     </div>
 
