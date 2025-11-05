@@ -3,5 +3,5 @@
 @use "./frontoffice/styleTemplate";
 @use "./frontoffice/styleLegales";
 @use "./frontoffice/style404";
-//@use './backoffice/_header.css';
+@use "./backoffice/header";
 @use './frontoffice/styleCompteClient';
