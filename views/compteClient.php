@@ -54,22 +54,39 @@
    }
 
    function verifierChamp() {
-    const bouton = document.querySelector(".boutonModiferProfil");
-    const champs = document.querySelectorAll("section input");
-    let tousRemplis = true;
+        const bouton = document.querySelector(".boutonModiferProfil");
+        const champs = document.querySelectorAll("section input");
+        let tousRemplis = true;
 
-    for (let i = 0; i < champs.length; i++) {
-        if (i !== 5 && champs[i].value.trim() === "") {
-            tousRemplis = false;
-            break;
+        for (let i = 0; i < champs.length; i++) {
+            let valeur = champs[i].value.trim();
+            if (i !== 5 && valeur === "") {
+                tousRemplis = false;
+                break;
+            }
+
+            if (i === 3) { 
+                if (!/^([0][1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/.test(valeur)) {
+                    tousRemplis = false;
+                    break;
+                }
+            }
+
+            if (i === 9) { 
+                if (!/^0[67](\s[0-9]{2}){4}$/.test(valeur)) {
+                    tousRemplis = false;
+                    break;
+                }
+            }
+
+            if (i === 10) {
+                if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
+                    tousRemplis = false;
+                    break;
+                }
+            }            
         }
-
-        if(champs[].value.chaine.match("^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$")){
-            tousRemplis = false;
-        }
-
         bouton.disabled = !tousRemplis;
-    }
     }
 
     verifierChamp();
@@ -83,23 +100,16 @@
         if (!enModif){
             let elems = document.querySelectorAll("section p");
             for (let i = 0; i < elems.length; i++){
-                if(i==3){
-                    let texteActuel = elems[i].innerText;
-                    let input = document.createElement("input");
-                    input.type = "date";
-                    input.value = texteActuel;
-                    elems[i].parentNode.replaceChild(input, elems[i]);
-                }
-
-                else if(i==10){
+                if(i==9){
                     let texteActuel = elems[i].innerText;
                     let input = document.createElement("input");
                     input.type = "email";
                     input.value = texteActuel;
                     elems[i].parentNode.replaceChild(input, elems[i]);
+                    
                 }
 
-                else if(i==11){
+                else if(i==10){
                     let texteActuel = elems[i].innerText;
                     let input = document.createElement("input");
                     input.type = "tel";
