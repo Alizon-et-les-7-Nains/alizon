@@ -5,6 +5,7 @@
     transition: $property $duration ease-in-out;
 }
 
+
 .CreerCompteVendeur {
     font: {
         family: 'lora', 'Serif';
@@ -22,6 +23,7 @@
     overflow-x: hidden;
     z-index: 1;
 
+
     h1 {
         margin: {
             top: 10px;
@@ -31,6 +33,7 @@
         text-align: left;
         font-weight: 600;
     }
+
 
     .triskiel{
         position: absolute;
@@ -42,6 +45,7 @@
         z-index: 0;
         pointer-events: none;
     }
+
 
     .haut_de_page{
         width: 100%;
@@ -57,6 +61,7 @@
         align-items: center;
     }
 
+
     > img[alt="photo de profil"]{
         width: 150px;
         height: 150px;
@@ -67,18 +72,21 @@
         }
     }
 
+
     .container{
         width: 100%;
-        max-width: 900px; 
+        max-width: 900px;
         padding: 0 5px;
         margin: {
             left: auto;
             right: auto;
         }
 
+
         .form-vendeur{
             display: flex;
             flex-direction: column;
+
 
             .form-group{
                 display: flex;
@@ -86,6 +94,7 @@
                 margin: {
                     bottom: 10px;
                 }
+
 
                 input[type="text"],input[type="email"],input[type="password"],input[type="date"]{
                     flex: 1;
@@ -96,15 +105,18 @@
                     color: $color-blue;
                     max-width: 32%;
 
+
                     &::placeholder {
                         color: $color-dark-gray;
                     }
 
-                    input[type="password"] { 
-                        border-color: $color-red; 
+
+                    input[type="password"] {
+                        border-color: $color-red;
                     }
                 }
             }
+
 
             .btn_inscription{
                 background-color: $color-pastel-purple;
@@ -118,6 +130,7 @@
                 border: 0;
                 cursor: pointer;
 
+
                 margin: {
                     top: 0;
                     right: auto;
@@ -125,18 +138,21 @@
                 }
                 display: block;
 
+
                 &:disabled {
                     opacity: 0.7;
                     cursor: not-allowed;
                 }
             }
 
+
             p, .connexion_lien{
-                
+               
                 font: {
                     weight: normal;
                     style: normal;
                 }
+
 
                 text-align: center;
                 margin: {
@@ -145,12 +161,14 @@
                 }
             }
 
+
             .inscriptions_autres{
                 text-align: center;
                 color: $color-dark-gray;
                 margin: {
                     top: 15px;
                 }
+
 
                 .logos {
                     display: flex;
@@ -160,9 +178,11 @@
                         bottom: 30px;
                     }
 
+
                     a {
                         text-decoration: none;
                         display: flex;
+
 
                         img {
                             padding: 5px;
@@ -170,23 +190,26 @@
                     }
                 }
             }
-        } 
+        }
     }
     .text-footer {
             max-width: 1000px;
             text-align: center;
-            
+           
             font: {
                 size: 0.8rem;
             }
 
+
             color: $color-dark-gray;
+
 
             margin: {
                 top: 20px;
                 left: auto;
                 right: auto;
             }
+
 
             padding: 0 20px;
         }
