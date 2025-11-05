@@ -22,11 +22,12 @@
                 </figure>
                 <figure></figure>
                 <figure>
-                    <img src="../../public/images/deconnexion.svg">
+                    <img src="../../public/images/deconnexionDark.svg">
                     <figcaption>Déconnexion</figcaption>
                 </figure>
                 <figure>
-                    
+                    <img src="../../public/images/compteDark.svg">
+                    <figcaption>Mon Compte</figcaption>
                 </figure> 
             </nav>
         </header>
