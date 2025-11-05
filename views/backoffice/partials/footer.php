@@ -1,4 +1,4 @@
-<footer class = "backoffice">
+<footer class="backoffice">
     <ul>
         <li><a href="../../frontoffice/legales.php">Mentions Légales</a></li>
         <li><copy>&copy; 2025 Alizon, Tous droits réservés.</copy></li>
