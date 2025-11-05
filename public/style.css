@@ -440,9 +440,6 @@ body {
   z-index: 0;
   pointer-events: none;
 }
-.pageConnexionCLient {
-  /* s'assurer que le contenu est au-dessus */
-}
 .pageConnexionCLient > * {
   position: relative;
   z-index: 1;
