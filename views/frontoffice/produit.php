@@ -16,7 +16,7 @@
     <article class="rectangleProduit">
         <img src="flecheGauche.svg" alt="">
         <div>
-            <img id="imageBouteille" src="Image_bouteille.svg" alt="">
+            <img id="imageBouteille" src="../../public/images/Image_bouteille.svg" alt="">
             <div id="lesCercles">
                 <div class="cercleNoir"></div>
                 <div class="cercleNoir"></div>
@@ -27,7 +27,7 @@
     </article>
     <article class="infoPreviewProduit">
         <h1>Cidre coco d'issé</h1>
-        <div>
+        <div id="prix">
             <h2>29.99€</h2>
             <h3>40.99€</h3>
         </div>
@@ -44,10 +44,10 @@
         </div>
         <h3>Choisir un type de produit</h3>
         <div>
-            <img src="Image_bouteille.svg" alt="">
-            <img src="Image_bouteille.svg" alt="">
-            <img src="Image_bouteille.svg" alt="">
-            <img src="Image_bouteille.svg" alt="">
+            <img src="../../public/images/Image_bouteille.svg" alt="">
+            <img src="../../public/images/Image_bouteille.svg" alt="">
+            <img src="../../public/images/Image_bouteille.svg" alt="">
+            <img src="../../public/images/Image_bouteille.svg" alt="">
         </div>
     </article>
     <article class="actionsProduit">
@@ -127,4 +127,7 @@
 <h3 class="VoirPlus" >Voir plus sur le produit</h3>
 <hr>
 </main>
+<footer>
+    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
+</footer>
 </html>

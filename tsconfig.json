@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "esnext",                 
+    "module": "amd",                   
+    "outFile": "./public/script.js",    
+    "rootDir": "./views/scripts",      
+    "sourceMap": true,               
+    "declaration": false,         
+    "strict": true                     
+  },
+  "include": [
+    "./views/scripts/**/*.ts"           
+  ],
+  "exclude": [
+    "node_modules"   
+  ]
+}

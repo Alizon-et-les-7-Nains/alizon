@@ -5,10 +5,9 @@
     body{
         margin: 0;
         padding: 0;
-        background-color: yellow;
     }
     h1{
-    font-family: "Lora", serif;
+        font-family: 'lora' ;
     }
 
     .infoHautProduit{
@@ -52,6 +51,7 @@
     .infoPreviewProduit div{
         display: flex;
         flex-direction: row;
+        align-items: baseline;
     }
 
     #lesCercles{
@@ -74,6 +74,13 @@
       -moz-border-radius: 25px;
       border-radius: 25px;
       background: black;
+    }
+
+    #prix{
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 2em;
     }
 
 }
