@@ -34,9 +34,10 @@ body {
 }
 .headerFront h1 {
   color: #e3f2fe;
-  font-family: "Berkshire Swash", serif;
-  font-weight: 200;
-  font-style: normal;
+  font-family: "berkshire", serif !important;
+  font-weight: lighter !important;
+  font-style: normal !important;
+  font-size: 40px !important;
 }
 .headerFront h1 a b {
   color: #e3f2fe;
@@ -60,7 +61,7 @@ body {
   margin: 0;
 }
 .headerFront img {
-  width: 50px;
+  width: 40px;
 }
 .headerFront .seConnecter {
   display: flex;
@@ -71,6 +72,9 @@ body {
 }
 .headerFront .seConnecter img {
   height: 40px;
+}
+.headerFront .seConnecter p {
+  margin: 0;
 }
 .headerFront .search-wrapper {
   position: relative;
@@ -153,13 +157,13 @@ body {
     gap: 8px;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 638px) {
   .headerFront .icons {
     display: none;
     visibility: hidden;
   }
 }
-@media (max-width: 428px) {
+@media (max-width: 500px) {
   .headerFront b {
     display: none;
     visibility: hidden;
@@ -175,6 +179,8 @@ body {
 .footerFront a, .footerFront p {
   text-decoration: none;
   color: #e3f2fe;
+  margin: 0;
+  margin-right: 15px;
 }
 
 .footerFront .footerTel {
@@ -182,10 +188,10 @@ body {
   visibility: hidden;
 }
 
-.footerFront, .footerFront div {
+.footerFront div {
   background-color: #273469;
   color: white;
-  font-style: italic;
+  font-style: normal;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
@@ -530,6 +536,102 @@ footer.backoffice figure figcaption {
 footer.backoffice a {
   text-decoration: none;
   color: #273469;
+}
+
+aside.backoffice {
+  background-color: #273469;
+}
+aside.backoffice ul {
+  position: sticky;
+  top: 1em;
+  padding: 0;
+  list-style: none;
+  margin-top: 1em;
+  padding-right: 1em;
+}
+aside.backoffice ul li {
+  background-color: #273469;
+  user-select: none;
+  height: 5em;
+  align-content: center;
+  border-radius: 24px;
+  margin-right: 1em;
+  transition: all 0.2s;
+}
+aside.backoffice ul li figure {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 4em;
+  width: 97%;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  transition: all 0.2s;
+}
+aside.backoffice ul li figure img {
+  margin-left: 1em;
+  height: 35px;
+  filter: brightness(0) invert(1);
+  margin-right: 1em;
+  transition: all 0.2s;
+}
+aside.backoffice ul li figure figcaption {
+  color: #fffefa;
+  font-family: "lora";
+  font-weight: normal;
+  font-size: 30px;
+  transition: all 0.2s;
+}
+aside.backoffice ul li:hover {
+  cursor: pointer;
+  width: 115%;
+}
+aside.backoffice ul li:hover figure {
+  background-color: #fffefa;
+}
+aside.backoffice ul li:hover figure img {
+  filter: none;
+}
+aside.backoffice ul li:hover figure figcaption {
+  color: #273469;
+}
+aside.backoffice ul li.here {
+  cursor: pointer;
+  width: 115%;
+}
+aside.backoffice ul li.here figure {
+  background-color: #fffefa;
+}
+aside.backoffice ul li.here figure img {
+  filter: none;
+}
+aside.backoffice ul li.here figure figcaption {
+  color: #273469;
+}
+aside.backoffice ul li.here:hover {
+  cursor: default;
+}
+
+body.backoffice {
+  display: grid;
+  grid-template-areas: "header header" "aside main" "footer footer";
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+body.backoffice header {
+  grid-area: header;
+}
+body.backoffice aside {
+  grid-area: aside;
+}
+body.backoffice main {
+  padding-left: 2em;
+  padding-right: 2em;
+  grid-area: main;
+}
+body.backoffice footer {
+  grid-area: footer;
 }
 
 .status-red {

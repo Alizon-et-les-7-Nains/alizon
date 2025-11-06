@@ -7,20 +7,22 @@
     <title>footer</title>
 </head>
 <body>
-  <footer class ="footerFront">
+  <footer class="footerFront">
     <div class="footerPC">
       <div>
         <a href="">Conditions générales de vente</a>
         <a href="">Mentions légales</a>
         <p>© 2025 Alizon Tous droits réservés.</p>
       </div>
-      <i class="bi bi-envelope fs-2"></i>
+      <div>
+        <img src="../../../public/images/whiteLetter.svg" alt="Bouton contact">
+      </div>
     </div>
     <div class="footerTel">
       <a href=""><img src="../../../public/images/homeLightBlue.svg" alt="" class="homeLightBlue"></a>
       <a href=""><img src="../../../public/images/searchLightBlue.svg" alt="" class="searchLightBlue"></a>
       <a href=""><img src="../../../public/images/cartLightBlue.svg" alt="" class="cartLightBlue"></a>
-      <a href=""><img src="../../../public/images/utilLightBlue.svg" alt="" class="utilLightBlue"></a>
+      <a href=""><img src="../../../public/images/utilLightBlue.svg" alt=""></a>
     </div>
   </footer>
 </body>

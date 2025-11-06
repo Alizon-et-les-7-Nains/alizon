@@ -5,4 +5,7 @@
 @use "./frontoffice/style404";
 @use "./backoffice/header";
 @use "./backoffice/footer";
+@use "./backoffice/aside";
+@use "./backoffice/structure";
 @use "./backoffice/CreerCompteVendeur";
+@use "./backoffice/AjouterProduit.scss";
