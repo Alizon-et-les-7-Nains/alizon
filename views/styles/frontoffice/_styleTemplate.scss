@@ -27,9 +27,10 @@ body {
 
   h1 {
     color: $color-pastel-blue;
-    font-family: "Berkshire Swash", serif;
-    font-weight: 200;
-    font-style: normal;
+    font-family: "berkshire", serif !important;
+    font-weight: lighter !important;
+    font-style: normal !important;
+    font-size: 40px !important; // METTRE A JOUR DANS BRANCH MAIN
 
     a {
       b {
@@ -61,7 +62,7 @@ body {
   }
 
   img {
-    width: 50px;
+    width: 40px;
   }
 
   .seConnecter {
@@ -171,14 +172,14 @@ body {
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 638px) {
     .icons {
       display: none;
       visibility: hidden;
     }
   }
 
-  @media (max-width: 428px) {
+  @media (max-width: 500px) {
     b {
       display: none;
       visibility: hidden;
