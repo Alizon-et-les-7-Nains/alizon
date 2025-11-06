@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Font stack variables for consistent usage across SCSS files */
 @font-face {
   font-family: "lora";
@@ -627,6 +628,116 @@ body.backoffice main {
 }
 body.backoffice footer {
   grid-area: footer;
+}
+
+.pagePaiement .parent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  padding: 28px;
+}
+.pagePaiement .parent .infosLivraison {
+  grid-column: span 2/span 2;
+  grid-row: span 2/span 2;
+  margin: 0 auto;
+}
+.pagePaiement .parent .infosLivraison h3 {
+  font-family: "lora", serif;
+  font-size: 18px;
+  font-weight: 100;
+  margin: 0 0 20px;
+  color: #252b56;
+}
+.pagePaiement .parent .infosLivraison .form-livraison {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+.pagePaiement .parent .infosLivraison .form-livraison .input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #273469;
+  border-radius: 8px;
+  font-family: "open-sans", sans-serif;
+  font-size: 14px;
+  box-sizing: border-box;
+  background: transparent;
+}
+.pagePaiement .parent .infosLivraison .form-livraison .input--large {
+  padding: 12px 14px;
+}
+.pagePaiement .parent .infosLivraison .form-livraison .row {
+  display: flex;
+  gap: 18px;
+}
+.pagePaiement .parent .infosLivraison .form-livraison .input--half {
+  flex: 1 1 0;
+  padding: 12px 14px;
+  font-size: 20px;
+}
+.pagePaiement .parent .infosLivraison .form-livraison {
+  /* placeholder stylé comme sur la maquette */
+}
+.pagePaiement .parent .infosLivraison .form-livraison .input::placeholder {
+  color: #8a8a8a;
+  font-style: italic;
+  opacity: 1;
+}
+.pagePaiement .parent .infosLivraison .form-livraison .checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "lora", serif;
+  font-size: 20px;
+  color: #252b56;
+}
+.pagePaiement .parent .infosLivraison .form-livraison .checkbox input[type=checkbox] {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 2px solid #252b56;
+}
+.pagePaiement .parent .recapPanier {
+  grid-column: span 2/span 2;
+  grid-row: span 5/span 5;
+  grid-column-start: 5;
+  grid-row-start: 1;
+  border: 2px solid #273469;
+}
+.pagePaiement .parent .paiement {
+  grid-column: span 2/span 2;
+  grid-row: span 3/span 3;
+  grid-column-start: 1;
+  grid-row-start: 3;
+  border: 2px solid #273469;
+}
+.pagePaiement .parent .conditionGen {
+  grid-column: span 2/span 2;
+  grid-column-start: 3;
+  grid-row-start: 1;
+  border: 2px solid #273469;
+}
+.pagePaiement {
+  /* responsive small screens */
+}
+@media (max-width: 720px) {
+  .pagePaiement .infosLivraison h3 {
+    font-size: 26px;
+  }
+  .pagePaiement .infosLivraison .form-livraison .row {
+    flex-direction: column;
+  }
+  .pagePaiement .infosLivraison .form-livraison .input {
+    font-size: 18px;
+    padding: 16px 18px;
+  }
+  .pagePaiement .infosLivraison .form-livraison .input--half {
+    padding: 14px 16px;
+  }
+  .pagePaiement .infosLivraison .form-livraison .checkbox {
+    font-size: 16px;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
