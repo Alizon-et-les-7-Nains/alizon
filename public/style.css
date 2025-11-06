@@ -710,7 +710,6 @@ body.backoffice footer {
   border-radius: 8px;
   font-size: 1rem;
   color: #273469;
-  transition: border-color 0.2s ease-in-out;
 }
 .CreerCompteVendeur .container .form-vendeur input.form-control[type=date] {
   line-height: normal;

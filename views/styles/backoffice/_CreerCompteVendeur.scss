@@ -1,10 +1,6 @@
 @use "../colors" as *;
 @use "../fonts" as *;
 
-@mixin transition($property: all, $duration: 0.3s) {
-    transition: $property $duration ease-in-out;
-}
-
 .status-red { color: $color-red; }
 .status-green { color: $color-green; }
 
@@ -91,7 +87,6 @@
                 border-radius: 8px;
                 font-size: 1rem;
                 color: $color-blue;
-                @include transition(border-color, 0.2s); 
 
                 &[type="date"] {
                     line-height: normal;
