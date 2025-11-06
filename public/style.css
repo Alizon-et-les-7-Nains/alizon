@@ -34,9 +34,10 @@ body {
 }
 .headerFront h1 {
   color: #e3f2fe;
-  font-family: "Berkshire Swash", serif;
-  font-weight: 200;
-  font-style: normal;
+  font-family: "berkshire", serif !important;
+  font-weight: lighter !important;
+  font-style: normal !important;
+  font-size: 40px !important;
 }
 .headerFront h1 a b {
   color: #e3f2fe;
@@ -60,7 +61,7 @@ body {
   margin: 0;
 }
 .headerFront img {
-  width: 50px;
+  width: 40px;
 }
 .headerFront .seConnecter {
   display: flex;
@@ -153,13 +154,13 @@ body {
     gap: 8px;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 638px) {
   .headerFront .icons {
     display: none;
     visibility: hidden;
   }
 }
-@media (max-width: 428px) {
+@media (max-width: 500px) {
   .headerFront b {
     display: none;
     visibility: hidden;
@@ -302,7 +303,6 @@ body {
   font-size: 50px;
   padding: 10px 50px;
   transition: 0.3s;
-  text-decoration: none;
 }
 .page404 a:hover {
   color: #273469;
@@ -317,15 +317,14 @@ body {
 }
 @media (max-width: 1300px) {
   .page404 h1 {
-    font-size: 55px;
+    font-size: 60px;
   }
   .page404 h2 {
-    font-size: 40px;
+    font-size: 30px;
   }
   .page404 a {
     font-size: 30px;
     padding: 5px 15px;
-    text-decoration: none;
   }
   .page404 img {
     width: 525px;
@@ -334,14 +333,7 @@ body {
     margin: 50px;
   }
 }
-@media (max-width: 562px) {
-  .page404 img {
-    width: 350px;
-  }
-  .bgImgs {
-    width: 600px;
-  }
-}
+
 .bgImgs {
   position: absolute;
   opacity: 0.3;
@@ -351,12 +343,12 @@ body {
 .bgImgs.bleu {
   bottom: -250px;
   left: -150px;
-  width: 1000px;
+  width: 1052px;
 }
 .bgImgs.rose {
   top: -200px;
   right: -150px;
-  width: 1000px;
+  width: 1052px;
   transform: rotate(180deg);
 }
 @media (max-width: 1300px) {
