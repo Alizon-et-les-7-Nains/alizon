@@ -9,7 +9,19 @@
 }
 @font-face {
   font-family: "open-sans";
-  src: url(../../public/fonts/open-sans/OpenSans-VariableFont_wdthwght.ttf);
+  src: url(../../public/fonts/open-sans/static/OpenSans-Regular.ttf);
+}
+@font-face {
+  font-family: "open-sans-bold";
+  src: url(../../public/fonts/open-sans/static/OpenSans-Bold.ttf);
+}
+@font-face {
+  font-family: "open-sans-italic";
+  src: url(../../public/fonts/open-sans/static/OpenSans-Italic.ttf);
+}
+@font-face {
+  font-family: "open-sans-bold-italic";
+  src: url(../../public/fonts/open-sans/static/OpenSans-BoldItalic.ttf);
 }
 html,
 body {
@@ -72,6 +84,9 @@ body {
 }
 .headerFront .seConnecter img {
   height: 40px;
+}
+.headerFront .seConnecter p {
+  margin: 0;
 }
 .headerFront .search-wrapper {
   position: relative;
@@ -176,6 +191,8 @@ body {
 .footerFront a, .footerFront p {
   text-decoration: none;
   color: #e3f2fe;
+  margin: 0;
+  margin-right: 15px;
 }
 
 .footerFront .footerTel {
@@ -183,10 +200,10 @@ body {
   visibility: hidden;
 }
 
-.footerFront, .footerFront div {
+.footerFront div {
   background-color: #273469;
   color: white;
-  font-style: italic;
+  font-style: normal;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;

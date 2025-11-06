@@ -75,6 +75,9 @@ body {
     img {
       height: 40px;
     }
+    p {
+      margin: 0;
+    }
   }
 
   .search-wrapper {
@@ -196,15 +199,17 @@ body {
 .footerFront a, .footerFront p {
   text-decoration: none;
   color: $color-pastel-blue;
+  margin: 0;
+  margin-right: 15px;
 }
 .footerFront .footerTel {
   display: none;
   visibility: hidden;
 }
-.footerFront, .footerFront div {
+.footerFront div {
   background-color: $color-blue;
   color: white;
-  font-style: italic;
+  font-style: normal;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
