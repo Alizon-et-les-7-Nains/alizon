@@ -302,7 +302,6 @@ body {
   font-size: 50px;
   padding: 10px 50px;
   transition: 0.3s;
-  text-decoration: none;
 }
 .page404 a:hover {
   color: #273469;
@@ -317,15 +316,14 @@ body {
 }
 @media (max-width: 1300px) {
   .page404 h1 {
-    font-size: 55px;
+    font-size: 60px;
   }
   .page404 h2 {
-    font-size: 40px;
+    font-size: 30px;
   }
   .page404 a {
     font-size: 30px;
     padding: 5px 15px;
-    text-decoration: none;
   }
   .page404 img {
     width: 525px;
@@ -334,14 +332,7 @@ body {
     margin: 50px;
   }
 }
-@media (max-width: 562px) {
-  .page404 img {
-    width: 350px;
-  }
-  .bgImgs {
-    width: 600px;
-  }
-}
+
 .bgImgs {
   position: absolute;
   opacity: 0.3;
@@ -351,12 +342,12 @@ body {
 .bgImgs.bleu {
   bottom: -250px;
   left: -150px;
-  width: 1000px;
+  width: 1052px;
 }
 .bgImgs.rose {
   top: -200px;
   right: -150px;
-  width: 1000px;
+  width: 1052px;
   transform: rotate(180deg);
 }
 @media (max-width: 1300px) {
