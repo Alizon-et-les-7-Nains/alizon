@@ -1,6 +1,165 @@
-@use "../colors" as *;
-@use "../fonts" as *;
+@use "../colors" as *; 
+@use "../fonts" as *; 
 
 .AjouterProduit{
+    font: {
+        family: 'lora', 'Serif';
+        weight: bold;
+        style: italic;
+    }
+    background-color: $color-white;
+    color: $color-blue;
+    min-height: 100vh;
+    padding: 20px 50px;
+    overflow-x: hidden;
 
-} 
+    left: 200px; 
+    width: calc(100% - 200px); 
+    top: 50px; 
+    
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .product-content {
+        display: flex;
+        gap: 30px; 
+        width: 100%;
+    }
+
+    .left-section {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 50%; 
+    }
+
+    .ajouterPhoto {
+        border: 2px solid $color-blue; 
+        height: 350px; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-bottom: 20px;
+
+        .placeholder-photo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            p {
+                margin: 0;
+                color: $color-blue;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .form-details {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    input[type="text"], textarea {
+        padding: 8px 10px;
+        border: 1px solid $color-blue;
+        border-radius: 4px;
+        font-size: 1rem;
+        color: $color-blue;
+        width: 100%;
+        box-sizing: border-box;
+        
+        &::placeholder {
+            color: lighten($color-blue, 20%);
+            font-style: italic;
+        }
+    }
+    
+    .price-weight-kg {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        
+        input {
+            width: 30%;
+        }
+        
+        .prix-kg-label {
+            width: 40%;
+            font-weight: bold;
+            text-align: right;
+        }
+    }
+    
+    .right-section {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        
+        .product-desc-box {
+            border: 2px solid $color-blue;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            
+            label {
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: $color-blue;
+            }
+            
+            textarea {
+                border: 1px solid lighten($color-blue, 30%);
+                resize: none; 
+                flex-grow: 1; 
+                min-height: 250px; 
+            }
+            
+            .char-count {
+                text-align: right;
+                font-size: 0.8rem;
+                color: gray;
+                margin-top: 5px;
+            }
+        }
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+
+        button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 120px;
+        }
+
+        .btn-previsualiser {
+            background-color: transparent;
+            border: 2px solid $color-blue;
+            color: $color-blue;
+        }
+
+        .btn-annuler {
+            background-color: transparent;
+            border: 2px solid $color-blue;
+            color: $color-blue;
+        }
+
+        .btn-ajouter {
+            background-color: $color-blue;
+            color: $color-white;
+        }
+    }
+}

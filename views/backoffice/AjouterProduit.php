@@ -9,36 +9,50 @@
     <title>Ajouter un produit au catalogue</title>
 </head>
 <body class="backoffice">
-    <?php require_once "./partials/headerMain.php"?>
+    <header>
+        <?php require_once "./partials/headerMain.php"?>
+    </header>
     <?php require_once "./partials/aside.php"?>
        
     <main class="AjouterProduit"> 
-        <div class="ajouterPhoto">
-            <img src="../../../public/images/ajouterPhoto.svg" alt="">
-            <p>Cliquer pour ajouter une photo</p>
-        </div>
+        <h1>Backoffice - Nouveau produit</h1>
+        <div class="product-content">
+            
+            <div class="left-section">
+                <div class="ajouterPhoto">
+                    <div class="placeholder-photo">
+                        <img src="../../../public/images/ajouterPhoto.svg" alt="">
+                        <p>Cliquer pour ajouter une photo</p>
+                    </div>
+                </div>
 
-        <div class="product-name">
-            <input type="text" placeholder="Intitulé du produit" required>
-        </div>
+                <div class="form-details">
+                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" required>
+                
+                    <div class="price-weight-kg">
+                        <input type="text" placeholder="Prix" required>
+                        <input type="text" placeholder="Poids" required>
+                        <span class="prix-kg-label">Prix au Kg:</span>
+                    </div>
 
-        <div class="spec-prod">
-            <input type="text" placeholder="Prix" required>
-            <input type="text" placeholder="Poids" required>
-            <p>Prix au Kg : </p>
-        </div>
+                    <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
+                </div>
+            </div>
 
-        <div class="keywords">
-            <input type="text" placeholder="Mots clés (séparés par des virgules)">
-        </div>
+            <div class="right-section">
+                <div class="product-desc-box">
+                    <label for="product-description">Description du produit</label>
+                    <textarea id="product-description" placeholder="Description de votre produit" maxlength="1000"></textarea>
+                    <div class="char-count">230/1000</div> 
+                </div>
 
-        <div class="product-desc">
-            <input type="text" placeholder="Description de votre produit">
+                <div class="form-actions">
+                    <button type="button" class="btn-previsualiser">Prévisualiser</button>
+                    <button type="button" class="btn-annuler">Annuler</button>
+                    <button type="submit" class="btn-ajouter">Ajouter le produit</button>
+                </div>
+            </div>
         </div>
-
-        <button type="submit" id="previsualiser-btn">Prévisualiser</button>
-        <button type="submit" id="annuler-btn">Annuler</button>
-        <button type="submit" id="ajt-btn">Ajouter le produit</button>
     </main>
     <?php require_once "./partials/footer.php"?>
 </body>

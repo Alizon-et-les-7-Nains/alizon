@@ -804,4 +804,142 @@ body.backoffice footer {
   margin-bottom: 0;
 }
 
+.AjouterProduit {
+  font-family: "lora", "Serif";
+  font-weight: bold;
+  font-style: italic;
+  background-color: #fffefa;
+  color: #273469;
+  min-height: 100vh;
+  padding: 20px 50px;
+  overflow-x: hidden;
+  left: 200px;
+  width: calc(100% - 200px);
+  top: 50px;
+}
+.AjouterProduit h1 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+.AjouterProduit .product-content {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
+.AjouterProduit .left-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 50%;
+}
+.AjouterProduit .ajouterPhoto {
+  border: 2px solid #273469;
+  height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.AjouterProduit .ajouterPhoto .placeholder-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.AjouterProduit .ajouterPhoto .placeholder-photo p {
+  margin: 0;
+  color: #273469;
+  font-weight: bold;
+}
+.AjouterProduit .form-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.AjouterProduit input[type=text], .AjouterProduit textarea {
+  padding: 8px 10px;
+  border: 1px solid #273469;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #273469;
+  width: 100%;
+  box-sizing: border-box;
+}
+.AjouterProduit input[type=text]::placeholder, .AjouterProduit textarea::placeholder {
+  color: rgb(66.625, 88.8333333333, 179.375);
+  font-style: italic;
+}
+.AjouterProduit .price-weight-kg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.AjouterProduit .price-weight-kg input {
+  width: 30%;
+}
+.AjouterProduit .price-weight-kg .prix-kg-label {
+  width: 40%;
+  font-weight: bold;
+  text-align: right;
+}
+.AjouterProduit .right-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.AjouterProduit .right-section .product-desc-box {
+  border: 2px solid #273469;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.AjouterProduit .right-section .product-desc-box label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #273469;
+}
+.AjouterProduit .right-section .product-desc-box textarea {
+  border: 1px solid rgb(99.6875, 118.9166666667, 197.3125);
+  resize: none;
+  flex-grow: 1;
+  min-height: 250px;
+}
+.AjouterProduit .right-section .product-desc-box .char-count {
+  text-align: right;
+  font-size: 0.8rem;
+  color: gray;
+  margin-top: 5px;
+}
+.AjouterProduit .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+.AjouterProduit .form-actions button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 120px;
+}
+.AjouterProduit .form-actions .btn-previsualiser {
+  background-color: transparent;
+  border: 2px solid #273469;
+  color: #273469;
+}
+.AjouterProduit .form-actions .btn-annuler {
+  background-color: transparent;
+  border: 2px solid #273469;
+  color: #273469;
+}
+.AjouterProduit .form-actions .btn-ajouter {
+  background-color: #273469;
+  color: #fffefa;
+}
+
 /*# sourceMappingURL=style.css.map */
