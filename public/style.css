@@ -501,7 +501,6 @@ header.backoffice nav figure:nth-child(4) img {
   background-size: contain;
   font-family: "lora";
   font-weight: bold;
-  font-style: italic;
 }
 .inscription form {
   display: flex;
@@ -510,7 +509,6 @@ header.backoffice nav figure:nth-child(4) img {
   align-items: center;
   font-size: 48px;
   font-weight: bold;
-  font-style: italic;
   text-align: center;
 }
 .inscription form input {
@@ -528,7 +526,6 @@ header.backoffice nav figure:nth-child(4) img {
   font-family: "Lora", serif;
   font-size: 48px;
   font-weight: bold;
-  font-style: italic;
   text-align: center;
   margin: 50px 0px;
 }
