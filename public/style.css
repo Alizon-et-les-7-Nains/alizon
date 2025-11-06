@@ -650,6 +650,9 @@ main.acceuilBackoffice {
   display: flex;
   flex-direction: column;
 }
+main.acceuilBackoffice img, main.acceuilBackoffice button {
+  user-select: none;
+}
 main.acceuilBackoffice section {
   display: flex;
   flex-direction: column;
@@ -665,7 +668,7 @@ main.acceuilBackoffice section article table {
   border-spacing: 0 1em;
 }
 main.acceuilBackoffice section article table thead td, main.acceuilBackoffice section article table tbody td {
-  padding: 0 1em;
+  padding: 0 3em;
 }
 main.acceuilBackoffice section article table thead td:first-child, main.acceuilBackoffice section article table tbody td:first-child {
   padding-left: 0;
@@ -674,6 +677,7 @@ main.acceuilBackoffice section article table thead td:last-child, main.acceuilBa
   padding-right: 0;
 }
 main.acceuilBackoffice section article table thead button {
+  transition: all 0.2s;
   letter-spacing: 1px;
   font-family: "lora";
   font-style: italic;
@@ -707,14 +711,14 @@ main.acceuilBackoffice section article table thead button.here:hover {
 }
 main.acceuilBackoffice section article table tbody {
   color: #273469;
-  font-family: "open-sans";
+  font-family: "open-sans-bold";
 }
 main.acceuilBackoffice section article table tbody figure {
   display: flex;
   padding: 0;
 }
 main.acceuilBackoffice section article table tbody figure img {
-  margin-top: 10px;
+  margin-top: 15px;
   align-self: flex-start;
 }
 main.acceuilBackoffice section article table tbody figure figcaption {
@@ -728,6 +732,9 @@ main.acceuilBackoffice section article table tbody figure figcaption.pos {
 }
 main.acceuilBackoffice section a {
   align-self: flex-end;
+}
+main.acceuilBackoffice section a img {
+  height: 25px;
 }
 
 /*# sourceMappingURL=style.css.map */
