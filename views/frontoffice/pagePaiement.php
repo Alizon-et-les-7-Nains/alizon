@@ -14,48 +14,69 @@
     <main>
 
         <div class="parent">
-            <div class="infosLivraison">
-                <h3>1 - Informations pour la livraison : </h3>
+            <div class="col col-1">
+                <div class="infosLivraison">
+                    <h3>1 - Informations pour la livraison :</h3>
 
-                <form class="form-livraison" autocomplete="on" novalidate>
-                    <label class="sr-only" for="adresse">Adresse de livraison</label>
-                    <input id="adresse" name="adresse" type="text" placeholder="Adresse de livraison"
-                        class="input input--large">
+                    <form class="form-livraison" autocomplete="on" novalidate>
+                        <input id="adresse" name="adresse" type="text" placeholder="Adresse de livraison"
+                            class="input input--large">
 
-                    <div class="row">
-                        <label class="sr-only" for="codepostal">Code postal</label>
-                        <input id="codepostal" name="codepostal" type="text" placeholder="Code postal"
-                            class="input input--half">
+                        <div class="row">
+                            <input id="codepostal" name="codepostal" type="text" placeholder="Code postal"
+                                class="input input--half">
 
-                        <label class="sr-only" for="ville">Ville</label>
-                        <input id="ville" name="ville" type="text" placeholder="Ville" class="input input--half">
-                    </div>
+                            <input id="ville" name="ville" type="text" placeholder="Ville" class="input input--half">
+                        </div>
+
+                        <label class="checkbox">
+                            <input type="checkbox" id="facturation" name="facturation">
+                            <span>Adresse de facturation différente</span>
+                        </label>
+                    </form>
+                </div>
+
+                <div class="paiement">
+                    <h3>2 - Informations de paiement :</h3>
+
+                    <form class="form-paiement" action="">
+                        <input id="numcarte" name="numcarte" type="text" placeholder="Numéro de carte bancaire"
+                            class="input input--large">
+
+                        <input id="nomcarte" name="nomcarte" type="text" placeholder="Nom sur la carte bancaire"
+                            class="input input--large">
+
+                        <div class="row">
+                            <input id="dateexp" name="dateexp" type="text" placeholder="Date d'expiration (MM/AA)"
+                                class="input input--half">
+
+                            <input id="cvv" name="cvv" type="number" placeholder="CVV" class="input input--half cvv">
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <!-- Colonne 2 : conditions générales -->
+            <div class="col col-2">
+                <div class="conditionGen">
+                    <h3>5 - Accepter les conditions générales et mentions légales</h3>
 
                     <label class="checkbox">
-                        <input type="checkbox" id="facturation" name="facturation">
-                        <span>Adresse de facturation différente</span>
+                        <input type="checkbox" id="cgv" name="cgv">
+                        <span>J’ai lu et j’accepte les Conditions Générales de Vente et les Mentions Légales
+                            d’Alizon.</span>
                     </label>
-                </form>
+                </div>
             </div>
-            <div class="recapPanier">
 
-            </div>
-            <div class="paiement">
-                <h3>2 - Informations de paiement : </h3>
-                <input type="text">
-                <input type="text">
-
-                <input type="text">
-                <input type="text">
-            </div>
-            <div class="conditionGen">
-                <h3>5 - Accepter les conditions génrales
-                    et mentions légales</h3>
-
-                <input type="checkbox" name="" id="">
+            <!-- Colonne 3 : récapitulatif du panier -->
+            <div class="col col-3">
+                <div class="recapPanier">
+                    <!-- contenu du récapitulatif -->
+                </div>
             </div>
         </div>
-
 
     </main>
 

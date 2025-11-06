@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* Font stack variables for consistent usage across SCSS files */
 @font-face {
   font-family: "lora";
@@ -648,112 +647,108 @@ body.backoffice footer {
 }
 
 .pagePaiement .parent {
+  margin: 0;
+  padding: 28px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
-  padding: 28px;
+  gap: 20px;
+  align-items: start;
+  box-sizing: border-box;
+  width: 100%;
 }
-.pagePaiement .parent .infosLivraison {
-  grid-column: span 2/span 2;
-  grid-row: span 2/span 2;
-  margin: 0 auto;
+.pagePaiement .col {
+  display: flex;
+  flex-direction: column;
 }
-.pagePaiement .parent .infosLivraison h3 {
+.pagePaiement h3 {
   font-family: "lora", serif;
   font-size: 18px;
   font-weight: 100;
-  margin: 0 0 20px;
+  margin: 0 0 12px;
   color: #252b56;
 }
-.pagePaiement .parent .infosLivraison .form-livraison {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  width: 100%;
-}
-.pagePaiement .parent .infosLivraison .form-livraison .input {
+.pagePaiement .input {
   width: 100%;
   padding: 12px 14px;
-  border: 2px solid #273469;
-  border-radius: 8px;
-  font-family: "open-sans", sans-serif;
-  font-size: 14px;
+  border-radius: 14px;
+  background: #fbfaf8;
+  border: 2px solid #252b56;
   box-sizing: border-box;
-  background: transparent;
+  font-family: "open-sans", sans-serif;
+  font-size: 16px;
+  color: rgb(112.5, 112.5, 112.5);
+  min-width: 0;
+  margin: 6px 0 6px 0;
 }
-.pagePaiement .parent .infosLivraison .form-livraison .input--large {
-  padding: 12px 14px;
-}
-.pagePaiement .parent .infosLivraison .form-livraison .row {
-  display: flex;
-  gap: 18px;
-}
-.pagePaiement .parent .infosLivraison .form-livraison .input--half {
-  flex: 1 1 0;
-  padding: 12px 14px;
-  font-size: 20px;
-}
-.pagePaiement .parent .infosLivraison .form-livraison {
-  /* placeholder stylé comme sur la maquette */
-}
-.pagePaiement .parent .infosLivraison .form-livraison .input::placeholder {
+.pagePaiement .input::placeholder {
   color: #8a8a8a;
   font-style: italic;
   opacity: 1;
 }
-.pagePaiement .parent .infosLivraison .form-livraison .checkbox {
+.pagePaiement .row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+.pagePaiement .input--half {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.pagePaiement .checkbox {
   display: inline-flex;
   align-items: center;
   gap: 12px;
   font-family: "lora", serif;
-  font-size: 20px;
+  font-size: 16px;
   color: #252b56;
 }
-.pagePaiement .parent .infosLivraison .form-livraison .checkbox input[type=checkbox] {
-  width: 24px;
-  height: 24px;
+.pagePaiement .checkbox input[type=checkbox] {
+  width: 18px;
+  height: 18px;
   border-radius: 4px;
   border: 2px solid #252b56;
 }
-.pagePaiement .parent .recapPanier {
-  grid-column: span 2/span 2;
-  grid-row: span 5/span 5;
-  grid-column-start: 5;
-  grid-row-start: 1;
-  border: 2px solid #273469;
+.pagePaiement .col-1 .infosLivraison,
+.pagePaiement .col-1 .paiement {
+  margin-top: 20px;
 }
-.pagePaiement .parent .paiement {
-  grid-column: span 2/span 2;
-  grid-row: span 3/span 3;
-  grid-column-start: 1;
-  grid-row-start: 3;
-  border: 2px solid #273469;
+.pagePaiement .col-2 .conditionGen {
+  align-self: stretch;
 }
-.pagePaiement .parent .conditionGen {
-  grid-column: span 2/span 2;
-  grid-column-start: 3;
-  grid-row-start: 1;
-  border: 2px solid #273469;
-}
-.pagePaiement {
-  /* responsive small screens */
+.pagePaiement .col-3 {
+  height: 100%;
+  background-color: red;
 }
 @media (max-width: 720px) {
-  .pagePaiement .infosLivraison h3 {
-    font-size: 26px;
+  .pagePaiement .parent {
+    grid-template-columns: 1fr;
   }
-  .pagePaiement .infosLivraison .form-livraison .row {
+  .pagePaiement .row {
     flex-direction: column;
   }
-  .pagePaiement .infosLivraison .form-livraison .input {
-    font-size: 18px;
-    padding: 16px 18px;
-  }
-  .pagePaiement .infosLivraison .form-livraison .input--half {
+  .pagePaiement .input {
     padding: 14px 16px;
+    font-size: 15px;
   }
-  .pagePaiement .infosLivraison .form-livraison .checkbox {
-    font-size: 16px;
+  .pagePaiement h3 {
+    font-size: 20px;
+  }
+}
+@media (min-width: 721px) and (max-width: 920px) {
+  .pagePaiement .parent {
+    grid-template-columns: 1fr 360px;
+  }
+  .pagePaiement .col-2 {
+    order: 2;
+  }
+  .pagePaiement .col-3 {
+    order: 3;
+  }
+}
+@media (min-width: 921px) {
+  .pagePaiement .parent {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
   }
 }
 
