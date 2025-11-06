@@ -1,6 +1,108 @@
 @use '../fonts';
-@use '../colors';
+@use '../colors' as *;
+
+@mixin secondary {
+    cursor: pointer;
+    color: $color-blue;
+    background-color: $color-pastel-blue;
+    border: {
+        style: solid;
+        color: $color-blue;
+        width: 2px;
+    }
+}
 
 main.acceuilBackoffice {
+    display: flex;
+    flex-direction: column;
     
+    section {
+        display: flex;
+        flex-direction: column;
+        
+        h1 {
+            font-family: 'lora';
+            color: $color-blue;
+        }
+        
+        article {
+            table {
+                width: 100%;
+                table-layout: fixed;
+                border-collapse: separate;
+                border-spacing: 0 1em;
+                
+                thead td, tbody td {
+                    padding: 0 1em;
+                    
+                    &:first-child {
+                        padding-left: 0;
+                    }
+                    
+                    &:last-child {
+                        padding-right: 0;
+                    }
+                }
+                
+                thead {
+                    button {
+                        letter-spacing: 1px;
+                        font: {
+                            family: 'lora';
+                            style: italic;
+                            weight: bold;
+                            size: 15px;
+                        }
+                        border: none;
+                        border-radius: 16px;
+                        background-color: $color-blue;
+                        color: $color-white;
+                        padding: 1em;
+                        width: 100%;
+                        
+                        &:hover {
+                            @include secondary;
+                        }
+                    }
+                    button.here {
+                        @include secondary;
+                        
+                        &:hover {
+                            cursor: default;
+                        }
+                    }
+                }
+                
+                tbody {
+                    color: $color-blue;
+
+                    font-family: 'open-sans';
+                    
+                    figure {
+                        display: flex;
+                        padding: 0;
+
+                        img {
+                            margin-top: 10px;
+                            align-self: flex-start;
+                        }
+
+                        figcaption {
+                            font-size: 40px;
+                        }
+                        figcaption.neg {
+                            color: $color-red;
+                        }
+                        figcaption.pos {
+                            color: $color-green;
+                        }
+                    }
+                }
+            }
+        }
+        
+        a {
+            align-self: flex-end;
+        }
+    }
 }

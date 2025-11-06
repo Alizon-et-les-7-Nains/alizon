@@ -628,4 +628,88 @@ body.backoffice footer {
   grid-area: footer;
 }
 
+main.acceuilBackoffice {
+  display: flex;
+  flex-direction: column;
+}
+main.acceuilBackoffice section {
+  display: flex;
+  flex-direction: column;
+}
+main.acceuilBackoffice section h1 {
+  font-family: "lora";
+  color: #273469;
+}
+main.acceuilBackoffice section article table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 1em;
+}
+main.acceuilBackoffice section article table thead td, main.acceuilBackoffice section article table tbody td {
+  padding: 0 1em;
+}
+main.acceuilBackoffice section article table thead td:first-child, main.acceuilBackoffice section article table tbody td:first-child {
+  padding-left: 0;
+}
+main.acceuilBackoffice section article table thead td:last-child, main.acceuilBackoffice section article table tbody td:last-child {
+  padding-right: 0;
+}
+main.acceuilBackoffice section article table thead button {
+  letter-spacing: 1px;
+  font-family: "lora";
+  font-style: italic;
+  font-weight: bold;
+  font-size: 15px;
+  border: none;
+  border-radius: 16px;
+  background-color: #273469;
+  color: #fffefa;
+  padding: 1em;
+  width: 100%;
+}
+main.acceuilBackoffice section article table thead button:hover {
+  cursor: pointer;
+  color: #273469;
+  background-color: #e3f2fe;
+  border-style: solid;
+  border-color: #273469;
+  border-width: 2px;
+}
+main.acceuilBackoffice section article table thead button.here {
+  cursor: pointer;
+  color: #273469;
+  background-color: #e3f2fe;
+  border-style: solid;
+  border-color: #273469;
+  border-width: 2px;
+}
+main.acceuilBackoffice section article table thead button.here:hover {
+  cursor: default;
+}
+main.acceuilBackoffice section article table tbody {
+  color: #273469;
+  font-family: "open-sans";
+}
+main.acceuilBackoffice section article table tbody figure {
+  display: flex;
+  padding: 0;
+}
+main.acceuilBackoffice section article table tbody figure img {
+  margin-top: 10px;
+  align-self: flex-start;
+}
+main.acceuilBackoffice section article table tbody figure figcaption {
+  font-size: 40px;
+}
+main.acceuilBackoffice section article table tbody figure figcaption.neg {
+  color: #f14e4e;
+}
+main.acceuilBackoffice section article table tbody figure figcaption.pos {
+  color: #259525;
+}
+main.acceuilBackoffice section a {
+  align-self: flex-end;
+}
+
 /*# sourceMappingURL=style.css.map */
