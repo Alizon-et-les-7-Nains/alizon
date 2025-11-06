@@ -83,6 +83,9 @@
       padding: 15px 40px;
       border-radius: 32px;
     }
+    .cardRecap article {
+      margin-bottom: 25px;
+    }
   }
   .cardRecap {
     border: 2px solid #273469;
@@ -191,5 +194,13 @@
     .listeProduit div {
         justify-content: center;
     }
+  }
+  .aucunProduit {
+    color: $color-dark-gray;
+    font-family: "lora", serif;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 30px;
+    text-align: center;
   }
 }

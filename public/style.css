@@ -504,6 +504,9 @@ body {
   padding: 15px 40px;
   border-radius: 32px;
 }
+.panier .recapPanier .cardRecap article {
+  margin-bottom: 25px;
+}
 .panier .cardRecap {
   border: 2px solid #273469;
   border-radius: 20px;
@@ -611,6 +614,14 @@ body {
   .panier .listeProduit div {
     justify-content: center;
   }
+}
+.panier .aucunProduit {
+  color: #6e6e6e;
+  font-family: "lora", serif;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 30px;
+  text-align: center;
 }
 
 /*# sourceMappingURL=style.css.map */

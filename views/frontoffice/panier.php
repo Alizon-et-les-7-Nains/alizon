@@ -11,29 +11,31 @@
 
     <main>
         <section class="listeProduit">
-            <?php for ($i = 0; $i < 5; $i++) { ?> 
+            <?php for ($i = 0; $i < 4; $i++) { ?> 
                 <article>
                     <div class="imgProduit">
                         <input type="checkbox" name="selectionProduit" id="selectionProduit">
                         <img src="../../public/images/defaultImageProduitCard.png" alt="Image du produit">
-                                        </div>
-                        <div class="infoProduit">
-                            <div>
-                                <h2>Lot de rilettes bretonne</h2>
-                                <h4>En stock</h4>
-                            </div>
-                            <div class="quantiteProduit">
-                                <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
-                                <p>0</p>
-                                <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
-                            </div>
+                    </div>
+                    <div class="infoProduit">
+                        <div>
+                            <h2>Lot de rilettes bretonne</h2>
+                            <h4>En stock</h4>
                         </div>
+                        <div class="quantiteProduit">
+                            <img class="btnMinus" src="../../public/images/minusDarkBlue.svg" alt="Symbole moins" style="cursor: pointer;"> 
+                            <p class="quantite">0</p> 
+                            <img class="btnPlus" src="../../public/images/plusDarkBlue.svg" alt="Symbole plus" style="cursor: pointer;"> 
+                        </div>
+                    </div>
                     <div class="prixOpt">
                         <h2><b>29.99€</b></h2>
-                        <img src="../../public/images/binDarkBlue.svg" alt="Enelever produit">
+                        <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="btnPoubelle" style="cursor: pointer;">
                     </div>
                 </article>
-            <?php } ?>
+            <?php } if ($i==0) { ?>
+                <h1 class="aucunProduit">Aucun produit</h1>
+            <?php } else { ?>
         </section>
         <section class="recapPanier">
             <h1>Votre panier</h1>
@@ -63,8 +65,44 @@
             </div>
             <a href="" class="viderPanier">Vider le panier</a>
         </section>
+        <?php } ?>
     </main>
 
     <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
+
+    <script>
+        const btnPlus = document.querySelectorAll('.btnPlus');
+        const btnMinus = document.querySelectorAll('.btnMinus');
+        const btnPoubelle = document.querySelectorAll('.btnPoubelle');
+
+        btnPlus.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const quantiteElement = this.parentElement.querySelector('.quantite');
+                let quantite = parseInt(quantiteElement.textContent);
+                quantite++;
+                quantiteElement.textContent = quantite;
+            });
+        });
+
+        btnMinus.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const quantiteElement = this.parentElement.querySelector('.quantite');
+                let quantite = parseInt(quantiteElement.textContent);
+                if (quantite > 0) {
+                    quantite--;
+                    quantiteElement.textContent = quantite;
+                }
+            });
+        });
+
+        btnPoubelle.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remonter à l'article parent puis chercher la quantité
+                const article = this.closest('article');
+                const quantiteElement = article.querySelector('.quantite');
+                quantiteElement.textContent = '0';
+            });
+        });
+    </script>
 </body>
 </html>
