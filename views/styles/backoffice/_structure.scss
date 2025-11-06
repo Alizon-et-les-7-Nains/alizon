@@ -1,0 +1,26 @@
+body.backoffice {
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "aside main"
+        "footer footer";
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    
+    header {
+        grid-area: header;
+    }
+    aside {
+        grid-area: aside;
+    }
+    main {
+        padding: {
+            left: 2em; right: 2em;
+        }
+        grid-area: main;
+    }
+    footer {
+        grid-area: footer;
+    }
+}

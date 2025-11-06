@@ -1,0 +1,83 @@
+@use '../fonts';
+@use '../colors' as *;
+
+@mixin secondary {
+    cursor: pointer;
+    width: 115%;
+    
+    figure {
+        background-color: $color-white;
+        
+        img {
+            filter: none;
+        }
+        
+        figcaption {
+            color: $color-blue;
+        }
+    }
+}
+
+aside.backoffice {
+    background-color: $color-blue;
+    
+    ul {
+        position: sticky;
+        top: 1em;
+        padding: 0;
+        list-style: none;
+        margin-top: 1em;
+        padding-right: 1em;
+        
+        li {
+            background-color: $color-blue;
+            user-select: none;
+            height: 5em;
+            align-content: center;
+            border-radius: 24px;
+            margin-right: 1em;
+            transition: all 0.2s;
+            
+            figure {
+                margin: 0;
+                display: flex;
+                align-items: center;
+                height: 4em;
+                width: 97%;
+                border-top-right-radius: 20px;
+                border-bottom-right-radius: 20px;
+                transition: all 0.2s;
+                
+                img {
+                    margin-left: 1em;
+                    height: 35px;
+                    filter: brightness(0) invert(1);
+                    margin-right: 1em;
+                    transition: all 0.2s;
+                }
+                
+                figcaption {
+                    color: $color-white;
+                    font: {
+                        family: 'lora';
+                        weight: normal;
+                        size: 30px;
+                    }
+                    transition: all 0.2s;
+                }
+            }
+            
+            &:hover {
+                @include secondary;
+            }
+        }
+
+        li.here {
+            @include secondary;
+
+            &:hover {
+                cursor: default;
+            }
+        }
+    }
+}
