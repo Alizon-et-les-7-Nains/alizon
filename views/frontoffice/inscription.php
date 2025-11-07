@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -119,29 +120,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 special: { element: reqSpecial, regex: /[^a-zA-Z0-9]/, message: 'Un caractère spécial (@, !, #, ...)' }
             };
 
-            // Gestion de l'état d'erreur visuel
-            function toggleErrorStyle(inputElement) {
-                if (inputElement.value.trim() === '') {
-                    inputElement.classList.add('input-error');
-                } else {
-                    inputElement.classList.remove('input-error');
-                }
-            }
-
-            // Mise à jour de l'affichage des critères
-            function updateRequirement(rule, password) {
-                const isValid = rule.regex.test(password);
-                const iconClass = isValid ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
-                const statusClass = isValid ? 'status-green' : 'status-red';
-
-                rule.element.className = statusClass;
-                rule.element.innerHTML = `<i class="bi ${iconClass}" style="margin-right: 5px;"></i>${rule.message}`;
-                return isValid;
-            }
-
-            //////////////////////////////////////////
-            //        Reprendre cette fonctiton     //
-            //////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////
+            //                                                              //
+            //        Fonction de validation des critères du formulaire     //
+            //                                                              //
+            //////////////////////////////////////////////////////////////////
+            
             function validateForm(){
                 let allValid = true;
                 if(!validatePassword()){
@@ -212,6 +196,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 return true;
             }
 
+            //////////////////////////////////////////////////////////////////
+            //                                                              //
+            //    Fonction de mise à jour des critères des mots de passe    //
+            //                                                              //
+            //////////////////////////////////////////////////////////////////
+            
+
+            // Gestion de l'état d'erreur visuel
+            function toggleErrorStyle(inputElement) {
+                if (inputElement.value.trim() === '') {
+                    inputElement.classList.add('input-error');
+                } else {
+                    inputElement.classList.remove('input-error');
+                }
+            }
+
+            // Mise à jour de l'affichage des critères
+            function updateRequirement(rule, password) {
+                const isValid = rule.regex.test(password);
+                const iconClass = isValid ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
+                const statusClass = isValid ? 'status-green' : 'status-red';
+
+                rule.element.className = statusClass;
+                rule.element.innerHTML = `<i class="bi ${iconClass}" style="margin-right: 5px;"></i>${rule.message}`;
+                return isValid;
+            }
+
+            
+
             passwordInput.addEventListener('blur', () => {
                 // Masquer les critères si le champ est vide
                 if (passwordInput.value.length === 0) {
@@ -251,6 +264,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 phoneNumberInput.classList.remove('input-error');
                 validateBirthDate();
             });
+
+            //////////////////////////////////////////////////////////////////
+            //                                                              //
+            //    Bloquage de la validation du formulaire si les champs     //
+            //               ne sont pas aux bons formats                   //
+            //                                                              //
+            //////////////////////////////////////////////////////////////////
             
             // Empêcher la soumission si la validation échoue
             document.querySelector('form').addEventListener('submit', function(e) {
