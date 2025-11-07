@@ -6,12 +6,14 @@
                 <figcaption>Accueil</figcaption>
             </figure>
         </li>
+        <!--
         <li class="aside-btn">
             <figure>
                 <img src="/public/images/courbeDark.svg">
                 <figcaption>Statistiques</figcaption>
             </figure>
         </li>
+        -->
         <li class="aside-btn">
             <figure>
                 <img src="/public/images/cartDarkBlue.svg">
@@ -36,12 +38,14 @@
                 <figcaption>Commandes</figcaption>
             </figure>
         </li>
+        <!--
         <li class="aside-btn">
             <figure>
                 <img src="/public/images/enveloppeDark.svg">
                 <figcaption>Retours</figcaption>
             </figure>
         </li>
+        -->
     </ul>
 
     <script type="module" src="/public/script.js"></script>
