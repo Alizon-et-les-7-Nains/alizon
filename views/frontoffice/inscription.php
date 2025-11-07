@@ -265,6 +265,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 validateBirthDate();
             });
 
+            birthDateInput.addEventListener('input', () => {
+                birthDateInput.classList.remove('input-error');
+            });
+
+            phoneNumberInput.addEventListener('input', () => {
+                phoneNumberInput.classList.remove('input-error');
+            });
+
             //////////////////////////////////////////////////////////////////
             //                                                              //
             //    Bloquage de la validation du formulaire si les champs     //
@@ -272,9 +280,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             //                                                              //
             //////////////////////////////////////////////////////////////////
             
-            // Empêcher la soumission si la validation échoue
             document.querySelector('form').addEventListener('submit', function(e) {
-                // Vérifier si les champs sont vides au moment de la soumission
                 const isPasswordValid = validatePassword();
                 const isBirthDateValid = validateBirthDate();
                 const isPhoneValid = validatePhoneNumber();
@@ -289,17 +295,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 toggleErrorStyle(birthDateInput);
                 toggleErrorStyle(phoneNumberInput);
                 
-                // Si la validation échoue OU si l'un des champs est vide
                 if (!isPasswordValid || passwordEmpty || confirmEmpty) {
                     e.preventDefault();
                 }
                 if(!isBirthDateValid || birthDateEmpty){
+                    birthDateInput.classList.add('input-error');
                     e.preventDefault();
-                    alert("La date de naissance n'est pas au bon format, utilisez le format JJ/MM/YYYY");
+                } else {
+                    birthDateInput.classList.remove('input-error');
                 }
                 if(!isPhoneValid || phoneEmpty){
+                    phoneNumberInput.classList.add('input-error');
                     e.preventDefault();
-                    alert("Le numéro de téléphone n'est format français");
+                } else {
+                    phoneNumberInput.classList.remove('input-error');
                 }
             });
 
