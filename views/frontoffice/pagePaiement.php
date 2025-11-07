@@ -18,8 +18,9 @@
                     <h3>1 - Informations pour la livraison :</h3>
                     <input type="text" placeholder="Adresse de livraison" aria-label="Adresse de livraison">
                     <div class="ligne">
-                        <input class="code-postal-input" type="text" placeholder="Code postal" aria-label="Code postal">
-                        <input type="text" placeholder="Ville" aria-label="Ville">
+                        <input class="code-postal-input" type="text" placeholder="Code postal" aria-label="Code postal"
+                            required minlenght="5" maxlength="5"> <input type="text" placeholder="Ville"
+                            aria-label="Ville">
                     </div>
                     <label><input type="checkbox"> Adresse de facturation différente</label>
                 </section>
@@ -30,7 +31,8 @@
                     <input type="text" placeholder="Nom sur la carte" aria-label="Nom sur la carte">
                     <div class="ligne">
                         <input class="carte-date" type="text" placeholder="00/00" aria-label="Date expiration">
-                        <input class="cvv-input" type=" text" placeholder="CVV" aria-label="CVV">
+                        <input class="cvv-input" type=" text" placeholder="CVV" aria-label="CVV" required minlenght="3"
+                            maxlength="3">
                     </div>
 
                     <div class="logos">
@@ -43,10 +45,10 @@
 
 
             <div class="col">
-                <section class="promotions">
+                <!-- <section class="promotions">
                     <h3>4 - Appliquer un bon de réduction</h3>
                     <input type="text" placeholder="Code de réduction" aria-label="Code de réduction">
-                </section>
+                </section> -->
                 <section class="conditions">
                     <h3>5 - Accepter les conditions générales et mentions légales</h3>
                     <label>
@@ -77,7 +79,7 @@
                     </div>
                 </div>
             </aside>
-        </div> <!-- .parent -->
+        </div>
         <!-- bouton mobile placé après tous les blocs, visible seulement en mobile -->
         <div class="payer-wrapper-mobile">
             <button class="payer payer--mobile">Payer</button>
@@ -85,6 +87,7 @@
     </main>
 
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
+    <script src="../../public/script.js"></script>
 </body>
 
 </html>
