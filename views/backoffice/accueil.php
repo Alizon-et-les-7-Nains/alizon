@@ -6,6 +6,7 @@
         <title>Alizon</title>
 
         <link rel="stylesheet" href="../../public/style.css">
+        <link rel="icon" href="/public/images/logoBackoffice.svg">
     </head>
 
     <body class="backoffice">
@@ -138,8 +139,44 @@
                 <a href="" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
 
-            <section>
+            <section class="avis">
                 <h1>Derniers Avis</h1>
+                <article>
+                    <ul>
+                        <li>
+                            <table>
+                                <tr>
+                                    <td rowspan=3></td>
+                                    <td>Pneu</td>
+                                    <td>
+                                        <figure>
+                                            <figcaption>3,5</figcaption>
+                                            <img src="/public/images/etoile.svg">
+                                        </figure>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Douceur gourmande</td>
+                                    <td>Un cidre délicat, à la robe claire et lumineuse, aux arômes de pomme fraîchement cueillie. La bouche est souple et veloutée, dominée par une belle rondeur sucrée qui en fait une boisson conviviale et facile à apprécier. À déguster bien frais, seul ou en accompagnement de desserts fruités.</td>
+                                    <td>
+                                        <ul>
+                                            <li><input type="text" placeholder="Écrivez la réponse ici..." name="" id=""></li>
+                                            <li><button>Répondre</button></li>
+                                            <li>
+                                                <ul>
+                                                    <li><img src=""></li>
+                                                    <li><img src=""></li>
+                                                    <li>|</li>
+                                                    <li>Signaler</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </li>
+                    </ul>
+                </article>
                 <a href="" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
 

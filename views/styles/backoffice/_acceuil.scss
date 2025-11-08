@@ -25,7 +25,7 @@ main.acceuilBackoffice {
         flex-direction: column;
         color: $color-blue;
         width: 100%;
-
+        
         h1 {
             user-select: none;
             font: {
@@ -33,7 +33,7 @@ main.acceuilBackoffice {
                 
             }
         }
-
+        
         article {
             width: 100%;
         }
@@ -46,13 +46,17 @@ main.acceuilBackoffice {
                 height: 25px;
             }
         }
-
+        
+        ul {
+            list-style: none;
+        }
+        
         &.stock article {
             display: grid;
             grid-template-rows: repeat(2, auto);
             grid-template-columns: repeat(3, auto);
             gap: 2em;
-
+            
             table {
                 padding: 1em;
                 border: solid 2px $color-blue;
@@ -60,7 +64,7 @@ main.acceuilBackoffice {
                 justify-content: center;
                 font-family: 'open-sans';
                 font-size: 20px;
-
+                
                 tr:nth-child(3) {
                     font: {
                         family: 'open-sans-bold';
@@ -69,17 +73,59 @@ main.acceuilBackoffice {
                     display: flex;
                     align-items: center;
                     width: 100%;
-
+                    
                     td:nth-child(2) {
                         font-size: 40px;
                         margin-left: auto;
-
+                        
                         &.epuise {
                             color: $color-red;
                         }
                         &.faible {
                             color: $color-green;
                         }
+                    }
+                }
+            }
+        }
+        
+        &.avis article {
+            table {
+                width: 100%;
+                
+                tr:first-child {
+                    display: flex;
+                    flex-direction: column;
+                    font-weight: bold;
+                    
+                    td:first-child {
+                        height: 50px;
+                        width: 50px;
+                        border-radius: 100%;
+                        align-items: center;
+                        background: {
+                            image: url(/public/images/pp.png);
+                            repeat: no-repeat;
+                            position: center center;
+                        }
+                    }
+                    
+                    figure {
+                        margin: 0;
+                        display: flex;
+                        color: $color-yellow;
+                        align-items: center;
+                        gap: 0.25em;
+                    }
+                }
+                tr:last-child {
+                    display: flex;
+                    flex-direction: column;
+
+                    input {
+                        border: none;
+                        border-bottom: solid 2px $color-blue;
+                        border-radius: 8px;
                     }
                 }
             }

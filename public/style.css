@@ -673,6 +673,9 @@ main.acceuilBackoffice section a {
 main.acceuilBackoffice section a img {
   height: 25px;
 }
+main.acceuilBackoffice section ul {
+  list-style: none;
+}
 main.acceuilBackoffice section.stock article {
   display: grid;
   grid-template-rows: repeat(2, auto);
@@ -703,6 +706,39 @@ main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(
 }
 main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).faible {
   color: #259525;
+}
+main.acceuilBackoffice section.avis article table {
+  width: 100%;
+}
+main.acceuilBackoffice section.avis article table tr:first-child {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:first-child {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  align-items: center;
+  background-image: url(/public/images/pp.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+main.acceuilBackoffice section.avis article table tr:first-child figure {
+  margin: 0;
+  display: flex;
+  color: #FFD000;
+  align-items: center;
+  gap: 0.25em;
+}
+main.acceuilBackoffice section.avis article table tr:last-child {
+  display: flex;
+  flex-direction: column;
+}
+main.acceuilBackoffice section.avis article table tr:last-child input {
+  border: none;
+  border-bottom: solid 2px #273469;
+  border-radius: 8px;
 }
 
 /*# sourceMappingURL=style.css.map */
