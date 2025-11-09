@@ -56,7 +56,7 @@
             -->
 
             <section class="stock">
-                <h1>Stocks Faible</h1>
+                <h1>Stocks Faibles</h1>
                 <article>
                     <table>
                         <tr>
@@ -131,12 +131,12 @@
                         </tr>
                     </table>
                 </article>
-                <a href="" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
+                <a href="./stock.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
 
             <section>
                 <h1>Dernières Commandes</h1>
-                <a href="" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
+                <a href="./commandes.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
 
             <section class="avis">
@@ -146,43 +146,68 @@
                         <li>
                             <table>
                                 <tr>
-                                    <td rowspan=3></td>
-                                    <td>Pneu</td>
-                                    <td>
+                                    <td rowspan=2>
+                                        <figure></figure>
+                                        <p>Pneu</p>
                                         <figure>
                                             <figcaption>3,5</figcaption>
                                             <img src="/public/images/etoile.svg">
                                         </figure>
                                     </td>
+                                    <td>Douceur gourmande</td>
+                                    <td>Le 26/08/2025</td>
+                                    <td></td>
                                 </tr>
                                 <tr>
-                                    <td>Douceur gourmande</td>
-                                    <td>Un cidre délicat, à la robe claire et lumineuse, aux arômes de pomme fraîchement cueillie. La bouche est souple et veloutée, dominée par une belle rondeur sucrée qui en fait une boisson conviviale et facile à apprécier. À déguster bien frais, seul ou en accompagnement de desserts fruités.</td>
-                                    <td>
-                                        <ul>
-                                            <li><input type="text" placeholder="Écrivez la réponse ici..." name="" id=""></li>
-                                            <li><button>Répondre</button></li>
-                                            <li>
-                                                <ul>
-                                                    <li><img src=""></li>
-                                                    <li><img src=""></li>
-                                                    <li>|</li>
-                                                    <li>Signaler</li>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                    <td colspan=3>Un cidre délicat, à la robe claire et lumineuse, aux arômes de pomme fraîchement cueillie. La bouche est souple et veloutée, dominée par une belle rondeur sucrée qui en fait une boisson conviviale et facile à apprécier. À déguster bien frais, seul ou en accompagnement de desserts fruités.</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td colspan=3>
+                                        <img src="/public/images/rilletes.svg">
+                                        <img src="/public/images/rilletes.svg">
+                                        <img src="/public/images/rilletes.svg">
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td colspan=2><input type="text" placeholder="Écrivez la réponse ici..." name="" id=""></td>
+                                    <td><button>Répondre</button></td>
+                                </tr>
+                            </table>
+
+                            <table>
+                                <tr>
+                                    <td rowspan=2>
+                                        <figure></figure>
+                                        <p>Pneu</p>
+                                        <figure>
+                                            <figcaption>3,5</figcaption>
+                                            <img src="/public/images/etoile.svg">
+                                        </figure>
+                                    </td>
+                                    <td>Douceur gourmande</td>
+                                    <td>Le 26/08/2025</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan=3>Un cidre délicat,  à la rUn cidre délicat,  à la robe claire et lumine à la robeUn cidre délicat,  à la robe claire et lumine à la robeUn cidre délicat,  à la robe claire et lumine à la robeobe claire et lumine à la robe claire et lumine à la robe claire et lumine à la robe claire et lumine à la robe claire et lumine à la robe claire et lumineà la robe claire et lumineuse, aux arômes de pomme fraîchement cueillie. La bouche est souple et veloutée, dominée par une belle rondeur sucrée qui en fait une boisson conviviale et facile à apprécier. À déguster bien frais, seul ou en accompagnement de desserts fruités.</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td colspan=2><input type="text" placeholder="Écrivez la réponse ici..." name="" id=""></td>
+                                    <td><button>Répondre</button></td>
                                 </tr>
                             </table>
                         </li>
                     </ul>
                 </article>
-                <a href="" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
+                <a href="./avis.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
 
             <section>
                 <h1>Produits en Vente</h1>
-                <a href="" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
+                <a href="./produits.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
         </main>
 
