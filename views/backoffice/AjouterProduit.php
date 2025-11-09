@@ -15,14 +15,14 @@
     <?php require_once "./partials/aside.php"?>
        
     <main class="AjouterProduit"> 
-        <h1>Backoffice - Nouveau produit</h1>
         <div class="product-content">
             
             <div class="left-section">
                 <div class="ajouterPhoto">
+                    <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
                     <div class="placeholder-photo">
-                        <img src="../../../public/images/ajouterPhoto.svg" alt="">
-                        <p>Cliquer pour ajouter une photo</p>
+                        <img src="../../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="imagePreview">
+                        <p id="placeholderText">Cliquer pour ajouter une photo</p>
                     </div>
                 </div>
 
@@ -47,13 +47,64 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn-previsualiser">Prévisualiser</button>
-                    <button type="button" class="btn-annuler">Annuler</button>
-                    <button type="submit" class="btn-ajouter">Ajouter le produit</button>
+                    <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
+                    <a href="#"><button type="button" class="btn-annuler">Annuler</button></a>
+                    <a href="#"><button type="submit" class="btn-ajouter">Ajouter le produit</button></a>
                 </div>
             </div>
         </div>
     </main>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        //Récupère les éléments
+        const photoUploadInput = document.getElementById('photoUpload');
+        const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
+        const imagePreview = document.getElementById('imagePreview'); //image
+        const placeholderText = document.getElementById('placeholderText'); //paragraphe
+        
+        // Sauvegarde de l'URL par défaut
+        const originalImageSrc = imagePreview.src;
+
+        //Déclenche le clic sur l'input de fichier
+        ajouterPhotoDiv.addEventListener('click', function() {
+            photoUploadInput.click();
+        });
+
+        //Gére la sélection du fichier et la prévisualisation
+        photoUploadInput.addEventListener('change', function() {
+            const files = this.files;
+            
+            if (files && files.length > 0) {
+                const file = files[0];
+                
+                if (file.type.startsWith('image/')) {
+                    // Création du lecteur de fichier
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        // Met à jour la source de l'image
+                        imagePreview.src = e.target.result;
+                        // Masque le texte
+                        placeholderText.style.display = 'none';
+                    };
+
+                    // Lit le fichier
+                    reader.readAsDataURL(file);
+
+                } else {
+                    // Si le fichier n'est pas une image
+                    imagePreview.src = originalImageSrc;
+                    placeholderText.style.display = 'block';
+                    alert("Votre fichier n'est pas une image, merci de réessayer.");
+                }
+            } else {
+                // Si la sélection est annulée
+                imagePreview.src = originalImageSrc;
+                placeholderText.style.display = 'block';
+            }
+        });
+    });
+</script>
     <?php require_once "./partials/footer.php"?>
 </body>
 </html>
