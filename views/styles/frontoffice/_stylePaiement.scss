@@ -76,14 +76,12 @@ $page-padding: 32px 16px;
     box-sizing: border-box;
   }
 
-  /* Colonne générique */
   .col {
     display: flex;
     flex-direction: column;
     gap: $gap;
   }
 
-  /* Titres H3 */
   h3 {
     font-family: "lora", serif;
     font-size: clamp(1rem, 1.8vw, 1.25rem);
@@ -92,15 +90,96 @@ $page-padding: 32px 16px;
     color: $color-blue;
   }
 
-  /* Liens */
   a {
     color: $color-blue;
   }
 
-  /* Champ texte standard */
   input[type="text"] {
     @extend %input-base;
     width: 100%;
+  }
+
+  .input-field {
+    position: relative;
+    display: flex;
+    flex-direction: column; 
+  }
+
+  .ligne .input-field.fixed-110 {
+    flex: 0 0 110px;
+  }
+
+  .ligne .input-field.fixed-100 {
+    flex: 0 0 100px;
+  }
+
+  .ligne .input-field.fixed-80 {
+    flex: 0 0 80px;
+  }
+
+  .ligne .input-field.flex-1 {
+    flex: 1 1 0;
+  }
+
+  .ligne .input-field input {
+    width: 100%;
+  }
+
+  .invalid::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #b00020;
+    box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.12);
+  }
+
+  .error-message {
+    color: #b00020;
+    font-size: 0.95rem;
+    margin-top: 8px;
+    display: block;
+    font-weight: 500;
+  }
+
+  .suggestions {
+    font-size: 0.95rem;
+  }
+
+  .payment-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  .payment-popup {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+  .payment-popup h3 {
+    margin-top: 0;
+    color: $color-blue;
+  }
+  .payment-popup button {
+    margin-top: 12px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    background: $color-blue;
+    color: white;
+    cursor: pointer;
   }
 
   /* Checkbox : style principal et état coché */
@@ -140,33 +219,8 @@ $page-padding: 32px 16px;
   .ligne {
     display: flex;
     gap: 12px;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
-
-    input {
-      flex: 1 1 0;
-      min-width: 0;
-      @extend %input-base;
-    }
-
-    /* Petits champs à largeur fixe */
-    .cvv-input,
-    .carte-date,
-    .code-postal-input {
-      flex: 0 0 auto;
-      @extend %input-base;
-      min-width: 70px;
-    }
-
-    .cvv-input {
-      width: 80px;
-    }
-    .carte-date {
-      width: 90px;
-    }
-    .code-postal-input {
-      width: 110px;
-    }
   }
 
   /* Labels alignés avec les champs */
@@ -355,10 +409,7 @@ $page-padding: 32px 16px;
     }
 
     /* Étire les champs contenus dans .ligne pour occuper toute la largeur */
-    .ligne input,
-    .ligne .cvv-input,
-    .ligne .carte-date,
-    .ligne .code-postal-input {
+    .ligne .input-field {
       flex: 1 1 auto;
       width: 100% !important;
       min-width: 0;

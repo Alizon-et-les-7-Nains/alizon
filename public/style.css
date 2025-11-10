@@ -649,9 +649,7 @@ body.backoffice footer {
 
 /* Variables principales */
 /* Placeholder réutilisable pour les champs input */
-.pagePaiement .ligne .cvv-input,
-.pagePaiement .ligne .carte-date,
-.pagePaiement .ligne .code-postal-input, .pagePaiement .ligne input, .pagePaiement input[type=text] {
+.pagePaiement input[type=text] {
   padding: 12px 14px;
   border: 2px solid #252b56;
   border-radius: 8px;
@@ -712,16 +710,10 @@ body.backoffice footer {
   align-items: start;
   box-sizing: border-box;
 }
-.pagePaiement {
-  /* Colonne générique */
-}
 .pagePaiement .col {
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-.pagePaiement {
-  /* Titres H3 */
 }
 .pagePaiement h3 {
   font-family: "lora", serif;
@@ -730,17 +722,84 @@ body.backoffice footer {
   margin: 0 0 8px;
   color: #273469;
 }
-.pagePaiement {
-  /* Liens */
-}
 .pagePaiement a {
   color: #273469;
 }
-.pagePaiement {
-  /* Champ texte standard */
-}
 .pagePaiement input[type=text] {
   width: 100%;
+}
+.pagePaiement .input-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.pagePaiement .ligne .input-field.fixed-110 {
+  flex: 0 0 110px;
+}
+.pagePaiement .ligne .input-field.fixed-100 {
+  flex: 0 0 100px;
+}
+.pagePaiement .ligne .input-field.fixed-80 {
+  flex: 0 0 80px;
+}
+.pagePaiement .ligne .input-field.flex-1 {
+  flex: 1 1 0;
+}
+.pagePaiement .ligne .input-field input {
+  width: 100%;
+}
+.pagePaiement .invalid::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #b00020;
+  box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.12);
+}
+.pagePaiement .error-message {
+  color: #b00020;
+  font-size: 0.95rem;
+  margin-top: 8px;
+  display: block;
+  font-weight: 500;
+}
+.pagePaiement .suggestions {
+  font-size: 0.95rem;
+}
+.pagePaiement .payment-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.pagePaiement .payment-popup {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+.pagePaiement .payment-popup h3 {
+  margin-top: 0;
+  color: #273469;
+}
+.pagePaiement .payment-popup button {
+  margin-top: 12px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #273469;
+  color: white;
+  cursor: pointer;
 }
 .pagePaiement {
   /* Checkbox : style principal et état coché */
@@ -779,30 +838,8 @@ body.backoffice footer {
 .pagePaiement .ligne {
   display: flex;
   gap: 12px;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
-}
-.pagePaiement .ligne input {
-  flex: 1 1 0;
-  min-width: 0;
-}
-.pagePaiement .ligne {
-  /* Petits champs à largeur fixe */
-}
-.pagePaiement .ligne .cvv-input,
-.pagePaiement .ligne .carte-date,
-.pagePaiement .ligne .code-postal-input {
-  flex: 0 0 auto;
-  min-width: 70px;
-}
-.pagePaiement .ligne .cvv-input {
-  width: 80px;
-}
-.pagePaiement .ligne .carte-date {
-  width: 90px;
-}
-.pagePaiement .ligne .code-postal-input {
-  width: 110px;
 }
 .pagePaiement {
   /* Labels alignés avec les champs */
@@ -989,10 +1026,7 @@ body.backoffice footer {
   .pagePaiement {
     /* Étire les champs contenus dans .ligne pour occuper toute la largeur */
   }
-  .pagePaiement .ligne input,
-  .pagePaiement .ligne .cvv-input,
-  .pagePaiement .ligne .carte-date,
-  .pagePaiement .ligne .code-postal-input {
+  .pagePaiement .ligne .input-field {
     flex: 1 1 auto;
     width: 100% !important;
     min-width: 0;

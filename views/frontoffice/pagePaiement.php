@@ -11,28 +11,84 @@
 <body class="pagePaiement">
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
+    <?php
+    $csvPath = __DIR__ . '/../../public/data/departements.csv';
+    $departments = [];
+    $citiesByCode = [];
+    $postals = [];
+    if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
+    $header = fgetcsv($handle, 0, ';', '"', '\\');
+    while (($row = fgetcsv($handle, 0, ';', '"', '\\')) !== false) {
+  
+            if (count($row) < 4) continue;
+            $code = str_pad(trim($row[0]), 2, '0', STR_PAD_LEFT);
+            $postal = trim($row[1]);
+            $dept = trim($row[2]);
+            $city = trim($row[3]);
+            $departments[$code] = $dept;
+            if (!isset($citiesByCode[$code])) $citiesByCode[$code] = [];
+            if ($city !== '' && !in_array($city, $citiesByCode[$code])) $citiesByCode[$code][] = $city;
+            if ($postal !== '') {
+                if (!isset($postals[$postal])) $postals[$postal] = [];
+                if (!in_array($city, $postals[$postal])) $postals[$postal][] = $city;
+            }
+        }
+        fclose($handle);
+    } else {
+        $departments['22'] = "Côtes-d'Armor";
+        $citiesByCode['22'] = ['Saint-Brieuc','Lannion','Dinan'];
+    }
+
+    $cart = [
+        ['id' => 'rillettes', 'title' => 'Lot de rillettes bretonne', 'price' => 29.99, 'qty' => 1, 'img' => '../../public/images/rillettes.png'],
+        ['id' => 'confiture', 'title' => 'Confiture artisanale', 'price' => 6.5, 'qty' => 2, 'img' => '../../public/images/jam.png'],
+    ];
+    ?>
+
+    <script>
+    window.__PAYMENT_DATA__ =
+        <?php echo json_encode(['departments' => $departments, 'citiesByCode' => $citiesByCode, 'postals' => $postals, 'cart' => $cart], JSON_UNESCAPED_UNICODE); ?>;
+    </script>
+
     <main class="container">
         <div class="parent">
             <div class="col">
                 <section class="delivery">
                     <h3>1 - Informations pour la livraison :</h3>
-                    <input type="text" placeholder="Adresse de livraison" aria-label="Adresse de livraison">
+                    <div class="input-field">
+                        <input class="adresse-input" type="text" placeholder="Adresse de livraison"
+                            aria-label="Adresse de livraison">
+                    </div>
                     <div class="ligne">
-                        <input class="code-postal-input" type="text" placeholder="Code postal" aria-label="Code postal"
-                            required minlenght="5" maxlength="5"> <input type="text" placeholder="Ville"
-                            aria-label="Ville">
+                        <div class="input-field fixed-110">
+                            <input class="code-postal-input" type="text" placeholder="Code département ou postal"
+                                aria-label="Code postal">
+                        </div>
+                        <div class="input-field flex-1">
+                            <input class="ville-input" type="text" placeholder="Ville" aria-label="Ville">
+                        </div>
                     </div>
                     <label><input type="checkbox"> Adresse de facturation différente</label>
                 </section>
 
                 <section class="payment">
                     <h3>2 - Informations de paiement :</h3>
-                    <input type="text" placeholder="Numéro sur la carte" aria-label="Numéro sur la carte">
-                    <input type="text" placeholder="Nom sur la carte" aria-label="Nom sur la carte">
+                    <div class="input-field">
+                        <input class="num-carte" type="text" placeholder="Numéro sur la carte"
+                            aria-label="Numéro sur la carte">
+                    </div>
+                    <div class="input-field">
+                        <input class="nom-carte" type="text" placeholder="Nom sur la carte"
+                            aria-label="Nom sur la carte">
+                    </div>
                     <div class="ligne">
-                        <input class="carte-date" type="text" placeholder="00/00" aria-label="Date expiration">
-                        <input class="cvv-input" type=" text" placeholder="CVV" aria-label="CVV" required minlenght="3"
-                            maxlength="3">
+                        <div class="input-field fixed-100">
+                            <input class="carte-date" type="text" placeholder="MM/AA" aria-label="Date expiration">
+                        </div>
+                        <div class="input-field fixed-80">
+                            <input class="cvv-input" type="text" placeholder="CVV" aria-label="CVV" required
+                                minlenght="3" maxlength="3">
+                        </div>
                     </div>
 
                     <div class="logos">
@@ -60,24 +116,27 @@
                 </section>
             </div>
 
-            <aside class="col recap">
-                <div class="produit">
-                    <img src="../../public/images/rillettes.png" alt="">
+            <aside class="col recap" id="recap">
+                <?php foreach ($cart as $item): ?>
+                <div class="produit" data-id="<?= htmlspecialchars($item['id']) ?>">
+                    <img src="<?= htmlspecialchars($item['img']) ?>" alt="">
                     <div class="infos">
-                        <p class="titre">Lot de rillettes bretonne</p>
-                        <p class="prix">29<sup>99</sup>€</p>
+                        <p class="titre"><?= htmlspecialchars($item['title']) ?></p>
+                        <p class="prix"><?= number_format($item['price'], 2, ',', '') ?>€</p>
                         <div class="gestQte">
                             <div class="qte">
-                                <button>-</button>
-                                <span>1</span>
-                                <button>+</button>
+                                <button class="minus" data-id="<?= htmlspecialchars($item['id']) ?>">-</button>
+                                <span class="qty"
+                                    data-id="<?= htmlspecialchars($item['id']) ?>"><?= intval($item['qty']) ?></span>
+                                <button class="plus" data-id="<?= htmlspecialchars($item['id']) ?>">+</button>
                             </div>
-                            <button class="delete">
+                            <button class="delete" data-id="<?= htmlspecialchars($item['id']) ?>">
                                 <img src="../../public/images/bin.svg" alt="">
                             </button>
                         </div>
                     </div>
                 </div>
+                <?php endforeach; ?>
             </aside>
         </div>
         <!-- bouton mobile placé après tous les blocs, visible seulement en mobile -->
