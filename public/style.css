@@ -456,53 +456,63 @@ header.backoffice nav figure:nth-child(1) figcaption {
 header.backoffice nav figure:nth-child(1) img {
   height: 40px;
 }
-header.backoffice nav figure:nth-child(2) {
-  position: relative;
-  width: 50px;
-  height: 50px;
+header.backoffice nav figure {
+  /*
+  &:nth-child(2) {
+      position: relative;
+      width: 50px;
+      height: 50px;
+
+      &::before {
+          content: '';
+          position: absolute;
+          top: 5px;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url(../../../public/images/bellDark.svg);
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          transition: opacity 0.2s ease;
+          opacity: 1;
+      }
+
+      &::after {
+          content: '';
+          position: absolute;
+          top: 5px;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url(../../../public/images/bellRingDark.svg);
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          transition: opacity 0.2s ease;
+          opacity: 0;
+      }
+
+      &:hover {
+          &::before {
+              opacity: 0;
+          }
+
+          &::after {
+              opacity: 1;
+          }
+      }
+  }
+  */
 }
-header.backoffice nav figure:nth-child(2)::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url(../../../public/images/bellDark.svg);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: opacity 0.2s ease;
-  opacity: 1;
-}
-header.backoffice nav figure:nth-child(2)::after {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url(../../../public/images/bellRingDark.svg);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: opacity 0.2s ease;
-  opacity: 0;
-}
-header.backoffice nav figure:nth-child(2):hover::before {
-  opacity: 0;
-}
-header.backoffice nav figure:nth-child(2):hover::after {
-  opacity: 1;
-}
-header.backoffice nav figure:nth-child(3), header.backoffice nav figure:nth-child(4) {
+header.backoffice nav figure:nth-child(2), header.backoffice nav figure:nth-child(3) {
   flex-direction: column;
   align-items: center;
 }
-header.backoffice nav figure:nth-child(3) img, header.backoffice nav figure:nth-child(4) img {
+header.backoffice nav figure:nth-child(2) img, header.backoffice nav figure:nth-child(3) img {
   height: 40px;
 }
-header.backoffice nav figure:nth-child(3) figcaption, header.backoffice nav figure:nth-child(4) figcaption {
+header.backoffice nav figure:nth-child(2) figcaption, header.backoffice nav figure:nth-child(3) figcaption {
   color: #273469;
   font-family: "lora";
   font-size: 20px;
