@@ -370,6 +370,240 @@ body {
   }
 }
 
+.pageCommandes {
+  font-family: "Lora", serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #273469;
+}
+@media (max-width: 1125px) {
+  .pageCommandes .supprElem {
+    display: none;
+    visibility: hidden;
+  }
+}
+.pageCommandes input[type=search] {
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 25px;
+  border: 2px solid #273469;
+  background-color: #fff;
+  color: #273469;
+  font-family: "Lora", serif;
+  font-size: 20px;
+  font-weight: bold;
+  font-style: italic;
+  box-sizing: border-box;
+}
+.pageCommandes input[type=search]::placeholder {
+  color: #273469;
+  opacity: 0.6;
+}
+.pageCommandes .commande {
+  border: 2px solid #273469;
+  margin-left: 150px;
+  margin-right: 150px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+.pageCommandes .commande h1, .pageCommandes .commande p, .pageCommandes .commande select {
+  margin: 0;
+}
+.pageCommandes .listeBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  width: 250px;
+}
+.pageCommandes .produit {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #273469;
+  padding: 20px;
+}
+.pageCommandes .produit.dernierProduit {
+  border-bottom: none;
+}
+.pageCommandes .produit img {
+  max-height: 127px;
+}
+.pageCommandes .infoProduit {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: 20px;
+}
+.pageCommandes .infoProduit h2 {
+  margin: 0;
+  font-size: 24px;
+}
+.pageCommandes .infoProduit ul {
+  font-weight: lighter;
+  font-size: 13px;
+  margin: 10px 0;
+  padding-left: 20px;
+}
+.pageCommandes .infoProduit ul li {
+  margin-bottom: 5px;
+}
+.pageCommandes .topRecherche {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+.pageCommandes .topRecherche h1 {
+  margin-top: 30px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  font-size: 48px;
+}
+.pageCommandes .topRecherche * {
+  margin-left: 80px;
+  margin-right: 80px;
+}
+.pageCommandes .filtreRecherche {
+  display: flex;
+  margin-left: 80px;
+  align-items: center;
+}
+.pageCommandes .filtreRecherche p, .pageCommandes .filtreRecherche select {
+  margin-bottom: 60px;
+  font-size: 16px;
+  margin-top: 30px;
+  margin-right: 10px;
+}
+.pageCommandes .filtreRecherche select {
+  padding: 10px;
+  border: 2px solid #273469;
+  border-radius: 20px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.pageCommandes .statutCommande {
+  display: flex;
+  align-items: center;
+}
+.pageCommandes .statutCommande p {
+  margin-right: 20px;
+  font-weight: normal;
+}
+.pageCommandes .statutCommande a {
+  display: flex;
+  font-size: 14px;
+  text-decoration: none;
+  color: white;
+  background-color: #273469;
+  border: 2px solid #273469;
+  border-radius: 20px;
+  padding: 5px 10px;
+  margin-left: 10px;
+}
+.pageCommandes .statutCommande a img {
+  margin-left: 10px;
+}
+.pageCommandes .listeBtn a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  font-size: 14px;
+  text-decoration: none;
+  color: #273469;
+  background-color: white;
+  border: 2px solid #273469;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-bottom: 5px;
+}
+.pageCommandes .listeBtn a:nth-child(2) {
+  color: white;
+  background-color: #273469;
+}
+.pageCommandes .listeBtn a img {
+  margin-left: 10px;
+}
+.pageCommandes .containerImg {
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+}
+.pageCommandes .footerCommande {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 20px 40px;
+}
+.pageCommandes .footerCommande .infoCommande {
+  display: flex;
+  flex-direction: column;
+}
+.pageCommandes .footerCommande .infoCommande p {
+  margin: 2px 0;
+  font-size: 15px;
+  font-weight: lighter;
+}
+.pageCommandes .footerCommande .liensCommande {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+.pageCommandes .footerCommande .liensCommande a {
+  color: #273469;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: lighter;
+}
+.pageCommandes .footerCommande .liensCommande a:hover {
+  text-decoration: underline;
+}
+.pageCommandes .footerCommande .liensCommande span {
+  margin: 0 10px;
+}
+@media (max-width: 1000px) {
+  .pageCommandes .commande {
+    margin-right: 50px;
+    margin-left: 50px;
+  }
+}
+@media (max-width: 787px) {
+  .pageCommandes .produit {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-between;
+  }
+  .pageCommandes .containerImg, .pageCommandes .listeBtn a {
+    margin-bottom: 10px;
+  }
+  .pageCommandes .containerImg {
+    margin-bottom: 20px;
+    display: block;
+    text-align: center;
+    margin-right: 0;
+  }
+  .pageCommandes .filtreRecherche p, .pageCommandes .filtreRecherche select {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  .pageCommandes .topRecherche h1 {
+    margin-top: 20px;
+    font-size: 32px;
+  }
+}
+@media (max-width: 630px) {
+  .pageCommandes .footerCommande {
+    display: block;
+    padding-top: 0;
+  }
+  .pageCommandes .infoCommande {
+    flex-direction: row !important;
+  }
+}
+
 /* ---- Header ---- */
 header.backoffice {
   display: flex;
