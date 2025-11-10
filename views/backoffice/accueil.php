@@ -1,7 +1,7 @@
 <?php require_once '../../controllers/pdo.php' ;
-    $stmt = $pdo->query("SELECT * FROM _client");
-    $clients = $stmt->fetchAll(PDO::FETCH_ASSOC); // tableau associatif
-    print_r ($clients);
+    // $stmt = $pdo->query("SELECT * FROM _client");
+    // $clients = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    // print_r ($clients);
 ?>
 
 <!DOCTYPE html>
