@@ -1,4 +1,4 @@
-<?php require_once '../../contollers/pdo.php' ;
+<?php require_once '../../controllers/pdo.php' ;
     print_r($pdo->query("select * from _client"))->fetchAll();
 ?>
 
