@@ -190,6 +190,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 // Le champ adresse2 est optionnel
                 if (i !== 5 && valeur === "") {
+                    // Le champ adresse2 est optionnel
+                if (i !== 5 && valeur === "") {
+                    if (i === 1) input.placeholder = "Entrez votre pseudo";
+                    else if (i === 2) input.placeholder = "Entrez votre nom";
+                    else if (i === 3) input.placeholder = "Entrez votre prénom";
+                    else if (i === 4) input.placeholder = "Entrez votre date de naissance";
+                    else if (i === 6) input.placeholder = "Entrez votre adresse";
+                    else if (i === 7) input.placeholder = "Entrez votre code postal";
+                    else if (i === 8) input.placeholder = "Entrez votre ville";
+                    else if (i === 9) input.placeholder = "Entrez votre pays";
+                    else if (i === 10) input.placeholder = "Entrez votre numéro de téléphone";
+                    else if (i === 11) input.placeholder = "Entrez votre email";
                     tousRemplis = false;
                     break;
                 }
@@ -213,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             bouton.disabled = !tousRemplis;
         }
-
+    }
         let enModif = false;
 
         // Création de l'input pour la photo de profil
