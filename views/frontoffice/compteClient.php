@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $adresse1 = $_POST['adresse1'];
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
-    $region = $_POST['region'];
+    $region = $_POST['region'] ?? '';
 
     $stmt = $pdo->query(
     "UPDATE _client 
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     nom = '$nom', 
     prenom = '$prenom', 
     email =  '$email', 
-    noTelephone = '$telephone', 
+    noTelephone = '$telephone'
     WHERE id_client = '$id_client';");
 
     $stmt = $pdo->query(
