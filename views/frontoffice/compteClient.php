@@ -21,24 +21,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $pdo->query(
     "UPDATE _client 
-    SET pseudo = $pseudo, 
-    nom = $nom, 
-    prenom = $prenom, 
-    email =  $email, 
-    noTelephone = $telephone, 
-    WHERE id_client = $id_client;");
+    SET pseudo = '$pseudo', 
+    nom = '$nom', 
+    prenom = '$prenom', 
+    email =  '$email', 
+    noTelephone = '$telephone', 
+    WHERE id_client = '$id_client';");
 
     $stmt = $pdo->query(
     "UPDATE _adresse 
-    SET adresse = $adresse1,
-    pays = $pays,
-    ville = $ville, 
-    code_postal = $codePostal,
-    region = $region
-    WHERE id_client = $id_client;");
+    SET adresse = '$adresse1',
+    pays = '$pays',
+    ville = '$ville', 
+    code_postal = '$codePostal',
+    region = '$region'
+    WHERE id_client = '$id_client';");
 
     //on recupère les infos du user pour les afficher
-    $stmt = $pdo->query("SELECT * FROM _client WHERE id_client = $id_client");
+    $stmt = $pdo->query("SELECT * FROM _client WHERE id_client = '$id_client'");
     $client = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $pseudo = $client['pseudo'];
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $noTelephone = $client['telephone'];
 
     //on recupère les infos d'adresse du user pour les afficher
-    $stmt = $pdo->query("SELECT * FROM _adresse WHERE id_client = $id_client");
+    $stmt = $pdo->query("SELECT * FROM _adresse WHERE id_client = '$id_client'");
     $adresse = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $pays = $adresse['pays'];
