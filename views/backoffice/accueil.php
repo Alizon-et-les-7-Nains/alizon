@@ -78,7 +78,7 @@ $produits = ($pdo->query("select * from _produit"))->fetchAll(PDO::FETCH_ASSOC);
             </tr>
             <tr>
                 <td>" . $atr['prix'] . "</td>";
-                $stock = atr['stock'];
+                $stock = $atr['stock'];
                 $seuil;
                 if ($stock == 0) {
                     $seuil = "epuise";
