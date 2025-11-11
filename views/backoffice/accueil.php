@@ -63,6 +63,7 @@
                 <article>
 <?php
     $stock = ($pdo->query("select * from _produit where stock < seuilAlerte"))->fetchAll(PDO::FETCH_ASSOC);
+    if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
     foreach ($stock as $produit => $atr) {
         $html = "
         <table>
