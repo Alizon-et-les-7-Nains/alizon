@@ -63,6 +63,7 @@
                 <h1>Stocks Faibles</h1>
 
                 <article>
+                    <?php echo "caca"; ?>
                     <?php
                         foreach ($produits as $produit => $atr) {
                             $html = "
