@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ville = '$ville', 
     code_postal = '$codePostal',
     region = '$region'
-    WHERE idClient = '$id_client';");
+    WHERE idAdresse = '$idAdresse';");
 
     //on recupère les infos du user pour les afficher
     $stmt = $pdo->query("SELECT * FROM _client WHERE idClient = '$id_client'");
