@@ -66,22 +66,33 @@ $produits = ($pdo->query("select * from _produit"))->fetchAll(PDO::FETCH_ASSOC);
                 <h1>Stocks Faibles</h1>
 
                 <article>
-                    <?php echo "caca"; ?>
-                    <?php
-                        foreach ($produits as $produit => $atr) {
-                            $html = "
-                            <table>
-                                <tr>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>" . $atr['nom'] . "</td>
-                                </tr>
-                            </table>
-                            ";
-                            echo $html;
-                        }
-                    ?>
+<?php
+    foreach ($produits as $produit => $atr) {
+        $html = "
+        <table>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td>" . $atr['nom'] . "</td>
+            </tr>
+            <tr>
+                <td>" . $atr['prix'] . "</td>";
+                $stock = atr['stock'];
+                $seuil;
+                if ($stock == 0) {
+                    $seuil = "epuise";
+                } else if ($stock <= $atr['seuilAlerte']) {
+                    $seuill = "faible";
+                }
+                $html .= "
+                <td class=\"$seuil\">$stock</td>
+            </tr>
+        </table>
+        ";
+        echo $html;
+    }
+?>
                 </article>
                 
                 <article>
