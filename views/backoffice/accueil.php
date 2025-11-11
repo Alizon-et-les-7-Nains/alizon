@@ -74,8 +74,8 @@
             </tr>
             <tr>";
                 $prix = "" . $atr['prix']; 
-                if (explode(',', $prix)[1]) {
-                    if (strlen(explode(',', $prix)[1]) == 1) {
+                if (explode('.', $prix)[1]) {
+                    if (strlen(explode(',', str_replace('.', ',', $prix))[1]) == 1) {
                         $prix .= "0";
                     }
                 }
@@ -287,12 +287,9 @@
             <tr>
                 <td></td>
             </tr>
-            <tr>
-                <td>" . $atr['nom'] . "</td>
-            </tr>
             <tr>";
                 $prix = "" . $atr['prix']; 
-                if (explode(',', $prix)[1]) {
+                if (explode('.', str_replace('.', ',', $prix))[1]) {
                     if (strlen(explode(',', $prix)[1]) == 1) {
                         $prix .= "0";
                     }
