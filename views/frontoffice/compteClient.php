@@ -192,16 +192,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (i !== 5 && valeur === "") {
                     // Le champ adresse2 est optionnel
                 if (i !== 5 && valeur === "") {
-                    if (i === 1) input.placeholder = "Entrez votre pseudo";
-                    else if (i === 2) input.placeholder = "Entrez votre nom";
-                    else if (i === 3) input.placeholder = "Entrez votre prénom";
-                    else if (i === 4) input.placeholder = "Entrez votre date de naissance";
-                    else if (i === 6) input.placeholder = "Entrez votre adresse";
-                    else if (i === 7) input.placeholder = "Entrez votre code postal";
-                    else if (i === 8) input.placeholder = "Entrez votre ville";
-                    else if (i === 9) input.placeholder = "Entrez votre pays";
-                    else if (i === 10) input.placeholder = "Entrez votre numéro de téléphone";
-                    else if (i === 11) input.placeholder = "Entrez votre email";
+                    switch(champs[i].name) {
+                        case "pseudo":
+                            champs[i].placeholder = "Entrez votre pseudo";
+                            break;
+                        case "nom":
+                            champs[i].placeholder = "Entrez votre nom";
+                            break;
+                        case "prenom":
+                            champs[i].placeholder = "Entrez votre prénom";
+                            break;
+                        case "dateNaissance":
+                            champs[i].placeholder = "Entrez votre date de naissance";
+                            break;
+                        case "adresse1":
+                            champs[i].placeholder = "Entrez votre adresse";
+                            break;
+                        case "codePostal":
+                            champs[i].placeholder = "Entrez votre code postal";
+                            break;
+                        case "ville":
+                            champs[i].placeholder = "Entrez votre ville";
+                            break;
+                        case "pays":
+                            champs[i].placeholder = "Entrez votre pays";
+                            break;
+                        case "telephone":
+                            champs[i].placeholder = "Entrez votre numéro de téléphone";
+                            break;
+                        case "email":
+                            champs[i].placeholder = "Entrez votre email";
+                            break;
+                    }
                     tousRemplis = false;
                     break;
                 }
