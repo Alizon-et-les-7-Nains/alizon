@@ -273,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Remplacer les <p> par des <input> pour modification
                 let elems = document.querySelectorAll("section p");
                 const nomsChamps = [
-                    "pseudo", "nom", "prenom", "dateNaissance",
+                    "pseudo", "prenom", "nom", "dateNaissance",
                     "adresse1", "adresse2", "codePostal", "ville", "pays",
                     "telephone", "email"
                 ];
