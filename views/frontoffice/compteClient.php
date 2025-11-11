@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $client['nom'];
     $dateNaissance = $client['dateNaissance'];
     $email = $client['email'];
-    $noTelephone = $client['telephone'];
+    $noTelephone = $client['noTelephone'];
 
     //on recupère les infos d'adresse du user pour les afficher
     $stmt = $pdo->query("SELECT * FROM _adresse WHERE idAdresse = '$idAdresse'");
