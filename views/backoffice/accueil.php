@@ -1,5 +1,8 @@
-<?php require_once '../../controllers/pdo.php' ;
-    $produits = ($pdo->query("select * from _produit"))->fetchAll(PDO::FETCH_ASSOC);
+<?php
+
+require_once '../../controllers/pdo.php' ;
+$produits = ($pdo->query("select * from _produit"))->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -76,6 +79,7 @@
                                 </tr>
                             </table>
                             ";
+                            echo $html;
                         }
                     ?>
                 </article>
