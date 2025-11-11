@@ -1,2 +1,5 @@
 /node_modules
-/*.json
+/package*.json
+/.env
+*.*.map
+/.sass-cache

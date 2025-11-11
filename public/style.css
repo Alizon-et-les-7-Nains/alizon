@@ -9,7 +9,19 @@
 }
 @font-face {
   font-family: "open-sans";
-  src: url(../../public/fonts/open-sans/OpenSans-VariableFont_wdthwght.ttf);
+  src: url(../../public/fonts/open-sans/static/OpenSans-Regular.ttf);
+}
+@font-face {
+  font-family: "open-sans-bold";
+  src: url(../../public/fonts/open-sans/static/OpenSans-Bold.ttf);
+}
+@font-face {
+  font-family: "open-sans-italic";
+  src: url(../../public/fonts/open-sans/static/OpenSans-Italic.ttf);
+}
+@font-face {
+  font-family: "open-sans-bold-italic";
+  src: url(../../public/fonts/open-sans/static/OpenSans-BoldItalic.ttf);
 }
 html,
 body {
@@ -34,9 +46,10 @@ body {
 }
 .headerFront h1 {
   color: #e3f2fe;
-  font-family: "Berkshire Swash", serif;
-  font-weight: 200;
-  font-style: normal;
+  font-family: "berkshire", serif !important;
+  font-weight: lighter !important;
+  font-style: normal !important;
+  font-size: 40px !important;
 }
 .headerFront h1 a b {
   color: #e3f2fe;
@@ -60,7 +73,7 @@ body {
   margin: 0;
 }
 .headerFront img {
-  width: 50px;
+  width: 40px;
 }
 .headerFront .seConnecter {
   display: flex;
@@ -71,6 +84,9 @@ body {
 }
 .headerFront .seConnecter img {
   height: 40px;
+}
+.headerFront .seConnecter p {
+  margin: 0;
 }
 .headerFront .search-wrapper {
   position: relative;
@@ -153,13 +169,13 @@ body {
     gap: 8px;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 638px) {
   .headerFront .icons {
     display: none;
     visibility: hidden;
   }
 }
-@media (max-width: 428px) {
+@media (max-width: 500px) {
   .headerFront b {
     display: none;
     visibility: hidden;
@@ -175,6 +191,8 @@ body {
 .footerFront a, .footerFront p {
   text-decoration: none;
   color: #e3f2fe;
+  margin: 0;
+  margin-right: 15px;
 }
 
 .footerFront .footerTel {
@@ -182,10 +200,10 @@ body {
   visibility: hidden;
 }
 
-.footerFront, .footerFront div {
+.footerFront div {
   background-color: #273469;
   color: white;
-  font-style: italic;
+  font-style: normal;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
@@ -364,7 +382,8 @@ body {
   }
 }
 
-.headerBackoffice {
+/* ---- Header ---- */
+header.backoffice {
   display: flex;
   background-color: #e4d9ff;
   border-bottom: solid #273469 5px;
@@ -372,28 +391,55 @@ body {
   align-items: center;
   justify-content: space-between;
 }
-.headerBackoffice * {
+header.backoffice * {
   margin: 0;
 }
-.headerBackoffice img, .headerBackoffice figure {
+header.backoffice img, header.backoffice figure {
   user-select: none;
 }
-.headerBackoffice figure {
+header.backoffice div {
   display: flex;
   align-items: center;
+}
+header.backoffice div img {
+  width: 50px;
+  height: 60px;
+  margin-right: 1em;
+}
+header.backoffice div h1 {
+  font-family: "berkshire";
+  font-size: 45px;
+  font-weight: normal;
+  color: #273469;
+}
+header.backoffice nav {
+  display: flex;
+}
+header.backoffice nav figure {
+  margin-left: 5em;
+  display: flex;
+  align-items: center;
+}
+header.backoffice nav figure:hover {
+  cursor: pointer;
+}
+header.backoffice nav figure:nth-child(1) {
   background-color: #273469;
   color: #e3f2fe;
-  padding: 0.5em;
-  height: 55px;
-  width: 250px;
+  height: 50px;
   border-radius: 16px;
-  justify-content: space-between;
+  justify-content: center;
+  transition: all 0.2s;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   font-family: "lora";
   font-size: 25px;
   font-weight: bold;
   font-style: italic;
 }
-.headerBackoffice figure:hover {
+header.backoffice nav figure:nth-child(1):hover {
   background-color: #e3f2fe;
   color: #273469;
   outline-width: 3px;
@@ -401,26 +447,491 @@ body {
   outline-style: solid;
   outline-color: #273469;
 }
-.headerBackoffice figure:hover img {
-  content: url(../../images/backoffice/panierPlusDark.svg);
+header.backoffice nav figure:nth-child(1):hover img {
+  content: url(../../../public/images/cartPlusDark.svg);
 }
-.headerBackoffice div {
+header.backoffice nav figure:nth-child(1) figcaption {
+  margin-right: 0.5em;
+}
+header.backoffice nav figure:nth-child(1) img {
+  height: 40px;
+}
+header.backoffice nav figure {
+  /*
+  &:nth-child(2) {
+      position: relative;
+      width: 50px;
+      height: 50px;
+
+      &::before {
+          content: '';
+          position: absolute;
+          top: 5px;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url(../../../public/images/bellDark.svg);
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          transition: opacity 0.2s ease;
+          opacity: 1;
+      }
+
+      &::after {
+          content: '';
+          position: absolute;
+          top: 5px;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url(../../../public/images/bellRingDark.svg);
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          transition: opacity 0.2s ease;
+          opacity: 0;
+      }
+
+      &:hover {
+          &::before {
+              opacity: 0;
+          }
+
+          &::after {
+              opacity: 1;
+          }
+      }
+  }
+  */
+}
+header.backoffice nav figure:nth-child(2), header.backoffice nav figure:nth-child(3) {
+  flex-direction: column;
+  align-items: center;
+}
+header.backoffice nav figure:nth-child(2) img, header.backoffice nav figure:nth-child(3) img {
+  height: 40px;
+}
+header.backoffice nav figure:nth-child(2) figcaption, header.backoffice nav figure:nth-child(3) figcaption {
+  color: #273469;
+  font-family: "lora";
+  font-size: 20px;
+  font-weight: bold;
+  font-style: italic;
+}
+header.backoffice nav figure:nth-child(4) img {
+  height: 35px;
+}
+
+.status-red {
+  color: #f14e4e;
+}
+
+.status-green {
+  color: #259525;
+}
+
+.inscription {
+  font-family: "lora";
+  font-weight: bold;
+}
+.inscription::before {
+  content: "";
+  position: absolute;
+  left: -200px;
+  top: 50px;
+  width: 900px;
+  height: 900px;
+  background: url("../../public/images/symboleRose.png") no-repeat center center;
+  background-size: contain;
+  transform: rotate(-180deg);
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+}
+.inscription form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+.inscription form input {
+  width: 450px;
+  height: 40px;
+  padding: 10px;
+  margin: 16px;
+  color: #6e6e6e;
+  font-size: 16px;
+  border: 2px solid #273469;
+  border-radius: 8px;
+}
+.inscription h2 {
+  color: #273469;
+  font-family: "Lora", serif;
+  font-size: 48px;
+  font-weight: bold;
+  text-align: center;
+  margin: 50px 0px;
+}
+
+#submitButton {
+  width: 450px;
+  height: 48px;
+  padding: 10px;
+  margin-bottom: 45px;
+  font-size: 16px;
+  background-color: #e4d9ff;
+  border-radius: 8px;
+  border: none;
+  color: #273469;
+}
+
+#password-requirements-container {
+  padding-left: 12px;
+}
+
+#password-requirements {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#password-requirements li {
+  margin-bottom: 5px;
+}
+
+footer.backoffice {
+  display: flex;
+  background-color: #e4d9ff;
+  color: #273469;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em;
+  font-family: "lora";
+  font-weight: bold;
+  font-style: italic;
+  border-top-style: solid;
+  border-top-color: #273469;
+  border-top-width: 5px;
+}
+footer.backoffice img, footer.backoffice copy {
+  user-select: none;
+}
+footer.backoffice ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+footer.backoffice ul li {
+  margin-right: 1em;
+}
+footer.backoffice figure {
   display: flex;
   align-items: center;
 }
-.headerBackoffice div img {
-  width: 50px;
-  height: 60px;
+footer.backoffice figure figcaption {
   margin-right: 1em;
 }
-.headerBackoffice div h1 {
-  font-family: "berkshire";
-  font-size: 45px;
-  font-weight: normal;
+footer.backoffice a {
+  text-decoration: none;
   color: #273469;
 }
-.headerBackoffice nav {
+
+aside.backoffice {
+  background-color: #273469;
+}
+aside.backoffice ul {
+  position: sticky;
+  top: 1em;
+  padding: 0;
+  list-style: none;
+  margin-top: 1em;
+  padding-right: 1em;
+}
+aside.backoffice ul li {
+  background-color: #273469;
+  user-select: none;
+  height: 5em;
+  align-content: center;
+  border-radius: 24px;
+  margin-right: 1em;
+  transition: all 0.2s;
+}
+aside.backoffice ul li figure {
+  margin: 0;
   display: flex;
+  align-items: center;
+  height: 4em;
+  width: 97%;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  transition: all 0.2s;
+}
+aside.backoffice ul li figure img {
+  margin-left: 1em;
+  height: 35px;
+  filter: brightness(0) invert(1);
+  margin-right: 1em;
+  transition: all 0.2s;
+}
+aside.backoffice ul li figure figcaption {
+  color: #fffefa;
+  font-family: "lora";
+  font-weight: normal;
+  font-size: 30px;
+  transition: all 0.2s;
+}
+aside.backoffice ul li:hover {
+  cursor: pointer;
+  width: 115%;
+}
+aside.backoffice ul li:hover figure {
+  background-color: #fffefa;
+}
+aside.backoffice ul li:hover figure img {
+  filter: none;
+}
+aside.backoffice ul li:hover figure figcaption {
+  color: #273469;
+}
+aside.backoffice ul li.here {
+  cursor: pointer;
+  width: 115%;
+}
+aside.backoffice ul li.here figure {
+  background-color: #fffefa;
+}
+aside.backoffice ul li.here figure img {
+  filter: none;
+}
+aside.backoffice ul li.here figure figcaption {
+  color: #273469;
+}
+aside.backoffice ul li.here:hover {
+  cursor: default;
+}
+
+body.backoffice {
+  display: grid;
+  grid-template-areas: "header header" "aside main" "footer footer";
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+body.backoffice header {
+  grid-area: header;
+}
+body.backoffice aside {
+  grid-area: aside;
+}
+body.backoffice main {
+  padding-left: 2em;
+  padding-right: 2em;
+  grid-area: main;
+}
+body.backoffice footer {
+  grid-area: footer;
+}
+
+main.acceuilBackoffice {
+  display: flex;
+  flex-direction: column;
+}
+main.acceuilBackoffice img, main.acceuilBackoffice button {
+  user-select: none;
+}
+main.acceuilBackoffice section {
+  display: flex;
+  flex-direction: column;
+  color: #273469;
+  width: 100%;
+}
+main.acceuilBackoffice section h1 {
+  user-select: none;
+  font-family: "lora";
+}
+main.acceuilBackoffice section article {
+  width: 100%;
+  overflow-x: auto;
+}
+main.acceuilBackoffice section a {
+  margin-top: 1em;
+  align-self: flex-end;
+}
+main.acceuilBackoffice section a img {
+  height: 25px;
+}
+main.acceuilBackoffice section ul {
+  list-style: none;
+  padding: 0;
+}
+main.acceuilBackoffice section.stock article {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2em;
+}
+main.acceuilBackoffice section.stock article table {
+  padding: 1em;
+  border: solid 2px #273469;
+  border-radius: 16px;
+  font-family: "open-sans";
+  font-size: 20px;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) {
+  font-family: "open-sans-bold";
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2) {
+  margin-left: auto;
+  font-size: 30px;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).epuise {
+  color: #f14e4e;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).faible {
+  color: #ffc25a;
+}
+main.acceuilBackoffice section.commandes article {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2em;
+}
+main.acceuilBackoffice section.commandes article table {
+  padding: 1em;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 16px;
+  border-color: #273469;
+}
+main.acceuilBackoffice section.commandes article table img {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+}
+main.acceuilBackoffice section.commandes article table th {
+  font-size: 20px;
+}
+main.acceuilBackoffice section.commandes article table tr:first-child th {
+  text-align: left;
+  line-height: 0.25em;
+}
+main.acceuilBackoffice section.commandes article table tr:nth-child(2) td {
+  vertical-align: top;
+}
+main.acceuilBackoffice section.commandes article table tr:last-child th {
+  text-align: right;
+}
+main.acceuilBackoffice section.avis article table {
+  width: 100%;
+  border-spacing: 1em 0;
+  table-layout: fixed;
+  border-collapse: separate;
+}
+main.acceuilBackoffice section.avis article table tr:first-child {
+  font-weight: bold;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) {
+  width: 120px;
+  justify-items: center;
+  line-height: 0.25em;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) figure:first-child {
+  border-radius: 100%;
+  height: 50px;
+  width: 50px;
+  background-image: url(/public/images/pp.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) figure:last-child {
+  color: #FFD000;
+  display: flex;
+  align-items: center;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(2) {
+  white-space: nowrap;
+  font-size: 20px;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(3) {
+  width: auto;
+  font-weight: normal;
+  font-size: 12px;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(4) {
+  width: 120px;
+}
+main.acceuilBackoffice section.avis article table tr:nth-child(2) td {
+  vertical-align: top;
+}
+main.acceuilBackoffice section.avis article table tr:nth-child(3) td:last-child {
+  display: flex;
+  gap: 1em;
+  justify-content: flex-start;
+}
+main.acceuilBackoffice section.avis article table tr:nth-child(3) td:last-child img {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+}
+main.acceuilBackoffice section.avis article table tr:last-child td:nth-child(2) {
+  padding-right: 1em;
+}
+main.acceuilBackoffice section.avis article table tr:last-child td:nth-child(3) {
+  width: auto;
+  text-align: right;
+  white-space: nowrap;
+}
+main.acceuilBackoffice section.avis article table input {
+  border: none;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #273469;
+  border-radius: 4px;
+}
+main.acceuilBackoffice section.avis article table button {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  font-family: "lora";
+  font-weight: bold;
+  background: none;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #273469;
+  border-radius: 8px;
+  color: #273469;
+  white-space: nowrap;
+  box-sizing: border-box;
+  min-width: fit-content;
+}
+main.acceuilBackoffice section.produits article {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2em;
+  font-size: 20px;
+}
+main.acceuilBackoffice section.produits article table {
+  padding: 1em;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #273469;
+  border-radius: 16px;
+}
+main.acceuilBackoffice section.produits article table th {
+  text-align: left;
+}
+main.acceuilBackoffice section.produits article table tr:last-child td {
+  text-align: right;
 }
 
 .mainCompteClient {
