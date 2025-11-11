@@ -30,11 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $pdo->query(
     "UPDATE _adresse 
-    SET adresse = $_POST[adresse1],
-    pays = $_POST[pays],
-    ville = $_POST[ville], 
-    code_postal = $_POST[codePostal],
-    region = $_POST[region]
+    SET adresse = $adresse1,
+    pays = $pays,
+    ville = $ville, 
+    code_postal = $codePostal,
+    region = $region
     WHERE id_client = $id_client;");
 
     //on recupère les infos du user pour les afficher
