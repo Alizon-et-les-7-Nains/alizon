@@ -17,46 +17,6 @@
         <?php require_once './partials/aside.php' ?>
 
         <main class="acceuilBackoffice">
-            <!--
-            <section>
-                <h1>Derniers Bilans</h1>
-                <article>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td><button class="bilan here">Journalier</button></td>
-                                <td><button class="bilan">Hebdomadaire</button></td>
-                                <td><button class="bilan">Mensuel</button></td>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>Nombre de ventes</td>
-                                <td colspan=2>Chiffre d'affaires</td>
-                            </tr>
-                            
-                            <tr>
-                                <td>
-                                    <figure>
-                                        <img src="/public/images/arrowDestonks.svg">
-                                        <figcaption class="neg">46</figcaption>
-                                    </figure>
-                                </td>
-                                <td>
-                                    <figure colspan=2>
-                                        <img src="/public/images/arrowStonks.svg">
-                                        <figcaption class="pos">1.634,50€</figcaption>
-                                    </figure>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </article>
-                <a href="" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-            </section>
-            -->
-
             <section class="stock">
                 <h1>Stocks Faibles</h1>
                 <article>
@@ -79,13 +39,13 @@
                         $prix .= "0";
                     }
                 }
-                $html .= "<td>" . $prix . "</td>";
+                $html .= "<td>" . $prix . "€</td>";
                 $stock = $atr['stock'];
                 $seuil = "";
                 if ($stock == 0) {
                     $seuil = "epuise";
                 } else if ($stock <= $atr['seuilAlerte']) {
-                    $seuill = "faible";
+                    $seuil = "faible";
                 }
                 $html .= "<td class=\"$seuil\">$stock</td>
             </tr>
@@ -280,7 +240,7 @@
                 <h1>Produits en Vente</h1>
                 <article>
 <?php
-    $produits = ($pdo->query("select * from _produit"))->fetchAll(PDO::FETCH_ASSOC);
+    $produits = ($pdo->query("select * from _produit where enVente = true"))->fetchAll(PDO::FETCH_ASSOC);
     foreach ($produits as $produit => $atr) {
         $html = "
         <table>
@@ -295,7 +255,7 @@
                     }
                 }
                 $html .= "<td>" . $atr['nom'] . "</td>
-                <td>$prix</td>
+                <td>" . $prix . "€</td>
             </tr>
         </table>
         ";

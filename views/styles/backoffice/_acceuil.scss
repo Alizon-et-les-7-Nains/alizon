@@ -260,6 +260,10 @@ main.acceuilBackoffice {
 
                 tr:last-child td {
                     text-align: right;
+                    
+                    &:last-child {
+                        font-weight: bold;
+                    }
                 }
             }
         }
