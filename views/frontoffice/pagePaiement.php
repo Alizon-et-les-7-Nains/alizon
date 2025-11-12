@@ -1,8 +1,30 @@
-<?php 
-    require_once "../../controllers/pdo.php"
+<?php
+require_once "../../controllers/pdo.php";
 
-    
+// ID utilisateur connecté (à remplacer par la gestion de session)
+$idClient = 1; 
+
+$stmt = $pdo->prepare("SELECT idPanier FROM distribill_sae03._panier WHERE idClient = :idClient ORDER BY idPanier DESC LIMIT 1");
+$stmt->execute(['idClient' => $idClient]);
+$panier = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$cart = [];
+
+if ($panier) {
+    $idPanier = $panier['idPanier'];
+
+    $stmt = $pdo->prepare("
+        SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit, i.URL as img
+        FROM distribill_sae03._produitAuPanier pa
+        JOIN distribill_sae03._produit p ON pa.idProduit = p.idProduit
+        LEFT JOIN distribill_sae03._imageDeProduit i ON p.idProduit = i.idProduit
+        WHERE pa.idPanier = :idPanier
+    ");
+    $stmt->execute(['idPanier' => $idPanier]);
+    $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -124,19 +146,19 @@
 
             <aside class="col recap" id="recap">
                 <?php foreach ($cart as $item): ?>
-                <div class="produit" data-id="<?= htmlspecialchars($item['id']) ?>">
-                    <img src="<?= htmlspecialchars($item['img']) ?>" alt="">
+                <div class="produit" data-id="<?= htmlspecialchars($item['idProduit']) ?>">
+                    <img src="<?= htmlspecialchars($item['img'] ?: '../../public/images/default.png') ?>" alt="">
                     <div class="infos">
-                        <p class="titre"><?= htmlspecialchars($item['title']) ?></p>
-                        <p class="prix"><?= number_format($item['price'], 2, ',', '') ?>€</p>
+                        <p class="titre"><?= htmlspecialchars($item['nom']) ?></p>
+                        <p class="prix"><?= number_format($item['prix'], 2, ',', '') ?>€</p>
                         <div class="gestQte">
                             <div class="qte">
-                                <button class="minus" data-id="<?= htmlspecialchars($item['id']) ?>">-</button>
+                                <button class="minus" data-id="<?= htmlspecialchars($item['idProduit']) ?>">-</button>
                                 <span class="qty"
-                                    data-id="<?= htmlspecialchars($item['id']) ?>"><?= intval($item['qty']) ?></span>
-                                <button class="plus" data-id="<?= htmlspecialchars($item['id']) ?>">+</button>
+                                    data-id="<?= htmlspecialchars($item['idProduit']) ?>"><?= intval($item['quantiteProduit']) ?></span>
+                                <button class="plus" data-id="<?= htmlspecialchars($item['idProduit']) ?>">+</button>
                             </div>
-                            <button class="delete" data-id="<?= htmlspecialchars($item['id']) ?>">
+                            <button class="delete" data-id="<?= htmlspecialchars($item['idProduit']) ?>">
                                 <img src="../../public/images/bin.svg" alt="">
                             </button>
                         </div>
@@ -144,6 +166,7 @@
                 </div>
                 <?php endforeach; ?>
             </aside>
+
         </div>
         <!-- bouton mobile placé après tous les blocs, visible seulement en mobile -->
         <div class="payer-wrapper-mobile">
