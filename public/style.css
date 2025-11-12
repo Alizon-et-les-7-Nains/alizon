@@ -1445,7 +1445,7 @@ main.acceuilBackoffice section.produits article table th {
 main.acceuilBackoffice section.produits article table tr:last-child td {
   text-align: right;
 }
-main.acceuilBackoffice section.produits article table tr:last-child td td:last-child {
+main.acceuilBackoffice section.produits article table tr:last-child td:last-child {
   font-weight: bold;
 }
 
