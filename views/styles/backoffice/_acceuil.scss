@@ -259,10 +259,12 @@ main.acceuilBackoffice {
                 }
 
                 tr:last-child td {
-                    text-align: right;
+                    font-family: 'open-sans';
                     
                     &:last-child {
+                        text-align: right;
                         font-weight: bold;
+                        
                     }
                 }
             }
