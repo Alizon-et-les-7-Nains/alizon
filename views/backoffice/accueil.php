@@ -25,11 +25,11 @@
     if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
     foreach ($stock as $produit => $atr) {
         $idProduit = $atr['idProduit'];
-        $image = ($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
+        $image = (String)($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC)[0];
         $html = "
         <table>
             <tr>
-                <td><img src='$image[0]'></td>
+                <td><img src='$image'></td>
             </tr>
             <tr>
                 <td>" . $atr['nom'] . "</td>
