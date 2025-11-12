@@ -1,3 +1,4 @@
+<?php require_once "../../controllers/prix.php" ?>
 <?php require_once "../../controllers/pdo.php" ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -38,7 +39,7 @@
                         <h2><?php echo $value['nom'] ?></h2>
                         <div class="infoProd">
                             <div class="prix">
-                                <h2><?php echo $value['prix'] ?>€</h2>
+                                <h2><?php echo prix($value['prix']) ?> €</h2>
                             </div>
                             <div>
                                 <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>

@@ -99,12 +99,14 @@
 
     article h2 {
         color: #273469;
-        font-size: 16px;
-        font-family: "Open sans", serif;
+        font-size: 20px;
+        font-family: "Open-sans", serif;
     }
 
     article .imgProduit {
         max-width: 267px;
+        max-height: 168px;
+        object-fit: contain;
     }
 
     .listeArticle {
