@@ -64,6 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div id="buttonsCompte">
                 <button type="button" onclick="popUpModifierMdp()" class="boutonModifierMdp">Modifier le mot de passe</button>
+                <button type="button"> </button>
                 <button type="button" class="boutonModiferProfil">Modifier</button>
             </div>
         </form>
