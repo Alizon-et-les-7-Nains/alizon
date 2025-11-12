@@ -41,6 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     WHERE idAdresse = '$idAdresse';");
 
     //verification et upload de la nouvelle photo de profil
+
+    $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png';
+    if (file_exists($photoPath)) {
+        unlink($photoPath); // supprime l’ancien fichier
+    }
+
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
         move_uploaded_file($_FILES['photoProfil']['tmp_name'], '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png');
     }
@@ -82,8 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="titreCompte">
                 <div class="photo-container">
                     <?php 
-                        $id = 1;
-                        $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id.'.png';
                         if (file_exists($photoPath)) {
                             echo "<img src=".$photoPath." alt=photoProfil id=imageProfile>";
                         } else {
