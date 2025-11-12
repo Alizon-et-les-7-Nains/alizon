@@ -1439,13 +1439,19 @@ main.acceuilBackoffice section.produits article table {
   border-color: #273469;
   border-radius: 16px;
 }
+main.acceuilBackoffice section.produits article table img {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+}
 main.acceuilBackoffice section.produits article table th {
   text-align: left;
 }
 main.acceuilBackoffice section.produits article table tr:last-child td {
-  text-align: right;
+  font-family: "open-sans";
 }
 main.acceuilBackoffice section.produits article table tr:last-child td:last-child {
+  text-align: right;
   font-weight: bold;
 }
 
