@@ -64,7 +64,7 @@ require_once '../../controllers/prix.php';
                 <article>
 <?php
     $commandes = ($pdo->query("select idProduit, dateCommande, etatLivraison, quantiteProduit, nom, prix, idVendeur, idCommande, idPanier from _produitAuPanier natural join _produit natural join _commande;"))->fetchAll(PDO::FETCH_ASSOC);
-    if (count($commandes == 0)) echo "<h2>Aucune commande</h2>";
+    if (count($commandes) == 0) echo "<h2>Aucune commande</h2>";
     foreach ($commandes as $commande) {
         $idProduit = $atr['idProduit'];
         $image = ($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
