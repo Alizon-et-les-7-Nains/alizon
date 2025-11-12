@@ -1,6 +1,7 @@
 <?php
 require_once '../../controllers/pdo.php';
 require_once '../../controllers/prix.php';
+require_once '../../controllers/date.php';
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +40,7 @@ require_once '../../controllers/prix.php';
                 <td>" . $atr['nom'] . "</td>
             </tr>
             <tr>";
-                $prix = prix($atr['prix']);
+                $prix = formatPrix($atr['prix']);
                 $html .= "<td>" . $prix . "</td>";
                 $stock = $atr['stock'];
                 $seuil = "";
@@ -77,13 +78,13 @@ require_once '../../controllers/prix.php';
             </tr>
             <tr>
                 <td>
-                    Prix Unitaire : <strong>" . prix($commande['prix']) . "</strong><br>
-                    Prix Unitaire : <strong>" . prix($commande['prix'] * $commande['quantiteProduit']) . "</strong><br>
+                    Prix Unitaire : <strong>" . formatPrix($commande['prix']) . "</strong><br>
+                    Prix Unitaire : <strong>" . formatPrix($commande['prix'] * $commande['quantiteProduit']) . "</strong><br>
                     Statut : <strong>" . $commande['etatLivraison'] . "</strong>
                 </td>
             </tr>
             <tr>
-                <td>" . str_replace('-', '/', $commande['dateCommande']) . "</td>
+                <td>" . formatDate($commande['dateCommande']) . "</td>
                 <th>" . $commande['quantiteProduit'] . "</th>
             </tr>
         </table>
@@ -176,7 +177,7 @@ require_once '../../controllers/prix.php';
                 <td><img src='$image'></td>
             </tr>
             <tr>";
-                $prix = prix($atr['prix']);
+                $prix = formatPrix($atr['prix']);
                 $html .= "<td>" . $atr['nom'] . "</td>
                 <td>" . $prix . "</td>
             </tr>
