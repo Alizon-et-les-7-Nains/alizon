@@ -29,20 +29,18 @@
                 foreach ($produitNouveaute as $value) {
                     ?>
                     <article>
-                        <img src="../../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
+                        <?php $idP = $value['idProduit'] ?>
+                        <img src="<?php ($pdo->query("select URL from _imageDeProduit where idProduit = $idP"))->fetchAll(PDO::FETCH_ASSOC); ?>" class="imgProduit" alt="Image du produit">
                         <h2><?php echo $value['nom'] ?></h2>
                         <div class="infoProd">
                             <div class="prix">
                                 <h2><?php echo $value['prix'] ?></h2>
                             </div>
                             <div>
-                                <?php $idP = $value['idProduit'] ?>
-                                <a href=""><img src="<?php ($pdo->query("select URL from _imageDeProduit where idProduit = $idP"))->fetchAll(PDO::FETCH_ASSOC); ?>" alt="Bouton ajout panier"></a>
+                                <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
                             </div>
                         </div>
                     </article>
-                <?php } if ($i==0) { ?>
-                    <h1>Aucun produit disponible pour le moment !</h1>
                 <?php } ?>
             </div>
         </section>
