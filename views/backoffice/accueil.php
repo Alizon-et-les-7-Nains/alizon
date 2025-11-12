@@ -1,4 +1,7 @@
-<?php require_once '../../controllers/pdo.php'; ?>
+<?php
+require_once '../../controllers/pdo.php';
+require_once '../../controllers/prix.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,12 +39,7 @@
                 <td>" . $atr['nom'] . "</td>
             </tr>
             <tr>";
-                $prix = str_replace('.', ',', (String)$atr['prix']); 
-                if (explode(',', $prix)[1]) {
-                    if (strlen(explode(',', $prix)[1]) == 1) {
-                        $prix .= "0";
-                    }
-                }
+                $prix = prix($atr['prix']);
                 $html .= "<td>" . $prix . "€</td>";
                 $stock = $atr['stock'];
                 $seuil = "";
@@ -254,12 +252,7 @@
                 <td><img src='$image'></td>
             </tr>
             <tr>";
-                $prix = str_replace('.', ',', (String)$atr['prix']); 
-                if (explode(',', $prix)[1]) {
-                    if (strlen(explode(',', $prix)[1]) == 1) {
-                        $prix .= "0";
-                    }
-                }
+                $prix = prix($atr['prix']);
                 $html .= "<td>" . $atr['nom'] . "</td>
                 <td>" . $prix . "€</td>
             </tr>
