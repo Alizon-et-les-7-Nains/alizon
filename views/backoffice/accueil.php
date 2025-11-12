@@ -24,10 +24,13 @@
     $stock = ($pdo->query("select * from _produit where stock < seuilAlerte"))->fetchAll(PDO::FETCH_ASSOC);
     if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
     foreach ($stock as $produit => $atr) {
+        $idProduit = $atr['idProduit'];
+        $image = ($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
+        $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $html = "
         <table>
             <tr>
-                <td></td>
+                <td><img src='/images/rillettes.png'></td>
             </tr>
             <tr>
                 <td>" . $atr['nom'] . "</td>
