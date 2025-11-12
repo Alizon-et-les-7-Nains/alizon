@@ -1,3 +1,5 @@
+<?php require_once "../../controllers/pdo.php" ?>
+$stmp = $pdo->query(requete)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +25,7 @@
                     <div class="placeholder-photo">
                         <img src="../../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="imagePreview">
                         <p id="placeholderText">Cliquer pour ajouter une photo</p>
+                        <div class="overlay-text">Cliquer pour modifier</div>
                     </div>
                 </div>
 
@@ -78,28 +81,25 @@
                 const file = files[0];
                 
                 if (file.type.startsWith('image/')) {
-                    // Création du lecteur de fichier
                     const reader = new FileReader();
                     
                     reader.onload = function(e) {
-                        // Met à jour la source de l'image
                         imagePreview.src = e.target.result;
-                        // Masque le texte
+                        imagePreview.classList.add('grise');
                         placeholderText.style.display = 'none';
                     };
 
-                    // Lit le fichier
                     reader.readAsDataURL(file);
 
                 } else {
-                    // Si le fichier n'est pas une image
                     imagePreview.src = originalImageSrc;
+                    imagePreview.classList.remove('grise');
                     placeholderText.style.display = 'block';
                     alert("Votre fichier n'est pas une image, merci de réessayer.");
                 }
             } else {
-                // Si la sélection est annulée
                 imagePreview.src = originalImageSrc;
+                imagePreview.classList.remove('grise');
                 placeholderText.style.display = 'block';
             }
         });
