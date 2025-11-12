@@ -325,8 +325,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             window.close();
         }
 
-        function boutonAnnuler(event) {
-            event.preventDefault();
+        function boutonAnnuler() {
 
             let inputs = document.querySelectorAll("section input");
 
