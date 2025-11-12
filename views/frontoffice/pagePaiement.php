@@ -4,8 +4,8 @@ require_once "../../controllers/pdo.php";
 // ID utilisateur connecté (à remplacer par la gestion de session)
 $idClient = 1; 
 
-$stmt = $pdo->prepare("SELECT idPanier FROM distribill_sae03._panier WHERE idClient = :idClient ORDER BY idPanier DESC LIMIT 1");
-$stmt->execute(['idClient' => $idClient]);
+$stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = '$idClient' ORDER BY idPanier DESC LIMIT 1");
+
 $panier = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $cart = [];
