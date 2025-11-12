@@ -4,7 +4,11 @@
 @use "./frontoffice/styleLegales";
 @use "./frontoffice/style404";
 @use "./backoffice/header";
+@use "./frontoffice/inscription";
 @use "./backoffice/footer";
 @use "./backoffice/aside";
 @use "./backoffice/structure";
-@use "./frontoffice/styleAcceuilConnecte";
+@use './backoffice/acceuil';
+@use './frontoffice/styleCompteClient';
+@use './backoffice/acceuil';
+@use './frontoffice/styleCompteClient';
