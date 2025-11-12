@@ -1282,7 +1282,7 @@ main.acceuilBackoffice section ul {
 }
 main.acceuilBackoffice section.stock article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 30%));
   gap: 2em;
 }
 main.acceuilBackoffice section.stock article table {
@@ -1310,7 +1310,7 @@ main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(
 }
 main.acceuilBackoffice section.commandes article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 30%));
   gap: 2em;
 }
 main.acceuilBackoffice section.commandes article table {
@@ -1428,7 +1428,7 @@ main.acceuilBackoffice section.avis article table button {
 }
 main.acceuilBackoffice section.produits article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 30%));
   gap: 2em;
   font-size: 20px;
 }
