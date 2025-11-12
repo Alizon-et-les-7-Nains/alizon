@@ -77,7 +77,7 @@ require_once '../../controllers/prix.php';
             </tr>
             <tr>
                 <td>
-                    Prix Unitaire : <stron>" . prix($commande['prix']) . "</strong><br>
+                    Prix Unitaire : <strong>" . prix($commande['prix']) . "</strong><br>
                     Prix Unitaire : <strong>" . prix($commande['prix'] * $commande['quantiteProduit']) . "</strong><br>
                     Statut : <strong>" . $commande['etatLivraison'] . "</strong>
                 </td>
