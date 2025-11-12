@@ -1,5 +1,4 @@
-<?php require_once "../../controllers/pdo.php" ?>
-$stmp = $pdo->query(requete)
+<?php require_once "../../../controllers/pdo.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +24,7 @@ $stmp = $pdo->query(requete)
                     <div class="placeholder-photo">
                         <img src="../../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="imagePreview">
                         <p id="placeholderText">Cliquer pour ajouter une photo</p>
-                        <div class="overlay-text">Cliquer pour modifier</div>
+                        <div class="overlay-text" id="overlayText">Cliquer pour modifier</div>
                     </div>
                 </div>
 
@@ -57,6 +56,7 @@ $stmp = $pdo->query(requete)
             </div>
         </div>
     </main>
+
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         //Récupère les éléments
@@ -64,6 +64,7 @@ $stmp = $pdo->query(requete)
         const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
         const imagePreview = document.getElementById('imagePreview'); //image
         const placeholderText = document.getElementById('placeholderText'); //paragraphe
+        const overlayText = document.getElementById('overlayText'); // texte “cliquer pour modifier”
         
         // Sauvegarde de l'URL par défaut
         const originalImageSrc = imagePreview.src;
@@ -85,26 +86,26 @@ $stmp = $pdo->query(requete)
                     
                     reader.onload = function(e) {
                         imagePreview.src = e.target.result;
-                        imagePreview.classList.add('grise');
                         placeholderText.style.display = 'none';
+                        overlayText.style.display = 'block';
                     };
 
                     reader.readAsDataURL(file);
 
                 } else {
                     imagePreview.src = originalImageSrc;
-                    imagePreview.classList.remove('grise');
                     placeholderText.style.display = 'block';
+                    overlayText.style.display = 'none';
                     alert("Votre fichier n'est pas une image, merci de réessayer.");
                 }
             } else {
                 imagePreview.src = originalImageSrc;
-                imagePreview.classList.remove('grise');
                 placeholderText.style.display = 'block';
+                overlayText.style.display = 'none';
             }
         });
     });
-</script>
+    </script>
     <?php require_once "./partials/footer.php"?>
 </body>
 </html>
