@@ -25,7 +25,7 @@
     if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
     foreach ($stock as $produit => $atr) {
         $idProduit = $atr['idProduit'];
-        $image = ($pdo->query("select URL from _imageDeProduit where id = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
+        $image = ($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
         $html = "
         <table>
             <tr>
