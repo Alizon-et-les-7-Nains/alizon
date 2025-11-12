@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
     $prenom = $_POST['prenom'];
     $email = $_POST['email'];
+    $dateNaissance = $_POST['dateNaissance'];
     $telephone = $_POST['telephone'];
     $codePostal = $_POST['codePostal'];
     $adresse1 = $_POST['adresse1'];
@@ -26,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     nom = '$nom', 
     prenom = '$prenom', 
     email =  '$email', 
+    dateNaissance = '$dateNaissance'
     noTelephone = '$telephone'
     WHERE idClient = '$id_client';");
 
@@ -255,7 +257,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Définir le type d'input approprié
                     if (i === 9) input.type = "tel";
                     else if (i === 10) input.type = "email";
-                    else if (i === 3) input.type = "date";
                     else input.type = "text";
 
                     switch(i) {
@@ -269,7 +270,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             input.placeholder = "Entrez votre prénom";
                             break;
                         case 3:
-                            input.placeholder = "Entrez votre date de naissance";
+                            input.placeholder = "Entrez votre date de naissance jj/mm/aaaa";
                             break;
                         case 4:
                             input.placeholder = "Entrez votre adresse";
