@@ -9,7 +9,19 @@
 }
 @font-face {
   font-family: "open-sans";
-  src: url(../../public/fonts/open-sans/OpenSans-VariableFont_wdthwght.ttf);
+  src: url(../../public/fonts/open-sans/static/OpenSans-Regular.ttf);
+}
+@font-face {
+  font-family: "open-sans-bold";
+  src: url(../../public/fonts/open-sans/static/OpenSans-Bold.ttf);
+}
+@font-face {
+  font-family: "open-sans-italic";
+  src: url(../../public/fonts/open-sans/static/OpenSans-Italic.ttf);
+}
+@font-face {
+  font-family: "open-sans-bold-italic";
+  src: url(../../public/fonts/open-sans/static/OpenSans-BoldItalic.ttf);
 }
 html,
 body {
@@ -444,53 +456,63 @@ header.backoffice nav figure:nth-child(1) figcaption {
 header.backoffice nav figure:nth-child(1) img {
   height: 40px;
 }
-header.backoffice nav figure:nth-child(2) {
-  position: relative;
-  width: 50px;
-  height: 50px;
+header.backoffice nav figure {
+  /*
+  &:nth-child(2) {
+      position: relative;
+      width: 50px;
+      height: 50px;
+
+      &::before {
+          content: '';
+          position: absolute;
+          top: 5px;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url(../../../public/images/bellDark.svg);
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          transition: opacity 0.2s ease;
+          opacity: 1;
+      }
+
+      &::after {
+          content: '';
+          position: absolute;
+          top: 5px;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url(../../../public/images/bellRingDark.svg);
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          transition: opacity 0.2s ease;
+          opacity: 0;
+      }
+
+      &:hover {
+          &::before {
+              opacity: 0;
+          }
+
+          &::after {
+              opacity: 1;
+          }
+      }
+  }
+  */
 }
-header.backoffice nav figure:nth-child(2)::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url(../../../public/images/bellDark.svg);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: opacity 0.2s ease;
-  opacity: 1;
-}
-header.backoffice nav figure:nth-child(2)::after {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url(../../../public/images/bellRingDark.svg);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: opacity 0.2s ease;
-  opacity: 0;
-}
-header.backoffice nav figure:nth-child(2):hover::before {
-  opacity: 0;
-}
-header.backoffice nav figure:nth-child(2):hover::after {
-  opacity: 1;
-}
-header.backoffice nav figure:nth-child(3), header.backoffice nav figure:nth-child(4) {
+header.backoffice nav figure:nth-child(2), header.backoffice nav figure:nth-child(3) {
   flex-direction: column;
   align-items: center;
 }
-header.backoffice nav figure:nth-child(3) img, header.backoffice nav figure:nth-child(4) img {
+header.backoffice nav figure:nth-child(2) img, header.backoffice nav figure:nth-child(3) img {
   height: 40px;
 }
-header.backoffice nav figure:nth-child(3) figcaption, header.backoffice nav figure:nth-child(4) figcaption {
+header.backoffice nav figure:nth-child(2) figcaption, header.backoffice nav figure:nth-child(3) figcaption {
   color: #273469;
   font-family: "lora";
   font-size: 20px;
@@ -499,6 +521,86 @@ header.backoffice nav figure:nth-child(3) figcaption, header.backoffice nav figu
 }
 header.backoffice nav figure:nth-child(4) img {
   height: 35px;
+}
+
+.status-red {
+  color: #f14e4e;
+}
+
+.status-green {
+  color: #259525;
+}
+
+.inscription {
+  font-family: "lora";
+  font-weight: bold;
+}
+.inscription::before {
+  content: "";
+  position: absolute;
+  left: -200px;
+  top: 50px;
+  width: 900px;
+  height: 900px;
+  background: url("../../public/images/symboleRose.png") no-repeat center center;
+  background-size: contain;
+  transform: rotate(-180deg);
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+}
+.inscription form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+.inscription form input {
+  width: 450px;
+  height: 40px;
+  padding: 10px;
+  margin: 16px;
+  color: #6e6e6e;
+  font-size: 16px;
+  border: 2px solid #273469;
+  border-radius: 8px;
+}
+.inscription h2 {
+  color: #273469;
+  font-family: "Lora", serif;
+  font-size: 48px;
+  font-weight: bold;
+  text-align: center;
+  margin: 50px 0px;
+}
+
+#submitButton {
+  width: 450px;
+  height: 48px;
+  padding: 10px;
+  margin-bottom: 45px;
+  font-size: 16px;
+  background-color: #e4d9ff;
+  border-radius: 8px;
+  border: none;
+  color: #273469;
+}
+
+#password-requirements-container {
+  padding-left: 12px;
+}
+
+#password-requirements {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#password-requirements li {
+  margin-bottom: 5px;
 }
 
 footer.backoffice {
@@ -634,6 +736,7 @@ body.backoffice footer {
   grid-area: footer;
 }
 
+<<<<<<< HEAD
 .status-red {
   color: #f14e4e;
 }
@@ -971,6 +1074,303 @@ body.backoffice footer {
 }
 .AjouterProduit .form-actions .btn-ajouter:hover {
   background-color: rgb(25.1875, 33.5833333333, 67.8125);
+=======
+main.acceuilBackoffice {
+  display: flex;
+  flex-direction: column;
+}
+main.acceuilBackoffice img, main.acceuilBackoffice button {
+  user-select: none;
+}
+main.acceuilBackoffice section {
+  display: flex;
+  flex-direction: column;
+  color: #273469;
+  width: 100%;
+}
+main.acceuilBackoffice section h1 {
+  user-select: none;
+  font-family: "lora";
+}
+main.acceuilBackoffice section article {
+  width: 100%;
+  overflow-x: auto;
+}
+main.acceuilBackoffice section a {
+  margin-top: 1em;
+  align-self: flex-end;
+}
+main.acceuilBackoffice section a img {
+  height: 25px;
+}
+main.acceuilBackoffice section ul {
+  list-style: none;
+  padding: 0;
+}
+main.acceuilBackoffice section.stock article {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2em;
+}
+main.acceuilBackoffice section.stock article table {
+  padding: 1em;
+  border: solid 2px #273469;
+  border-radius: 16px;
+  font-family: "open-sans";
+  font-size: 20px;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) {
+  font-family: "open-sans-bold";
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2) {
+  margin-left: auto;
+  font-size: 30px;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).epuise {
+  color: #f14e4e;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).faible {
+  color: #ffc25a;
+}
+main.acceuilBackoffice section.commandes article {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2em;
+}
+main.acceuilBackoffice section.commandes article table {
+  padding: 1em;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 16px;
+  border-color: #273469;
+}
+main.acceuilBackoffice section.commandes article table img {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+}
+main.acceuilBackoffice section.commandes article table th {
+  font-size: 20px;
+}
+main.acceuilBackoffice section.commandes article table tr:first-child th {
+  text-align: left;
+  line-height: 0.25em;
+}
+main.acceuilBackoffice section.commandes article table tr:nth-child(2) td {
+  vertical-align: top;
+}
+main.acceuilBackoffice section.commandes article table tr:last-child th {
+  text-align: right;
+}
+main.acceuilBackoffice section.avis article table {
+  width: 100%;
+  border-spacing: 1em 0;
+  table-layout: fixed;
+  border-collapse: separate;
+}
+main.acceuilBackoffice section.avis article table tr:first-child {
+  font-weight: bold;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) {
+  width: 120px;
+  justify-items: center;
+  line-height: 0.25em;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) figure:first-child {
+  border-radius: 100%;
+  height: 50px;
+  width: 50px;
+  background-image: url(/public/images/pp.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) figure:last-child {
+  color: #FFD000;
+  display: flex;
+  align-items: center;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(2) {
+  white-space: nowrap;
+  font-size: 20px;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(3) {
+  width: auto;
+  font-weight: normal;
+  font-size: 12px;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(4) {
+  width: 120px;
+}
+main.acceuilBackoffice section.avis article table tr:nth-child(2) td {
+  vertical-align: top;
+}
+main.acceuilBackoffice section.avis article table tr:nth-child(3) td:last-child {
+  display: flex;
+  gap: 1em;
+  justify-content: flex-start;
+}
+main.acceuilBackoffice section.avis article table tr:nth-child(3) td:last-child img {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+}
+main.acceuilBackoffice section.avis article table tr:last-child td:nth-child(2) {
+  padding-right: 1em;
+}
+main.acceuilBackoffice section.avis article table tr:last-child td:nth-child(3) {
+  width: auto;
+  text-align: right;
+  white-space: nowrap;
+}
+main.acceuilBackoffice section.avis article table input {
+  border: none;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #273469;
+  border-radius: 4px;
+}
+main.acceuilBackoffice section.avis article table button {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  font-family: "lora";
+  font-weight: bold;
+  background: none;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #273469;
+  border-radius: 8px;
+  color: #273469;
+  white-space: nowrap;
+  box-sizing: border-box;
+  min-width: fit-content;
+}
+main.acceuilBackoffice section.produits article {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2em;
+  font-size: 20px;
+}
+main.acceuilBackoffice section.produits article table {
+  padding: 1em;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #273469;
+  border-radius: 16px;
+}
+main.acceuilBackoffice section.produits article table th {
+  text-align: left;
+}
+main.acceuilBackoffice section.produits article table tr:last-child td {
+  text-align: right;
+}
+
+.mainCompteClient {
+  background-image: url("../../../public/images/triskel.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  font-family: "lora";
+  font-weight: bold;
+  font-style: italic;
+}
+.mainCompteClient h1 {
+  font-family: "lora";
+  font-size: 48px;
+  color: #273469;
+}
+.mainCompteClient #titreCompte {
+  padding-top: 60px;
+  padding-bottom: 10px;
+  padding-left: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 50px;
+}
+.mainCompteClient #titreCompte img {
+  border-radius: 100%;
+  width: 150px;
+  height: auto;
+}
+.mainCompteClient section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+.mainCompteClient article {
+  display: flex;
+  flex-direction: column;
+}
+.mainCompteClient article div {
+  display: flex;
+  flex-direction: row;
+  gap: 29px;
+}
+.mainCompteClient article div p, .mainCompteClient article div input {
+  width: 185px;
+}
+.mainCompteClient article p, .mainCompteClient input {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  width: 420px;
+  height: 45px;
+  padding: 10px;
+  margin-bottom: 45px;
+  color: #6E6E6E;
+  border: 2px solid #273469;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: "lora";
+  font-weight: bold;
+  font-style: italic;
+}
+.mainCompteClient #buttonsCompte {
+  padding-top: 32px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  gap: 20px;
+}
+.mainCompteClient button {
+  color: #273469;
+  background-color: #e4d9ff;
+  border-radius: 32px;
+  padding: 10px;
+  border: none;
+  border-radius: 32px;
+  font-family: "lora";
+  cursor: pointer;
+}
+.mainCompteClient .boutonModifierMdp {
+  width: 250px;
+  height: 55px;
+}
+.mainCompteClient .boutonModiferProfil {
+  width: 200px;
+  height: 55px;
+}
+
+.overlayPopUpCompteClient {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+>>>>>>> origin/main
 }
 
 /*# sourceMappingURL=style.css.map */
