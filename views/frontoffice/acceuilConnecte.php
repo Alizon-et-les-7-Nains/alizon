@@ -30,7 +30,7 @@
                     ?>
                     <article>
                         <?php
-                            $idProduit = $atr['idProduit'];
+                            $idProduit = $value['idProduit'];
                             $image = ($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
                             $image = $image = !empty($image) ? $image[0]['URL'] : '';
                         ?>
