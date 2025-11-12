@@ -39,13 +39,13 @@
                         $prix .= "0";
                     }
                 }
-                $html .= "<td>" . $prix . "</td>";
+                $html .= "<td>" . $prix . "€</td>";
                 $stock = $atr['stock'];
                 $seuil = "";
                 if ($stock == 0) {
                     $seuil = "epuise";
                 } else if ($stock <= $atr['seuilAlerte']) {
-                    $seuill = "faible";
+                    $seuil = "faible";
                 }
                 $html .= "<td class=\"$seuil\">$stock</td>
             </tr>
@@ -255,7 +255,7 @@
                     }
                 }
                 $html .= "<td>" . $atr['nom'] . "</td>
-                <td>$prix</td>
+                <td>" . $prix . "€</td>
             </tr>
         </table>
         ";
