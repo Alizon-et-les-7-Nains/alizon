@@ -30,7 +30,7 @@
         $html = "
         <table>
             <tr>
-                <td><img src='/images/cidre.png'></td>
+                <td><img src='$image'></td>
             </tr>
             <tr>
                 <td>" . $atr['nom'] . "</td>
@@ -245,10 +245,13 @@
 <?php
     $produits = ($pdo->query("select * from _produit where enVente = true"))->fetchAll(PDO::FETCH_ASSOC);
     foreach ($produits as $produit => $atr) {
+        $idProduit = $atr['idProduit'];
+        $image = ($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
+        $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $html = "
         <table>
             <tr>
-                <td></td>
+                <td><img src='$image'></td>
             </tr>
             <tr>";
                 $prix = str_replace('.', ',', (String)$atr['prix']); 

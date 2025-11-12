@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $id = 1;
                         $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id.'.png';
                         if (file_exists($photoPath)) {
-                            echo '<img src="'.$photoPath.'?t='.time().'" alt="photoProfil" id="imageProfile">';
+                            echo "<img src=".$photoPath." alt=photoProfil id=imageProfile>";
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div id="buttonsCompte">
                 <button type="button" onclick="popUpModifierMdp()" class="boutonModifierMdp">Modifier le mot de passe</button>
-                <button type="button"> </button>
+                <button class="boutonAnnuler" type="button" onclick="boutonAnnuler()">Annuler</button>
                 <button type="button" class="boutonModiferProfil">Modifier</button>
             </div>
         </form>
@@ -187,39 +187,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             for (let i = 0; i < champs.length; i++) {
                 let valeur = champs[i].value.trim();
-
-                switch(champs[i].name) {
-                        case "pseudo":
-                            champs[i].placeholder = "Entrez votre pseudo";
-                            break;
-                        case "nom":
-                            champs[i].placeholder = "Entrez votre nom";
-                            break;
-                        case "prenom":
-                            champs[i].placeholder = "Entrez votre prénom";
-                            break;
-                        case "dateNaissance":
-                            champs[i].placeholder = "Entrez votre date de naissance";
-                            break;
-                        case "adresse1":
-                            champs[i].placeholder = "Entrez votre adresse";
-                            break;
-                        case "codePostal":
-                            champs[i].placeholder = "Entrez votre code postal";
-                            break;
-                        case "ville":
-                            champs[i].placeholder = "Entrez votre ville";
-                            break;
-                        case "pays":
-                            champs[i].placeholder = "Entrez votre pays";
-                            break;
-                        case "telephone":
-                            champs[i].placeholder = "Entrez votre numéro de téléphone";
-                            break;
-                        case "email":
-                            champs[i].placeholder = "Entrez votre email";
-                            break;
-                    }
                 
                 // Le champ adresse2 est optionnel
                 if (i !== 5 && valeur === "") {
@@ -261,6 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         let imageProfile = document.getElementById("imageProfile");
         let bnModifier = document.getElementsByClassName("boutonModiferProfil");
         let bnModifMdp = document.getElementsByClassName("boutonModifierMdp");
+        let bnAnnuler = document.getElementsByClassName("boutonAnnuler");
 
         function modifierProfil(event) {
 
@@ -290,6 +258,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     else if (i === 3) input.type = "date";
                     else input.type = "text";
 
+                    switch(i) {
+                        case 0:
+                            input.placeholder = "Entrez votre pseudo";
+                            break;
+                        case 1:
+                            input.placeholder = "Entrez votre nom";
+                            break;
+                        case 2:
+                            input.placeholder = "Entrez votre prénom";
+                            break;
+                        case 3:
+                            input.placeholder = "Entrez votre date de naissance";
+                            break;
+                        case 4:
+                            input.placeholder = "Entrez votre adresse";
+                            break;
+                        case 6:
+                            input.placeholder = "Entrez votre code postal";
+                            break;
+                        case 7:
+                            input.placeholder = "Entrez votre ville";
+                            break;
+                        case 8:
+                            input.placeholder = "Entrez votre pays";
+                            break;
+                        case 9:
+                            input.placeholder = "Entrez votre numéro de téléphone";
+                            break;
+                        case 10:
+                            input.placeholder = "Entrez votre email";
+                            break;
+                    }
+
                     elems[i].parentNode.replaceChild(input, elems[i]);
                 }
 
@@ -303,6 +304,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 imageProfile.onclick = () => ajoutPhoto.click();
                 
                 enModif = true;
+
+                bnAnnuler[0].style.display = "block";
 
                 document.querySelector("section").addEventListener("input", verifierChamp);
                 verifierChamp();
@@ -318,8 +321,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         bnModifier[0].addEventListener("click", modifierProfil);
 
         function fermerFenetre(){
-                window.close();
-            }
+            window.close();
+        }
+
+        function boutonAnnuler(event){
+            bnAnnuler[0].style.display = "none";
+            event.preventDefault();
+            bnModifier[0].innerHTML = "Modifier";
+            bnModifier[0].style.backgroundColor = "#e4d9ff";
+            bnModifier[0].style.color = "#273469";
+        }
     </script>
 </body>
 </html>
