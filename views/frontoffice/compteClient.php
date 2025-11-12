@@ -51,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prenom = $client['prenom'];
     $nom = $client['nom'];
     $dateNaissance = $client['dateNaissance'];
-    $dateNaissance = date('Y-m-d', strtotime($dateNaissance));
     $email = $client['email'];
     $noTelephone = $client['noTelephone'];
 
