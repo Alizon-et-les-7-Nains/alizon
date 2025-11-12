@@ -29,12 +29,16 @@
                 foreach ($produitNouveaute as $value) {
                     ?>
                     <article>
-                        <?php $idP = $value['idProduit'] ?>
-                        <img src="<?php ($pdo->query("select URL from _imageDeProduit where idProduit = $idP"))->fetchAll(PDO::FETCH_ASSOC); ?>" class="imgProduit" alt="Image du produit">
+                        <?php
+                            $idProduit = $atr['idProduit'];
+                            $image = ($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
+                            $image = $image = !empty($image) ? $image[0]['URL'] : '';
+                        ?>
+                        <img src="<?php echo $image ?>" class="imgProduit" alt="Image du produit">
                         <h2><?php echo $value['nom'] ?></h2>
                         <div class="infoProd">
                             <div class="prix">
-                                <h2><?php echo $value['prix'] ?></h2>
+                                <h2><?php echo $value['prix'] ?>€</h2>
                             </div>
                             <div>
                                 <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
