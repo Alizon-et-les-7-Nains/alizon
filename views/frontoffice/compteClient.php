@@ -306,6 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 enModif = true;
 
                 bnAnnuler[0].style.display = "block";
+                bnAnnuler[0].style.color = "white";
 
                 document.querySelector("section").addEventListener("input", verifierChamp);
                 verifierChamp();
@@ -325,11 +326,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         function boutonAnnuler(event){
-            bnAnnuler[0].style.display = "none";
+            // bnAnnuler[0].style.display = "none";
+            // event.preventDefault();
+            // bnModifier[0].innerHTML = "Modifier";
+            // bnModifier[0].style.backgroundColor = "#e4d9ff";
+            // bnModifier[0].style.color = "#273469";
+            // enModif = false;
             event.preventDefault();
-            bnModifier[0].innerHTML = "Modifier";
-            bnModifier[0].style.backgroundColor = "#e4d9ff";
-            bnModifier[0].style.color = "#273469";
+            location.reload(); // recharge la page et restaure les <p>
         }
     </script>
 </body>
