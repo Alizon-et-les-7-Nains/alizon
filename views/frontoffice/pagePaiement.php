@@ -4,8 +4,7 @@ require_once "../../controllers/pdo.php";
 // ID utilisateur connecté (à remplacer par la gestion de session)
 $idClient = 1; 
 
-$stmt = $pdo->prepare("SELECT idPanier FROM distribill_sae03._panier WHERE idClient = :idClient ORDER BY idPanier DESC LIMIT 1");
-$stmt->execute(['idClient' => $idClient]);
+$stmt = $pdo->query("SELECT idPanier FROM distribill_sae03._panier WHERE idClient = 1 ORDER BY idPanier DESC LIMIT 1");
 $panier = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $cart = [];
@@ -13,17 +12,16 @@ $cart = [];
 if ($panier) {
     $idPanier = $panier['idPanier'];
 
-    $stmt = $pdo->prepare("
+    // Méthode avec query() seulement
+    $stmt = $pdo->query("
         SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
         FROM distribill_sae03._produitAuPanier pa
         JOIN distribill_sae03._produit p ON pa.idProduit = p.idProduit
         LEFT JOIN distribill_sae03._imageDeProduit i ON p.idProduit = i.idProduit
-        WHERE pa.idPanier = :idPanier
+        WHERE pa.idPanier = $idPanier
     ");
-    $stmt->execute(['idPanier' => $idPanier]);
     $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 // ============================================================================
 // FONCTIONS POUR GÉRER LES ACTIONS AJAX
 // ============================================================================
