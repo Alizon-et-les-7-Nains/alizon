@@ -23,7 +23,9 @@
                 <hr>
             </div>
             <div class="listeArticle">
-                <?php for ($i=0 ; $i < 0 ; $i++) { ?>
+                <?php 
+                for ($i=0 ; $i < 0 ; $i++) {      
+                    ?>
                     <article>
                         <img src="../../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
                         <h2>Assortiment de rillettes de thon la compagne bretonne - 300g</h2>

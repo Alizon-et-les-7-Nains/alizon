@@ -55,7 +55,7 @@ main.acceuilBackoffice {
         
         &.stock article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 30%));
             gap: 2em;
             
             table {
@@ -90,7 +90,7 @@ main.acceuilBackoffice {
 
         &.commandes article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 30%));
             gap: 2em;
 
             table {
@@ -241,7 +241,7 @@ main.acceuilBackoffice {
 
         &.produits article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 30%));
             gap: 2em;
             font-size: 20px;
 
