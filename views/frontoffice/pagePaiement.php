@@ -14,12 +14,15 @@ if ($panier) {
     $idPanier = $panier['idPanier'];
 
     $stmt = $pdo->query("
-        SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit, i.URL as img
-        FROM distribill_sae03._produitAuPanier pa
-        JOIN distribill_sae03._produit p ON pa.idProduit = p.idProduit
-        LEFT JOIN distribill_sae03._imageDeProduit i ON p.idProduit = i.idProduit
-        WHERE pa.idPanier = :idPanier
+        Select idProduit from _produitAuPanier WHERE idClient = '$idClient' and idPanier = '$idPanier';
     ");
+    $produitAuPanier = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $stmt = $pdo->query("
+        Select prix, stock from _produit WHERE idProduit = '$produitAuPanier[0]';
+    ");
+    $infoProd = $stmt->fetch(PDO::FETCH_ASSOC);
+    $prix = $infoProd['prix'];
     
     $cart = $stmt->fetch(PDO::FETCH_ASSOC);
 }

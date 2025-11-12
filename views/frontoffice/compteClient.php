@@ -38,6 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     region = '$region'
     WHERE idAdresse = '$idAdresse';");
 
+    //verification et upload de la nouvelle photo de profil
+    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png');
+    }
+}   
     //on recupère les infos du user pour les afficher
     $stmt = $pdo->query("SELECT * FROM _client WHERE idClient = '$id_client'");
     $client = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -57,12 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ville = $adresse['ville'];
     $codePostal = $adresse['codePostal'];
     $adresse1 = $adresse['adresse'];
-
-    //verification et upload de la nouvelle photo de profil
-    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png');
-    }
-}
 
 ?>
 <!DOCTYPE html>
@@ -119,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div id="buttonsCompte">
                 <button type="button" onclick="popUpModifierMdp()" class="boutonModifierMdp">Modifier le mot de passe</button>
+                <button type="button"> </button>
                 <button type="button" class="boutonModiferProfil">Modifier</button>
             </div>
         </form>
@@ -187,12 +187,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             for (let i = 0; i < champs.length; i++) {
                 let valeur = champs[i].value.trim();
-                
-                // Le champ adresse2 est optionnel
-                if (i !== 5 && valeur === "") {
-                    // Le champ adresse2 est optionnel
-                if (i !== 5 && valeur === "") {
-                    switch(champs[i].name) {
+
+                switch(champs[i].name) {
                         case "pseudo":
                             champs[i].placeholder = "Entrez votre pseudo";
                             break;
@@ -224,6 +220,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             champs[i].placeholder = "Entrez votre email";
                             break;
                     }
+                
+                // Le champ adresse2 est optionnel
+                if (i !== 5 && valeur === "") {
                     tousRemplis = false;
                     break;
                 }
@@ -247,7 +246,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             bouton.disabled = !tousRemplis;
         }
-    }
         let enModif = false;
 
         // Création de l'input pour la photo de profil
