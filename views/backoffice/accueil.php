@@ -17,46 +17,6 @@
         <?php require_once './partials/aside.php' ?>
 
         <main class="acceuilBackoffice">
-            <!--
-            <section>
-                <h1>Derniers Bilans</h1>
-                <article>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td><button class="bilan here">Journalier</button></td>
-                                <td><button class="bilan">Hebdomadaire</button></td>
-                                <td><button class="bilan">Mensuel</button></td>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>Nombre de ventes</td>
-                                <td colspan=2>Chiffre d'affaires</td>
-                            </tr>
-                            
-                            <tr>
-                                <td>
-                                    <figure>
-                                        <img src="/public/images/arrowDestonks.svg">
-                                        <figcaption class="neg">46</figcaption>
-                                    </figure>
-                                </td>
-                                <td>
-                                    <figure colspan=2>
-                                        <img src="/public/images/arrowStonks.svg">
-                                        <figcaption class="pos">1.634,50€</figcaption>
-                                    </figure>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </article>
-                <a href="" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-            </section>
-            -->
-
             <section class="stock">
                 <h1>Stocks Faibles</h1>
                 <article>
