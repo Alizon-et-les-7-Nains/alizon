@@ -8,5 +8,7 @@
 @use "./backoffice/footer";
 @use "./backoffice/aside";
 @use "./backoffice/structure";
+@use "./frontoffice/stylePaiement";
 @use './backoffice/acceuil';
 @use './frontoffice/styleCompteClient';
+@use './frontoffice/styleAcceuilConnecte';
