@@ -1,4 +1,4 @@
-<?php require_once "../../../controllers/pdo.php" ?>
+<?php require_once "../../controllers/pdo.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

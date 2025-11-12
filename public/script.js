@@ -648,31 +648,37 @@ if (document.body.classList.contains("pagePaiement")) {
         maps: { departments, citiesByCode, postals, allCities },
         selectedDepartment,
     });
-    // Données de panier factices (peuvent être fournies par le serveur)
-    // utiliser le panier fourni par le serveur si présent
+    // Données de panier : priorité
+    // 1) utiliser les données fournies par le serveur via window.__PAYMENT_DATA__.cart
+    // 2) sinon tenter de lire le HTML déjà rendu côté serveur dans #recap (utiliser la BDD)
+    // 3) sinon démarrer avec un panier vide
     let cart = [];
-    if (window.__PAYMENT_DATA__ &&
-        Array.isArray(window.__PAYMENT_DATA__.cart)) {
-        cart = window.__PAYMENT_DATA__.cart;
+    const preCart = window.__PAYMENT_DATA__?.cart;
+    if (Array.isArray(preCart) && preCart.length > 0) {
+        cart = preCart;
+    }
+    else if (recapEl) {
+        // lire les éléments déjà rendus par le serveur (PHP) dans #recap
+        const produits = Array.from(recapEl.querySelectorAll(".produit"));
+        if (produits.length > 0) {
+            cart = produits.map((p) => {
+                const id = (p.getAttribute("data-id") || "").toString() || "";
+                const title = p.querySelector(".titre")?.textContent?.trim() || "";
+                const qtyText = p.querySelector(".qty")?.textContent?.trim() || "1";
+                const qty = parseInt(qtyText, 10) || 1;
+                const prixText = p.querySelector(".prix")?.textContent?.trim() || "0";
+                // extract number from strings like "29.99 €"
+                const price = Number(prixText.replace(/[€\s]/g, "").replace(",", ".")) || 0;
+                const img = p.querySelector("img")?.src || "";
+                return { id, title, price, qty, img };
+            });
+        }
+        else {
+            cart = [];
+        }
     }
     else {
-        // Utiliser chemins d'images absolus depuis la racine publique pour éviter les 404
-        cart = [
-            {
-                id: "rillettes",
-                title: "Lot de rillettes bretonne",
-                price: 29.99,
-                qty: 1,
-                img: "/images/rillettes.png",
-            },
-            {
-                id: "confiture",
-                title: "Confiture artisanale",
-                price: 6.5,
-                qty: 2,
-                img: "/images/jam.png",
-            },
-        ];
+        cart = [];
     }
     function updateQty(id, delta) {
         cart = cart
