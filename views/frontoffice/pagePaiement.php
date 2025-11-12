@@ -1,31 +1,3 @@
-<?php
-require_once "../../controllers/pdo.php";
-
-// ID utilisateur connecté (à remplacer par la gestion de session)
-$idClient = 1; 
-
-$stmt = $pdo->prepare("SELECT idPanier FROM distribill_sae03._panier WHERE idClient = :idClient ORDER BY idPanier DESC LIMIT 1");
-$stmt->execute(['idClient' => $idClient]);
-$panier = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$cart = [];
-
-if ($panier) {
-    $idPanier = $panier['idPanier'];
-
-    $stmt = $pdo->prepare("
-        SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit, i.URL as img
-        FROM distribill_sae03._produitAuPanier pa
-        JOIN distribill_sae03._produit p ON pa.idProduit = p.idProduit
-        LEFT JOIN distribill_sae03._imageDeProduit i ON p.idProduit = i.idProduit
-        WHERE pa.idPanier = :idPanier
-    ");
-    $stmt->execute(['idPanier' => $idPanier]);
-    $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -175,6 +147,7 @@ if ($panier) {
     </main>
 
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
+    <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 </body>
 
