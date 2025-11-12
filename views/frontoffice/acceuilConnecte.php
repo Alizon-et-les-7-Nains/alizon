@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../../public/style.css">
   <title>Alizon - Acceuil</title>
 </head>
-<body class="acceuilConnecte">
+<body class="acceuil">
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
     <section class="banniere">

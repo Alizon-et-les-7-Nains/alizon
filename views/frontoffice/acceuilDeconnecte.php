@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="../public/style/styleTemplate.css">
-  <link rel="stylesheet" href="../public/style/styleAcceuil.css">
+  <link rel="stylesheet" href="../../public/style.css">
   <title>Alizon - Acceuil</title>
 </head>
-<body>
-    <?php include '../views/frontoffice/partials/headerDeconnecte.php'; ?>
+<body class="acceuil">
+    <?php include '../../views/frontoffice/partials/headerDeconnecte.php'; ?>
 
     <section class="banniere">
         <h1>Plus de promotion à venir !</h1>
-            <img src="../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
+            <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
     </section>
 
     <main>
@@ -25,9 +22,9 @@
                 <hr>
             </div>
             <div class="listeArticle">
-                <?php for ($i=0 ; $i < 15 ; $i++) { ?>
+                <?php for ($i=0 ; $i < 0 ; $i++) { ?>
                     <article>
-                        <img src="../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
+                        <img src="../../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
                         <h2>Assortiment de rillettes de thon la compagne bretonne - 300g</h2>
                         <div class="infoProd">
                             <div class="prix">
@@ -35,7 +32,7 @@
                                 <h3>99.72 € / Kg</h3>
                             </div>
                             <div>
-                                <a href=""><img src="../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
                             </div>
                         </div>
                     </article>
@@ -51,9 +48,9 @@
                 <hr>
             </div>
             <div class="listeArticle">
-                <?php for ($i=0 ; $i < 15 ; $i++) { ?>
+                <?php for ($i=0 ; $i < 0 ; $i++) { ?>
                     <article>
-                        <img src="../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
+                        <img src="../../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
                         <h2>Assortiment de rillettes de thon la compagne bretonne - 300g</h2>
                         <div class="infoProd">
                             <div class="prix">
@@ -61,7 +58,7 @@
                                 <h3>99.72 € / Kg</h3>
                             </div>
                             <div>
-                                <a href=""><img src="../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
                             </div>
                         </div>
                     </article>
@@ -79,7 +76,7 @@
             <div class="listeArticle">
                 <?php for ($i=0 ; $i < 0 ; $i++) { ?>
                     <article>
-                        <img src="../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
+                        <img src="../../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
                         <h2>Assortiment de rillettes de thon la compagne bretonne - 300g</h2>
                         <div class="infoProd">
                             <div class="prix">
@@ -87,7 +84,7 @@
                                 <h3>99.72 € / Kg</h3>
                             </div>
                             <div>
-                                <a href=""><img src="../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
                             </div>
                         </div>
                     </article>
@@ -105,7 +102,7 @@
             <div class="listeArticle">
                 <?php for ($i=0 ; $i < 0 ; $i++) { ?>
                     <article>
-                        <img src="../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
+                        <img src="../../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
                         <h2>Assortiment de rillettes de thon la compagne bretonne - 300g</h2>
                         <div class="infoProd">
                             <div class="prix">
@@ -113,7 +110,7 @@
                                 <h3>99.72 € / Kg</h3>
                             </div>
                             <div>
-                                <a href=""><img src="../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
                             </div>
                         </div>
                     </article>
@@ -124,6 +121,6 @@
         </section>
     </main>
 
-    <?php include '../views/frontoffice/partials/footerDeconnecte.php'; ?>
+    <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 </body>
 </html>

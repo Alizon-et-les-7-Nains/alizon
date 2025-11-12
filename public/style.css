@@ -1034,83 +1034,83 @@ main.acceuilBackoffice section.produits article table tr:last-child td {
   z-index: 1000;
 }
 
-.acceuilConnecte .nomCategorie {
+.acceuil .nomCategorie {
   display: flex;
   align-items: center;
   margin: 30px 40px;
 }
-.acceuilConnecte .nomCategorie h2 {
+.acceuil .nomCategorie h2 {
   font-family: "Lora", serif;
   font-size: 40px;
   color: #273469;
   font-weight: 100;
 }
-.acceuilConnecte .nomCategorie hr {
+.acceuil .nomCategorie hr {
   flex-grow: 1; /* la ligne prend tout l’espace libre */
   height: 3px;
   background-color: #273469;
   border: none;
   margin-left: 20px; /* petit espace entre le texte et la ligne */
 }
-.acceuilConnecte .banniere, .acceuilConnecte .banniere div {
+.acceuil .banniere, .acceuil .banniere div {
   background-color: #E4D9FF;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.acceuilConnecte .banniere {
+.acceuil .banniere {
   text-align: center;
   justify-content: center;
 }
-.acceuilConnecte .banniere * {
+.acceuil .banniere * {
   margin: 0px 30px;
 }
-.acceuilConnecte .banniere h1 {
+.acceuil .banniere h1 {
   color: #273469;
   font-family: "Lora", serif;
   font-size: 45px;
   font-weight: bold;
   font-style: italic;
 }
-.acceuilConnecte .banniere img {
+.acceuil .banniere img {
   max-width: 340px;
 }
 @media (max-width: 965px) {
-  .acceuilConnecte .banniere div * {
+  .acceuil .banniere div * {
     margin: 0px 0px;
   }
-  .acceuilConnecte hr {
+  .acceuil hr {
     display: none;
     visibility: hidden;
   }
-  .acceuilConnecte .banniere {
+  .acceuil .banniere {
     align-items: center;
   }
-  .acceuilConnecte .banniere, .acceuilConnecte .banniere div {
+  .acceuil .banniere, .acceuil .banniere div {
     display: block;
   }
-  .acceuilConnecte .banniere img {
+  .acceuil .banniere img {
     max-width: 170px;
   }
-  .acceuilConnecte .banniere .fleche {
+  .acceuil .banniere .fleche {
     display: none;
     visibility: hidden;
   }
-  .acceuilConnecte .banniere h1 {
+  .acceuil .banniere h1 {
     font-size: 32px;
     background-color: #E3F2FE;
     padding: 10px;
   }
-  .acceuilConnecte .banniere div {
+  .acceuil .banniere div {
     background-color: #E4D9FF;
     display: block;
     text-align: center;
   }
-  .acceuilConnecte .nomCategorie h2 {
+  .acceuil .nomCategorie h2 {
     font-size: 30px;
   }
 }
-.acceuilConnecte article {
+.acceuil article {
   border: 2px solid #273469;
   border-radius: 20px;
   margin: 0px 40px;
@@ -1119,31 +1119,31 @@ main.acceuilBackoffice section.produits article table tr:last-child td {
   display: flex;
   flex-direction: column;
 }
-.acceuilConnecte article h2 {
+.acceuil article h2 {
   color: #273469;
   font-size: 16px;
   font-family: "Open sans", serif;
 }
-.acceuilConnecte article .imgProduit {
+.acceuil article .imgProduit {
   max-width: 267px;
 }
-.acceuilConnecte .listeArticle {
+.acceuil .listeArticle {
   width: 100%;
   display: flex;
   overflow-x: auto;
 }
-.acceuilConnecte .listeArticle::-webkit-scrollbar {
+.acceuil .listeArticle::-webkit-scrollbar {
   display: none;
   visibility: hidden;
 }
-.acceuilConnecte .infoProd {
+.acceuil .infoProd {
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
   flex-direction: row;
   align-items: center;
 }
-.acceuilConnecte .prix h2 {
+.acceuil .prix h2 {
   color: #273469;
   font-size: 32px;
   font-family: "Lora", serif;
@@ -1151,7 +1151,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td {
   font-style: italic;
   margin: 0;
 }
-.acceuilConnecte .prix h3 {
+.acceuil .prix h3 {
   color: #000000;
   font-size: 12px;
   font-family: "Lora", serif;
@@ -1159,7 +1159,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td {
   font-style: italic;
   margin: 0;
 }
-.acceuilConnecte .listeArticle h1 {
+.acceuil .listeArticle h1 {
   font-family: "Lora", serif;
   font-weight: bold;
   font-style: italic;
