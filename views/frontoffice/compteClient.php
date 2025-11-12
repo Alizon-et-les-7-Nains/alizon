@@ -256,7 +256,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Définir le type d'input approprié
                     if (i === 9) input.type = "tel";
                     else if (i === 10) input.type = "email";
-                    else if (i === 3) input.type = "date";
                     else input.type = "text";
 
                     switch(i) {
@@ -270,7 +269,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             input.placeholder = "Entrez votre prénom";
                             break;
                         case 3:
-                            input.placeholder = "Entrez votre date de naissance";
+                            input.placeholder = "Entrez votre date de naissance jj/mm/aaaa";
                             break;
                         case 4:
                             input.placeholder = "Entrez votre adresse";
