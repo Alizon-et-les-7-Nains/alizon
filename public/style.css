@@ -1312,6 +1312,8 @@ main.acceuilBackoffice section.commandes article {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 30%));
   gap: 2em;
+  font-family: "open-sans";
+  font-size: 20px;
 }
 main.acceuilBackoffice section.commandes article table {
   padding: 1em;
@@ -1428,7 +1430,8 @@ main.acceuilBackoffice section.avis article table button {
 }
 main.acceuilBackoffice section.produits article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 30%));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  max-width: 1200px;
   gap: 2em;
   font-size: 20px;
 }
