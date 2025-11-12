@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="footerTel">
-      <a href=""><img src="../../../public/images/homeLightBlue.svg" alt="" class="homeLightBlue"></a>
+      <a href="../acceuilConnecte.php"><img src="../../../public/images/homeLightBlue.svg" alt="" class="homeLightBlue"></a>
       <a href=""><img src="../../../public/images/searchLightBlue.svg" alt="" class="searchLightBlue"></a>
       <a href=""><img src="../../../public/images/cartLightBlue.svg" alt="" class="cartLightBlue"></a>
       <a href=""><img src="../../../public/images/burgerLightBlue.svg" alt="" class="burgerLightBlue"></a>

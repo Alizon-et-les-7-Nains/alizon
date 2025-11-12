@@ -24,18 +24,20 @@
             </div>
             <div class="listeArticle">
                 <?php 
-                for ($i=0 ; $i < 0 ; $i++) {      
+
+                $produitNouveaute = ($pdo->query("select * from _produit where dateAjout < now() - interval 1 week"))->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($produitNouveaute as $value) {
                     ?>
                     <article>
                         <img src="../../public/images/defaultImageProduitCard.png" class="imgProduit" alt="Image du produit">
-                        <h2>Assortiment de rillettes de thon la compagne bretonne - 300g</h2>
+                        <h2><?php echo $value['nom'] ?></h2>
                         <div class="infoProd">
                             <div class="prix">
-                                <h2>29.99€</h2>
-                                <h3>99.72 € / Kg</h3>
+                                <h2><?php echo $value['prix'] ?></h2>
                             </div>
                             <div>
-                                <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                <?php $idP = $value['idProduit'] ?>
+                                <a href=""><img src="<?php ($pdo->query("select URL from _imageDeProduit where idProduit = $idP"))->fetchAll(PDO::FETCH_ASSOC); ?>" alt="Bouton ajout panier"></a>
                             </div>
                         </div>
                     </article>
