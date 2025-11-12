@@ -6,6 +6,12 @@
 @use "./frontoffice/produit";
 
 @use "./backoffice/header";
+@use "./frontoffice/inscription";
 @use "./backoffice/footer";
 @use "./backoffice/aside";
+
 @use "./backoffice/structure";
+@use "./frontoffice/stylePaiement";
+@use './backoffice/acceuil';
+@use './frontoffice/styleCompteClient';
+@use './frontoffice/styleAcceuilConnecte';

@@ -9,7 +9,9 @@
             <figcaption>Nouveau Produit</figcaption>
             <img src="/public/images/cartPlusLight.svg">
         </figure>
+        <!--
         <figure></figure>
+        -->
         <figure>
             <img src="/public/images/deconnexionDark.svg">
             <figcaption>Déconnexion</figcaption>
