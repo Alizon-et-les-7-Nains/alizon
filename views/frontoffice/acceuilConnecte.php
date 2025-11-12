@@ -45,7 +45,7 @@
                         </div>
                         <div class="infoProd">
                             <div class="prix">
-                                <h2><?php echo prix($value['prix']); ?> €</h2>
+                                <h2><?php echo formatPrice($value['prix']); ?> €</h2>
                             </div>
                             <div>
                                 <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
@@ -84,7 +84,7 @@
                         </div>
                         <div class="infoProd">
                             <div class="prix">
-                                <h2><?php echo prix($value['prix']); ?> €</h2>
+                                <h2><?php echo formatPrice($value['prix']); ?> €</h2>
                             </div>
                             <div>
                                 <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
@@ -123,7 +123,7 @@
                         </div>
                         <div class="infoProd">
                             <div class="prix">
-                                <h2><?php echo prix($value['prix']); ?> €</h2>
+                                <h2><?php echo formatPrice($value['prix']); ?> €</h2>
                             </div>
                             <div>
                                 <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
