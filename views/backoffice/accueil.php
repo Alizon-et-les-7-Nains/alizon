@@ -255,7 +255,7 @@
                     }
                 }
                 $html .= "<td>" . $atr['nom'] . "</td>
-                <td>" . $prix€ . "€</td>
+                <td>" . $prix . "€</td>
             </tr>
         </table>
         ";
