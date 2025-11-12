@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     nom = '$nom', 
     prenom = '$prenom', 
     email =  '$email', 
-    dateNaissance = '$dateNaissance'
+    dateNaissance = '$dateNaissance',
     noTelephone = '$telephone'
     WHERE idClient = '$id_client';");
 
