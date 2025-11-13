@@ -23,7 +23,7 @@ define("frontoffice/paiement-types", ["require", "exports"], function (require, 
     Object.defineProperty(exports, "__esModule", { value: true });
 });
 // ============================================================================
-// ASIDE (RECAP) - Version avec base de données
+// ASIDE (RECAP) - Version avec API unifiée
 // ============================================================================
 define("frontoffice/paiement-aside", ["require", "exports"], function (require, exports) {
     "use strict";
@@ -35,7 +35,6 @@ define("frontoffice/paiement-aside", ["require", "exports"], function (require, 
             console.error("Container aside non trouvé:", recapSelector);
             throw new Error("Container aside non trouvé");
         }
-        // Debug: afficher les données reçues
         console.log("Données cart reçues dans aside:", cart);
         function normalizeCartItem(item) {
             return {
@@ -46,35 +45,36 @@ define("frontoffice/paiement-aside", ["require", "exports"], function (require, 
                 img: item.img || item.URL || "../../public/images/default.png",
             };
         }
-        const normalizedCart = cart.map(normalizeCartItem);
-        console.log("Cart normalisé:", normalizedCart);
+        let normalizedCart = cart.map(normalizeCartItem);
         async function updateQty(id, delta) {
             try {
-                console.log("Mise à jour quantité:", id, delta);
-                const formData = new FormData();
-                formData.append("action", "updateQty");
-                formData.append("idProduit", id);
-                formData.append("delta", delta.toString());
-                const response = await fetch("", {
-                    method: "POST",
-                    body: formData,
-                });
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP: ${response.status}`);
+                console.log("Mise à jour quantité via API:", id, delta);
+                if (!window.PaymentAPI) {
+                    throw new Error("PaymentAPI non disponible");
                 }
-                const result = await response.json();
-                console.log("Réponse updateQty:", result);
-                if (result.success) {
-                    console.log("Quantité mise à jour - Rechargement");
-                    window.location.reload();
+                const success = await window.PaymentAPI.updateQuantity(id, delta);
+                if (success) {
+                    console.log("Quantité mise à jour - Mise à jour dynamique");
+                    const itemIndex = normalizedCart.findIndex((item) => item.id === id);
+                    if (itemIndex !== -1) {
+                        const newQty = normalizedCart[itemIndex].qty + delta;
+                        if (newQty <= 0) {
+                            normalizedCart.splice(itemIndex, 1);
+                        }
+                        else {
+                            normalizedCart[itemIndex].qty = newQty;
+                        }
+                        render();
+                        onCartUpdate();
+                    }
                 }
                 else {
-                    alert("Erreur: " + (result.error || "Erreur inconnue"));
+                    alert("Erreur lors de la mise à jour de la quantité");
                 }
             }
             catch (error) {
                 console.error("Erreur:", error);
-                alert("Erreur réseau: " + error.message);
+                alert("Erreur: " + error.message);
             }
         }
         async function removeItem(id) {
@@ -82,67 +82,55 @@ define("frontoffice/paiement-aside", ["require", "exports"], function (require, 
                 if (!confirm("Supprimer ce produit du panier ?")) {
                     return;
                 }
-                console.log("Suppression produit:", id);
-                const formData = new FormData();
-                formData.append("action", "removeItem");
-                formData.append("idProduit", id);
-                const response = await fetch("", {
-                    method: "POST",
-                    body: formData,
-                });
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP: ${response.status}`);
+                console.log("Suppression produit via API:", id);
+                if (!window.PaymentAPI) {
+                    throw new Error("PaymentAPI non disponible");
                 }
-                const result = await response.json();
-                console.log("Réponse removeItem:", result);
-                if (result.success) {
-                    console.log("Produit supprimé - Rechargement");
-                    window.location.reload();
+                const success = await window.PaymentAPI.removeItem(id);
+                if (success) {
+                    console.log("Produit supprimé - Mise à jour dynamique");
+                    normalizedCart = normalizedCart.filter((item) => item.id !== id);
+                    render();
+                    onCartUpdate();
                 }
                 else {
-                    alert("Erreur: " + (result.error || "Erreur inconnue"));
+                    alert("Erreur lors de la suppression du produit");
                 }
             }
             catch (error) {
                 console.error("Erreur:", error);
-                alert("Erreur réseau: " + error.message);
+                alert("Erreur: " + error.message);
             }
         }
         function attachListeners() {
-            // Boutons +
             container
                 .querySelectorAll("button.plus")
                 .forEach((btn) => {
                 btn.addEventListener("click", (ev) => {
                     ev.preventDefault();
                     const id = btn.getAttribute("data-id");
-                    if (id) {
+                    if (id)
                         updateQty(id, 1);
-                    }
                 });
             });
-            // Boutons -
             container
                 .querySelectorAll("button.minus")
                 .forEach((btn) => {
                 btn.addEventListener("click", (ev) => {
                     ev.preventDefault();
                     const id = btn.getAttribute("data-id");
-                    if (id) {
+                    if (id)
                         updateQty(id, -1);
-                    }
                 });
             });
-            // Boutons suppression
             container
                 .querySelectorAll("button.delete")
                 .forEach((btn) => {
                 btn.addEventListener("click", (ev) => {
                     ev.preventDefault();
                     const id = btn.getAttribute("data-id");
-                    if (id) {
+                    if (id)
                         removeItem(id);
-                    }
                 });
             });
         }
@@ -178,18 +166,19 @@ define("frontoffice/paiement-aside", ["require", "exports"], function (require, 
             container.innerHTML = html;
             attachListeners();
         }
-        // Initial render
         render();
         return {
             update(newCart) {
                 console.log("Mise à jour aside avec nouveau panier:", newCart);
-                const newNormalizedCart = newCart.map(normalizeCartItem);
-                normalizedCart.splice(0, normalizedCart.length, ...newNormalizedCart);
+                normalizedCart = newCart.map(normalizeCartItem);
                 render();
                 onCartUpdate();
             },
             getElement() {
                 return container;
+            },
+            getCart() {
+                return [...normalizedCart];
             },
         };
     }
@@ -625,7 +614,7 @@ define("frontoffice/paiement-autocomplete", ["require", "exports", "frontoffice/
     }
 });
 // ============================================================================
-// POPUP - Version avec base de données
+// POPUP - Version avec API unifiée
 // ============================================================================
 define("frontoffice/paiement-popup", ["require", "exports"], function (require, exports) {
     "use strict";
@@ -638,20 +627,26 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const adresseInput = document.querySelector("body.pagePaiement .adresse-input");
         const codePostalInput = document.querySelector("body.pagePaiement .code-postal-input");
         const villeInput = document.querySelector("body.pagePaiement .ville-input");
-        // CORRECTION : utiliser la bonne classe
         const numCarteInput = document.querySelector("body.pagePaiement .num-carte");
         const adresse = adresseInput?.value.trim() || "";
         const codePostal = codePostalInput?.value.trim() || "";
         const ville = villeInput?.value.trim() || "";
         const rawNumCarte = numCarteInput?.value.replace(/\s+/g, "") || "";
         const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
-        // CORRECTION : Utiliser les bonnes propriétés des données PHP
-        const preCart = Array.isArray(window.__PAYMENT_DATA__?.cart)
-            ? window.__PAYMENT_DATA__.cart
-            : [];
+        // Utiliser les données dynamiques de l'aside
+        let currentCart = [];
+        if (window.__ASIDE_HANDLE__ &&
+            typeof window.__ASIDE_HANDLE__.getCart === "function") {
+            currentCart = window.__ASIDE_HANDLE__.getCart();
+            console.log("Panier dynamique récupéré:", currentCart);
+        }
+        else if (Array.isArray(window.__PAYMENT_DATA__?.cart)) {
+            currentCart = window.__PAYMENT_DATA__.cart;
+            console.log("Panier initial utilisé:", currentCart);
+        }
         let cartItemsHtml = "";
-        if (Array.isArray(preCart) && preCart.length > 0) {
-            cartItemsHtml = preCart
+        if (Array.isArray(currentCart) && currentCart.length > 0) {
+            cartItemsHtml = currentCart
                 .map((item) => `
       <div class="product">
         <img src="${item.img || "/images/default.png"}" alt="${item.nom}" />
@@ -662,7 +657,7 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                 .join("");
         }
         else {
-            cartItemsHtml = `<p class="empty">Panier vide</p>`;
+            cartItemsHtml = `<p class="empty">Panier vide - Impossible de commander</p>`;
         }
         overlay.innerHTML = `
     <div class="payment-popup" role="dialog" aria-modal="true">
@@ -677,7 +672,9 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         <div class="cart">${cartItemsHtml}</div>
         <div class="actions">
           <button class="undo">Annuler</button>
-          <button class="confirm">Confirmer ma commande</button>
+          <button class="confirm" ${currentCart.length === 0 ? "disabled" : ""}>
+            ${currentCart.length === 0 ? "Panier vide" : "Confirmer ma commande"}
+          </button>
         </div>
       </div>
     </div>
@@ -689,27 +686,26 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const confirmBtn = overlay.querySelector(".confirm");
         closeBtn?.addEventListener("click", () => overlay.remove());
         undoBtn?.addEventListener("click", () => overlay.remove());
-        if (!confirmBtn)
+        if (!confirmBtn || confirmBtn.disabled)
             return;
         confirmBtn.addEventListener("click", async () => {
             confirmBtn.disabled = true;
             const prevText = confirmBtn.textContent || "";
             confirmBtn.textContent = "Traitement en cours...";
             try {
-                console.log("Création commande via AJAX direct...");
-                const response = await fetch("", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                    body: `action=createOrder&adresseLivraison=${encodeURIComponent(adresse)}&villeLivraison=${encodeURIComponent(ville)}&regionLivraison=${encodeURIComponent(codePostal)}&numeroCarte=${encodeURIComponent(rawNumCarte)}`,
-                });
-                if (!response.ok) {
-                    throw new Error(`Erreur réseau (${response.status})`);
+                console.log("Création commande via PaymentAPI...");
+                if (!window.PaymentAPI) {
+                    throw new Error("PaymentAPI non disponible");
                 }
-                const result = await response.json();
+                const orderData = {
+                    adresseLivraison: adresse,
+                    villeLivraison: ville,
+                    regionLivraison: codePostal,
+                    numeroCarte: rawNumCarte,
+                };
+                const result = await window.PaymentAPI.createOrder(orderData);
                 if (result && result.success) {
-                    console.log("Commande créée en BD:", result.idCommande);
+                    console.log("Commande créée:", result.idCommande);
                     const popup = overlay.querySelector(".payment-popup");
                     if (!popup) {
                         overlay.remove();
@@ -725,19 +721,18 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                     const innerClose = popup.querySelector(".close-popup");
                     innerClose?.addEventListener("click", () => {
                         overlay.remove();
-                        // Redirection après commande
                         window.location.href = "/accueil";
                     });
                 }
                 else {
-                    throw new Error(result?.error || "Erreur inconnue");
+                    throw new Error(result?.error || "Erreur lors de la création de la commande");
                 }
             }
             catch (error) {
                 console.error("Erreur création commande:", error);
                 alert("Erreur lors de la création de la commande: " + error.message);
                 confirmBtn.disabled = false;
-                confirmBtn.textContent = prevText || "Confirmer ma commande";
+                confirmBtn.textContent = prevText;
             }
         });
     }

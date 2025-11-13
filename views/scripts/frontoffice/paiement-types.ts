@@ -7,7 +7,7 @@ export interface CartItem {
   nom: string;
   prix: number;
   qty: number;
-  img?: string;
+  img: string;
 }
 
 export interface Inputs {
@@ -36,7 +36,15 @@ export interface Maps {
   allCities: Set<string>;
 }
 
+export interface OrderData {
+  adresseLivraison: string;
+  villeLivraison: string;
+  regionLivraison: string;
+  numeroCarte: string;
+}
+
 export interface AsideHandle {
-  update: (cart: CartItem[]) => void;
-  getElement: () => HTMLElement | null;
+  update(newCart: CartItem[]): void;
+  getElement(): HTMLElement;
+  getCart(): CartItem[];
 }

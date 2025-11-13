@@ -1,3 +1,7 @@
+// ============================================================================
+// FICHIER PRINCIPAL - Initialisation et coordination
+// ============================================================================
+
 // API de paiement - Communication avec le backend
 class PaymentAPI {
   static async updateQuantity(idProduit, delta) {
@@ -7,8 +11,14 @@ class PaymentAPI {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `action=updateQty&idProduit=${idProduit}&delta=${delta}`,
+        body: `action=updateQty&idProduit=${encodeURIComponent(
+          idProduit
+        )}&delta=${delta}`,
       });
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
 
       const result = await response.json();
       return result.success;
@@ -25,8 +35,12 @@ class PaymentAPI {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `action=removeItem&idProduit=${idProduit}`,
+        body: `action=removeItem&idProduit=${encodeURIComponent(idProduit)}`,
       });
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
 
       const result = await response.json();
       return result.success;
@@ -46,6 +60,10 @@ class PaymentAPI {
         body: `action=createOrder&${new URLSearchParams(orderData).toString()}`,
       });
 
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
+
       const result = await response.json();
       return result;
     } catch (error) {
@@ -55,22 +73,11 @@ class PaymentAPI {
   }
 }
 
-// Exposer l'API globalement
-window.PaymentAPI = PaymentAPI;
-
-// Fonction pour rafraîchir le panier sans recharger la page
+// Fonction pour rafraîchir le panier
 async function refreshCart() {
   try {
-    // Option 1: Recharger les données via AJAX
-    const response = await fetch("?action=getCart");
-    const newCart = await response.json();
-
-    // Mettre à jour l'interface
-    if (window.paiementAside && window.paiementAside.update) {
-      window.paiementAside.update(newCart);
-    }
-
-    // Option 2: Rechargement simple (plus facile)
+    // Pour l'instant, on utilise le rechargement simple
+    // Vous pourriez implémenter une version AJAX plus tard
     window.location.reload();
   } catch (error) {
     console.error("Erreur lors du rafraîchissement:", error);
@@ -80,9 +87,48 @@ async function refreshCart() {
 
 // Initialisation au chargement de la page
 document.addEventListener("DOMContentLoaded", function () {
-  // Stocker la référence à l'aside pour les mises à jour
-  if (window.initAside && document.getElementById("recap")) {
-    const cartData = window.__PAYMENT_DATA__?.cart || [];
-    window.paiementAside = window.initAside("#recap", cartData, refreshCart);
+  console.log("Initialisation de la page de paiement...");
+
+  // Exposer l'API globalement
+  window.PaymentAPI = PaymentAPI;
+
+  // Vérifier la disponibilité des données
+  if (!window.__PAYMENT_DATA__) {
+    console.error("Données de paiement non disponibles");
+    return;
   }
+
+  // Initialiser l'aside si disponible
+  if (typeof initAside !== "undefined" && document.getElementById("recap")) {
+    const cartData = window.__PAYMENT_DATA__.cart || [];
+    const asideHandle = initAside("#recap", cartData, refreshCart);
+
+    // Stocker les références globales
+    window.__ASIDE_HANDLE__ = asideHandle;
+    window.paiementAside = asideHandle;
+
+    console.log("Aside initialisé avec", cartData.length, "produits");
+  }
+
+  // Gestion des boutons payer
+  document.querySelectorAll(".payer").forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Vérifier que l'API est disponible
+      if (typeof showPopup === "undefined") {
+        alert("Fonctionnalité de paiement non disponible");
+        return;
+      }
+
+      showPopup("Confirmation de commande");
+    });
+  });
+
+  console.log("Page de paiement initialisée avec succès");
+});
+
+// Gestion des erreurs globales
+window.addEventListener("error", function (e) {
+  console.error("Erreur globale:", e.error);
 });

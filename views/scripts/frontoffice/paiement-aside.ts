@@ -1,8 +1,14 @@
 // ============================================================================
-// ASIDE (RECAP) - Version avec base de données
+// ASIDE (RECAP) - Version avec API unifiée
 // ============================================================================
 
 import { CartItem, AsideHandle } from "./paiement-types";
+
+declare global {
+  interface Window {
+    PaymentAPI?: any;
+  }
+}
 
 export function initAside(
   recapSelector: string,
@@ -16,7 +22,6 @@ export function initAside(
     throw new Error("Container aside non trouvé");
   }
 
-  // Debug: afficher les données reçues
   console.log("Données cart reçues dans aside:", cart);
 
   function normalizeCartItem(item: any): CartItem {
@@ -29,39 +34,40 @@ export function initAside(
     };
   }
 
-  const normalizedCart: CartItem[] = cart.map(normalizeCartItem);
-  console.log("Cart normalisé:", normalizedCart);
+  let normalizedCart: CartItem[] = cart.map(normalizeCartItem);
 
   async function updateQty(id: string, delta: number) {
     try {
-      console.log("Mise à jour quantité:", id, delta);
+      console.log("Mise à jour quantité via API:", id, delta);
 
-      const formData = new FormData();
-      formData.append("action", "updateQty");
-      formData.append("idProduit", id);
-      formData.append("delta", delta.toString());
-
-      const response = await fetch("", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erreur HTTP: ${response.status}`);
+      if (!window.PaymentAPI) {
+        throw new Error("PaymentAPI non disponible");
       }
 
-      const result = await response.json();
-      console.log("Réponse updateQty:", result);
+      const success = await window.PaymentAPI.updateQuantity(id, delta);
 
-      if (result.success) {
-        console.log("Quantité mise à jour - Rechargement");
-        window.location.reload();
+      if (success) {
+        console.log("Quantité mise à jour - Mise à jour dynamique");
+
+        const itemIndex = normalizedCart.findIndex((item) => item.id === id);
+        if (itemIndex !== -1) {
+          const newQty = normalizedCart[itemIndex].qty + delta;
+
+          if (newQty <= 0) {
+            normalizedCart.splice(itemIndex, 1);
+          } else {
+            normalizedCart[itemIndex].qty = newQty;
+          }
+
+          render();
+          onCartUpdate();
+        }
       } else {
-        alert("Erreur: " + (result.error || "Erreur inconnue"));
+        alert("Erreur lors de la mise à jour de la quantité");
       }
     } catch (error) {
       console.error("Erreur:", error);
-      alert("Erreur réseau: " + (error as Error).message);
+      alert("Erreur: " + (error as Error).message);
     }
   }
 
@@ -71,73 +77,56 @@ export function initAside(
         return;
       }
 
-      console.log("Suppression produit:", id);
+      console.log("Suppression produit via API:", id);
 
-      const formData = new FormData();
-      formData.append("action", "removeItem");
-      formData.append("idProduit", id);
-
-      const response = await fetch("", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erreur HTTP: ${response.status}`);
+      if (!window.PaymentAPI) {
+        throw new Error("PaymentAPI non disponible");
       }
 
-      const result = await response.json();
-      console.log("Réponse removeItem:", result);
+      const success = await window.PaymentAPI.removeItem(id);
 
-      if (result.success) {
-        console.log("Produit supprimé - Rechargement");
-        window.location.reload();
+      if (success) {
+        console.log("Produit supprimé - Mise à jour dynamique");
+        normalizedCart = normalizedCart.filter((item) => item.id !== id);
+        render();
+        onCartUpdate();
       } else {
-        alert("Erreur: " + (result.error || "Erreur inconnue"));
+        alert("Erreur lors de la suppression du produit");
       }
     } catch (error) {
       console.error("Erreur:", error);
-      alert("Erreur réseau: " + (error as Error).message);
+      alert("Erreur: " + (error as Error).message);
     }
   }
 
   function attachListeners() {
-    // Boutons +
     container
       .querySelectorAll<HTMLButtonElement>("button.plus")
       .forEach((btn) => {
         btn.addEventListener("click", (ev) => {
           ev.preventDefault();
           const id = btn.getAttribute("data-id");
-          if (id) {
-            updateQty(id, 1);
-          }
+          if (id) updateQty(id, 1);
         });
       });
 
-    // Boutons -
     container
       .querySelectorAll<HTMLButtonElement>("button.minus")
       .forEach((btn) => {
         btn.addEventListener("click", (ev) => {
           ev.preventDefault();
           const id = btn.getAttribute("data-id");
-          if (id) {
-            updateQty(id, -1);
-          }
+          if (id) updateQty(id, -1);
         });
       });
 
-    // Boutons suppression
     container
       .querySelectorAll<HTMLButtonElement>("button.delete")
       .forEach((btn) => {
         btn.addEventListener("click", (ev) => {
           ev.preventDefault();
           const id = btn.getAttribute("data-id");
-          if (id) {
-            removeItem(id);
-          }
+          if (id) removeItem(id);
         });
       });
   }
@@ -178,19 +167,20 @@ export function initAside(
     attachListeners();
   }
 
-  // Initial render
   render();
 
   return {
     update(newCart: CartItem[]) {
       console.log("Mise à jour aside avec nouveau panier:", newCart);
-      const newNormalizedCart = newCart.map(normalizeCartItem);
-      normalizedCart.splice(0, normalizedCart.length, ...newNormalizedCart);
+      normalizedCart = newCart.map(normalizeCartItem);
       render();
       onCartUpdate();
     },
     getElement() {
       return container;
+    },
+    getCart() {
+      return [...normalizedCart];
     },
   };
 }
