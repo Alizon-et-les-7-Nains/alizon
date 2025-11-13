@@ -37,6 +37,7 @@ body {
   padding: 20px 0px;
   position: sticky;
   top: 0;
+  z-index: 1000;
 }
 .headerFront a, .headerFront p {
   text-decoration: none;
@@ -1282,7 +1283,7 @@ main.acceuilBackoffice section ul {
 }
 main.acceuilBackoffice section.stock article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+  grid-template-columns: repeat(auto-fit, 33%);
   width: 100%;
   gap: 2em;
 }
@@ -1311,7 +1312,7 @@ main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(
 }
 main.acceuilBackoffice section.commandes article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+  grid-template-columns: repeat(auto-fit, 33%);
   width: 100%;
   gap: 2em;
   font-family: "open-sans";
@@ -1432,7 +1433,7 @@ main.acceuilBackoffice section.avis article table button {
 }
 main.acceuilBackoffice section.produits article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
   max-width: 100%;
   gap: 2em;
   font-size: 20px;
@@ -1568,7 +1569,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .acceuil .nomCategorie {
   display: flex;
   align-items: center;
-  margin: 30px 40px;
+  margin: 15px 40px;
 }
 .acceuil .nomCategorie h2 {
   font-family: "Lora", serif;
@@ -1651,6 +1652,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 5px;
 }
 .acceuil article:hover {
   transform: translateY(-5px);
