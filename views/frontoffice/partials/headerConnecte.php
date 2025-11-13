@@ -13,7 +13,7 @@
       <div class="logoNom">
 
         <img src="../../../public/images/logoAlizonHeader.png" alt="Logo Alizon">
-        <h1><a href="../public/acceuil.php"><b>Alizon</b></a></h1>
+        <h1><a href="../public/acceuilConnecte.php"><b>Alizon</b></a></h1>
 
       </div>
       <div class="searchBar">
