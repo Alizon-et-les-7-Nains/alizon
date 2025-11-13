@@ -171,6 +171,12 @@ main.acceuilBackoffice {
                         }
                     }
                 }
+                tr:last-child {
+                    img {
+                        height: 100px;
+                        margin-right: 1em;
+                    }
+                }
             }
         }
         
