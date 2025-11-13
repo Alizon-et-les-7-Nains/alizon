@@ -87,7 +87,6 @@ if (document.body.classList.contains("pagePaiement")) {
   });
 
   // aside is rendered server-side (PHP forms). No client-side init required.
-
   payerButtons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
