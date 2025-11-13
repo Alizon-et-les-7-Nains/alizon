@@ -79,7 +79,7 @@ require_once '../../controllers/date.php';
             <tr>
                 <td>
                     Prix Unitaire : <strong>" . formatPrice($commande['prix']) . "</strong><br>
-                    Prix Unitaire : <strong>" . formatPrice($commande['prix'] * $commande['quantiteProduit']) . "</strong><br>
+                    Prix Total : <strong>" . formatPrice($commande['prix'] * $commande['quantiteProduit']) . "</strong><br>
                     Statut : <strong>" . $commande['etatLivraison'] . "</strong>
                 </td>
             </tr>

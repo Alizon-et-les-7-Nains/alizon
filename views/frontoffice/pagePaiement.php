@@ -12,7 +12,7 @@ $cart = [];
 if ($panier) {
     $idPanier = $panier['idPanier'];
 
-    // Méthode avec query() seulement
+    $idPanier = intval($idPanier); // protection basique contre l'injection
     $stmt = $pdo->query("
         SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
         FROM _produitAuPanier pa
@@ -20,35 +20,39 @@ if ($panier) {
         LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
         WHERE pa.idPanier = $idPanier
     ");
-    $cart = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+
+    $nom = $cart['nom'];
+    $imgProd = $cart['img'];
+    $prix = $cart['prix'];
+    $qty = $cart['qty'];
 }
 // ============================================================================
 // FONCTIONS POUR GÉRER LES ACTIONS AJAX
 // ============================================================================
 
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
-    // Récupérer la quantité actuelle
+    $idProduit = intval($idProduit);
+    $idClient = intval($idClient);
+
     $sql = "SELECT quantiteProduit FROM _produitAuPanier 
-            WHERE idProduit = ? AND idPanier IN (
-                SELECT idPanier FROM _panier WHERE idClient = ?
+            WHERE idProduit = $idProduit AND idPanier IN (
+                SELECT idPanier FROM _panier WHERE idClient = $idClient
             )";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$idProduit, $idClient]);
-    $current = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->query($sql);
+    $current = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
     if ($current) {
-        $newQty = max(0, $current['quantiteProduit'] + $delta);
+        $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
         
         if ($newQty > 0) {
-            // Mettre à jour la quantité
-            $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
-                    WHERE idProduit = ? AND idPanier IN (
-                        SELECT idPanier FROM _panier WHERE idClient = ?
+            $sql = "UPDATE _produitAuPanier SET quantiteProduit = $newQty 
+                    WHERE idProduit = $idProduit AND idPanier IN (
+                        SELECT idPanier FROM _panier WHERE idClient = $idClient
                     )";
-            $stmt = $pdo->prepare($sql);
-            $success = $stmt->execute([$newQty, $idProduit, $idClient]);
+            $res = $pdo->query($sql);
+            $success = $res !== false;
         } else {
-            // Supprimer le produit si quantité = 0
             $success = removeFromCartInDatabase($pdo, $idClient, $idProduit);
         }
         
@@ -58,79 +62,84 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 }
 
 function removeFromCartInDatabase($pdo, $idClient, $idProduit) {
+    $idProduit = intval($idProduit);
+    $idClient = intval($idClient);
+
     $sql = "DELETE FROM _produitAuPanier 
-            WHERE idProduit = ? AND idPanier IN (
-                SELECT idPanier FROM _panier WHERE idClient = ?
+            WHERE idProduit = $idProduit AND idPanier IN (
+                SELECT idPanier FROM _panier WHERE idClient = $idClient
             )";
-    $stmt = $pdo->prepare($sql);
-    return $stmt->execute([$idProduit, $idClient]);
+    $res = $pdo->query($sql);
+    return $res !== false;
 }
 
 function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte) {
     try {
         $pdo->beginTransaction();
 
-        // Récupérer le panier actuel
-        $sql = "SELECT * FROM _panier WHERE idClient = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$idClient]);
-        $panier = $stmt->fetch(PDO::FETCH_ASSOC);
+        $idClient = intval($idClient);
+        $sql = "SELECT * FROM _panier WHERE idClient = $idClient";
+        $stmt = $pdo->query($sql);
+        $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
         
         if (!$panier) {
             throw new Exception("Panier non trouvé");
         }
 
+        $idPanier = intval($panier['idPanier']);
+
         // Calculer les totaux
         $sqlTotals = "SELECT SUM(p.prix * pap.quantiteProduit) as sousTotal, SUM(pap.quantiteProduit) as nbArticles 
                      FROM _produitAuPanier pap
                      JOIN _produit p ON pap.idProduit = p.idProduit
-                     WHERE pap.idPanier = ?";
-        $stmtTotals = $pdo->prepare($sqlTotals);
-        $stmtTotals->execute([$panier['idPanier']]);
-        $totals = $stmtTotals->fetch(PDO::FETCH_ASSOC);
-        
+                     WHERE pap.idPanier = $idPanier";
+        $stmtTotals = $pdo->query($sqlTotals);
+        $totals = $stmtTotals ? $stmtTotals->fetch(PDO::FETCH_ASSOC) : [];
+
         $sousTotal = $totals['sousTotal'] ?? 0;
         $nbArticles = $totals['nbArticles'] ?? 0;
 
-        // Créer la commande
+        // Créer la commande (utilisation de quote() pour les champs texte)
+        $montantTTC = floatval($sousTotal) * 1.20;
+        $montantHT = floatval($sousTotal);
+        $adresseQ = $pdo->quote($adresseLivraison);
+        $villeQ = $pdo->quote($villeLivraison);
+        $regionQ = $pdo->quote($regionLivraison);
+        $carteQ = $pdo->quote($numeroCarte);
+
         $sql = "
             INSERT INTO _commande 
             (dateCommande, etatLivraison, montantCommandeTTC, montantCommandeHt, 
              quantiteCommande, adresseLivr, villeLivr, regionLivr, numeroCarte, idPanier)
-            VALUES (NOW(), 'En attente', ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (NOW(), 'En attente', $montantTTC, $montantHT, $nbArticles, $adresseQ, $villeQ, $regionQ, $carteQ, $idPanier)
         ";
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            $sousTotal * 1.20, // TTC (20% TVA)
-            $sousTotal, // HT
-            $nbArticles,
-            $adresseLivraison,
-            $villeLivraison,
-            $regionLivraison,
-            $numeroCarte,
-            $panier['idPanier']
-        ]);
+        $res = $pdo->query($sql);
+        if ($res === false) {
+            throw new Exception("Impossible de créer la commande");
+        }
 
         $idCommande = $pdo->lastInsertId();
 
         // Copier les produits du panier vers la table contient
         $sql = "
             INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
-            SELECT pap.idProduit, ?, p.prix, COALESCE(t.pourcentageTva, 20.0), pap.quantiteProduit
+            SELECT pap.idProduit, $idCommande, p.prix, COALESCE(t.pourcentageTva, 20.0), pap.quantiteProduit
             FROM _produitAuPanier pap
             JOIN _produit p ON pap.idProduit = p.idProduit
             LEFT JOIN _tva t ON p.typeTva = t.typeTva
-            WHERE pap.idPanier = ?
+            WHERE pap.idPanier = $idPanier
         ";
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$idCommande, $panier['idPanier']]);
+        $res = $pdo->query($sql);
+        if ($res === false) {
+            throw new Exception("Impossible de copier les produits dans la commande");
+        }
 
         // Vider le panier après commande
-        $sql = "DELETE FROM _produitAuPanier WHERE idPanier = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$panier['idPanier']]);
+        $sql = "DELETE FROM _produitAuPanier WHERE idPanier = $idPanier";
+        $res = $pdo->query($sql);
+        if ($res === false) {
+            throw new Exception("Impossible de vider le panier");
+        }
 
         $pdo->commit();
         return $idCommande;
@@ -323,18 +332,22 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 <?php if (empty($cart)): ?>
                 <div class="empty-cart">Panier vide</div>
                 <?php else: ?>
-                <?php foreach ($cart as $item): ?>
+                <?php foreach ($cart as $item): 
+                    $nom = $item['nom'] ?? '';
+                    $imgProd = $item['img'] ?? '../../public/images/default.png';
+                    $prix = $item['prix'] ?? 0;
+                    $qty = $item['qty'] ?? 0;
+                ?>
                 <div class="produit" data-id="<?= htmlspecialchars($item['idProduit']) ?>">
-                    <img src="<?= htmlspecialchars($item['img'] ?? '../../public/images/default.png') ?>"
-                        alt="<?= htmlspecialchars($item['nom']) ?>">
+                    <img src="<?= htmlspecialchars($imgProd) ?>" alt="<?= htmlspecialchars($nom) ?>">
                     <div class="infos">
-                        <p class="titre"><?= htmlspecialchars($item['nom']) ?></p>
-                        <p class="prix"><?= number_format($item['prix'] * $item['qty'], 2, ',', '') ?>€</p>
+                        <p class="titre"><?= htmlspecialchars($nom) ?></p>
+                        <p class="prix"><?= number_format($prix * $qty, 2, ',', '') ?>€</p>
                         <div class="gestQte">
                             <div class="qte">
                                 <button class="minus" data-id="<?= htmlspecialchars($item['idProduit']) ?>">-</button>
                                 <span class="qty"
-                                    data-id="<?= htmlspecialchars($item['idProduit']) ?>"><?= intval($item['qty']) ?></span>
+                                    data-id="<?= htmlspecialchars($item['idProduit']) ?>"><?= intval($qty) ?></span>
                                 <button class="plus" data-id="<?= htmlspecialchars($item['idProduit']) ?>">+</button>
                             </div>
                             <button class="delete" data-id="<?= htmlspecialchars($item['idProduit']) ?>">
