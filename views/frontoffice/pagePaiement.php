@@ -14,10 +14,10 @@ if ($panier) {
     $idPanier = intval($panier['idPanier']); // protection basique contre l'injection
 
     // Requête (utilisation de query() avec idPanier casté en int)
-    $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img\
-        FROM _produitAuPanier pa\
-        JOIN _produit p ON pa.idProduit = p.idProduit\
-        LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit\
+    $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+        FROM _produitAuPanier pa
+        JOIN _produit p ON pa.idProduit = p.idProduit
+        LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
         WHERE pa.idPanier = " . intval($idPanier);
     $stmt = $pdo->query($sql);
     $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
