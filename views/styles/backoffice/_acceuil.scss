@@ -55,7 +55,7 @@ main.acceuilBackoffice {
         
         &.stock article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
             width: 100%;
             gap: 2em;
             
@@ -91,7 +91,7 @@ main.acceuilBackoffice {
 
         &.commandes article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
             width: 100%;
             gap: 2em;
             font-family: 'open-sans';
@@ -118,7 +118,7 @@ main.acceuilBackoffice {
 
                 tr:first-child th {
                     text-align: left;
-                    line-height: 0.25em;
+                    line-height: 0.5em;
                 }
                 tr:nth-child(2) td {
                     vertical-align: top;
@@ -245,7 +245,7 @@ main.acceuilBackoffice {
 
         &.produits article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
             max-width: 100%;
             gap: 2em;
             font-size: 20px;
