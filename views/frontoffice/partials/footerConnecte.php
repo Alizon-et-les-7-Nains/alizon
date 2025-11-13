@@ -10,8 +10,8 @@
   <footer class="footerFront">
     <div class="footerPC">
       <div>
-        <a href="">Conditions générales de vente</a>
-        <a href="">Mentions légales</a>
+        <a href="../legalesConnecte.php">Conditions générales de vente</a>
+        <a href="../legalesConnecte.php">Mentions légales</a>
         <p>© 2025 Alizon Tous droits réservés.</p>
       </div>
       <div>

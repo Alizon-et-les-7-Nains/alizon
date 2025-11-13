@@ -5,7 +5,7 @@
     .nomCategorie {
         display: flex;
         align-items: center;
-        margin: 30px 40px;
+        margin: 15px 40px;
     }
 
     .nomCategorie h2 {
@@ -97,6 +97,7 @@
         flex-direction: column;
         justify-content: space-between;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        margin-top: 5px;
     }
 
     article:hover {

@@ -41,9 +41,9 @@
                         <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                         <div class="notation">
                             <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
-                                <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                                <img s
+                                <span><?php echo number_format($value['note'], 1); ?></span>rc="../../public/images/etoile.svg" alt="Note" class="etoile">
                             <?php } ?>
-                            <span><?php echo number_format($value['note'], 1); ?></span>
                         </div>
                         <div class="infoProd">
                             <div class="prix">
@@ -65,11 +65,11 @@
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE typeProd = :typeProd");
-                $stmt->execute([':typeProd' => 'alimentaire']);
-                $produitCharcuterie = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $stmt = $pdo->prepare("select * from _produit where typeProd = charcuterie");
+                $stmt->execute();
+                $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
-                foreach ($produitCharcuterie as $value) {
+                foreach ($produitNouveaute as $value) {
                     $idProduit = $value['idProduit'];
                     
                     $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
@@ -79,10 +79,12 @@
                     ?>
                     <article onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
                         <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
-                        <h2><?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                         <div class="notation">
-                            <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                            <span><?php echo number_format($value['note'], 1); ?></span>
+                            <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                <img s
+                                <span><?php echo number_format($value['note'], 1); ?></span>rc="../../public/images/etoile.svg" alt="Note" class="etoile">
+                            <?php } ?>
                         </div>
                         <div class="infoProd">
                             <div class="prix">
@@ -104,11 +106,11 @@
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE typeProd = :typeProd");
-                $stmt->execute([':typeProd' => 'boisson']);
-                $produitAlcool = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $stmt = $pdo->prepare("select * from _produit where typeProd = alcools");
+                $stmt->execute();
+                $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
-                foreach ($produitAlcool as $value) {
+                foreach ($produitNouveaute as $value) {
                     $idProduit = $value['idProduit'];
                     
                     $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
@@ -118,10 +120,12 @@
                     ?>
                     <article onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
                         <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
-                        <h2><?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                         <div class="notation">
-                            <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                            <span><?php echo number_format($value['note'], 1); ?></span>
+                            <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                <img s
+                                <span><?php echo number_format($value['note'], 1); ?></span>rc="../../public/images/etoile.svg" alt="Note" class="etoile">
+                            <?php } ?>
                         </div>
                         <div class="infoProd">
                             <div class="prix">
