@@ -14,10 +14,11 @@ function popUpModifierMdp(){
                 <h1>Modification de votre mot de passe</h1>
                 <section>
                     <div class="formulaireMdp">
-                        <form action="">
-                            <input type="password" placeholder="Ancien mot de passe">
-                            <input type="password" placeholder="Nouveau mot de passe">
-                            <input type="password" placeholder="Confirmer le nouveau mot de passe">
+                        <form id="formMdp" method="POST" action="../../controllers/modifierMdp.php">
+                            <input type="password" name="ancienMdp" placeholder="Ancien mot de passe">
+                            <input type="password" name="nouveauMdp" placeholder="Nouveau mot de passe">
+                            <input type="password" name="confirmationMdp" placeholder="Confirmer le nouveau mot de passe">
+                            
                         
                             <article>
                                 <div class="croix">
@@ -51,7 +52,7 @@ function popUpModifierMdp(){
                                 <p>Au moins un charactères spéciale</p>
                             </article>
                         </div>
-                            <button type="button" onclick="fermerFenetre()">Valider</button>
+                            <button type="submit">Valider</button>
                         </form>
                     </section>
                 </main>`;
@@ -71,8 +72,12 @@ function popUpModifierMdp(){
 
 
     function verifierMdp() {
+        
         const ancienMdpChiffree = vignere(ancienMdp.value, cle, 1);
-        if (ancienMdpChiffree === mdpChiffree && nouveauMdp.value === confirmationMdp.value) {
+        const nouveauMdpChiffree = vignere(nouveauMdp.value, cle, 1);
+        const confirmationMdpChiffree = vignere(confirmationMdp.value, cle, 1);
+
+        if (ancienMdpChiffree === mdpChiffree && nouveauMdpChiffree.value === confirmationMdpChiffree.value) {
             valider.disabled = false;
             valider.style.cursor = "pointer";
         } else {
