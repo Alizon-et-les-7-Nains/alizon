@@ -37,6 +37,7 @@ body {
   padding: 20px 0px;
   position: sticky;
   top: 0;
+  z-index: 1000;
 }
 .headerFront a, .headerFront p {
   text-decoration: none;
@@ -1282,7 +1283,8 @@ main.acceuilBackoffice section ul {
 }
 main.acceuilBackoffice section.stock article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 30%));
+  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+  width: 100%;
   gap: 2em;
 }
 main.acceuilBackoffice section.stock article table {
@@ -1310,8 +1312,11 @@ main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(
 }
 main.acceuilBackoffice section.commandes article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 30%));
+  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+  width: 100%;
   gap: 2em;
+  font-family: "open-sans";
+  font-size: 20px;
 }
 main.acceuilBackoffice section.commandes article table {
   padding: 1em;
@@ -1428,7 +1433,8 @@ main.acceuilBackoffice section.avis article table button {
 }
 main.acceuilBackoffice section.produits article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 30%));
+  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  max-width: 100%;
   gap: 2em;
   font-size: 20px;
 }
@@ -1563,7 +1569,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .acceuil .nomCategorie {
   display: flex;
   align-items: center;
-  margin: 30px 40px;
+  margin: 15px 40px;
 }
 .acceuil .nomCategorie h2 {
   font-family: "Lora", serif;
@@ -1572,11 +1578,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: 100;
 }
 .acceuil .nomCategorie hr {
-  flex-grow: 1; /* la ligne prend tout l’espace libre */
+  flex-grow: 1;
   height: 3px;
   background-color: #273469;
   border: none;
-  margin-left: 20px; /* petit espace entre le texte et la ligne */
+  margin-left: 20px;
 }
 .acceuil .banniere, .acceuil .banniere div {
   background-color: #E4D9FF;
@@ -1644,16 +1650,40 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   min-width: 276px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 5px;
+}
+.acceuil article:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(39, 52, 105, 0.3);
 }
 .acceuil article h2 {
   color: #273469;
   font-size: 20px;
   font-family: "Open-sans", serif;
+  font-weight: lighter;
 }
 .acceuil article .imgProduit {
   max-width: 267px;
   max-height: 168px;
   object-fit: contain;
+}
+.acceuil .notation {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0;
+}
+.acceuil .notation .etoile {
+  width: 20px;
+  height: 20px;
+}
+.acceuil .notation span {
+  color: #273469;
+  font-family: "Open-sans", serif;
+  font-size: 16px;
+  font-weight: 600;
 }
 .acceuil .listeArticle {
   width: 100%;
@@ -1670,13 +1700,14 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-wrap: nowrap;
   flex-direction: row;
   align-items: center;
+  margin-top: auto;
 }
 .acceuil .prix h2 {
   color: #273469;
   font-size: 32px;
   font-family: "Lora", serif;
   font-weight: bold;
-  font-style: italic;
+  font-style: normal;
   margin: 0;
 }
 .acceuil .prix h3 {
@@ -1692,6 +1723,33 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: bold;
   font-style: italic;
   margin-left: 40px;
+}
+.acceuil article:hover {
+  cursor: pointer;
+}
+.acceuil .nomProduit {
+  font-weight: normal;
+  margin-bottom: 0px;
+  color: #273469;
+  font-weight: 500;
+  margin-bottom: 0px;
+  margin-top: 10px;
+}
+.acceuil .notation {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+.acceuil .notation span {
+  font-family: "Lora", serif;
+  font-weight: bold;
+  color: #273469;
+  font-size: 16px;
+}
+.acceuil .notation img {
+  height: 32px;
 }
 
 /*# sourceMappingURL=style.css.map */
