@@ -48,5 +48,6 @@
         -->
     </ul>
 
-    <script type="module" src="/public/script.js"></script>
+    <script src="/public/amd-shim.js"></script>
+    <script src="/public/script.js"></script>
 </aside>

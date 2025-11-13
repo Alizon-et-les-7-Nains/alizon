@@ -2,3 +2,5 @@
 /package*.json
 /.env
 *.*.map
+/.sass-cache
+/images/
