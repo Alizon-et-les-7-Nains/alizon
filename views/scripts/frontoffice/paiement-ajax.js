@@ -117,13 +117,6 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".payer").forEach((btn) => {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
-
-      // Vérifier que l'API est disponible
-      if (typeof showPopup === "undefined") {
-        alert("Fonctionnalité de paiement non disponible");
-        return;
-      }
-
       showPopup("Confirmation de commande");
     });
   });
