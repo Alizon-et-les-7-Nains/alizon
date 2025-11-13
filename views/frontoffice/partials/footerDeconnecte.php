@@ -22,7 +22,7 @@
       <a href="../acceuilDeconnecte.php"><img src="../../../public/images/homeLightBlue.svg" alt="" class="homeLightBlue"></a>
       <a href=""><img src="../../../public/images/searchLightBlue.svg" alt="" class="searchLightBlue"></a>
       <a href=""><img src="../../../public/images/cartLightBlue.svg" alt="" class="cartLightBlue"></a>
-      <a href="../inscription.php"><img src="../../../public/images/utilLightBlue.svg" alt=""></a>
+      <a href="../inscription.php" style="margin-right: 0px;"><img src="../../../public/images/utilLightBlue.svg" alt=""></a>
     </div>
   </footer>
 </body>

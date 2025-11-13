@@ -1658,7 +1658,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: #273469;
   font-size: 20px;
   font-family: "Open-sans", serif;
-  margin-top: 10px;
+  font-weight: lighter;
 }
 .acceuil article .imgProduit {
   max-width: 267px;
@@ -1733,20 +1733,19 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .acceuil .notation {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   margin-top: 10px;
 }
 .acceuil .notation span {
   font-family: "Lora", serif;
   font-weight: bold;
   color: #273469;
-  font-size: 13px;
+  font-size: 16px;
 }
 .acceuil .notation img {
-  margin-right: 10px;
-  height: 16px;
+  height: 32px;
 }
 
 /*# sourceMappingURL=style.css.map */

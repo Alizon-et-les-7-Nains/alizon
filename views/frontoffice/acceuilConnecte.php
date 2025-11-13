@@ -24,7 +24,7 @@
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE dateAjout >= NOW() - INTERVAL 1 WEEK");
+                $stmt = $pdo->prepare("select * from _produit where dateAjout < now() - interval 1 week");
                 $stmt->execute();
                 $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
@@ -40,7 +40,9 @@
                         <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
                         <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                         <div class="notation">
-                            <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                            <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                            <?php } ?>
                             <span><?php echo number_format($value['note'], 1); ?></span>
                         </div>
                         <div class="infoProd">
