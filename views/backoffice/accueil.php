@@ -127,6 +127,7 @@ require_once '../../controllers/date.php';
                 <td></td>
                 <td colspan=3>";
                     foreach ($imagesAvis as $imgage) {
+                        print_r($image['URL']);
                         $html .= "<img src='" . $image['URL'] . "'>";
                     }
                 $html .= "</td>
