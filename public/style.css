@@ -1426,6 +1426,7 @@ main.acceuilBackoffice section.avis article table tr:first-child td:first-child 
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 120px;
 }
 main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:first-child {
   display: flex;
@@ -1444,6 +1445,7 @@ main.acceuilBackoffice section.avis article table tr:first-child td:first-child 
   gap: 0.25em;
   align-items: center;
   color: #FFD000;
+  font-weight: bold;
 }
 main.acceuilBackoffice section.produits article {
   display: grid;

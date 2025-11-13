@@ -113,7 +113,7 @@ require_once '../../controllers/date.php';
                         <figcaption>" . $avi['nomClient'] . "</figcaption>
                     </figure>
                     <figure>
-                        <figcaption>" . $avi['note'] . "</figcaption>
+                        <figcaption>" . str_replace('.', ',', $avi['note']) . "</figcaption>
                         <img src='/public/images/etoile.svg'>
                     </figure>
                 </td>

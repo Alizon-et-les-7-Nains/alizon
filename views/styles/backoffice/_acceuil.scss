@@ -147,6 +147,7 @@ main.acceuilBackoffice {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
+                        width: 120px;
 
                         figure:first-child {
                             display: flex;
@@ -166,6 +167,7 @@ main.acceuilBackoffice {
                             gap: 0.25em;
                             align-items: center;
                             color: $color-yellow;
+                            font-weight: bold;
                         }
                     }
                 }
