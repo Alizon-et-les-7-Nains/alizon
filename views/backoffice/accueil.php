@@ -99,8 +99,33 @@ require_once '../../controllers/date.php';
             <section class="avis">
                 <h1>Derniers Avis</h1>
                 <article>
-                    <ul>
-                        <li>
+<?php
+    $avis = ($pdo->query(file_get_contents('../../queries/backoffice/derniersAvis.sql')))->fetchAll(PDO::FETCH_ASSOC);
+    if (count($avis) == 0) echo "<h2>Aucun avis</h>";
+    foreach ($avis as $avi) {
+        $idProduit = $avi['idProduit'];
+        $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
+        $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        $html = "
+        <table>
+            <tr>
+                <td rowspan=2>
+                    <figure>
+                        <img src='$image'>
+                        <figcaption>" . $avi['nomClient'] . "</figcaption>
+                    </figure>
+                    <figure>
+                        <figcaption>" . $avi['note'] . "</figcaption>
+                        <img src='/public/images/etoile.svg'>
+                    </figure>
+                </td>
+            </tr>
+        </table>
+        ";
+    }
+?>
+                </article>
+                <article>
                             <table>
                                 <tr>
                                     <td rowspan=2>
@@ -156,8 +181,6 @@ require_once '../../controllers/date.php';
                                     <td><button>Répondre</button></td>
                                 </tr>
                             </table>
-                        </li>
-                    </ul>
                 </article>
                 <a href="./avis.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
