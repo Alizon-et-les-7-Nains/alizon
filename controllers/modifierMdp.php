@@ -15,5 +15,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     WHERE idClient = '$idClient';");
 }
 
-header("Location: ../frontoffice/compteClient.php"); 
+header("Location: ../views/frontoffice/compteClient.php"); 
 ?>
