@@ -1426,29 +1426,32 @@ main.acceuilBackoffice section.avis article table {
 main.acceuilBackoffice section.avis article table th {
   font-weight: bold;
 }
-main.acceuilBackoffice section.avis article table tr:first-child td:first-child {
+main.acceuilBackoffice section.avis article table tr:first-child th:first-child {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 120px;
 }
-main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:first-child {
+main.acceuilBackoffice section.avis article table tr:first-child th:first-child figure:first-child {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.25em;
 }
-main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:first-child img {
+main.acceuilBackoffice section.avis article table tr:first-child th:first-child figure:first-child img {
   height: 80px;
   width: 80px;
   object-fit: cover;
   border-radius: 100%;
 }
-main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:last-child {
+main.acceuilBackoffice section.avis article table tr:first-child th:first-child figure:last-child {
   display: flex;
   gap: 0.25em;
   align-items: center;
   color: #FFD000;
+}
+main.acceuilBackoffice section.avis article table tr:first-child th:nth-child(2) {
+  text-align: left;
 }
 main.acceuilBackoffice section.avis article table tr:last-child td:last-child {
   display: flex;

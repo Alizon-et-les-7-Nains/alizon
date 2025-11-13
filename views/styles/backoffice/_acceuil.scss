@@ -148,7 +148,7 @@ main.acceuilBackoffice {
                 }
                 
                 tr:first-child {
-                    td:first-child {
+                    th:first-child {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
@@ -173,6 +173,9 @@ main.acceuilBackoffice {
                             align-items: center;
                             color: $color-yellow;
                         }
+                    }
+                    th:nth-child(2) {
+                        text-align: left;
                     }
                 }
                 tr:last-child {
