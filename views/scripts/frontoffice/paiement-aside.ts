@@ -13,7 +13,7 @@ export function initAside(
 
   async function updateQty(id: string, delta: number) {
     try {
-      console.log("📤 Envoi direct AJAX - Mise à jour quantité:", id, delta);
+      console.log("Envoi direct AJAX - Mise à jour quantité:", id, delta);
 
       const response = await fetch("", {
         method: "POST",
@@ -26,8 +26,8 @@ export function initAside(
       const result = await response.json();
 
       if (result.success) {
-        console.log("✅ BD mise à jour - Rechargement");
-        window.location.reload(); // Recharge la page pour voir les changements
+        console.log("BD mise à jour - Rechargement");
+        window.location.reload();
       } else {
         alert("Erreur: " + (result.error || "Erreur inconnue"));
       }
@@ -39,7 +39,7 @@ export function initAside(
 
   async function removeItem(id: string) {
     try {
-      console.log("📤 Envoi direct AJAX - Suppression:", id);
+      console.log("Envoi direct AJAX - Suppression:", id);
 
       const response = await fetch("", {
         method: "POST",
@@ -52,7 +52,7 @@ export function initAside(
       const result = await response.json();
 
       if (result.success) {
-        console.log("✅ Produit supprimé - Rechargement");
+        console.log("Produit supprimé - Rechargement");
         window.location.reload();
       } else {
         alert("Erreur: " + (result.error || "Erreur inconnue"));
@@ -109,11 +109,11 @@ export function initAside(
       row.setAttribute("data-id", item.id);
       row.innerHTML = `
         <img src="${item.img || "/images/default.png"}" alt="${
-        item.title
+        item.nom
       }" class="mini" />
         <div class="infos">
-          <p class="titre">${item.title}</p>
-          <p class="prix">${(item.price * item.qty).toFixed(2)} €</p>
+          <p class="titre">${item.nom}</p>
+          <p class="prix">${(item.prix * item.qty).toFixed(2)} €</p>
           <div class="gestQte">
             <div class="qte">
               <button class="minus" data-id="${item.id}">-</button>
@@ -136,7 +136,7 @@ export function initAside(
 
   return {
     update(newCart: CartItem[]) {
-      console.log("🔄 Mise à jour de l'aside avec nouveau panier");
+      console.log("Mise à jour de l'aside avec nouveau panier");
       cart = newCart;
       render();
     },

@@ -1433,7 +1433,7 @@ main.acceuilBackoffice section.avis article table button {
 }
 main.acceuilBackoffice section.produits article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
   max-width: 100%;
   gap: 2em;
   font-size: 20px;
@@ -1644,6 +1644,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .acceuil article {
   border: 2px solid #273469;
+  margin-top: 5px;
   border-radius: 20px;
   margin: 0px 40px;
   padding: 10px;
@@ -1652,7 +1653,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-top: 5px;
 }
 .acceuil article:hover {
   transform: translateY(-5px);
@@ -1740,13 +1740,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 5px;
-  margin-top: 10px;
 }
 .acceuil .notation span {
   font-family: "Lora", serif;
   font-weight: bold;
   color: #273469;
-  font-size: 16px;
+  font-size: 18px;
 }
 .acceuil .notation img {
   height: 32px;

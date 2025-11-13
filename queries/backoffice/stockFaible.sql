@@ -1,0 +1,1 @@
+select * from _produit where stock < seuilAlerte;
