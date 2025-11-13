@@ -1,3 +1,4 @@
+<?php require_once "../../controllers/prix.php" ?>
 <?php require_once "../../controllers/pdo.php" ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,10 +13,10 @@
 
     <section class="banniere">
         <h1>Plus de promotion à venir !</h1>
-            <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
+        <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
     </section>
 
- <main>
+    <main>
         <section>
             <div class="nomCategorie">
                 <h2>Nouveautés</h2>
@@ -39,10 +40,10 @@
                         <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
                         <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                         <div class="notation">
+                            <span><?php echo number_format($value['note'], 1); ?></span>
                             <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
                                 <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
                             <?php } ?>
-                            <span><?php echo number_format($value['note'], 1); ?></span>
                         </div>
                         <div class="infoProd">
                             <div class="prix">
@@ -53,6 +54,8 @@
                             </div>
                         </div>
                     </article>
+                <?php } if($stmt == null) { ?>
+                    <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -65,10 +68,10 @@
             <div class="listeArticle">
                 <?php 
                 $stmt = $pdo->prepare("SELECT * FROM _produit WHERE typeProd = :typeProd");
-                $stmt->execute([':typeProd' => 'alimentaire']);
-                $produitCharcuterie = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                
-                foreach ($produitCharcuterie as $value) {
+                $stmt->execute([':typeProd' => 'charcuteries']);
+                $produitAlcool = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach ($produitNouveaute as $value) {
                     $idProduit = $value['idProduit'];
                     
                     $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
@@ -78,10 +81,12 @@
                     ?>
                     <article onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
                         <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
-                        <h2><?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                         <div class="notation">
-                            <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
                             <span><?php echo number_format($value['note'], 1); ?></span>
+                            <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                            <?php } ?>
                         </div>
                         <div class="infoProd">
                             <div class="prix">
@@ -92,6 +97,8 @@
                             </div>
                         </div>
                     </article>
+                <?php } if($stmt == null) { ?>
+                    <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -104,10 +111,10 @@
             <div class="listeArticle">
                 <?php 
                 $stmt = $pdo->prepare("SELECT * FROM _produit WHERE typeProd = :typeProd");
-                $stmt->execute([':typeProd' => 'boisson']);
+                $stmt->execute([':typeProd' => 'alcools']);
                 $produitAlcool = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
-                foreach ($produitAlcool as $value) {
+                foreach ($produitNouveaute as $value) {
                     $idProduit = $value['idProduit'];
                     
                     $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
@@ -117,10 +124,12 @@
                     ?>
                     <article onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
                         <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
-                        <h2><?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                         <div class="notation">
-                            <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
                             <span><?php echo number_format($value['note'], 1); ?></span>
+                            <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                            <?php } ?>
                         </div>
                         <div class="infoProd">
                             <div class="prix">
@@ -131,10 +140,11 @@
                             </div>
                         </div>
                     </article>
+                <?php } if($stmt == null) { ?>
+                    <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
-
     </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>

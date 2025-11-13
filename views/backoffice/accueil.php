@@ -29,7 +29,7 @@ require_once '../../controllers/date.php';
     if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
     foreach ($stock as $produit => $atr) {
         $idProduit = $atr['idProduit'];
-        $image = ($pdo->query(file_get_contents('../../queries/imagesProduit.sql')))->fetchAll(PDO::FETCH_ASSOC);
+        $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $html = "
         <table>
@@ -68,7 +68,7 @@ require_once '../../controllers/date.php';
     if (count($commandes) == 0) echo "<h2>Aucune commande</h2>";
     foreach ($commandes as $commande) {
         $idProduit = $commande['idProduit'];
-        $image = ($pdo->query(file_get_contents('../../queries/imagesProduit.sql')))->fetchAll(PDO::FETCH_ASSOC);
+        $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $html = "
         <table>
@@ -169,7 +169,7 @@ require_once '../../controllers/date.php';
     $produits = ($pdo->query(file_get_contents('../../queries/backoffice/produitsVente.sql')))->fetchAll(PDO::FETCH_ASSOC);
     foreach ($produits as $produit => $atr) {
         $idProduit = $atr['idProduit'];
-        $image = ($pdo->query(file_get_contents('../../queries/imagesProduit.sql')))->fetchAll(PDO::FETCH_ASSOC);
+        $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $html = "
         <table>
