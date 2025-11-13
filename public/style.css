@@ -259,7 +259,7 @@ body {
   }
 }
 /* -------------------------------------------- FIN FOOTER -------------------------------------------- */
-.legalesMain main h1 {
+.cgucgv main h1 {
   color: #273469;
   font-family: "lora", serif;
   font-size: 48px;
@@ -268,24 +268,24 @@ body {
   text-align: center;
   margin: 50px 0px;
 }
-.legalesMain section {
+.cgucgv section {
   margin: 0px 80px;
 }
-.legalesMain .titreSection {
+.cgucgv .titreSection {
   font-family: "lora", serif;
   font-size: 20px;
   font-weight: bold;
 }
-.legalesMain .texteSection {
+.cgucgv .texteSection {
   font-family: "open-sans", sans-serif;
   font-size: 14px;
 }
 @media (max-width: 1300px) {
-  .legalesMain main h1 {
+  .cgucgv main h1 {
     font-size: 32px;
     margin: 20px 0px;
   }
-  .legalesMain section {
+  .cgucgv section {
     margin: 0px 40px;
   }
 }
@@ -1283,7 +1283,7 @@ main.acceuilBackoffice section ul {
 }
 main.acceuilBackoffice section.stock article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   width: 100%;
   gap: 2em;
 }

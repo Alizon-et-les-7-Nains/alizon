@@ -55,7 +55,7 @@ main.acceuilBackoffice {
         
         &.stock article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
             width: 100%;
             gap: 2em;
             
