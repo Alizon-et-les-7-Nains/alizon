@@ -71,17 +71,24 @@ function popUpModifierMdp(){
 
     function verifierMdp() {
 
-        const ancienMdpChiffree = vignere(ancienMdp.value, cle, 1);
         const nouveauMdpChiffree = vignere(nouveauMdp.value, cle, 1);
         const confirmationMdpChiffree = vignere(confirmationMdp.value, cle, 1);
 
-        if (ancienMdpChiffree === mdpChiffree && nouveauMdpChiffree === confirmationMdpChiffree && nouveauMdpChiffree != "" ) {
+        if (ancienMdp === mdpDechiffree && nouveauMdpChiffree === confirmationMdpChiffree && nouveauMdpChiffree != "") {
             valider.disabled = false;
             valider.style.cursor = "pointer";
+            valider.onclick = function(e) {
+            e.preventDefault(); 
+            const form = document.getElementById("formMdp");
+            form.ancienMdp.value = vignere(form.ancienMdp.value, cle, 1);
+            form.nouveauMdp.value = vignere(form.nouveauMdp.value, cle, 1);
+            form.confirmationMdp.value = vignere(form.confirmationMdp.value, cle, 1);
+            document.getElementById("formMdp").submit();
         }
-        else {
+        } else {
             valider.disabled = true;
             valider.style.cursor = "default";
+            valider.onclick = null;
 
         }
     }
@@ -89,14 +96,6 @@ function popUpModifierMdp(){
     ancienMdp.addEventListener("input", verifierMdp);
     nouveauMdp.addEventListener("input", verifierMdp);
     confirmationMdp.addEventListener("input", verifierMdp);
-
-    overlay.querySelector("form").addEventListener("submit", function(e) {
-        // Chiffre les valeurs avant envoi
-        ancienMdp.value = vignere(ancienMdp.value, cle, 1);
-        nouveauMdp.value = vignere(nouveauMdp.value, cle, 1);
-        confirmationMdp.value = vignere(confirmationMdp.value, cle, 1);
-    });
-
 
 }
 
