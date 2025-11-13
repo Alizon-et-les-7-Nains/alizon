@@ -352,6 +352,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             bnModifier[0].innerHTML = "Modifier";
             bnModifier[0].style.backgroundColor = "#e4d9ff";
             bnModifier[0].style.color = "#273469";
+            bnModifier[0].disabled = false; 
 
             bnAnnuler[0].style.display = "none";
 
