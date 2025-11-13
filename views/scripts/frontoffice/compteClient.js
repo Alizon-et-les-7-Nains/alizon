@@ -74,6 +74,8 @@ function popUpModifierMdp(){
         const ancienMdpChiffree = vignere(ancienMdp.value, cle, 1);
         const nouveauMdpChiffree = vignere(nouveauMdp.value, cle, 1);
         const confirmationMdpChiffree = vignere(confirmationMdp.value, cle, 1);
+        console.log(ancienMdpChiffree, mdpChiffree, nouveauMdpChiffree, confirmationMdpChiffree);
+
 
         if (ancienMdpChiffree === mdpChiffree && nouveauMdpChiffree === confirmationMdpChiffree) {
             valider.disabled = false;
@@ -88,9 +90,6 @@ function popUpModifierMdp(){
     nouveauMdp.addEventListener("input", verifierMdp);
     confirmationMdp.addEventListener("input", verifierMdp);
 
-    valider.disabled = true;
-    valider.style.cursor = "default";
-    
 }
 
 function verifierChamp() {
