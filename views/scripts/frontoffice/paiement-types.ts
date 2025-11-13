@@ -4,8 +4,8 @@
 
 export type CartItem = {
   id: string;
-  title: string;
-  price: number;
+  nom: string;
+  prix: number;
   qty: number;
   img?: string;
 };
@@ -40,4 +40,3 @@ export type AsideHandle = {
   update: (cart: CartItem[]) => void;
   getElement: () => HTMLElement | null;
 };
-
