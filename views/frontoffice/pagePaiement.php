@@ -81,14 +81,14 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idClient = intval($idClient);
 
-        // 1. Récupérer le panier actuel
+        // Recupération du panier actuel
         $stmt = $pdo->query("SELECT * FROM _panier WHERE idClient = $idClient ORDER BY idPanier DESC LIMIT 1");
         $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
         if (!$panier) throw new Exception("Aucun panier trouvé pour ce client.");
 
         $idPanier = intval($panier['idPanier']);
 
-        // 2. Calculer les totaux
+        // Calcul total
         $sqlTotals = "
             SELECT SUM(p.prix * pap.quantiteProduit) AS sousTotal, SUM(pap.quantiteProduit) AS nbArticles
             FROM _produitAuPanier pap
@@ -100,7 +100,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $sousTotal = floatval($totals['sousTotal'] ?? 0);
         $nbArticles = intval($totals['nbArticles'] ?? 0);
 
-        // 3. Vérifier si la carte existe, sinon l'ajouter
+        // Verification existante carte sinon ajouter
         $carteQ = $pdo->quote($numeroCarte);
         $checkCarte = $pdo->query("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = $carteQ");
 
@@ -117,7 +117,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             }
         }
 
-        // 4. Créer l’adresse
+        // Création de l'adresse
         $adresseQ = $pdo->quote($adresseLivraison);
         $villeQ = $pdo->quote($villeLivraison);
         $regionQ = $pdo->quote($regionLivraison);
@@ -132,7 +132,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
         $idAdresse = $pdo->lastInsertId();
 
-        // 5. Créer la commande
+        // Création de la commande
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
 
@@ -153,7 +153,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idCommande = $pdo->lastInsertId();
 
-        // 6. Copier les produits vers _contient
+        // produits vers _contient
         $sqlContient = "
             INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
             SELECT pap.idProduit, $idCommande, p.prix, COALESCE(t.pourcentageTva, 20.0), pap.quantiteProduit
@@ -166,7 +166,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             throw new Exception("Erreur lors de la copie des produits : " . implode(', ', $pdo->errorInfo()));
         }
 
-        // 7. Vider le panier
+        // Vider le panier
         if ($pdo->query("DELETE FROM _produitAuPanier WHERE idPanier = $idPanier") === false) {
             throw new Exception("Erreur lors du vidage du panier : " . implode(', ', $pdo->errorInfo()));
         }
@@ -244,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 // RÉCUPÉRATION DES DONNÉES POUR LA PAGE
 // ============================================================================
 
-// Récupérer le panier actuel
+// recuperation panier courent
 $cart = getCurrentCart($pdo, $idClient);
 
 // Récupération des départements et villes
