@@ -14,18 +14,20 @@ if ($panier) {
 
     $idPanier = intval($idPanier); // protection basique contre l'injection
     $stmt = $pdo->query("
-        SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+        SELECT 
+            p.idProduit,
+            p.nom AS nom,
+            p.nom AS name,
+            p.prix AS prix,
+            p.prix AS price,
+            pa.quantiteProduit AS qty,
+            i.URL AS img
         FROM _produitAuPanier pa
         JOIN _produit p ON pa.idProduit = p.idProduit
         LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
         WHERE pa.idPanier = $idPanier
     ");
     $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
-
-    $nom = $cart['nom'];
-    $imgProd = $cart['img'];
-    $prix = $cart['prix'];
-    $qty = $cart['qty'];
 }
 // ============================================================================
 // FONCTIONS POUR GÉRER LES ACTIONS AJAX
