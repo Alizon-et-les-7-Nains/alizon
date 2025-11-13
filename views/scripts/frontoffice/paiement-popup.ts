@@ -1,8 +1,8 @@
 // ============================================================================
-// POPUP - Version avec API unifiée
+// POPUP - Version avec base de données
 // ============================================================================
 
-import { CartItem, OrderData } from "./paiement-types";
+import { CartItem } from "./paiement-types";
 
 declare global {
   interface Window {
@@ -10,8 +10,6 @@ declare global {
       cart?: CartItem[];
       [key: string]: any;
     };
-    __ASIDE_HANDLE__?: any;
-    PaymentAPI?: any;
   }
 }
 
@@ -29,6 +27,7 @@ export function showPopup(message: string) {
   const villeInput = document.querySelector(
     "body.pagePaiement .ville-input"
   ) as HTMLInputElement | null;
+  // CORRECTION : utiliser la bonne classe
   const numCarteInput = document.querySelector(
     "body.pagePaiement .num-carte"
   ) as HTMLInputElement | null;
@@ -39,24 +38,14 @@ export function showPopup(message: string) {
   const rawNumCarte = numCarteInput?.value.replace(/\s+/g, "") || "";
   const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
 
-  // Utiliser les données dynamiques de l'aside
-  let currentCart: CartItem[] = [];
-
-  if (
-    window.__ASIDE_HANDLE__ &&
-    typeof window.__ASIDE_HANDLE__.getCart === "function"
-  ) {
-    currentCart = window.__ASIDE_HANDLE__.getCart();
-    console.log("Panier dynamique récupéré:", currentCart);
-  } else if (Array.isArray(window.__PAYMENT_DATA__?.cart)) {
-    currentCart = window.__PAYMENT_DATA__!.cart as CartItem[];
-    console.log("Panier initial utilisé:", currentCart);
-  }
-
+  // CORRECTION : Utiliser les bonnes propriétés des données PHP
+  const preCart = Array.isArray(window.__PAYMENT_DATA__?.cart)
+    ? (window.__PAYMENT_DATA__!.cart as CartItem[])
+    : [];
   let cartItemsHtml = "";
 
-  if (Array.isArray(currentCart) && currentCart.length > 0) {
-    cartItemsHtml = currentCart
+  if (Array.isArray(preCart) && preCart.length > 0) {
+    cartItemsHtml = preCart
       .map(
         (item: CartItem) => `
       <div class="product">
@@ -70,7 +59,7 @@ export function showPopup(message: string) {
       )
       .join("");
   } else {
-    cartItemsHtml = `<p class="empty">Panier vide - Impossible de commander</p>`;
+    cartItemsHtml = `<p class="empty">Panier vide</p>`;
   }
 
   overlay.innerHTML = `
@@ -86,11 +75,7 @@ export function showPopup(message: string) {
         <div class="cart">${cartItemsHtml}</div>
         <div class="actions">
           <button class="undo">Annuler</button>
-          <button class="confirm" ${currentCart.length === 0 ? "disabled" : ""}>
-            ${
-              currentCart.length === 0 ? "Panier vide" : "Confirmer ma commande"
-            }
-          </button>
+          <button class="confirm">Confirmer ma commande</button>
         </div>
       </div>
     </div>
@@ -110,7 +95,7 @@ export function showPopup(message: string) {
   closeBtn?.addEventListener("click", () => overlay.remove());
   undoBtn?.addEventListener("click", () => overlay.remove());
 
-  if (!confirmBtn || confirmBtn.disabled) return;
+  if (!confirmBtn) return;
 
   confirmBtn.addEventListener("click", async () => {
     confirmBtn.disabled = true;
@@ -118,23 +103,30 @@ export function showPopup(message: string) {
     confirmBtn.textContent = "Traitement en cours...";
 
     try {
-      console.log("Création commande via PaymentAPI...");
+      console.log("Création commande via AJAX direct...");
 
-      if (!window.PaymentAPI) {
-        throw new Error("PaymentAPI non disponible");
+      const response = await fetch("", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `action=createOrder&adresseLivraison=${encodeURIComponent(
+          adresse
+        )}&villeLivraison=${encodeURIComponent(
+          ville
+        )}&regionLivraison=${encodeURIComponent(
+          codePostal
+        )}&numeroCarte=${encodeURIComponent(rawNumCarte)}`,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur réseau (${response.status})`);
       }
 
-      const orderData = {
-        adresseLivraison: adresse,
-        villeLivraison: ville,
-        regionLivraison: codePostal,
-        numeroCarte: rawNumCarte,
-      };
-
-      const result = await window.PaymentAPI.createOrder(orderData);
+      const result = await response.json();
 
       if (result && result.success) {
-        console.log("Commande créée:", result.idCommande);
+        console.log("Commande créée en BD:", result.idCommande);
         const popup = overlay.querySelector(".payment-popup") as HTMLElement;
         if (!popup) {
           overlay.remove();
@@ -154,12 +146,11 @@ export function showPopup(message: string) {
         ) as HTMLButtonElement | null;
         innerClose?.addEventListener("click", () => {
           overlay.remove();
+          // Redirection après commande
           window.location.href = "/accueil";
         });
       } else {
-        throw new Error(
-          result?.error || "Erreur lors de la création de la commande"
-        );
+        throw new Error(result?.error || "Erreur inconnue");
       }
     } catch (error) {
       console.error("Erreur création commande:", error);
@@ -167,7 +158,7 @@ export function showPopup(message: string) {
         "Erreur lors de la création de la commande: " + (error as Error).message
       );
       confirmBtn.disabled = false;
-      confirmBtn.textContent = prevText;
+      confirmBtn.textContent = prevText || "Confirmer ma commande";
     }
   });
 }

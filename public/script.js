@@ -614,7 +614,7 @@ define("frontoffice/paiement-autocomplete", ["require", "exports", "frontoffice/
     }
 });
 // ============================================================================
-// POPUP - Version avec API unifiée
+// POPUP - Version avec base de données
 // ============================================================================
 define("frontoffice/paiement-popup", ["require", "exports"], function (require, exports) {
     "use strict";
@@ -627,26 +627,20 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const adresseInput = document.querySelector("body.pagePaiement .adresse-input");
         const codePostalInput = document.querySelector("body.pagePaiement .code-postal-input");
         const villeInput = document.querySelector("body.pagePaiement .ville-input");
+        // CORRECTION : utiliser la bonne classe
         const numCarteInput = document.querySelector("body.pagePaiement .num-carte");
         const adresse = adresseInput?.value.trim() || "";
         const codePostal = codePostalInput?.value.trim() || "";
         const ville = villeInput?.value.trim() || "";
         const rawNumCarte = numCarteInput?.value.replace(/\s+/g, "") || "";
         const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
-        // Utiliser les données dynamiques de l'aside
-        let currentCart = [];
-        if (window.__ASIDE_HANDLE__ &&
-            typeof window.__ASIDE_HANDLE__.getCart === "function") {
-            currentCart = window.__ASIDE_HANDLE__.getCart();
-            console.log("Panier dynamique récupéré:", currentCart);
-        }
-        else if (Array.isArray(window.__PAYMENT_DATA__?.cart)) {
-            currentCart = window.__PAYMENT_DATA__.cart;
-            console.log("Panier initial utilisé:", currentCart);
-        }
+        // CORRECTION : Utiliser les bonnes propriétés des données PHP
+        const preCart = Array.isArray(window.__PAYMENT_DATA__?.cart)
+            ? window.__PAYMENT_DATA__.cart
+            : [];
         let cartItemsHtml = "";
-        if (Array.isArray(currentCart) && currentCart.length > 0) {
-            cartItemsHtml = currentCart
+        if (Array.isArray(preCart) && preCart.length > 0) {
+            cartItemsHtml = preCart
                 .map((item) => `
       <div class="product">
         <img src="${item.img || "/images/default.png"}" alt="${item.nom}" />
@@ -657,7 +651,7 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                 .join("");
         }
         else {
-            cartItemsHtml = `<p class="empty">Panier vide - Impossible de commander</p>`;
+            cartItemsHtml = `<p class="empty">Panier vide</p>`;
         }
         overlay.innerHTML = `
     <div class="payment-popup" role="dialog" aria-modal="true">
@@ -672,9 +666,7 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         <div class="cart">${cartItemsHtml}</div>
         <div class="actions">
           <button class="undo">Annuler</button>
-          <button class="confirm" ${currentCart.length === 0 ? "disabled" : ""}>
-            ${currentCart.length === 0 ? "Panier vide" : "Confirmer ma commande"}
-          </button>
+          <button class="confirm">Confirmer ma commande</button>
         </div>
       </div>
     </div>
@@ -686,26 +678,27 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const confirmBtn = overlay.querySelector(".confirm");
         closeBtn?.addEventListener("click", () => overlay.remove());
         undoBtn?.addEventListener("click", () => overlay.remove());
-        if (!confirmBtn || confirmBtn.disabled)
+        if (!confirmBtn)
             return;
         confirmBtn.addEventListener("click", async () => {
             confirmBtn.disabled = true;
             const prevText = confirmBtn.textContent || "";
             confirmBtn.textContent = "Traitement en cours...";
             try {
-                console.log("Création commande via PaymentAPI...");
-                if (!window.PaymentAPI) {
-                    throw new Error("PaymentAPI non disponible");
+                console.log("Création commande via AJAX direct...");
+                const response = await fetch("", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `action=createOrder&adresseLivraison=${encodeURIComponent(adresse)}&villeLivraison=${encodeURIComponent(ville)}&regionLivraison=${encodeURIComponent(codePostal)}&numeroCarte=${encodeURIComponent(rawNumCarte)}`,
+                });
+                if (!response.ok) {
+                    throw new Error(`Erreur réseau (${response.status})`);
                 }
-                const orderData = {
-                    adresseLivraison: adresse,
-                    villeLivraison: ville,
-                    regionLivraison: codePostal,
-                    numeroCarte: rawNumCarte,
-                };
-                const result = await window.PaymentAPI.createOrder(orderData);
+                const result = await response.json();
                 if (result && result.success) {
-                    console.log("Commande créée:", result.idCommande);
+                    console.log("Commande créée en BD:", result.idCommande);
                     const popup = overlay.querySelector(".payment-popup");
                     if (!popup) {
                         overlay.remove();
@@ -721,18 +714,19 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                     const innerClose = popup.querySelector(".close-popup");
                     innerClose?.addEventListener("click", () => {
                         overlay.remove();
+                        // Redirection après commande
                         window.location.href = "/accueil";
                     });
                 }
                 else {
-                    throw new Error(result?.error || "Erreur lors de la création de la commande");
+                    throw new Error(result?.error || "Erreur inconnue");
                 }
             }
             catch (error) {
                 console.error("Erreur création commande:", error);
                 alert("Erreur lors de la création de la commande: " + error.message);
                 confirmBtn.disabled = false;
-                confirmBtn.textContent = prevText;
+                confirmBtn.textContent = prevText || "Confirmer ma commande";
             }
         });
     }
