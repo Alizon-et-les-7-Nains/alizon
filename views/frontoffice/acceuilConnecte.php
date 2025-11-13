@@ -1,5 +1,11 @@
-<?php require_once "../../controllers/prix.php" ?>
-<?php require_once "../../controllers/pdo.php" ?>
+<?php 
+
+ob_start();
+
+require_once "../../controllers/prix.php";
+require_once "../../controllers/pdo.php";
+?>
+
 
 <!-- ============================================================================
 DEFINITION DES FONCTIONS ET DU COOKIE
@@ -26,22 +32,22 @@ DEFINITION DES FONCTIONS ET DU COOKIE
         $key = array_search($idProduitConsulte, $tabIDProduit);
         if ($key !== false) {
             unset($tabIDProduit[$key]);
-            $tabIDProduit = array_values($tabIDProduit); // Réindexer le tableau
+            $tabIDProduit = array_values($tabIDProduit);
         }
         
-        // Si le tableau est plein, on retire le plus ancien (premier élément)
+        // Si le tableau est plein, on retire le plus ancien
         if (count($tabIDProduit) >= PRODUIT_CONSULTE_MAX_SIZE) {
-            array_shift($tabIDProduit); // Retire le premier élément
+            array_shift($tabIDProduit);
         }
         
         // Ajouter le nouveau produit à la fin
         $tabIDProduit[] = $idProduitConsulte;
         
-        // Sauvegarder dans le cookie
+        // Sauvegarder dans le cookie (90 jours)
         setcookie("produitConsulte", serialize($tabIDProduit), time() + (60*60*24*90), "/");
     }
 
-    // Gestion de l'ajout d'un produit via GET (avant redirection)
+    // Gestion de l'ajout d'un produit via GET
     if (isset($_GET['addRecent']) && !empty($_GET['addRecent'])) {
         $idProduitAjoute = intval($_GET['addRecent']);
         ajouterProduitConsulter($tabIDProduitConsulte, $idProduitAjoute);
@@ -54,9 +60,6 @@ DEFINITION DES FONCTIONS ET DU COOKIE
     }
 ?>
 
-<!-- ============================================================================
-AFFICHAGE DE LA PAGE
-============================================================================ -->
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -64,17 +67,15 @@ AFFICHAGE DE LA PAGE
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../../public/style.css">
-  <title>Alizon - Acceuil</title>
+  <title>Alizon - Accueil</title>
 </head>
 <body class="acceuil">
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
-
 
     <section class="banniere">
         <h1>Plus de promotion à venir !</h1>
         <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
     </section>
-
 
     <main>
         <!-- SECTION NOUVEAUTÉS -->
@@ -123,8 +124,6 @@ AFFICHAGE DE LA PAGE
             </div>
         </section>
 
-
-
         <!-- SECTION CHARCUTERIES -->
         <section>
             <div class="nomCategorie">
@@ -170,8 +169,6 @@ AFFICHAGE DE LA PAGE
                 <?php } ?>
             </div>
         </section>
-
-
 
         <!-- SECTION ALCOOLS -->
         <section>
@@ -219,9 +216,7 @@ AFFICHAGE DE LA PAGE
             </div>
         </section>
 
-
-
-        <!-- SECTION CONSULTÉS RÉCEMMENT -->
+        <!-- SECTION CONSULTES RECEMMENT -->
         <section>
             <div class="nomCategorie">
                 <h2>Consultés récemment</h2>
@@ -230,11 +225,9 @@ AFFICHAGE DE LA PAGE
             <div class="listeArticle">
                 <?php
                 if (!empty($tabIDProduitConsulte) && count($tabIDProduitConsulte) > 0) {
-                    // Inverser le tableau pour afficher les plus récents en premier
                     $produitsRecents = array_reverse($tabIDProduitConsulte);
                     
                     foreach ($produitsRecents as $idProduitRecent) {
-                        // Récupérer les informations du produit
                         $stmtRecent = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :idProduit");
                         $stmtRecent->execute([':idProduit' => $idProduitRecent]);
                         $produitRecent = $stmtRecent->fetch(PDO::FETCH_ASSOC);
@@ -277,3 +270,8 @@ AFFICHAGE DE LA PAGE
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 </body>
 </html>
+
+<?php
+
+ob_end_flush();
+?>
