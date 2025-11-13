@@ -1433,10 +1433,10 @@ main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1)
   align-items: center;
 }
 main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) figure:first-child img {
-  border-radius: 100%;
-  height: 50px;
-  width: 50px;
-  object-fit: cover;
+  border-radius: 100% !important;
+  height: 50px !important;
+  width: 50px !important;
+  object-fit: cover !important;
 }
 main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) figure:last-child {
   color: #FFD000;
