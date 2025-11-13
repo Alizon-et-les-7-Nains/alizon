@@ -1,4 +1,4 @@
-<?php require_once "../../controllers/pdo.php" ?>
+<?php // require_once "../../controllers/pdo.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,15 +36,16 @@
                         <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
 
-                    <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
+                    <!-- <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)"> -->
                 </div>
             </div>
 
             <div class="right-section">
-                <div class="product-desc-box">
-                    <label for="product-description">Description du produit</label>
-                    <textarea id="product-description" placeholder="Description de votre produit" maxlength="1000"></textarea>
-                    <div class="char-count">230/1000</div> 
+                <div class="ajouterResume">
+                    <textarea name="resume" id="resume" placeholder>Décrivez votreproduit
+                    en quelques mots (cette partie s'affichera tout en haut de la page)</textarea>
+                </div>
+                <div class="ajouterSection">
                 </div>
 
                 <div class="form-actions">
