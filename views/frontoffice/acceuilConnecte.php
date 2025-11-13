@@ -54,6 +54,8 @@
                             </div>
                         </div>
                     </article>
+                <?php } if($stmt == null) { ?>
+                    <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -95,6 +97,8 @@
                             </div>
                         </div>
                     </article>
+                <?php } if($stmt == null) { ?>
+                    <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -136,6 +140,8 @@
                             </div>
                         </div>
                     </article>
+                <?php } if($stmt == null) { ?>
+                    <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -155,6 +161,6 @@
         </section>
     </main>
 
-    <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
+    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 </body>
 </html>
