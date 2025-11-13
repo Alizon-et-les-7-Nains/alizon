@@ -80,9 +80,15 @@ function popUpModifierMdp(){
         if (ancienMdpChiffree === mdpChiffree && nouveauMdpChiffree === confirmationMdpChiffree) {
             valider.disabled = false;
             valider.style.cursor = "pointer";
+            valider.onclick = function(e) {
+            e.preventDefault(); 
+            document.getElementById("formMdp").submit();
+    }
         } else {
             valider.disabled = true;
             valider.style.cursor = "default";
+            valider.onclick = null;
+
         }
     }
 
