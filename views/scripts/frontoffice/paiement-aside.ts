@@ -11,6 +11,15 @@ export function initAside(
 ): AsideHandle {
   const container = document.querySelector(recapSelector) as HTMLElement | null;
 
+  // CORRECTION : Valider et normaliser les données du panier
+  const normalizedCart = cart.map((item) => ({
+    id: String(item.id || ""),
+    nom: String(item.nom || "Produit sans nom"),
+    prix: Number(item.prix || 0),
+    qty: Number(item.qty || 0),
+    img: item.img || "../../public/images/default.png",
+  }));
+
   async function updateQty(id: string, delta: number) {
     try {
       console.log("Envoi direct AJAX - Mise à jour quantité:", id, delta);
@@ -95,7 +104,7 @@ export function initAside(
 
     container.innerHTML = "";
 
-    if (cart.length === 0) {
+    if (normalizedCart.length === 0) {
       const empty = document.createElement("div");
       empty.className = "empty-cart";
       empty.textContent = "Panier vide";
@@ -103,14 +112,12 @@ export function initAside(
       return;
     }
 
-    cart.forEach((item) => {
+    normalizedCart.forEach((item) => {
       const row = document.createElement("div");
       row.className = "produit";
       row.setAttribute("data-id", item.id);
       row.innerHTML = `
-        <img src="${item.img || "/images/default.png"}" alt="${
-        item.nom
-      }" class="mini" />
+        <img src="${item.img}" alt="${item.nom}" class="mini" />
         <div class="infos">
           <p class="titre">${item.nom}</p>
           <p class="prix">${(item.prix * item.qty).toFixed(2)} €</p>
@@ -137,7 +144,15 @@ export function initAside(
   return {
     update(newCart: CartItem[]) {
       console.log("Mise à jour de l'aside avec nouveau panier");
-      cart = newCart;
+      // Re-normaliser les nouvelles données
+      const newNormalizedCart = newCart.map((item) => ({
+        id: String(item.id || ""),
+        nom: String(item.nom || "Produit sans nom"),
+        prix: Number(item.prix || 0),
+        qty: Number(item.qty || 0),
+        img: item.img || "../../public/images/default.png",
+      }));
+      normalizedCart.splice(0, normalizedCart.length, ...newNormalizedCart);
       render();
     },
     getElement() {

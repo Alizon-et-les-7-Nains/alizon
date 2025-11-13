@@ -7,13 +7,11 @@ $idClient = 1;
 $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
 $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
+
 $cart = [];
-
 if ($panier) {
-    // Récupération et cast de l'idPanier
-    $idPanier = intval($panier['idPanier']); // protection basique contre l'injection
+    $idPanier = intval($panier['idPanier']); 
 
-    // Requête (utilisation de query() avec idPanier casté en int)
     $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
         FROM _produitAuPanier pa
         JOIN _produit p ON pa.idProduit = p.idProduit
@@ -21,10 +19,18 @@ if ($panier) {
         WHERE pa.idPanier = " . intval($idPanier);
     $stmt = $pdo->query($sql);
     $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
-
-    // Ne pas essayer d'accéder à $cart['nom'] puisque $cart est un tableau de lignes.
-    // Les champs nom/img/prix/qty sont lus pour chaque article à l'intérieur du foreach plus bas.
+    
+    $cart = array_map(function($item) {
+        return [
+            'id' => strval($item['idProduit'] ?? ''),
+            'nom' => strval($item['nom'] ?? 'Produit sans nom'),
+            'prix' => floatval($item['prix'] ?? 0),
+            'qty' => intval($item['qty'] ?? 0),
+            'img' => $item['img'] ?? '../../public/images/default.png'
+        ];
+    }, $cart);
 }
+
 // ============================================================================
 // FONCTIONS POUR GÉRER LES ACTIONS AJAX
 // ============================================================================

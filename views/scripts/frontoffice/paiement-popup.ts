@@ -27,9 +27,9 @@ export function showPopup(message: string) {
   const villeInput = document.querySelector(
     "body.pagePaiement .ville-input"
   ) as HTMLInputElement | null;
-  // FIX: utiliser le même nom de classe que les autres inputs (num-carte-input)
+  // CORRECTION : utiliser la bonne classe
   const numCarteInput = document.querySelector(
-    "body.pagePaiement .num-carte-input"
+    "body.pagePaiement .num-carte"
   ) as HTMLInputElement | null;
 
   const adresse = adresseInput?.value.trim() || "";
@@ -38,7 +38,7 @@ export function showPopup(message: string) {
   const rawNumCarte = numCarteInput?.value.replace(/\s+/g, "") || "";
   const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
 
-  // Utiliser les données du panier depuis window.__PAYMENT_DATA__
+  // CORRECTION : Utiliser les bonnes propriétés des données PHP
   const preCart = Array.isArray(window.__PAYMENT_DATA__?.cart)
     ? (window.__PAYMENT_DATA__!.cart as CartItem[])
     : [];
@@ -49,10 +49,10 @@ export function showPopup(message: string) {
       .map(
         (item: CartItem) => `
       <div class="product">
-        <img src="${item.img || "/images/default.png"}" alt="${item.title}" />
-        <p class="title">${item.title}</p>
+        <img src="${item.img || "/images/default.png"}" alt="${item.nom}" />
+        <p class="title">${item.nom}</p>
         <p><strong>Quantité :</strong> ${item.qty}</p>
-        <p><strong>Prix total :</strong> ${(item.price * item.qty).toFixed(
+        <p><strong>Prix total :</strong> ${(item.prix * item.qty).toFixed(
           2
         )} €</p>
       </div>`
@@ -105,7 +105,6 @@ export function showPopup(message: string) {
     try {
       console.log("Création commande via AJAX direct...");
 
-      // Envoi au même endpoint (vide = même URL) est possible, mais vérifier la réponse
       const response = await fetch("", {
         method: "POST",
         headers: {
@@ -127,7 +126,7 @@ export function showPopup(message: string) {
       const result = await response.json();
 
       if (result && result.success) {
-        console.log("✅ Commande créée en BD:", result.idCommande);
+        console.log("Commande créée en BD:", result.idCommande);
         const popup = overlay.querySelector(".payment-popup") as HTMLElement;
         if (!popup) {
           overlay.remove();
