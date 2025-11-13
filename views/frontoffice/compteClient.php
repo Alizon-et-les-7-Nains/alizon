@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         const mdp = "<?php echo $mdp; ?>";
         const mdpChiffree = vignere(mdp, cle, 1);
-        const mdpDehiffree = vignere(mdp, cle, -1);
+        const mdpDechiffree = vignere(mdp, cle, -1);
     </script>
     <script src="../scripts/frontoffice/compteClient.js"></script>
 </body>
