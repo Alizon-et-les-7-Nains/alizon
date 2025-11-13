@@ -103,14 +103,14 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $sousTotal = $totals['sousTotal'] ?? 0;
         $nbArticles = $totals['nbArticles'] ?? 0;
 
-        // 1. Créer l'adresse de livraison dans la table _adresse
+        // 1. Créer l'adresse de livraison dans la table _adresse (sans idClient)
         $adresseQ = $pdo->quote($adresseLivraison);
         $villeQ = $pdo->quote($villeLivraison);
         $regionQ = $pdo->quote($regionLivraison);
         $codePostalQ = $pdo->quote($codePostal);
 
-        $sqlAdresse = "INSERT INTO _adresse (adresse, region, codePostal, ville, pays, idClient) 
-                      VALUES ($adresseQ, $regionQ, $codePostalQ, $villeQ, 'France', $idClient)";
+        $sqlAdresse = "INSERT INTO _adresse (adresse, region, codePostal, ville, pays) 
+                      VALUES ($adresseQ, $regionQ, $codePostalQ, $villeQ, 'France')";
         
         $resAdresse = $pdo->query($sqlAdresse);
         if ($resAdresse === false) {
