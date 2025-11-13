@@ -39,7 +39,7 @@ export function initAside(
 
   async function removeItem(id: string) {
     try {
-      console.log("📤 Envoi direct AJAX - Suppression:", id);
+      console.log("Envoi direct AJAX - Suppression:", id);
 
       const response = await fetch("", {
         method: "POST",
@@ -52,7 +52,7 @@ export function initAside(
       const result = await response.json();
 
       if (result.success) {
-        console.log("✅ Produit supprimé - Rechargement");
+        console.log("Produit supprimé - Rechargement");
         window.location.reload();
       } else {
         alert("Erreur: " + (result.error || "Erreur inconnue"));
@@ -136,7 +136,7 @@ export function initAside(
 
   return {
     update(newCart: CartItem[]) {
-      console.log("🔄 Mise à jour de l'aside avec nouveau panier");
+      console.log("Mise à jour de l'aside avec nouveau panier");
       cart = newCart;
       render();
     },

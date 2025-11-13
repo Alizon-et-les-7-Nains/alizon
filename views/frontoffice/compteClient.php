@@ -40,8 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     region = '$region'
     WHERE idAdresse = '$idAdresse';");
 
-    //verification et upload de la nouvelle photo de profil
+}   
 
+    //verification et upload de la nouvelle photo de profil
     $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png';
     if (file_exists($photoPath)) {
         unlink($photoPath); // supprime l’ancien fichier
@@ -50,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
         move_uploaded_file($_FILES['photoProfil']['tmp_name'], '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png');
     }
-}   
+
     //on recupère les infos du user pour les afficher
     $stmt = $pdo->query("SELECT * FROM _client WHERE idClient = '$id_client'");
     $client = $stmt->fetch(PDO::FETCH_ASSOC);
