@@ -65,7 +65,7 @@
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("select * from _produit where typeProd = :charcuteries");
+                $stmt = $pdo->prepare("select * from _produit where typeProd = charcuteries");
                 $stmt->execute();
                 $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
@@ -106,7 +106,7 @@
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("select * from _produit where typeProd = :alcools");
+                $stmt = $pdo->prepare("select * from _produit where typeProd = alcools");
                 $stmt->execute();
                 $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
