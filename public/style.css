@@ -1363,8 +1363,6 @@ main.acceuilBackoffice section.stock article table {
 }
 main.acceuilBackoffice section.stock article table img {
   height: 100px;
-  width: 100px;
-  object-fit: cover;
 }
 main.acceuilBackoffice section.stock article table tr:nth-child(3) {
   font-family: "open-sans-bold";
