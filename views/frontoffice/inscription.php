@@ -1,28 +1,10 @@
+<?php //require_once "../../controllers/pdo.php" ?> 
 <?php
-$message = "";
-$data = []; 
-$nom_contact = '';
-$prenom_contact = '';
-$email = '';
-$num_tel = '';
-$nom_utilisateur = '';
-$num_siren = '';
-$adresse_entreprise = '';
-$raison_sociale = '';
-$date_naissance = '';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nom_contact        = htmlspecialchars(trim($_POST['nom_contact'] ?? ''));
-    $prenom_contact     = htmlspecialchars(trim($_POST['prenom_contact'] ?? ''));
-    $email              = htmlspecialchars(trim($_POST['email'] ?? ''));
-    $num_tel            = htmlspecialchars(trim($_POST['num_tel'] ?? ''));
-    $nom_utilisateur    = htmlspecialchars(trim($_POST['nom_utilisateur'] ?? ''));
-    $mdp                = $_POST['mdp'] ?? '';
-    $confimer_mdp       = $_POST['confimer_mdp'] ?? '';
-    $date_naissance     = htmlspecialchars(trim($_POST['date_naissance'] ?? ''));
-    
-    $form_is_valid = true;
-}
+    if (isset($_COOKIE[session_name()])) {
+        session_start(['read_and_close' => true]);
+    }
+
 ?>
 
 
@@ -39,18 +21,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body class="inscription">
 
-  <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
+  <?php include './partials/headerConnecte.php'; ?>
 
     <h2>Inscription</h2>
   
 
       <main>
-        <form id="monForm" action="../backoffice/partials/session_start.php" method="post" enctype="multipart/form-data">
+        <form id="monForm" action="../backend/session_start.php" method="post" enctype="multipart/form-data">
 
           <!-- Pseudo -->
           <input type="text" placeholder="Pseudo*" id="pseudo" name="pseudo" required />
           <br />
-
+        <div id="refactor">
           <!-- Nom -->
           <input type="text" placeholder="Nom*" id="nom" name="nom" required />
           <br />
@@ -58,19 +40,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           <!-- Prénom -->
           <input type="text" placeholder="Prénom*" id="prenom" name="prenom" required />
           <br />
+        </div>
+        <div id="refactor">
+            <!-- Date de naissance -->
+            <input type="text" placeholder="Date de naissance*" id="birthdate" name="birthdate" required/>
+            <br />
 
-          <!-- Date de naissance -->
-          <input type="text" placeholder="Date de naissance :" id="birthdate" name="birthdate" required/>
+            <!-- Téléphone -->
+            <input type="tel" placeholder="Téléphone*" id="telephone" name="telephone" required/>
+            <br />
+        </div>
+           <!-- Email -->
+          <input type="email" placeholder="Email*" id="email*" name="email" required/>
           <br />
-          
-          <!-- Email -->
-          <input type="email" placeholder="Email*" id="email" name="email" required/>
-          <br />
-
-          <!-- Téléphone -->
-          <input type="tel" placeholder="Numéro de téléphone" id="telephone" name="telephone" />
-          <br />
-
           <!-- Mot de passe -->
           <input type="password" placeholder="Mot de passe*" id="mdp" name="motdepasse" required />
           <br />
@@ -93,11 +75,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           <!-- Bouton de soumission -->
           <input id="submitButton" type="submit" value="S'inscrire"/>
         </form> 
-
         <script>
             // Eléments du DOM
-            const birthDateInput = document.getElementById('birthdate')
-            const phoneNumberInput = document.getElementById('telephone')
+            const pseudoInput = document.getElementById('pseudo');
+            const prenomInput = document.getElementById('prenom');
+            const nomInput = document.getElementById('nom');
+            const birthDateInput = document.getElementById('birthdate');
+            const emailInput = document.getElementById('email');
+            const phoneNumberInput = document.getElementById('telephone');
             const passwordInput = document.getElementById('mdp');
             const confirmPasswordInput = document.getElementById('cmdp');
             const submitButton = document.getElementById('submitButton');
@@ -120,6 +105,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 special: { element: reqSpecial, regex: /[^a-zA-Z0-9]/, message: 'Un caractère spécial (@, !, #, ...)' }
             };
 
+            passwordInput.addEventListener('blur', () => {
+                // Masquer les critères si le champ est vide
+                if (passwordInput.value.length === 0) {
+                    passwordRequirementsContainer.classList.add('hidden');
+                }
+                toggleErrorStyle(passwordInput);
+            });
+            
+            confirmPasswordInput.addEventListener('blur', () => {
+                // Gérer l'état vide/erreur du champ Confirmer MDP
+                toggleErrorStyle(confirmPasswordInput);
+            });
+
+
+            passwordInput.addEventListener('focus', () => {
+                passwordRequirementsContainer.classList.remove('hidden');
+                passwordInput.classList.remove('input-error'); // Enlève l'erreur quand l'utilisateur revient
+                validatePassword(); 
+            });
+
+            passwordInput.addEventListener('input', () => {
+                passwordInput.classList.remove('input-error');
+                validatePassword(); 
+            });
+            
+            confirmPasswordInput.addEventListener('input', () => {
+                confirmPasswordInput.classList.remove('input-error');
+                validatePassword(); 
+            });
+
+            birthDateInput.addEventListener('focus', () =>{
+                birthDateInput.classList.remove('input-error');
+                validateBirthDate();
+            });
+
+            phoneNumberInput.addEventListener('focus', () =>{
+                phoneNumberInput.classList.remove('input-error');
+                validatePhoneNumber();
+            });
+
+            birthDateInput.addEventListener('input', () => {
+                birthDateInput.classList.remove('input-error');
+            });
+
+            phoneNumberInput.addEventListener('input', () => {
+                phoneNumberInput.classList.remove('input-error');
+            });
+
             //////////////////////////////////////////////////////////////////
             //                                                              //
             //        Fonction de validation des critères du formulaire     //
@@ -140,13 +173,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 submitButton.disabled = !allValid;
                 
                 if(allValid){
-                    <?php
-                        session_start();
-                        $_SESSION["newsession"]=$value;
-
-                        print_r( $_SESSION["newsession"] );
-                    ?>
+                    $_POST['pseudo'] = $nomInput.value;        
+                    $_POST['prenom'] = $prenomInput.value; 
+                    $_POST['email'] = $emailInput.value;          
+                    $_POST['num_tel'] = $phoneNumberInput.value;          
+                    $_POST['nom'] = $pseudoInput.value;
+                    $_POST['mdp'] = $mdpInput.value;              
+                    $_POST['confimer_mdp'] = $confirmPasswordInput.value       
+                    $_POST['date_naissance'] = $birthDateIput.value;     
+                    return true;
                 }
+                return false
             }
 
 
@@ -223,48 +260,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 return isValid;
             }
 
-            
-
-            passwordInput.addEventListener('blur', () => {
-                // Masquer les critères si le champ est vide
-                if (passwordInput.value.length === 0) {
-                    passwordRequirementsContainer.classList.add('hidden');
-                }
-                toggleErrorStyle(passwordInput);
-            });
-            
-            confirmPasswordInput.addEventListener('blur', () => {
-                // Gérer l'état vide/erreur du champ Confirmer MDP
-                toggleErrorStyle(confirmPasswordInput);
-            });
-
-
-            passwordInput.addEventListener('focus', () => {
-                passwordRequirementsContainer.classList.remove('hidden');
-                passwordInput.classList.remove('input-error'); // Enlève l'erreur quand l'utilisateur revient
-                validatePassword(); 
-            });
-
-            passwordInput.addEventListener('input', () => {
-                passwordInput.classList.remove('input-error');
-                validatePassword(); 
-            });
-            
-            confirmPasswordInput.addEventListener('input', () => {
-                confirmPasswordInput.classList.remove('input-error');
-                validatePassword(); 
-            });
-
-            birthDateInput.addEventListener('focus', () =>{
-                birthDateInput.classList.remove('input-error');
-                validateBirthDate();
-            });
-
-            phoneNumberInput.addEventListener('focus', () =>{
-                phoneNumberInput.classList.remove('input-error');
-                validateBirthDate();
-            });
-
             //////////////////////////////////////////////////////////////////
             //                                                              //
             //    Bloquage de la validation du formulaire si les champs     //
@@ -272,9 +267,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             //                                                              //
             //////////////////////////////////////////////////////////////////
             
-            // Empêcher la soumission si la validation échoue
             document.querySelector('form').addEventListener('submit', function(e) {
-                // Vérifier si les champs sont vides au moment de la soumission
                 const isPasswordValid = validatePassword();
                 const isBirthDateValid = validateBirthDate();
                 const isPhoneValid = validatePhoneNumber();
@@ -289,26 +282,46 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 toggleErrorStyle(birthDateInput);
                 toggleErrorStyle(phoneNumberInput);
                 
-                // Si la validation échoue OU si l'un des champs est vide
                 if (!isPasswordValid || passwordEmpty || confirmEmpty) {
                     e.preventDefault();
                 }
                 if(!isBirthDateValid || birthDateEmpty){
+                    birthDateInput.classList.add('input-error');
                     e.preventDefault();
-                    alert("La date de naissance n'est pas au bon format, utilisez le format JJ/MM/YYYY");
+                } else {
+                    birthDateInput.classList.remove('input-error');
                 }
                 if(!isPhoneValid || phoneEmpty){
+                    phoneNumberInput.classList.add('input-error');
                     e.preventDefault();
-                    alert("Le numéro de téléphone n'est format français");
+                } else {
+                    phoneNumberInput.classList.remove('input-error');
                 }
             });
 
             validateForm(); 
+
+            if(validateForm()){
+                <?php
+
+                $pseudo             = $_POST['pseudo'];
+                $prenom             = $_POST['prenom'];
+                $nom                = $_POST['nom'];
+                $email              = $_POST['email'];
+                $num_tel            = $_POST['num_tel'];
+                $mdp                = $_POST['mdp'] ;
+                $date_naissance     = $_POST['date_naissance'];
+
+
+                $nouveauClient = "INSERT INTO _client
+                                  (dateNaissance, prenom, nom, email, mdp, noTelephone, pseudo)
+                                  VALUES ($date_naissance, $prenom  , $nom, $email, $mdp , $num_tel, $pseudo ;";            
+                ?>
+            }
         </script>
       </main>
 
-
-  <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
+    <?php include '../../views/frontoffice/partials/footer.php'; ?>
 
 </body>
 </html>
