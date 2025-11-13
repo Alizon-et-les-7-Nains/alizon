@@ -1445,7 +1445,6 @@ main.acceuilBackoffice section.avis article table tr:first-child td:first-child 
   gap: 0.25em;
   align-items: center;
   color: #FFD000;
-  font-weight: bold;
 }
 main.acceuilBackoffice section.avis article table tr:last-child td:last-child {
   display: flex;

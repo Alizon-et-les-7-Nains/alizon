@@ -107,7 +107,7 @@ require_once '../../controllers/date.php';
         $html = "
         <table border=2>
             <tr>
-                <td rowspan=2>
+                <th rowspan=2>
                     <figure>
                         <img src='/public/images/pp.png'>
                         <figcaption>" . $avi['nomClient'] . "</figcaption>
@@ -116,8 +116,8 @@ require_once '../../controllers/date.php';
                         <figcaption>" . str_replace('.', ',', $avi['note']) . "</figcaption>
                         <img src='/public/images/etoile.svg'>
                     </figure>
-                </td>
-                <td>" . $avi['nomProduit'] . " - " . $avi['titreAvis'] . "</td>
+                </th>
+                <th>" . $avi['nomProduit'] . " - " . $avi['titreAvis'] . "</th>
                 <td>Le " . formatDate($avi['dateAvis']) . "</td>
             </tr>
             <tr>
