@@ -1426,10 +1426,19 @@ main.acceuilBackoffice section.avis article table tr:first-child td:first-child 
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.25em;
 }
 main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:first-child img {
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
+  object-fit: cover;
+  border-radius: 100%;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:last-child {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
+  color: #FFD000;
 }
 main.acceuilBackoffice section.produits article {
   display: grid;
