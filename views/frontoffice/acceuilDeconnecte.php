@@ -40,7 +40,7 @@
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
+                        <article style="margin-top: 5px;" onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
                             <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
                             <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
@@ -87,7 +87,7 @@
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
+                        <article style="margin-top: 5px;" onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
                             <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
                             <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
@@ -134,7 +134,7 @@
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
+                        <article style="margin-top: 5px;" onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
                             <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
                             <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">

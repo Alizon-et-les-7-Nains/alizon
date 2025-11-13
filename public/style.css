@@ -1668,6 +1668,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   max-width: 267px;
   max-height: 168px;
   object-fit: contain;
+  border-radius: 20px;
 }
 .acceuil .notation {
   display: flex;
