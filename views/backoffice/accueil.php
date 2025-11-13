@@ -16,7 +16,7 @@ require_once '../../controllers/date.php';
     </head>
 
     <body class="backoffice">
-        <?php require_once './partials/headerMain.php' ?>
+        <?php require_once './partials/header.php' ?>
 
         <?php require_once './partials/aside.php' ?>
 
