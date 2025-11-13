@@ -1413,9 +1413,83 @@ main.acceuilBackoffice section.commandes article table tr:nth-child(2) td {
 main.acceuilBackoffice section.commandes article table tr:last-child th {
   text-align: right;
 }
-main.acceuilBackoffice section.avis article img {
-  height: 50px;
-  width: 50px;
+main.acceuilBackoffice section.avis article {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+main.acceuilBackoffice section.avis article table {
+  width: 100%;
+  border: 2px solid #ddd;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+main.acceuilBackoffice section.avis article table td {
+  padding: 1rem;
+  vertical-align: top;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:first-child {
+  width: 200px;
+  background: #f8f8f8;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:first-child img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:first-child figcaption {
+  font-weight: 600;
+  color: #333;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:last-child {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:last-child figcaption {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f39c12;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:first-child figure:last-child img {
+  width: 20px;
+  height: 20px;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(2) {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(3) {
+  text-align: right;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+main.acceuilBackoffice section.avis article table tr:nth-child(2) td {
+  color: #555;
+  line-height: 1.6;
+}
+main.acceuilBackoffice section.avis article table tr:last-child td:last-child {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+main.acceuilBackoffice section.avis article table tr:last-child td:last-child img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 }
 main.acceuilBackoffice section.produits article {
   display: grid;

@@ -105,7 +105,7 @@ require_once '../../controllers/date.php';
     foreach ($avis as $avi) {
         $imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
         $html = "
-        <table border=2>
+        <table>
             <tr>
                 <td rowspan=2>
                     <figure>
