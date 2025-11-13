@@ -5,6 +5,7 @@ function popUpModifierMdp(){
                 <main class="mainPopUpCompteClient">
                 <h1>Modification de votre mot de passe</h1>
                 <p>${mdpChiffree}</p>
+                <p>${mdpDechiffree}</p>
                 <section>
                     <div class="formulaireMdp">
                         <form action="">
