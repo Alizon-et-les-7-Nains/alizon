@@ -331,13 +331,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             window.close();
         }
 
+        let elems = document.querySelectorAll("section p");
+
         function boutonAnnuler() {
 
             let inputs = document.querySelectorAll("section input");
 
             for (let i = 0; i < inputs.length; i++) {
                 let p = document.createElement("p");
-                p.innerText = inputs[i].value;
+                p.innerText = elems[i].value;
                 inputs[i].parentNode.replaceChild(p, inputs[i]);
             }
 
@@ -355,6 +357,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             imageProfile.style.cursor = "default";
             imageProfile.onclick = null;
+            
         }
     </script>
 </body>

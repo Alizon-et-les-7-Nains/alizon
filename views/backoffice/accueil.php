@@ -25,11 +25,11 @@ require_once '../../controllers/date.php';
                 <h1>Stocks Faibles</h1>
                 <article>
 <?php
-    $stock = ($pdo->query("select * from _produit where stock < seuilAlerte"))->fetchAll(PDO::FETCH_ASSOC);
+    $stock = ($pdo->query(file_get_contents('../../queries/backoffice/stockFaible.sql')))->fetchAll(PDO::FETCH_ASSOC);
     if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
     foreach ($stock as $produit => $atr) {
         $idProduit = $atr['idProduit'];
-        $image = ($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
+        $image = ($pdo->query(file_get_contents('../../queries/imagesProduit.sql')))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $html = "
         <table>
@@ -68,7 +68,7 @@ require_once '../../controllers/date.php';
     if (count($commandes) == 0) echo "<h2>Aucune commande</h2>";
     foreach ($commandes as $commande) {
         $idProduit = $commande['idProduit'];
-        $image = ($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
+        $image = ($pdo->query(file_get_contents('../../queries/imagesProduit.sql')))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $html = "
         <table>
@@ -166,10 +166,10 @@ require_once '../../controllers/date.php';
                 <h1>Produits en Vente</h1>
                 <article>
 <?php
-    $produits = ($pdo->query("select * from _produit where enVente = true"))->fetchAll(PDO::FETCH_ASSOC);
+    $produits = ($pdo->query(file_get_contents('../../queries/backoffice/produitsVente.sql')))->fetchAll(PDO::FETCH_ASSOC);
     foreach ($produits as $produit => $atr) {
         $idProduit = $atr['idProduit'];
-        $image = ($pdo->query("select URL from _imageDeProduit where idProduit = $idProduit"))->fetchAll(PDO::FETCH_ASSOC);
+        $image = ($pdo->query(file_get_contents('../../queries/imagesProduit.sql')))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $html = "
         <table>
