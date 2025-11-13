@@ -74,8 +74,8 @@
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idCategorie = :idCategorie");
-                $stmt->execute([':idCategorie' => 3]);
+                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE typeProd = :typeProd");
+                $stmt->execute([':typeProd' => 'charcuterie']);
                 $produitCharcuterie = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 if (count($produitCharcuterie) > 0) {
@@ -121,9 +121,9 @@
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idCategorie = :idCategorie");
-                $stmt->execute([':idCategorie' => 1]);
-                $produitAlcool = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE typeProd = :typeProd");
+                $stmt->execute([':typeProd' => 'alcools']);
+                $produitCharcuterie = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 if (count($produitAlcool) > 0) {
                     foreach ($produitAlcool as $value) {
