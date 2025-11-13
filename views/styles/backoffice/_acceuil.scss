@@ -65,6 +65,11 @@ main.acceuilBackoffice {
                 border-radius: 16px;
                 font-family: 'open-sans';
                 font-size: 20px;
+
+                img {
+                    height: 100px; width: 100px;
+                    object-fit: cover;
+                }
                 
                 tr:nth-child(3) {
                     font: {
