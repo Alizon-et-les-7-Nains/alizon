@@ -1,15 +1,23 @@
+function fermerPopUp(overlay){
+    overlay.remove();
+}
+
 function popUpModifierMdp(){
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpCompteClient";
     overlay.innerHTML = `
                 <main class="mainPopUpCompteClient">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div> 
                 <h1>Modification de votre mot de passe</h1>
                 <section>
                     <div class="formulaireMdp">
                         <form action="">
-                            <input type="text" placeholder="Ancien mot de passe">
-                            <input type="text" placeholder="Nouveau mot de passe">
-                            <input type="text" placeholder="Confirmer le nouveau mot de passe">
+                            <input type="password" placeholder="Ancien mot de passe">
+                            <input type="password" placeholder="Nouveau mot de passe">
+                            <input type="password" placeholder="Confirmer le nouveau mot de passe">
                         
                             <article>
                                 <div class="croix">
@@ -49,16 +57,21 @@ function popUpModifierMdp(){
                 </main>`;
     document.body.appendChild(overlay);
 
+    let croixFermerLaPage = document.getElementsByClassName("croixFermerLaPage");
+    croixFermerLaPage = croixFermerLaPage[0];
+    croixFermerLaPage.addEventListener("click",fermerPopUp(overlay));
+
     let input = document.querySelectorAll("input");
     let ancienMdp = input[0];
     let nouveauMdp = input[1];
     let confirmationMdp = input[2];
     let button = document.querySelectorAll("button");
     let valider = button[0];
+    valider.addEventListener("click",fermerPopUp(overlay));
 
-    ancienMdpChiffree = vignere(ancienMdp, cle, 1);
+    ancienMdpChiffree = vignere(ancienMdp.value, cle, 1);
 
-    if (ancienMdpChiffree === mdpChiffree && nouveauMdp === confirmationMdp){
+    if (ancienMdpChiffree === mdpChiffree && nouveauMdp.value === confirmationMdp.value){
         valider.disabled = false;
         valider.cursor = "pointer";
     } else {
