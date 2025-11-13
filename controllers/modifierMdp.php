@@ -14,4 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     SET mdp = '$nouveauMdp'
     WHERE idClient = '$idClient';");
 }
+
+header("Location: ../frontoffice/compteClient.php"); 
 ?>
