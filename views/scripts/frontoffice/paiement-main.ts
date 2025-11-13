@@ -6,7 +6,6 @@ import { CartItem, Inputs, Maps } from "./paiement-types";
 import { validateAll } from "./paiement-validation";
 import { setupAutocomplete } from "./paiement-autocomplete";
 import { showPopup } from "./paiement-popup";
-// aside is rendered server-side now; no client init required
 
 if (document.body.classList.contains("pagePaiement")) {
   // Éléments
@@ -86,7 +85,7 @@ if (document.body.classList.contains("pagePaiement")) {
     selectedDepartment,
   });
 
-  // aside is rendered server-side (PHP forms). No client-side init required.
+  // Gestion des boutons payer
   payerButtons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();

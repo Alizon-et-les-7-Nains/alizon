@@ -42,9 +42,3 @@ export interface OrderData {
   regionLivraison: string;
   numeroCarte: string;
 }
-
-export interface AsideHandle {
-  update(newCart: CartItem[]): void;
-  getElement(): HTMLElement;
-  getCart(): CartItem[];
-}

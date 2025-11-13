@@ -21,14 +21,23 @@ class PaymentAPI {
       }
 
       const result = await response.json();
-      return result.success;
+      if (result.success) {
+        // Rechargement simple de la page pour voir les changements
+        window.location.reload();
+      } else {
+        alert("Erreur lors de la mise à jour de la quantité");
+      }
     } catch (error) {
       console.error("Erreur lors de la mise à jour:", error);
-      return false;
+      alert("Erreur réseau lors de la mise à jour");
     }
   }
 
   static async removeItem(idProduit) {
+    if (!confirm("Supprimer ce produit du panier ?")) {
+      return;
+    }
+
     try {
       const response = await fetch("", {
         method: "POST",
@@ -43,10 +52,15 @@ class PaymentAPI {
       }
 
       const result = await response.json();
-      return result.success;
+      if (result.success) {
+        // Rechargement simple de la page pour voir les changements
+        window.location.reload();
+      } else {
+        alert("Erreur lors de la suppression du produit");
+      }
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
-      return false;
+      alert("Erreur réseau lors de la suppression");
     }
   }
 
@@ -73,18 +87,6 @@ class PaymentAPI {
   }
 }
 
-// Fonction pour rafraîchir le panier
-async function refreshCart() {
-  try {
-    // Pour l'instant, on utilise le rechargement simple
-    // Vous pourriez implémenter une version AJAX plus tard
-    window.location.reload();
-  } catch (error) {
-    console.error("Erreur lors du rafraîchissement:", error);
-    window.location.reload(); // Fallback
-  }
-}
-
 // Initialisation au chargement de la page
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Initialisation de la page de paiement...");
@@ -92,35 +94,29 @@ document.addEventListener("DOMContentLoaded", function () {
   // Exposer l'API globalement
   window.PaymentAPI = PaymentAPI;
 
-  // Vérifier la disponibilité des données
-  if (!window.__PAYMENT_DATA__) {
-    console.error("Données de paiement non disponibles");
-    return;
-  }
+  // Gestion des boutons +, -, supprimer du aside PHP
+  document
+    .querySelectorAll("button.plus, button.minus, button.delete")
+    .forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        const id = this.getAttribute("data-id");
+        if (!id) return;
 
-  // Initialiser l'aside si disponible
-  if (typeof initAside !== "undefined" && document.getElementById("recap")) {
-    const cartData = window.__PAYMENT_DATA__.cart || [];
-    const asideHandle = initAside("#recap", cartData, refreshCart);
-
-    // Stocker les références globales
-    window.__ASIDE_HANDLE__ = asideHandle;
-    window.paiementAside = asideHandle;
-
-    console.log("Aside initialisé avec", cartData.length, "produits");
-  }
+        if (this.classList.contains("plus")) {
+          PaymentAPI.updateQuantity(id, 1);
+        } else if (this.classList.contains("minus")) {
+          PaymentAPI.updateQuantity(id, -1);
+        } else if (this.classList.contains("delete")) {
+          PaymentAPI.removeItem(id);
+        }
+      });
+    });
 
   // Gestion des boutons payer
   document.querySelectorAll(".payer").forEach((btn) => {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
-
-      // Vérifier que l'API est disponible
-      if (typeof showPopup === "undefined") {
-        alert("Fonctionnalité de paiement non disponible");
-        return;
-      }
-
       showPopup("Confirmation de commande");
     });
   });

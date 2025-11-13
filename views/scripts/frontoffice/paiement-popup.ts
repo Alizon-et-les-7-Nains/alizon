@@ -10,6 +10,7 @@ declare global {
       cart?: CartItem[];
       [key: string]: any;
     };
+    PaymentAPI?: any;
   }
 }
 
@@ -27,7 +28,6 @@ export function showPopup(message: string) {
   const villeInput = document.querySelector(
     "body.pagePaiement .ville-input"
   ) as HTMLInputElement | null;
-  // CORRECTION : utiliser la bonne classe
   const numCarteInput = document.querySelector(
     "body.pagePaiement .num-carte"
   ) as HTMLInputElement | null;
@@ -38,7 +38,16 @@ export function showPopup(message: string) {
   const rawNumCarte = numCarteInput?.value.replace(/\s+/g, "") || "";
   const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
 
-  // CORRECTION : Utiliser les bonnes propriétés des données PHP
+  // Déterminer la région à partir du code postal
+  let region = "";
+  if (codePostal.length >= 2) {
+    const codeDept =
+      codePostal.length === 5
+        ? codePostal.slice(0, 2)
+        : codePostal.padStart(2, "0");
+    region = `Département ${codeDept}`;
+  }
+
   const preCart = Array.isArray(window.__PAYMENT_DATA__?.cart)
     ? (window.__PAYMENT_DATA__!.cart as CartItem[])
     : [];
@@ -98,45 +107,32 @@ export function showPopup(message: string) {
   if (!confirmBtn) return;
 
   confirmBtn.addEventListener("click", async () => {
-    confirmBtn.disabled = true;
-    const prevText = confirmBtn.textContent || "";
+    const popup = overlay.querySelector(".payment-popup") as HTMLElement | null;
+    if (!popup) return;
+
+    // Afficher un indicateur de chargement
     confirmBtn.textContent = "Traitement en cours...";
+    confirmBtn.disabled = true;
 
     try {
-      console.log("Création commande via AJAX direct...");
+      // Appeler l'API pour créer la commande
+      const orderData = {
+        adresseLivraison: adresse,
+        villeLivraison: ville,
+        regionLivraison: region,
+        numeroCarte: rawNumCarte,
+        codePostal: codePostal,
+      };
 
-      const response = await fetch("", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `action=createOrder&adresseLivraison=${encodeURIComponent(
-          adresse
-        )}&villeLivraison=${encodeURIComponent(
-          ville
-        )}&regionLivraison=${encodeURIComponent(
-          codePostal
-        )}&numeroCarte=${encodeURIComponent(rawNumCarte)}`,
-      });
+      const result = await window.PaymentAPI.createOrder(orderData);
 
-      if (!response.ok) {
-        throw new Error(`Erreur réseau (${response.status})`);
-      }
-
-      const result = await response.json();
-
-      if (result && result.success) {
-        console.log("Commande créée en BD:", result.idCommande);
-        const popup = overlay.querySelector(".payment-popup") as HTMLElement;
-        if (!popup) {
-          overlay.remove();
-          return;
-        }
-
+      if (result.success) {
+        // Afficher le message de succès
         popup.innerHTML = `
           <div class="thank-you">
             <h2>Merci de votre commande !</h2>
-            <p>Votre commande n°${result.idCommande} a bien été enregistrée.</p>
+            <p>Votre commande a bien été enregistrée.</p>
+            <p><strong>Numéro de commande :</strong> ${result.idCommande}</p>
             <button class="close-popup">Fermer</button>
           </div>
         `;
@@ -145,20 +141,23 @@ export function showPopup(message: string) {
           ".close-popup"
         ) as HTMLButtonElement | null;
         innerClose?.addEventListener("click", () => {
-          overlay.remove();
-          // Redirection après commande
-          window.location.href = "/accueil";
+          // Recharger la page pour vider le panier
+          window.location.reload();
         });
       } else {
-        throw new Error(result?.error || "Erreur inconnue");
+        // Afficher l'erreur
+        alert(
+          "Erreur lors de la création de la commande: " +
+            (result.error || "Erreur inconnue")
+        );
+        confirmBtn.textContent = "Confirmer ma commande";
+        confirmBtn.disabled = false;
       }
     } catch (error) {
-      console.error("Erreur création commande:", error);
-      alert(
-        "Erreur lors de la création de la commande: " + (error as Error).message
-      );
+      console.error("Erreur:", error);
+      alert("Erreur réseau lors de la création de la commande");
+      confirmBtn.textContent = "Confirmer ma commande";
       confirmBtn.disabled = false;
-      confirmBtn.textContent = prevText || "Confirmer ma commande";
     }
   });
 }
