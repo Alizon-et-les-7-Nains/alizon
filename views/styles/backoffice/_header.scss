@@ -14,7 +14,7 @@ header.backoffice {
         margin: 0;
     }
     
-    img, figure {
+    img, figure, h1 {
         user-select: none;
     }
     
@@ -92,54 +92,7 @@ header.backoffice {
                     height: 40px;
                 }
             }
-            
-            &:nth-child(2) {
-                position: relative;
-                width: 50px;
-                height: 50px;
-                
-                &::before {
-                    content: '';
-                    position: absolute;
-                    top: 5px;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-image: url(../../../public/images/bellDark.svg);
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    transition: opacity 0.2s ease;
-                    opacity: 1;
-                }
-                
-                &::after {
-                    content: '';
-                    position: absolute;
-                    top: 5px;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-image: url(../../../public/images/bellRingDark.svg);
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    transition: opacity 0.2s ease;
-                    opacity: 0;
-                }
-                
-                &:hover {
-                    &::before {
-                        opacity: 0;
-                    }
-                    
-                    &::after {
-                        opacity: 1;
-                    }
-                }
-            }
-            
-            &:nth-child(3), &:nth-child(4) {
+            &:nth-child(2), &:nth-child(3) {
                 flex-direction: column;
                 align-items: center;
                 
@@ -160,6 +113,75 @@ header.backoffice {
             &:nth-child(4) {
                 img {
                     height: 35px;
+                }
+            }
+        }
+    }
+    
+    &.nouveauProduit {
+        nav figure:first-child {
+            display: none;
+        }
+    }
+    
+    &.nonConnecte {
+        nav {
+            display: none;
+        }
+    }
+    
+    dialog {
+        background-color: $color-white;
+        border: none;
+        border-radius: 16px;
+        padding: {
+            left: 2em; right: 2em;
+            top: 1em; bottom: 1em;
+        }
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: $color-blue;
+        font-family: 'open-sans';
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        
+        &::backdrop {
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(1px);
+        }
+        
+        button {
+            border: none;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            transition: all 0.2s;
+            
+            &:hover img {
+                content: url(../../../public/images/croixRouge.svg);
+            }
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-around;
+            
+            button {
+                padding: 1em;
+                width: 200px;
+                font-size: 20px;
+                border-radius: 24px;
+                
+                &:first-child {
+                    background-color: $color-pastel-purple;
+                    color: $color-blue;
+                }
+                &:last-child {
+                    background-color: $color-blue;
+                    color: $color-white;
                 }
             }
         }

@@ -1,0 +1,241 @@
+@use '../fonts';
+@use '../colors' as *;
+
+@mixin secondary {
+    cursor: pointer;
+    color: $color-blue;
+    background-color: $color-pastel-blue;
+    border: {
+        style: solid;
+        color: $color-blue;
+        width: 2px;
+    }
+}
+
+main.acceuilBackoffice {
+    display: flex;
+    flex-direction: column;
+    
+    img, button {
+        user-select: none;
+    }
+    
+    section {
+        display: flex;
+        flex-direction: column;
+        color: $color-blue;
+        width: 100%;
+        
+        h1 {
+            user-select: none;
+            font: {
+                family: 'lora';
+                
+            }
+        }
+        
+        article {
+            width: 100%;
+            overflow-x: auto; 
+        }
+        
+        a {
+            margin-top: 1em;
+            align-self: flex-end;
+            
+            img {
+                height: 25px;
+            }
+        }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        &.stock article {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            width: 100%;
+            gap: 2em;
+            
+            table {
+                padding: 1em;
+                border: solid 2px $color-blue;
+                border-radius: 16px;
+                font-family: 'open-sans';
+                font-size: 20px;
+                
+                img {
+                    height: 100px;
+                }
+                
+                tr:nth-child(3) {
+                    font: {
+                        family: 'open-sans-bold';
+                    }
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    
+                    td:nth-child(2) {
+                        margin-left: auto;
+                        font-size: 30px;
+                        
+                        &.epuise {
+                            color: $color-red;
+                        }
+                        &.faible {
+                            color: $color-orange;
+                        }
+                    }
+                }
+            }
+        }
+        
+        &.commandes article {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+            width: 100%;
+            gap: 2em;
+            font-family: 'open-sans';
+            font-size: 20px;
+            
+            table {
+                padding: 1em;
+                border: {
+                    style: solid;
+                    width: 2px;
+                    radius: 16px;
+                    color: $color-blue;
+                }
+                
+                img {
+                    height: 100px;
+                    width: 100px;
+                    object-fit: cover;
+                }
+                
+                th {
+                    font-size: 20px;
+                }
+                
+                tr:first-child th {
+                    text-align: left;
+                    line-height: 0.5em;
+                }
+                tr:nth-child(2) td {
+                    vertical-align: top;
+                }
+                tr:last-child th {
+                    text-align: right;
+                }
+            }
+        }
+        
+        &.avis article {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2em;
+            font-family: 'open-sans';
+            
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 20px;
+                background-color: $color-pastel-purple;
+                border-radius: 16px;
+
+                td, th {
+                    padding: 0.5em;
+                }
+
+                tr:first-child {
+                    th:first-child {
+                        vertical-align: top;
+                    }
+
+                    figure:first-child {
+                        img {
+                            height: 80px; width: 80px;
+                            object-fit: cover;
+                            border-radius: 100%;
+                        }
+                    }
+                    figure:last-child {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.25em;
+                        justify-self: center;
+                        color: $color-yellow;
+
+                        img {
+                            height: 25px; width: 25px;
+                        }
+                    }
+
+                    th:nth-child(2) {
+                        white-space: nowrap;
+                        text-align: left;
+                    }
+
+                    td {
+                        width: 100%;
+                    }
+                }
+
+                tr:nth-child(2) {
+                    vertical-align: top;
+                }
+
+                tr:last-child {
+                    td:last-child {
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+                }
+            }
+
+            img.imageAvis {
+                height: 150px;
+            }
+        }
+        
+        &.produits article {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            max-width: 100%;
+            gap: 2em;
+            font-size: 20px;
+            
+            table {
+                padding: 1em;
+                border: {
+                    style: solid;
+                    width: 2px;
+                    color: $color-blue;
+                    radius: 16px;
+                }
+                
+                img {
+                    height: 100px; width: 100px;
+                    object-fit: cover;
+                }
+                
+                th {
+                    text-align: left;
+                }
+                
+                tr:last-child td {
+                    font-family: 'open-sans';
+                    
+                    &:last-child {
+                        text-align: right;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}

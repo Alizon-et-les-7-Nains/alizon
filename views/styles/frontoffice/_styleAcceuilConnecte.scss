@@ -1,0 +1,215 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.acceuil {
+    .nomCategorie {
+        display: flex;
+        align-items: center;
+        margin: 15px 40px;
+    }
+
+    .nomCategorie h2 {
+        font-family: "Lora", serif;
+        font-size: 40px;
+        color: #273469;
+        font-weight: 100;
+    }
+
+    .nomCategorie hr {
+        flex-grow: 1;
+        height: 3px;
+        background-color: #273469;
+        border: none;
+        margin-left: 20px;
+    }
+
+    .banniere, .banniere div {
+        background-color: #E4D9FF;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .banniere {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .banniere * {
+        margin: 0px 30px;
+    }
+
+    .banniere h1 {
+        color: #273469;
+        font-family: "Lora", serif;
+        font-size: 45px;
+        font-weight: bold;  
+        font-style: italic; 
+    }
+
+    .banniere img {
+        max-width: 340px;
+    }
+
+    @media (max-width: 965px) {
+        .banniere div * {
+            margin: 0px 0px;
+        }
+        hr {
+            display: none;
+            visibility: hidden;
+        }
+        .banniere {
+            align-items: center;
+        }
+        .banniere, .banniere div {
+            display: block;
+        }
+        .banniere img {
+            max-width: 170px;
+        }
+        .banniere .fleche {
+            display: none;
+            visibility: hidden;
+        }
+        .banniere h1 {
+            font-size: 32px;
+            background-color: #E3F2FE;
+            padding: 10px;
+        }
+        .banniere div {
+            background-color: #E4D9FF;
+            display: block;
+            text-align: center;
+        }
+        .nomCategorie h2 {
+            font-size: 30px;
+        }
+    }
+
+    article {
+        border: 2px solid #273469;
+        margin-top: 5px;
+        border-radius: 20px;
+        margin: 0px 40px;
+        padding: 10px;
+        min-width: 276px;
+        max-width: 276px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    article:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(39, 52, 105, 0.3);
+    }
+
+    article h2 {
+        color: #273469;
+        font-size: 20px;
+        font-family: "Open-sans", serif;
+        font-weight: lighter;
+    }
+
+    article .imgProduit {
+        max-width: 267px;
+        max-height: 168px;
+        object-fit: contain;
+        border-radius: 20px;
+    }
+
+    .notation {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin: 5px 0;
+    }
+
+    .notation .etoile {
+        width: 20px;
+        height: 20px;
+    }
+
+    .notation span {
+        color: #273469;
+        font-family: "Open-sans", serif;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .listeArticle {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .listeArticle::-webkit-scrollbar {
+        display: none;
+        visibility: hidden;
+    }
+
+    .infoProd {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .prix h2 {
+        color: #273469;
+        font-size: 32px;
+        font-family: "Lora", serif;
+        font-weight: bold;   
+        font-style: normal;  
+        margin: 0;
+    }
+
+    .prix h3 {
+        color: #000000;
+        font-size: 12px;
+        font-family: "Lora", serif;
+        font-weight: bold;   
+        font-style: italic;  
+        margin: 0;
+    }
+
+    .listeArticle h1 {
+        font-family: "Lora", serif;
+        font-weight: bold;   
+        font-style: italic;  
+        margin-left: 40px;
+    }
+
+    article:hover {
+        cursor: pointer;
+    }
+
+    .nomProduit {
+        font-weight: normal;
+        margin-bottom: 0px;
+        color: #273469;
+        font-weight: 500;
+        margin-bottom: 0px;
+        margin-top: 10px;
+    }
+
+    .notation {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    .notation span {
+        font-family: "Lora", serif;
+        font-weight: bold;   
+        color: #273469;
+        font-size: 18px;
+    }
+
+    .notation img {
+        height: 32px;
+    }
+}

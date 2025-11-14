@@ -2,18 +2,25 @@
 <html lang="fr">
 
 <head>
+<<<<<<< HEAD
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../../public/style.css">
     <title>Alizon - Acceuil</title>
+=======
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../public/style.css">
+  <title>Alizon - Erreur</title>
+>>>>>>> origin/main
 </head>
 
 <body class="page404">
 
-    <img class="bgImgs bleu" src="../public/images/symboleBleu.png" alt="symboleBleu">
-    <img class="bgImgs rose" src="../public/images/symboleRose.png" alt="symboleRose">
+    <img class="bgImgs bleu" src="../../public/images/symboleBleu.png" alt="symboleBleu">
+    <img class="bgImgs rose" src="../../public/images/symboleRose.png" alt="symboleRose">
 
     <main>
 
@@ -23,7 +30,7 @@
         </div>
 
         <div>
-            <img src="../public/images/404.png" alt="Image d'erreur 404"><br>
+            <img src="../../public/images/404.png" alt="Image d'erreur 404"><br>
         </div>
 
         <div>
@@ -32,6 +39,7 @@
 
     </main>
 
+<<<<<<< HEAD
     <footer>
         <div class="footerPC">
             <div>
@@ -49,6 +57,8 @@
         </div>
     </footer>
 
+=======
+>>>>>>> origin/main
 </body>
 
 </html>
