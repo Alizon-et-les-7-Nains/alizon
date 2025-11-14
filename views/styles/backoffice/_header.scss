@@ -138,40 +138,61 @@ header.backoffice {
             left: 2em; right: 2em;
             top: 1em; bottom: 1em;
         }
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        // Retirez position: fixed, top, left, transform
+        // Le dialog se positionne automatiquement
         color: $color-blue;
         font-family: 'open-sans';
-        display: flex;
-        flex-direction: column;
-        gap: 1em;
+        // Gardez display: flex mais sans position fixed
         
         &::backdrop {
             background: rgba(0, 0, 0, 0.25);
             backdrop-filter: blur(1px);
         }
         
-        button {
+        // Ajoutez un conteneur flex interne
+        & > * {
+            display: block;
+        }
+        
+        button:first-child {
             border: none;
-            align-self: flex-end;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+            margin-left: auto;
+            display: block;
+            margin-bottom: 1em;
             transition: all 0.2s;
             
-            &:hover img {
-                content: url(../../../public/images/croixRouge.svg);
+            &:hover {
+                cursor: pointer;
+                
+                img {
+                    content: url(../../../public/images/croixRouge.svg);
+                }
             }
+            
+            img {
+                display: block;
+            }
+        }
+        
+        h1 {
+            margin-bottom: 1em;
         }
         
         nav {
             display: flex;
             justify-content: space-around;
+            gap: 1em;
             
             button {
                 padding: 1em;
                 width: 200px;
                 font-size: 20px;
                 border-radius: 24px;
+                border: none;
+                cursor: pointer;
                 
                 &:first-child {
                     background-color: $color-pastel-purple;
