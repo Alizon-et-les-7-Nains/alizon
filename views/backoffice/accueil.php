@@ -127,7 +127,7 @@ require_once '../../controllers/date.php';
                 <td></td>
                 <td colspan='2'>";   
                     foreach ($imagesAvis as $imageAvi) {
-                        $html .= "<img src='" . $imageAvi['URL'] . "'>";
+                        $html .= "<img src='" . $imageAvi['URL'] . "' class='imageAvis'>";
                     }
                 $html .= "</td>
             </tr>
