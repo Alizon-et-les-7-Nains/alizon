@@ -215,7 +215,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     $adresseLivraison = $_POST['adresseLivraison'] ?? '';
                     $villeLivraison = $_POST['villeLivraison'] ?? '';
                     $regionLivraison = $_POST['regionLivraison'] ?? '';
+                    // We expect the card number and CVV to be encrypted on the client-side
                     $numeroCarte = $_POST['numeroCarte'] ?? '';
+                    $cvv = $_POST['cvv'] ?? '';
                     $codePostal = $_POST['codePostal'] ?? '';
 
                     if (empty($adresseLivraison) || empty($villeLivraison) || empty($regionLivraison) || empty($numeroCarte)) {
@@ -223,7 +225,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         break;
                     }
 
-                    $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte, $codePostal);
+                    // Pass the encrypted CVV to the database function as well
+                    $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte, $codePostal, 'Client inconnu', '12/30', $cvv);
                     echo json_encode(['success' => true, 'idCommande' => $idCommande]);
                     break;
             case 'getCart':
@@ -416,6 +419,11 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
+    <script>
+
+    </script>
+    <!-- Chiffrement utilisé pour chiffrer numéro de carte et CVV côté client -->
+    <script src="../scripts/frontoffice/Chiffrement.js"></script>
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
