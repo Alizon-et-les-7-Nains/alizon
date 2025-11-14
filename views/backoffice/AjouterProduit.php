@@ -48,11 +48,18 @@
                 </div>
             <h2>Plus d'informations</h2>
 
-            <div id="sections-container"></div> 
+            <div id="sections-container"></div>
+
                 <div class="ajouterSection">
-                    <p>Etoffez la description de votre produit en ajoutant une première section</p>
+                    <p>Etoffez la description de votre produit en ajoutant une section</p>
+                    <select id="section-type">
+                        <option value="both">Titre + Description</option>
+                        <option value="title">Titre seulement</option>
+                        <option value="desc">Description seulement</option>
+                    </select>
                     <button id="add-section-btn" type="button">Ajouter une section</button>
                 </div>
+
             <div class="form-actions">
                 <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
                 <a href="#"><button type="button" class="btn-annuler">Annuler</button></a>
@@ -63,94 +70,94 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        //Récupère les éléments
         const photoUploadInput = document.getElementById('photoUpload');
         const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
-        const imagePreview = document.getElementById('imagePreview'); //image
-        const placeholderText = document.getElementById('placeholderText'); //paragraphe
-        const overlayText = document.getElementById('overlayText'); // texte “cliquer pour modifier”
-        
-        // Sauvegarde de l'URL par défaut
+        const imagePreview = document.getElementById('imagePreview');
+        const placeholderText = document.getElementById('placeholderText');
+        const overlayText = document.getElementById('overlayText');
+
         const originalImageSrc = imagePreview.src;
 
-        //Déclenche le clic sur l'input de fichier
         ajouterPhotoDiv.addEventListener('click', function() {
             photoUploadInput.click();
         });
 
-        //Gére la sélection du fichier et la prévisualisation
         photoUploadInput.addEventListener('change', function() {
             const files = this.files;
-            
             if (files && files.length > 0) {
                 const file = files[0];
-                
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
-                    
                     reader.onload = function(e) {
                         imagePreview.src = e.target.result;
                         placeholderText.style.display = 'none';
-                        overlayText.style.display = 'block';
+                        overlayText.style.opacity = '1';
                     };
-
                     reader.readAsDataURL(file);
-
                 } else {
                     imagePreview.src = originalImageSrc;
                     placeholderText.style.display = 'block';
-                    overlayText.style.display = 'none';
+                    overlayText.style.opacity = '0';
                     alert("Votre fichier n'est pas une image, merci de réessayer.");
                 }
             } else {
                 imagePreview.src = originalImageSrc;
                 placeholderText.style.display = 'block';
-                overlayText.style.display = 'none';
+                overlayText.style.opacity = '0';
             }
         });
+
         // Gestion des sections
         const addSectionBtn = document.getElementById('add-section-btn');
         const sectionsContainer = document.getElementById('sections-container');
+        const sectionTypeSelect = document.getElementById('section-type');
         let sectionCount = 0;
-    
-        // Fonction pour créer une nouvelle section
+
         function createNewSection(){
             sectionCount ++;
+            const type = sectionTypeSelect.value;
             const newSection = document.createElement('div');
             newSection.classList.add('new-section-box');
             newSection.dataset.sectionId = sectionCount;
-    
-            newSection.innerHTML = `
+
+            let sectionHTML = `
                 <div class="section-header">
                     <h3 class="section-title">Section n°${sectionCount}</h3>
                     <button type="button" class="btn-delete-section" title="Supprimer la section">
                         <i class="bi bi-x-circle-fill"></i>
                     </button>
                 </div>
-    
-                <div class="input-group">
-                    <label for="section-title-${sectionCount}">Titre de la section (H3)</label>
-                    <input type="text" id="section-title-${sectionCount}" name="section_title_${sectionCount}" placeholder="Ex: Ingrédients">
-                </div>
-    
-                <div class="input-group">
-                    <label for="section-desc-${sectionCount}">Description (P)</label>
-                    <textarea id="section-desc-${sectionCount}" name="section_desc_${sectionCount}" placeholder="Détaillez le contenu de cette section."></textarea>
-                </div>
             `;
-    
+
+            if(type === "both" || type === "title"){
+                sectionHTML += `
+                    <div class="input-group">
+                        <label for="section-title-${sectionCount}">Titre de la section (H3)</label>
+                        <input type="text" id="section-title-${sectionCount}" name="section_title_${sectionCount}" placeholder="Ex: Ingrédients">
+                    </div>
+                `;
+            }
+
+            if(type === "both" || type === "desc"){
+                sectionHTML += `
+                    <div class="input-group">
+                        <label for="section-desc-${sectionCount}">Description (P)</label>
+                        <textarea id="section-desc-${sectionCount}" name="section_desc_${sectionCount}" placeholder="Détaillez le contenu de cette section."></textarea>
+                    </div>
+                `;
+            }
+
+            newSection.innerHTML = sectionHTML;
+
             newSection.querySelector('.btn-delete-section').addEventListener('click', function(){
                 newSection.remove();
             });
-    
+
             sectionsContainer.appendChild(newSection);
         }
-        createNewSection();
-        // Ajout de sections supplémentaires au clic
+
         addSectionBtn.addEventListener('click', createNewSection);
     });
-
-
     </script>
     <?php require_once "./partials/footer.php"?>
 </body>
