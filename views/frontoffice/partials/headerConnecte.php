@@ -1,6 +1,3 @@
-<?php require_once "../../controllers/prix.php" ?>
-<?php require_once "../../controllers/pdo.php" ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,8 +27,8 @@
 
       </div>
       <div class="icons">
-        <a href=""><img src="../../../public/images/bellLightBlue.svg" alt=""></a>
-        <a href=""><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
+        <a href="../frontoffice/notification.php""><img src="../../../public/images/bellLightBlue.svg" alt=""></a>
+        <a href="../frontoffice/panier.php""><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
         <a href=""><img src="../../../public/images/burgerLightBlue.svg" alt=""></a>
       </div>
     </div>

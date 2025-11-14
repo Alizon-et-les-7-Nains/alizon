@@ -28,7 +28,7 @@
       </div>
       <div class="icons">
         <div class="seConnecter">
-            <a href=""><img src="../../../public/images/utilLightBlue.svg" alt=""></a>
+            <a href="../frontoffice/connexion.php""><img src="../../../public/images/utilLightBlue.svg" alt=""></a>
             <p>Se connecter</p>
         </div>
       </div>
