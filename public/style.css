@@ -1541,10 +1541,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: row;
   gap: 29px;
 }
-.mainCompteClient article div p, .mainCompteClient article div input {
+.mainCompteClient article div p, .mainCompteClient article div .input-container {
   width: 185px;
 }
-.mainCompteClient article p, .mainCompteClient input {
+.mainCompteClient article p, .mainCompteClient .input-container {
   margin-top: 45px;
   display: flex;
   align-items: center;
@@ -1596,12 +1596,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 0.8rem;
   margin-top: 2px;
   display: block;
-}
-.mainCompteClient .input-container {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 420px;
 }
 
 .overlayPopUpCompteClient {
