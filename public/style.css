@@ -489,20 +489,25 @@ header.backoffice dialog {
   background-color: #fffefa;
   border-radius: 16px;
   padding: 1em;
-  animation: all 0.2s;
+  animation: fadeIn 0.2s ease;
   transition: all 0.2s;
-  position: center center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 header.backoffice dialog::backdrop {
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(1px);
 }
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
   }
   to {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
