@@ -116,7 +116,7 @@ function setError(element, message) {
 function clearError(element) {
   if (!element) return;
   element.classList.remove("invalid");
-  const container = element.parentElement;
+  let container = element.closest(".input-contenaire") || element.parentElement;
   if (!container) return;
   const err = container.querySelector(".error-message");
   if (err) err.textContent = "";
