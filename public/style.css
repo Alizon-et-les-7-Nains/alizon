@@ -1544,7 +1544,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient article div p, .mainCompteClient article div .input-container {
   width: 185px;
 }
-.mainCompteClient article p, .mainCompteClient .input-container {
+.mainCompteClient article p, .mainCompteClient input {
   margin-top: 45px;
   display: flex;
   align-items: center;
@@ -1596,31 +1596,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 0.8rem;
   margin-top: 2px;
   display: block;
-}
-.mainCompteClient .input-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.mainCompteClient input {
-  width: 100%;
-  height: 45px;
-  font-size: 16px;
-  font-family: "lora";
-  font-weight: bold;
-  font-style: italic;
-  color: #6E6E6E;
-  border: 0;
-  background-color: transparent;
-}
-.mainCompteClient input:focus {
-  outline: none;
-  box-shadow: none;
-}
-.mainCompteClient .villeEtCodePostal {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
 }
 
 .overlayPopUpCompteClient {
