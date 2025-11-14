@@ -169,7 +169,7 @@ function verifierChamp() {
             }
         }  
 
-        if (champValide && (i === 5 || valeur !== "")) {
+        if ((i === 5 || valeur !== "")) {
             clearError(champs[i]);
         }
     }
