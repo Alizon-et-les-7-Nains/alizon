@@ -129,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" class="boutonModiferProfil">Modifier</button>
             </div>
         </form>
+
     </main>
     
     <?php include 'partials/footerConnecte.php'; ?>
@@ -138,7 +139,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tabMdp = $stmt->fetch(PDO::FETCH_ASSOC);
         $mdp = $tabMdp['mdp'];
     ?>
-    <script>const mdp = "<?php echo $mdp; ?>";</script>
+    <script src="../scripts/frontoffice/Chiffrement.js"></script>
+    <script>
+        const mdp = "<?php echo $mdp; ?>";
+    </script>
     <script src="../scripts/frontoffice/compteClient.js"></script>
 </body>
 </html>

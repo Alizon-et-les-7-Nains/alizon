@@ -94,6 +94,7 @@
         margin: 0px 40px;
         padding: 10px;
         min-width: 276px;
+        max-width: 276px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -155,7 +156,6 @@
         flex-wrap: nowrap;
         flex-direction: row;
         align-items: center;
-        margin-top: auto;
     }
 
     .prix h2 {

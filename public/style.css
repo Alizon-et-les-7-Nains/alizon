@@ -1361,6 +1361,9 @@ main.acceuilBackoffice section.stock article table {
   font-family: "open-sans";
   font-size: 20px;
 }
+main.acceuilBackoffice section.stock article table img {
+  height: 100px;
+}
 main.acceuilBackoffice section.stock article table tr:nth-child(3) {
   font-family: "open-sans-bold";
   display: flex;
@@ -1410,93 +1413,56 @@ main.acceuilBackoffice section.commandes article table tr:nth-child(2) td {
 main.acceuilBackoffice section.commandes article table tr:last-child th {
   text-align: right;
 }
-main.acceuilBackoffice section.avis article table {
+main.acceuilBackoffice section.avis article {
   width: 100%;
-  border-spacing: 1em 0;
-  table-layout: fixed;
-  border-collapse: separate;
-}
-main.acceuilBackoffice section.avis article table tr:first-child {
-  font-weight: bold;
-}
-main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) {
-  width: 120px;
-  justify-items: center;
-  line-height: 0.25em;
-}
-main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) figure:first-child {
-  border-radius: 100%;
-  height: 50px;
-  width: 50px;
-  background-image: url(/public/images/pp.png);
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(1) figure:last-child {
-  color: #FFD000;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 2em;
+  font-family: "open-sans";
 }
-main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(2) {
-  white-space: nowrap;
+main.acceuilBackoffice section.avis article table {
+  border-collapse: collapse;
+  width: 100%;
   font-size: 20px;
 }
-main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(3) {
-  width: auto;
-  font-weight: normal;
-  font-size: 12px;
+main.acceuilBackoffice section.avis article table td, main.acceuilBackoffice section.avis article table th {
+  padding: 0.5em;
 }
-main.acceuilBackoffice section.avis article table tr:first-child td:nth-child(4) {
-  width: 120px;
-}
-main.acceuilBackoffice section.avis article table tr:nth-child(2) td {
+main.acceuilBackoffice section.avis article tr:first-child th:first-child {
   vertical-align: top;
 }
-main.acceuilBackoffice section.avis article table tr:nth-child(3) td:last-child {
+main.acceuilBackoffice section.avis article tr:first-child figure:first-child img {
+  height: 80px;
+  width: 80px;
+  object-fit: cover;
+  border-radius: 100%;
+}
+main.acceuilBackoffice section.avis article tr:first-child figure:last-child {
   display: flex;
-  gap: 1em;
-  justify-content: flex-start;
+  align-items: center;
+  gap: 0.25em;
+  justify-self: center;
 }
-main.acceuilBackoffice section.avis article table tr:nth-child(3) td:last-child img {
-  height: 100px;
-  width: auto;
-  object-fit: contain;
+main.acceuilBackoffice section.avis article tr:first-child figure:last-child img {
+  height: 25px;
+  width: 25px;
 }
-main.acceuilBackoffice section.avis article table tr:last-child td:nth-child(2) {
-  padding-right: 1em;
-}
-main.acceuilBackoffice section.avis article table tr:last-child td:nth-child(3) {
-  width: auto;
-  text-align: right;
+main.acceuilBackoffice section.avis article tr:first-child th:nth-child(2) {
   white-space: nowrap;
+  text-align: left;
 }
-main.acceuilBackoffice section.avis article table input {
-  border: none;
+main.acceuilBackoffice section.avis article tr:first-child td {
   width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  outline: none;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #273469;
-  border-radius: 4px;
 }
-main.acceuilBackoffice section.avis article table button {
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  font-family: "lora";
-  font-weight: bold;
-  background: none;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #273469;
-  border-radius: 8px;
-  color: #273469;
-  white-space: nowrap;
-  box-sizing: border-box;
-  min-width: fit-content;
+main.acceuilBackoffice section.avis article tr:nth-child(2) {
+  vertical-align: top;
+}
+main.acceuilBackoffice section.avis article tr:last-child td:last-child {
+  display: flex;
+  flex-wrap: wrap;
+}
+main.acceuilBackoffice section.avis article img.imageAvis {
+  height: 150px;
 }
 main.acceuilBackoffice section.produits article {
   display: grid;
@@ -1622,6 +1588,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   width: 200px;
   height: 55px;
 }
+.mainCompteClient .error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 2px;
+  display: block;
+}
 
 .overlayPopUpCompteClient {
   position: fixed;
@@ -1716,6 +1688,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin: 0px 40px;
   padding: 10px;
   min-width: 276px;
+  max-width: 276px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1768,7 +1741,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-wrap: nowrap;
   flex-direction: row;
   align-items: center;
-  margin-top: auto;
 }
 .acceuil .prix h2 {
   color: #273469;
@@ -1821,8 +1793,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 
 .mainPopUpCompteClient {
   background-color: #fffefa;
-  padding: 10px;
+  padding: 30px 50px;
   border-radius: 16px;
+  position: relative;
 }
 .mainPopUpCompteClient h1 {
   font-style: normal;
@@ -1894,6 +1867,26 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainPopUpCompteClient .formulaireMdp {
   display: flex;
   flex-direction: column;
+}
+.mainPopUpCompteClient .croixFermerLaPage {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}
+.mainPopUpCompteClient .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.mainPopUpCompteClient .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.mainPopUpCompteClient .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 /*# sourceMappingURL=style.css.map */

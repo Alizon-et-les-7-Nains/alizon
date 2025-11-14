@@ -2,23 +2,24 @@
 @use "../fonts" as *;
 
 .mainPopUpCompteClient{ 
- background-color: $color-white;
- padding: 10px;
- border-radius: 16px;
- h1{
-    font-style: normal;
-    font-weight: normal;
-    font-size: 48px;
-    color: #273469;
-    text-align: center;
+    background-color: $color-white;
+    padding: 30px 50px;
+    border-radius: 16px;
+    position: relative;
+    h1{
+        font-style: normal;
+        font-weight: normal;
+        font-size: 48px;
+        color: #273469;
+        text-align: center;
     }
-
+    
     form{
         display: flex;
         flex-direction: column;
-
+        
     }
-
+    
     input{
         width: 450px;
         height: auto;
@@ -29,7 +30,7 @@
         border: 2px solid #273469;
         border-radius: 8px ;
     }
-
+    
     button{
         width: 200px;
         color : #273469;
@@ -44,11 +45,11 @@
         margin-top: 20px;
         cursor: pointer;
     }
-
+    
     .croix {
         position: relative;   
     }
-
+    
     .croix div {
         position: absolute; 
         top: 50%;             
@@ -57,15 +58,15 @@
         height: 2px;           
         background-color: #BABABA;
     }
-
+    
     .croix div:first-of-type {
         transform: translate(-50%, -50%) rotate(45deg);
     }
-
+    
     .croix div:last-of-type {
         transform: translate(-50%, -50%) rotate(-45deg);
     }
-
+    
     section{
         display:flex ;
         flex-direction: column;
@@ -73,20 +74,41 @@
         justify-content: center;
         
     }
-
+    
     section article{
         display: flex;
         flex-direction: row;
         gap: 20px;
         padding-left: 10px;
     }
-
+    
     p{
         margin: 5px;
     }
-
+    
     .formulaireMdp{
         display: flex;
         flex-direction: column;
+    }
+    
+    .croixFermerLaPage {
+        position: absolute; 
+        top: 30px;
+        right: 30px;
+        cursor: pointer;
+    }
+    .croixFermerLaPage div {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 30px; 
+        height: 3px;
+        background-color: #BABABA;
+    }
+    .croixFermerLaPage div:first-of-type {
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+    .croixFermerLaPage div:last-of-type {
+        transform: translate(-50%, -50%) rotate(-45deg);
     }
 }
