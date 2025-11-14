@@ -1542,7 +1542,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: row;
   gap: 29px;
 }
-.mainCompteClient article div p, .mainCompteClient article div input#codePostal, .mainCompteClient article div input#ville {
+.mainCompteClient article div p, .mainCompteClient article div .input-container, .mainCompteClient article div input#codePostal, .mainCompteClient article div input#ville {
   width: 185px;
 }
 .mainCompteClient article p,

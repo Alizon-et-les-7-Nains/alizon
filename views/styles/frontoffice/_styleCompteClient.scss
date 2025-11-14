@@ -49,7 +49,7 @@
             flex-direction: row;
             gap: 29px;
 
-            p, input#codePostal, input#ville {
+            p, .input-container, input#codePostal, input#ville {
                 width: 185px; // code postal + ville
             }
         }
