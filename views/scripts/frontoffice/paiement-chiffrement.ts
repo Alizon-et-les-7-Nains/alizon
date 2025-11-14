@@ -1,1 +1,0 @@
-const cardNum = <?php echo $cvv ?>

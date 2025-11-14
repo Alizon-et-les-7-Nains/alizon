@@ -31,7 +31,7 @@ document.querySelector('header.backoffice dialog nav button:first-child')?.addEv
 document.querySelector('header.backoffice dialog nav button:last-child')?.addEventListener('click', () => {
     window.location.href = '10.253.5.104/views/backoffice/connexion.php';
 });
-modal?.addEventListener('click', (e) => {
+modal.addEventListener('click', (e) => {
     if (e.target === modal) {
         modal.close();
     }
@@ -473,8 +473,6 @@ define("frontoffice/paiement-autocomplete", ["require", "exports", "frontoffice/
         }
     }
 });
-const cardNum = echo, $cvv;
- > ;
 // ============================================================================
 // POPUP - Version avec base de données
 // ============================================================================
