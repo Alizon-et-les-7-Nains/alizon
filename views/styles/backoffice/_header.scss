@@ -196,9 +196,8 @@ header.backoffice {
                         border: {
                             style: solid;
                             width: 2px;
-                            color: $color-blue;
+                            color: $color-white;
                         }
-                        background-color: $color-pastel-blue;
                     }
                 }
                 &:last-child {
@@ -211,8 +210,6 @@ header.backoffice {
                             width: 2px;
                             color: $color-blue;
                         }
-                        background-color: $color-pastel-blue;
-                        color: $color-blue;
                     }
                 }
             }

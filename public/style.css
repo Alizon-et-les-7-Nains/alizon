@@ -545,8 +545,7 @@ header.backoffice dialog nav button:first-child {
 header.backoffice dialog nav button:first-child:hover {
   border-style: solid;
   border-width: 2px;
-  border-color: #273469;
-  background-color: #e3f2fe;
+  border-color: #fffefa;
 }
 header.backoffice dialog nav button:last-child {
   background-color: #273469;
@@ -556,8 +555,6 @@ header.backoffice dialog nav button:last-child:hover {
   border-style: solid;
   border-width: 2px;
   border-color: #273469;
-  background-color: #e3f2fe;
-  color: #273469;
 }
 
 .status-red {
