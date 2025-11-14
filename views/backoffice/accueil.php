@@ -121,6 +121,7 @@ require_once '../../controllers/date.php';
                 <td>Le " . formatDate($avi['dateAvis']) . "</td>
             </tr>
             <tr>
+                <td></td>
                 <td colspan=2>" . $avi['contenuAvis'] . "</td>
             </tr>
             <tr>
