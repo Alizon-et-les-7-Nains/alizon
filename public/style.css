@@ -1524,6 +1524,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 100%;
   width: 150px;
   height: auto;
+  cursor: default;
 }
 .mainCompteClient section {
   display: flex;
@@ -1541,7 +1542,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: row;
   gap: 29px;
 }
-.mainCompteClient article p, .mainCompteClient input {
+.mainCompteClient article div p, .mainCompteClient article div .input-container, .mainCompteClient article div input#codePostal, .mainCompteClient article div input#ville {
+  width: 185px;
+}
+.mainCompteClient article p,
+.mainCompteClient article input {
   margin-top: 45px;
   display: flex;
   align-items: center;
@@ -1555,6 +1560,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-family: "lora";
   font-weight: bold;
   font-style: italic;
+}
+.mainCompteClient .input-container {
+  display: flex;
+  flex-direction: column;
+  width: 420px;
 }
 .mainCompteClient #buttonsCompte {
   padding-top: 32px;
@@ -1570,7 +1580,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 32px;
   padding: 10px;
   border: none;
-  border-radius: 32px;
   font-family: "lora";
   cursor: pointer;
 }
@@ -1593,14 +1602,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 0.8rem;
   margin-top: 2px;
   display: block;
-}
-.mainCompteClient .input-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-.mainCompteClient article div p, .mainCompteClient article div .input-container, .mainCompteClient article div input#codePostal, .mainCompteClient article div input#ville {
-  width: 185px;
 }
 
 .overlayPopUpCompteClient {
