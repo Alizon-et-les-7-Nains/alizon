@@ -1,38 +1,39 @@
 @use "../colors" as *;
 @use "../fonts" as *;
-
-.mainCompteClient {
+ 
+.mainCompteClient{
     background-image: url("../../../public/images/triskel.png");
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size:contain;
     font-family: 'lora';
     font-weight: bold;
     font-style: italic;
 
-    h1 {
+
+    h1{
         font-family: 'lora';
         font-size: 48px;
         color: $color-blue;
     }
 
-    #titreCompte {
-        padding-top: 60px;
-        padding-bottom: 10px;
-        padding-left: 50px;
+    #titreCompte{
+        padding-top:60px ;
+        padding-bottom:10px ;
+        padding-left:50px ;
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: 50px;
     }
 
-    #titreCompte img {
+    #titreCompte img{
         border-radius: 100%;
         width: 150px;
         height: auto;
-        cursor: default;
     }
 
-    section {
+
+    section{
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
@@ -40,36 +41,19 @@
         flex-wrap: wrap;
     }
 
-    article {
+    article{
         display: flex;
         flex-direction: column;
-
-        div {
-            display: flex;
-            flex-direction: row;
-            gap: 29px;
-
-            /* Tous les inputs ou p directs dans ce div (Code Postal / Ville) */
-            > p,
-            > .input-container {
-                width: 185px;
-                display: flex;
-                flex-direction: column;
-            }
-
-            /* Messages d'erreur sous chaque champ */
-            small.error-message {
-                width: 100%;
-                margin-top: 4px;
-                color: red;
-                font-size: 0.8rem;
-            }
-        }
     }
 
-    /* Styles pour tous les <p> et <input> standards */
-    article p,
-    article input {
+
+    article div{
+        display: flex;
+        flex-direction: row;
+        gap: 29px;
+    }
+
+    article p, input{
         margin-top: 45px;
         display: flex;
         align-items: center;
@@ -78,50 +62,44 @@
         padding: 10px;
         color: #6E6E6E;
         border: 2px solid $color-blue;
-        border-radius: 8px;
+        border-radius: 8px ;
         font-size: 16px;
         font-family: 'lora';
         font-weight: bold;
         font-style: italic;
     }
 
-    /* Container des inputs en mode édition */
-    .input-container {
-        display: flex;
-        flex-direction: column;
-        width: 420px; // largeur par défaut, sauf Code Postal / Ville
-    }
-
-    #buttonsCompte {
+    #buttonsCompte{
         padding-top: 32px;
         padding-right: 20px;
         display: flex;
         flex-direction: row;
-        justify-content: end;
+        justify-content:end;
         gap: 20px;
     }
 
-    button {
-        color: $color-blue;
+    button{
+        color :  $color-blue;
         background-color: $color-pastel-purple;
         border-radius: 32px;
         padding: 10px;
         border: none;
+        border-radius: 32px ;
         font-family: 'lora';
         cursor: pointer;
     }
 
-    .boutonModifierMdp {
+    .boutonModifierMdp{
         width: 250px;
         height: 55px;
     }
 
-    .boutonModiferProfil {
+    .boutonModiferProfil{
         width: 200px;
         height: 55px;
     }
 
-    .boutonAnnuler {
+    .boutonAnnuler{
         display: none;
         background-color: $color-red;
         width: 200px;
@@ -134,14 +112,25 @@
         margin-top: 2px;
         display: block;
     }
-}
 
-.overlayPopUpCompteClient {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    z-index: 1000;
+    .input-container{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    article div p, article div .input-container, article div input#codePostal, article div input#ville {
+        width: 185px;
+    }
 }
+    
+.overlayPopUpCompteClient{
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 1000;
+    }
+
