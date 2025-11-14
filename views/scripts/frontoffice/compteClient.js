@@ -125,7 +125,7 @@ function clearError(element) {
 
 function verifierChamp() {
     const bouton = document.querySelector(".boutonModiferProfil");
-    const champs = document.querySelectorAll("#profilInfos input");
+    const champs = document.querySelectorAll("section input");
     let tousRemplis = true;
     
     for (let i = 0; i < champs.length; i++) {
@@ -137,8 +137,6 @@ function verifierChamp() {
             setError(
                 champs[i], "Le champs obligatoire est vide"
             );
-        } else {
-            clearError(champs[i]);
         }
 
         // Validation spécifique pour la date de naissance
@@ -148,8 +146,6 @@ function verifierChamp() {
                 setError(
                     champs[i], "Format attendu : jj/mm/aaaa"
                 );
-            } else {
-                clearError(champs[i]);
             }
         }
         
@@ -160,8 +156,6 @@ function verifierChamp() {
                 setError(
                     champs[i], "Format attendu : 06 01 02 03 04"
                 );
-            } else {
-                clearError(champs[i]);
             }
         }
         
@@ -172,11 +166,10 @@ function verifierChamp() {
                 setError(
                     champs[i], "Email invalide (ex: nom@domaine.fr)"
                 );
-            } else {
-                clearError(champs[i]);
             }
-        }            
+        }  
     }
+
     bouton.disabled = !tousRemplis;
 }
 let enModif = false;
@@ -259,7 +252,10 @@ function modifierProfil(event) {
                 break;
             }
             
-            elems[i].parentNode.replaceChild(input, elems[i]);
+            let container = document.createElement("div");
+            container.className = "input-container";
+            container.appendChild(input);
+            elems[i].parentNode.replaceChild(container, elems[i]);
         }
         
         // Modifier le bouton "Modifier" en "Enregistrer"

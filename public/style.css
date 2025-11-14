@@ -1421,18 +1421,12 @@ main.acceuilBackoffice section.avis article {
   gap: 2em;
   font-family: "open-sans";
 }
-main.acceuilBackoffice section.avis article div {
-  height: 10px;
-  width: 75%;
-  justify-self: center;
-  background-color: #e3f2fe;
-  border-radius: 16px;
-  margin: 0 auto;
-}
 main.acceuilBackoffice section.avis article table {
   border-collapse: collapse;
   width: 100%;
   font-size: 20px;
+  background-color: #e3f2fe;
+  border-radius: 16px;
 }
 main.acceuilBackoffice section.avis article table td, main.acceuilBackoffice section.avis article table th {
   padding: 0.5em;
@@ -1602,6 +1596,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 0.8rem;
   margin-top: 2px;
   display: block;
+}
+.mainCompteClient .input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .overlayPopUpCompteClient {

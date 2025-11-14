@@ -467,6 +467,7 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const codePostalInput = document.querySelector("body.pagePaiement .code-postal-input");
         const villeInput = document.querySelector("body.pagePaiement .ville-input");
         const numCarteInput = document.querySelector("body.pagePaiement .num-carte");
+        const cvvInput = document.querySelector("body.pagePaiement .cvv-input");
         const adresse = adresseInput?.value.trim() || "";
         const codePostal = codePostalInput?.value.trim() || "";
         const ville = villeInput?.value.trim() || "";
@@ -534,11 +535,33 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
             confirmBtn.disabled = true;
             try {
                 // Appeler l'API pour créer la commande
+                // Encrypt sensitive fields (numero carte + cvv) on client-side using vignere
+                // Chiffrement.js exposes `vignere` and `cle` in global scope
+                let encryptedNumero = rawNumCarte;
+                let encryptedCvv = "";
+                try {
+                    const vg = window.vignere;
+                    const key = window.cle;
+                    if (typeof vg === "function" &&
+                        typeof key === "string" &&
+                        rawNumCarte) {
+                        encryptedNumero = vg(rawNumCarte, key, 1);
+                    }
+                    const rawCvv = cvvInput?.value.replace(/\s+/g, "") || "";
+                    if (typeof vg === "function" && typeof key === "string" && rawCvv) {
+                        encryptedCvv = vg(rawCvv, key, 1);
+                    }
+                }
+                catch (err) {
+                    // If encryption fails, fall back to sending raw values (not ideal but avoids blocking)
+                    console.error("Erreur chiffrement client:", err);
+                }
                 const orderData = {
                     adresseLivraison: adresse,
                     villeLivraison: ville,
                     regionLivraison: region,
-                    numeroCarte: rawNumCarte,
+                    numeroCarte: encryptedNumero,
+                    cvv: encryptedCvv,
                     codePostal: codePostal,
                 };
                 const result = await window.PaymentAPI.createOrder(orderData);
