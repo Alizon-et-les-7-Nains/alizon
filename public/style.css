@@ -1598,6 +1598,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: block;
 }
 .mainCompteClient input {
+  width: 420px;
   font-size: 16px;
   font-family: "lora";
   font-weight: bold;
