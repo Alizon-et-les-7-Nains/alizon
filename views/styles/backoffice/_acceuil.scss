@@ -55,7 +55,8 @@ main.acceuilBackoffice {
         
         &.stock article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            width: 100%;
             gap: 2em;
             
             table {
@@ -64,6 +65,10 @@ main.acceuilBackoffice {
                 border-radius: 16px;
                 font-family: 'open-sans';
                 font-size: 20px;
+                
+                img {
+                    height: 100px;
+                }
                 
                 tr:nth-child(3) {
                     font: {
@@ -87,12 +92,15 @@ main.acceuilBackoffice {
                 }
             }
         }
-
+        
         &.commandes article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+            width: 100%;
             gap: 2em;
-
+            font-family: 'open-sans';
+            font-size: 20px;
+            
             table {
                 padding: 1em;
                 border: {
@@ -101,20 +109,20 @@ main.acceuilBackoffice {
                     radius: 16px;
                     color: $color-blue;
                 }
-
+                
                 img {
                     height: 100px;
                     width: 100px;
                     object-fit: cover;
                 }
-
+                
                 th {
                     font-size: 20px;
                 }
-
+                
                 tr:first-child th {
                     text-align: left;
-                    line-height: 0.25em;
+                    line-height: 0.5em;
                 }
                 tr:nth-child(2) td {
                     vertical-align: top;
@@ -126,125 +134,81 @@ main.acceuilBackoffice {
         }
         
         &.avis article {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2em;
+            font-family: 'open-sans';
+            
             table {
+                border-collapse: collapse;
                 width: 100%;
-                border-spacing: 1em 0;
-                table-layout: fixed;
-                border-collapse: separate;
-                
-                tr:first-child {
-                    font-weight: bold;
+                font-size: 20px;
+                background-color: $color-pastel-blue;
+                border-radius: 16px;
 
-                    td:nth-child(1) {
-                        width: 120px;
-                        justify-items: center;
-                        line-height: 0.25em;
-                        
-                        figure:first-child {
+                td, th {
+                    padding: 0.5em;
+                }
+
+                tr:first-child {
+                    th:first-child {
+                        vertical-align: top;
+                    }
+
+                    figure:first-child {
+                        img {
+                            height: 80px; width: 80px;
+                            object-fit: cover;
                             border-radius: 100%;
-                            height: 50px; width: 50px;
-                            background: {
-                                image: url(/public/images/pp.png);
-                                position: center center;
-                                repeat: no-repeat;
-                            }
-                        }
-                        figure:last-child {
-                            color: $color-yellow;
-                            display: flex;
-                            align-items: center;
                         }
                     }
-                    td:nth-child(2) {
+                    figure:last-child {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.25em;
+                        justify-self: center;
+                        color: $color-yellow;
+
+                        img {
+                            height: 25px; width: 25px;
+                        }
+                    }
+
+                    th:nth-child(2) {
                         white-space: nowrap;
-                        font-size: 20px;
+                        text-align: left;
                     }
-                    td:nth-child(3) {
-                        width: auto;
-                        font-weight: normal;
-                        font-size: 12px;
-                    }
-                    td:nth-child(4) {
-                        width: 120px; 
+
+                    td {
+                        width: 100%;
                     }
                 }
 
                 tr:nth-child(2) {
-                    td {
-                        vertical-align: top;
-                    }
-                }
-
-                tr:nth-child(3) {
-                    td:last-child {
-                        display: flex;
-                        gap: 1em;
-                        justify-content: flex-start;
-
-                        img {
-                            height: 100px;
-                            width: auto;
-                            object-fit: contain;
-                        }
-                    }
+                    vertical-align: top;
                 }
 
                 tr:last-child {
-                    td:nth-child(2) {
-                        padding-right: 1em;
+                    td:last-child {
+                        display: flex;
+                        flex-wrap: wrap;
                     }
-                    
-                    td:nth-child(3) {
-                        width: auto;
-                        text-align: right;
-                        white-space: nowrap;
-                    }
-                }
-                
-                input {
-                    border: none;
-                    width: 100%;
-                    max-width: 100%; 
-                    box-sizing: border-box; 
-                    outline: none;
-                    border-bottom: {
-                        style: solid;
-                        width: 2px;
-                        color: $color-blue;
-                    }
-                    border-radius: 4px;
-                }
-                
-                button {
-                    padding: {
-                        left: 1em; right: 1em;
-                        top: 0.5em; bottom: 0.5em;
-                    }
-                    font: {
-                        family: 'lora';
-                        weight: bold;
-                    }
-                    background: none;
-                    border: {
-                        style: solid;
-                        width: 2px;
-                        color: $color-blue;
-                        radius: 8px;
-                    }
-                    color: $color-blue;
-                    white-space: nowrap;
-                    box-sizing: border-box;
-                    min-width: fit-content;
                 }
             }
-        }
 
+            img.imageAvis {
+                height: 150px;
+            }
+        }
+        
         &.produits article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            max-width: 100%;
             gap: 2em;
             font-size: 20px;
-
+            
             table {
                 padding: 1em;
                 border: {
@@ -253,13 +217,23 @@ main.acceuilBackoffice {
                     color: $color-blue;
                     radius: 16px;
                 }
-
+                
+                img {
+                    height: 100px; width: 100px;
+                    object-fit: cover;
+                }
+                
                 th {
                     text-align: left;
                 }
-
+                
                 tr:last-child td {
-                    text-align: right;
+                    font-family: 'open-sans';
+                    
+                    &:last-child {
+                        text-align: right;
+                        font-weight: bold;
+                    }
                 }
             }
         }

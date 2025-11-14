@@ -3,3 +3,4 @@
 /.env
 *.*.map
 /.sass-cache
+/images/

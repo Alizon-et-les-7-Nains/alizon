@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
     $prenom = $_POST['prenom'];
     $email = $_POST['email'];
+    $dateNaissance = $_POST['dateNaissance'];
     $telephone = $_POST['telephone'];
     $codePostal = $_POST['codePostal'];
     $adresse1 = $_POST['adresse1'];
@@ -26,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     nom = '$nom', 
     prenom = '$prenom', 
     email =  '$email', 
+    dateNaissance = '$dateNaissance',
     noTelephone = '$telephone'
     WHERE idClient = '$id_client';");
 
@@ -37,6 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     codePostal = '$codePostal',
     region = '$region'
     WHERE idAdresse = '$idAdresse';");
+
+}   
+
+    //verification et upload de la nouvelle photo de profil
+    $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png';
+    if (file_exists($photoPath)) {
+        unlink($photoPath); // supprime l’ancien fichier
+    }
+
+    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png');
+    }
 
     //on recupère les infos du user pour les afficher
     $stmt = $pdo->query("SELECT * FROM _client WHERE idClient = '$id_client'");
@@ -58,12 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $codePostal = $adresse['codePostal'];
     $adresse1 = $adresse['adresse'];
 
-    //verification et upload de la nouvelle photo de profil
-    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png');
-    }
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,10 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="titreCompte">
                 <div class="photo-container">
                     <?php 
-                        $id = 1;
-                        $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id.'.png';
                         if (file_exists($photoPath)) {
-                            echo '<img src="'.$photoPath.'?t='.time().'" alt="photoProfil" id="imageProfile">';
+                            echo "<img src=".$photoPath." alt=photoProfil id=imageProfile>";
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
@@ -93,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h1>Mon Compte</h1>
             </div>
 
-            <section>
+            <section id="profilInfos">
                 <article>
                     <p><?php echo htmlspecialchars($pseudo ?? ''); ?></p>
                     <p><?php echo htmlspecialchars($prenom ?? ''); ?></p>
@@ -119,209 +125,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div id="buttonsCompte">
                 <button type="button" onclick="popUpModifierMdp()" class="boutonModifierMdp">Modifier le mot de passe</button>
+                <button class="boutonAnnuler" type="button" onclick="boutonAnnuler()">Annuler</button>
                 <button type="button" class="boutonModiferProfil">Modifier</button>
             </div>
         </form>
+
     </main>
     
     <?php include 'partials/footerConnecte.php'; ?>
 
+    <?php 
+        $stmt = $pdo->query("SELECT mdp FROM _client WHERE idClient = '$id_client'");
+        $tabMdp = $stmt->fetch(PDO::FETCH_ASSOC);
+        $mdp = $tabMdp['mdp'];
+    ?>
+    <script src="../scripts/frontoffice/Chiffrement.js"></script>
     <script>
-        function popUpModifierMdp(){
-            const overlay = document.createElement("div");
-            overlay.className = "overlayPopUpCompteClient";
-            overlay.innerHTML = `
-                <main class="mainPopUpCompteClient">
-                <h1>Modification de votre mot de passe</h1>
-               
-                <section>
-                    <div class="formulaireMdp">
-                        <form action="">
-                            <input type="text" placeholder="Ancien mot de passe">
-                            <input type="text" placeholder="Nouveau mot de passe">
-                            <input type="text" placeholder="Confirmer le nouveau mot de passe">
-                        
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Longueur minimale de 12 charactères</p>
-                            </article>
-
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Au moins une minuscule / majuscule</p>
-                            </article>
-
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Au moins un chiffre</p>
-                            </article>
-
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div>  
-                                <p>Au moins un charactères spéciale</p>
-                            </article>
-                        </div>
-                            <button type="button" onclick="fermerFenetre()">Valider</button>
-                        </form>
-                    </section>
-                </main>`;
-            document.body.appendChild(overlay);
-        }
-
-        function verifierChamp() {
-            const bouton = document.querySelector(".boutonModiferProfil");
-            const champs = document.querySelectorAll("section input");
-            let tousRemplis = true;
-
-            for (let i = 0; i < champs.length; i++) {
-                let valeur = champs[i].value.trim();
-                
-                // Le champ adresse2 est optionnel
-                if (i !== 5 && valeur === "") {
-                    // Le champ adresse2 est optionnel
-                if (i !== 5 && valeur === "") {
-                    switch(champs[i].name) {
-                        case "pseudo":
-                            champs[i].placeholder = "Entrez votre pseudo";
-                            break;
-                        case "nom":
-                            champs[i].placeholder = "Entrez votre nom";
-                            break;
-                        case "prenom":
-                            champs[i].placeholder = "Entrez votre prénom";
-                            break;
-                        case "dateNaissance":
-                            champs[i].placeholder = "Entrez votre date de naissance";
-                            break;
-                        case "adresse1":
-                            champs[i].placeholder = "Entrez votre adresse";
-                            break;
-                        case "codePostal":
-                            champs[i].placeholder = "Entrez votre code postal";
-                            break;
-                        case "ville":
-                            champs[i].placeholder = "Entrez votre ville";
-                            break;
-                        case "pays":
-                            champs[i].placeholder = "Entrez votre pays";
-                            break;
-                        case "telephone":
-                            champs[i].placeholder = "Entrez votre numéro de téléphone";
-                            break;
-                        case "email":
-                            champs[i].placeholder = "Entrez votre email";
-                            break;
-                    }
-                    tousRemplis = false;
-                    break;
-                }
-
-                // Validation spécifique pour le numéro de téléphone
-                if (i === 9) { 
-                    if (!/^0[67](\s[0-9]{2}){4}$/.test(valeur)) {
-                        tousRemplis = false;
-                        break;
-                    }
-                }
-
-                // Validation spécifique pour l'email
-                if (i === 10) {
-                    if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
-                        tousRemplis = false;
-                        break;
-                    }
-                }            
-            }
-
-            bouton.disabled = !tousRemplis;
-        }
-    }
-        let enModif = false;
-
-        // Création de l'input pour la photo de profil
-        let ajoutPhoto = document.createElement("input");
-        ajoutPhoto.type = "file";
-        ajoutPhoto.id = "photoProfil";
-        ajoutPhoto.name = "photoProfil";
-        ajoutPhoto.accept = "image/*";
-        ajoutPhoto.style.display = "none";
-        ajoutPhoto.autocomplete = "off";
-        
-        let conteneur = document.getElementById("titreCompte");
-        let imageProfile = document.getElementById("imageProfile");
-        let bnModifier = document.getElementsByClassName("boutonModiferProfil");
-        let bnModifMdp = document.getElementsByClassName("boutonModifierMdp");
-
-        function modifierProfil(event) {
-
-            // Empêche le comportement par défaut du bouton
-            event.preventDefault();
-
-            if (!enModif) {
-                // Remplacer les <p> par des <input> pour modification
-                let elems = document.querySelectorAll("section p");
-                const nomsChamps = [
-                    "pseudo", "prenom", "nom", "dateNaissance",
-                    "adresse1", "adresse2", "codePostal", "ville", "pays",
-                    "telephone", "email"
-                ];
-
-                for (let i = 0; i < elems.length; i++) {
-                    let texteActuel = elems[i].innerText;
-                    let input = document.createElement("input");
-                    input.value = texteActuel;
-                    input.name = nomsChamps[i];
-                    input.id = nomsChamps[i];
-                    input.autocomplete = nomsChamps[i];
-
-                    // Définir le type d'input approprié
-                    if (i === 9) input.type = "tel";
-                    else if (i === 10) input.type = "email";
-                    else if (i === 3) input.type = "date";
-                    else input.type = "text";
-
-                    elems[i].parentNode.replaceChild(input, elems[i]);
-                }
-
-                // Modifier le bouton "Modifier" en "Enregistrer"
-                bnModifier[0].innerHTML = "Enregistrer";
-                bnModifier[0].style.backgroundColor = "#64a377";
-                bnModifier[0].style.color = "#FFFEFA";
-                conteneur.appendChild(ajoutPhoto);
-                
-                imageProfile.style.cursor = "pointer";
-                imageProfile.onclick = () => ajoutPhoto.click();
-                
-                enModif = true;
-
-                document.querySelector("section").addEventListener("input", verifierChamp);
-                verifierChamp();
-
-            } 
-            
-            else {
-                // Soumettre le formulaire pour enregistrer les modifications
-                document.querySelector("form").submit();
-            }
-        }
-
-        bnModifier[0].addEventListener("click", modifierProfil);
-
-        function fermerFenetre(){
-                window.close();
-            }
+        const mdp = "<?php echo $mdp; ?>";
     </script>
+    <script src="../scripts/frontoffice/compteClient.js"></script>
 </body>
 </html>

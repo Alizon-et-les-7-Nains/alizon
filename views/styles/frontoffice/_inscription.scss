@@ -14,64 +14,188 @@ $btn-padding: 12px 16px;
 $btn-radius: 50px;
 $bg-left: -200px;
 $bg-top: 50px;
-$bg-size: 900px;
+$bg-size: 600px;
 $bg-rotation: -180deg;
 $bg-opacity: 0.3;
 $content-z: 1;
 $bg-z: 0;
 
+.input-error {
+    border: 2px solid red !important;
+    background-color: #ffe6e6;
+    transition: 0.3s ease;
+}
 
-.inscription {
-  font-family: "lora";
-  font-weight: bold;
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: $bg-left;
-    top: $bg-top;
-    width: $bg-size;
-    height: $bg-size;
-    background: url("../../public/images/symboleRose.png") no-repeat center
-      center;
-    background-size: contain;
-    transform: rotate($bg-rotation);
-    opacity: $bg-opacity;
-    z-index: $bg-z;
-    pointer-events: none;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font: {
-      size: 16px;
-      weight: bold;
-    }
-    text-align: center;
-    input {
-      width: 450px;
-      height: 40px;
-      padding: 10px;
-      margin: 16px;
-      color: #6e6e6e;
-      font-size: 16px;
-      border: 2px solid #273469;
-      border-radius: 8px;
-    }
-
-  }
-
-  h2 {
-    color: #273469;
-    font-family: "Lora", serif;
-    font-size: 48px;
+@media(max-width:2000px){
+  .inscription {
+    font-family: "lora";
     font-weight: bold;
-    text-align: center;
-    margin: 50px 0px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: $bg-left;
+      top: $bg-top;
+      width: $bg-size;
+      height: $bg-size;
+      background: url("../../public/images/symboleRose.png") no-repeat center
+        center;
+      background-size: contain;
+      transform: rotate($bg-rotation);
+      opacity: $bg-opacity;
+      z-index: $bg-z;
+      pointer-events: none;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font: {
+        size: 16px;
+        weight: bold;
+      }
+      text-align: center;
+      input {
+        width: 450px;
+        height: 50px;
+        padding: 10px;
+        margin: 16px;
+        color: #6e6e6e;
+        font-size: 16px;
+        border: 2px solid #273469;
+        border-radius: 8px;
+      }
+
+    }
+
+    h2 {
+      color: #273469;
+      font-family: "Lora", serif;
+      font-size: 48px;
+      font-weight: bold;
+      text-align: center;
+      margin: 50px 0px;
+    }
   }
 }
+
+@media(max-width:800px){
+    .inscription {
+    font-family: "lora";
+    font-weight: bold;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: $bg-left;
+      top: $bg-top;
+      width: calc($bg-size/1.5);
+      height: $bg-size;
+      background: url("../../public/images/symboleRose.png") no-repeat center
+        center;
+      background-size: contain;
+      transform: rotate($bg-rotation);
+      opacity: $bg-opacity;
+      z-index: $bg-z;
+      pointer-events: none;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font: {
+        size: 16px;
+        weight: bold;
+      }
+      text-align: center;
+      input {
+        width: 300px;
+        height: 50px;
+        padding: 10px;
+        margin: 16px;
+        color: #6e6e6e;
+        font-size: 16px;
+        border: 2px solid #273469;
+        border-radius: 8px;
+      }
+
+
+    }
+
+    h2 {
+      color: #273469;
+      font-family: "Lora", serif;
+      font-size: 48px;
+      font-weight: bold;
+      text-align: center;
+      margin: 50px 0px;
+    }
+  }
+}
+
+@media(max-width:500px){
+    .inscription {
+    font-family: "lora";
+    font-weight: bold;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: $bg-left;
+      top: $bg-top;
+      width: calc($bg-size/1.7) 5;
+      height: $bg-size;
+      background: url("../../public/images/symboleRose.png") no-repeat center
+        center;
+      background-size: contain;
+      transform: rotate($bg-rotation);
+      opacity: $bg-opacity;
+      z-index: $bg-z;
+      pointer-events: none;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font: {
+        size: 16px;
+        weight: bold;
+      }
+      text-align: center;
+      input {
+        width: 300px;
+        height: 50px;
+        padding: 10px;
+        margin: 16px;
+        color: #6e6e6e;
+        font-size: 13px;
+        border: 2px solid #273469;
+        border-radius: 8px;
+      }
+
+      #refactor{
+        display:flex;
+        input{
+            width: 135px;
+        } 
+      }
+
+    }
+
+    h2 {
+      color: #273469;
+      font-family: "Lora", serif;
+      font-size: 48px;
+      font-weight: bold;
+      text-align: center;
+      margin: 30px 0px;
+    }
+  }
+}
+
 
 #submitButton {
   width: 450px;
@@ -99,3 +223,4 @@ $bg-z: 0;
 #password-requirements li {
   margin-bottom: 5px;        
 }
+

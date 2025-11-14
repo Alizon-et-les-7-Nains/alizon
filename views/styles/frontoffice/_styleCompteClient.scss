@@ -56,14 +56,13 @@
         width: 185px;
     }
 
-    article p, input {
-        margin-top: 0;
+    article p, input{
+        margin-top: 45px;
         display: flex;
         align-items: center;
         width: 420px;
         height: 45px;
         padding: 10px;
-        margin-bottom: 45px;
         color: #6E6E6E;
         border: 2px solid $color-blue;
         border-radius: 8px ;
@@ -103,6 +102,19 @@
         height: 55px;
     }
 
+    .boutonAnnuler{
+        display: none;
+        background-color: $color-red;
+        width: 200px;
+        height: 55px;
+    }
+
+    .error-message {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 2px;
+    display: block;
+}
     
 }
 
@@ -115,3 +127,4 @@
         justify-content: center;
         z-index: 1000;
     }
+
