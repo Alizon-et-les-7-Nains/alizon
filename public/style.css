@@ -1588,6 +1588,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   width: 200px;
   height: 55px;
 }
+.mainCompteClient .error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 2px;
+  display: block;
+}
 
 .overlayPopUpCompteClient {
   position: fixed;
