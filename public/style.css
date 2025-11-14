@@ -1597,6 +1597,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin-top: 2px;
   display: block;
 }
+.mainCompteClient input {
+  font-size: 16px;
+  font-family: "lora";
+  font-weight: bold;
+  font-style: italic;
+  border: 0;
+}
 
 .overlayPopUpCompteClient {
   position: fixed;
