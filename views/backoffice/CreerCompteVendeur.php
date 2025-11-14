@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>Création d'un compte vendeur</title>
 </head>
     <?php
-        require_once "./partials/headerMain.php";
+        require_once "./partials/header.php";
     ?>
 <body>
     <main class="CreerCompteVendeur">
