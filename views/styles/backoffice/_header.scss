@@ -138,27 +138,21 @@ header.backoffice {
             left: 2em; right: 2em;
             top: 1em; bottom: 1em;
         }
-        // Retirez position: fixed, top, left, transform
-        // Le dialog se positionne automatiquement
         color: $color-blue;
         font-family: 'open-sans';
-        // Gardez display: flex mais sans position fixed
         
         &::backdrop {
             background: rgba(0, 0, 0, 0.25);
             backdrop-filter: blur(1px);
         }
         
-        // Ajoutez un conteneur flex interne
         & > * {
             display: block;
         }
         
-        button:first-child {
+        button {
             border: none;
             background: none;
-            cursor: pointer;
-            padding: 0;
             margin-left: auto;
             display: block;
             margin-bottom: 1em;
@@ -166,7 +160,7 @@ header.backoffice {
             
             &:hover {
                 cursor: pointer;
-                
+
                 img {
                     content: url(../../../public/images/croixRouge.svg);
                 }
@@ -187,8 +181,11 @@ header.backoffice {
             gap: 1em;
             
             button {
-                padding: 1em;
-                width: 200px;
+                padding: {
+                    left: 2em; right: 2em;
+                    top: 1em; bottom: 1em;
+                }
+                width: 200px; height: auto;
                 font-size: 20px;
                 border-radius: 24px;
                 border: none;

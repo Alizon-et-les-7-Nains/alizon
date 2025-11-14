@@ -503,23 +503,21 @@ header.backoffice dialog::backdrop {
 header.backoffice dialog > * {
   display: block;
 }
-header.backoffice dialog button:first-child {
+header.backoffice dialog button {
   border: none;
   background: none;
-  cursor: pointer;
-  padding: 0;
   margin-left: auto;
   display: block;
   margin-bottom: 1em;
   transition: all 0.2s;
 }
-header.backoffice dialog button:first-child:hover {
+header.backoffice dialog button:hover {
   cursor: pointer;
 }
-header.backoffice dialog button:first-child:hover img {
+header.backoffice dialog button:hover img {
   content: url(../../../public/images/croixRouge.svg);
 }
-header.backoffice dialog button:first-child img {
+header.backoffice dialog button img {
   display: block;
 }
 header.backoffice dialog h1 {
@@ -531,8 +529,12 @@ header.backoffice dialog nav {
   gap: 1em;
 }
 header.backoffice dialog nav button {
-  padding: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
   width: 200px;
+  height: auto;
   font-size: 20px;
   border-radius: 24px;
   border: none;
