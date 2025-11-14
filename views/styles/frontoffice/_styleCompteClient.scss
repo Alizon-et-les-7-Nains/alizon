@@ -123,7 +123,12 @@
         font-style: italic;
         color: #6E6E6E;
         border: 0 ;
-        opacity: 100%;
+        background-color: transparent;
+    }
+
+    input:focus {
+    outline: none;
+    box-shadow: none;
     }
     
 }
