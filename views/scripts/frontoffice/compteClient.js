@@ -263,8 +263,6 @@ function modifierProfil(event) {
                 input.placeholder = "Entrez votre email*";
                 break;
             }
-            
-            elems[i].parentNode.replaceChild(input, elems[i]);
         }
         
         // Modifier le bouton "Modifier" en "Enregistrer"
