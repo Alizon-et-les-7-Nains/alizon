@@ -131,6 +131,11 @@
     outline: none;
     box-shadow: none;
     }
+
+    .input-container {
+    display: flex;
+    flex-direction: column;
+}
     
 }
 
