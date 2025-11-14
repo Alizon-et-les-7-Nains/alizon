@@ -102,8 +102,11 @@ require_once '../../controllers/date.php';
 <?php
     $avis = ($pdo->query(file_get_contents('../../queries/backoffice/derniersAvis.sql')))->fetchAll(PDO::FETCH_ASSOC);
     if (count($avis) == 0) echo "<h2>Aucun avis</h>";
+    $first = true;
     foreach ($avis as $avi) {
         $imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
+        if ($first) echo "<hr>";
+        $first = false;
         $html = "
         <table>
             <tr>

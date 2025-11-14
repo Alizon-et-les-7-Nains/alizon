@@ -139,6 +139,14 @@ main.acceuilBackoffice {
             flex-direction: column;
             gap: 2em;
             font-family: 'open-sans';
+
+            hr {
+                width: 75%;
+                justify-self: center;
+                width: 5px;
+                color: $color-pastel-plue;
+                border: none;
+            }
             
             table {
                 border-collapse: collapse;
