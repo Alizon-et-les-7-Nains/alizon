@@ -105,7 +105,7 @@ require_once '../../controllers/date.php';
     $first = true;
     foreach ($avis as $avi) {
         $imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
-        if ($first) echo "<hr>";
+        if ($first) echo "<div></div>";
         $first = false;
         $html = "
         <table>
