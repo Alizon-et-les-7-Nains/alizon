@@ -1,6 +1,121 @@
 <?php 
 require_once "../../controllers/prix.php";
 require_once "../../controllers/pdo.php";
+
+// ID utilisateur connecté (à remplacer par la gestion de session)
+$idClient = 2; 
+
+function getCurrentCart($pdo, $idClient) {
+    $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
+    $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+
+    $cart = [];
+
+    if ($panier) {
+        $idPanier = intval($panier['idPanier']); 
+
+        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+                FROM _produitAuPanier pa
+                JOIN _produit p ON pa.idProduit = p.idProduit
+                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                WHERE pa.idPanier = " . intval($idPanier);
+        $stmt = $pdo->query($sql);
+        $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+    }
+    
+    return $cart;
+}
+
+function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+    $idProduit = intval($idProduit);
+    $idClient = intval($idClient);
+
+    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
+            WHERE idProduit = $idProduit AND idPanier IN (
+                SELECT idPanier FROM _panier WHERE idClient = $idClient
+            )";
+    $stmt = $pdo->query($sql);
+    $current = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+
+    if ($current) {
+        $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
+        
+        if ($newQty > 0) {
+            $sql = "UPDATE _produitAuPanier SET quantiteProduit = $newQty 
+                    WHERE idProduit = $idProduit AND idPanier IN (
+                        SELECT idPanier FROM _panier WHERE idClient = $idClient
+                    )";
+            $res = $pdo->query($sql);
+            $success = $res !== false;
+        } else {
+            $success = removeFromCartInDatabase($pdo, $idClient, $idProduit);
+        }
+        
+        return $success;
+    }
+    return false;
+}
+
+function removeFromCartInDatabase($pdo, $idClient, $idProduit) {
+    $idProduit = intval($idProduit);
+    $idClient = intval($idClient);
+
+    $sql = "DELETE FROM _produitAuPanier 
+            WHERE idProduit = $idProduit AND idPanier IN (
+                SELECT idPanier FROM _panier WHERE idClient = $idClient
+            )";
+    $res = $pdo->query($sql);
+    return $res !== false;
+}
+
+// ============================================================================
+// GESTION DES ACTIONS AJAX
+// ============================================================================
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    header('Content-Type: application/json');
+    
+    try {
+        switch ($_POST['action']) {
+            case 'updateQty':
+                $idProduit = $_POST['idProduit'] ?? '';
+                $delta = intval($_POST['delta'] ?? 0);
+                if ($idProduit && $delta != 0) {
+                    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
+                    echo json_encode(['success' => $success]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
+                }
+                break;
+
+            case 'removeItem':
+                $idProduit = $_POST['idProduit'] ?? '';
+                if ($idProduit) {
+                    $success = removeFromCartInDatabase($pdo, $idClient, $idProduit);
+                    echo json_encode(['success' => $success]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'ID produit manquant']);
+                }
+                break;
+            case 'getCart':
+                $cart = getCurrentCart($pdo, $idClient);
+                echo json_encode($cart);
+                break;
+
+            default:
+                echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit;
+}
+
+$cart = getCurrentCart($pdo, $idClient);
+
+// ============================================================================
+// AFFICHAGE DE LA PAGE
+// ============================================================================
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -15,71 +130,45 @@ require_once "../../controllers/pdo.php";
 
     <main>
         <section class="listeProduit">
-            <?php for ($i = 0; $i < 4; $i++) { ?> 
+            <?php foreach ($cart as $item) { 
+                $nom = $item['nom'] ?? '';
+                $image = $item['img'] ?? '../../public/images/default.png';
+                $prix = $item['prix'] ?? 0;
+                $qty = $item['qty'] ?? 0;
+                ?> 
                 <article>
                     <div class="imgProduit">
-                        <input type="checkbox" name="selectionProduit" id="selectionProduit">
-                        <img src="../../public/images/defaultImageProduitCard.png" alt="Image du produit">
+                        <img src="<?php echo htmlspecialchars($image); ?>" alt="Image du produit">
                     </div>
                     <div class="infoProduit">
                         <div>
-                            <h2>Lot de rilettes bretonne</h2>
+                            <h2><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <h4>En stock</h4>
                         </div>
                         <div class="quantiteProduit">
-                            <img class="btnMinus" src="../../public/images/minusDarkBlue.svg" alt="Symbole moins" style="cursor: pointer;"> 
-                            <p class="quantite">0</p> 
-                            <img class="btnPlus" src="../../public/images/plusDarkBlue.svg" alt="Symbole plus" style="cursor: pointer;"> 
+                            <img class="minus" src="../../public/images/minusDarkBlue.svg" alt="Symbole moins" data-id="<?= htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;"> 
+                            <p class="quantite"><?= intval($qty) ?></p> 
+                            <img class="plus" src="../../public/images/plusDarkBlue.svg" alt="Symbole plus" data-id="<?= htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;"> 
                         </div>
                     </div>
                     <div class="prixOpt">
-                        <h2><b>29.99€</b></h2>
-                        <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="btnPoubelle" style="cursor: pointer;">
+                        <h2><b><?php echo formatPrice($value['prix']); ?></b></h2>
+                        <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delete" data-id="<?= htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;">
                     </div>
                 </article>
             <?php } if ($i==0) { ?>
                 <h1 class="aucunProduit">Aucun produit</h1>
-            <?php } else { ?>
-        </section>
-        <section class="recapPanier">
-            <h1>Votre panier</h1>
-            <div class="cardRecap">
-                <article>
-                    <h2><b>Récapitulatif de votre panier</b></h2>
-                    <div class="infoCommande">
-                        <section>
-                            <h2>Nombres d'articles</h2>
-                            <h2 class="val">0</h2>
-                        </section>
-                        <section>
-                            <h2>Prix HT</h2>
-                            <h2 class="val">0€</h2>
-                        </section>
-                        <section>
-                            <h2>TVA</h2>
-                            <h2 class="val">0€</h2>
-                        </section>
-                        <section>
-                            <h2>Total</h2>
-                            <h2 class="val">0€</h2>
-                        </section>
-                    </div>
-                </article>
-                <a href=""><p>Passer la commande</p></a>
-            </div>
-            <a href="" class="viderPanier">Vider le panier</a>
-        </section>
-        <?php } ?>
+            <?php } ?>
     </main>
 
     <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
 
     <script>
-        const btnPlus = document.querySelectorAll('.btnPlus');
-        const btnMinus = document.querySelectorAll('.btnMinus');
-        const btnPoubelle = document.querySelectorAll('.btnPoubelle');
+        const plus = document.querySelectorAll('.plus');
+        const minus = document.querySelectorAll('.minus');
+        const btnPoubelle = document.querySelectorAll('.delete');
 
-        btnPlus.forEach(btn => {
+        plus.forEach(btn => {
             btn.addEventListener('click', function() {
                 const quantiteElement = this.parentElement.querySelector('.quantite');
                 let quantite = parseInt(quantiteElement.textContent);
@@ -88,7 +177,7 @@ require_once "../../controllers/pdo.php";
             });
         });
 
-        btnMinus.forEach(btn => {
+        minus.forEach(btn => {
             btn.addEventListener('click', function() {
                 const quantiteElement = this.parentElement.querySelector('.quantite');
                 let quantite = parseInt(quantiteElement.textContent);
@@ -108,5 +197,6 @@ require_once "../../controllers/pdo.php";
             });
         });
     </script>
+    <script src="../scripts/frontoffice/paiement-ajax.js"></script>
 </body>
 </html>
