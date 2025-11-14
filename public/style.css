@@ -508,7 +508,7 @@ header.backoffice dialog button {
   justify-self: right;
   transition: all 0.2s;
 }
-header.backoffice dialog button:hover {
+header.backoffice dialog button:hover img {
   content: url(../../../public/images/croixRouge.svg);
 }
 header.backoffice dialog nav {

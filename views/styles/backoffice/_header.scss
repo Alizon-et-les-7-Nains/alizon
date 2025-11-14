@@ -154,7 +154,7 @@ header.backoffice {
             justify-self: right;
             transition: all 0.2s;
             
-            &:hover {
+            &:hover img {
                 content: url(../../../public/images/croixRouge.svg);
             }
         }
