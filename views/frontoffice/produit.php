@@ -141,8 +141,7 @@
     <div class="conteneurTexte">
         <h2>Plus d'informations sur l'article</h2>
         <?php 
-        $descriptionHtml = $_GET['description'];
-        echo $descriptionHtml;
+        echo htmlspecialchars($produit['description']);
         ?>
     </div> 
     <label for="activeVoirPlus" class="voirPlus"> </label> 
