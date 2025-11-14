@@ -305,6 +305,10 @@
                 
                 $nouveauClient = "INSERT INTO `_client`(`dateNaissance`, `prenom`, `nom`, `email`, `mdp`, `noTelephone`, `pseudo`)
                 VALUES ('$date_naissance', '$prenom', '$nom', '$email', '$mdp', '$num_tel', '$pseudo')";
+
+                if ($pdo->query($nouveauClient) === false) {
+                    throw new Exception("Erreur lors de la création d'un compte : " . implode(', ', $pdo->errorInfo()));
+                }
                 ?>
             }
         </script>
