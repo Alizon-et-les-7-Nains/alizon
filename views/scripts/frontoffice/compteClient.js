@@ -292,23 +292,18 @@ bnModifier[0].addEventListener("click", modifierProfil);
 const valeursInitiales = Array.from(document.querySelectorAll("section p"))
 
 function boutonAnnuler() {
-    
     let inputs = document.querySelectorAll("section input");
     
     for (let i = 0; i < inputs.length; i++) {
         let p = document.createElement("p");
-        p.innerText = valeursInitiales[i].texte;
+        p.innerText = valeursInitiales[i].innerText; 
         
         let currentParent = inputs[i].parentNode;
         
         // Si l'input est dans un input-container, remplacer le container par le <p>
-        if (currentParent.className === 'input-container') {
+        if (currentParent.classList.contains('input-container')) {
             currentParent.parentNode.replaceChild(p, currentParent);
         } 
-        // Si l'input est directement dans un div (code postal/ville), remplacer juste l'input
-        else if (currentParent.tagName === 'DIV') {
-            currentParent.replaceChild(p, inputs[i]);
-        }
         // Sinon, remplacement simple
         else {
             currentParent.replaceChild(p, inputs[i]);
@@ -330,6 +325,6 @@ function boutonAnnuler() {
     
     imageProfile.style.cursor = "default";
     imageProfile.onclick = null;
-      
 }
+
 
