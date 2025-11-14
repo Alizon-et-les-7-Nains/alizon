@@ -175,8 +175,13 @@ function verifierChamp() {
             } else {
                 clearError(champs[i]);
             }
-        }            
+        }  
+        
+        if (champValide && (i === 5 || valeur !== "")) {
+            clearError(champs[i]);
+        }          
     }
+
     bouton.disabled = !tousRemplis;
 }
 let enModif = false;
