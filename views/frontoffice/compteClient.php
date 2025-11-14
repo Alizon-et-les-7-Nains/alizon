@@ -130,7 +130,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
 
-        <h1>TIMEO</h1>
     </main>
     
     <?php include 'partials/footerConnecte.php'; ?>

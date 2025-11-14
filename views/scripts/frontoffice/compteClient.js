@@ -138,7 +138,6 @@ function verifierChamp() {
             setError(
                 champs[i], "Le champs obligatoire est vide"
             );
-            break
         } else {
             clearError(champs[i]);
         }
@@ -150,7 +149,6 @@ function verifierChamp() {
                 setError(
                     champs[i], "Le champs de la date de naissance doit être sous la forme dd/mm/aaaa"
                 );
-                break;
             } else {
                 clearError(champs[i]);
             }
@@ -163,7 +161,6 @@ function verifierChamp() {
                 setError(
                     champs[i], "Le champs numéro de téléphone doit être sous la forme 06 01 02 03 04"
                 );
-                break;
             } else {
                 clearError(champs[i]);
             }
@@ -176,7 +173,6 @@ function verifierChamp() {
                 setError(
                     champs[i], "Le champs email doit contenir un @ et un nom de domaine ex : .fr .com"
                 );
-                break;
             } else {
                 clearError(champs[i]);
             }
