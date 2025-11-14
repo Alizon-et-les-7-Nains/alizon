@@ -473,6 +473,8 @@ define("frontoffice/paiement-autocomplete", ["require", "exports", "frontoffice/
         }
     }
 });
+const cardNum = echo, $cvv;
+ > ;
 // ============================================================================
 // POPUP - Version avec base de données
 // ============================================================================
