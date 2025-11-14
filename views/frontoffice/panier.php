@@ -136,7 +136,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 $prix = $item['prix'] ?? 0;
                 $qty = $item['qty'] ?? 0;
                 ?> 
-                <article>
+                <article data-price="<?= htmlspecialchars($prix) ?>">
                     <div class="imgProduit">
                         <img src="<?= htmlspecialchars($image) ?>" alt="Image de <?= htmlspecialchars($nom) ?>">
                     </div>
@@ -146,19 +146,51 @@ $cart = getCurrentCart($pdo, $idClient);
                             <h4>En stock</h4>
                         </div>
                         <div class="quantiteProduit">
-                            <img class="minus" src="../../public/images/minusDarkBlue.svg" alt="Symbole moins" data-id="<?php echo htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;"> 
-                            <p class="quantite"><?php echo intval($qty) ?></p> 
+                            <img class="minus" src="../../public/images/minusDarkBlue.svg" alt="Symbole moins" data-id="<?= htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;"> 
+                            <p class="quantite"><?= intval($qty) ?></p> 
                             <img class="plus" src="../../public/images/plusDarkBlue.svg" alt="Symbole plus" data-id="<?= htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;"> 
                         </div>
                     </div>
                     <div class="prixOpt">
-                        <h2><b><?= number_format($prix * $qty, 2, ',', '') ?>€</b></h2>
+                        <h2><b class="itemTotal"><?= number_format($prix * $qty, 2, ',', ' ') ?>€</b></h2>
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delete" data-id="<?= htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;">
                     </div>
                 </article>
             <?php } if (count($cart) === 0) { ?>
                 <h1 class="aucunProduit">Aucun produit</h1>
             <?php } ?>
+        </section>
+        
+        <?php if (count($cart) > 0) { ?>
+        <section class="recapPanier">
+            <h1>Votre panier</h1>
+            <div class="cardRecap">
+                <article>
+                    <h2><b>Récapitulatif de votre panier</b></h2>
+                    <div class="infoCommande">
+                        <section>
+                            <h2>Nombres d'articles</h2>
+                            <h2 class="val" id="totalItems"><?= $totalItems ?></h2>
+                        </section>
+                        <section>
+                            <h2>Prix HT</h2>
+                            <h2 class="val" id="totalHT"><?= number_format($totalHT, 2, ',', ' ') ?>€</h2>
+                        </section>
+                        <section>
+                            <h2>TVA</h2>
+                            <h2 class="val" id="totalTVA"><?= number_format($totalTVA, 2, ',', ' ') ?>€</h2>
+                        </section>
+                        <section>
+                            <h2>Total</h2>
+                            <h2 class="val" id="totalTTC"><?= number_format($totalTTC, 2, ',', ' ') ?>€</h2>
+                        </section>
+                    </div>
+                </article>
+                <a href=""><p>Passer la commande</p></a>
+            </div>
+            <a href="" class="viderPanier">Vider le panier</a>
+        </section>
+        <?php } ?>
     </main>
 
     <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
