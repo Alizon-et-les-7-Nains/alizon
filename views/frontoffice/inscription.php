@@ -22,7 +22,6 @@
   <?php include './partials/headerConnecte.php'; ?>
 
     <h2>Inscription</h2>
-
       <main>
         <form id="monForm" action="../backend/session_start.php" method="post" enctype="multipart/form-data">
 
@@ -306,7 +305,7 @@
                 VALUES ('$date_naissance', '$prenom', '$nom', '$email', '$mdp', '$num_tel', '$pseudo')";
 
                 if ($pdo->query($nouveauClient) === false) {
-                    throw new Exception("Erreur lors de la création d'un compte : " . implode(', ', $pdo->errorInfo()));
+                    throw new Exception("Erreur lors de la création d'un : " . implode(', ', $pdo->errorInfo()));
                 }
                 ?>
             }

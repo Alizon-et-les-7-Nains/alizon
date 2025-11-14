@@ -53,7 +53,7 @@
         gap: 29px;
     }
 
-    article div p, article div .input-container{
+    article div p{
         width: 185px;
     }
 
@@ -115,6 +115,11 @@
         font-size: 0.8rem;
         margin-top: 2px;
         display: block;
+    }
+
+    .input-container{
+        display: flex;
+        flex-direction: column;
     }
 
 }
