@@ -9,6 +9,7 @@
     font-weight: bold;
     font-style: italic;
 
+
     h1{
         font-family: 'lora';
         font-size: 48px;
@@ -52,11 +53,11 @@
         gap: 29px;
     }
 
-    article div p, article div input{
+    article div p, article div .input-container{
         width: 185px;
     }
 
-    article p, input, .input-container{
+    article p, .input-container{
         margin-top: 45px;
         display: flex;
         align-items: center;
@@ -119,10 +120,33 @@
     .input-container {
         display: flex;
         flex-direction: column;
-        gap: 4px;
     }
-    
+
+    input{
+        width: 420px;
+        font-size: 16px;
+        font-family: 'lora';
+        font-weight: bold;
+        font-style: italic;
+        color: #6E6E6E;
+        border: 0 ;
+        background-color: transparent;
+    }
+
+    input:focus {
+    outline: none;
+    box-shadow: none;
+    }
+
+    .villeEtCodePostal{
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+    }
+
 }
+    
+
 
 .overlayPopUpCompteClient{
         position: fixed;

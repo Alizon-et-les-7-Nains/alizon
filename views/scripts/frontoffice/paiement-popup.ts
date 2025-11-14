@@ -11,8 +11,12 @@ declare global {
       [key: string]: any;
     };
     PaymentAPI?: any;
+    vignere?: (texte: string, cle: string, sens: number) => string;
   }
 }
+
+// Clé de chiffrement (doit correspondre à celle dans Chiffrement.js)
+const CLE_CHIFFREMENT = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
 
 export function showPopup(message: string) {
   const overlay = document.createElement("div");
@@ -31,6 +35,12 @@ export function showPopup(message: string) {
   const numCarteInput = document.querySelector(
     "body.pagePaiement .num-carte"
   ) as HTMLInputElement | null;
+  const nomCarteInput = document.querySelector(
+    "body.pagePaiement .nom-carte"
+  ) as HTMLInputElement | null;
+  const carteDateInput = document.querySelector(
+    "body.pagePaiement .carte-date"
+  ) as HTMLInputElement | null;
   const cvvInput = document.querySelector(
     "body.pagePaiement .cvv-input"
   ) as HTMLInputElement | null;
@@ -39,6 +49,18 @@ export function showPopup(message: string) {
   const codePostal = codePostalInput?.value.trim() || "";
   const ville = villeInput?.value.trim() || "";
   const rawNumCarte = numCarteInput?.value.replace(/\s+/g, "") || "";
+  const nomCarte = nomCarteInput?.value.trim() || "";
+  const dateCarte = carteDateInput?.value.trim() || "";
+  const rawCVV = cvvInput?.value.trim() || "";
+
+  // CHIFFREMENT DES DONNÉES SENSIBLES
+  const numeroCarteChiffre = window.vignere
+    ? window.vignere(rawNumCarte, CLE_CHIFFREMENT, 1)
+    : rawNumCarte;
+  const cvvChiffre = window.vignere
+    ? window.vignere(rawCVV, CLE_CHIFFREMENT, 1)
+    : rawCVV;
+
   const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
 
   // Déterminer la région à partir du code postal
@@ -119,35 +141,14 @@ export function showPopup(message: string) {
 
     try {
       // Appeler l'API pour créer la commande
-      // Encrypt sensitive fields (numero carte + cvv) on client-side using vignere
-      // Chiffrement.js exposes `vignere` and `cle` in global scope
-      let encryptedNumero = rawNumCarte;
-      let encryptedCvv = "";
-      try {
-        const vg = (window as any).vignere;
-        const key = (window as any).cle;
-        if (
-          typeof vg === "function" &&
-          typeof key === "string" &&
-          rawNumCarte
-        ) {
-          encryptedNumero = vg(rawNumCarte, key, 1);
-        }
-        const rawCvv = cvvInput?.value.replace(/\s+/g, "") || "";
-        if (typeof vg === "function" && typeof key === "string" && rawCvv) {
-          encryptedCvv = vg(rawCvv, key, 1);
-        }
-      } catch (err) {
-        // If encryption fails, fall back to sending raw values (not ideal but avoids blocking)
-        console.error("Erreur chiffrement client:", err);
-      }
-
       const orderData = {
         adresseLivraison: adresse,
         villeLivraison: ville,
         regionLivraison: region,
-        numeroCarte: encryptedNumero,
-        cvv: encryptedCvv,
+        numeroCarte: numeroCarteChiffre, // Version chiffrée
+        cvv: cvvChiffre, // Version chiffrée
+        nomCarte: nomCarte,
+        dateExpiration: dateCarte,
         codePostal: codePostal,
       };
 
