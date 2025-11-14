@@ -50,11 +50,7 @@
     article div{
         display: flex;
         flex-direction: row;
-        gap: 29px;
-    }
-
-    article div p, .input-container{
-        width: 185px;
+        margin-right: 29px;
     }
 
     article p, input{
@@ -120,12 +116,14 @@
     .input-container{
         display: flex;
         flex-direction: column;
+        width: 100%;
     }
 
+    article div p, article div .input-container, article div input#codePostal, article div input#ville {
+        width: 185px;
+    }
 }
     
-
-
 .overlayPopUpCompteClient{
         position: fixed;
         inset: 0;

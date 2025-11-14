@@ -291,7 +291,9 @@
             
             validateForm(); 
 
-            if(validateForm()){
+
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php
                 $pseudo = $_POST['pseudo'] ?? '';
                 $prenom = $_POST['prenom'] ?? '';
