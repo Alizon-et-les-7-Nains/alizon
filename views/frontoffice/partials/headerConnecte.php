@@ -34,28 +34,13 @@
                 <a href=""><img src="../../../public/images/burgerLightBlue.svg" alt=""></a>
             </div>
         </div>
-        </div>
-        <div class="icons">
-            <a href="../frontoffice/notification.php"><img src=" ../../../public/images/bellLightBlue.svg" alt=""></a>
-            <a href="../frontoffice/panier.php"><img src=" ../../../public/images/cartLightBlue.svg" alt=""></a>
-            <a href=""><img src="../../../public/images/burgerLightBlue.svg" alt=""></a>
-        </div>
-        </div>
 
         <div class="carousel">
             <div class="group">
                 <?php 
-        $categorie = ($pdo->query("SELECT * FROM _categorie"))->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($categorie as $value) { ?>
-                <a class="categorie"><?php echo $value['nomCategorie']; ?></a>
-                <?php } ?>
-            </div>
-        </div>
-
-        <div class="carousel">
-            <div class="group">
-                <?php for ($i=0 ; $i < 15 ; $i++) { ?>
-                <a class="categorie">Categorie</a>
+                    $categorie = ($pdo->query("SELECT * FROM _categorie"))->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($categorie as $value) { ?>
+                        <a class="categorie"><?php echo $value['nomCategorie']; ?></a>
                 <?php } ?>
             </div>
         </div>

@@ -34,27 +34,14 @@
                     <p>Se connecter</p>
                 </div>
             </div>
-
         </div>
-        <div class="icons">
-            <div class="seConnecter">
-                <a href="../frontoffice/connexion.php"><img src=" ../../../public/images/utilLightBlue.svg" alt=""></a>
-                <p>Se connecter</p>
-            </div>
 
-            <div class="carousel">
-                <div class="group">
-                    <?php for ($i=0 ; $i < 15 ; $i++) { ?>
-                    <a class="categorie">Categorie</a>
-                    <?php } ?>
-                </div>
-            </div>
             <div class="carousel">
                 <div class="group">
                     <?php 
-        $categorie = ($pdo->query("SELECT * FROM _categorie"))->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($categorie as $value) { ?>
-                    <a class="categorie"><?php echo $value['nomCategorie']; ?></a>
+                        $categorie = ($pdo->query("SELECT * FROM _categorie"))->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($categorie as $value) { ?>
+                            <a class="categorie"><?php echo $value['nomCategorie']; ?></a>
                     <?php } ?>
                 </div>
             </div>
