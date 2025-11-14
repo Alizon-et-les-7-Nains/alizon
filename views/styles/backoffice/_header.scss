@@ -140,13 +140,11 @@ header.backoffice {
         }
         color: $color-blue;
         font-family: 'open-sans';
-        max-width: 500px;
         
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        margin: 0;
         
         &::backdrop {
             background: rgba(0, 0, 0, 0.25);
@@ -168,10 +166,6 @@ header.backoffice {
                     content: url(../../../public/images/croixRouge.svg);
                 }
             }
-            
-            img {
-                display: block;
-            }
         }
         
         h1 {
@@ -182,7 +176,6 @@ header.backoffice {
         nav {
             display: flex;
             justify-content: space-around;
-            gap: 1em;
             
             button {
                 padding: {

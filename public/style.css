@@ -495,12 +495,10 @@ header.backoffice dialog {
   padding-bottom: 1em;
   color: #273469;
   font-family: "open-sans";
-  max-width: 500px;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  margin: 0;
 }
 header.backoffice dialog::backdrop {
   background: rgba(0, 0, 0, 0.25);
@@ -520,9 +518,6 @@ header.backoffice dialog button:first-child:hover {
 header.backoffice dialog button:first-child:hover img {
   content: url(../../../public/images/croixRouge.svg);
 }
-header.backoffice dialog button:first-child img {
-  display: block;
-}
 header.backoffice dialog h1 {
   margin-bottom: 1em;
   text-align: center;
@@ -530,7 +525,6 @@ header.backoffice dialog h1 {
 header.backoffice dialog nav {
   display: flex;
   justify-content: space-around;
-  gap: 1em;
 }
 header.backoffice dialog nav button {
   padding-left: 2em;
