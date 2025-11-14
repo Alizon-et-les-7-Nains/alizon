@@ -100,12 +100,34 @@ function popUpModifierMdp(){
 
 }
 
+function setError(element, message) {
+  if (!element) return;
+  element.classList.add("invalid");
+  element.style.color = "red";
+  const container = element.parentElement;
+  if (!container) return;
+  let err = container.querySelector(".error-message");
+  if (!err) {
+    err = document.createElement("small");
+    err.className = "error-message";
+    container.appendChild(err);
+  }
+  err.textContent = message;
+}
+
+function clearError(element) {
+  if (!element) return;
+  element.classList.remove("invalid");
+  const container = element.parentElement;
+  if (!container) return;
+  const err = container.querySelector(".error-message");
+  if (err) err.textContent = "";
+}
+
 function verifierChamp() {
     const bouton = document.querySelector(".boutonModiferProfil");
     const champs = document.querySelectorAll("section input");
     let tousRemplis = true;
-    let champVide = document.createElement("p");
-    champVide.textContent = "Le champs obligatoire est vide";
     
     for (let i = 0; i < champs.length; i++) {
         let valeur = champs[i].value.trim();
@@ -113,18 +135,24 @@ function verifierChamp() {
         // Le champ adresse2 est optionnel
         if (i !== 5 && valeur === "") {
             tousRemplis = false;
-            champs[i].appendChild(champVide);
+            setError(
+                champs[i], "Le champs obligatoire est vide"
+            );
             break
+        } else {
+            clearError(champs[i]);
         }
 
         // Validation spécifique pour la date de naissance
         if(i === 3){
             if (!/^([0][1-9]||[12][0-9]||[3][01])\/([0][1-9]||[1][012])\/([1][9][0-9][0-9]||[2][0][0-1][0-9]||[2][0][2][0-5])$/.test(valeur)) {
                 tousRemplis = false;
-                let testDateNaissance = document.createElement("p");
-                testDateNaissance.textContent = "Le champs de la date de naissance doit être sous la forme dd/mm/aaaa";
-                champs[i].appendChild(testDateNaissance);
+                setError(
+                    champs[i], "Le champs de la date de naissance doit être sous la forme dd/mm/aaaa"
+                );
                 break;
+            } else {
+                clearError(champs[i]);
             }
         }
         
@@ -132,10 +160,12 @@ function verifierChamp() {
         if (i === 9) { 
             if (!/^0[67](\s[0-9]{2}){4}$/.test(valeur)) {
                 tousRemplis = false;
-                let testTelelphone = document.createElement("p");
-                testTelelphone.textContent = "Le champs numéro de téléphone doit être sous la forme 06 01 02 03 04";
-                champs[i].appendChild(testTelelphone);
+                setError(
+                    champs[i], "Le champs numéro de téléphone doit être sous la forme 06 01 02 03 04"
+                );
                 break;
+            } else {
+                clearError(champs[i]);
             }
         }
         
@@ -143,14 +173,15 @@ function verifierChamp() {
         if (i === 10) {
             if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
                 tousRemplis = false;
-                let testemail = document.createElement("p");
-                testemail.textContent = "Le champs email doit contenir un @ et un nom de domaine ex : .fr .com";
-                champs[i].appendChild(testemail);
+                setError(
+                    champs[i], "Le champs email doit contenir un @ et un nom de domaine ex : .fr .com"
+                );
                 break;
+            } else {
+                clearError(champs[i]);
             }
         }            
     }
-    
     bouton.disabled = !tousRemplis;
 }
 let enModif = false;
