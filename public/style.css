@@ -1600,9 +1600,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient .input-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 .mainCompteClient input {
-  width: 420px;
+  width: 100%;
   font-size: 16px;
   font-family: "lora";
   font-weight: bold;
