@@ -1597,6 +1597,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin-top: 2px;
   display: block;
 }
+.mainCompteClient .input-container {
+  display: flex;
+  flex-direction: column;
+}
 .mainCompteClient input {
   width: 420px;
   font-size: 16px;
@@ -1611,9 +1615,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   outline: none;
   box-shadow: none;
 }
-.mainCompteClient .input-container {
+.mainCompteClient .villeEtCodePostal {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 20px;
 }
 
 .overlayPopUpCompteClient {

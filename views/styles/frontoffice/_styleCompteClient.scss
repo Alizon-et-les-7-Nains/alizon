@@ -9,6 +9,7 @@
     font-weight: bold;
     font-style: italic;
 
+
     h1{
         font-family: 'lora';
         font-size: 48px;
@@ -116,6 +117,11 @@
         display: block;
     }
 
+    .input-container {
+        display: flex;
+        flex-direction: column;
+    }
+
     input{
         width: 420px;
         font-size: 16px;
@@ -132,12 +138,15 @@
     box-shadow: none;
     }
 
-    .input-container {
-    display: flex;
-    flex-direction: column;
+    .villeEtCodePostal{
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+    }
+
 }
     
-}
+
 
 .overlayPopUpCompteClient{
         position: fixed;

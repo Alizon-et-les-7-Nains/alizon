@@ -1,1 +1,7 @@
-select * from _produit where stock < seuilAlerte;
+select *
+from
+	_produit
+where
+	stock < seuilAlerte
+order by
+	stock / seuilAlerte;
