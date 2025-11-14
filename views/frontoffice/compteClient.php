@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h1>Mon Compte</h1>
             </div>
 
-            <section>
+            <section id="profilInfos">
                 <article>
                     <p><?php echo htmlspecialchars($pseudo ?? ''); ?></p>
                     <p><?php echo htmlspecialchars($prenom ?? ''); ?></p>

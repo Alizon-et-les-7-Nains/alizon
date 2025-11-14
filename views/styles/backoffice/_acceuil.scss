@@ -139,18 +139,13 @@ main.acceuilBackoffice {
             flex-direction: column;
             gap: 2em;
             font-family: 'open-sans';
-
-            div {
-                height: 10px; width: 75%;
-                justify-self: center;
-                background-color: $color-pastel-plue;
-                border-radius: 16px;
-            }
             
             table {
                 border-collapse: collapse;
                 width: 100%;
                 font-size: 20px;
+                background-color: $color-pastel-blue;
+                border-radius: 16px;
 
                 td, th {
                     padding: 0.5em;
