@@ -105,6 +105,7 @@ require_once '../../controllers/date.php';
     foreach ($avis as $avi) {
         $imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
         $imageClient = ($pdo->query("select URL from _imageClient where idClient = " . $avi['idClient']))->fetchAll(PDO::FETCH_ASSOC);
+        $imageClient = $imageClient = !empty($imageClient) ? $imageClient[0]['URL'] : '';
         $html = "
         <table>
             <tr>

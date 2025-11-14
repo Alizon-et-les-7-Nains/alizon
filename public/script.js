@@ -459,6 +459,8 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.showPopup = showPopup;
+    // Clé de chiffrement (doit correspondre à celle dans Chiffrement.js)
+    const CLE_CHIFFREMENT = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
     function showPopup(message) {
         const overlay = document.createElement("div");
         overlay.className = "payment-overlay";
@@ -467,11 +469,23 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const codePostalInput = document.querySelector("body.pagePaiement .code-postal-input");
         const villeInput = document.querySelector("body.pagePaiement .ville-input");
         const numCarteInput = document.querySelector("body.pagePaiement .num-carte");
+        const nomCarteInput = document.querySelector("body.pagePaiement .nom-carte");
+        const carteDateInput = document.querySelector("body.pagePaiement .carte-date");
         const cvvInput = document.querySelector("body.pagePaiement .cvv-input");
         const adresse = adresseInput?.value.trim() || "";
         const codePostal = codePostalInput?.value.trim() || "";
         const ville = villeInput?.value.trim() || "";
         const rawNumCarte = numCarteInput?.value.replace(/\s+/g, "") || "";
+        const nomCarte = nomCarteInput?.value.trim() || "";
+        const dateCarte = carteDateInput?.value.trim() || "";
+        const rawCVV = cvvInput?.value.trim() || "";
+        // CHIFFREMENT DES DONNÉES SENSIBLES
+        const numeroCarteChiffre = window.vignere
+            ? window.vignere(rawNumCarte, CLE_CHIFFREMENT, 1)
+            : rawNumCarte;
+        const cvvChiffre = window.vignere
+            ? window.vignere(rawCVV, CLE_CHIFFREMENT, 1)
+            : rawCVV;
         const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
         // Déterminer la région à partir du code postal
         let region = "";
@@ -535,33 +549,14 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
             confirmBtn.disabled = true;
             try {
                 // Appeler l'API pour créer la commande
-                // Encrypt sensitive fields (numero carte + cvv) on client-side using vignere
-                // Chiffrement.js exposes `vignere` and `cle` in global scope
-                let encryptedNumero = rawNumCarte;
-                let encryptedCvv = "";
-                try {
-                    const vg = window.vignere;
-                    const key = window.cle;
-                    if (typeof vg === "function" &&
-                        typeof key === "string" &&
-                        rawNumCarte) {
-                        encryptedNumero = vg(rawNumCarte, key, 1);
-                    }
-                    const rawCvv = cvvInput?.value.replace(/\s+/g, "") || "";
-                    if (typeof vg === "function" && typeof key === "string" && rawCvv) {
-                        encryptedCvv = vg(rawCvv, key, 1);
-                    }
-                }
-                catch (err) {
-                    // If encryption fails, fall back to sending raw values (not ideal but avoids blocking)
-                    console.error("Erreur chiffrement client:", err);
-                }
                 const orderData = {
                     adresseLivraison: adresse,
                     villeLivraison: ville,
                     regionLivraison: region,
-                    numeroCarte: encryptedNumero,
-                    cvv: encryptedCvv,
+                    numeroCarte: numeroCarteChiffre, // Version chiffrée
+                    cvv: cvvChiffre, // Version chiffrée
+                    nomCarte: nomCarte,
+                    dateExpiration: dateCarte,
                     codePostal: codePostal,
                 };
                 const result = await window.PaymentAPI.createOrder(orderData);

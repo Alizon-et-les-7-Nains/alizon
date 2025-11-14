@@ -100,14 +100,16 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $sousTotal = floatval($totals['sousTotal'] ?? 0);
         $nbArticles = intval($totals['nbArticles'] ?? 0);
 
-        // Verification existante carte sinon ajouter
-        $carteQ = $pdo->quote($numeroCarte);
+        // LES DONNÉES SONT DÉJÀ CHIFFRÉES DEPUIS LE FRONT - on les stocke directement
+        $carteQ = $pdo->quote($numeroCarte); // Déjà chiffré
+        $cvvQ = $pdo->quote($cvv); // Déjà chiffré
+
+        // Verification existante carte (avec données chiffrées)
         $checkCarte = $pdo->query("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = $carteQ");
 
         if ($checkCarte->rowCount() === 0) {
             $nomCarteQ = $pdo->quote($nomCarte);
             $dateExpQ = $pdo->quote($dateExp);
-            $cvvQ = $pdo->quote($cvv);
             $sqlInsertCarte = "
                 INSERT INTO _carteBancaire (numeroCarte, nom, dateExpiration, cvv)
                 VALUES ($carteQ, $nomCarteQ, $dateExpQ, $cvvQ)
@@ -211,24 +213,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 }
                 break;
 
-                case 'createOrder':
-                    $adresseLivraison = $_POST['adresseLivraison'] ?? '';
-                    $villeLivraison = $_POST['villeLivraison'] ?? '';
-                    $regionLivraison = $_POST['regionLivraison'] ?? '';
-                    // We expect the card number and CVV to be encrypted on the client-side
-                    $numeroCarte = $_POST['numeroCarte'] ?? '';
-                    $cvv = $_POST['cvv'] ?? '';
-                    $codePostal = $_POST['codePostal'] ?? '';
+            case 'createOrder':
+                $adresseLivraison = $_POST['adresseLivraison'] ?? '';
+                $villeLivraison = $_POST['villeLivraison'] ?? '';
+                $regionLivraison = $_POST['regionLivraison'] ?? '';
+                $numeroCarte = $_POST['numeroCarte'] ?? '';
+                $cvv = $_POST['cvv'] ?? '';
+                $codePostal = $_POST['codePostal'] ?? '';
+                $nomCarte = $_POST['nomCarte'] ?? 'Client inconnu';
+                $dateExpiration = $_POST['dateExpiration'] ?? '12/30';
 
-                    if (empty($adresseLivraison) || empty($villeLivraison) || empty($regionLivraison) || empty($numeroCarte)) {
-                        echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
-                        break;
-                    }
-
-                    // Pass the encrypted CVV to the database function as well
-                    $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte, $codePostal, 'Client inconnu', '12/30', $cvv);
-                    echo json_encode(['success' => true, 'idCommande' => $idCommande]);
+                if (empty($adresseLivraison) || empty($villeLivraison) || empty($regionLivraison) || empty($numeroCarte)) {
+                    echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
                     break;
+                }
+
+                $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExpiration, $cvv);
+                echo json_encode(['success' => true, 'idCommande' => $idCommande]);
+                break;
+
             case 'getCart':
                 $cart = getCurrentCart($pdo, $idClient);
                 echo json_encode($cart);
@@ -419,10 +422,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
-    <script>
-
-    </script>
-    <!-- Chiffrement utilisé pour chiffrer numéro de carte et CVV côté client -->
     <script src="../scripts/frontoffice/Chiffrement.js"></script>
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
