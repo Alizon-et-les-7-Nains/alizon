@@ -191,10 +191,29 @@ header.backoffice {
                 &:first-child {
                     background-color: $color-pastel-purple;
                     color: $color-blue;
+
+                    &:hover {
+                        border: {
+                            style: solid;
+                            width: 2px;
+                            color: $color-blue;
+                        }
+                        background-color: $color-pastel-blue;
+                    }
                 }
                 &:last-child {
                     background-color: $color-blue;
                     color: $color-white;
+
+                    &:hover {
+                        border: {
+                            style: solid;
+                            width: 2px;
+                            color: $color-blue;
+                        }
+                        background-color: $color-pastel-blue;
+                        color: $color-blue;
+                    }
                 }
             }
         }
