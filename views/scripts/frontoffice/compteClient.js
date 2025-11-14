@@ -168,6 +168,10 @@ function verifierChamp() {
                 );
             }
         }  
+
+        if (champValide && (i === 5 || valeur !== "")) {
+            clearError(champs[i]);
+        }
     }
 
     bouton.disabled = !tousRemplis;

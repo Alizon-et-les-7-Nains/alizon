@@ -2,6 +2,15 @@
     if (isset($_COOKIE[session_name()])) {
         session_start(['read_and_close' => true]);
     }
+
+    $pseudo = $_POST['pseudo'] ?? null;
+    $prenom = $_POST['prenom'] ?? null;
+    $nom = $_POST['nom'] ?? null;
+    $email = $_POST['email'] ?? null;
+    $num_tel = $_POST['num_tel'] ?? null;
+    $mdp = $_POST['mdp'] ?? null;
+    $date_naissance = $_POST['date_naissance'] ?? null;
+
 ?>
 <?php require_once "../../controllers/pdo.php" ?> 
 <?php require_once "../../controllers/prix.php" ?>
@@ -129,35 +138,19 @@
 
             birthDateInput.addEventListener('input', () => {
                 birthDateInput.classList.remove('input-error');
-                $_POST['date_naissance'] = $birthDateInput.value;
             });
 
             phoneNumberInput.addEventListener('input', () => {
                 phoneNumberInput.classList.remove('input-error');
-                $_POST['num_tel'] = $phoneNumberInput.value;
-            });
-
-            nomInput.addEventListener('input', () => {
-                $_POST['nom'] = $nomInput.value;
-            });
-
-            prenomInput.addEventListener('input', () => {
-                $_POST['prenom'] = $prenomInput.value;
-            });
-
-            emailInput.addEventListener('input', () => {
-                $_POST['email'] = $emailInput.value;
             });
 
             passwordInput.addEventListener('input', () => {
                 passwordInput.classList.remove('input-error');
-                $_POST['mdp'] = $passwordInput.value;
                 validatePassword(); 
             });
 
             confirmPasswordInput.addEventListener('input', () => {
                 confirmPasswordInput.classList.remove('input-error');
-                $_POST['confirmer_mdp'] = $confirmPasswordInput.value;
                 validatePassword(); 
             });
 
@@ -311,16 +304,6 @@
 
             if(validateForm()){
                 <?php
-
-                $pseudo             = $_POST['pseudo'];
-                $prenom             = $_POST['prenom'];
-                $nom                = $_POST['nom'];
-                $email              = $_POST['email'];
-                $num_tel            = $_POST['num_tel'];
-                $mdp                = $_POST['mdp'] ;
-                $date_naissance     = $_POST['date_naissance'];
-
-
                 $nouveauClient = "INSERT INTO _client
                                   (dateNaissance, prenom, nom, email, mdp, noTelephone, pseudo)
                                   VALUES ($date_naissance, $prenom  , $nom, $email, $mdp , $num_tel, $pseudo ;";            
