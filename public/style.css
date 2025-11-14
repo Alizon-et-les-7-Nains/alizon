@@ -1505,9 +1505,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-family: "lora";
   font-weight: bold;
   font-style: italic;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 .mainCompteClient h1 {
   font-family: "lora";
