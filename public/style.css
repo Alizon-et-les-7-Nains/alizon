@@ -1,9 +1,9 @@
 /* Error: Undefined variable.
  *     ,
- * 147 |                 color: $color-pastel-plue;
- *     |                        ^^^^^^^^^^^^^^^^^^
+ * 146 |                 background-color: $color-pastel-plue;
+ *     |                                   ^^^^^^^^^^^^^^^^^^
  *     '
- *   views\styles\backoffice\_acceuil.scss 147:24  @use
+ *   views\styles\backoffice\_acceuil.scss 146:35  @use
  *   views\styles\main.scss 12:1                   root stylesheet */
 
 body::before {
@@ -14,5 +14,5 @@ body::before {
   padding: 1em;
   margin-bottom: 1em;
   border-bottom: 2px solid black;
-  content: "Error: Undefined variable.\a     \2577 \a 147 \2502                  color: $color-pastel-plue;\d\a     \2502                         ^^^^^^^^^^^^^^^^^^\a     \2575 \a   views\\styles\\backoffice\\_acceuil.scss 147:24  @use\a   views\\styles\\main.scss 12:1                   root stylesheet";
+  content: "Error: Undefined variable.\a     \2577 \a 146 \2502                  background-color: $color-pastel-plue;\d\a     \2502                                    ^^^^^^^^^^^^^^^^^^\a     \2575 \a   views\\styles\\backoffice\\_acceuil.scss 146:35  @use\a   views\\styles\\main.scss 12:1                   root stylesheet";
 }

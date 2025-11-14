@@ -140,12 +140,11 @@ main.acceuilBackoffice {
             gap: 2em;
             font-family: 'open-sans';
 
-            hr {
-                width: 75%;
+            div {
+                height: 10px; width: 75%;
                 justify-self: center;
-                width: 5px;
-                color: $color-pastel-plue;
-                border: none;
+                background-color: $color-pastel-plue;
+                border-radius: 16px;
             }
             
             table {
