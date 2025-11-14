@@ -173,6 +173,6 @@ require_once '../../controllers/date.php';
 
         <?php require_once './partials/footer.php' ?>
 
-        <script src='/public/script.js'></script>
+        <script src="/public/script.js"></script>
     </body>
 </html>

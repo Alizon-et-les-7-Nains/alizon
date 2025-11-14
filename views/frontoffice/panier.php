@@ -138,25 +138,25 @@ $cart = getCurrentCart($pdo, $idClient);
                 ?> 
                 <article>
                     <div class="imgProduit">
-                        <img src="<?php echo htmlspecialchars($image); ?>" alt="Image du produit">
+                        <img src="<?= htmlspecialchars($image) ?>" alt="Image de <?= htmlspecialchars($nom) ?>">
                     </div>
                     <div class="infoProduit">
                         <div>
-                            <h2><?php echo htmlspecialchars($value['nom']); ?></h2>
+                            <h2><?= htmlspecialchars($nom) ?></h2>
                             <h4>En stock</h4>
                         </div>
                         <div class="quantiteProduit">
-                            <img class="minus" src="../../public/images/minusDarkBlue.svg" alt="Symbole moins" data-id="<?= htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;"> 
-                            <p class="quantite"><?= intval($qty) ?></p> 
+                            <img class="minus" src="../../public/images/minusDarkBlue.svg" alt="Symbole moins" data-id="<?php echo htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;"> 
+                            <p class="quantite"><?php echo intval($qty) ?></p> 
                             <img class="plus" src="../../public/images/plusDarkBlue.svg" alt="Symbole plus" data-id="<?= htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;"> 
                         </div>
                     </div>
                     <div class="prixOpt">
-                        <h2><b><?php echo formatPrice($value['prix']); ?></b></h2>
+                        <h2><b><?= number_format($prix * $qty, 2, ',', '') ?>€</b></h2>
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delete" data-id="<?= htmlspecialchars($item['idProduit']) ?>" style="cursor: pointer;">
                     </div>
                 </article>
-            <?php } if ($i==0) { ?>
+            <?php } if (count($cart) === 0) { ?>
                 <h1 class="aucunProduit">Aucun produit</h1>
             <?php } ?>
     </main>
