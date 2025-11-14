@@ -104,6 +104,8 @@ function verifierChamp() {
     const bouton = document.querySelector(".boutonModiferProfil");
     const champs = document.querySelectorAll("section input");
     let tousRemplis = true;
+    let champVide = document.createElement("p");
+    champVide.textContent = "Le champs obligatoire est vide";
     
     for (let i = 0; i < champs.length; i++) {
         let valeur = champs[i].value.trim();
@@ -111,13 +113,28 @@ function verifierChamp() {
         // Le champ adresse2 est optionnel
         if (i !== 5 && valeur === "") {
             tousRemplis = false;
-            break;
+            champs[i].appendChild(champVide);
+            break
+        }
+
+        // Validation spécifique pour la date de naissance
+        if(i === 3){
+            if (!/^([0][1-9]||[12][0-9]||[3][01])\/([0][1-9]||[1][012])\/([1][9][0-9][0-9]||[2][0][0-1][0-9]||[2][0][2][0-5])$/.test(valeur)) {
+                tousRemplis = false;
+                let testDateNaissance = document.createElement("p");
+                testDateNaissance.textContent = "Le champs de la date de naissance doit être sous la forme dd/mm/aaaa";
+                champs[i].appendChild(testDateNaissance);
+                break;
+            }
         }
         
         // Validation spécifique pour le numéro de téléphone
         if (i === 9) { 
             if (!/^0[67](\s[0-9]{2}){4}$/.test(valeur)) {
                 tousRemplis = false;
+                let testTelelphone = document.createElement("p");
+                testTelelphone.textContent = "Le champs numéro de téléphone doit être sous la forme 06 01 02 03 04";
+                champs[i].appendChild(testTelelphone);
                 break;
             }
         }
@@ -126,6 +143,9 @@ function verifierChamp() {
         if (i === 10) {
             if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
                 tousRemplis = false;
+                let testemail = document.createElement("p");
+                testemail.textContent = "Le champs email doit contenir un @ et un nom de domaine ex : .fr .com";
+                champs[i].appendChild(testemail);
                 break;
             }
         }            
@@ -179,34 +199,37 @@ function modifierProfil(event) {
             
             switch(i) {
                 case 0:
-                input.placeholder = "Entrez votre pseudo";
+                input.placeholder = "Entrez votre pseudo*";
                 break;
                 case 1:
-                input.placeholder = "Entrez votre nom";
+                input.placeholder = "Entrez votre nom*";
                 break;
                 case 2:
-                input.placeholder = "Entrez votre prénom";
+                input.placeholder = "Entrez votre prénom*";
                 break;
                 case 3:
-                input.placeholder = "Entrez votre date de naissance jj/mm/aaaa";
+                input.placeholder = "Entrez votre date de naissance*";
                 break;
                 case 4:
-                input.placeholder = "Entrez votre adresse";
+                input.placeholder = "Entrez votre adresse*";
+                break;
+                case 5:
+                input.placeholder = "Entrez votre complément d'adresse";
                 break;
                 case 6:
-                input.placeholder = "Entrez votre code postal";
+                input.placeholder = "Entrez votre code postal*";
                 break;
                 case 7:
-                input.placeholder = "Entrez votre ville";
+                input.placeholder = "Entrez votre ville*";
                 break;
                 case 8:
-                input.placeholder = "Entrez votre pays";
+                input.placeholder = "Entrez votre pays*";
                 break;
                 case 9:
-                input.placeholder = "Entrez votre numéro de téléphone";
+                input.placeholder = "Entrez votre numéro de téléphone*";
                 break;
                 case 10:
-                input.placeholder = "Entrez votre email";
+                input.placeholder = "Entrez votre email*";
                 break;
             }
             
