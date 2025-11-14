@@ -1542,14 +1542,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient article div p, .mainCompteClient article div input {
   width: 185px;
 }
-.mainCompteClient article p, .mainCompteClient input, .mainCompteClient .input-contenaire {
-  margin-top: 0;
+.mainCompteClient article p, .mainCompteClient input {
+  margin-top: 45px;
   display: flex;
   align-items: center;
   width: 420px;
   height: 45px;
   padding: 10px;
-  margin-bottom: 45px;
   color: #6E6E6E;
   border: 2px solid #273469;
   border-radius: 8px;
