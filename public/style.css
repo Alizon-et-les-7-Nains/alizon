@@ -1541,8 +1541,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: row;
   gap: 29px;
 }
-.mainCompteClient article div p, .mainCompteClient article div .input-container {
+.mainCompteClient article div p, .mainCompteClient article div input {
   width: 185px;
+  gap: 29px;
 }
 .mainCompteClient article p, .mainCompteClient input {
   margin-top: 45px;
