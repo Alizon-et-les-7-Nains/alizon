@@ -493,8 +493,6 @@ header.backoffice dialog {
   padding-right: 2em;
   padding-top: 1em;
   padding-bottom: 1em;
-  animation: fadeIn 0.2s ease;
-  transition: all 0.2s;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -506,11 +504,12 @@ header.backoffice dialog::backdrop {
   backdrop-filter: blur(1px);
 }
 header.backoffice dialog button {
+  border: none;
   justify-self: right;
   transition: all 0.2s;
 }
 header.backoffice dialog button:hover {
-  content: url(/public/images/croixRouge.svg);
+  content: url(../../../public/images/croixRouge.svg);
 }
 header.backoffice dialog nav {
   display: flex;
@@ -529,16 +528,6 @@ header.backoffice dialog nav button:first-child {
 header.backoffice dialog nav button:last-child {
   background-color: #273469;
   color: #fffefa;
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
 }
 
 .status-red {
