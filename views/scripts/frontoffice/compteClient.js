@@ -137,8 +137,6 @@ function verifierChamp() {
             setError(
                 champs[i], "Le champs obligatoire est vide"
             );
-        } else {
-            clearError(champs[i]);
         }
 
         // Validation spécifique pour la date de naissance
@@ -148,8 +146,6 @@ function verifierChamp() {
                 setError(
                     champs[i], "Format attendu : jj/mm/aaaa"
                 );
-            } else {
-                clearError(champs[i]);
             }
         }
         
@@ -160,8 +156,6 @@ function verifierChamp() {
                 setError(
                     champs[i], "Format attendu : 06 01 02 03 04"
                 );
-            } else {
-                clearError(champs[i]);
             }
         }
         
@@ -172,8 +166,6 @@ function verifierChamp() {
                 setError(
                     champs[i], "Email invalide (ex: nom@domaine.fr)"
                 );
-            } else {
-                clearError(champs[i]);
             }
         }  
     }
