@@ -1423,7 +1423,9 @@ main.acceuilBackoffice section.avis article {
 }
 main.acceuilBackoffice section.avis article div {
   height: 10px;
-  min-width: 80%;
+  width: auto;
+  margin-left: 2em;
+  margin-right: 2em;
   justify-self: center;
   background-color: #e3f2fe;
   border-radius: 16px;

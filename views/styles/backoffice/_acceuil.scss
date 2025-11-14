@@ -142,7 +142,10 @@ main.acceuilBackoffice {
 
             div {
                 height: 10px;
-                min-width: 80%;
+                width: auto;
+                margin: {
+                    left: 2em; right: 2em;
+                }
                 justify-self: center;
                 background-color: $color-pastel-blue;
                 border-radius: 16px;
