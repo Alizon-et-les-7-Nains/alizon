@@ -109,48 +109,48 @@
                 overlayText.style.display = 'none';
             }
         });
+        // Gestion des sections
+        const addSectionBtn = document.getElementById('add-section-btn');
+        const sectionsContainer = document.getElementById('sections-container');
+        let sectionCount = 0;
+    
+        // Fonction pour créer une nouvelle section
+        function createNewSection(){
+            sectionCount ++;
+            const newSection = document.createElement('div');
+            newSection.classList.add('new-section-box');
+            newSection.dataset.sectionId = sectionCount;
+    
+            newSection.innerHTML = `
+                <div class="section-header">
+                    <h3 class="section-title">Section n°${sectionCount}</h3>
+                    <button type="button" class="btn-delete-section" title="Supprimer la section">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </button>
+                </div>
+    
+                <div class="input-group">
+                    <label for="section-title-${sectionCount}">Titre de la section (H3)</label>
+                    <input type="text" id="section-title-${sectionCount}" name="section_title_${sectionCount}" placeholder="Ex: Ingrédients">
+                </div>
+    
+                <div class="input-group">
+                    <label for="section-desc-${sectionCount}">Description (P)</label>
+                    <textarea id="section-desc-${sectionCount}" name="section_desc_${sectionCount}" placeholder="Détaillez le contenu de cette section."></textarea>
+                </div>
+            `;
+    
+            newSection.querySelector('.btn-delete-section').addEventListener('click', function(){
+                newSection.remove();
+            });
+    
+            sectionsContainer.appendChild(newSection);
+        }
+        createNewSection();
+        // Ajout de sections supplémentaires au clic
+        addSectionBtn.addEventListener('click', createNewSection);
     });
 
-    // Gestion des sections
-    const addSectionBtn = document.getElementById('add-section-btn');
-    const sectionsContainer = document.getElementById('sections-container');
-    let sectionCount = 0;
-
-    // Fonction pour créer une nouvelle section
-    function createNewSection(){
-        sectionCount ++;
-        const newSection = document.createElement('div');
-        newSection.classList.add('new-section-box');
-        newSection.dataset.sectionId = sectionCount;
-
-        newSection.innerHTML = `
-            <div class="section-header">
-                <h3 class="section-title">Section n°${sectionCount}</h3>
-                <button type="button" class="btn-delete-section" title="Supprimer la section">
-                    <i class="bi bi-x-circle-fill"></i>
-                </button>
-            </div>
-
-            <div class="input-group">
-                <label for="section-title-${sectionCount}">Titre de la section (H3)</label>
-                <input type="text" id="section-title-${sectionCount}" name="section_title_${sectionCount}" placeholder="Ex: Ingrédients">
-            </div>
-
-            <div class="input-group">
-                <label for="section-desc-${sectionCount}">Description (P)</label>
-                <textarea id="section-desc-${sectionCount}" name="section_desc_${sectionCount}" placeholder="Détaillez le contenu de cette section."></textarea>
-            </div>
-        `;
-
-        newSection.querySelector('.btn-delete-section').addEventListener('click', function(){
-            newSection.remove();
-        });
-
-        sectionsContainer.appendChild(newSection);
-    }
-    createNewSection();
-    // Ajout de sections supplémentaires au clic
-    addSectionBtn.addEventListener('click', createNewSection);
 
     </script>
     <?php require_once "./partials/footer.php"?>
