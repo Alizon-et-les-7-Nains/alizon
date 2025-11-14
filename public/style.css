@@ -1539,9 +1539,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient article div {
   display: flex;
   flex-direction: row;
-  gap: 29px;
 }
-.mainCompteClient article div p {
+.mainCompteClient article div p, .mainCompteClient .input-container {
   width: 185px;
 }
 .mainCompteClient article p, .mainCompteClient input {
