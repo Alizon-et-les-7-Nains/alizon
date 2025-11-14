@@ -138,36 +138,56 @@ header.backoffice {
             left: 2em; right: 2em;
             top: 1em; bottom: 1em;
         }
+        color: $color-blue;
+        font-family: 'open-sans';
+        
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        color: $color-blue;
         
         &::backdrop {
             background: rgba(0, 0, 0, 0.25);
             backdrop-filter: blur(1px);
         }
         
-        button {
+        button:first-child {
             border: none;
-            justify-self: right;
+            background: none;
+            margin-left: auto;
+            display: block;
+            margin-bottom: 1em;
             transition: all 0.2s;
             
-            &:hover img {
-                content: url(../../../public/images/croixRouge.svg);
+            &:hover {
+                cursor: pointer;
+                
+                img {
+                    content: url(../../../public/images/croixRouge.svg);
+                }
             }
+        }
+        
+        h1 {
+            margin-bottom: 1em;
+            text-align: center;
         }
         
         nav {
             display: flex;
             justify-content: space-around;
+            justify-items: space-around;
             
             button {
-                padding: 1em;
+                padding: {
+                    left: 2em; right: 2em;
+                    top: 1em; bottom: 1em;
+                }
                 width: 200px;
                 font-size: 20px;
                 border-radius: 24px;
+                border: none;
+                cursor: pointer;
                 
                 &:first-child {
                     background-color: $color-pastel-purple;
