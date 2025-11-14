@@ -1432,6 +1432,7 @@ main.acceuilBackoffice section.avis article table tr:first-child th:first-child 
   align-items: center;
   width: 120px;
   line-height: 0.25em;
+  justify-content: flex-start;
 }
 main.acceuilBackoffice section.avis article table tr:first-child th:first-child figure:first-child {
   display: flex;
