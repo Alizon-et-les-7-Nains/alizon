@@ -1544,7 +1544,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient article div p, .mainCompteClient article div input {
   width: 185px;
 }
-.mainCompteClient article p, .mainCompteClient input {
+.mainCompteClient article p, .mainCompteClient input, .mainCompteClient .input-container {
   margin-top: 45px;
   display: flex;
   align-items: center;
@@ -1596,6 +1596,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 0.8rem;
   margin-top: 2px;
   display: block;
+}
+.mainCompteClient .input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .overlayPopUpCompteClient {
@@ -1890,6 +1895,206 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .mainPopUpCompteClient .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.panier .listeProduit article {
+  border: 2px solid #273469;
+  border-radius: 20px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  max-width: 800px;
+  margin-bottom: 40px;
+}
+.panier .quantiteProduit {
+  display: flex;
+  border: 2px solid #273469;
+  border-radius: 15px;
+  justify-content: center;
+  padding: 5px;
+}
+.panier .listeProduit article img {
+  max-height: 220px;
+  margin: 0px 10px;
+}
+.panier .listeProduit article .imgProduit {
+  display: flex;
+}
+.panier .prixOpt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 0;
+}
+.panier .listeProduit div {
+  margin: 0px 15px;
+}
+.panier .quantiteProduit * {
+  margin: 0;
+  padding: 0;
+}
+.panier .infoProduit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 180px;
+}
+.panier .infoProduit img {
+  max-width: 16px;
+}
+.panier .infoProduit p {
+  margin: 0px 30px;
+}
+.panier h2 {
+  margin-right: 0;
+}
+.panier main {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 40px 40px;
+}
+.panier .recapPanier {
+  text-align: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-height: 660px;
+}
+.panier .recapPanier a {
+  font-family: "Lora", serif;
+  font-size: 18px;
+  font-weight: normal;
+  text-decoration: none;
+}
+.panier .recapPanier .viderPanier {
+  color: #ffffff;
+  background-color: #f14e4e;
+  padding: 15px 40px;
+  border-radius: 32px;
+}
+.panier .recapPanier .cardRecap article {
+  margin-bottom: 25px;
+}
+.panier .cardRecap {
+  border: 2px solid #273469;
+  border-radius: 20px;
+  padding: 0px 20px 20px 20px;
+}
+.panier .cardRecap p {
+  color: #273469;
+  background-color: #e4d9ff;
+  padding: 15px 40px;
+  border-radius: 32px;
+  margin: 0;
+}
+.panier article h2 {
+  color: #273469;
+  font-family: "Lora", serif;
+  font-size: 24px;
+  font-weight: normal;
+}
+.panier main h1 {
+  color: #273469;
+  font-family: "lora", serif;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 48px;
+  margin: 0;
+}
+.panier article h4 {
+  font-family: "lora", serif;
+  font-weight: bold;
+  font-style: normal;
+  color: #259525;
+}
+.panier .infoCommande section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 3px solid #e3f2fe;
+}
+.panier .infoCommande section:nth-child(4) {
+  border-bottom: none;
+  justify-content: flex-start;
+}
+.panier .infoCommande section:nth-child(4) * {
+  margin-right: 20px;
+}
+.panier .infoCommande section h2 {
+  color: black;
+}
+.panier .infoCommande section h2:nth-of-type(2) {
+  font-family: "open-sans", sans-serif;
+  font-weight: bold;
+}
+.panier article h2 b {
+  color: black;
+}
+.panier .prixOpt img {
+  margin: 0 !important;
+}
+@media (max-width: 1248px) {
+  .panier main {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .panier .listeProduit article {
+    max-width: none;
+  }
+  .panier .recapPanier * {
+    margin-bottom: 20px;
+  }
+}
+@media (max-width: 767px) {
+  .panier .listeProduit article {
+    border: none;
+    padding: none;
+  }
+  .panier .imgProduit input {
+    display: none;
+  }
+  .panier .listeProduit article img {
+    max-height: 180px;
+    margin: 0px 10px;
+  }
+  .panier .infoProduit div h2 {
+    font-size: 15px;
+  }
+  .panier .quantiteProduit img {
+    width: 9px !important;
+  }
+  .panier .listeProduit div {
+    margin: 0;
+  }
+  .panier main {
+    margin: 10px 10px;
+  }
+}
+@media (max-width: 530px) {
+  .panier .listeProduit article img {
+    max-height: 100px;
+    margin: 0px 10px;
+  }
+  .panier .listeProduit article {
+    align-items: center;
+    margin-bottom: 0;
+  }
+  .panier .listeProduit div {
+    justify-content: center;
+  }
+}
+.panier .aucunProduit {
+  color: #6e6e6e;
+  font-family: "lora", serif;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 30px;
+  text-align: center;
 }
 
 /*# sourceMappingURL=style.css.map */
