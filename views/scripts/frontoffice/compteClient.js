@@ -128,16 +128,17 @@ function verifierChamp() {
     let tousRemplis = true;
     
     for (let i = 0; i < champs.length; i++) {
-        let valeur = champs[i].value.trim();
+        const input = contenaires[i].querySelector("input");
+        let valeur = input.value.trim();
         
         // Le champ adresse2 est optionnel
         if (i !== 5 && valeur === "") {
             tousRemplis = false;
             setError(
-                champs[i], "Le champs obligatoire est vide"
+                input, "Le champs obligatoire est vide"
             );
         } else {
-            clearError(champs[i]);
+            clearError(input);
         }
 
         // Validation spécifique pour la date de naissance
@@ -145,10 +146,10 @@ function verifierChamp() {
             if (!/^([0][1-9]||[12][0-9]||[3][01])\/([0][1-9]||[1][012])\/([1][9][0-9][0-9]||[2][0][0-1][0-9]||[2][0][2][0-5])$/.test(valeur)) {
                 tousRemplis = false;
                 setError(
-                    champs[i], "Format attendu : jj/mm/aaaa"
+                    input, "Format attendu : jj/mm/aaaa"
                 );
             } else {
-                clearError(champs[i]);
+                clearError(input);
             }
         }
         
@@ -157,10 +158,10 @@ function verifierChamp() {
             if (!/^0[67](\s[0-9]{2}){4}$/.test(valeur)) {
                 tousRemplis = false;
                 setError(
-                    champs[i], "Format attendu : 06 01 02 03 04"
+                    input, "Format attendu : 06 01 02 03 04"
                 );
             } else {
-                clearError(champs[i]);
+                clearError(input);
             }
         }
         
@@ -169,10 +170,10 @@ function verifierChamp() {
             if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
                 tousRemplis = false;
                 setError(
-                    champs[i], "Email invalide (ex: nom@domaine.fr)"
+                    input, "Email invalide (ex: nom@domaine.fr)"
                 );
             } else {
-                clearError(champs[i]);
+                clearError(input);
             }
         }            
     }
