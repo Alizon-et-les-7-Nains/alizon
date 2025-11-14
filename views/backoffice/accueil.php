@@ -104,12 +104,13 @@ require_once '../../controllers/date.php';
     if (count($avis) == 0) echo "<h2>Aucun avis</h>";
     foreach ($avis as $avi) {
         $imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
+        $imageClient = ($pdo->query("select URL from _imageClient where idClient = " . $avi['idClient']))->fetchAll(PDO::FETCH_ASSOC);
         $html = "
         <table>
             <tr>
                 <th rowspan=2>
                     <figure>
-                        <img src='/public/images/pp.png'>
+                        <img src='$imageClient'>
                         <figcaption>" . $avi['nomClient'] . "</figcaption>
                     </figure>
                     <figure>
