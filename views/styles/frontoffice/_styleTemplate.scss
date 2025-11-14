@@ -17,8 +17,7 @@ body {
   top: 0;
   z-index: 1000;
 
-  a,
-  p {
+  a, p {
     text-decoration: none;
     color: $color-pastel-blue;
   }
@@ -47,8 +46,7 @@ body {
     align-items: end;
     justify-content: space-between;
 
-    div *,
-    .categorie {
+    div *, .categorie {
       margin-left: 10px;
       margin-right: 10px;
     }
@@ -138,6 +136,7 @@ body {
     }
   }
 
+
   .categorie {
     display: inline-flex;
     align-items: center;
@@ -202,8 +201,7 @@ body {
 .footerFront {
   margin-top: 50px;
 }
-.footerFront a,
-.footerFront p {
+.footerFront a, .footerFront p {
   text-decoration: none;
   color: $color-pastel-blue;
   margin: 0;
@@ -213,10 +211,6 @@ body {
   display: none;
   visibility: hidden;
 }
-<<<<<<< HEAD
-.footerFront,
-=======
->>>>>>> origin/main
 .footerFront div {
   background-color: $color-blue;
   color: white;
@@ -229,8 +223,7 @@ body {
   font-weight: bold;
   align-items: center;
 }
-.footerFront a,
-.footerFront p {
+.footerFront a, .footerFront p {
   padding: 10px 10px;
 }
 .footerFront .homeDarkBlue,

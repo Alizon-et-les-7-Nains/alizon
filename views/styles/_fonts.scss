@@ -5,23 +5,17 @@ $font-open-sans: "open-sans", sans-serif;
 
 @font-face {
   font-family: "lora";
-  src: url("/fonts/lora/Lora-VariableFont_wght.ttf") format("truetype");
+  src: url(../../public/fonts/lora/Lora-VariableFont_wght.ttf);
 }
 
 @font-face {
   font-family: "berkshire";
-  src: url("/fonts/berkshire-swash/BerkshireSwash-Regular.ttf")
-    format("truetype");
+  src: url(../../public/fonts/berkshire-swash/BerkshireSwash-Regular.ttf);
 }
 
 @font-face {
   font-family: "open-sans";
-<<<<<<< HEAD
-  src: url("/fonts/open-sans/OpenSans-VariableFont_wdthwght.ttf")
-    format("truetype");
-=======
   src: url(../../public/fonts/open-sans/static/OpenSans-Regular.ttf);
->>>>>>> origin/main
 }
 @font-face {
   font-family: "open-sans-bold";

@@ -2,15 +2,27 @@
 /* Font stack variables for consistent usage across SCSS files */
 @font-face {
   font-family: "lora";
-  src: url("/fonts/lora/Lora-VariableFont_wght.ttf") format("truetype");
+  src: url(../../public/fonts/lora/Lora-VariableFont_wght.ttf);
 }
 @font-face {
   font-family: "berkshire";
-  src: url("/fonts/berkshire-swash/BerkshireSwash-Regular.ttf") format("truetype");
+  src: url(../../public/fonts/berkshire-swash/BerkshireSwash-Regular.ttf);
 }
 @font-face {
   font-family: "open-sans";
-  src: url("/fonts/open-sans/OpenSans-VariableFont_wdthwght.ttf") format("truetype");
+  src: url(../../public/fonts/open-sans/static/OpenSans-Regular.ttf);
+}
+@font-face {
+  font-family: "open-sans-bold";
+  src: url(../../public/fonts/open-sans/static/OpenSans-Bold.ttf);
+}
+@font-face {
+  font-family: "open-sans-italic";
+  src: url(../../public/fonts/open-sans/static/OpenSans-Italic.ttf);
+}
+@font-face {
+  font-family: "open-sans-bold-italic";
+  src: url(../../public/fonts/open-sans/static/OpenSans-BoldItalic.ttf);
 }
 html,
 body {
@@ -27,8 +39,7 @@ body {
   top: 0;
   z-index: 1000;
 }
-.headerFront a,
-.headerFront p {
+.headerFront a, .headerFront p {
   text-decoration: none;
   color: #e3f2fe;
 }
@@ -51,8 +62,7 @@ body {
   align-items: end;
   justify-content: space-between;
 }
-.headerFront .headerMain div *,
-.headerFront .headerMain .categorie {
+.headerFront .headerMain div *, .headerFront .headerMain .categorie {
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -184,8 +194,7 @@ body {
   margin-top: 50px;
 }
 
-.footerFront a,
-.footerFront p {
+.footerFront a, .footerFront p {
   text-decoration: none;
   color: #e3f2fe;
   margin: 0;
@@ -197,7 +206,6 @@ body {
   visibility: hidden;
 }
 
-.footerFront,
 .footerFront div {
   background-color: #273469;
   color: white;
@@ -211,8 +219,7 @@ body {
   align-items: center;
 }
 
-.footerFront a,
-.footerFront p {
+.footerFront a, .footerFront p {
   padding: 10px 10px;
 }
 
@@ -540,193 +547,6 @@ header.backoffice dialog nav button:last-child {
   color: #fffefa;
 }
 
-.status-red {
-  color: #f14e4e;
-}
-
-.status-green {
-  color: #259525;
-}
-
-.input-error {
-  border: 2px solid red !important;
-  background-color: #ffe6e6;
-  transition: 0.3s ease;
-}
-
-@media (max-width: 2000px) {
-  .inscription {
-    font-family: "lora";
-    font-weight: bold;
-  }
-  .inscription::before {
-    content: "";
-    position: absolute;
-    left: -200px;
-    top: 50px;
-    width: 600px;
-    height: 600px;
-    background: url("../../public/images/symboleRose.png") no-repeat center center;
-    background-size: contain;
-    transform: rotate(-180deg);
-    opacity: 0.3;
-    z-index: 0;
-    pointer-events: none;
-  }
-  .inscription form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-  }
-  .inscription form input {
-    width: 450px;
-    height: 50px;
-    padding: 10px;
-    margin: 16px;
-    color: #6e6e6e;
-    font-size: 16px;
-    border: 2px solid #273469;
-    border-radius: 8px;
-  }
-  .inscription h2 {
-    color: #273469;
-    font-family: "Lora", serif;
-    font-size: 48px;
-    font-weight: bold;
-    text-align: center;
-    margin: 50px 0px;
-  }
-}
-@media (max-width: 800px) {
-  .inscription {
-    font-family: "lora";
-    font-weight: bold;
-  }
-  .inscription::before {
-    content: "";
-    position: absolute;
-    left: -200px;
-    top: 50px;
-    width: 400px;
-    height: 600px;
-    background: url("../../public/images/symboleRose.png") no-repeat center center;
-    background-size: contain;
-    transform: rotate(-180deg);
-    opacity: 0.3;
-    z-index: 0;
-    pointer-events: none;
-  }
-  .inscription form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-  }
-  .inscription form input {
-    width: 300px;
-    height: 50px;
-    padding: 10px;
-    margin: 16px;
-    color: #6e6e6e;
-    font-size: 16px;
-    border: 2px solid #273469;
-    border-radius: 8px;
-  }
-  .inscription h2 {
-    color: #273469;
-    font-family: "Lora", serif;
-    font-size: 48px;
-    font-weight: bold;
-    text-align: center;
-    margin: 50px 0px;
-  }
-}
-@media (max-width: 500px) {
-  .inscription {
-    font-family: "lora";
-    font-weight: bold;
-  }
-  .inscription::before {
-    content: "";
-    position: absolute;
-    left: -200px;
-    top: 50px;
-    width: 352.9411764706px 5;
-    height: 600px;
-    background: url("../../public/images/symboleRose.png") no-repeat center center;
-    background-size: contain;
-    transform: rotate(-180deg);
-    opacity: 0.3;
-    z-index: 0;
-    pointer-events: none;
-  }
-  .inscription form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-  }
-  .inscription form input {
-    width: 300px;
-    height: 50px;
-    padding: 10px;
-    margin: 16px;
-    color: #6e6e6e;
-    font-size: 13px;
-    border: 2px solid #273469;
-    border-radius: 8px;
-  }
-  .inscription form #refactor {
-    display: flex;
-  }
-  .inscription form #refactor input {
-    width: 135px;
-  }
-  .inscription h2 {
-    color: #273469;
-    font-family: "Lora", serif;
-    font-size: 48px;
-    font-weight: bold;
-    text-align: center;
-    margin: 30px 0px;
-  }
-}
-#submitButton {
-  width: 450px;
-  height: 48px;
-  padding: 10px;
-  margin-bottom: 45px;
-  font-size: 16px;
-  background-color: #e4d9ff;
-  border-radius: 8px;
-  border: none;
-  color: #273469;
-}
-
-#password-requirements-container {
-  padding-left: 12px;
-}
-
-#password-requirements {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-#password-requirements li {
-  margin-bottom: 5px;
-}
-
 .pageConnexionCLient {
   position: relative;
 }
@@ -972,6 +792,193 @@ body.backoffice main {
 }
 body.backoffice footer {
   grid-area: footer;
+}
+
+.status-red {
+  color: #f14e4e;
+}
+
+.status-green {
+  color: #259525;
+}
+
+.input-error {
+  border: 2px solid red !important;
+  background-color: #ffe6e6;
+  transition: 0.3s ease;
+}
+
+@media (max-width: 2000px) {
+  .inscription {
+    font-family: "lora";
+    font-weight: bold;
+  }
+  .inscription::before {
+    content: "";
+    position: absolute;
+    left: -200px;
+    top: 50px;
+    width: 600px;
+    height: 600px;
+    background: url("../../public/images/symboleRose.png") no-repeat center center;
+    background-size: contain;
+    transform: rotate(-180deg);
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .inscription form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .inscription form input {
+    width: 450px;
+    height: 50px;
+    padding: 10px;
+    margin: 16px;
+    color: #6e6e6e;
+    font-size: 16px;
+    border: 2px solid #273469;
+    border-radius: 8px;
+  }
+  .inscription h2 {
+    color: #273469;
+    font-family: "Lora", serif;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    margin: 50px 0px;
+  }
+}
+@media (max-width: 800px) {
+  .inscription {
+    font-family: "lora";
+    font-weight: bold;
+  }
+  .inscription::before {
+    content: "";
+    position: absolute;
+    left: -200px;
+    top: 50px;
+    width: 400px;
+    height: 600px;
+    background: url("../../public/images/symboleRose.png") no-repeat center center;
+    background-size: contain;
+    transform: rotate(-180deg);
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .inscription form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .inscription form input {
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    margin: 16px;
+    color: #6e6e6e;
+    font-size: 16px;
+    border: 2px solid #273469;
+    border-radius: 8px;
+  }
+  .inscription h2 {
+    color: #273469;
+    font-family: "Lora", serif;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    margin: 50px 0px;
+  }
+}
+@media (max-width: 500px) {
+  .inscription {
+    font-family: "lora";
+    font-weight: bold;
+  }
+  .inscription::before {
+    content: "";
+    position: absolute;
+    left: -200px;
+    top: 50px;
+    width: 352.9411764706px 5;
+    height: 600px;
+    background: url("../../public/images/symboleRose.png") no-repeat center center;
+    background-size: contain;
+    transform: rotate(-180deg);
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .inscription form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .inscription form input {
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    margin: 16px;
+    color: #6e6e6e;
+    font-size: 13px;
+    border: 2px solid #273469;
+    border-radius: 8px;
+  }
+  .inscription form #refactor {
+    display: flex;
+  }
+  .inscription form #refactor input {
+    width: 135px;
+  }
+  .inscription h2 {
+    color: #273469;
+    font-family: "Lora", serif;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    margin: 30px 0px;
+  }
+}
+#submitButton {
+  width: 450px;
+  height: 48px;
+  padding: 10px;
+  margin-bottom: 45px;
+  font-size: 16px;
+  background-color: #e4d9ff;
+  border-radius: 8px;
+  border: none;
+  color: #273469;
+}
+
+#password-requirements-container {
+  padding-left: 12px;
+}
+
+#password-requirements {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#password-requirements li {
+  margin-bottom: 5px;
 }
 
 /* Variables principales */

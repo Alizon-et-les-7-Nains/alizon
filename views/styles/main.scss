@@ -4,16 +4,11 @@
 @use "./frontoffice/styleLegales";
 @use "./frontoffice/style404";
 @use "./backoffice/header";
-<<<<<<< HEAD
 @use "./frontoffice/pageConnexionCLient";
 @use "./backoffice/footer";
 @use "./backoffice/aside";
 @use "./backoffice/structure";
-=======
 @use "./frontoffice/inscription";
-@use "./backoffice/footer";
-@use "./backoffice/aside";
-@use "./backoffice/structure";
 @use "./frontoffice/stylePaiement";
 @use "./backoffice/acceuil";
 @use "./frontoffice/styleCompteClient";
@@ -22,4 +17,3 @@
 @use "./frontoffice/stylePanier";
 @use "./backoffice/AjouterProduit";
 @use "./backoffice/CreerCompteVendeur";
->>>>>>> origin/main
