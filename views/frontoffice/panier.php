@@ -1,3 +1,7 @@
+<?php 
+require_once "../../controllers/prix.php";
+require_once "../../controllers/pdo.php";
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
