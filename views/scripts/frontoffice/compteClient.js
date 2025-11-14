@@ -292,13 +292,22 @@ bnModifier[0].addEventListener("click", modifierProfil);
 const valeursInitiales = Array.from(document.querySelectorAll("section p"))
 
 function boutonAnnuler() {
-    
     let inputs = document.querySelectorAll("section input");
     
     for (let i = 0; i < inputs.length; i++) {
         let p = document.createElement("p");
-        p.innerText = valeursInitiales[i].innerText;
-        inputs[i].parentNode.replaceChild(p, inputs[i]);
+        p.innerText = valeursInitiales[i].innerText; 
+        
+        let currentParent = inputs[i].parentNode;
+        
+        // Si l'input est dans un input-container, remplacer le container par le <p>
+        if (currentParent.classList.contains('input-container')) {
+            currentParent.parentNode.replaceChild(p, currentParent);
+        } 
+        // Sinon, remplacement simple
+        else {
+            currentParent.replaceChild(p, inputs[i]);
+        }
     }
     
     if (document.getElementById("photoProfil")) {
@@ -316,6 +325,6 @@ function boutonAnnuler() {
     
     imageProfile.style.cursor = "default";
     imageProfile.onclick = null;
-    
 }
+
 
