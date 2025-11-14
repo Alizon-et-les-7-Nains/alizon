@@ -59,7 +59,6 @@
                 <a href="#"><button type="submit" class="btn-ajouter">Ajouter le produit</button></a>
             </div>
         </div>
-    </div>
     </main>
 
     <script>

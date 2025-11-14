@@ -53,10 +53,6 @@
         gap: 29px;
     }
 
-    article div p{
-        width: 185px;
-    }
-
     article p, input{
         margin-top: 45px;
         display: flex;
@@ -120,8 +116,12 @@
     .input-container{
         display: flex;
         flex-direction: column;
+        width: 100%;
     }
 
+    article div p, article div .input-container, article div input#codePostal, article div input#ville {
+        width: 185px;
+    }
 }
     
 

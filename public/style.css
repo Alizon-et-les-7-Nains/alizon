@@ -1541,9 +1541,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: row;
   gap: 29px;
 }
-.mainCompteClient article div p {
-  width: 185px;
-}
 .mainCompteClient article p, .mainCompteClient input {
   margin-top: 45px;
   display: flex;
@@ -1600,6 +1597,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient .input-container {
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+.mainCompteClient article div p, .mainCompteClient article div .input-container, .mainCompteClient article div input#codePostal, .mainCompteClient article div input#ville {
+  width: 185px;
 }
 
 .overlayPopUpCompteClient {
