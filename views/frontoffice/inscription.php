@@ -1,13 +1,10 @@
-<?php require_once "../../controllers/pdo.php" ?> 
-<?php require_once "../../controllers/prix.php" ?>
 <?php
-
     if (isset($_COOKIE[session_name()])) {
         session_start(['read_and_close' => true]);
     }
-
 ?>
-
+<?php require_once "../../controllers/pdo.php" ?> 
+<?php require_once "../../controllers/prix.php" ?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -322,7 +319,7 @@
         </script>
       </main>
 
-    <?php include '../../views/frontoffice/partials/footer.php'; ?>
+    <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 
 </body>
 </html>
