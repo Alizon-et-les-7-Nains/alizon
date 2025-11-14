@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <article>
                     <p><?php echo htmlspecialchars($adresse1 ?? ''); ?></p>
                     <p><?php echo htmlspecialchars(" "); ?></p>
-                    <div class = "villeEtCodePostal">
+                    <div>
                         <p><?php echo htmlspecialchars($codePostal ?? ''); ?></p>
                         <p><?php echo htmlspecialchars($ville ?? ''); ?></p>
                     </div>
