@@ -1611,6 +1611,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border: 0;
   background-color: transparent;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 .mainCompteClient input:focus {
