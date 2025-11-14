@@ -49,13 +49,25 @@
             flex-direction: row;
             gap: 29px;
 
-            p, .input-container, input#codePostal, input#ville {
-                width: 185px; // code postal + ville
+            /* Tous les inputs ou p directs dans ce div (Code Postal / Ville) */
+            > p,
+            > .input-container {
+                width: 185px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Messages d'erreur sous chaque champ */
+            small.error-message {
+                width: 100%;
+                margin-top: 4px;
+                color: red;
+                font-size: 0.8rem;
             }
         }
     }
 
-    // Styles pour tous les <p> et <input> normaux
+    /* Styles pour tous les <p> et <input> standards */
     article p,
     article input {
         margin-top: 45px;
@@ -73,11 +85,11 @@
         font-style: italic;
     }
 
-    // Container des inputs lors de la modification
+    /* Container des inputs en mode édition */
     .input-container {
         display: flex;
         flex-direction: column;
-        width: 420px; // largeur par défaut
+        width: 420px; // largeur par défaut, sauf Code Postal / Ville
     }
 
     #buttonsCompte {
