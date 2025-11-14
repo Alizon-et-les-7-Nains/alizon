@@ -1,16 +1,24 @@
+function fermerPopUp(){
+    const overlay = document.querySelector(".overlayPopUpCompteClient");
+    if (overlay) overlay.remove();
+}
 function popUpModifierMdp(){
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpCompteClient";
     overlay.innerHTML = `
                 <main class="mainPopUpCompteClient">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div> 
                 <h1>Modification de votre mot de passe</h1>
-                <p>${mdpChiffree}</p>
                 <section>
                     <div class="formulaireMdp">
-                        <form action="">
-                            <input type="text" placeholder="Ancien mot de passe">
-                            <input type="text" placeholder="Nouveau mot de passe">
-                            <input type="text" placeholder="Confirmer le nouveau mot de passe">
+                        <form id="formMdp" method="POST" action="../../controllers/modifierMdp.php">
+                            <input type="password" name="ancienMdp" placeholder="Ancien mot de passe">
+                            <input type="password" name="nouveauMdp" placeholder="Nouveau mot de passe">
+                            <input type="password" name="confirmationMdp" placeholder="Confirmer le nouveau mot de passe">
+                            
                         
                             <article>
                                 <div class="croix">
@@ -44,11 +52,75 @@ function popUpModifierMdp(){
                                 <p>Au moins un charactères spéciale</p>
                             </article>
                         </div>
-                            <button type="button" onclick="fermerFenetre()">Valider</button>
+                            <button type="submit">Valider</button>
                         </form>
                     </section>
                 </main>`;
     document.body.appendChild(overlay);
+
+    let croixFermerLaPage = overlay.getElementsByClassName("croixFermerLaPage");
+    croixFermerLaPage = croixFermerLaPage[0];
+    croixFermerLaPage.addEventListener("click",fermerPopUp);
+
+    let input = overlay.querySelectorAll("input");
+    let ancienMdp = input[0];
+    let nouveauMdp = input[1];
+    let confirmationMdp = input[2];
+    let button = overlay.querySelectorAll("button");
+    let valider = button[0];
+
+    function verifierMdp() {
+
+        const ancienMdpChiffree = vignere(ancienMdp.value, cle, 1);
+        const nouveauMdpChiffree = vignere(nouveauMdp.value, cle, 1);
+        const confirmationMdpChiffree = vignere(confirmationMdp.value, cle, 1);
+
+        if (ancienMdpChiffree === mdp && nouveauMdpChiffree === confirmationMdpChiffree && nouveauMdpChiffree != "") {
+            valider.disabled = false;
+            valider.style.cursor = "pointer";
+            valider.onclick = function(e) {
+            e.preventDefault(); 
+            const form = document.getElementById("formMdp");
+            form.ancienMdp.value = vignere(form.ancienMdp.value, cle, 1);
+            form.nouveauMdp.value = vignere(form.nouveauMdp.value, cle, 1);
+            form.confirmationMdp.value = vignere(form.confirmationMdp.value, cle, 1);
+            document.getElementById("formMdp").submit();
+        }
+        } else {
+            valider.disabled = true;
+            valider.style.cursor = "default";
+            valider.onclick = null;
+
+        }
+    }
+
+    ancienMdp.addEventListener("input", verifierMdp);
+    nouveauMdp.addEventListener("input", verifierMdp);
+    confirmationMdp.addEventListener("input", verifierMdp);
+
+}
+
+function setError(element, message) {
+  if (!element) return;
+  element.classList.add("invalid");
+  const container = element.parentElement;
+  if (!container) return;
+  let err = container.querySelector(".error-message");
+  if (!err) {
+    err = document.createElement("small");
+    err.className = "error-message";
+    container.appendChild(err);
+  }
+  err.textContent = message;
+}
+
+function clearError(element) {
+  if (!element) return;
+  element.classList.remove("invalid");
+  const container = element.parentElement;
+  if (!container) return;
+  const err = container.querySelector(".error-message");
+  if (err) err.textContent = "";
 }
 
 function verifierChamp() {
@@ -62,14 +134,34 @@ function verifierChamp() {
         // Le champ adresse2 est optionnel
         if (i !== 5 && valeur === "") {
             tousRemplis = false;
-            break;
+            setError(
+                champs[i], "Le champs obligatoire est vide"
+            );
+        } else {
+            clearError(champs[i]);
+        }
+
+        // Validation spécifique pour la date de naissance
+        if(i === 3){
+            if (!/^([0][1-9]||[12][0-9]||[3][01])\/([0][1-9]||[1][012])\/([1][9][0-9][0-9]||[2][0][0-1][0-9]||[2][0][2][0-5])$/.test(valeur)) {
+                tousRemplis = false;
+                setError(
+                    champs[i], "Format attendu : jj/mm/aaaa"
+                );
+            } else {
+                clearError(champs[i]);
+            }
         }
         
         // Validation spécifique pour le numéro de téléphone
         if (i === 9) { 
             if (!/^0[67](\s[0-9]{2}){4}$/.test(valeur)) {
                 tousRemplis = false;
-                break;
+                setError(
+                    champs[i], "Format attendu : 06 01 02 03 04"
+                );
+            } else {
+                clearError(champs[i]);
             }
         }
         
@@ -77,11 +169,14 @@ function verifierChamp() {
         if (i === 10) {
             if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
                 tousRemplis = false;
-                break;
+                setError(
+                    champs[i], "Email invalide (ex: nom@domaine.fr)"
+                );
+            } else {
+                clearError(champs[i]);
             }
         }            
     }
-    
     bouton.disabled = !tousRemplis;
 }
 let enModif = false;
@@ -130,34 +225,37 @@ function modifierProfil(event) {
             
             switch(i) {
                 case 0:
-                input.placeholder = "Entrez votre pseudo";
+                input.placeholder = "Entrez votre pseudo*";
                 break;
                 case 1:
-                input.placeholder = "Entrez votre nom";
+                input.placeholder = "Entrez votre nom*";
                 break;
                 case 2:
-                input.placeholder = "Entrez votre prénom";
+                input.placeholder = "Entrez votre prénom*";
                 break;
                 case 3:
-                input.placeholder = "Entrez votre date de naissance jj/mm/aaaa";
+                input.placeholder = "Entrez votre date de naissance*";
                 break;
                 case 4:
-                input.placeholder = "Entrez votre adresse";
+                input.placeholder = "Entrez votre adresse*";
+                break;
+                case 5:
+                input.placeholder = "Entrez votre complément d'adresse";
                 break;
                 case 6:
-                input.placeholder = "Entrez votre code postal";
+                input.placeholder = "Entrez votre code postal*";
                 break;
                 case 7:
-                input.placeholder = "Entrez votre ville";
+                input.placeholder = "Entrez votre ville*";
                 break;
                 case 8:
-                input.placeholder = "Entrez votre pays";
+                input.placeholder = "Entrez votre pays*";
                 break;
                 case 9:
-                input.placeholder = "Entrez votre numéro de téléphone";
+                input.placeholder = "Entrez votre numéro de téléphone*";
                 break;
                 case 10:
-                input.placeholder = "Entrez votre email";
+                input.placeholder = "Entrez votre email*";
                 break;
             }
             
@@ -190,10 +288,6 @@ function modifierProfil(event) {
 }
 
 bnModifier[0].addEventListener("click", modifierProfil);
-
-function fermerFenetre(){
-    window.close();
-}
 
 const valeursInitiales = Array.from(document.querySelectorAll("section p"))
 

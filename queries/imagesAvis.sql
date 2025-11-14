@@ -1,0 +1,1 @@
+select URL from _imageAvis where idProduit = $idProduit and idClient = $idClient;

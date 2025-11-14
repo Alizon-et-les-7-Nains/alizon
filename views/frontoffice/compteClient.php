@@ -129,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" class="boutonModiferProfil">Modifier</button>
             </div>
         </form>
+
     </main>
     
     <?php include 'partials/footerConnecte.php'; ?>
@@ -141,7 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../scripts/frontoffice/Chiffrement.js"></script>
     <script>
         const mdp = "<?php echo $mdp; ?>";
-        const mdpChiffree = vignere(mdp, cle, 1);
     </script>
     <script src="../scripts/frontoffice/compteClient.js"></script>
 </body>

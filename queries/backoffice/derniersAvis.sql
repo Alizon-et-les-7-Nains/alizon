@@ -7,4 +7,4 @@ join
 join
     _client c on a.idClient = c.idClient
 order by dateAvis desc
-limit 2;
+limit 4;

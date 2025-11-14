@@ -1,13 +1,10 @@
-<?php require_once "../../controllers/pdo.php" ?> 
-<?php require_once "../../controllers/prix.php" ?>
 <?php
-
     if (isset($_COOKIE[session_name()])) {
         session_start(['read_and_close' => true]);
     }
-
 ?>
-
+<?php require_once "../../controllers/pdo.php" ?> 
+<?php require_once "../../controllers/prix.php" ?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -106,13 +103,7 @@
                 special: { element: reqSpecial, regex: /[^a-zA-Z0-9]/, message: 'Un caractère spécial (@, !, #, ...)' }
             };
 
-            passwordInput.addEventListener('blur', () => {
-                // Masquer les critères si le champ est vide
-                if (passwordInput.value.length === 0) {
-                    passwordRequirementsContainer.classList.add('hidden');
-                }
-                toggleErrorStyle(passwordInput);
-            });
+
             
             confirmPasswordInput.addEventListener('blur', () => {
                 // Gérer l'état vide/erreur du champ Confirmer MDP
@@ -123,16 +114,6 @@
             passwordInput.addEventListener('focus', () => {
                 passwordRequirementsContainer.classList.remove('hidden');
                 passwordInput.classList.remove('input-error'); // Enlève l'erreur quand l'utilisateur revient
-                validatePassword(); 
-            });
-
-            passwordInput.addEventListener('input', () => {
-                passwordInput.classList.remove('input-error');
-                validatePassword(); 
-            });
-            
-            confirmPasswordInput.addEventListener('input', () => {
-                confirmPasswordInput.classList.remove('input-error');
                 validatePassword(); 
             });
 
@@ -148,10 +129,36 @@
 
             birthDateInput.addEventListener('input', () => {
                 birthDateInput.classList.remove('input-error');
+                $_POST['date_naissance'] = $birthDateInput.value;
             });
 
             phoneNumberInput.addEventListener('input', () => {
                 phoneNumberInput.classList.remove('input-error');
+                $_POST['num_tel'] = $phoneNumberInput.value;
+            });
+
+            nomInput.addEventListener('input', () => {
+                $_POST['nom'] = $nomInput.value;
+            });
+
+            prenomInput.addEventListener('input', () => {
+                $_POST['prenom'] = $prenomInput.value;
+            });
+
+            emailInput.addEventListener('input', () => {
+                $_POST['email'] = $emailInput.value;
+            });
+
+            passwordInput.addEventListener('input', () => {
+                passwordInput.classList.remove('input-error');
+                $_POST['mdp'] = $passwordInput.value;
+                validatePassword(); 
+            });
+
+            confirmPasswordInput.addEventListener('input', () => {
+                confirmPasswordInput.classList.remove('input-error');
+                $_POST['confirmer_mdp'] = $confirmPasswordInput.value;
+                validatePassword(); 
             });
 
             //////////////////////////////////////////////////////////////////
@@ -181,7 +188,7 @@
                     $_POST['nom'] = $pseudoInput.value;
                     $_POST['mdp'] = $mdpInput.value;              
                     $_POST['confimer_mdp'] = $confirmPasswordInput.value       
-                    $_POST['date_naissance'] = $birthDateIput.value;     
+                    $_POST['date_naissance'] = $birthDateInput.value;     
                     return true;
                 }
                 return false
@@ -322,7 +329,7 @@
         </script>
       </main>
 
-    <?php include '../../views/frontoffice/partials/footer.php'; ?>
+    <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 
 </body>
 </html>
