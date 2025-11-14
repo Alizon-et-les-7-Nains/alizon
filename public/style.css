@@ -83,9 +83,10 @@ body {
   align-items: center;
   align-content: center;
   justify-content: center;
+  font-family: "Lora", serif;
 }
 .headerFront .seConnecter img {
-  height: 40px;
+  height: 30px;
 }
 .headerFront .seConnecter p {
   margin: 0;
