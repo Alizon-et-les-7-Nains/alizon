@@ -20,7 +20,7 @@ document.querySelector('header.backoffice dialog nav button:last-child')?.addEve
     window.location.href = '10.253.5.104/views/backoffice/connexion.php';
 })
 
-modal.addEventListener('click', (e) => {
+modal?.addEventListener('click', (e) => {
     if (e.target === modal) {
         modal.close();
     }
