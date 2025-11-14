@@ -1539,7 +1539,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient article div {
   display: flex;
   flex-direction: row;
-  margin-right: 29px;
+  gap: 29px;
 }
 .mainCompteClient article p, .mainCompteClient input {
   margin-top: 45px;
