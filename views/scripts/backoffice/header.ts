@@ -37,3 +37,5 @@ modal?.addEventListener("click", (e) => {
     modal.close();
   }
 });
+
+console.log("");
