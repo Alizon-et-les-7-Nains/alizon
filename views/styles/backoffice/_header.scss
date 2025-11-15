@@ -117,16 +117,87 @@ header.backoffice {
             }
         }
     }
-
+    
     &.nouveauProduit {
         nav figure:first-child {
             display: none;
         }
     }
-
+    
     &.nonConnecte {
         nav {
             display: none;
+        }
+    }
+    
+    dialog {
+        background-color: $color-white;
+        border: none;
+        border-radius: 16px;
+        padding: {
+            left: 2em; right: 2em;
+            top: 1em; bottom: 1em;
+        }
+        color: $color-blue;
+        font-family: 'open-sans';
+        
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+        &::backdrop {
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(1px);
+        }
+        
+        button:first-child {
+            border: none;
+            background: none;
+            margin-left: auto;
+            display: block;
+            margin-bottom: 1em;
+            transition: all 0.2s;
+            
+            &:hover {
+                cursor: pointer;
+                
+                img {
+                    content: url(../../../public/images/croixRouge.svg);
+                }
+            }
+        }
+        
+        h1 {
+            margin-bottom: 1em;
+            text-align: center;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-around;
+            justify-items: space-around;
+            
+            button {
+                padding: {
+                    left: 2em; right: 2em;
+                    top: 1em; bottom: 1em;
+                }
+                width: 200px;
+                font-size: 20px;
+                border-radius: 24px;
+                border: none;
+                cursor: pointer;
+                
+                &:first-child {
+                    background-color: $color-pastel-purple;
+                    color: $color-blue;
+                }
+                &:last-child {
+                    background-color: $color-blue;
+                    color: $color-white;
+                }
+            }
         }
     }
 }

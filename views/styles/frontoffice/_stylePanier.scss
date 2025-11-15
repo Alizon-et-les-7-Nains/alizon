@@ -7,7 +7,7 @@
     border-radius: 20px;
     padding: 10px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: nowrap;
     max-width: 800px;
     margin-bottom: 40px;
@@ -21,7 +21,9 @@
   }
   .listeProduit article img {
     max-height: 220px;
+    max-width: 220px;
     margin: 0px 10px;
+    object-fit: contain;
   }
   .listeProduit article .imgProduit {
     display: flex;
@@ -30,8 +32,12 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: center;
     margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 15px;
   }
 
   .listeProduit div {
@@ -45,7 +51,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: space-between;
+      justify-content: space-around;
       height: 180px;
   }
   .infoProduit img {
@@ -83,8 +89,8 @@
       padding: 15px 40px;
       border-radius: 32px;
     }
-    .cardRecap article {
-      margin-bottom: 25px;
+    h1, .cardRecap {
+      margin-bottom: 40px;
     }
   }
   .cardRecap {
@@ -142,9 +148,6 @@
   article h2 b {
     color: black;
   }
-  .prixOpt img {
-    margin: 0 !important;
-  }
   @media (max-width: 1248px) {
       main {
         flex-direction: column;
@@ -185,6 +188,7 @@
   @media (max-width: 530px) {
       .listeProduit article img {
         max-height: 100px;
+        max-width: 100px;
         margin: 0px 10px;
     }
     .listeProduit article {
@@ -194,13 +198,23 @@
     .listeProduit div {
         justify-content: center;
     }
+    button .delete {
+      margin-top: 20px;
+    }
   }
-  .aucunProduit {
-    color: $color-dark-gray;
-    font-family: "lora", serif;
-    font-weight: normal;
-    font-style: italic;
-    font-size: 30px;
-    text-align: center;
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .infoProduit h2 {
+    margin-top: 0;
+  }
+  button .delete {
+    margin-bottom: 15px;
   }
 }

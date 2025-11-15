@@ -254,7 +254,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 $cart = getCurrentCart($pdo, $idClient);
 
 // Récupération des départements et villes
-$csvPath = __DIR__ . '../../public/data/departements.csv';
+$csvPath = __DIR__ . '/../../public/data/departements.csv';
 $departments = [];
 $citiesByCode = [];
 $postals = [];
@@ -263,14 +263,11 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     $header = fgetcsv($handle, 0, ';', '"', '\\');
     while (($row = fgetcsv($handle, 0, ';', '"', '\\')) !== false) {
         if (count($row) < 4) continue;
-        $code = str_pad(preg_replace('/\D/', '', trim($row[0])), 2, '0', STR_PAD_LEFT);
+        $code = str_pad(trim($row[0]), 2, '0', STR_PAD_LEFT);
         $postal = trim($row[1]);
         $dept = trim($row[2]);
         $city = trim($row[3]);
-
-        if ($dept !== '' && !isset($departments[$code])) {
-            $departments[$code] = $dept;
-        }
+        $departments[$code] = $dept;
         if (!isset($citiesByCode[$code])) $citiesByCode[$code] = [];
         if ($city !== '' && !in_array($city, $citiesByCode[$code])) $citiesByCode[$code][] = $city;
         if ($postal !== '') {

@@ -125,6 +125,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Gestion des erreurs globales
-window.addEventListener("error", function (e) {
-  console.error("Erreur globale:", e.error);
-});
+// window.addEventListener("error", function (e) {
+//   console.error("Erreur globale:", e.error);
+// });
