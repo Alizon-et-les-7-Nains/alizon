@@ -49,6 +49,7 @@
     article div{
         margin-top: 45px;
         display: flex;
+        flex-direction: column;
         align-items: center;
         width: 420px;
         height: 45px;
@@ -58,6 +59,7 @@
     }
 
     article div p, input{
+        background-color: transparent;
         width: 100%;
         color: #6E6E6E;
         font-size: 16px;
@@ -127,6 +129,7 @@
 
     article > div.double-champ input,
     article > div.double-champ p {
+        background-color: transparent;
         width: 100%; 
         border: 0;
         height: 100%;
@@ -139,6 +142,10 @@
         margin-top: 0;
     }
 
+    input:focus{
+        outline: none;      /* enlève le contour bleu par défaut */
+        border: 0;
+    }   
 
 }
     
