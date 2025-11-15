@@ -1711,7 +1711,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   flex-direction: column;
 }
-.mainCompteClient article > div, .mainCompteClient article > div.double-champ div {
+.mainCompteClient article div {
   margin-top: 45px;
   display: flex;
   align-items: center;
