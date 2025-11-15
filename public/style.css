@@ -1728,6 +1728,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-family: "lora";
   font-weight: bold;
   font-style: italic;
+  border: 0;
+  height: 100%;
 }
 .mainCompteClient #buttonsCompte {
   padding-top: 32px;
@@ -1781,6 +1783,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   width: 100%;
   border: 0;
   height: 100%;
+  display: flex;
+  align-items: center;
 }
 .mainCompteClient article > div.double-champ div {
   width: 185px;

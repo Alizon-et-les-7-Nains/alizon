@@ -64,6 +64,8 @@
         font-family: 'lora';
         font-weight: bold;
         font-style: italic;
+        border: 0;
+        height: 100%;
     }
 
     #buttonsCompte{
@@ -126,6 +128,8 @@
         width: 100%; 
         border: 0;
         height: 100%;
+        display: flex;
+        align-items: center;
     }
 
     article > div.double-champ div{
