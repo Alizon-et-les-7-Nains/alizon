@@ -386,6 +386,7 @@ body {
 .pageProduit body {
   margin: 0;
   padding: 0;
+  transition: all 0.3s ease;
 }
 .pageProduit main {
   display: flex;
@@ -418,17 +419,14 @@ body {
   margin: 3em 2em;
   padding: 0 1em;
   width: 550px;
-  height: 450px;
+  height: 480px;
   border: 1.5px inset #273469;
   border-radius: 16px;
+  position: relative;
 }
 .pageProduit #imageBouteille {
   width: 220px;
   height: 330px;
-}
-.pageProduit .rectangleProduit img:nth-child(2n+1) {
-  width: 35px;
-  height: 61px;
 }
 .pageProduit .infoPreviewProduit {
   width: 400px;
@@ -447,7 +445,7 @@ body {
 .pageProduit .infoPreviewProduit h1, .pageProduit .infoPreviewProduit h2, .pageProduit .infoPreviewProduit h3, .pageProduit .infoPreviewProduit h4, .pageProduit .infoPreviewProduit p {
   margin: 0 0;
 }
-.pageProduit .voirPlus {
+.pageProduit .infoPreviewProduit a {
   text-decoration: underline;
   float: right;
   color: #273469;
@@ -458,14 +456,6 @@ body {
 }
 .pageProduit #prix {
   gap: 0.5em;
-}
-.pageProduit #lesCercles {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 1em;
-  margin-top: 1em;
-  align-items: center;
 }
 .pageProduit .infoPreviewProduit div img {
   width: 50px;
@@ -488,14 +478,7 @@ body {
 .pageProduit .voirPlus {
   color: #273469;
   text-decoration: underline;
-}
-.pageProduit .cercleNoir {
-  width: 10px;
-  height: 10px;
-  -webkit-border-radius: 25px;
-  -moz-border-radius: 25px;
-  border-radius: 25px;
-  background: black;
+  float: right;
 }
 .pageProduit .actionsProduit {
   top: 15em;
@@ -539,44 +522,72 @@ body {
   height: 60px;
   padding: 10px;
   font-size: 16px;
-  margin: 0.5em;
   border-radius: 32px;
   border: none;
   position: relative;
-  left: 5%;
 }
-.pageProduit .actionsProduit button:nth-child(2n+1) {
-  background-color: #e4d9ff;
-  color: #273469;
+.pageProduit #quantiteContainer div button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.pageProduit .actionsProduit button:nth-child(2n) {
-  background-color: #273469;
-  color: white;
+.pageProduit #quantiteContainer div {
+  display: flex;
+  flex-direction: row;
 }
-.pageProduit #moins {
+.pageProduit #quantiteContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 300px;
+  height: 60px;
+  font-size: 16px;
+  border-radius: 32px;
+  border: 2px solid #273469;
+  position: relative;
+  margin-bottom: 10px;
+}
+.pageProduit #moins img {
+  display: block;
   width: 16px;
   height: 2.25px;
 }
-.pageProduit #plus {
+.pageProduit #plus img {
   width: 16px;
   height: 16px;
 }
 .pageProduit #quantite {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 1em;
-  padding: 0 0;
-  background-color: white;
-  border: 2px inset #273469;
+  gap: 0.5em;
+  padding: 0.5em;
 }
-.pageProduit #quantite div {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 1em;
+.pageProduit #quantite p {
+  font-weight: bold;
+  margin: 0;
+  font-size: 16px;
+}
+.pageProduit #quantiteInput {
+  width: 40px;
+  text-align: center;
+  border: none;
+  font-size: 18px;
+  padding: 0.2em;
+  pointer-events: none;
+}
+.pageProduit .boutonRose {
+  background-color: #e4d9ff;
+  color: #273469;
+}
+.pageProduit .boutonBleu {
+  background-color: #273469;
+  color: #fffefa;
 }
 .pageProduit .conteneurTexte {
   width: 50%;
@@ -620,52 +631,105 @@ body {
   font-weight: 300;
 }
 .pageProduit .sectionAvis {
-  width: 70%;
+  width: 68%;
   margin-left: 2.5em;
+}
+.pageProduit .sectionAvis h6 {
+  color: #273469;
+  font-weight: 100;
 }
 .pageProduit .sectionAvis button {
   margin: 2em 0;
 }
 .pageProduit .sectionAvis article {
   display: flex;
-  flex-direction: column;
+  margin-bottom: 2em;
 }
 .pageProduit .sectionAvis article * {
-  margin: 0.3em 0;
+  margin: 0.5em 0;
 }
 .pageProduit .sectionAvis article div {
   margin: 0 0;
 }
 .pageProduit .sectionAvis article div h3 {
-  padding-top: 0.3em;
+  padding-top: 0.2em;
 }
-.pageProduit #ppClientBox img {
+.pageProduit #pp {
   margin-right: 0.5em;
+  margin-top: 0.7em;
   width: 64px;
   height: 64px;
   object-fit: cover;
   border-radius: 100%;
 }
+.pageProduit .sectionImagesAvis {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+.pageProduit .sectionImagesAvis img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
 .pageProduit .horizontal {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  padding-top: 0.2em;
 }
 .pageProduit .vertical {
   display: flex;
   flex-direction: column;
+}
+.pageProduit .baselineSpaceBetween {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.pageProduit .actionsAvis {
+  display: flex;
+  flex-direction: row;
+  gap: 0.8em;
+  justify-content: center;
+  align-items: center;
+}
+.pageProduit .actionsAvis a {
+  text-decoration: underline;
+  color: #6e6e6e;
+}
+.pageProduit .actionsAvis shape {
+  width: 2px;
+  height: 40px;
+  background-color: #273469;
+}
+.pageProduit .product-rating {
+  display: flex;
+  flex-direction: column;
+}
+.pageProduit .rating-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #273469;
+  margin: 0;
+}
+.pageProduit .review-count {
+  text-decoration: underline;
+  color: #6e6e6e;
 }
 .pageProduit .star-rating {
   font-size: 32px;
   position: relative;
   display: inline-block;
   padding: 0 0;
-  margin: 0 0;
 }
 .pageProduit .stars::before {
   content: "★★★★★";
   color: lightgray;
   padding: 0 0;
-  margin: 0 0;
+  margin-right: 0.2em;
 }
 .pageProduit .stars::after {
   content: "★★★★★";
@@ -676,7 +740,83 @@ body {
   width: calc(var(--rating) / 5 * 100%);
   overflow: hidden;
   padding: 0 0;
-  margin: 0 0;
+}
+.pageProduit .pouce-actif {
+  filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(2081%) hue-rotate(202deg) brightness(93%) contrast(91%);
+}
+.pageProduit .pouce-inactif {
+  filter: none;
+}
+.pageProduit .carousel-container {
+  position: relative;
+  width: 220px;
+  height: 330px;
+  overflow: visible;
+  border-radius: 10px;
+  background: #f5f5f5;
+  margin-bottom: 50px;
+}
+.pageProduit .carousel-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.pageProduit .carousel-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+.pageProduit .carousel-image.active {
+  opacity: 1;
+}
+.pageProduit .carousel-arrow {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease;
+  z-index: 10;
+}
+.pageProduit .carousel-arrow:hover {
+  transform: scale(1.1);
+}
+.pageProduit #lesCercles {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1em;
+  margin-top: 15px;
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  right: 0;
+  z-index: 15;
+}
+.pageProduit .cercleNoir {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  background-color: #666 !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #273469;
+  display: block !important;
+  flex-shrink: 0;
+}
+.pageProduit .cercleNoir.active {
+  background-color: white !important;
+  transform: scale(1.3);
+}
+.pageProduit .cercleNoir:hover {
+  background-color: #273469 !important;
+  transform: scale(1.15);
 }
 
 /* ---- Header ---- */

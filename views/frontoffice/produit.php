@@ -1,5 +1,5 @@
 <?php
-// Connexion simple à la base
+// Connexion à la base de données
 // try {
 //     $pdo = new PDO("mysql:host=localhost;dbname=saedb;charset=utf8mb4", "username", "password", [
 //     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, 
@@ -56,6 +56,30 @@
 
 // $resultAvis = $pdo->query($sqlAvis);
 // $lesAvis = $resultAvis->fetch(PDO::FETCH_ASSOC);
+
+$images = [
+    [
+        'URL' => 'cidre.png',
+        'title' => 'Premium Cidre'
+    ],
+    [
+        'URL' => 'rillettes.png', 
+        'title' => 'Artisanal Cidre'
+    ],
+    [
+        'URL' => 'defaultImageProduit.png',
+        'title' => 'Traditional Cidre'
+    ]
+];
+
+// Your existing product data (mock)
+$produit = [
+    'nom_produit' => 'Cidre Artisanal Breton',
+    'description' => 'Un cidre artisanal produit selon les méthodes traditionnelles bretonnes...',
+    'prix' => 12.50,
+    'prenom_vendeur' => 'Jean',
+    'nom_vendeur' => 'Dupont',
+    'stock' => 20 ];
 ?>
 
 <!DOCTYPE html>
@@ -73,19 +97,32 @@
 </header>
 <main>
 <section class="infoHautProduit">
-    <article class="rectangleProduit">
-        <img src="../../public/images/flecheGauche.svg" alt="">
-        <div>
-            <img id="imageBouteille"
-            src="../../../images/<?php echo htmlspecialchars($images[0]['URL']); ?>"alt="Pas d'image trouvée">
-            <div id="lesCercles">
-                <div class="cercleNoir"></div>
-                <div class="cercleNoir"></div>
-                <div class="cercleNoir"></div>
-            </div>
+<article class="rectangleProduit">
+    <img src="../../public/images/flecheGauche.svg" alt="Previous" class="carousel-arrow prev-arrow">
+    <div class="carousel-container">
+        <div class="carousel-slide">
+            <?php if (!empty($images)): ?>
+                <?php foreach ($images as $index => $image): ?>
+                    <img src="../../public/images/<?php echo htmlspecialchars($image['URL']); ?>" 
+                         alt="Image produit <?php echo $index + 1; ?>"
+                         class="carousel-image <?php echo $index === 0 ? 'active' : ''; ?>">
+                <?php endforeach; ?>
+            <?php else: ?>
+                <img src="../../public/images/placeholder.jpg" alt="Pas d'image trouvée" class="carousel-image active">
+            <?php endif; ?>
         </div>
-        <img src="../../public/images/flecheDroite.svg" alt="">
-    </article>
+        <!-- Circles container - positioned absolutely -->
+        <div id="lesCercles" class="carousel-indicators">
+            <?php if (!empty($images)): ?>
+                <?php foreach ($images as $index => $image): ?>
+                    <div class="cercleNoir indicator <?php echo $index === 0 ? 'active' : ''; ?>" 
+                         data-index="<?php echo $index; ?>"></div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+    <img src="../../public/images/flecheDroite.svg" alt="Next" class="carousel-arrow next-arrow">
+</article>
     <article class="infoPreviewProduit">
         <h1><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
         <div id="prix">
@@ -97,7 +134,7 @@
         <p id="descriptionCourte">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus enim iure ratione voluptates
             eius doloremque obcaecati dignissimos ea porro exercitationem ex omnis reiciendis neque explicabo,
             libero quidem placeat, accusantium sit.</p>
-        <p class="voirPlus">Voir plus sur le produit</p>
+        <a href="#conteneurTexte">Voir plus sur le produit</a>
         <div class="version">
             <h3>Version :</h3>
             <p>50cl</p>
@@ -131,22 +168,29 @@
     </div>
     <hr>
     <br>
-        <div class="bouton" id="quantite">
-            <p>Quantité</p>
-            <div>
-                <img src="../../public/images/moins.svg" alt="" id="moins">
-                <p>1</p>
-                <img src="../../public/images/plus.svg" alt="" id="plus">
-            </div>  
+        <div id="quantite">
+            <form action="panier.php" method="POST">
+                <div id="quantiteContainer">
+                    <p>Quantité</p>
+                    <div>
+                        <button type="button" id="moins"><img src="../../public/images/moins.svg " alt=""></button>
+                        <input type="text" id="quantiteInput" name="quantite" value="1" readonly>
+                        <button type="button" id="plus"><img src="../../public/images/plus.svg " alt=""></button>
+                    </div>
+                </div>
+                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                <button class="bouton boutonRose" type="submit">Ajouter au panier</button>
+            </form>
+            <form action="pagePaiement.php" method="POST">
+                <button class="bouton boutonBleu" >Acheter maintenant</button>
+            </form>
         </div>
-        <button class="bouton">Ajouter au panier</button>
-        <button class="bouton">Acheter maintenant</button>
 </article>
 </section>
 <hr>
 <section class="informations">
     <input type="checkbox" id="activeVoirPlus">
-    <div class="conteneurTexte">
+    <div class="conteneurTexte" id="conteneurTexte">
         <h2>Plus d'informations sur l'article</h2>
         <?php 
         echo htmlspecialchars($produit['description']);
@@ -156,6 +200,19 @@
 </section>
 <section class="sectionAvis">
     <h2>Ce qu'en disent nos clients</h2>
+    <?php
+    $note = 4.2; // Exemple de note moyenne A CHANGER
+    $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
+    ?>
+    <div class="product-rating">
+        <div class="horizontal">
+            <div class="star-rating">
+                <div class="stars" style="--rating: <?php echo $note; ?>"></div>
+            </div>
+            <span class="rating-number"><?php echo number_format($note, 1); ?>/5</span>
+        </div>
+        <span class="review-count"><?php echo $nombreAvis; ?> évaluations</span>
+    </div>
     <?php 
     $note = $produit['note'];
     echo htmlspecialchars($note);
@@ -165,8 +222,8 @@
     <?php
         $html = "
         <article>
-            <div class=\"horizontal\" id=\"ppClientBox\">
-                <img src=\"../../public/images/pp.png\">
+            <img src=\"../../public/images/pp.png\" id=\"pp\">
+            <div>
                 <div class=\"vertical\">
                     <div class=\"horizontal\">
                         <div class=\"star-rating\">
@@ -176,39 +233,48 @@
                     </div>
                     <h6>Avis déposé le 10/06/24" . htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
                 </div>
-            </div>
-            <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($atr['contenuAvis']) . "</p>
-            <p> Tout va bien</p>
-            <div>
-                <img src=\"\" alt=\"\">
-                <div>
-                    <img src=\"../../../images/pouceHaut.png\" alt=\"\">
-                    <img src=\"../../../images/pouceBas.png\" alt=\"\">
-                    <img src=\"\" alt=\"\">
+                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($atr['contenuAvis']) . "</p>
+                <div class=\"baselineSpaceBetween\">
+                <div class =\"sectionImagesAvis\">
+                    <img src=\"../../public/images/cidre.png\" alt=\"\">
+                    <img src=\"../../public/images/cidre.png\" alt=\"\">
+                </div>   
+                <div class=\"actionsAvis\">
+                    <img src=\"../../public/images/pouceHaut.png\" alt=\"Like\" onclick=\"changerPouce(this, 'haut')\" class=\"pouce\">
+                    <img src=\"../../public/images/pouceBas.png\" alt=\"Dislike\" onclick=\"changerPouce(this, 'bas')\" class=\"pouce\">
+                    <shape></shape>
                     <a href=\"#\">Signaler</a>
+                </div>
                 </div>
             </div>
         </article>
         <article>
+            <img src=\"../../public/images/pp.png\" id=\"pp\">
             <div>
-                <div class=\"star-rating\">
-                    <div class=\"stars\" style=\"--rating:3.5\"></div>
+                <div class=\"vertical\">
+                    <div class=\"horizontal\">
+                        <div class=\"star-rating\">
+                            <div class=\"stars\" style=\"--rating:3.7\"></div>
+                        </div>
+                        <h3> Une fraîcheur authentique " . htmlspecialchars($atr['titreAvis']) . "</h3>
+                    </div>
+                    <h6>Avis déposé le 10/06/24" . htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
                 </div>
-                <h3> Une fraîcheur authentique " . htmlspecialchars($atr['titreAvis']) . "</h3>
-            </div>
-            <h6>Avis déposé le 10/06/24" . htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
-            <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($atr['contenuAvis']) . "</p>
-            <p> Tout va bien</p>
-            <div>
-                <img src=\"\" alt=\"\">
-                <div>
-                    <img src=\"../../../images/pouceHaut.png\" alt=\"\">
-                    <img src=\"../../../images/pouceBas.png\" alt=\"\">
-                    <img src=\"\" alt=\"\">
-                    <a href=\"#\">Signaler</a>
+                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($atr['contenuAvis']) . "</p>
+                <div class=\"baselineSpaceBetween\">
+                <div class =\"sectionImagesAvis\">
+                    <img src=\"../../public/images/cidre.png\" alt=\"\">
+                    <img src=\"../../public/images/cidre.png\" alt=\"\">
+                </div>   
+                    <div class=\"actionsAvis\">
+                        <img src=\"../../public/images/pouceHaut.png\" alt=\"\">
+                        <img src=\"../../public/images/pouceBas.png\" alt=\"\">
+                        <shape></shape>
+                        <a href=\"#\">Signaler</a>
+                    </div>
                 </div>
             </div>
-        </article>"; 
+        </article>";
         echo $html;
     ?>
 </section>
@@ -218,4 +284,154 @@
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 </footer> 
 </body>
+<script>
+class ProductCarousel {
+    constructor() {
+        this.currentImageIndex = 0;
+        this.images = document.querySelectorAll('.carousel-image');
+        this.init();
+    }
+    
+    init() {
+        this.setupEventListeners();
+        this.showImage(this.currentImageIndex);
+    }
+    
+    setupEventListeners() {
+        const prevArrow = document.querySelector('.prev-arrow');
+        const nextArrow = document.querySelector('.next-arrow');
+        
+        if (prevArrow) {
+            prevArrow.addEventListener('click', () => this.prevImage());
+        }
+        
+        if (nextArrow) {
+            nextArrow.addEventListener('click', () => this.nextImage());
+        }
+        
+        const indicators = document.querySelectorAll('.indicator');
+        indicators.forEach(indicator => {
+            indicator.addEventListener('click', () => {
+                const index = parseInt(indicator.getAttribute('data-index'));
+                this.goToImage(index);
+            });
+        });
+        
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') {
+                this.prevImage();
+            } else if (event.key === 'ArrowRight') {
+                this.nextImage();
+            }
+        });
+    }
+    
+    showImage(index) {
+        this.images.forEach(img => {
+            img.classList.remove('active');
+        });
+        
+        if (this.images[index]) {
+            this.images[index].classList.add('active');
+        }
+        
+        const indicators = document.querySelectorAll('.indicator');
+        indicators.forEach((indicator, i) => {
+            indicator.classList.toggle('active', i === index);
+        });
+        
+        this.currentImageIndex = index;
+    }
+    
+    nextImage() {
+        let nextIndex = this.currentImageIndex + 1;
+        if (nextIndex >= this.images.length) {
+            nextIndex = 0;
+        }
+        this.showImage(nextIndex);
+    }
+    
+    prevImage() {
+        let prevIndex = this.currentImageIndex - 1;
+        if (prevIndex < 0) {
+            prevIndex = this.images.length - 1;
+        }
+        this.showImage(prevIndex);
+    }
+    
+    goToImage(index) {
+        if (index >= 0 && index < this.images.length) {
+            this.showImage(index);
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    new ProductCarousel();
+    
+    let quantite = 1;
+    const quantiteInput = document.getElementById('quantiteInput');
+    
+    const plusBtn = document.getElementById('plus');
+    const moinsBtn = document.getElementById('moins');
+
+    const stock = <?php echo $produit['stock']; ?>;
+    
+    if (plusBtn && quantiteInput) {
+        plusBtn.addEventListener('click', () => {
+            if (quantite < stock){
+                quantite++;
+                quantiteInput.value = quantite;
+                quantiteInput.style.color = '#273469';
+            }
+            else {
+                quantiteInput.style.color = 'red';
+                
+                setTimeout(() => {
+                    quantiteInput.style.color = '#273469';
+                }, 300);
+            }
+        });
+    }
+    
+    if (moinsBtn && quantiteInput) {
+        moinsBtn.addEventListener('click', () => {
+            if (quantite > 1){
+                quantite--;
+                quantiteInput.value = quantite;
+            }
+        });
+    }
+});
+
+function changerPouce(element, type) {
+    const article = element.closest('article');
+    const pouceHaut = article.querySelector('img[alt="Like"]');
+    const pouceBas = article.querySelector('img[alt="Dislike"]');
+    
+    const pouceHautInactif = "../../public/images/pouceHaut.png";
+    const pouceHautActif = "../../public/images/pouceHautActive.png";
+    const pouceBasInactif = "../../public/images/pouceBas.png";
+    const pouceBasActif = "../../public/images/pouceBasActive.png";
+    
+    if (element.src.includes('Active')) {
+        if (type === 'haut') {
+            element.src = pouceHautInactif;
+        } else {
+            element.src = pouceBasInactif;
+        }
+    } else {
+        if (pouceHaut) pouceHaut.src = pouceHautInactif;
+        if (pouceBas) pouceBas.src = pouceBasInactif;
+        
+        if (type === 'haut') {
+            element.src = pouceHautActif;
+        } else {
+            element.src = pouceBasActif;
+        }
+    }
+}
+</script>
+
+</script>
 </html>
