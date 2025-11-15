@@ -1779,6 +1779,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .mainCompteClient article > div.double-champ div {
   width: 185px;
+  margin-top: 0;
 }
 
 .overlayPopUpCompteClient {
