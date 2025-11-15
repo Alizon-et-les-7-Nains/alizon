@@ -50,7 +50,6 @@
         margin-top: 45px;
         display: flex;
         flex-direction: column;
-        justify-content: center;  // centre verticalement le contenu
         width: 420px;
         height: 45px;
         padding: 10px;
@@ -112,7 +111,7 @@
     .error-message {
         color: red;
         font-size: 0.8rem;
-        margin-top: 40px;
+        margin-top: 30px;
         display: block;
     }
 
@@ -140,6 +139,10 @@
     article > div.double-champ div{
         width: 185px;
         margin-top: 0;
+    }
+
+    article input{
+        margin-top: 10px;
     }
 
     input:focus{
