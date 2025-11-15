@@ -1770,8 +1770,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient article > div.double-champ {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   border: 0;
+  padding: 0;
+  height: 70px;
+  width: 443px;
 }
 .mainCompteClient article > div.double-champ input,
 .mainCompteClient article > div.double-champ p {

@@ -256,7 +256,7 @@ function modifierProfil(event) {
                 break;
             }
             
-            elems[i].parentNode.replaceChild(input[i], elems[i]);
+            elems[i].parentNode.replaceChild(input, elems[i]);
         }
         
         // Modifier le bouton "Modifier" en "Enregistrer"

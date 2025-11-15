@@ -113,8 +113,11 @@
     article > div.double-champ {
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: space-between;
         border: 0;
+        padding: 0;
+        height: 70px;
+        width: 443px;
     }
 
 
