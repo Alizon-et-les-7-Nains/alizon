@@ -1779,6 +1779,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient article > div.double-champ input,
 .mainCompteClient article > div.double-champ p {
   width: 100%;
+  border: 0;
+  height: 100%;
 }
 .mainCompteClient article > div.double-champ div {
   width: 185px;
