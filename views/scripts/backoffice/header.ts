@@ -38,4 +38,4 @@ modal?.addEventListener("click", (e) => {
   }
 });
 
-console.log("");
+console.log("Test");
