@@ -109,12 +109,14 @@ function popUpModifierMdp(){
     let nouveauMdp = input[1];
     let confirmationMdp = input[2];
 
-     function verifierMdp() {
+    valider.addEventListener("click", function(event) {
+        let testAncien = false;
+        let testNouveau = false;
+        let testConfirm = false;
+
         const ancien = ancienMdp.value;
         const nouveau = nouveauMdp.value;
         const confirm = confirmationMdp.value;
-
-        let testAncien = false, testNouveau = false, testConfirm = false;
 
         if (vignere(ancien, cle, 1) !== mdp) {
             setError(ancienMdp, "L'ancien mot de passe est incorrect");
@@ -124,7 +126,7 @@ function popUpModifierMdp(){
         }
 
         if (!validerMdp(nouveau)) {
-            setError(nouveauMdp, "Mot de passe incorrect : respecte les conditions ci-dessous");
+            setError(nouveauMdp, "Mot de passe incorrect, il doit respecter les conditions ci-dessous");
         } else {
             clearError(nouveauMdp);
             testNouveau = true;
@@ -137,27 +139,11 @@ function popUpModifierMdp(){
             testConfirm = true;
         }
 
-        if (testAncien && testNouveau && testConfirm) {
-            valider.disabled = false;
-            valider.style.cursor = "pointer";
-        } else {
-            valider.disabled = true;
-            valider.style.cursor = "default";
-}
-
-        return testAncien && testNouveau && testConfirm;
-    }
-
-    ancienMdp.addEventListener("input", verifierMdp);
-    nouveauMdp.addEventListener("input", verifierMdp);
-    confirmationMdp.addEventListener("input", verifierMdp);
-
-    form.addEventListener("submit", function(e) {
-        if (!verifierMdp()) {
-            e.preventDefault();
+        if (!(testAncien && testNouveau && testConfirm)) {
+            event.preventDefault();
         }
-    });    
-}
+    });
+}    
 
 function verifierChamp() {
     const bouton = document.querySelector(".boutonModiferProfil");
