@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ?>
     <script src="../scripts/frontoffice/Chiffrement.js"></script>
     <script>
-        const mdp = "<?php echo htmlspecialchars($mdp, ENT_QUOTES); ?>";
+        const mdp = <?php echo json_encode($mdp, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
     </script>
     <script src="../scripts/frontoffice/compteClient.js"></script>
 </body>
