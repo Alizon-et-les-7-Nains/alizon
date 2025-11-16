@@ -2104,6 +2104,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 .mainPopUpCompteClient .error-message {
+  margin-top: 2px;
   font-size: 0.8rem;
   color: red;
 }
