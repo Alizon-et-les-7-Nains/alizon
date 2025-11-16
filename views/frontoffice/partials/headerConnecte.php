@@ -29,6 +29,7 @@
 
             </div>
             <div class="icons">
+            <!-- TODO REFAIRE LES LIENS SUR LES 4 PARTIALS CLIENT  -->
                 <a href=""><img src="../../../public/images/bellLightBlue.svg" alt=""></a>
                 <a href=""><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
                 <a href=""><img src="../../../public/images/burgerLightBlue.svg" alt=""></a>
