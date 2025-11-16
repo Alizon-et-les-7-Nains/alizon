@@ -111,4 +111,9 @@
     .croixFermerLaPage div:last-of-type {
         transform: translate(-50%, -50%) rotate(-45deg);
     }
+
+    .error-message {
+        font-size: 0.8rem;
+        color: red;
+    }
 }

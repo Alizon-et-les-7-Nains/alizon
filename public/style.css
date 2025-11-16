@@ -2094,6 +2094,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainPopUpCompteClient .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
+.mainPopUpCompteClient .error-message {
+  font-size: 0.8rem;
+  color: red;
+}
 
 .panier .listeProduit article {
   border: 2px solid #273469;
