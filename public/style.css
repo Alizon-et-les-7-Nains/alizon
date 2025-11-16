@@ -2015,7 +2015,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: column;
 }
 .mainPopUpCompteClient .input {
-  position: relative;
+  display: flex;
+  flex-direction: column;
   width: 450px;
   height: auto;
   padding: 10px;
@@ -2108,9 +2109,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 .mainPopUpCompteClient .error-message {
-  position: absolute;
-  bottom: -18px;
-  left: 0;
   font-size: 0.8rem;
   color: red;
 }
