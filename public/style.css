@@ -2021,15 +2021,14 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   height: auto;
   padding: 10px;
   margin-bottom: 5px;
+}
+.mainPopUpCompteClient input {
   color: #6E6E6E;
   font-size: 16px;
   border: 2px solid #273469;
   border-radius: 8px;
-}
-.mainPopUpCompteClient input {
   background-color: transparent;
   width: 100%;
-  border: 0;
   height: 100%;
   display: flex;
   align-items: center;
