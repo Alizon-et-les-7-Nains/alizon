@@ -20,7 +20,7 @@
         
     }
     
-    input{
+    .input{
         width: 450px;
         height: auto;
         padding: 10px;
@@ -30,6 +30,21 @@
         border: 2px solid #273469;
         border-radius: 8px ;
     }
+
+    input{
+        background-color: transparent;
+        width: 100%; 
+        border: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    input:focus{
+        outline: none;
+        border: 0;
+    }   
+
     
     button{
         width: 200px;

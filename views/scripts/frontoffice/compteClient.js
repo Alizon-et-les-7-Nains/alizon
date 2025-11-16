@@ -54,9 +54,9 @@ function popUpModifierMdp(){
                 <section>
                     <div class="formulaireMdp">
                         <form id="formMdp" method="POST" action="../../controllers/modifierMdp.php">
-                            <input type="password" name="ancienMdp" placeholder="Ancien mot de passe">
-                            <input type="password" name="nouveauMdp" placeholder="Nouveau mot de passe">
-                            <input type="password" name="confirmationMdp" placeholder="Confirmer le nouveau mot de passe">
+                            <div class="input"><input type="password" name="ancienMdp" placeholder="Ancien mot de passe"></div>
+                            <div class="input"><input type="password" name="nouveauMdp" placeholder="Nouveau mot de passe"></div>
+                            <div class="input"><input type="password" name="confirmationMdp" placeholder="Confirmer le nouveau mot de passe"></div>
                             
                         
                             <article>
@@ -119,7 +119,6 @@ function popUpModifierMdp(){
         let testNouveau = false;
         let testConfirm = false;
 
-        // --- Vérification ancien mdp ---
         if (vignere(ancien, cle, 1) !== mdp) {
             setError(ancienMdp, "L'ancien mot de passe est incorrect");
         } else {
@@ -127,31 +126,25 @@ function popUpModifierMdp(){
             testAncien = true;
         }
 
-        // --- Vérification nouveau mdp ---
-        if (nouveau === "" || !validerMdp(nouveau)) {
-            setError(nouveauMdp, "Mot de passe incorrect, il doit respecter les conditions ci-dessous");
-            // on bloque confirm tant que le nouveau n’est pas valide
-            clearError(confirmationMdp);
+        if (nouveau !== "" && !validerMdp(nouveauMdp)) {
+            setError(nouveauMdp, "Mot de passe incorect il doit respecter les conditions si dessous");
         } else {
             clearError(nouveauMdp);
-            testNouveau = true;
-        }
-
-        // --- Vérification confirmation ---
-        // Ne vérifier QUE si le nouveau est valide
-        if (testNouveau) {
-            if (nouveau !== confirm) {
-                setError(confirmationMdp, "Les mots de passe ne correspondent pas");
-            } else {
-                clearError(confirmationMdp);
-                if (confirm !== "") {
-                    testConfirm = true;
-                }
+            if (validerMdp(nouveau)){
+                testNouveau = true;
             }
         }
 
-        // --- Activation du bouton ---
-        if (testAncien && testNouveau && testConfirm) {
+        if (nouveau !== confirm) {
+            setError(confirmationMdp, "Les mots de passe ne correspondent pas");
+        } else {
+            clearError(confirmationMdp);
+            if (confirm !== "" && nouveau === confirm){
+                testConfirm = true;
+            }
+        }
+
+        if (Ancien && testNouveau && testConfirm) {
             valider.disabled = false;
             valider.style.cursor = "pointer";
         } else {

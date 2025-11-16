@@ -1797,7 +1797,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin-top: 0;
 }
 .mainCompteClient input:focus {
-  outline: none; /* enlève le contour bleu par défaut */
+  outline: none;
   border: 0;
 }
 
@@ -2014,7 +2014,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   flex-direction: column;
 }
-.mainPopUpCompteClient input {
+.mainPopUpCompteClient .input {
   width: 450px;
   height: auto;
   padding: 10px;
@@ -2023,6 +2023,18 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 16px;
   border: 2px solid #273469;
   border-radius: 8px;
+}
+.mainPopUpCompteClient input {
+  background-color: transparent;
+  width: 100%;
+  border: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.mainPopUpCompteClient input:focus {
+  outline: none;
+  border: 0;
 }
 .mainPopUpCompteClient button {
   width: 200px;
