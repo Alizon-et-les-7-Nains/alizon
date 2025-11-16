@@ -109,15 +109,12 @@ function popUpModifierMdp(){
     let nouveauMdp = input[1];
     let confirmationMdp = input[2];
 
-    function verifierMdp() {
-
+     function verifierMdp() {
         const ancien = ancienMdp.value;
         const nouveau = nouveauMdp.value;
         const confirm = confirmationMdp.value;
 
-        let testAncien = false;
-        let testNouveau = false;
-        let testConfirm = false;
+        let testAncien = false, testNouveau = false, testConfirm = false;
 
         if (vignere(ancien, cle, 1) !== mdp) {
             setError(ancienMdp, "L'ancien mot de passe est incorrect");
@@ -126,35 +123,40 @@ function popUpModifierMdp(){
             testAncien = true;
         }
 
-        if (nouveau !== "" && !validerMdp(nouveauMdp)) {
-            setError(nouveauMdp, "Mot de passe incorect il doit respecter les conditions si dessous");
+        if (!validerMdp(nouveau)) {
+            setError(nouveauMdp, "Mot de passe incorrect : respecte les conditions ci-dessous");
         } else {
             clearError(nouveauMdp);
-            if (validerMdp(nouveau)){
-                testNouveau = true;
-            }
+            testNouveau = true;
         }
 
         if (nouveau !== confirm) {
             setError(confirmationMdp, "Les mots de passe ne correspondent pas");
         } else {
             clearError(confirmationMdp);
-            if (confirm !== "" && nouveau === confirm){
-                testConfirm = true;
-            }
+            testConfirm = true;
         }
 
-        if (Ancien && testNouveau && testConfirm) {
+        if (testAncien && testNouveau && testConfirm) {
             valider.disabled = false;
             valider.style.cursor = "pointer";
         } else {
             valider.disabled = true;
             valider.style.cursor = "default";
-        }
+}
+
+        return testAncien && testNouveau && testConfirm;
     }
+
     ancienMdp.addEventListener("input", verifierMdp);
     nouveauMdp.addEventListener("input", verifierMdp);
-    confirmationMdp.addEventListener("input", verifierMdp);    
+    confirmationMdp.addEventListener("input", verifierMdp);
+
+    form.addEventListener("submit", function(e) {
+        if (!verifierMdp()) {
+            e.preventDefault();
+        }
+    });    
 }
 
 function verifierChamp() {
