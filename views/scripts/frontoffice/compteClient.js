@@ -120,6 +120,8 @@ function popUpModifierMdp(){
         const nouveau = vignere(nouveauMdp.value, cle, 1);
         const confirm = vignere(confirmationMdp.value, cle, 1);
 
+        console.log(ancien);
+
         if (ancien !== mdp) {
             setError(ancienMdp, "L'ancien mot de passe est incorrect");
         } else {
