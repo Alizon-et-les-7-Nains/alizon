@@ -4,6 +4,7 @@
 button#haut {
     position: sticky;
     justify-self: right;
+    transition: all 0.2s;
     width: 150px;
     margin: {
         top: 1em; bottom: 1em;
@@ -21,12 +22,7 @@ button#haut {
     border-radius: 16px;
 
     &:hover {
-        outline: {
-            style: solid;
-            color: $color-blue;
-            offset: -2px;
-            width: 2px;
-        }
+        cursor: pointer;
         color: $color-blue;
         background-color: $color-pastel-blue;
     }
