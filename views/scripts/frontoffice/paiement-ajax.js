@@ -113,10 +113,18 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
+  // Gestion des boutons payer
+  document.querySelectorAll(".payer").forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      showPopup("Confirmation de commande");
+    });
+  });
+
   console.log("Page de paiement initialisée avec succès");
 });
 
 // Gestion des erreurs globales
-window.addEventListener("error", function (e) {
-  console.error("Erreur globale:", e.error);
-});
+// window.addEventListener("error", function (e) {
+//   console.error("Erreur globale:", e.error);
+// });

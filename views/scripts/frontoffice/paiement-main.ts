@@ -7,11 +7,6 @@ import { validateAll } from "./paiement-validation";
 import { setupAutocomplete } from "./paiement-autocomplete";
 import { showPopup } from "./paiement-popup";
 
-// Exposer les fonctions globalement pour éviter les problèmes de modules
-(window as any).validateAllPaiement = validateAll;
-(window as any).setupAutocompletePaiement = setupAutocomplete;
-(window as any).showPopupPaiement = showPopup;
-
 if (document.body.classList.contains("pagePaiement")) {
   // Éléments
   const adresseInput = document.querySelector(

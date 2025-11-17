@@ -633,10 +633,6 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
 define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement-validation", "frontoffice/paiement-autocomplete", "frontoffice/paiement-popup"], function (require, exports, paiement_validation_2, paiement_autocomplete_1, paiement_popup_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    // Exposer les fonctions globalement pour éviter les problèmes de modules
-    window.validateAllPaiement = paiement_validation_2.validateAll;
-    window.setupAutocompletePaiement = paiement_autocomplete_1.setupAutocomplete;
-    window.showPopupPaiement = paiement_popup_1.showPopup;
     if (document.body.classList.contains("pagePaiement")) {
         // Éléments
         const adresseInput = document.querySelector("body.pagePaiement .adresse-input");
