@@ -8,7 +8,7 @@
         $nom = $_POST['nom'] ?? '';
         $email = $_POST['email'] ?? '';
         $num_tel = $_POST['telephone'] ?? '';
-        $mdp = $_POST['motdepasse'] ?? '';
+        $mdp = $_POST['mdp'] ?? '';
         $date_naissance = $_POST['birthdate'] ?? '';
         
         $nouveauClient = ("INSERT INTO _client (dateNaissance, prenom, nom, email, mdp, noTelephone, pseudo)
@@ -16,9 +16,7 @@
 
         if ($pdo->query($nouveauClient) === false) {
             throw new Exception("Erreur lors de la création d'un : " . implode(', ', $pdo->errorInfo()));
-        }
-
-                
+        } 
         }
 
     session_start();  

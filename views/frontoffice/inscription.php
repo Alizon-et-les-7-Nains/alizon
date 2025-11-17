@@ -275,10 +275,14 @@
                 }
             });
 
+            document.getElementById("monForm").addEventListener("submit", (e) => {
+            const pwdField = document.getElementById("motdepasse");
+
             if (typeof vignere !== 'undefined') {
-                const passwordChiffre = vignere(passwordInput.value, cle, 1);
-                document.getElementById('mdp').value = passwordChiffre;      
-             }
+                pwdField.value = vignere(pwdField.value, cle, 1);
+            }
+            })
+            
             validateForm(); 
 
 
