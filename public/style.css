@@ -504,7 +504,7 @@ header.backoffice dialog::backdrop {
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(1px);
 }
-header.backoffice dialog button:first-child {
+header.backoffice dialog button:not(nav button) {
   border: none;
   background: none;
   margin-left: auto;
@@ -512,10 +512,10 @@ header.backoffice dialog button:first-child {
   margin-bottom: 1em;
   transition: all 0.2s;
 }
-header.backoffice dialog button:first-child:hover {
+header.backoffice dialog button:not(nav button):hover {
   cursor: pointer;
 }
-header.backoffice dialog button:first-child:hover img {
+header.backoffice dialog button:not(nav button):hover img {
   content: url(../../../public/images/croixRouge.svg);
 }
 header.backoffice dialog h1 {
