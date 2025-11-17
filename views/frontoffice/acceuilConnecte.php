@@ -32,38 +32,57 @@ function getCurrentCart($pdo, $idClient) {
     return $cart;
 }
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
-    echo "fonction update appelé";
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
-
-    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
-            WHERE idProduit = $idProduit AND idPanier IN (
-                SELECT idPanier FROM _panier WHERE idClient = $idClient
-            )";
-
-    if ($sql == NULL) {
-        $sql = "INSERT INTO _produitAuPanier($idProduit, quantiteProduit, $idClient) VALUES ($idProduit, 1, $idClient)";
-        echo "Insertion fait";
+    
+    // Récupérer le panier actuel
+    $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmtPanier->execute([$idClient]);
+    $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$panier) {
+        // Créer un nouveau panier si nécessaire
+        $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+        $stmtCreate->execute([$idClient]);
+        $idPanier = $pdo->lastInsertId();
+    } else {
+        $idPanier = $panier['idPanier'];
     }
 
-    $stmt = $pdo->query($sql);
-    $current = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+    // Vérifier si le produit existe déjà dans le panier
+    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
+            WHERE idProduit = ? AND idPanier = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idProduit, $idPanier]);
+    $current = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($current) {
+        // Produit existe : mettre à jour la quantité
         $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
         
         if ($newQty > 0) {
-            $sql = "UPDATE _produitAuPanier SET quantiteProduit = $newQty 
-                    WHERE idProduit = $idProduit AND idPanier IN (
-                        SELECT idPanier FROM _panier WHERE idClient = $idClient
-                    )";
-            $res = $pdo->query($sql);
-            $success = $res !== false;
+            $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
+                    WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$newQty, $idProduit, $idPanier]);
+        } else {
+            // Supprimer si quantité = 0
+            $sql = "DELETE FROM _produitAuPanier WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$idProduit, $idPanier]);
         }
-        
-        return $success;
+    } else {
+        // Produit n'existe pas : l'ajouter si delta > 0
+        if ($delta > 0) {
+            $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$idProduit, $idPanier, $delta]);
+        } else {
+            $success = false;
+        }
     }
-    return false;
+    
+    return $success;
 }
 
 // ============================================================================
@@ -196,8 +215,8 @@ $cart = getCurrentCart($pdo, $idClient);
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article style="margin-top: 5px;" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
+                        <article style="margin-top: 5px;">
+                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
                             <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <span><?php echo number_format($value['note'], 1); ?></span>
@@ -244,8 +263,8 @@ $cart = getCurrentCart($pdo, $idClient);
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article style="margin-top: 5px;" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
+                        <article style="margin-top: 5px;">
+                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
                             <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <span><?php echo number_format($value['note'], 1); ?></span>
@@ -292,8 +311,8 @@ $cart = getCurrentCart($pdo, $idClient);
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article style="margin-top: 5px;" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
+                        <article style="margin-top: 5px;">
+                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
                             <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <span><?php echo number_format($value['note'], 1); ?></span>
@@ -343,8 +362,8 @@ $cart = getCurrentCart($pdo, $idClient);
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                             ?>
-                            <article style="margin-top: 5px;" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                                <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
+                            <article style="margin-top: 5px;">
+                                <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
                                 <h2 class="nomProduit"><?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
                                 <div class="notation">
                                     <span><?php echo number_format($produitRecent['note'], 1); ?></span>
