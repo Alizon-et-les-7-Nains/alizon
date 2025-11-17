@@ -159,7 +159,7 @@ if (document.body.classList.contains("pagePaiement")) {
     document.body.removeChild(addrFactOverlay);
   });
 
-  const factAdresseInput = document.getElementById("checkboxFactAddr");
+  const factAdresseInput = document.querySelector("#checkboxFactAddr");
 
   factAdresseInput?.addEventListener("change", (e) => {
     const isChecked = (e.target as HTMLInputElement).checked;
