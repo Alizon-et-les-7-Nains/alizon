@@ -1,15 +1,85 @@
-<?php 
+<?php
+require_once "../../controllers/pdo.php";
+require_once "../../controllers/prix.php";
+require_once "../../controllers/pdo.php";
 
 ob_start();
 
-require_once "../../controllers/prix.php";
-require_once "../../controllers/pdo.php";
+// ============================================================================
+// CONFIGURATION INITIALE
+// ============================================================================
+
+// ID utilisateur connecté (à remplacer par la gestion de session)
+$idClient = 2; 
+
+function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+    $idProduit = intval($idProduit);
+    $idClient = intval($idClient);
+
+    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
+            WHERE idProduit = $idProduit AND idPanier IN (
+                SELECT idPanier FROM _panier WHERE idClient = $idClient
+            )";
+    $stmt = $pdo->query($sql);
+    $current = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+
+    if ($current) {
+        $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
+        
+        if ($newQty > 0) {
+            $sql = "UPDATE _produitAuPanier SET quantiteProduit = $newQty 
+                    WHERE idProduit = $idProduit AND idPanier IN (
+                        SELECT idPanier FROM _panier WHERE idClient = $idClient
+                    )";
+            $res = $pdo->query($sql);
+            $success = $res !== false;
+        }
+        
+        return $success;
+    }
+    return false;
+}
+
+// ============================================================================
+// GESTION DES ACTIONS AJAX
+// ============================================================================
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    header('Content-Type: application/json');
+    
+    try {
+        switch ($_POST['action']) {
+            case 'updateQty':
+                $idProduit = $_POST['idProduit'] ?? '';
+                $delta = intval($_POST['delta'] ?? 0);
+                if ($idProduit && $delta != 0) {
+                    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
+                    echo json_encode(['success' => $success]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
+                }
+                break;
+
+            default:
+                echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit;
+}
+
+// ============================================================================
+// RÉCUPÉRATION DES DONNÉES POUR LA PAGE
+// ============================================================================
+
+// recuperation panier courent
+$cart = getCurrentCart($pdo, $idClient);
+
+// ============================================================================
+// GESTION DES COOKIES
+// ============================================================================
 ?>
-
-<!-- ============================================================================
-DEFINITION DES FONCTIONS ET DU COOKIE
-============================================================================ -->
-
 
 <?php 
     const PRODUIT_CONSULTE_MAX_SIZE = 4;
@@ -51,8 +121,11 @@ DEFINITION DES FONCTIONS ET DU COOKIE
             exit;
         }
     }
-?>
 
+// ============================================================================
+// AFFICHAGE DE LA PAGE
+// ============================================================================
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -106,7 +179,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                    <a href="" onclick="event.stopPropagation();" class="btnAjoutPanier plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                    </a>
                                 </div>
                             </div>
                         </article>
@@ -152,7 +227,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                    <a href="" onclick="event.stopPropagation();" class="btnAjoutPanier plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                    </a>
                                 </div>
                             </div>
                         </article>
@@ -198,7 +275,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                    <a href="" onclick="event.stopPropagation();" class="btnAjoutPanier plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                    </a>
                                 </div>
                             </div>
                         </article>
@@ -234,7 +313,7 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                             ?>
                             <article style="margin-top: 5px;" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                                <img onclick="event.stopPropagation();" src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
+                                <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
                                 <h2 class="nomProduit"><?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
                                 <div class="notation">
                                     <span><?php echo number_format($produitRecent['note'], 1); ?></span>
@@ -247,7 +326,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                         <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
                                     </div>
                                     <div>
-                                        <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                        <a href="" onclick="event.stopPropagation();" class="btnAjoutPanier plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                            <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                        </a>
                                     </div>
                                 </div>
                             </article>
@@ -261,6 +342,18 @@ DEFINITION DES FONCTIONS ET DU COOKIE
     </main>
 
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
+
+    <script>
+        // Ajouts au panier des produitsRecents
+        const btnAjout = document.querySelectorAll('.btnAjoutPanier');
+
+        btnAjout.forEach(btn => {
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                alert("Produit ajouté au panier !");
+            });
+        });
+    </script>
 </body>
 </html>
 
