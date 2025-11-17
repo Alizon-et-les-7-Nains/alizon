@@ -279,7 +279,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         </div>
                     </div>
                     <div class="prixOpt">
-                    <h2><?= htmlspecialchars($item['prix'] ?? 'N/A') ?></h2>                 
+                    <?= htmlspecialchars($item['prix'] ?? 'N/A') ?>          
                     <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
                     </button>
