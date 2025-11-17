@@ -1,5 +1,6 @@
 <?php
 // require_once "../../controllers/pdo.php";
+
 // Connexion à la base de données
 // try {
 //     $pdo = new PDO("mysql:host=localhost;dbname=saedb;charset=utf8mb4", "username", "password", [
@@ -73,7 +74,6 @@ $images = [
     ]
 ];
 
-// Your existing product data (mock)
 $produit = [
     'nom_produit' => 'Cidre Artisanal Breton',
     'description' => 'Un cidre artisanal produit selon les méthodes traditionnelles bretonnes...',
@@ -431,5 +431,4 @@ function changerPouce(element, type) {
 }
 </script>
 
-</script>
 </html>

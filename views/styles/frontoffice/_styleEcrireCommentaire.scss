@@ -1,0 +1,60 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.pageEcrireCommentaire{
+
+    .produit{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1em;
+    }
+
+    .reviewArticle{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        left: 15%;
+        width: 70%;
+    }
+
+    .etoiles img{
+        width: 64px;
+        height: 64px;
+    }
+
+    #ajouterPhoto{
+        width: 64px;
+        height: 64px;
+    }
+
+    textarea{
+        border: 2px solid $color-blue;
+        border-radius: 8px;
+    }
+
+    #sujet{
+        height: 60px;
+    }
+
+    #message{
+        min-height: 230px;
+        max-height: 300px;
+    }
+
+    .bouton{
+        width: 300px;
+        height: 60px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 32px;
+        border: none;
+        position: relative;
+    }
+
+    .boutonBleu{
+        background-color: $color-blue;
+        color: $color-white;
+    }
+}
