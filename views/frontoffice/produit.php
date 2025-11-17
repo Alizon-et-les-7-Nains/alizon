@@ -1,4 +1,5 @@
 <?php
+// require_once "../../controllers/pdo.php";
 // Connexion à la base de données
 // try {
 //     $pdo = new PDO("mysql:host=localhost;dbname=saedb;charset=utf8mb4", "username", "password", [
@@ -81,7 +82,6 @@ $produit = [
     'nom_vendeur' => 'Dupont',
     'stock' => 20 ];
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,9 +92,7 @@ $produit = [
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body class="pageProduit">
-<header>
-<?php include "../../views/frontoffice/partials/headerConnecte.php" ?>
-</header>
+<?php // include "../../views/frontoffice/partials/headerConnecte.php" ?>
 <main>
 <section class="infoHautProduit">
 <article class="rectangleProduit">
