@@ -1,0 +1,186 @@
+@use '../fonts';
+@use '../colors' as *;
+
+.produitBackOffice{
+    p{
+        margin: 0;
+    }
+    h1 {
+        color: $color-blue;
+        font: {
+            family: 'lora';
+            size: 40px
+        }
+    }
+
+    section{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 2px solid $color-blue;
+        border-radius: 16px;
+        width: 320px;
+        margin: 20px 0;
+    }
+
+    article {
+        position: relative;
+    }
+
+    .nomEtEvaluation{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px;
+        align-items: center;
+        p{
+            font-size: 24px;
+            color: $color-blue;
+        }
+    }
+
+    .evaluation{
+        display: flex;
+        flex-direction: column;
+        height: 40px;
+        p{
+            color: $color-dark-gray;
+            font: {
+                family: 'lora';
+                weight: bold;
+                style: italic;
+                size: 16px;
+            }
+            text-decoration: underline;
+            margin-top: 0;
+        }
+        div p {
+            text-decoration: none;
+            margin: 0;
+            padding-left:5px ;
+        }
+    }
+
+    .etoiles{
+        display: flex;
+        flex-direction: row;
+        height: 40px;
+    }
+
+    .produit{
+        height: 185px;
+        width: 300px; 
+        object-fit: contain;       
+        margin-top: 10px;
+        border-radius: 16px;
+    }
+
+    .bouton{
+        background-color: $color-blue; 
+        border-radius: 16px;
+        padding: 10px;
+        color: white;
+        border: 0;
+        width: 80px;
+        display: flex;
+        flex-direction: row;
+        align-items:center ;
+        position: absolute;
+        right: 0;
+        bottom: 10px;
+    }
+
+    button{
+        background-color: transparent;
+        border: 0;
+        color: white;
+        font-family: 'lora';
+        cursor: pointer;
+    }
+
+    .ligneProduit {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+        justify-items: center;
+    }
+
+    .prix, .prixAuKg{
+        font-size: 24px;
+        color: $color-blue;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .prixAuKg{
+        font-size: 16px;
+        font-weight: normal;
+        margin-bottom: 10px;
+    }
+
+    .hoverBouton {
+        display: none;
+    }
+
+    .hoverBouton div {
+        display:flex;
+    }
+
+    .bouton:hover {
+        width: 150px;
+    }
+
+    .bouton:hover .hoverBouton, .bouton:hover .hoverBouton img, .bouton:hover  .hoverBouton button{
+        display: block;
+    }
+
+    .bouton:hover button, .bouton:hover img {
+        display: none;
+    }
+    
+    .ligne{
+        border: 1px solid white;
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .iconeTexteLigne{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .iconeTexte{
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.overlaypopUpPromouvoir{
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 1000;
+}
+
+.overlayPopUpInfoCalcul{
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 10000;
+}
+
+.overlayPopUpRemise{
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 1000;
+}

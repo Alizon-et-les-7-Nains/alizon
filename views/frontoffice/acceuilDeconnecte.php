@@ -1,27 +1,24 @@
-<?php 
-
+<?php
 ob_start();
 
-require_once "../../controllers/prix.php";
 require_once "../../controllers/pdo.php";
-?>
+require_once "../../controllers/prix.php";
 
-<!-- ============================================================================
-DEFINITION DES FONCTIONS ET DU COOKIE
-============================================================================ -->
-
-
-<?php 
     const PRODUIT_CONSULTE_MAX_SIZE = 4;
 
+    const PRODUIT_DANS_PANIER_MAX_SIZE = 10;
+
     // Récupération du cookie existant ou création d'un tableau vide
-    if (isset($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitConsulte'])) {
+    if (((isset($_COOKIE['produitConsulte'])) && (isset($_COOKIE['produitPanier']))) && (!empty($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitPanier']))) {
         $tabIDProduitConsulte = unserialize($_COOKIE['produitConsulte']);
+        $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
         if (!is_array($tabIDProduitConsulte)) {
             $tabIDProduitConsulte = [];
+            $tabIDProduitPanier = [];
         }
     } else {
         $tabIDProduitConsulte = [];
+        $tabIDProduitPanier = [];
     }
 
     // Fonction pour ajouter un produit consulté
@@ -41,6 +38,22 @@ DEFINITION DES FONCTIONS ET DU COOKIE
         setcookie("produitConsulte", serialize($tabIDProduit), time() + (60*60*24*90), "/");
     }
 
+    function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
+        if (isset($tabIDProduitPanier[$idProduit])) {
+            $tabIDProduitPanier[$idProduit] += $quantite;
+        } else {
+            if (count($tabIDProduitPanier) >= PRODUIT_DANS_PANIER_MAX_SIZE) {
+                $message = "Impossible d'ajouter plus de ".PRODUIT_DANS_PANIER_MAX_SIZE." produits différents. Connectez-vous pour en ajouter plus.";
+                echo "<script>alert(".json_encode($message).");</script>";
+                return false;
+            }
+            $tabIDProduitPanier[$idProduit] = $quantite;
+        }
+        
+        setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
+        return true;
+    }
+
     // Gestion de l'ajout d'un produit via GET
     if (isset($_GET['addRecent']) && !empty($_GET['addRecent'])) {
         $idProduitAjoute = intval($_GET['addRecent']);
@@ -51,8 +64,22 @@ DEFINITION DES FONCTIONS ET DU COOKIE
             exit;
         }
     }
-?>
 
+    if (isset($_GET['addPanier']) && !empty($_GET['addPanier'])) {
+        $idProduitAjoute = intval($_GET['addPanier']);
+        $quantite = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
+        ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute);
+        
+        if (isset($_GET['id'])) {
+            header("Location: produit.php?id=" . intval($_GET['id']));
+            exit;
+        }
+    }
+
+// ============================================================================
+// AFFICHAGE DE LA PAGE
+// ============================================================================
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -92,9 +119,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article style="margin-top: 5px;" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
-                            <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <article style="margin-top: 5px;">
+                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
+                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <span><?php echo number_format($value['note'], 1); ?></span>
                                 <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
@@ -106,7 +133,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                    <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                    </button>
                                 </div>
                             </div>
                         </article>
@@ -138,9 +167,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article style="margin-top: 5px;" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
-                            <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <article style="margin-top: 5px;">
+                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
+                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <span><?php echo number_format($value['note'], 1); ?></span>
                                 <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
@@ -152,7 +181,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                    <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                    </button>
                                 </div>
                             </div>
                         </article>
@@ -184,9 +215,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article style="margin-top: 5px;" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
-                            <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <article style="margin-top: 5px;">
+                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
+                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <span><?php echo number_format($value['note'], 1); ?></span>
                                 <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
@@ -198,7 +229,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                    <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                    </button>
                                 </div>
                             </div>
                         </article>
@@ -233,9 +266,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                             ?>
-                            <article style="margin-top: 5px;" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                                <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
-                                <h2 class="nomProduit"><?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
+                            <article style="margin-top: 5px;">
+                                <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
+                                <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
                                 <div class="notation">
                                     <span><?php echo number_format($produitRecent['note'], 1); ?></span>
                                     <?php for ($i=0; $i < number_format($produitRecent['note'], 0); $i++) { ?>
@@ -247,7 +280,9 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                         <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
                                     </div>
                                     <div>
-                                        <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                        <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                                            <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                    </button>
                                     </div>
                                 </div>
                             </article>
@@ -261,10 +296,14 @@ DEFINITION DES FONCTIONS ET DU COOKIE
     </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
+
+    <script src="../scripts/frontoffice/paiement-ajax.js"></script>
+    <script src="../../public/amd-shim.js"></script>
+    <script src="../../public/script.js"></script>
+
 </body>
 </html>
 
 <?php
-
 ob_end_flush();
 ?>

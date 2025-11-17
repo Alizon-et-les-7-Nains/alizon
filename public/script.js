@@ -15,8 +15,17 @@ Array.from(document.getElementsByClassName('aside-btn')).forEach(asideButton => 
         }
     });
 });
-document.querySelector('button#haut')?.addEventListener('click', () => {
+const boutonHaut = document.getElementById('haut');
+boutonHaut?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+window.addEventListener('scroll', () => {
+    if (window.scrollY > window.innerHeight) {
+        boutonHaut?.classList.add('visible');
+    }
+    else {
+        boutonHaut?.classList.remove('visible');
+    }
 });
 document
     .querySelector("header.backoffice figure:first-child")
@@ -490,11 +499,19 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.showPopup = showPopup;
-    // Clé de chiffrement (doit correspondre à celle dans Chiffrement.js)
-    const CLE_CHIFFREMENT = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
-    function showPopup(message) {
+    // Fonction helper pour le chiffrement avec vérification renforcée
+    const chiffrerAvecVignere = (texte, sens) => {
+        // Utiliser la clé depuis window ou une valeur par défaut
+        const cle = window.CLE_CHIFFREMENT || "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
+        if (typeof window.vignere === "function" && cle && cle.length > 0) {
+            return window.vignere(texte, cle, sens);
+        }
+        console.warn("Fonction vignere non disponible ou clé invalide, retour du texte en clair");
+        return texte;
+    };
+    function showPopup(message, type = "info") {
         const overlay = document.createElement("div");
-        overlay.className = "payment-overlay";
+        overlay.className = `payment-overlay ${type}`;
         // Récupérer les valeurs des inputs
         const adresseInput = document.querySelector("body.pagePaiement .adresse-input");
         const codePostalInput = document.querySelector("body.pagePaiement .code-postal-input");
@@ -510,13 +527,9 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const nomCarte = nomCarteInput?.value.trim() || "";
         const dateCarte = carteDateInput?.value.trim() || "";
         const rawCVV = cvvInput?.value.trim() || "";
-        // CHIFFREMENT DES DONNÉES SENSIBLES
-        const numeroCarteChiffre = window.vignere
-            ? window.vignere(rawNumCarte, CLE_CHIFFREMENT, 1)
-            : rawNumCarte;
-        const cvvChiffre = window.vignere
-            ? window.vignere(rawCVV, CLE_CHIFFREMENT, 1)
-            : rawCVV;
+        // CHIFFREMENT DES DONNÉES SENSIBLES - version sécurisée
+        const numeroCarteChiffre = chiffrerAvecVignere(rawNumCarte, 1);
+        const cvvChiffre = chiffrerAvecVignere(rawCVV, 1);
         const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
         // Déterminer la région à partir du code postal
         let region = "";
@@ -545,7 +558,7 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
             cartItemsHtml = `<p class="empty">Panier vide</p>`;
         }
         overlay.innerHTML = `
-    <div class="payment-popup" role="dialog" aria-modal="true">
+    <div class="payment-popup" role="dialog" aria-modal="true" data-type="${type}">
       <button class="close-popup" aria-label="Fermer">✕</button>
       <div class="order-summary">
         <h2>Récapitulatif de commande</h2>
@@ -567,8 +580,13 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const closeBtn = overlay.querySelector(".close-popup");
         const undoBtn = overlay.querySelector(".undo");
         const confirmBtn = overlay.querySelector(".confirm");
-        closeBtn?.addEventListener("click", () => overlay.remove());
-        undoBtn?.addEventListener("click", () => overlay.remove());
+        let removeOverlay = () => {
+            if (document.body.contains(overlay)) {
+                document.body.removeChild(overlay);
+            }
+        };
+        closeBtn?.addEventListener("click", removeOverlay);
+        undoBtn?.addEventListener("click", removeOverlay);
         if (!confirmBtn)
             return;
         confirmBtn.addEventListener("click", async () => {
@@ -576,21 +594,52 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
             if (!popup)
                 return;
             // Afficher un indicateur de chargement
+            const originalText = confirmBtn.textContent;
             confirmBtn.textContent = "Traitement en cours...";
             confirmBtn.disabled = true;
             try {
+                // Vérifier que le chiffrement a fonctionné
+                if (!window.vignere) {
+                    throw new Error("Système de sécurité non disponible");
+                }
+                // Récupérer l'ID de l'adresse de facturation depuis window
+                const idAdresseFact = window.idAdresseFacturation || null;
                 // Appeler l'API pour créer la commande
                 const orderData = {
                     adresseLivraison: adresse,
                     villeLivraison: ville,
                     regionLivraison: region,
-                    numeroCarte: numeroCarteChiffre, // Version chiffrée
-                    cvv: cvvChiffre, // Version chiffrée
+                    numeroCarte: numeroCarteChiffre,
+                    cvv: cvvChiffre,
                     nomCarte: nomCarte,
                     dateExpiration: dateCarte,
                     codePostal: codePostal,
                 };
-                const result = await window.PaymentAPI.createOrder(orderData);
+                // AJOUT: Inclure l'ID de l'adresse de facturation si disponible
+                if (idAdresseFact) {
+                    orderData.idAdresseFacturation = idAdresseFact;
+                    console.log("Utilisation de l'adresse de facturation ID:", idAdresseFact);
+                }
+                else {
+                    console.log("Aucune adresse de facturation spécifique, utilisation de l'adresse de livraison");
+                }
+                // Utiliser PaymentAPI s'il existe, sinon faire un fetch direct
+                let result;
+                if (window.PaymentAPI &&
+                    typeof window.PaymentAPI.createOrder === "function") {
+                    result = await window.PaymentAPI.createOrder(orderData);
+                }
+                else {
+                    // Fallback: appel direct
+                    const response = await fetch("", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: new URLSearchParams(orderData).toString(),
+                    });
+                    result = await response.json();
+                }
                 if (result.success) {
                     // Afficher le message de succès
                     popup.innerHTML = `
@@ -603,25 +652,42 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         `;
                     const innerClose = popup.querySelector(".close-popup");
                     innerClose?.addEventListener("click", () => {
-                        // Recharger la page pour vider le panier
                         window.location.reload();
                     });
                 }
                 else {
-                    // Afficher l'erreur
-                    alert("Erreur lors de la création de la commande: " +
-                        (result.error || "Erreur inconnue"));
-                    confirmBtn.textContent = "Confirmer ma commande";
-                    confirmBtn.disabled = false;
+                    throw new Error(result.error || "Erreur inconnue lors de la création de la commande");
                 }
             }
             catch (error) {
                 console.error("Erreur:", error);
-                alert("Erreur réseau lors de la création de la commande");
-                confirmBtn.textContent = "Confirmer ma commande";
+                alert("Erreur lors de la création de la commande: " +
+                    (error instanceof Error ? error.message : String(error)));
+                // Réactiver le bouton
+                confirmBtn.textContent = originalText;
                 confirmBtn.disabled = false;
             }
         });
+        // Fermer en cliquant en dehors du popup
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) {
+                removeOverlay();
+            }
+        });
+        // Fermer avec la touche Escape
+        const handleEscape = (e) => {
+            if (e.key === "Escape") {
+                removeOverlay();
+                document.removeEventListener("keydown", handleEscape);
+            }
+        };
+        document.addEventListener("keydown", handleEscape);
+        // Nettoyer l'écouteur lors de la suppression
+        const originalRemove = removeOverlay;
+        removeOverlay = () => {
+            document.removeEventListener("keydown", handleEscape);
+            originalRemove();
+        };
     }
 });
 // ============================================================================
@@ -641,7 +707,7 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
         const cvvInput = document.querySelector("body.pagePaiement .cvv-input");
         const payerButtons = Array.from(document.querySelectorAll("body.pagePaiement .payer"));
         const recapEl = document.getElementById("recap");
-        const departments = new Map(); // code -> nom du département
+        const departments = new Map();
         const citiesByCode = new Map();
         const allCities = new Set();
         const postals = new Map();
@@ -666,7 +732,6 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
                 preloaded.postals[postal].forEach((c) => allCities.add(c));
             });
         }
-        // Initialiser le panier à partir des données injectées côté PHP
         let cart = [];
         if (preloaded.cart && Array.isArray(preloaded.cart)) {
             cart = preloaded.cart.map((it) => ({
@@ -684,10 +749,129 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
             maps: { departments, citiesByCode, postals, allCities },
             selectedDepartment,
         });
+        // Variable pour stocker l'ID de l'adresse de facturation
+        let idAdresseFacturation = null;
+        // Création de l'overlay pour l'adresse de facturation
+        const addrFactOverlay = document.createElement("div");
+        addrFactOverlay.className = "addr-fact-overlay";
+        addrFactOverlay.innerHTML = `
+    <div class="addr-fact-content">
+      <h2>Adresse de facturation</h2>
+      <div class="form-group">
+        <input class="adresse-fact-input" type="text" placeholder="Adresse complète" required>
+      </div>
+      <div class="form-group">
+        <input class="code-postal-fact-input" type="text" placeholder="Code postal" required>
+      </div>
+      <div class="form-group">
+        <input class="ville-fact-input" type="text" placeholder="Ville" required>
+      </div>
+      <div class="button-group">
+        <button id="closeAddrFact" class="btn-fermer">Annuler</button>
+        <button id="validerAddrFact" class="btn-valider">Valider</button>
+      </div>
+    </div>
+  `;
+        document.body.appendChild(addrFactOverlay);
+        // Gestion des événements de l'overlay
+        const validerAddrFactBtn = addrFactOverlay.querySelector("#validerAddrFact");
+        validerAddrFactBtn?.addEventListener("click", async () => {
+            const adresseFactInput = addrFactOverlay.querySelector(".adresse-fact-input");
+            const codePostalFactInput = addrFactOverlay.querySelector(".code-postal-fact-input");
+            const villeFactInput = addrFactOverlay.querySelector(".ville-fact-input");
+            // Validation basique
+            if (!adresseFactInput.value.trim() ||
+                !codePostalFactInput.value.trim() ||
+                !villeFactInput.value.trim()) {
+                (0, paiement_popup_1.showPopup)("Veuillez remplir tous les champs de l'adresse de facturation", "error");
+                return;
+            }
+            // Validation du code postal
+            const codePostal = codePostalFactInput.value.trim();
+            if (!/^\d{5}$/.test(codePostal)) {
+                (0, paiement_popup_1.showPopup)("Le code postal doit contenir 5 chiffres", "error");
+                return;
+            }
+            try {
+                // Enregistrer l'adresse de facturation dans la base de données
+                const formData = new URLSearchParams();
+                formData.append("action", "saveBillingAddress");
+                formData.append("adresse", adresseFactInput.value.trim());
+                formData.append("codePostal", codePostal);
+                formData.append("ville", villeFactInput.value.trim());
+                console.log("Envoi de la requête saveBillingAddress...");
+                const response = await fetch("", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: formData,
+                });
+                console.log("Réponse reçue:", response.status, response.statusText);
+                const result = await response.json();
+                console.log("Résultat JSON:", result);
+                if (result.success) {
+                    // STOCKER L'ID DE L'ADRESSE DE FACTURATION
+                    idAdresseFacturation = result.idAdresseFacturation;
+                    (0, paiement_popup_1.showPopup)(result.message || "Adresse de facturation enregistrée avec succès", "success");
+                    addrFactOverlay.style.display = "none";
+                    console.log("Adresse de facturation enregistrée avec ID:", idAdresseFacturation);
+                    // Décocher la checkbox après validation
+                    const factAdresseCheckbox = document.querySelector("#checkboxFactAddr");
+                    if (factAdresseCheckbox) {
+                        factAdresseCheckbox.checked = false;
+                    }
+                }
+                else {
+                    (0, paiement_popup_1.showPopup)("Erreur lors de l'enregistrement: " + result.error, "error");
+                }
+            }
+            catch (error) {
+                console.error("Erreur complète:", error);
+                (0, paiement_popup_1.showPopup)("Erreur réseau lors de l'enregistrement", "error");
+            }
+        });
+        const closeAddrFactBtn = addrFactOverlay.querySelector("#closeAddrFact");
+        closeAddrFactBtn?.addEventListener("click", () => {
+            addrFactOverlay.style.display = "none";
+            // Décocher la checkbox
+            const factAdresseCheckbox = document.querySelector("#checkboxFactAddr");
+            if (factAdresseCheckbox) {
+                factAdresseCheckbox.checked = false;
+            }
+        });
+        // Fermer en cliquant en dehors du contenu
+        addrFactOverlay.addEventListener("click", (e) => {
+            if (e.target === addrFactOverlay) {
+                addrFactOverlay.style.display = "none";
+                const factAdresseCheckbox = document.querySelector("#checkboxFactAddr");
+                if (factAdresseCheckbox) {
+                    factAdresseCheckbox.checked = false;
+                }
+            }
+        });
+        // Gestion de la checkbox
+        const factAdresseInput = document.querySelector("#checkboxFactAddr");
+        factAdresseInput?.addEventListener("change", (e) => {
+            const isChecked = e.target.checked;
+            if (isChecked) {
+                addrFactOverlay.style.display = "flex";
+                // Focus sur le premier champ
+                const firstInput = addrFactOverlay.querySelector("input");
+                if (firstInput) {
+                    firstInput.focus();
+                }
+            }
+            else {
+                addrFactOverlay.style.display = "none";
+            }
+        });
         // Gestion des boutons payer
         payerButtons.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
+                // Stocker l'ID de facturation dans window pour qu'il soit accessible par showPopup
+                window.idAdresseFacturation = idAdresseFacturation;
                 const ok = (0, paiement_validation_2.validateAll)({
                     inputs: {
                         adresseInput,
@@ -705,7 +889,7 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
                     selectedDepartment,
                 });
                 if (ok) {
-                    (0, paiement_popup_1.showPopup)("Paiement réussi");
+                    (0, paiement_popup_1.showPopup)("Validation des informations", "info");
                 }
                 else {
                     const first = document.querySelector(".invalid");
@@ -733,34 +917,6 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
                     s.style.display = "none";
                 }
             });
-        });
-        const addrFactOverlay = document.createElement("div");
-        addrFactOverlay.className = "addr-fact-overlay";
-        addrFactOverlay.innerHTML = `
-    <div class="addr-fact-content">
-      <h2>Adresse de facturation</h2>
-      <label>Adresse
-        <input class="adresse-input" type="text" placeholder="Adresse" aria-label="Adresse">
-      </label>
-      <label>Code Postal
-        <input class="code-postal-input" type="text" placeholder="Code Postal" aria-label="Code Postal">
-      </label>
-      <label>Ville
-        <input class="ville-input" type="text" placeholder="Ville" aria-label="Ville">
-      </label>
-      <button id="closeAddrFact">Fermer</button>
-    </div>
-  `;
-        const closeAddrFactBtn = addrFactOverlay.querySelector("#closeAddrFact");
-        closeAddrFactBtn?.addEventListener("click", () => {
-            document.body.removeChild(addrFactOverlay);
-        });
-        const factAdresseInput = document.querySelector("#checkboxFactAddr");
-        factAdresseInput?.addEventListener("change", (e) => {
-            const isChecked = e.target.checked;
-            if (isChecked) {
-                document.body.appendChild(addrFactOverlay);
-            }
         });
     }
 });

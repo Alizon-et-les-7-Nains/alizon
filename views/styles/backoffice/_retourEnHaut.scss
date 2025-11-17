@@ -2,9 +2,12 @@
 @use "../fonts";
 
 button#haut {
-    position: sticky;
-    justify-self: right;
-    transition: all 0.2s;
+    position: fixed;
+    transform: translateY(100px);
+    visibility: hidden;
+    opacity: 0;
+    bottom: 1em; right: 2em;
+    transition: all 0.2s ease;
     width: 150px;
     margin: {
         top: 1em; bottom: 1em;
@@ -20,10 +23,17 @@ button#haut {
         color: $color-blue;
     }
     border-radius: 16px;
-
-    &:hover {
-        cursor: pointer;
-        color: $color-blue;
-        background-color: $color-pastel-blue;
+    
+    &.visible {
+        transform: translateY(0);
+        opacity: 0.75;
+        visibility: visible;
+        
+        &:hover {
+            opacity: 1;
+            cursor: pointer;
+            color: $color-blue;
+            background-color: $color-pastel-blue;
+        }
     }
 }

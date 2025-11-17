@@ -1255,6 +1255,349 @@ body.backoffice footer {
   grid-area: footer;
 }
 
+main.acceuilBackoffice article {
+  overflow-y: hidden;
+}
+main.acceuilBackoffice {
+  display: flex;
+  flex-direction: column;
+}
+main.acceuilBackoffice img, main.acceuilBackoffice button {
+  user-select: none;
+}
+main.acceuilBackoffice section {
+  display: flex;
+  flex-direction: column;
+  color: #273469;
+  width: 100%;
+}
+main.acceuilBackoffice section h1 {
+  user-select: none;
+  font-family: "lora";
+}
+main.acceuilBackoffice section article {
+  width: 100%;
+  overflow-x: auto;
+}
+main.acceuilBackoffice section a {
+  margin-top: 1em;
+  align-self: flex-end;
+}
+main.acceuilBackoffice section a img {
+  height: 25px;
+}
+main.acceuilBackoffice section ul {
+  list-style: none;
+  padding: 0;
+}
+main.acceuilBackoffice section.stock article {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  width: 100%;
+  gap: 2em;
+}
+main.acceuilBackoffice section.stock article table {
+  padding: 1em;
+  border: solid 2px #273469;
+  border-radius: 16px;
+  font-family: "open-sans";
+  font-size: 20px;
+}
+main.acceuilBackoffice section.stock article table img {
+  height: 100px;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) {
+  font-family: "open-sans-bold";
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2) {
+  margin-left: auto;
+  font-size: 30px;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).epuise {
+  color: #f14e4e;
+}
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).faible {
+  color: #ffc25a;
+}
+main.acceuilBackoffice section.commandes article {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+  width: 100%;
+  gap: 2em;
+  font-family: "open-sans";
+  font-size: 20px;
+}
+main.acceuilBackoffice section.commandes article table {
+  padding: 1em;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 16px;
+  border-color: #273469;
+}
+main.acceuilBackoffice section.commandes article table img {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+}
+main.acceuilBackoffice section.commandes article table th {
+  font-size: 20px;
+}
+main.acceuilBackoffice section.commandes article table tr:first-child th {
+  text-align: left;
+  line-height: 0.5em;
+}
+main.acceuilBackoffice section.commandes article table tr:nth-child(2) td {
+  vertical-align: top;
+}
+main.acceuilBackoffice section.commandes article table tr:last-child th {
+  text-align: right;
+}
+main.acceuilBackoffice section.avis article {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  font-family: "open-sans";
+}
+main.acceuilBackoffice section.avis article table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 20px;
+  background-color: #e4d9ff;
+  border-radius: 16px;
+}
+main.acceuilBackoffice section.avis article table td, main.acceuilBackoffice section.avis article table th {
+  padding: 0.5em;
+}
+main.acceuilBackoffice section.avis article table tr:first-child th:first-child {
+  vertical-align: top;
+}
+main.acceuilBackoffice section.avis article table tr:first-child figure:first-child img {
+  height: 80px;
+  width: 80px;
+  object-fit: cover;
+  border-radius: 100%;
+}
+main.acceuilBackoffice section.avis article table tr:first-child figure:last-child {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  justify-self: center;
+  color: #FFD000;
+}
+main.acceuilBackoffice section.avis article table tr:first-child figure:last-child img {
+  height: 25px;
+  width: 25px;
+}
+main.acceuilBackoffice section.avis article table tr:first-child th:nth-child(2) {
+  white-space: nowrap;
+  text-align: left;
+}
+main.acceuilBackoffice section.avis article table tr:first-child td {
+  width: 100%;
+}
+main.acceuilBackoffice section.avis article table tr:nth-child(2) {
+  vertical-align: top;
+}
+main.acceuilBackoffice section.avis article table tr:last-child td:last-child {
+  display: flex;
+  flex-wrap: wrap;
+}
+main.acceuilBackoffice section.avis article img.imageAvis {
+  height: 150px;
+}
+main.acceuilBackoffice section.produits article {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  max-width: 100%;
+  gap: 2em;
+  font-size: 20px;
+}
+main.acceuilBackoffice section.produits article table {
+  padding: 1em;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #273469;
+  border-radius: 16px;
+}
+main.acceuilBackoffice section.produits article table img {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+}
+main.acceuilBackoffice section.produits article table th {
+  text-align: left;
+}
+main.acceuilBackoffice section.produits article table tr:last-child td {
+  font-family: "open-sans";
+}
+main.acceuilBackoffice section.produits article table tr:last-child td:last-child {
+  text-align: right;
+  font-weight: bold;
+}
+
+.produitBackOffice p {
+  margin: 0;
+}
+.produitBackOffice h1 {
+  color: #273469;
+  font-family: "lora";
+  font-size: 40px;
+}
+.produitBackOffice section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #273469;
+  border-radius: 16px;
+  width: 320px;
+  margin: 20px 0;
+}
+.produitBackOffice article {
+  position: relative;
+}
+.produitBackOffice .nomEtEvaluation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+}
+.produitBackOffice .nomEtEvaluation p {
+  font-size: 24px;
+  color: #273469;
+}
+.produitBackOffice .evaluation {
+  display: flex;
+  flex-direction: column;
+  height: 40px;
+}
+.produitBackOffice .evaluation p {
+  color: #6e6e6e;
+  font-family: "lora";
+  font-weight: bold;
+  font-style: italic;
+  font-size: 16px;
+  text-decoration: underline;
+  margin-top: 0;
+}
+.produitBackOffice .evaluation div p {
+  text-decoration: none;
+  margin: 0;
+  padding-left: 5px;
+}
+.produitBackOffice .etoiles {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+}
+.produitBackOffice .produit {
+  height: 185px;
+  width: 300px;
+  object-fit: contain;
+  margin-top: 10px;
+  border-radius: 16px;
+}
+.produitBackOffice .bouton {
+  background-color: #273469;
+  border-radius: 16px;
+  padding: 10px;
+  color: white;
+  border: 0;
+  width: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+}
+.produitBackOffice button {
+  background-color: transparent;
+  border: 0;
+  color: white;
+  font-family: "lora";
+  cursor: pointer;
+}
+.produitBackOffice .ligneProduit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  justify-items: center;
+}
+.produitBackOffice .prix, .produitBackOffice .prixAuKg {
+  font-size: 24px;
+  color: #273469;
+  margin: 0;
+  font-weight: bold;
+}
+.produitBackOffice .prixAuKg {
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+.produitBackOffice .hoverBouton {
+  display: none;
+}
+.produitBackOffice .hoverBouton div {
+  display: flex;
+}
+.produitBackOffice .bouton:hover {
+  width: 150px;
+}
+.produitBackOffice .bouton:hover .hoverBouton, .produitBackOffice .bouton:hover .hoverBouton img, .produitBackOffice .bouton:hover .hoverBouton button {
+  display: block;
+}
+.produitBackOffice .bouton:hover button, .produitBackOffice .bouton:hover img {
+  display: none;
+}
+.produitBackOffice .ligne {
+  border: 1px solid white;
+  width: 100%;
+  margin: 5px 0;
+}
+.produitBackOffice .iconeTexteLigne {
+  display: flex;
+  flex-direction: column;
+}
+.produitBackOffice .iconeTexte {
+  display: flex;
+  justify-content: space-between;
+}
+
+.overlaypopUpPromouvoir {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.overlayPopUpInfoCalcul {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.overlayPopUpRemise {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+}
+
 .status-red {
   color: #f14e4e;
 }
@@ -1444,7 +1787,10 @@ body.backoffice footer {
 
 /* Variables principales */
 /* Placeholder réutilisable pour les champs input */
-.pagePaiement input[type=text] {
+.addr-fact-overlay .addr-fact-content input,
+.addr-fact-overlay .addr-fact-content .adresse-fact-input,
+.addr-fact-overlay .addr-fact-content .code-postal-fact-input,
+.addr-fact-overlay .addr-fact-content .ville-fact-input, .pagePaiement input[type=text] {
   padding: 12px 14px;
   border: 2px solid #252b56;
   border-radius: 8px;
@@ -1953,185 +2299,79 @@ body.backoffice footer {
   }
 }
 
-main.acceuilBackoffice {
+/* Style pour la popup d'adresse de facturation */
+.addr-fact-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.addr-fact-overlay .addr-fact-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 500px;
+  /* structure pour pousser les boutons en bas */
   display: flex;
   flex-direction: column;
+  min-height: 320px;
+  box-sizing: border-box;
 }
-main.acceuilBackoffice img, main.acceuilBackoffice button {
-  user-select: none;
-}
-main.acceuilBackoffice section {
-  display: flex;
-  flex-direction: column;
+.addr-fact-overlay .addr-fact-content h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
   color: #273469;
-  width: 100%;
 }
-main.acceuilBackoffice section h1 {
-  user-select: none;
-  font-family: "lora";
-}
-main.acceuilBackoffice section article {
-  width: 100%;
-  overflow-x: auto;
-}
-main.acceuilBackoffice section a {
-  margin-top: 1em;
-  align-self: flex-end;
-}
-main.acceuilBackoffice section a img {
-  height: 25px;
-}
-main.acceuilBackoffice section ul {
-  list-style: none;
-  padding: 0;
-}
-main.acceuilBackoffice section.stock article {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-  width: 100%;
-  gap: 2em;
-}
-main.acceuilBackoffice section.stock article table {
-  padding: 1em;
-  border: solid 2px #273469;
-  border-radius: 16px;
-  font-family: "open-sans";
-  font-size: 20px;
-}
-main.acceuilBackoffice section.stock article table img {
-  height: 100px;
-}
-main.acceuilBackoffice section.stock article table tr:nth-child(3) {
-  font-family: "open-sans-bold";
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2) {
-  margin-left: auto;
-  font-size: 30px;
-}
-main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).epuise {
-  color: #f14e4e;
-}
-main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).faible {
-  color: #ffc25a;
-}
-main.acceuilBackoffice section.commandes article {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
-  width: 100%;
-  gap: 2em;
-  font-family: "open-sans";
-  font-size: 20px;
-}
-main.acceuilBackoffice section.commandes article table {
-  padding: 1em;
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 16px;
-  border-color: #273469;
-}
-main.acceuilBackoffice section.commandes article table img {
-  height: 100px;
-  width: 100px;
-  object-fit: cover;
-}
-main.acceuilBackoffice section.commandes article table th {
-  font-size: 20px;
-}
-main.acceuilBackoffice section.commandes article table tr:first-child th {
-  text-align: left;
-  line-height: 0.5em;
-}
-main.acceuilBackoffice section.commandes article table tr:nth-child(2) td {
-  vertical-align: top;
-}
-main.acceuilBackoffice section.commandes article table tr:last-child th {
-  text-align: right;
-}
-main.acceuilBackoffice section.avis article {
-  width: 100%;
+.addr-fact-overlay .addr-fact-content .form-group {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 2em;
-  font-family: "open-sans";
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 }
-main.acceuilBackoffice section.avis article table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 20px;
-  background-color: #e4d9ff;
-  border-radius: 16px;
-}
-main.acceuilBackoffice section.avis article table td, main.acceuilBackoffice section.avis article table th {
-  padding: 0.5em;
-}
-main.acceuilBackoffice section.avis article table tr:first-child th:first-child {
-  vertical-align: top;
-}
-main.acceuilBackoffice section.avis article table tr:first-child figure:first-child img {
-  height: 80px;
-  width: 80px;
-  object-fit: cover;
-  border-radius: 100%;
-}
-main.acceuilBackoffice section.avis article table tr:first-child figure:last-child {
-  display: flex;
-  align-items: center;
-  gap: 0.25em;
-  justify-self: center;
-  color: #FFD000;
-}
-main.acceuilBackoffice section.avis article table tr:first-child figure:last-child img {
-  height: 25px;
-  width: 25px;
-}
-main.acceuilBackoffice section.avis article table tr:first-child th:nth-child(2) {
-  white-space: nowrap;
-  text-align: left;
-}
-main.acceuilBackoffice section.avis article table tr:first-child td {
+.addr-fact-overlay .addr-fact-content input,
+.addr-fact-overlay .addr-fact-content .adresse-fact-input,
+.addr-fact-overlay .addr-fact-content .code-postal-fact-input,
+.addr-fact-overlay .addr-fact-content .ville-fact-input {
   width: 100%;
 }
-main.acceuilBackoffice section.avis article table tr:nth-child(2) {
-  vertical-align: top;
-}
-main.acceuilBackoffice section.avis article table tr:last-child td:last-child {
-  display: flex;
-  flex-wrap: wrap;
-}
-main.acceuilBackoffice section.avis article img.imageAvis {
-  height: 150px;
-}
-main.acceuilBackoffice section.produits article {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-  max-width: 100%;
-  gap: 2em;
-  font-size: 20px;
-}
-main.acceuilBackoffice section.produits article table {
-  padding: 1em;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #273469;
-  border-radius: 16px;
-}
-main.acceuilBackoffice section.produits article table img {
-  height: 100px;
-  width: 100px;
-  object-fit: cover;
-}
-main.acceuilBackoffice section.produits article table th {
-  text-align: left;
-}
-main.acceuilBackoffice section.produits article table tr:last-child td {
-  font-family: "open-sans";
-}
-main.acceuilBackoffice section.produits article table tr:last-child td:last-child {
-  text-align: right;
+.addr-fact-overlay .addr-fact-content label {
+  display: block;
+  margin-bottom: 0.5rem;
   font-weight: bold;
+  color: #555;
+}
+.addr-fact-overlay .addr-fact-content .button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: auto;
+  width: 100%;
+}
+.addr-fact-overlay .addr-fact-content .btn-valider,
+.addr-fact-overlay .addr-fact-content .btn-fermer {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  min-width: 120px;
+}
+.addr-fact-overlay .addr-fact-content .btn-valider {
+  background: #273469;
+  color: white;
+}
+.addr-fact-overlay .addr-fact-content .btn-fermer {
+  background: #f43636;
+  color: white;
 }
 
 .mainCompteClient {
@@ -2456,6 +2696,15 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .acceuil .notation img {
   height: 32px;
+}
+.acceuil .infoProd button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .mainPopUpCompteClient {
@@ -2785,9 +3034,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 
 button#haut {
-  position: sticky;
-  justify-self: right;
-  transition: all 0.2s;
+  position: fixed;
+  transform: translateY(100px);
+  visibility: hidden;
+  opacity: 0;
+  bottom: 1em;
+  right: 2em;
+  transition: all 0.2s ease;
   width: 150px;
   margin-top: 1em;
   margin-bottom: 1em;
@@ -2799,7 +3052,13 @@ button#haut {
   background-color: #273469;
   border-radius: 16px;
 }
-button#haut:hover {
+button#haut.visible {
+  transform: translateY(0);
+  opacity: 0.75;
+  visibility: visible;
+}
+button#haut.visible:hover {
+  opacity: 1;
   cursor: pointer;
   color: #273469;
   background-color: #e3f2fe;
@@ -3024,6 +3283,382 @@ button#haut:hover {
   padding-bottom: 0;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.popUpPromouvoir {
+  background-color: #fffefa;
+  border-radius: 16px;
+  position: relative;
+}
+.popUpPromouvoir .titreEtProduit {
+  display: flex;
+  flex-direction: column;
+  width: 550px;
+  align-items: center;
+}
+.popUpPromouvoir h1 {
+  color: #273469;
+  font-family: "lora";
+  font-size: 40px;
+  text-align: center;
+}
+.popUpPromouvoir .page {
+  display: flex;
+}
+.popUpPromouvoir .page .croixFermerLaPage {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}
+.popUpPromouvoir .page .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.popUpPromouvoir .page .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.popUpPromouvoir .page .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.popUpPromouvoir .page p {
+  margin: 0;
+}
+.popUpPromouvoir .page section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #273469;
+  border-radius: 16px;
+  width: 320px;
+  margin: 20px 0;
+  margin-left: 20px;
+}
+.popUpPromouvoir .page section article {
+  position: relative;
+}
+.popUpPromouvoir .page section .nomEtEvaluation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+}
+.popUpPromouvoir .page section .nomEtEvaluation p {
+  font-size: 24px;
+  color: #273469;
+}
+.popUpPromouvoir .page section .evaluation {
+  display: flex;
+  flex-direction: column;
+  height: 40px;
+}
+.popUpPromouvoir .page section .evaluation p {
+  color: #6e6e6e;
+  font-family: "lora";
+  font-weight: bold;
+  font-style: italic;
+  font-size: 16px;
+  text-decoration: underline;
+  margin-top: 0;
+}
+.popUpPromouvoir .page section .evaluation div p {
+  text-decoration: none;
+  margin: 0;
+  padding-left: 5px;
+}
+.popUpPromouvoir .page section .etoiles {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+}
+.popUpPromouvoir .page section .produit {
+  height: 185px;
+  width: 300px;
+  object-fit: contain;
+  margin-top: 10px;
+  border-radius: 16px;
+}
+.popUpPromouvoir .page section .prix,
+.popUpPromouvoir .page section .prixAuKg {
+  font-size: 24px;
+  color: #273469;
+  margin: 0;
+  font-weight: bold;
+}
+.popUpPromouvoir .page section .prixAuKg {
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+.popUpPromouvoir .page .ligne {
+  border-left: #273469 solid 2px;
+  margin: 30px;
+}
+.popUpPromouvoir .page .section2 {
+  border: 0;
+  align-items: flex-start;
+  width: 500px;
+}
+.popUpPromouvoir .page .section2 .supprimer {
+  color: #273469;
+}
+.popUpPromouvoir .page .section2 h2 {
+  width: 100%;
+  color: #273469;
+  font-weight: normal;
+}
+.popUpPromouvoir .page .section2 input {
+  border: 2px solid #273469;
+  padding: 15px;
+  border-radius: 10px;
+  width: 160px;
+}
+.popUpPromouvoir .page .section2 input#baniere {
+  display: none;
+  width: 380px;
+}
+.popUpPromouvoir .page .section2 .ajouterBaniere {
+  display: flex;
+  justify-content: center;
+  border: 2px solid #273469;
+  padding: 20px;
+  border-radius: 10px;
+  width: 380px;
+  background-color: #e4e4e4;
+}
+.popUpPromouvoir .page .section2 .ajouterBaniere img {
+  width: 50px;
+}
+.popUpPromouvoir .page .section2 .sousTotal {
+  background-color: #e4d9ff;
+  border-radius: 16px;
+  padding: 10px;
+  width: 200px;
+}
+.popUpPromouvoir .page .section2 .sousTotal p {
+  margin-bottom: 5px;
+}
+.popUpPromouvoir .page .section2 .infoCalcul {
+  display: flex;
+  cursor: pointer;
+}
+.popUpPromouvoir .page .section2 .infoCalcul img {
+  margin: 4px;
+}
+.popUpPromouvoir .page .section2 button {
+  margin-top: 10px;
+  border: 0;
+  background-color: #273469;
+  width: 180px;
+  padding: 15px;
+  color: white;
+  border-radius: 32px;
+  font-family: "lora";
+  margin-left: 10px;
+}
+.popUpPromouvoir .page .section2 .deuxBoutons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.popUpInfoCalcul {
+  width: 330px;
+  font-family: "lora";
+  background-color: #fffefa;
+  border-radius: 16px;
+  position: relative;
+}
+.popUpInfoCalcul .croixFermerLaPage {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+.popUpInfoCalcul .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.popUpInfoCalcul .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.popUpInfoCalcul .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.popUpInfoCalcul h1 {
+  color: #273469;
+  font-size: 20px;
+}
+.popUpInfoCalcul h2 {
+  font-size: 15px;
+}
+.popUpInfoCalcul p {
+  color: #273469;
+  font-size: 12px;
+}
+
+.popUpRemise {
+  background-color: #fffefa;
+  border-radius: 16px;
+  position: relative;
+  width: 60%;
+}
+.popUpRemise .titreEtProduit {
+  display: flex;
+  flex-direction: column;
+  width: 550px;
+  align-items: center;
+}
+.popUpRemise h1 {
+  color: #273469;
+  font-family: "lora";
+  font-size: 40px;
+  text-align: center;
+}
+.popUpRemise .page {
+  display: flex;
+}
+.popUpRemise .page .croixFermerLaPage {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}
+.popUpRemise .page .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.popUpRemise .page .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.popUpRemise .page .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.popUpRemise .page p {
+  margin: 0;
+}
+.popUpRemise .page section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #273469;
+  border-radius: 16px;
+  width: 320px;
+  margin: 20px 0;
+  margin-left: 20px;
+}
+.popUpRemise .page section article {
+  position: relative;
+}
+.popUpRemise .page section .nomEtEvaluation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+}
+.popUpRemise .page section .nomEtEvaluation p {
+  font-size: 24px;
+  color: #273469;
+}
+.popUpRemise .page section .evaluation {
+  display: flex;
+  flex-direction: column;
+  height: 40px;
+}
+.popUpRemise .page section .evaluation p {
+  color: #6e6e6e;
+  font-family: "lora";
+  font-weight: bold;
+  font-style: italic;
+  font-size: 16px;
+  text-decoration: underline;
+  margin-top: 0;
+}
+.popUpRemise .page section .evaluation div p {
+  text-decoration: none;
+  margin: 0;
+  padding-left: 5px;
+}
+.popUpRemise .page section .etoiles {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+}
+.popUpRemise .page section .produit {
+  height: 185px;
+  width: 300px;
+  object-fit: contain;
+  margin-top: 10px;
+  border-radius: 16px;
+}
+.popUpRemise .page section .prix,
+.popUpRemise .page section .prixAuKg {
+  font-size: 24px;
+  color: #273469;
+  margin: 0;
+  font-weight: bold;
+}
+.popUpRemise .page section .prixAuKg {
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+.popUpRemise .page .ligne {
+  border-left: #273469 solid 2px;
+  margin: 30px;
+}
+.popUpRemise .page .section2 {
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 500px;
+}
+.popUpRemise .page .section2 h2 {
+  font-size: 24px;
+  color: #273469;
+}
+.popUpRemise .page .section2 input {
+  padding: 10px;
+  width: 200px;
+  border: 2px solid #273469;
+  border-radius: 8px;
+  font-family: "lora";
+  margin: 10px;
+}
+.popUpRemise .page .section2 div input {
+  width: 110px;
+}
+.popUpRemise .page .section2 button {
+  background-color: #273469;
+  padding: 15px;
+  border-radius: 32px;
+  font-family: "lora";
+  width: 200px;
+  color: #fffefa;
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+}
+.popUpRemise .page .section2 p {
+  background-color: #e4d9ff;
+  padding: 10px;
+  border-radius: 16px;
 }
 
 /*# sourceMappingURL=style.css.map */
