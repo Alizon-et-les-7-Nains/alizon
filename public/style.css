@@ -1966,69 +1966,75 @@ body.backoffice footer {
   align-items: center;
   z-index: 1000;
 }
-
-.addr-fact-content {
+.addr-fact-overlay .addr-fact-content {
   background: white;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 500px;
+  /* structure pour pousser les boutons en bas */
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  box-sizing: border-box;
 }
-
-.addr-fact-content h2 {
+.addr-fact-overlay .addr-fact-content h2 {
   margin-bottom: 1.5rem;
-  color: #333;
+  text-align: center;
+  color: #273469;
 }
-
-.addr-fact-content label {
+.addr-fact-overlay .addr-fact-content .form-group {
+  /* laisser les groupes de champs occuper l'espace disponible */
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.addr-fact-overlay .addr-fact-content input,
+.addr-fact-overlay .addr-fact-content .adresse-fact-input,
+.addr-fact-overlay .addr-fact-content .code-postal-fact-input,
+.addr-fact-overlay .addr-fact-content .ville-fact-input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.25rem;
+  border: 2px solid #273469;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+.addr-fact-overlay .addr-fact-content label {
   display: block;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   font-weight: bold;
   color: #555;
 }
-
-.addr-fact-content input {
-  width: 100%;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.button-group {
+.addr-fact-overlay .addr-fact-content .button-group {
   display: flex;
   gap: 1rem;
-  margin-top: 1.5rem;
-  justify-content: flex-end;
+  justify-content: center; /* centré horizontalement */
+  margin-top: auto; /* pousse le groupe de boutons en bas du conteneur */
+  width: 100%;
 }
-
-.btn-valider {
-  background: #4caf50;
-  color: white;
+.addr-fact-overlay .addr-fact-content .btn-valider,
+.addr-fact-overlay .addr-fact-content .btn-fermer {
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
   font-size: 1rem;
+  min-width: 120px;
 }
-
-.btn-valider:hover {
-  background: #45a049;
+.addr-fact-overlay .addr-fact-content .btn-valider {
+  background: #273469;
+  color: white;
 }
-
-.btn-fermer {
+.addr-fact-overlay .addr-fact-content .btn-fermer {
   background: #f44336;
   color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
 }
-
-.btn-fermer:hover {
+.addr-fact-overlay .addr-fact-content .btn-fermer:hover {
   background: #da190b;
 }
 
