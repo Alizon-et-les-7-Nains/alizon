@@ -734,6 +734,34 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
                 }
             });
         });
+        const addrFactOverlay = document.createElement("div");
+        addrFactOverlay.className = "addr-fact-overlay";
+        addrFactOverlay.innerHTML = `
+    <div class="addr-fact-content">
+      <h2>Adresse de facturation</h2>
+      <label>Adresse
+        <input class="adresse-input" type="text" placeholder="Adresse" aria-label="Adresse">
+      </label>
+      <label>Code Postal
+        <input class="code-postal-input" type="text" placeholder="Code Postal" aria-label="Code Postal">
+      </label>
+      <label>Ville
+        <input class="ville-input" type="text" placeholder="Ville" aria-label="Ville">
+      </label>
+      <button id="closeAddrFact">Fermer</button>
+    </div>
+  `;
+        const closeAddrFactBtn = addrFactOverlay.querySelector("#closeAddrFact");
+        closeAddrFactBtn?.addEventListener("click", () => {
+            document.body.removeChild(addrFactOverlay);
+        });
+        const factAdresseInput = document.getElementById("checkboxFactAddr");
+        factAdresseInput?.addEventListener("change", (e) => {
+            const isChecked = e.target.checked;
+            if (isChecked) {
+                document.body.appendChild(addrFactOverlay);
+            }
+        });
     }
 });
 //# sourceMappingURL=script.js.map
