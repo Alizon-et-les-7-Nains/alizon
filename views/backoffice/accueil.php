@@ -170,10 +170,10 @@ require_once '../../controllers/date.php';
                 <a href="./produits.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
 
-            <?php require_once './partials/footer.php' ?>
+            <?php require_once './partials/retourEnHaut.php' ?>
         </main>
 
-        <?php require_once './partials/retourEnHaut.php' ?>
+        <?php require_once './partials/footer.php' ?>
 
         <script src="../../public/script.js"></script>
     </body>
