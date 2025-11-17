@@ -276,11 +276,16 @@
                 }
             });
 
+
+            //Chiffrement du mot de passe
             document.getElementById("monForm").addEventListener("submit", (e) => {
             const password = document.getElementById("mdp");
-
+            const confirmPassword = document.getElementById("cmdp");
+            
             if (typeof vignere !== 'undefined') {
                 password.value = vignere(password.value, cle, 1);
+                confirPassword.value = vignere(confirPassword.value, cle, 1);
+
             }
             })
             

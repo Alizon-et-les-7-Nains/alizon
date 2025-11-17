@@ -32,6 +32,7 @@ function getCurrentCart($pdo, $idClient) {
     return $cart;
 }
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+    echo "fonction update appelé";
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
 
@@ -39,6 +40,12 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
             WHERE idProduit = $idProduit AND idPanier IN (
                 SELECT idPanier FROM _panier WHERE idClient = $idClient
             )";
+
+    if ($sql == NULL) {
+        $sql = "INSERT INTO _produitAuPanier($idProduit, quantiteProduit, $idClient) VALUES ($idProduit, 1, $idClient)";
+        echo "Insertion fait";
+    }
+
     $stmt = $pdo->query($sql);
     $current = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
@@ -73,11 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $delta = intval($_POST['delta'] ?? 0);
                 if ($idProduit && $delta != 0) {
                     $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
-                    echo "Réussite";
                     echo json_encode(['success' => $success]);
                 } else {
                     echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
-                    echo "Erreur";
                 }
                 break;
 
@@ -205,9 +210,9 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href="" onclick="event.stopPropagation();" class="btnAjoutPanier plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                    <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
                                         <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </article>
@@ -253,9 +258,9 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href="" onclick="event.stopPropagation();" class="btnAjoutPanier plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                    <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
                                         <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </article>
@@ -301,9 +306,9 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href="" onclick="event.stopPropagation();" class="btnAjoutPanier plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                    <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
                                         <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </article>
@@ -352,9 +357,9 @@ $cart = getCurrentCart($pdo, $idClient);
                                         <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
                                     </div>
                                     <div>
-                                        <a href="" onclick="event.stopPropagation();" class="btnAjoutPanier plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                        <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
                                             <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                                        </a>
+                                    </button>
                                     </div>
                                 </div>
                             </article>
@@ -373,21 +378,9 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 
-    <script>
-        // Ajouts au panier des produitsRecents
-        const btnAjout = document.querySelectorAll('.btnAjoutPanier');
-
-        btnAjout.forEach(btn => {
-            btn.addEventListener('click', (event) => {
-                event.preventDefault();
-                alert("Produit ajouté au panier !");
-            });
-        });
-    </script>
 </body>
 </html>
 
 <?php
-
 ob_end_flush();
 ?>

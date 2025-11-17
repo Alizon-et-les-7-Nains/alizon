@@ -346,6 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (this.classList.contains("plus")) {
           PaymentAPI.updateQuantity(id, 1);
+          console.log("API contacté, ajout produit");
         } else if (this.classList.contains("minus")) {
           PaymentAPI.updateQuantity(id, -1);
         } else if (this.classList.contains("delete")) {
