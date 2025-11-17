@@ -500,7 +500,6 @@ footer.backoffice {
   background-color: #e4d9ff;
   color: #273469;
   align-items: center;
-  justify-content: space-between;
   padding: 1em;
   font-family: "lora";
   font-weight: bold;
@@ -509,7 +508,7 @@ footer.backoffice {
   border-top-color: #273469;
   border-top-width: 5px;
 }
-footer.backoffice img, footer.backoffice copy {
+footer.backoffice copy {
   user-select: none;
 }
 footer.backoffice ul {
@@ -518,13 +517,6 @@ footer.backoffice ul {
   align-items: center;
 }
 footer.backoffice ul li {
-  margin-right: 1em;
-}
-footer.backoffice figure {
-  display: flex;
-  align-items: center;
-}
-footer.backoffice figure figcaption {
   margin-right: 1em;
 }
 footer.backoffice a {
