@@ -27,8 +27,8 @@
 
         </div>
             <div class="icons">
-                <a href="../notification.php"><img src="../../../public/images/bellLightBlue.svg" alt=""></a>
-                <a href="../panier.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
+                <a href="../frontoffice/notification.php"><img src="../../../public/images/bellLightBlue.svg" alt=""></a>
+                <a href="../frontoffice/panier.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
                 <a href="javascript:void(0);" onclick="menuBurger();"><img src="../../../public/images/burgerLightBlue.svg" alt=""></a>
             </div>
         </div>
@@ -45,12 +45,12 @@
 
         <section id="burgerIcon">
             <div id="triangle-codeHeader"></div>
-            <a href="../compteClient.php">Mon compte</a>
-            <a href="../commentaires.php">Mes commentaires</a>
-            <a href="../listeDeSouhait.php">Liste de souhait</a>
-            <a href="../commandes.php">Mes commandes</a>
-            <a href="../panier.php">Mon panier</a>
-            <a href="../connexionClient.php">Déconnexion</a>
+            <a href="../frontoffice/compteClient.php">Mon compte</a>
+            <a href="../frontoffice/commentaires.php">Mes commentaires</a>
+            <a href="../frontoffice/listeDeSouhait.php">Liste de souhait</a>
+            <a href="../frontoffice/commandes.php">Mes commandes</a>
+            <a href="../frontoffice/panier.php">Mon panier</a>
+            <a href="../frontoffice/connexionClient.php">Déconnexion</a>
         </section>
 
     </header>

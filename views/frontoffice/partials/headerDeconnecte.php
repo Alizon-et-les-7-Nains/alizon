@@ -14,7 +14,7 @@
         <div class="headerMain">
             <div class="logoNom">
                 <img src="../../../public/images/logoAlizonHeader.png" alt="Logo Alizon">
-                <h1><a href="../acceuilDeconnecte.php"><b>Alizon</b></a></h1>
+                <h1><a href="../frontoffice/acceuilDeconnecte.php"><b>Alizon</b></a></h1>
             </div>
         <div class="searchBar">
 
@@ -28,7 +28,7 @@
         </div>
             <div class="icons">
                 <div class="seConnecter">
-                    <a href="../../connexionClient.php"><img src="../../../public/images/utilLightBlue.svg" alt=""></a>
+                    <a href="../frontoffice/connexionClient.php"><img src="../../../public/images/utilLightBlue.svg" alt=""></a>
                     <p>Se connecter</p>
                 </div>
             </div>
