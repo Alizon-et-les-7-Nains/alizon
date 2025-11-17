@@ -15,6 +15,18 @@ Array.from(document.getElementsByClassName('aside-btn')).forEach(asideButton => 
         }
     });
 });
+const boutonHaut = document.getElementById('haut');
+boutonHaut?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+window.addEventListener('scroll', () => {
+    if (window.scrollY > window.innerHeight) {
+        boutonHaut?.classList.add('visible');
+    }
+    else {
+        boutonHaut?.classList.remove('visible');
+    }
+});
 document
     .querySelector("header.backoffice figure:first-child")
     ?.addEventListener("click", () => {
