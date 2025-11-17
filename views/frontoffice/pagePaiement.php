@@ -1,12 +1,18 @@
 <?php
 require_once "../../controllers/pdo.php";
+session_start();
 
 // ============================================================================
-// CONFIGURATION INITIALE
+// VÉRIFICATION DE LA CONNEXION
 // ============================================================================
 
-// ID utilisateur connecté (à remplacer par la gestion de session)
-$idClient = 1; 
+if (!isset($_SESSION['user_id'])) {
+    // Rediriger vers la page de connexion si non connecté
+    header('Location: ../../views/frontoffice/connexionClient.php');
+    exit;
+}
+
+$idClient = $_SESSION['user_id'];
 
 // ============================================================================
 // FONCTIONS DE GESTION DU PANIER

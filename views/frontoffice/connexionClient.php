@@ -6,17 +6,16 @@ $error = '';
 $email_tel = '';
 $password = '';
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email_tel = trim($_POST['email_tel']);
-    $password = trim($_POST['password']);
+    $password_chiffre = trim($_POST['password_chiffre']); 
     
-    // Vérifier si c'est un email ou un numéro de téléphone
+    //email ou un numéro de téléphone
     if (filter_var($email_tel, FILTER_VALIDATE_EMAIL)) {
-        // C'est un email
+        //email
         $sql = "SELECT idClient, email, mdp, noTelephone, prenom, nom FROM _client WHERE email = ?";
     } else {
-        // C'est un numéro de téléphone 
+        // numéro de téléphone
         $tel_clean = preg_replace('/[^0-9]/', '', $email_tel);
         $sql = "SELECT idClient, email, mdp, noTelephone, prenom, nom FROM _client WHERE REPLACE(noTelephone, ' ', '') = ?";
         $email_tel = $tel_clean;
@@ -26,15 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$email_tel]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    if ($user && password_verify($password, $user['mdp'])) {
-        // Connexion réussie
-        $_SESSION['user_id'] = $user['idClient'];
-        $_SESSION['user_email'] = $user['email'];
-        $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
-        
-        // Redirection vers la page d'accueil ou profil
-        header('Location: ../../views/frontoffice/accueil.php');
-        exit;
+    if ($user) {
+        // Comparer les mots de passe chiffrés 
+        if ($password_chiffre === $user['mdp']) {
+            // Connexion réussie
+            $_SESSION['user_id'] = $user['idClient'];
+            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
+            $_SESSION['user_prenom'] = $user['prenom'];
+            $_SESSION['user_nom'] = $user['nom'];
+            
+            // Redirection vers la page d'accueil apres connexion
+            header('Location: ../../views/frontoffice/accueil.php'); // corriger la faute de frappe ici
+            exit;
+        } else {
+            $error = "Identifiants incorrects";
+        }
     } else {
         $error = "Identifiants incorrects";
     }
@@ -66,14 +72,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <?php endif; ?>
 
-        <form method="POST" action="">
+        <form id="loginForm" method="POST" action="">
             <input type="text" name="email_tel" placeholder="Adresse mail ou numéro de téléphone*"
                 class="inputConnexionClient" value="<?php echo htmlspecialchars($email_tel); ?>" required>
 
-            <input type="password" name="password" placeholder="Mot de passe*" class="inputConnexionClient" required>
+            <input type="password" id="password_input" placeholder="Mot de passe*" class="inputConnexionClient"
+                required>
+
+            <!-- Champ caché pour le mot de passe chiffré -->
+            <input type="hidden" name="password_chiffre" id="password_chiffre">
 
             <div>
-                <a href="#">Pas encore client ? Inscrivez-vous ici</a>
+                <a href="inscriptionClient.php">Pas encore client ? Inscrivez-vous ici</a>
                 <a href="#">Mot de passe oublié ? Cliquez ici</a>
                 <button type="submit" class="boutonConnexionClient">Se connecter</button>
             </div>
@@ -88,6 +98,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
+
+    <script src="../scripts/frontoffice/Chiffrement.js"></script>
+
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const passwordClair = document.getElementById('password_input').value;
+        const passwordChiffre = vignere(passwordClair, cle, 1);
+
+        document.getElementById('password_chiffre').value = passwordChiffre;
+
+        this.submit();
+    });
+    </script>
 </body>
 
 </html>
