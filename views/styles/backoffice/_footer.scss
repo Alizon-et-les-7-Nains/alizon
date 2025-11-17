@@ -6,7 +6,6 @@ footer.backoffice {
     background-color: $color-pastel-purple;
     color: $color-blue;
     align-items: center;
-    justify-content: space-between;
     padding: 1em;
     font: {
         family: 'lora';
@@ -19,7 +18,7 @@ footer.backoffice {
         width: 5px;
     }
 
-    img, copy {
+    copy {
         user-select: none;
     }
     
@@ -29,15 +28,6 @@ footer.backoffice {
         align-items: center;
         
         li {
-            margin-right: 1em;
-        }
-    }
-    
-    figure {
-        display: flex;
-        align-items: center;
-        
-        figcaption {
             margin-right: 1em;
         }
     }
