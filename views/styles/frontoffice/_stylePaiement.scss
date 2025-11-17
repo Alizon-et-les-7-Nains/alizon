@@ -558,3 +558,82 @@ $page-padding: 32px 16px;
     }
   }
 }
+
+/* Style pour la popup d'adresse de facturation */
+.addr-fact-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.addr-fact-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 500px;
+}
+
+.addr-fact-content h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.addr-fact-content label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.addr-fact-content input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
+.btn-valider {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-valider:hover {
+  background: #45a049;
+}
+
+.btn-fermer {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-fermer:hover {
+  background: #da190b;
+}

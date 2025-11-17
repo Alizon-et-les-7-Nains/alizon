@@ -18,9 +18,13 @@ declare global {
 // Clé de chiffrement (doit correspondre à celle dans Chiffrement.js)
 const CLE_CHIFFREMENT = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
 
-export function showPopup(message: string) {
+export function showPopup(
+  message: string,
+  type: "error" | "success" | "info" = "info"
+) {
   const overlay = document.createElement("div");
-  overlay.className = "payment-overlay";
+  // add a type-specific class for styling (e.g. .payment-overlay.error)
+  overlay.className = `payment-overlay ${type}`;
 
   // Récupérer les valeurs des inputs
   const adresseInput = document.querySelector(
@@ -54,11 +58,11 @@ export function showPopup(message: string) {
   const rawCVV = cvvInput?.value.trim() || "";
 
   // CHIFFREMENT DES DONNÉES SENSIBLES
-  const numeroCarteChiffre = window.vignere
-    ? window.vignere(rawNumCarte, CLE_CHIFFREMENT, 1)
+  const numeroCarteChiffre = (window as any).vignere
+    ? (window as any).vignere(rawNumCarte, (window as any).CLE_CHIFFREMENT, 1)
     : rawNumCarte;
-  const cvvChiffre = window.vignere
-    ? window.vignere(rawCVV, CLE_CHIFFREMENT, 1)
+  const cvvChiffre = (window as any).vignere
+    ? (window as any).vignere(rawCVV, (window as any).CLE_CHIFFREMENT, 1)
     : rawCVV;
 
   const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
@@ -73,15 +77,15 @@ export function showPopup(message: string) {
     region = `Département ${codeDept}`;
   }
 
-  const preCart = Array.isArray(window.__PAYMENT_DATA__?.cart)
-    ? (window.__PAYMENT_DATA__!.cart as CartItem[])
+  const preCart = Array.isArray((window as any).__PAYMENT_DATA__?.cart)
+    ? ((window as any).__PAYMENT_DATA__!.cart as any[])
     : [];
   let cartItemsHtml = "";
 
   if (Array.isArray(preCart) && preCart.length > 0) {
     cartItemsHtml = preCart
       .map(
-        (item: CartItem) => `
+        (item: any) => `
       <div class="product">
         <img src="${item.img || "/images/default.png"}" alt="${item.nom}" />
         <p class="title">${item.nom}</p>
@@ -97,7 +101,7 @@ export function showPopup(message: string) {
   }
 
   overlay.innerHTML = `
-    <div class="payment-popup" role="dialog" aria-modal="true">
+    <div class="payment-popup" role="dialog" aria-modal="true" data-type="${type}">
       <button class="close-popup" aria-label="Fermer">✕</button>
       <div class="order-summary">
         <h2>Récapitulatif de commande</h2>
@@ -152,7 +156,7 @@ export function showPopup(message: string) {
         codePostal: codePostal,
       };
 
-      const result = await window.PaymentAPI.createOrder(orderData);
+      const result = await (window as any).PaymentAPI.createOrder(orderData);
 
       if (result.success) {
         // Afficher le message de succès
@@ -173,7 +177,7 @@ export function showPopup(message: string) {
           window.location.reload();
         });
       } else {
-        // Afficher l'erreur
+        // Afficher l'erreur via alert and keep the popup open for correction
         alert(
           "Erreur lors de la création de la commande: " +
             (result.error || "Erreur inconnue")
