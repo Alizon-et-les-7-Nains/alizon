@@ -294,9 +294,11 @@
             validateForm(); 
 
 
-
+            
+        </script>
+        <?php
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                <?php
+                
                 $pseudo = $_POST['pseudo'] ?? '';
                 $prenom = $_POST['prenom'] ?? '';
                 $nom = $_POST['nom'] ?? '';
@@ -305,15 +307,15 @@
                 $mdp = $_POST['motdepasse'] ?? '';
                 $date_naissance = $_POST['birthdate'] ?? '';
                 
-                $nouveauClient = $pdo->query ("INSERT INTO _client ('dateNaissance', 'prenom', 'nom', 'email', 'mdp', 'noTelephone','pseudo')
+                $nouveauClient = $pdo->query("INSERT INTO _client ('dateNaissance', 'prenom', 'nom', 'email', 'mdp', 'noTelephone','pseudo')
                 VALUES ('$date_naissance', '$prenom', '$nom', '$email', '$mdp', '$num_tel', '$pseudo')");
 
                 if ($pdo->query($nouveauClient) === false) {
                     throw new Exception("Erreur lors de la création d'un : " . implode(', ', $pdo->errorInfo()));
                 }
-                ?>
+                
             }
-        </script>
+            ?>
       </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
