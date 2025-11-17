@@ -116,8 +116,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
   console.log("Page de paiement initialisée avec succès");
 });
-
-// Gestion des erreurs globales
-window.addEventListener("error", function (e) {
-  console.error("Erreur globale:", e.error);
-});
