@@ -151,19 +151,22 @@ header.backoffice {
             backdrop-filter: blur(1px);
         }
         
-        button:not(header.main dialog nav > button) {
-            border: none;
-            background: none;
+        div {
             margin-left: auto;
             display: block;
             margin-bottom: 1em;
-            transition: all 0.2s;
-            
-            &:hover {
-                cursor: pointer;
+
+            button {
+                border: none;
+                background: none;
+                transition: all 0.2s;
                 
-                img {
-                    content: url(../../../public/images/croixRouge.svg);
+                &:hover {
+                    cursor: pointer;
+                    
+                    img {
+                        content: url(../../../public/images/croixRouge.svg);
+                    }
                 }
             }
         }
@@ -176,7 +179,7 @@ header.backoffice {
         nav {
             display: flex;
             justify-content: space-around;
-            justify-items: space-around;
+            align-items: center;
             width: 100%;
             
             button {
@@ -198,7 +201,7 @@ header.backoffice {
                     background-color: $color-blue;
                     color: $color-white;
                 }
-
+                
                 &:hover {
                     background-color: $color-pastel-blue;
                     color: $color-blue;

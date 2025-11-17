@@ -23,7 +23,7 @@
 
     <h2>Inscription</h2>
       <main>
-        <form id="monForm" action="../backend/session_start.php" method="post" enctype="multipart/form-data">
+        <form id="monForm" action="../../controllers/session_start.php" method="post" enctype="multipart/form-data">
 
           <!-- Pseudo -->
           <input type="text" placeholder="Pseudo*" id="pseudo" name="pseudo" required />
@@ -170,7 +170,9 @@
                     $_POST['nom'] = $pseudoInput.value;
                     $_POST['mdp'] = $mdpInput.value;              
                     $_POST['confimer_mdp'] = $confirmPasswordInput.value       
-                    $_POST['date_naissance'] = $birthDateInput.value;     
+                    $_POST['date_naissance'] = $birthDateInput.value;   
+                    
+                    var_dump($_POST);
                     return true;
                 }
                 return false
