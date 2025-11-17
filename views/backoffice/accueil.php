@@ -171,6 +171,8 @@ require_once '../../controllers/date.php';
             </section>
         </main>
 
+        <?php require_once './partials/retourEnHaut.php' ?>
+
         <?php require_once './partials/footer.php' ?>
 
         <script src="../../public/script.js"></script>
