@@ -34,3 +34,6 @@ function vignere(texte, cle, sens){
 }
 
 cle = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
+
+window.vignere = vignere;
+window.cle = cle;
