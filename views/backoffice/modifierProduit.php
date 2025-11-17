@@ -1,4 +1,22 @@
-<?php // require_once "../../controllers/pdo.php" ?>
+<?php
+require_once "../../controllers/pdo.php"; // Connexion à la BDD
+
+// Vérifier que l'ID est présent
+if (!isset($_GET['id'])) {
+    die("Aucun produit sélectionné");
+}
+
+$productId = (int)$_GET['id']; // Sécuriser l'ID
+
+// Préparer la requête
+$stmt = $pdo->prepare("SELECT * FROM produits WHERE id = ?");
+$stmt->execute([$productId]);
+$product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$product) {
+    die("Produit introuvable");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +34,8 @@
     <?php require_once "./partials/aside.php"?>
        
     <main class="modifierProduit"> 
-        <div class="product-content">
+        <form class="product-content" id="monForm" action="../../controllers/updateProduit.php" method="post" enctype="multipart/form-data">
+>
             <div class="left-section">
                 <div class="ajouterPhoto">
                     <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
@@ -29,15 +48,18 @@
 
                 <div class="form-details">
                     <input type="text" class="product-name-input" placeholder="Intitulé du produit" required>
+                    <?= htmlspecialchars($product['nom']) ?>
                 
                     <div class="price-weight-kg">
-                        <input type="text" placeholder="Prix" required>
-                        <input type="text" placeholder="Poids" required>
+                        <input type="text" placeholder="Prix" required
+                        <?= htmlspecialchars($product['prix']) ?>>
+                        <input type="text" placeholder="Poids" required
+                        <?= htmlspecialchars($product['poids']) ?>>
                         <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
-                    <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)"  required>
+                    <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)"  required
+                    <?= htmlspecialchars($product['description']) ?>>
 
-                    <!-- <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)"> -->
                 </div>
             </div>
 
@@ -53,8 +75,9 @@
                 <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
                 <a href="#"><button type="button" class="btn-supprimer">Supprimer</button></a>
                 <a href="#"><button type="submit" class="btn-ajouter">Ajouter le produit</button></a>
+                
             </div>
-        </div>
+        </form>
     </main>
 
     <script>
