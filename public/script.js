@@ -49,9 +49,6 @@ modal?.addEventListener("click", (e) => {
         modal.close();
     }
 });
-// ============================================================================
-// TYPES & INTERFACES
-// ============================================================================
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
