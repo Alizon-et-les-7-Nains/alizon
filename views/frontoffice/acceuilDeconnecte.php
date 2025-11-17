@@ -2,146 +2,21 @@
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
 
-ob_start();
-
-// ============================================================================
-// CONFIGURATION INITIALE
-// ============================================================================
-
-// ID utilisateur connecté (à remplacer par la gestion de session)
-$idClient = 2; 
-
-function getCurrentCart($pdo, $idClient) {
-    $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
-    $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
-
-    $cart = [];
-
-    if ($panier) {
-        $idPanier = intval($panier['idPanier']); 
-
-        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
-                FROM _produitAuPanier pa
-                JOIN _produit p ON pa.idProduit = p.idProduit
-                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-                WHERE pa.idPanier = " . intval($idPanier);
-        $stmt = $pdo->query($sql);
-        $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
-    }
-    
-    return $cart;
-}
-function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
-    $idProduit = intval($idProduit);
-    $idClient = intval($idClient);
-    
-    // Récupérer le panier actuel
-    $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
-    $stmtPanier->execute([$idClient]);
-    $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$panier) {
-        // Créer un nouveau panier si nécessaire
-        $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
-        $stmtCreate->execute([$idClient]);
-        $idPanier = $pdo->lastInsertId();
-    } else {
-        $idPanier = $panier['idPanier'];
-    }
-
-    // Vérifier si le produit existe déjà dans le panier
-    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
-            WHERE idProduit = ? AND idPanier = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$idProduit, $idPanier]);
-    $current = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($current) {
-        // Produit existe : mettre à jour la quantité
-        $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
-        
-        if ($newQty > 0) {
-            $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
-                    WHERE idProduit = ? AND idPanier = ?";
-            $stmt = $pdo->prepare($sql);
-            $success = $stmt->execute([$newQty, $idProduit, $idPanier]);
-        } else {
-            // Supprimer si quantité = 0
-            $sql = "DELETE FROM _produitAuPanier WHERE idProduit = ? AND idPanier = ?";
-            $stmt = $pdo->prepare($sql);
-            $success = $stmt->execute([$idProduit, $idPanier]);
-        }
-    } else {
-        // Produit n'existe pas : l'ajouter si delta > 0
-        if ($delta > 0) {
-            $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
-            $stmt = $pdo->prepare($sql);
-            $success = $stmt->execute([$idProduit, $idPanier, $delta]);
-        } else {
-            $success = false;
-        }
-    }
-    
-    return $success;
-}
-
-// ============================================================================
-// GESTION DES ACTIONS AJAX
-// ============================================================================
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    header('Content-Type: application/json');
-    
-    try {
-        switch ($_POST['action']) {
-            case 'updateQty':
-                $idProduit = $_POST['idProduit'] ?? '';
-                $delta = intval($_POST['delta'] ?? 0);
-                if ($idProduit && $delta != 0) {
-                    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
-                    echo json_encode(['success' => $success]);
-                } else {
-                    echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
-                }
-                break;
-
-            case 'getCart':
-                $cart = getCurrentCart($pdo, $idClient);
-                echo json_encode($cart);
-                break;
-                
-            default:
-                echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
-        }
-    } catch (Exception $e) {
-        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
-    }
-    exit;
-}
-
-// ============================================================================
-// RÉCUPÉRATION DES DONNÉES POUR LA PAGE
-// ============================================================================
-
-// recuperation panier courent
-$cart = getCurrentCart($pdo, $idClient);
-
-// ============================================================================
-// GESTION DES COOKIES
-// ============================================================================
-?>
-
-<?php 
     const PRODUIT_CONSULTE_MAX_SIZE = 4;
 
+    const PRODUIT_DANS_PANIER_MAX_SIZE = 10;
+
     // Récupération du cookie existant ou création d'un tableau vide
-    if (isset($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitConsulte'])) {
+    if (((isset($_COOKIE['produitConsulte'])) && (isset($_COOKIE['produitPanier']))) && (!empty($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitPanier']))) {
         $tabIDProduitConsulte = unserialize($_COOKIE['produitConsulte']);
+        $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
         if (!is_array($tabIDProduitConsulte)) {
             $tabIDProduitConsulte = [];
+            $tabIDProduitPanier = [];
         }
     } else {
         $tabIDProduitConsulte = [];
+        $tabIDProduitPanier = [];
     }
 
     // Fonction pour ajouter un produit consulté
@@ -161,10 +36,37 @@ $cart = getCurrentCart($pdo, $idClient);
         setcookie("produitConsulte", serialize($tabIDProduit), time() + (60*60*24*90), "/");
     }
 
+    function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
+        if (isset($tabIDProduitPanier[$idProduit])) {
+            $tabIDProduitPanier[$idProduit] += $quantite;
+        } else {
+            if (count($tabIDProduitPanier) >= PRODUIT_DANS_PANIER_MAX_SIZE) {
+                $message = "Impossible d'ajouter plus de ".PRODUIT_DANS_PANIER_MAX_SIZE." produits différents. Connectez-vous pour en ajouter plus.";
+                echo "<script>alert(".json_encode($message).");</script>";
+                return false;
+            }
+            $tabIDProduitPanier[$idProduit] = $quantite;
+        }
+        
+        setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
+        return true;
+    }
+
     // Gestion de l'ajout d'un produit via GET
     if (isset($_GET['addRecent']) && !empty($_GET['addRecent'])) {
         $idProduitAjoute = intval($_GET['addRecent']);
         ajouterProduitConsulter($tabIDProduitConsulte, $idProduitAjoute);
+        
+        if (isset($_GET['id'])) {
+            header("Location: produit.php?id=" . intval($_GET['id']));
+            exit;
+        }
+    }
+
+    if (isset($_GET['addPanier']) && !empty($_GET['addPanier'])) {
+        $idProduitAjoute = intval($_GET['addPanier']);
+        $quantite = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
+        ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute);
         
         if (isset($_GET['id'])) {
             header("Location: produit.php?id=" . intval($_GET['id']));
@@ -229,7 +131,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                    <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
                                         <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                                     </button>
                                 </div>
@@ -277,7 +179,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                    <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
                                         <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                                     </button>
                                 </div>
@@ -325,7 +227,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                    <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
                                         <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                                     </button>
                                 </div>
@@ -376,7 +278,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                         <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
                                     </div>
                                     <div>
-                                        <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                        <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
                                             <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                                     </button>
                                     </div>

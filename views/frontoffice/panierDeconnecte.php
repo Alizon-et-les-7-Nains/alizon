@@ -1,7 +1,78 @@
 <?php
 require_once "../../controllers/pdo.php";
+require_once "../../controllers/prix.php";
 
+    const PRODUIT_CONSULTE_MAX_SIZE = 4;
+
+    const PRODUIT_DANS_PANIER_MAX_SIZE = 10;
+
+    // Récupération du cookie existant ou création d'un tableau vide
+    if (((isset($_COOKIE['produitConsulte'])) && (isset($_COOKIE['produitPanier']))) && (!empty($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitPanier']))) {
+        $tabIDProduitConsulte = unserialize($_COOKIE['produitConsulte']);
+        $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
+        if (!is_array($tabIDProduitConsulte)) {
+            $tabIDProduitConsulte = [];
+            $tabIDProduitPanier = [];
+        }
+    } else {
+        $tabIDProduitConsulte = [];
+        $tabIDProduitPanier = [];
+    }
+
+    // Fonction pour ajouter un produit consulte
+    function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
+        if (isset($tabIDProduitPanier[$idProduit])) {
+            $tabIDProduitPanier[$idProduit] += $quantite;
+        } else {
+            if (count($tabIDProduitPanier) >= PRODUIT_DANS_PANIER_MAX_SIZE) {
+                $message = "Impossible d'ajouter plus de ".PRODUIT_DANS_PANIER_MAX_SIZE." produits différents. Connectez-vous pour en ajouter plus.";
+                echo "<script>alert(".json_encode($message).");</script>";
+                return false;
+            }
+            $tabIDProduitPanier[$idProduit] = $quantite;
+        }
+        
+        setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
+        return true;
+    }
+
+    function modifierQuantitePanier(&$tabIDProduitPanier, $idProduit, $quantite) {
+        if (isset($tabIDProduitPanier[$idProduit])) {
+            if ($quantite == 0) {
+                unset($tabIDProduitPanier[$idProduit]);
+            } else {
+                $tabIDProduitPanier[$idProduit] += $quantite;
+            }
+        }
+        
+        setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
+        return true;
+    }
+
+    if (isset($_GET['addPanier']) && !empty($_GET['addPanier'])) {
+        $idProduitAjoute = intval($_GET['addPanier']);
+        $quantite = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
+        ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute, $quantite);
+        
+        if (isset($_GET['id'])) {
+            header("Location: produit.php?id=" . intval($_GET['id']));
+            exit;
+        }
+    }
+
+    $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
+
+    // Récupération des informations des produits dans le panier
+    $nbProduit = 0;
+    foreach ($tabIDProduitPanier as $key => $value) {
+        $totalPrix += $value;
+    }
+
+    // ============================================================================
+    // AFFICHAGE DE LA PAGE
+    // ============================================================================
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,11 +82,11 @@ require_once "../../controllers/pdo.php";
     <title>Alizon - Votre panier</title>
 </head>
 <body class="panier">
-    <?php include "../../views/frontoffice/partials/headerDeconnecte.php"; ?>
+    <?php include "../../views/frontoffice/partials/headerConnecte.php"; ?>
 
     <main>
         <section class="listeProduit">
-            <?php foreach ($cart as $item) { ?>
+            <?php foreach ($tabIDProduitPanier as $item) { ?>
                 <article>
                     <div class="imgProduit">
                         <?php 
@@ -25,7 +96,7 @@ require_once "../../controllers/pdo.php";
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';    
                         ?>
-                    <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>">
+                        <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>">
                     </div>
                     <div class="infoProduit">
                         <div>
@@ -33,20 +104,20 @@ require_once "../../controllers/pdo.php";
                             <h4>En stock</h4>
                         </div>
                         <div class="quantiteProduit">
-                        <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
+                            <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
                             <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
                         </button>                            
                         <p class="quantite"><?= htmlspecialchars($item['qty'] ?? 'N/A') ?></p> 
-                        <button class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
+                        <button class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 1; ?>'">
                             <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
                         </button> 
                         </div>
                     </div>
                     <div class="prixOpt">
-                    <?= htmlspecialchars($item['prix'] ?? 'N/A') ?>          
-                    <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
+                        <?= htmlspecialchars($item['prix'] ?? 'N/A') ?>          
+                        <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
-                    </button>
+                        </button>
                     </div>
                 </article> 
             <?php } if ($cart==0) { ?>
@@ -57,36 +128,11 @@ require_once "../../controllers/pdo.php";
             <h1>Votre panier</h1>
             <div class="cardRecap">
                 <article>
-                    <?php  
-                        $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = $idClient ORDER BY idPanier DESC LIMIT 1");
-                        $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
-                        
-                        if ($panier) {
-                            $idPanier = intval($panier['idPanier']);
-                            
-                            // Calcul en temps réel
-                            $sqlTotals = "
-                                SELECT 
-                                    SUM(pap.quantiteProduit) AS nbArticles,
-                                    SUM(p.prix * pap.quantiteProduit) AS prixHT,
-                                    SUM(p.prix * pap.quantiteProduit * COALESCE(t.pourcentageTva, 20.0) / 100) AS prixTotalTvaPanier,
-                                    SUM(p.prix * pap.quantiteProduit * (1 + COALESCE(t.pourcentageTva, 20.0) / 100)) AS sousTotal
-                                FROM _produitAuPanier pap
-                                JOIN _produit p ON pap.idProduit = p.idProduit
-                                LEFT JOIN _tva t ON p.typeTva = t.typeTva
-                                WHERE pap.idPanier = $idPanier
-                            ";
-                            
-                            $stmt = $pdo->query($sqlTotals);
-                            $totals = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : [];
-                        }
-                    ?>
-
                     <h2><b>Récapitulatif de votre panier</b></h2>
                     <div class="infoCommande">
                         <section>
                             <h2>Nombres d'articles</h2>
-                            <h2 class="val"><?= $totals['nbArticles'] ?? 0 ?></h2>
+                            <h2 class="val"><?= $nbProduit ?? 0 ?></h2>
                         </section>
                         <section>
                             <h2>Prix HT</h2>
@@ -102,14 +148,14 @@ require_once "../../controllers/pdo.php";
                         </section>
                     </div>
                 </article>
-                <a href="../../views/frontoffice/pagePaiement.php"><p>Passer la commande</p></a>
+                <a href="../../views/frontoffice/connexionClient.php"><p>Passer la commande</p></a>
             </div>
             <a href="" class="viderPanier">Vider le panier</a>
         </section>
         <?php } ?>
     </main>
 
-    <?php include "../../views/frontoffice/partials/footerDeconnecte.php"; ?>
+    <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
 
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>

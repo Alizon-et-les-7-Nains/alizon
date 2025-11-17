@@ -31,6 +31,7 @@
                     <a href="../frontoffice/connexionClient.php"><img src="../../../public/images/utilLightBlue.svg" alt=""></a>
                     <p>Se connecter</p>
                 </div>
+                <a href="../frontoffice/panierDeconnecte.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
             </div>
         </div>
 
