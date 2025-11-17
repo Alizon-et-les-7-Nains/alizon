@@ -106,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         e.preventDefault();
 
         const passwordClair = document.getElementById('password_input').value;
+        console.log(vignere("dqW%9mmA]=CDJ", cle, -1));
         const passwordChiffre = vignere(passwordClair, cle, 1);
 
         document.getElementById('password_chiffre').value = passwordChiffre;
