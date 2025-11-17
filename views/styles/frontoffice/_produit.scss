@@ -1,0 +1,521 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.pageProduit{
+    body{
+        margin: 0;
+        padding: 0;
+        transition: all 0.3s ease;
+    }
+
+    main{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    h1,h2,h3,h4,p{
+        font-family: $font-lora;
+        color: $color-blue;
+    }
+    #descriptionCourte{
+        color: black;
+    }
+
+    .infoHautProduit{
+        display: flex;
+        flex-direction: row;
+        overflow-y: scroll;
+        position: relative;
+    }
+
+    .rect{
+        width:1440px;
+        height:224px;
+        background:#273469;
+    }
+
+    .rectangleProduit{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin: 3em 2em;
+        padding: 0 1em;
+        width: 550px;
+        height: 480px;
+        border: 1.5px inset #273469;
+        border-radius: 16px;
+        position: relative;
+    }
+
+    #imageBouteille{
+        width: 220px;
+        height: 330px;
+    }
+
+    .infoPreviewProduit{
+        width: 400px;
+        height: 434px;
+        margin-top: 3.5em;
+    }
+
+    .infoPreviewProduit div{
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap : 1em;  
+    }
+
+    .infoPreviewProduit div h1, .infoPreviewProduit div h2, .infoPreviewProduit div h4{
+        margin: 1em 0;
+    }
+
+    .infoPreviewProduit h1, .infoPreviewProduit h2,.infoPreviewProduit h3, .infoPreviewProduit h4, .infoPreviewProduit p{
+        margin: 0 0;
+    }
+
+    .infoPreviewProduit a{
+        text-decoration: underline;
+        float: right;
+        color: $color-blue;
+    }
+
+    #prix h1, #prix h3{
+        margin: 0.2em 0;
+        font-weight: 300;
+    }
+
+    #prix{
+        gap: 0.5em;
+    }
+
+    .infoPreviewProduit div img{
+        width: 50px;
+        height: 75px;
+        margin-top: 0.5em;
+    }
+
+    .version{
+        margin-top: 1.6em;
+        padding: 0 0;
+    }
+
+    .version p{
+        background-color: $color-pastel-purple;
+        padding: 0.3em 0.7em;
+        border-radius: 8px;
+        margin: 0 0;
+    }
+
+    .version h3, .version p{
+        margin: 0.2em 0;
+    }
+
+    .voirPlus{
+        color : $color-blue;
+        text-decoration: underline;
+        float: right;
+    }
+
+    .actionsProduit{
+        top: 15em;
+        right: 1em;
+        position: fixed;
+        width: 341px;
+        z-index: 10;
+        height: fit-content;
+        padding: 15px;
+    }
+
+    .actionsProduit h2{
+        margin: 0 0;
+        padding: 0 0;
+    }
+
+    .underline{
+        text-decoration: underline;
+    }
+
+    #plusDarticles{
+        margin: 0 0;
+    }
+
+    .actionsProduit h1,h2,h3,h4{
+        margin: 0 0;
+    }
+
+    .actionsProduit p, .ligneActions{
+        margin: 0.5em 0;
+        color: black;
+    }
+    
+    .ligneActions{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
+    }
+
+    .ligneActions img{
+        width: 40px;
+        height: 40px;
+    }
+
+    .bouton{
+        width: 300px;
+        height: 60px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 32px;
+        border: none;
+        position: relative;
+    }
+
+    #quantiteContainer div button {
+        background: none; 
+        border: none;
+        padding: 0; 
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #quantiteContainer div{
+        display: flex;
+        flex-direction: row;
+    }
+
+    #quantiteContainer{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 300px;
+        height: 60px;
+        font-size: 16px;
+        border-radius: 32px;
+        border: 2px solid $color-blue;
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+    #moins img{
+        display: block;
+        width: 16px;
+        height: 2.25px;
+    }
+
+    #plus img{
+        width: 16px;
+        height: 16px;
+    }
+
+    #quantite {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5em;
+        padding: 0.5em;
+    }
+
+    #quantite p {
+        font-weight: bold;
+        margin: 0;
+        font-size: 16px;
+    }
+
+    #quantiteInput {
+        width: 40px;
+        text-align: center;
+        border: none;
+        font-size: 18px;
+        padding: 0.2em;
+        pointer-events: none;
+    }
+
+    .boutonRose{
+        background-color: $color-pastel-purple;
+        color: $color-blue;
+    }
+
+    .boutonBleu{
+        background-color: $color-blue;
+        color: $color-white;
+    }
+
+    .conteneurTexte{
+        width: 50%;
+        max-height: 600px;
+        margin-left: 2.5em;
+        color: $color-blue;
+        mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    }
+
+    .conteneurTexte h2{
+        margin-bottom: 1em;
+    }
+
+    #activeVoirPlus:checked ~ .conteneurTexte{
+        max-height: 1000px;
+        mask-image: none;
+    }
+
+    .voirPlus::after{
+        content: "Voir plus";
+    }
+
+    #activeVoirPlus:checked ~ .voirPlus::after{
+        content: "Voir moins";
+    }
+
+    #activeVoirPlus{
+        display: none;
+    }
+
+    .informations label{
+        display: inline-block;
+        position: relative;
+        right: 60%;
+        font-weight: 500;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .informations ul, .informations h3, .informations h4, .informations p{
+        font-size: 18px;
+    }
+
+    .informations ul li p{
+        margin: 0 0;
+        padding: 0 0;
+    }
+
+    .informations h4{
+        font-weight: 300;
+    }
+
+    .sectionAvis{
+        width: 68%;
+        margin-left: 2.5em;
+    }
+
+    .sectionAvis h6{
+        color: $color-blue;
+        font-weight: 100;
+    }
+
+    .sectionAvis button{
+        margin: 2em 0;
+    }
+
+    .sectionAvis article{
+        display: flex;
+        margin-bottom: 2em;
+    }
+
+    .sectionAvis article *{
+        margin: 0.5em 0;
+    }
+
+    .sectionAvis article div{
+        margin: 0 0;
+    }
+
+    .sectionAvis article div h3{
+        padding-top: 0.2em;
+    }
+
+    #pp{
+        margin-right: 0.5em;
+        margin-top: 0.7em;
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 100%;
+    }
+
+    .sectionImagesAvis{
+        display: flex;
+        flex-direction: row;
+        gap: 1em;
+    }
+
+    .sectionImagesAvis img{
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .horizontal{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-top: 0.2em;
+    }
+
+    .vertical{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .baselineSpaceBetween{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .actionsAvis{
+        display: flex;
+        flex-direction: row;
+        gap: 0.8em;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .actionsAvis a{
+        text-decoration: underline;
+        color: $color-dark-gray;
+    }
+
+    .actionsAvis shape{
+        width: 2px;
+        height: 40px;
+        background-color: $color-blue;
+    }
+
+    .product-rating {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rating-number {
+        font-size: 24px;
+        font-weight: bold;
+        color: $color-blue;
+        margin: 0;
+    }
+
+    .review-count{
+        text-decoration: underline;
+        color: $color-dark-gray;
+    }
+
+    .star-rating {
+        font-size: 32px;
+        position: relative;
+        display: inline-block;
+        padding: 0 0;
+    }
+
+    .stars::before {
+        content: "★★★★★";
+        color: lightgray;
+        padding: 0 0;
+        margin-right: 0.2em;
+    }
+
+    .stars::after {
+        content: "★★★★★";
+        color: gold;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(var(--rating) / 5 * 100%);
+        overflow: hidden;
+        padding: 0 0;
+    }
+
+    .pouce-actif {
+        filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(2081%) hue-rotate(202deg) brightness(93%) contrast(91%);
+    }
+
+    .pouce-inactif {
+        filter: none;
+    }
+
+    .carousel-container {
+        position: relative;
+        width: 220px;
+        height: 330px;
+        overflow: visible;
+        border-radius: 10px;
+        background: #f5f5f5;
+        margin-bottom: 50px;
+    }
+
+    .carousel-slide {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .carousel-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        pointer-events: none;
+    }
+
+    .carousel-image.active {
+        opacity: 1;
+    }
+
+    .carousel-arrow {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        transition: transform 0.3s ease;
+        z-index: 10;
+    }
+
+    .carousel-arrow:hover {
+        transform: scale(1.1);
+    }
+
+    #lesCercles {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: center;
+        gap: 1em;
+        margin-top: 15px;
+        position: absolute;
+        bottom: -40px;
+        left: 0;
+        right: 0;
+        z-index: 15;
+    }
+
+    .cercleNoir {
+        width: 12px !important;
+        height: 12px !important;
+        border-radius: 50% !important;
+        background-color: #666 !important;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid #273469;
+        display: block !important;
+        flex-shrink: 0;
+    }
+
+    .cercleNoir.active {
+        background-color: white !important;
+        transform: scale(1.3);
+    }
+
+    .cercleNoir:hover {
+        background-color: #273469 !important;
+        transform: scale(1.15);
+    }
+}

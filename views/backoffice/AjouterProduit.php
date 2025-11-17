@@ -1,4 +1,4 @@
-<?php require_once "../../controllers/pdo.php" ?>
+<?php // require_once "../../controllers/pdo.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +17,6 @@
        
     <main class="AjouterProduit"> 
         <div class="product-content">
-            
             <div class="left-section">
                 <div class="ajouterPhoto">
                     <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
@@ -37,7 +36,7 @@
                         <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
 
-                    <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
+                    <!-- <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)"> -->
                 </div>
             </div>
 
