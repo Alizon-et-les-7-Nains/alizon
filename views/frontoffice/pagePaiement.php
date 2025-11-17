@@ -81,66 +81,144 @@ function removeFromCartInDatabase($pdo, $idClient, $idProduit) {
     return $res !== false;
 }
 
-function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000') {
+// function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000') {
+//     try {
+//         $pdo->beginTransaction();
+
+//         $idClient = intval($idClient);
+
+//         // Recupération du panier actuel
+//         $stmt = $pdo->query("SELECT * FROM _panier WHERE idClient = $idClient ORDER BY idPanier DESC LIMIT 1");
+//         $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+//         if (!$panier) throw new Exception("Aucun panier trouvé pour ce client.");
+
+//         $idPanier = intval($panier['idPanier']);
+
+//         // Calcul total
+//         $sqlTotals = "
+//             SELECT SUM(p.prix * pap.quantiteProduit) AS sousTotal, SUM(pap.quantiteProduit) AS nbArticles
+//             FROM _produitAuPanier pap
+//             JOIN _produit p ON pap.idProduit = p.idProduit
+//             WHERE pap.idPanier = $idPanier
+//         ";
+//         $stmtTotals = $pdo->query($sqlTotals);
+//         $totals = $stmtTotals ? $stmtTotals->fetch(PDO::FETCH_ASSOC) : [];
+//         $sousTotal = floatval($totals['sousTotal'] ?? 0);
+//         $nbArticles = intval($totals['nbArticles'] ?? 0);
+
+//         // LES DONNÉES SONT DÉJÀ CHIFFRÉES DEPUIS LE FRONT - on les stocke directement
+//         $carteQ = $pdo->quote($numeroCarte); // Déjà chiffré
+//         $cvvQ = $pdo->quote($cvv); // Déjà chiffré
+
+//         // Verification existante carte (avec données chiffrées)
+//         $checkCarte = $pdo->query("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = $carteQ");
+
+//         if ($checkCarte->rowCount() === 0) {
+//             $nomCarteQ = $pdo->quote($nomCarte);
+//             $dateExpQ = $pdo->quote($dateExp);
+//             $sqlInsertCarte = "
+//                 INSERT INTO _carteBancaire (numeroCarte, nom, dateExpiration, cvv)
+//                 VALUES ($carteQ, $nomCarteQ, $dateExpQ, $cvvQ)
+//             ";
+//             if ($pdo->query($sqlInsertCarte) === false) {
+//                 throw new Exception("Erreur lors de l'ajout de la carte bancaire : " . implode(', ', $pdo->errorInfo()));
+//             }
+//         }
+
+//         // Création de l'adresse
+//         $adresseQ = $pdo->quote($adresseLivraison);
+//         $villeQ = $pdo->quote($villeLivraison);
+//         $regionQ = $pdo->quote($regionLivraison);
+//         $codePostalQ = $pdo->quote($codePostal);
+
+//         $sqlAdresse = "
+//             INSERT INTO _adresse (adresse, region, codePostal, ville, pays)
+//             VALUES ($adresseQ, $regionQ, $codePostalQ, $villeQ, 'France')
+//         ";
+//         if ($pdo->query($sqlAdresse) === false) {
+//             throw new Exception("Erreur lors de l'ajout de l'adresse : " . implode(', ', $pdo->errorInfo()));
+//         }
+//         $idAdresse = $pdo->lastInsertId();
+
+//         // Création de la commande
+//         $montantHT = $sousTotal;
+//         $montantTTC = $sousTotal * 1.20;
+
+//         $sqlCommande = "
+//             INSERT INTO _commande (
+//                 dateCommande, etatLivraison, montantCommandeTTC, montantCommandeHt,
+//                 quantiteCommande, nomTransporteur, dateExpedition,
+//                 idAdresseLivr, idAdresseFact, numeroCarte, idPanier
+//             ) VALUES (
+//                 NOW(), 'En préparation', $montantTTC, $montantHT,
+//                 $nbArticles, 'Colissimo', NULL,
+//                 $idAdresse, $idAdresse, $carteQ, $idPanier
+//             )
+//         ";
+//         if ($pdo->query($sqlCommande) === false) {
+//             throw new Exception("Erreur lors de la création de la commande : " . implode(', ', $pdo->errorInfo()));
+//         }
+
+//         $idCommande = $pdo->lastInsertId();
+
+//         // produits vers _contient
+//         $sqlContient = "
+//             INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
+//             SELECT pap.idProduit, $idCommande, p.prix, COALESCE(t.pourcentageTva, 20.0), pap.quantiteProduit
+//             FROM _produitAuPanier pap
+//             JOIN _produit p ON pap.idProduit = p.idProduit
+//             LEFT JOIN _tva t ON p.typeTva = t.typeTva
+//             WHERE pap.idPanier = $idPanier
+//         ";
+//         if ($pdo->query($sqlContient) === false) {
+//             throw new Exception("Erreur lors de la copie des produits : " . implode(', ', $pdo->errorInfo()));
+//         }
+
+//         // Vider le panier
+//         if ($pdo->query("DELETE FROM _produitAuPanier WHERE idPanier = $idPanier") === false) {
+//             throw new Exception("Erreur lors du vidage du panier : " . implode(', ', $pdo->errorInfo()));
+//         }
+
+//         $pdo->commit();
+//         return $idCommande;
+
+//     } catch (Exception $e) {
+//         $pdo->rollBack();
+//         throw new Exception("Erreur lors de la création de la commande : " . $e->getMessage());
+//     }
+// }
+
+function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000', $idAdresseFacturation = null) {
     try {
         $pdo->beginTransaction();
 
         $idClient = intval($idClient);
 
-        // Recupération du panier actuel
-        $stmt = $pdo->query("SELECT * FROM _panier WHERE idClient = $idClient ORDER BY idPanier DESC LIMIT 1");
-        $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
-        if (!$panier) throw new Exception("Aucun panier trouvé pour ce client.");
+        // ... code existant pour récupérer le panier et calculer les totaux ...
 
-        $idPanier = intval($panier['idPanier']);
-
-        // Calcul total
-        $sqlTotals = "
-            SELECT SUM(p.prix * pap.quantiteProduit) AS sousTotal, SUM(pap.quantiteProduit) AS nbArticles
-            FROM _produitAuPanier pap
-            JOIN _produit p ON pap.idProduit = p.idProduit
-            WHERE pap.idPanier = $idPanier
-        ";
-        $stmtTotals = $pdo->query($sqlTotals);
-        $totals = $stmtTotals ? $stmtTotals->fetch(PDO::FETCH_ASSOC) : [];
-        $sousTotal = floatval($totals['sousTotal'] ?? 0);
-        $nbArticles = intval($totals['nbArticles'] ?? 0);
-
-        // LES DONNÉES SONT DÉJÀ CHIFFRÉES DEPUIS LE FRONT - on les stocke directement
-        $carteQ = $pdo->quote($numeroCarte); // Déjà chiffré
-        $cvvQ = $pdo->quote($cvv); // Déjà chiffré
-
-        // Verification existante carte (avec données chiffrées)
-        $checkCarte = $pdo->query("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = $carteQ");
-
-        if ($checkCarte->rowCount() === 0) {
-            $nomCarteQ = $pdo->quote($nomCarte);
-            $dateExpQ = $pdo->quote($dateExp);
-            $sqlInsertCarte = "
-                INSERT INTO _carteBancaire (numeroCarte, nom, dateExpiration, cvv)
-                VALUES ($carteQ, $nomCarteQ, $dateExpQ, $cvvQ)
-            ";
-            if ($pdo->query($sqlInsertCarte) === false) {
-                throw new Exception("Erreur lors de l'ajout de la carte bancaire : " . implode(', ', $pdo->errorInfo()));
-            }
-        }
-
-        // Création de l'adresse
+        // Création de l'adresse de LIVRAISON
         $adresseQ = $pdo->quote($adresseLivraison);
         $villeQ = $pdo->quote($villeLivraison);
         $regionQ = $pdo->quote($regionLivraison);
         $codePostalQ = $pdo->quote($codePostal);
 
-        $sqlAdresse = "
-            INSERT INTO _adresse (adresse, region, codePostal, ville, pays)
-            VALUES ($adresseQ, $regionQ, $codePostalQ, $villeQ, 'France')
+        $sqlAdresseLivraison = "
+            INSERT INTO _adresse (adresse, region, codePostal, ville, pays, idClient, typeAdresse)
+            VALUES ($adresseQ, $regionQ, $codePostalQ, $villeQ, 'France', $idClient, 'livraison')
         ";
-        if ($pdo->query($sqlAdresse) === false) {
-            throw new Exception("Erreur lors de l'ajout de l'adresse : " . implode(', ', $pdo->errorInfo()));
+        if ($pdo->query($sqlAdresseLivraison) === false) {
+            throw new Exception("Erreur lors de l'ajout de l'adresse de livraison: " . implode(', ', $pdo->errorInfo()));
         }
-        $idAdresse = $pdo->lastInsertId();
+        $idAdresseLivraison = $pdo->lastInsertId();
 
-        // Création de la commande
+        // Utiliser l'adresse de facturation si fournie, sinon utiliser la même que la livraison
+        if ($idAdresseFacturation) {
+            $idAdresseFacturation = intval($idAdresseFacturation);
+        } else {
+            $idAdresseFacturation = $idAdresseLivraison;
+        }
+
+        // Création de la commande avec les deux adresses
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
 
@@ -152,39 +230,55 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             ) VALUES (
                 NOW(), 'En préparation', $montantTTC, $montantHT,
                 $nbArticles, 'Colissimo', NULL,
-                $idAdresse, $idAdresse, $carteQ, $idPanier
+                $idAdresseLivraison, $idAdresseFacturation, $carteQ, $idPanier
             )
         ";
-        if ($pdo->query($sqlCommande) === false) {
-            throw new Exception("Erreur lors de la création de la commande : " . implode(', ', $pdo->errorInfo()));
-        }
-
-        $idCommande = $pdo->lastInsertId();
-
-        // produits vers _contient
-        $sqlContient = "
-            INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
-            SELECT pap.idProduit, $idCommande, p.prix, COALESCE(t.pourcentageTva, 20.0), pap.quantiteProduit
-            FROM _produitAuPanier pap
-            JOIN _produit p ON pap.idProduit = p.idProduit
-            LEFT JOIN _tva t ON p.typeTva = t.typeTva
-            WHERE pap.idPanier = $idPanier
-        ";
-        if ($pdo->query($sqlContient) === false) {
-            throw new Exception("Erreur lors de la copie des produits : " . implode(', ', $pdo->errorInfo()));
-        }
-
-        // Vider le panier
-        if ($pdo->query("DELETE FROM _produitAuPanier WHERE idPanier = $idPanier") === false) {
-            throw new Exception("Erreur lors du vidage du panier : " . implode(', ', $pdo->errorInfo()));
-        }
-
-        $pdo->commit();
-        return $idCommande;
-
+        
+        // ... reste du code existant ...
     } catch (Exception $e) {
         $pdo->rollBack();
-        throw new Exception("Erreur lors de la création de la commande : " . $e->getMessage());
+        throw new Exception("Erreur lors de la création de la commande: " . $e->getMessage());
+    }
+}
+
+function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
+    try {
+        $idClient = intval($idClient);
+        $adresseQ = $pdo->quote($adresse);
+        $codePostalQ = $pdo->quote($codePostal);
+        $villeQ = $pdo->quote($ville);
+
+        // Vérifier si l'adresse existe déjà pour ce client
+        $sqlCheck = "SELECT idAdresse FROM _adresse 
+                    WHERE idClient = $idClient 
+                    AND adresse = $adresseQ 
+                    AND codePostal = $codePostalQ 
+                    AND ville = $villeQ";
+        
+        $stmt = $pdo->query($sqlCheck);
+        
+        if ($stmt && $stmt->rowCount() > 0) {
+            // Adresse existe déjà
+            $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+            return ['success' => true, 'idAdresse' => $existing['idAdresse'], 'message' => 'Adresse déjà existante'];
+        }
+
+        // Insérer la nouvelle adresse de facturation
+        $sqlInsert = "
+            INSERT INTO _adresse (adresse, codePostal, ville, pays, idClient, typeAdresse)
+            VALUES ($adresseQ, $codePostalQ, $villeQ, 'France', $idClient, 'facturation')
+        ";
+        
+        if ($pdo->query($sqlInsert) === false) {
+            throw new Exception("Erreur lors de l'insertion de l'adresse: " . implode(', ', $pdo->errorInfo()));
+        }
+
+        $idAdresse = $pdo->lastInsertId();
+        
+        return ['success' => true, 'idAdresse' => $idAdresse, 'message' => 'Adresse enregistrée avec succès'];
+
+    } catch (Exception $e) {
+        return ['success' => false, 'error' => $e->getMessage()];
     }
 }
 

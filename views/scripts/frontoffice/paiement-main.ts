@@ -136,20 +136,88 @@ if (document.body.classList.contains("pagePaiement")) {
   const addrFactOverlay = document.createElement("div");
   addrFactOverlay.className = "addr-fact-overlay";
   addrFactOverlay.innerHTML = `
-    <div class="addr-fact-content">
-      <h2>Adresse de facturation</h2>
-      <label>Adresse
-        <input class="adresse-input" type="text" placeholder="Adresse" aria-label="Adresse">
-      </label>
-      <label>Code Postal
-        <input class="code-postal-input" type="text" placeholder="Code Postal" aria-label="Code Postal">
-      </label>
-      <label>Ville
-        <input class="ville-input" type="text" placeholder="Ville" aria-label="Ville">
-      </label>
-      <button id="closeAddrFact">Fermer</button>
+  <div class="addr-fact-content">
+    <h2>Adresse de facturation</h2>
+    <label>Adresse
+      <input class="adresse-fact-input" type="text" placeholder="Adresse" aria-label="Adresse de facturation">
+    </label>
+    <label>Code Postal
+      <input class="code-postal-fact-input" type="text" placeholder="Code Postal" aria-label="Code Postal de facturation">
+    </label>
+    <label>Ville
+      <input class="ville-fact-input" type="text" placeholder="Ville" aria-label="Ville de facturation">
+    </label>
+    <div class="button-group">
+      <button id="validerAddrFact" class="btn-valider">Valider</button>
+      <button id="closeAddrFact" class="btn-fermer">Fermer</button>
     </div>
-  `;
+  </div>
+`;
+
+  // Fonction pour valider l'adresse de facturation
+  const validerAddrFactBtn = addrFactOverlay.querySelector(
+    "#validerAddrFact"
+  ) as HTMLButtonElement | null;
+
+  validerAddrFactBtn?.addEventListener("click", async () => {
+    const adresseFactInput = addrFactOverlay.querySelector(
+      ".adresse-fact-input"
+    ) as HTMLInputElement;
+    const codePostalFactInput = addrFactOverlay.querySelector(
+      ".code-postal-fact-input"
+    ) as HTMLInputElement;
+    const villeFactInput = addrFactOverlay.querySelector(
+      ".ville-fact-input"
+    ) as HTMLInputElement;
+
+    // Validation basique
+    if (
+      !adresseFactInput.value.trim() ||
+      !codePostalFactInput.value.trim() ||
+      !villeFactInput.value.trim()
+    ) {
+      showPopup(
+        "Veuillez remplir tous les champs de l'adresse de facturation",
+        "error"
+      );
+      return;
+    }
+
+    try {
+      // Enregistrer l'adresse de facturation dans la base de données
+      const response = await fetch("", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          action: "saveBillingAddress",
+          adresse: adresseFactInput.value.trim(),
+          codePostal: codePostalFactInput.value.trim(),
+          ville: villeFactInput.value.trim(),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showPopup("Adresse de facturation enregistrée avec succès");
+        document.body.removeChild(addrFactOverlay);
+
+        // Décocher la checkbox après validation
+        const factAdresseCheckbox = document.querySelector(
+          "#checkboxFactAddr"
+        ) as HTMLInputElement;
+        if (factAdresseCheckbox) {
+          factAdresseCheckbox.checked = false;
+        }
+      } else {
+        showPopup("Erreur lors de l'enregistrement: " + result.error, "error");
+      }
+    } catch (error) {
+      showPopup("Erreur réseau: " + error, "error");
+    }
+  });
 
   const closeAddrFactBtn = addrFactOverlay.querySelector(
     "#closeAddrFact"
@@ -159,13 +227,27 @@ if (document.body.classList.contains("pagePaiement")) {
     document.body.removeChild(addrFactOverlay);
   });
 
-  const factAdresseInput = document.querySelector("#checkboxFactAddr");
+  const factAdresseInput = document.querySelector(
+    "#checkboxFactAddr"
+  ) as HTMLInputElement;
 
   factAdresseInput?.addEventListener("change", (e) => {
     const isChecked = (e.target as HTMLInputElement).checked;
 
     if (isChecked) {
       document.body.appendChild(addrFactOverlay);
+
+      // Focus sur le premier champ
+      const firstInput = addrFactOverlay.querySelector(
+        "input"
+      ) as HTMLInputElement;
+      if (firstInput) {
+        firstInput.focus();
+      }
+    } else {
+      if (document.body.contains(addrFactOverlay)) {
+        document.body.removeChild(addrFactOverlay);
+      }
     }
   });
 }
