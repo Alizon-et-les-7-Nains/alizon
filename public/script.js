@@ -501,9 +501,16 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
     exports.showPopup = showPopup;
     // Clé de chiffrement (doit correspondre à celle dans Chiffrement.js)
     const CLE_CHIFFREMENT = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
+    // Fonction helper pour le chiffrement avec vérification
+    const chiffrerAvecVignere = (texte, cle, sens) => {
+        if (typeof window.vignere === "function" && cle && cle.length > 0) {
+            return window.vignere(texte, cle, sens);
+        }
+        console.warn("Fonction vignere non disponible ou clé invalide, retour du texte en clair");
+        return texte;
+    };
     function showPopup(message, type = "info") {
         const overlay = document.createElement("div");
-        // add a type-specific class for styling (e.g. .payment-overlay.error)
         overlay.className = `payment-overlay ${type}`;
         // Récupérer les valeurs des inputs
         const adresseInput = document.querySelector("body.pagePaiement .adresse-input");
@@ -520,13 +527,9 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const nomCarte = nomCarteInput?.value.trim() || "";
         const dateCarte = carteDateInput?.value.trim() || "";
         const rawCVV = cvvInput?.value.trim() || "";
-        // CHIFFREMENT DES DONNÉES SENSIBLES
-        const numeroCarteChiffre = window.vignere
-            ? window.vignere(rawNumCarte, window.CLE_CHIFFREMENT, 1)
-            : rawNumCarte;
-        const cvvChiffre = window.vignere
-            ? window.vignere(rawCVV, window.CLE_CHIFFREMENT, 1)
-            : rawCVV;
+        // CHIFFREMENT DES DONNÉES SENSIBLES avec la clé locale
+        const numeroCarteChiffre = chiffrerAvecVignere(rawNumCarte, CLE_CHIFFREMENT, 1);
+        const cvvChiffre = chiffrerAvecVignere(rawCVV, CLE_CHIFFREMENT, 1);
         const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
         // Déterminer la région à partir du code postal
         let region = "";
@@ -577,8 +580,13 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const closeBtn = overlay.querySelector(".close-popup");
         const undoBtn = overlay.querySelector(".undo");
         const confirmBtn = overlay.querySelector(".confirm");
-        closeBtn?.addEventListener("click", () => overlay.remove());
-        undoBtn?.addEventListener("click", () => overlay.remove());
+        const removeOverlay = () => {
+            if (document.body.contains(overlay)) {
+                document.body.removeChild(overlay);
+            }
+        };
+        closeBtn?.addEventListener("click", removeOverlay);
+        undoBtn?.addEventListener("click", removeOverlay);
         if (!confirmBtn)
             return;
         confirmBtn.addEventListener("click", async () => {
@@ -632,6 +640,20 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                 confirmBtn.disabled = false;
             }
         });
+        // Fermer en cliquant en dehors du popup
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) {
+                removeOverlay();
+            }
+        });
+        // Fermer avec la touche Escape
+        const handleEscape = (e) => {
+            if (e.key === "Escape") {
+                removeOverlay();
+                document.removeEventListener("keydown", handleEscape);
+            }
+        };
+        document.addEventListener("keydown", handleEscape);
     }
 });
 // ============================================================================

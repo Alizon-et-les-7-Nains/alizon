@@ -12,18 +12,33 @@ declare global {
     };
     PaymentAPI?: any;
     vignere?: (texte: string, cle: string, sens: number) => string;
+    CLE_CHIFFREMENT?: string;
   }
 }
 
 // Clé de chiffrement (doit correspondre à celle dans Chiffrement.js)
 const CLE_CHIFFREMENT = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
 
+// Fonction helper pour le chiffrement avec vérification
+const chiffrerAvecVignere = (
+  texte: string,
+  cle: string,
+  sens: number
+): string => {
+  if (typeof window.vignere === "function" && cle && cle.length > 0) {
+    return window.vignere(texte, cle, sens);
+  }
+  console.warn(
+    "Fonction vignere non disponible ou clé invalide, retour du texte en clair"
+  );
+  return texte;
+};
+
 export function showPopup(
   message: string,
   type: "error" | "success" | "info" = "info"
 ) {
   const overlay = document.createElement("div");
-  // add a type-specific class for styling (e.g. .payment-overlay.error)
   overlay.className = `payment-overlay ${type}`;
 
   // Récupérer les valeurs des inputs
@@ -57,13 +72,13 @@ export function showPopup(
   const dateCarte = carteDateInput?.value.trim() || "";
   const rawCVV = cvvInput?.value.trim() || "";
 
-  // CHIFFREMENT DES DONNÉES SENSIBLES
-  const numeroCarteChiffre = (window as any).vignere
-    ? (window as any).vignere(rawNumCarte, (window as any).CLE_CHIFFREMENT, 1)
-    : rawNumCarte;
-  const cvvChiffre = (window as any).vignere
-    ? (window as any).vignere(rawCVV, (window as any).CLE_CHIFFREMENT, 1)
-    : rawCVV;
+  // CHIFFREMENT DES DONNÉES SENSIBLES avec la clé locale
+  const numeroCarteChiffre = chiffrerAvecVignere(
+    rawNumCarte,
+    CLE_CHIFFREMENT,
+    1
+  );
+  const cvvChiffre = chiffrerAvecVignere(rawCVV, CLE_CHIFFREMENT, 1);
 
   const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
 
@@ -77,8 +92,8 @@ export function showPopup(
     region = `Département ${codeDept}`;
   }
 
-  const preCart = Array.isArray((window as any).__PAYMENT_DATA__?.cart)
-    ? ((window as any).__PAYMENT_DATA__!.cart as any[])
+  const preCart = Array.isArray(window.__PAYMENT_DATA__?.cart)
+    ? (window.__PAYMENT_DATA__!.cart as any[])
     : [];
   let cartItemsHtml = "";
 
@@ -130,8 +145,14 @@ export function showPopup(
     ".confirm"
   ) as HTMLButtonElement | null;
 
-  closeBtn?.addEventListener("click", () => overlay.remove());
-  undoBtn?.addEventListener("click", () => overlay.remove());
+  const removeOverlay = () => {
+    if (document.body.contains(overlay)) {
+      document.body.removeChild(overlay);
+    }
+  };
+
+  closeBtn?.addEventListener("click", removeOverlay);
+  undoBtn?.addEventListener("click", removeOverlay);
 
   if (!confirmBtn) return;
 
@@ -156,7 +177,7 @@ export function showPopup(
         codePostal: codePostal,
       };
 
-      const result = await (window as any).PaymentAPI.createOrder(orderData);
+      const result = await window.PaymentAPI.createOrder(orderData);
 
       if (result.success) {
         // Afficher le message de succès
@@ -192,4 +213,20 @@ export function showPopup(
       confirmBtn.disabled = false;
     }
   });
+
+  // Fermer en cliquant en dehors du popup
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      removeOverlay();
+    }
+  });
+
+  // Fermer avec la touche Escape
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      removeOverlay();
+      document.removeEventListener("keydown", handleEscape);
+    }
+  };
+  document.addEventListener("keydown", handleEscape);
 }
