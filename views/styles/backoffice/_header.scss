@@ -195,6 +195,10 @@ header.backoffice {
                 &:last-child {
                     background-color: $color-blue;
                     color: $color-white;
+
+                    &:focus {
+                        border: $color-white;
+                    }
                 }
                 
                 &:hover {
