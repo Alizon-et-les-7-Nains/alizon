@@ -50,7 +50,7 @@
           <input type="email" placeholder="Email*" id="email*" name="email" required/>
           <br />
           <!-- Mot de passe -->
-          <input type="password" placeholder="Mot de passe*" id="mdp" name="motdepasse" required />
+          <input type="password" placeholder="Mot de passe*" id="mdp" name="mdp" required />
           <br />
           <div id="password-requirements-container" class="mt-2 hidden">
               <ul id="password-requirements">
@@ -275,10 +275,14 @@
                 }
             });
 
+            document.getElementById("monForm").addEventListener("submit", (e) => {
+            const password = document.getElementById("mdp");
+
             if (typeof vignere !== 'undefined') {
-                const passwordChiffre = vignere(passwordInput.value, cle, 1);
-                document.getElementById('mdp').value = passwordChiffre;      
-             }
+                password.value = vignere(password.value, cle, 1);
+            }
+            })
+            
             validateForm(); 
 
 
