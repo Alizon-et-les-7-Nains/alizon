@@ -19,30 +19,30 @@ $idClient = $_SESSION['user_id'];
 // ============================================================================
 
 function getCurrentCart($pdo, $idClient) {
-    // S'assurer qu'un panier existe (le créer si nécessaire)
+    // Vérifier d'abord si un panier existe
     $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
     $stmt->execute([$idClient]);
     $panier = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$panier) {
-        // Créer un nouveau panier
+    $cart = [];
+
+    if ($panier) {
+        $idPanier = intval($panier['idPanier']); 
+
+        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+                FROM _produitAuPanier pa
+                JOIN _produit p ON pa.idProduit = p.idProduit
+                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                WHERE pa.idPanier = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idPanier]);
+        $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+    } else {
+        // Créer un nouveau panier vide si aucun n'existe
         $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
         $stmtCreate->execute([$idClient]);
-        $idPanier = $pdo->lastInsertId();
-    } else {
-        $idPanier = intval($panier['idPanier']);
+        // Le panier sera vide, mais au moins il existe
     }
-
-    // Maintenant récupérer le contenu du panier
-    $cart = [];
-    $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
-            FROM _produitAuPanier pa
-            JOIN _produit p ON pa.idProduit = p.idProduit
-            LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-            WHERE pa.idPanier = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$idPanier]);
-    $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     
     return $cart;
 }

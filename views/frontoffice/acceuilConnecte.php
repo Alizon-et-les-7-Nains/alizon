@@ -1,36 +1,49 @@
 <?php
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
+session_start();
 
 ob_start();
 
+
 // ============================================================================
-// CONFIGURATION INITIALE
+// VÉRIFICATION DE LA CONNEXION
 // ============================================================================
 
-// ID utilisateur connecté (à remplacer par la gestion de session)
-$idClient = 2; 
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../../views/frontoffice/connexionClient.php');
+    exit;
+}
+
+$idClient = $_SESSION['user_id'];
 
 function getCurrentCart($pdo, $idClient) {
-    $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
-    $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+    // S'assurer qu'un panier existe
+    $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmt->execute([$idClient]);
+    $panier = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$panier) {
+        $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+        $stmtCreate->execute([$idClient]);
+        $idPanier = $pdo->lastInsertId();
+    } else {
+        $idPanier = intval($panier['idPanier']);
+    }
 
     $cart = [];
-
-    if ($panier) {
-        $idPanier = intval($panier['idPanier']); 
-
-        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
-                FROM _produitAuPanier pa
-                JOIN _produit p ON pa.idProduit = p.idProduit
-                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-                WHERE pa.idPanier = " . intval($idPanier);
-        $stmt = $pdo->query($sql);
-        $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
-    }
+    $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+            FROM _produitAuPanier pa
+            JOIN _produit p ON pa.idProduit = p.idProduit
+            LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+            WHERE pa.idPanier = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idPanier]);
+    $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     
     return $cart;
 }
+
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
@@ -179,12 +192,14 @@ $cart = getCurrentCart($pdo, $idClient);
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../../public/style.css">
-  <title>Alizon - Accueil</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../public/style.css">
+    <title>Alizon - Accueil</title>
 </head>
+
 <body class="acceuil">
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
@@ -215,29 +230,33 @@ $cart = getCurrentCart($pdo, $idClient);
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article style="margin-top: 5px;">
-                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
-                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
-                            <div class="notation">
-                                <span><?php echo number_format($value['note'], 1); ?></span>
-                                <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
-                                    <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                                <?php } ?>
-                            </div>
-                            <div class="infoProd">
-                                <div class="prix">
-                                    <h2><?php echo formatPrice($value['prix']); ?></h2>
-                                </div>
-                                <div>
-                                    <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
-                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
-                    <?php } 
+                <article style="margin-top: 5px;">
+                    <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
+                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"
+                        alt="Image du produit">
+                    <h2 class="nomProduit"
+                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                        <?php echo htmlspecialchars($value['nom']); ?></h2>
+                    <div class="notation">
+                        <span><?php echo number_format($value['note'], 1); ?></span>
+                        <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                        <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                        <?php } ?>
+                    </div>
+                    <div class="infoProd">
+                        <div class="prix">
+                            <h2><?php echo formatPrice($value['prix']); ?></h2>
+                        </div>
+                        <div>
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                <?php } 
                 } else { ?>
-                    <h1>Aucun produit disponible</h1>
+                <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -263,29 +282,33 @@ $cart = getCurrentCart($pdo, $idClient);
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article style="margin-top: 5px;">
-                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
-                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
-                            <div class="notation">
-                                <span><?php echo number_format($value['note'], 1); ?></span>
-                                <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
-                                    <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                                <?php } ?>
-                            </div>
-                            <div class="infoProd">
-                                <div class="prix">
-                                    <h2><?php echo formatPrice($value['prix']); ?></h2>
-                                </div>
-                                <div>
-                                    <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
-                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
-                    <?php } 
+                <article style="margin-top: 5px;">
+                    <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
+                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"
+                        alt="Image du produit">
+                    <h2 class="nomProduit"
+                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                        <?php echo htmlspecialchars($value['nom']); ?></h2>
+                    <div class="notation">
+                        <span><?php echo number_format($value['note'], 1); ?></span>
+                        <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                        <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                        <?php } ?>
+                    </div>
+                    <div class="infoProd">
+                        <div class="prix">
+                            <h2><?php echo formatPrice($value['prix']); ?></h2>
+                        </div>
+                        <div>
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                <?php } 
                 } else { ?>
-                    <h1>Aucun produit disponible</h1>
+                <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -311,29 +334,33 @@ $cart = getCurrentCart($pdo, $idClient);
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                        <article style="margin-top: 5px;">
-                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
-                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
-                            <div class="notation">
-                                <span><?php echo number_format($value['note'], 1); ?></span>
-                                <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
-                                    <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                                <?php } ?>
-                            </div>
-                            <div class="infoProd">
-                                <div class="prix">
-                                    <h2><?php echo formatPrice($value['prix']); ?></h2>
-                                </div>
-                                <div>
-                                    <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
-                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
-                    <?php } 
+                <article style="margin-top: 5px;">
+                    <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
+                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"
+                        alt="Image du produit">
+                    <h2 class="nomProduit"
+                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                        <?php echo htmlspecialchars($value['nom']); ?></h2>
+                    <div class="notation">
+                        <span><?php echo number_format($value['note'], 1); ?></span>
+                        <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                        <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                        <?php } ?>
+                    </div>
+                    <div class="infoProd">
+                        <div class="prix">
+                            <h2><?php echo formatPrice($value['prix']); ?></h2>
+                        </div>
+                        <div>
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                <?php } 
                 } else { ?>
-                    <h1>Aucun produit disponible</h1>
+                <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -362,30 +389,34 @@ $cart = getCurrentCart($pdo, $idClient);
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                             ?>
-                            <article style="margin-top: 5px;">
-                                <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
-                                <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
-                                <div class="notation">
-                                    <span><?php echo number_format($produitRecent['note'], 1); ?></span>
-                                    <?php for ($i=0; $i < number_format($produitRecent['note'], 0); $i++) { ?>
-                                        <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                                    <?php } ?>
-                                </div>
-                                <div class="infoProd">
-                                    <div class="prix">
-                                        <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
-                                    </div>
-                                    <div>
-                                        <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
-                                            <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                                    </button>
-                                    </div>
-                                </div>
-                            </article>
-                        <?php }
+                <article style="margin-top: 5px;">
+                    <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
+                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"
+                        alt="Image du produit">
+                    <h2 class="nomProduit"
+                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                        <?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
+                    <div class="notation">
+                        <span><?php echo number_format($produitRecent['note'], 1); ?></span>
+                        <?php for ($i=0; $i < number_format($produitRecent['note'], 0); $i++) { ?>
+                        <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                        <?php } ?>
+                    </div>
+                    <div class="infoProd">
+                        <div class="prix">
+                            <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
+                        </div>
+                        <div>
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                <?php }
                     }
                 } else { ?>
-                    <h1>Aucun produit récemment consultés !</h1>
+                <h1>Aucun produit récemment consultés !</h1>
                 <?php } ?>
             </div>
         </section>
@@ -398,6 +429,7 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="../../public/script.js"></script>
 
 </body>
+
 </html>
 
 <?php
