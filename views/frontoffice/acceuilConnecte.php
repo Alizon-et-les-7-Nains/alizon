@@ -369,6 +369,10 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
+    <script src="../scripts/frontoffice/paiement-ajax.js"></script>
+    <script src="../../public/amd-shim.js"></script>
+    <script src="../../public/script.js"></script>
+
     <script>
         // Ajouts au panier des produitsRecents
         const btnAjout = document.querySelectorAll('.btnAjoutPanier');
