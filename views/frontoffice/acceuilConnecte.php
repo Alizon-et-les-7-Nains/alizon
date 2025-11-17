@@ -39,6 +39,12 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
             WHERE idProduit = $idProduit AND idPanier IN (
                 SELECT idPanier FROM _panier WHERE idClient = $idClient
             )";
+
+    if ($sql == NULL) {
+        $sql = "INSERT INTO _produitAuPanier($idProduit, quantiteProduit, $idClient) VALUES ($idProduit, 1, $idClient)";
+        echo "Insertion fait";
+    }
+
     $stmt = $pdo->query($sql);
     $current = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
@@ -73,11 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $delta = intval($_POST['delta'] ?? 0);
                 if ($idProduit && $delta != 0) {
                     $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
-                    echo "Réussite";
                     echo json_encode(['success' => $success]);
                 } else {
                     echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
-                    echo "Erreur";
                 }
                 break;
 
