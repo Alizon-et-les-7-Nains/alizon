@@ -1,0 +1,20 @@
+@use "../colors" as *;
+@use "../fonts";
+
+button#haut {
+    position: sticky;
+    bottom: 1em;
+    right: 1em;
+    width: 80px;
+    border: none;
+    padding: 1em;
+    color: $color-blue;
+    font: {
+        family: 'open-sans';
+        weight: bold;
+    }
+    background: {
+        color: $color-pastel-blue;
+    }
+    border-radius: 16px;
+}

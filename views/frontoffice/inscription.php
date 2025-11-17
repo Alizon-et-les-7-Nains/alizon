@@ -59,7 +59,6 @@
                   <li id="req-uppercase" class="status-red"><i class="bi bi-x-circle-fill" style="margin-right: 5px;"></i>Une majuscule</li>
                   <li id="req-number" class="status-red"><i class="bi bi-x-circle-fill" style="margin-right: 5px;">   </i>Un chiffre (0-9)</li>
                   <li id="req-special" class="status-red"><i class="bi bi-x-circle-fill" style="margin-right: 5px;">  </i>Un caractère spécial (@, !, #, ...)</li>
-                  <li id="req-match" class="status-red"><i class="bi bi-x-circle-fill" style="margin-right: 5px;">    </i>Les mots de passe correspondent</li>
                </ul>
           </div>
 
@@ -90,7 +89,6 @@
             const reqUppercase = document.getElementById('req-uppercase');
             const reqNumber = document.getElementById('req-number');
             const reqSpecial = document.getElementById('req-special');
-            const reqMatch = document.getElementById('req-match');
 
             // Critères de validation
             const rules = {
@@ -100,7 +98,6 @@
                 number: { element: reqNumber, regex: /[0-9]/, message: 'Un chiffre (0-9)' },
                 special: { element: reqSpecial, regex: /[^a-zA-Z0-9]/, message: 'Un caractère spécial (@, !, #, ...)' }
             };
-
 
             
             confirmPasswordInput.addEventListener('blur', () => {
@@ -163,16 +160,8 @@
                 submitButton.disabled = !allValid;
                 
                 if(allValid){
-                    $_POST['pseudo'] = $nomInput.value;        
-                    $_POST['prenom'] = $prenomInput.value; 
-                    $_POST['email'] = $emailInput.value;          
-                    $_POST['num_tel'] = $phoneNumberInput.value;          
-                    $_POST['nom'] = $pseudoInput.value;
-                    $_POST['mdp'] = $mdpInput.value;              
-                    $_POST['confimer_mdp'] = $confirmPasswordInput.value       
-                    $_POST['date_naissance'] = $birthDateInput.value;   
-                    
-                    var_dump($_POST);
+                    const passwordChiffre = vignere(passwordInput.value, cle, 1);
+                    document.getElementById('mdp').value = passwordChiffre;
                     return true;
                 }
                 return false
@@ -182,6 +171,7 @@
             // Valide tous les critères et met à jour le bouton d'inscription.
             function validatePassword() {
                 const password = passwordInput.value;
+                const passwordChiffre = vignere(password, cle, 1);
                 const confirmPassword = confirmPasswordInput.value;
                 let allValid = true;
 
@@ -197,9 +187,6 @@
                 const matchIconClass = passwordsMatch ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
                 const matchStatusClass = passwordsMatch ? 'status-green' : 'status-red';
 
-                reqMatch.className = matchStatusClass;
-                reqMatch.innerHTML = `<i class="bi ${matchIconClass}" style="margin-right: 5px;"></i>Les mots de passe correspondent`;
-                
                 if (!passwordsMatch) {
                     allValid = false;
                 }

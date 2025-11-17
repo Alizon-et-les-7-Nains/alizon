@@ -15,6 +15,9 @@ Array.from(document.getElementsByClassName('aside-btn')).forEach(asideButton => 
         }
     });
 });
+document.querySelector('button#haut')?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 document
     .querySelector("header.backoffice figure:first-child")
     ?.addEventListener("click", () => {
