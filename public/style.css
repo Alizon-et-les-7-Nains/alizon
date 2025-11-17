@@ -2798,6 +2798,14 @@ button#haut {
   background-color: #273469;
   border-radius: 16px;
 }
+button#haut:hover {
+  outline-style: solid;
+  outline-color: #273469;
+  outline-offset: -2px;
+  outline-width: 2px;
+  color: #273469;
+  background-color: #e3f2fe;
+}
 
 .status-red {
   color: #f14e4e;
