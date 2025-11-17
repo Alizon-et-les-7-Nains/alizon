@@ -21,8 +21,8 @@
 @use "./frontoffice/stylePanier";
 @use "./backoffice/retourEnHaut";
 @use "./frontoffice/styleEcrireAvis";
-// @use "./backoffice/AjouterProduit";
-// maj
+@use "./backoffice/modifierProduit";
+@use "./backoffice/ajouterProduit";
 @use "./backoffice/CreerCompteVendeur";
 @use "./backoffice/stylepopUpPromouvoir";
 @use "./backoffice/stylePopUpInfoCalcul";

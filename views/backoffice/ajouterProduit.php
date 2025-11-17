@@ -15,7 +15,7 @@
     </header>
     <?php require_once "./partials/aside.php"?>
        
-    <main class="AjouterProduit"> 
+    <main class="ajouterProduit"> 
         <div class="product-content">
             <div class="left-section">
                 <div class="ajouterPhoto">
