@@ -64,9 +64,6 @@ require_once "../../controllers/prix.php";
 
     // Récupération des informations des produits dans le panier
     $nbProduit = count($tabIDProduitPanier);
-    foreach ($tabIDProduitPanier as $key => $value) {
-        $totalProduit += $value;
-    }
 
     // ============================================================================
     // AFFICHAGE DE LA PAGE
@@ -86,7 +83,12 @@ require_once "../../controllers/prix.php";
 
     <main>
         <section class="listeProduit">
-            <?php foreach ($tabIDProduitPanier as $item) { ?>
+            <?php foreach ($tabIDProduitPanier as $item) { 
+
+                $prix = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idP));
+                $panier = $prix ? $prix->fetch(PDO::FETCH_ASSOC) : false;
+
+                ?>
                 <article>
                     <div class="imgProduit">
                         <?php 
@@ -96,26 +98,26 @@ require_once "../../controllers/prix.php";
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';    
                         ?>
-                        <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>">
+                        <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($panier['nom'] ?? '') ?>">
                     </div>
                     <div class="infoProduit">
                         <div>
-                            <h2><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></h2>
+                            <h2><?= htmlspecialchars($panier['nom'] ?? 'N/A') ?></h2>
                             <h4>En stock</h4>
                         </div>
                         <div class="quantiteProduit">
-                            <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
+                            <button class="minus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
                             <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
                         </button>                            
-                        <p class="quantite"><?= htmlspecialchars($item['qty'] ?? 'N/A') ?></p> 
-                        <button class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 1; ?>'">
+                        <p class="quantite"><?= htmlspecialchars($panier['qty'] ?? 'N/A') ?></p> 
+                        <button class="plus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 1; ?>'">
                             <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
                         </button> 
                         </div>
                     </div>
                     <div class="prixOpt">
-                        <?= htmlspecialchars($item['prix'] ?? 'N/A') ?>          
-                        <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
+                        <?= htmlspecialchars($panier['prix'] ?? 'N/A') ?>          
+                        <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
                         </button>
                     </div>
