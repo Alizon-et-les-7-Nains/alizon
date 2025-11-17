@@ -170,7 +170,9 @@
                     $_POST['nom'] = $pseudoInput.value;
                     $_POST['mdp'] = $mdpInput.value;              
                     $_POST['confimer_mdp'] = $confirmPasswordInput.value       
-                    $_POST['date_naissance'] = $birthDateInput.value;     
+                    $_POST['date_naissance'] = $birthDateInput.value;   
+                    
+                    var_dump($_POST);
                     return true;
                 }
                 return false
@@ -292,27 +294,7 @@
             validateForm(); 
 
 
-
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                <?php
-                $pseudo = $_POST['pseudo'] ?? '';
-                $prenom = $_POST['prenom'] ?? '';
-                $nom = $_POST['nom'] ?? '';
-                $email = $_POST['email'] ?? '';
-                $num_tel = $_POST['telephone'] ?? '';
-                $mdp = $_POST['motdepasse'] ?? '';
-                $date_naissance = $_POST['birthdate'] ?? '';
-                
-                alert($pseudo);
-
-                $nouveauClient = "INSERT INTO `_client`(`dateNaissance`, `prenom`, `nom`, `email`, `mdp`, `noTelephone`, `pseudo`)
-                VALUES ('$date_naissance', '$prenom', '$nom', '$email', '$mdp', '$num_tel', '$pseudo')";
-
-                if ($pdo->query($nouveauClient) === false) {
-                    throw new Exception("Erreur lors de la création d'un : " . implode(', ', $pdo->errorInfo()));
-                }
-                ?>
-            }
+            
         </script>
       </main>
 

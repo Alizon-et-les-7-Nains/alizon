@@ -20,7 +20,6 @@
     </nav>
 
     <dialog>
-        <button><img src='/public/images/croix.svg'></button>
         <h1>Êtes-vous sûr de vouloir vous déconnecter ?</h1>
         <nav>
             <button>Annuler</button>

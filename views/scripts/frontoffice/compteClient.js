@@ -23,6 +23,7 @@ function clearError(element) {
 
 function validerMdp(mdp) {
 
+    //On regarde si il y a plus de 12 char
     if (mdp.length < 12){
         return false;
     }
@@ -33,6 +34,7 @@ function validerMdp(mdp) {
 
     const contientUnCharSpe = /[^a-zA-Z0-9]/.test(mdp);
 
+    //On regarde si il le mdp a minimum 1 maj 1 chiffre et 1 char spé
     return (contientUneMaj && contientUnChiffre && contientUnCharSpe);
 }
 
@@ -41,6 +43,7 @@ function fermerPopUp(){
     const overlay = document.querySelector(".overlayPopUpCompteClient");
     if (overlay) overlay.remove();
 }
+
 function popUpModifierMdp(){
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpCompteClient";
@@ -99,6 +102,7 @@ function popUpModifierMdp(){
 
     let croixFermerLaPage = overlay.getElementsByClassName("croixFermerLaPage");
     croixFermerLaPage = croixFermerLaPage[0];
+    //Appel de la fonction fermer la pop up quand on clique sur la croix
     croixFermerLaPage.addEventListener("click",fermerPopUp);
 
     let form = overlay.querySelector("form");
@@ -107,22 +111,23 @@ function popUpModifierMdp(){
     let valider = button[0];
 
     let input = overlay.querySelectorAll("input");
+
+    //On récupère les 3 inputs
     let ancienMdp = input[0];
     let nouveauMdp = input[1];
     let confirmationMdp = input[2];
 
-    valider.addEventListener("click", function(event) {
+    function verifMdp (event){
         let testAncien = false;
         let testNouveau = false;
         let testConfirm = false;
 
+        //On chiffre les 3 inputs
         const ancien = vignere(ancienMdp.value, cle, 1);
         const nouveau = vignere(nouveauMdp.value, cle, 1);
         const confirm = vignere(confirmationMdp.value, cle, 1);
         
-        console.log(ancien);
-        console.log(ancien);
-
+        //Vérification si l'ancien mdp correspond à celui dans la bdd
         if (ancien !== mdp) {
             setError(ancienMdp, "L'ancien mot de passe est incorrect");
         } else {
@@ -130,6 +135,7 @@ function popUpModifierMdp(){
             testAncien = true;
         }
 
+        //Vérification si le nouveau mdp est valide
         if (!validerMdp(vignere(nouveau, cle, -1))) {
             setError(nouveauMdp, "Mot de passe incorrect, il doit respecter les conditions ci-dessous");
         } else {
@@ -137,6 +143,7 @@ function popUpModifierMdp(){
             testNouveau = true;
         }
 
+        //Vérification si le nouveau mdp correspond à la confirmation
         if (nouveau !== confirm) {
             setError(confirmationMdp, "Les mots de passe ne correspondent pas");
         } else {
@@ -144,6 +151,7 @@ function popUpModifierMdp(){
             testConfirm = true;
         }
 
+        //Désactive le bouton valider si y'a un des cas qui return false Sinon on envoie le nouveau mdp chiffré dans la BDD
         if (!(testAncien && testNouveau && testConfirm)) {
             event.preventDefault();
         } else {
@@ -151,7 +159,9 @@ function popUpModifierMdp(){
             confirmationMdp.value = confirm;
             form.submit();
         }
-    });
+    };
+
+    valider.addEventListener("click", verifMdp )
 }    
 
 function verifierChamp() {
@@ -199,7 +209,7 @@ function verifierChamp() {
                 );
             }
         }  
-
+        //Si c'est pas vide on affiche pas de message d'erreur
         if ((i === 5 || valeur !== "")) {
             clearError(champs[i]);
         }
@@ -331,9 +341,7 @@ function boutonAnnuler() {
         currentParent.replaceChild(p, inputs[i]);
     }
     
-    if (document.getElementById("photoProfil")) {
-        document.getElementById("photoProfil").remove();
-    }
+    document.getElementById("photoProfil").remove();
     
     enModif = false;
     

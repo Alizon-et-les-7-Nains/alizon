@@ -151,23 +151,6 @@ header.backoffice {
             backdrop-filter: blur(1px);
         }
         
-        button:first-child {
-            border: none;
-            background: none;
-            margin-left: auto;
-            display: block;
-            margin-bottom: 1em;
-            transition: all 0.2s;
-            
-            &:hover {
-                cursor: pointer;
-                
-                img {
-                    content: url(../../../public/images/croixRouge.svg);
-                }
-            }
-        }
-        
         h1 {
             margin-bottom: 1em;
             text-align: center;
@@ -175,8 +158,9 @@ header.backoffice {
         
         nav {
             display: flex;
-            justify-content: space-around;
-            justify-items: space-around;
+            justify-content: center;
+            gap: 2em;
+            width: 100%;
             
             button {
                 padding: {
@@ -196,6 +180,11 @@ header.backoffice {
                 &:last-child {
                     background-color: $color-blue;
                     color: $color-white;
+                }
+                
+                &:hover {
+                    background-color: $color-pastel-blue;
+                    color: $color-blue;
                 }
             }
         }
