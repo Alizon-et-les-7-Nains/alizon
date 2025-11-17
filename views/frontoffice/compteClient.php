@@ -134,13 +134,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <?php include 'partials/footerConnecte.php'; ?>
 
+    
     <?php 
+        //On récupère le mot de passe de la BDD
         $stmt = $pdo->query("SELECT mdp FROM _client WHERE idClient = '$id_client'");
         $tabMdp = $stmt->fetch(PDO::FETCH_ASSOC);
         $mdp = $tabMdp['mdp'];
     ?>
-    <script src="../scripts/frontoffice/Chiffrement.js"></script>
+    <script src="../../controllers/Chiffrement.js"></script>
     <script>
+        //On récupère le mot de passe de la BDD et on utilise json_encode pour que les caratères comme \ soient considérés
         const mdp = <?php echo json_encode($mdp); ?>;
     </script>
     <script src="../scripts/frontoffice/compteClient.js"></script>
