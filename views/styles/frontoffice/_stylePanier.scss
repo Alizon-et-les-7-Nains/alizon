@@ -1,0 +1,220 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.panier {
+  .listeProduit article {
+    border: 2px solid #273469;
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    max-width: 800px;
+    margin-bottom: 40px;
+  }
+  .quantiteProduit {
+    display: flex;
+    border: 2px solid $color-blue;
+    border-radius: 15px;
+    justify-content: center;
+    padding: 5px;
+  }
+  .listeProduit article img {
+    max-height: 220px;
+    max-width: 220px;
+    margin: 0px 10px;
+    object-fit: contain;
+  }
+  .listeProduit article .imgProduit {
+    display: flex;
+  }
+  .prixOpt {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+
+  .listeProduit div {
+    margin: 0px 15px;
+  }
+  .quantiteProduit * {
+    margin: 0;
+    padding: 0;
+  }
+  .infoProduit {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
+      height: 180px;
+  }
+  .infoProduit img {
+    max-width: 16px;
+  }
+  .infoProduit p {
+    margin: 0px 30px;
+  }
+  h2 {
+    margin-right: 0;
+  }
+  main {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 40px 40px;
+  }
+  .recapPanier {
+    text-align: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    max-height: 660px;
+    a {
+      font-family: "Lora", serif;
+      font-size: 18px;
+      font-weight: normal;
+      text-decoration: none;
+    }
+    .viderPanier {
+      color: #ffffff;
+      background-color: $color-red;
+      padding: 15px 40px;
+      border-radius: 32px;
+    }
+    h1, .cardRecap {
+      margin-bottom: 40px;
+    }
+  }
+  .cardRecap {
+    border: 2px solid #273469;
+    border-radius: 20px;
+    padding: 0px 20px 20px 20px;
+  }
+  .cardRecap p {
+    color: #273469;
+    background-color: $color-pastel-purple;
+    padding: 15px 40px;
+    border-radius: 32px;
+    margin: 0;
+  }
+  article h2 {
+    color: $color-blue;
+    font-family: "Lora", serif;
+    font-size: 24px;
+    font-weight: normal;
+  }
+  main h1 {
+    color: $color-blue;
+    font-family: "lora", serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 48px;
+    margin: 0;
+  }
+  article h4 {
+    font-family: "lora", serif;
+    font-weight: bold;
+    font-style: normal;
+    color: $color-green;
+  }
+  .infoCommande section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 3px solid $color-pastel-blue;
+    &:nth-child(4) {
+      border-bottom: none;
+      justify-content: flex-start;
+      * {
+        margin-right: 20px;
+      }
+    }
+    h2 {
+      color: black;
+    }
+  }
+  .infoCommande section h2:nth-of-type(2) { 
+    font-family: "open-sans", sans-serif;
+    font-weight: bold;
+  }
+  article h2 b {
+    color: black;
+  }
+  @media (max-width: 1248px) {
+      main {
+        flex-direction: column;
+        justify-content: center;
+      }
+      .listeProduit article {
+        max-width: none;
+      }
+      .recapPanier * {
+        margin-bottom: 20px;
+      }
+  }
+  @media (max-width: 767px) {
+    .listeProduit article {
+        border: none;
+        padding: none;
+    }
+    .imgProduit input  {
+      display: none;
+    }
+    .listeProduit article img {
+      max-height: 180px;
+      margin: 0px 10px;
+    }
+    .infoProduit div h2 {
+      font-size: 15px;
+    }
+    .quantiteProduit img {
+      width: 9px !important;
+    }
+    .listeProduit div {
+      margin: 0;
+    }
+    main {
+      margin: 10px 10px;
+    }
+  }
+  @media (max-width: 530px) {
+      .listeProduit article img {
+        max-height: 100px;
+        max-width: 100px;
+        margin: 0px 10px;
+    }
+    .listeProduit article {
+      align-items: center;
+      margin-bottom: 0;
+    }
+    .listeProduit div {
+        justify-content: center;
+    }
+    button .delete {
+      margin-top: 20px;
+    }
+  }
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .infoProduit h2 {
+    margin-top: 0;
+  }
+  button .delete {
+    margin-bottom: 15px;
+  }
+}

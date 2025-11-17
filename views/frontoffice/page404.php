@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../../public/style.css">
-  <title>Alizon - Erreur</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../public/style.css">
+    <title>Alizon - Erreur</title>
 </head>
+
 <body class="page404">
 
     <img class="bgImgs bleu" src="../../public/images/symboleBleu.png" alt="symboleBleu">
@@ -28,5 +30,23 @@
 
     </main>
 
+    <footer>
+        <div class="footerPC">
+            <div>
+                <a href="">Conditions générales de vente</a>
+                <a href="">Mentions légales</a>
+                <p>© 2025 Alizon Tous droits réservés.</p>
+            </div>
+            <i class="bi bi-envelope fs-2"></i>
+        </div>
+        <div class="footerTel">
+            <a href=""><img src="../public/images/homeLightBlue.svg" alt=""></a>
+            <a href=""><img src="../public/images/searchLightBlue.svg" alt=""></a>
+            <a href=""><img src="../public/images/cartLightBlue.svg" alt=""></a>
+            <a href=""><img src="../public/images/burgerLightBlue.svg" alt=""></a>
+        </div>
+    </footer>
+
 </body>
+
 </html>

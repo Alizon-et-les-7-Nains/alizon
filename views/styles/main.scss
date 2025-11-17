@@ -4,9 +4,21 @@
 @use "./frontoffice/styleLegales";
 @use "./frontoffice/style404";
 @use "./backoffice/header";
-@use "./frontoffice/inscription";
+@use "./frontoffice/pageConnexionCLient";
 @use "./backoffice/footer";
 @use "./backoffice/aside";
 @use "./backoffice/structure";
+<<<<<<< HEAD
 @use './backoffice/acceuil';
 @use './backoffice/produits';
+=======
+@use "./frontoffice/inscription";
+@use "./frontoffice/stylePaiement";
+@use "./backoffice/acceuil";
+@use "./frontoffice/styleCompteClient";
+@use "./frontoffice/styleAcceuilConnecte";
+@use "./frontoffice/stylePopUpCompteClient";
+@use "./frontoffice/stylePanier";
+@use "./backoffice/AjouterProduit";
+@use "./backoffice/CreerCompteVendeur";
+>>>>>>> main

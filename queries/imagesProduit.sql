@@ -1,0 +1,1 @@
+select URL from _imageDeProduit where idProduit = $idProduit;

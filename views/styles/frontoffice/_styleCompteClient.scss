@@ -1,0 +1,162 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+ 
+.mainCompteClient{
+    background-image: url("../../../public/images/triskel.png");
+    background-repeat: no-repeat;
+    background-size:contain;
+    font-family: 'lora';
+    font-weight: bold;
+    font-style: italic;
+
+
+    h1{
+        font-family: 'lora';
+        font-size: 48px;
+        color: $color-blue;
+    }
+
+    #titreCompte{
+        padding-top:60px ;
+        padding-bottom:10px ;
+        padding-left:50px ;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 50px;
+    }
+
+    #titreCompte img{
+        border-radius: 100%;
+        width: 150px;
+        height: auto;
+    }
+
+
+    section{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin-top: 50px;
+        flex-wrap: wrap;
+    }
+
+    article{
+        display: flex;
+        flex-direction: column;
+    }
+
+    article div {
+        position: relative; 
+        width: 420px;
+        height: 45px;
+        margin-top: 45px;
+        padding: 10px;
+        border: 2px solid $color-blue;
+        border-radius: 8px;
+        display: flex;
+        align-items: center; 
+    }
+
+    article div p, input{
+        background-color: transparent;
+        width: 100%;
+        color: #6E6E6E;
+        font-size: 16px;
+        font-family: 'lora';
+        font-weight: bold;
+        font-style: italic;
+        border: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    #buttonsCompte{
+        padding-top: 32px;
+        padding-right: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content:end;
+        gap: 20px;
+    }
+
+    button{
+        color :  $color-blue;
+        background-color: $color-pastel-purple;
+        border-radius: 32px;
+        padding: 10px;
+        border: none;
+        border-radius: 32px ;
+        font-family: 'lora';
+        cursor: pointer;
+    }
+
+    .boutonModifierMdp{
+        width: 250px;
+        height: 55px;
+    }
+
+    .boutonModiferProfil{
+        width: 200px;
+        height: 55px;
+    }
+
+    .boutonAnnuler{
+        display: none;
+        background-color: $color-red;
+        width: 200px;
+        height: 55px;
+    }
+
+    .error-message {
+        position: absolute;
+        bottom: -18px; 
+        left: 0;
+        font-size: 0.8rem;
+        color: red;
+    }
+
+    article > div.double-champ {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border: 0;
+        padding: 0;
+        height: 70px;
+        width: 443px;
+    }
+
+
+    article > div.double-champ input,
+    article > div.double-champ p {
+        background-color: transparent;
+        width: 100%; 
+        border: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    article > div.double-champ div{
+        width: 185px;
+        margin-top: 0;
+    }
+
+    input:focus{
+        outline: none;
+        border: 0;
+    }   
+
+}
+
+    
+.overlayPopUpCompteClient{
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        z-index: 1000;
+    }

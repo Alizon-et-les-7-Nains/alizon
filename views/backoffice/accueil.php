@@ -1,7 +1,7 @@
-<?php require_once '../../controllers/pdo.php' ;
-    // $stmt = $pdo->query("SELECT * FROM _client");
-    // $clients = $stmt->fetchAll(PDO::FETCH_ASSOC); 
-    // print_r ($clients);
+<?php
+require_once '../../controllers/pdo.php';
+require_once '../../controllers/prix.php';
+require_once '../../controllers/date.php';
 ?>
 
 <!DOCTYPE html>
@@ -16,126 +16,46 @@
     </head>
 
     <body class="backoffice">
-        <?php require_once './partials/headerMain.php' ?>
+        <?php require_once './partials/header.php' ?>
 
         <?php require_once './partials/aside.php' ?>
 
         <main class="acceuilBackoffice">
-            <!--
-            <section>
-                <h1>Derniers Bilans</h1>
-                <article>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td><button class="bilan here">Journalier</button></td>
-                                <td><button class="bilan">Hebdomadaire</button></td>
-                                <td><button class="bilan">Mensuel</button></td>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>Nombre de ventes</td>
-                                <td colspan=2>Chiffre d'affaires</td>
-                            </tr>
-                            
-                            <tr>
-                                <td>
-                                    <figure>
-                                        <img src="/public/images/arrowDestonks.svg">
-                                        <figcaption class="neg">46</figcaption>
-                                    </figure>
-                                </td>
-                                <td>
-                                    <figure colspan=2>
-                                        <img src="/public/images/arrowStonks.svg">
-                                        <figcaption class="pos">1.634,50€</figcaption>
-                                    </figure>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </article>
-                <a href="" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-            </section>
-            -->
-
             <section class="stock">
                 <h1>Stocks Faibles</h1>
                 <article>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <td colspan=2>Rillettes</td>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                            <td class="epuise">0</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <td colspan=2>Rillettes</td>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                            <td class="epuise">0</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <td colspan=2>Rillettes</td>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                            <td class="epuise">0</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <td colspan=2>Rillettes</td>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                            <td class="faible">5</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <td colspan=2>Rillettes</td>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                            <td class="faible">6</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <td colspan=2>Rillettes</td>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                            <td class="faible">12</td>
-                        </tr>
-                    </table>
+<?php
+    $stock = ($pdo->query(file_get_contents('../../queries/backoffice/stockFaible.sql')))->fetchAll(PDO::FETCH_ASSOC);
+    if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
+    foreach ($stock as $produit => $atr) {
+        $idProduit = $atr['idProduit'];
+        $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
+        $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        $html = "
+        <table>
+            <tr>
+                <td><img src='$image'></td>
+            </tr>
+            <tr>
+                <td>" . $atr['nom'] . "</td>
+            </tr>
+            <tr>";
+                $prix = formatPrice($atr['prix']);
+                $html .= "<td>" . $prix . "</td>";
+                $stock = $atr['stock'];
+                $seuil = "";
+                if ($stock == 0) {
+                    $seuil = "epuise";
+                } else if ($stock <= $atr['seuilAlerte']) {
+                    $seuil = "faible";
+                }
+                $html .= "<td class=\"$seuil\">$stock</td>
+            </tr>
+        </table>
+        ";
+        echo $html;
+    }
+?>
                 </article>
                 <a href="./stock.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
@@ -143,111 +63,35 @@
             <section class="commandes">
                 <h1>Dernières Commandes</h1>
                 <article>
-                    <table>
-                        <tr>
-                            <td rowspan=2><img src="/public/images/rilletes.svg"></td>
-                            <th>Rillettes</th>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                        </tr>
-                        <tr>
-                            <td>14/11/2025</td>
-                            <th>3</th>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td rowspan=2><img src="/public/images/rilletes.svg"></td>
-                            <th>Rillettes</th>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                        </tr>
-                        <tr>
-                            <td>14/11/2025</td>
-                            <th>3</th>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td rowspan=2><img src="/public/images/rilletes.svg"></td>
-                            <th>Rillettes</th>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                        </tr>
-                        <tr>
-                            <td>14/11/2025</td>
-                            <th>3</th>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td rowspan=2><img src="/public/images/rilletes.svg"></td>
-                            <th>Rillettes</th>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                        </tr>
-                        <tr>
-                            <td>14/11/2025</td>
-                            <th>3</th>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td rowspan=2><img src="/public/images/rilletes.svg"></td>
-                            <th>Rillettes</th>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                        </tr>
-                        <tr>
-                            <td>14/11/2025</td>
-                            <th>3</th>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td rowspan=2><img src="/public/images/rilletes.svg"></td>
-                            <th>Rillettes</th>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                        </tr>
-                        <tr>
-                            <td>14/11/2025</td>
-                            <th>3</th>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td rowspan=2><img src="/public/images/rilletes.svg"></td>
-                            <th>Rillettes</th>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                        </tr>
-                        <tr>
-                            <td>1
-                                4/11/2025</td>
-                            <th>3</th>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td rowspan=2><img src="/public/images/rilletes.svg"></td>
-                            <th>Rillettes</th>
-                        </tr>
-                        <tr>
-                            <td>29,99€</td>
-                        </tr>
-                        <tr>
-                            <td>14/11/2025</td>
-                            <th>3</th>
-                        </tr>
-                    </table>
+<?php
+    $commandes = ($pdo->query(file_get_contents('../../queries/backoffice/dernieresCommandes.sql')))->fetchAll(PDO::FETCH_ASSOC);
+    if (count($commandes) == 0) echo "<h2>Aucune commande</h2>";
+    foreach ($commandes as $commande) {
+        $idProduit = $commande['idProduit'];
+        $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
+        $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        $html = "
+        <table>
+            <tr>
+                <td rowspan=2><img src='$image'></td>
+                <th>" . $commande['nom'] . "</th>
+            </tr>
+            <tr>
+                <td>
+                    Prix Unitaire : <strong>" . formatPrice($commande['prix']) . "</strong><br>
+                    Prix Total : <strong>" . formatPrice($commande['prix'] * $commande['quantiteProduit']) . "</strong><br>
+                    Statut : <strong>" . $commande['etatLivraison'] . "</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>" . formatDate($commande['dateCommande']) . "</td>
+                <th>" . $commande['quantiteProduit'] . "</th>
+            </tr>
+        </table>
+        ";
+        echo $html;
+    }
+?>
                 </article>
                 <a href="./commandes.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
@@ -255,65 +99,45 @@
             <section class="avis">
                 <h1>Derniers Avis</h1>
                 <article>
-                    <ul>
-                        <li>
-                            <table>
-                                <tr>
-                                    <td rowspan=2>
-                                        <figure></figure>
-                                        <p>Pneu</p>
-                                        <figure>
-                                            <figcaption>3,5</figcaption>
-                                            <img src="/public/images/etoile.svg">
-                                        </figure>
-                                    </td>
-                                    <td>Douceur gourmande</td>
-                                    <td>Le 26/08/2025</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td colspan=3>Un cidre délicat, à la robe claire et lumineuse, aux arômes de pomme fraîchement cueillie. La bouche est souple et veloutée, dominée par une belle rondeur sucrée qui en fait une boisson conviviale et facile à apprécier. À déguster bien frais, seul ou en accompagnement de desserts fruités.</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td colspan=3>
-                                        <img src="/public/images/rilletes.svg">
-                                        <img src="/public/images/rilletes.svg">
-                                        <img src="/public/images/rilletes.svg">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td colspan=2><input type="text" placeholder="Écrivez la réponse ici..." name="" id=""></td>
-                                    <td><button>Répondre</button></td>
-                                </tr>
-                            </table>
-
-                            <table>
-                                <tr>
-                                    <td rowspan=2>
-                                        <figure></figure>
-                                        <p>Pneu</p>
-                                        <figure>
-                                            <figcaption>3,5</figcaption>
-                                            <img src="/public/images/etoile.svg">
-                                        </figure>
-                                    </td>
-                                    <td>Douceur gourmande</td>
-                                    <td>Le 26/08/2025</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td colspan=3>Un cidre délicat,  à la rUn cidre délicat,  à la robe claire et lumine à la robeUn cidre délicat,  à la robe claire et lumine à la robeUn cidre délicat,  à la robe claire et lumine à la robeobe claire et lumine à la robe claire et lumine à la robe claire et lumine à la robe claire et lumine à la robe claire et lumine à la robe claire et lumineà la robe claire et lumineuse, aux arômes de pomme fraîchement cueillie. La bouche est souple et veloutée, dominée par une belle rondeur sucrée qui en fait une boisson conviviale et facile à apprécier. À déguster bien frais, seul ou en accompagnement de desserts fruités.</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td colspan=2><input type="text" placeholder="Écrivez la réponse ici..." name="" id=""></td>
-                                    <td><button>Répondre</button></td>
-                                </tr>
-                            </table>
-                        </li>
-                    </ul>
+<?php
+    $avis = ($pdo->query(file_get_contents('../../queries/backoffice/derniersAvis.sql')))->fetchAll(PDO::FETCH_ASSOC);
+    if (count($avis) == 0) echo "<h2>Aucun avis</h>";
+    foreach ($avis as $avi) {
+        $imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
+        $imageClient = ($pdo->query("select URL from _imageClient where idClient = " . $avi['idClient']))->fetchAll(PDO::FETCH_ASSOC);
+        $imageClient = $imageClient = !empty($imageClient) ? $imageClient[0]['URL'] : '';
+        $html = "
+        <table>
+            <tr>
+                <th rowspan=2>
+                    <figure>
+                        <img src='$imageClient'>
+                        <figcaption>" . $avi['nomClient'] . "</figcaption>
+                    </figure>
+                    <figure>
+                        <figcaption>" . str_replace('.', ',', $avi['note']) . "</figcaption>
+                        <img src='/public/images/etoile.svg'>
+                    </figure>
+                </th>
+                <th>" . $avi['nomProduit'] . " - " . $avi['titreAvis'] . "</th>
+                <td>Le" . formatDate($avi['dateAvis']) . "</td>
+            </tr>
+            <tr>
+                <td colspan='2'>" . $avi['contenuAvis'] . "</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan='2'>";   
+                    foreach ($imagesAvis as $imageAvi) {
+                        $html .= "<img src='" . $imageAvi['URL'] . "' class='imageAvis'>";
+                    }
+                $html .= "</td>
+            </tr>
+        </table>
+        ";
+        echo $html;
+    }
+?>
                 </article>
                 <a href="./avis.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
@@ -321,65 +145,34 @@
             <section class="produits">
                 <h1>Produits en Vente</h1>
                 <article>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <th>Rillettes</th>
-                            <td>29,99€</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <th>Rillettes</th>
-                            <td>29,99€</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <th>Rillettes</th>
-                            <td>29,99€</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <th>Rillettes</th>
-                            <td>29,99€</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <th>Rillettes</th>
-                            <td>29,99€</td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td colspan=2><img src="/public/images/rilletes.svg"></td>
-                        </tr>
-                        <tr>
-                            <th>Rillettes</th>
-                            <td>29,99€</td>
-                        </tr>
-                    </table>
+<?php
+    $produits = ($pdo->query(file_get_contents('../../queries/backoffice/produitsVente.sql')))->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($produits as $produit => $atr) {
+        $idProduit = $atr['idProduit'];
+        $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
+        $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        $html = "
+        <table>
+            <tr>
+                <td><img src='$image'></td>
+            </tr>
+            <tr>";
+                $prix = formatPrice($atr['prix']);
+                $html .= "<td>" . $atr['nom'] . "</td>
+                <td>" . $prix . "</td>
+            </tr>
+        </table>
+        ";
+        echo $html;
+    }
+?>
                 </article>
                 <a href="./produits.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
             </section>
         </main>
 
         <?php require_once './partials/footer.php' ?>
+
+        <script src="../../public/script.js"></script>
     </body>
 </html>
