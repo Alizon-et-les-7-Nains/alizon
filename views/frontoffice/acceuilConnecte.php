@@ -378,17 +378,6 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 
-    <script>
-        // Ajouts au panier des produitsRecents
-        const btnAjout = document.querySelectorAll('.btnAjoutPanier');
-
-        btnAjout.forEach(btn => {
-            btn.addEventListener('click', (event) => {
-                event.preventDefault();
-                alert("Produit ajouté au panier !");
-            });
-        });
-    </script>
 </body>
 </html>
 
