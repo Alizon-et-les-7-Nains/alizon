@@ -2030,9 +2030,6 @@ body.backoffice footer {
   background: #36a2f4;
   color: white;
 }
-.addr-fact-overlay .addr-fact-content .btn-fermer:hover {
-  background: #da190b;
-}
 
 main.acceuilBackoffice article {
   overflow-y: hidden;
