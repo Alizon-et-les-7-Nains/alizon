@@ -9,6 +9,7 @@
     font-weight: bold;
     font-style: italic;
 
+
     h1{
         font-family: 'lora';
         font-size: 48px;
@@ -45,32 +46,30 @@
         flex-direction: column;
     }
 
-
-    article div{
-        display: flex;
-        flex-direction: row;
-        gap: 29px;
-    }
-
-    article div p, article div input{
-        width: 185px;
-    }
-
-    article p, input {
-        margin-top: 0;
-        display: flex;
-        align-items: center;
+    article div {
+        position: relative; 
         width: 420px;
         height: 45px;
+        margin-top: 45px;
         padding: 10px;
-        margin-bottom: 45px;
-        color: #6E6E6E;
         border: 2px solid $color-blue;
-        border-radius: 8px ;
+        border-radius: 8px;
+        display: flex;
+        align-items: center; 
+    }
+
+    article div p, input{
+        background-color: transparent;
+        width: 100%;
+        color: #6E6E6E;
         font-size: 16px;
         font-family: 'lora';
         font-weight: bold;
         font-style: italic;
+        border: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
 
     #buttonsCompte{
@@ -103,9 +102,55 @@
         height: 55px;
     }
 
-    
+    .boutonAnnuler{
+        display: none;
+        background-color: $color-red;
+        width: 200px;
+        height: 55px;
+    }
+
+    .error-message {
+        position: absolute;
+        bottom: -18px; 
+        left: 0;
+        font-size: 0.8rem;
+        color: red;
+    }
+
+    article > div.double-champ {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border: 0;
+        padding: 0;
+        height: 70px;
+        width: 443px;
+    }
+
+
+    article > div.double-champ input,
+    article > div.double-champ p {
+        background-color: transparent;
+        width: 100%; 
+        border: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    article > div.double-champ div{
+        width: 185px;
+        margin-top: 0;
+    }
+
+    input:focus{
+        outline: none;
+        border: 0;
+    }   
+
 }
 
+    
 .overlayPopUpCompteClient{
         position: fixed;
         inset: 0;

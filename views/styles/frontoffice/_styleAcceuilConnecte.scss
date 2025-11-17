@@ -3,9 +3,9 @@
 
 .acceuil {
     .nomCategorie {
-    display: flex;
-    align-items: center;
-    margin: 30px 40px;
+        display: flex;
+        align-items: center;
+        margin: 15px 40px;
     }
 
     .nomCategorie h2 {
@@ -16,11 +16,11 @@
     }
 
     .nomCategorie hr {
-    flex-grow: 1;        /* la ligne prend tout l’espace libre */
-    height: 3px;
-    background-color: #273469;
-    border: none;
-    margin-left: 20px;   /* petit espace entre le texte et la ligne */
+        flex-grow: 1;
+        height: 3px;
+        background-color: #273469;
+        border: none;
+        margin-left: 20px;
     }
 
     .banniere, .banniere div {
@@ -89,22 +89,54 @@
 
     article {
         border: 2px solid #273469;
+        margin-top: 5px;
         border-radius: 20px;
         margin: 0px 40px;
         padding: 10px;
         min-width: 276px;
+        max-width: 276px;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    article:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(39, 52, 105, 0.3);
     }
 
     article h2 {
         color: #273469;
-        font-size: 16px;
-        font-family: "Open sans", serif;
+        font-size: 20px;
+        font-family: "Open-sans", serif;
+        font-weight: lighter;
     }
 
     article .imgProduit {
         max-width: 267px;
+        max-height: 168px;
+        object-fit: contain;
+        border-radius: 20px;
+    }
+
+    .notation {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin: 5px 0;
+    }
+
+    .notation .etoile {
+        width: 20px;
+        height: 20px;
+    }
+
+    .notation span {
+        color: #273469;
+        font-family: "Open-sans", serif;
+        font-size: 16px;
+        font-weight: 600;
     }
 
     .listeArticle {
@@ -131,7 +163,7 @@
         font-size: 32px;
         font-family: "Lora", serif;
         font-weight: bold;   
-        font-style: italic;  
+        font-style: normal;  
         margin: 0;
     }
 
@@ -149,5 +181,35 @@
         font-weight: bold;   
         font-style: italic;  
         margin-left: 40px;
+    }
+
+    article:hover {
+        cursor: pointer;
+    }
+
+    .nomProduit {
+        font-weight: normal;
+        margin-bottom: 0px;
+        color: #273469;
+        font-weight: 500;
+        margin-bottom: 0px;
+        margin-top: 10px;
+    }
+
+    .notation {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    .notation span {
+        font-family: "Lora", serif;
+        font-weight: bold;   
+        color: #273469;
+        font-size: 18px;
+    }
+
+    .notation img {
+        height: 32px;
     }
 }

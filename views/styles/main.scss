@@ -6,13 +6,18 @@
 @use "./frontoffice/produit";
 
 @use "./backoffice/header";
-@use "./frontoffice/inscription";
+@use "./frontoffice/pageConnexionCLient";
 @use "./backoffice/footer";
 @use "./backoffice/aside";
 @use "./backoffice/ajouterProduit";
 
 @use "./backoffice/structure";
+@use "./frontoffice/inscription";
 @use "./frontoffice/stylePaiement";
-@use './backoffice/acceuil';
-@use './frontoffice/styleCompteClient';
-@use './frontoffice/styleAcceuilConnecte';
+@use "./backoffice/acceuil";
+@use "./frontoffice/styleCompteClient";
+@use "./frontoffice/styleAcceuilConnecte";
+@use "./frontoffice/stylePopUpCompteClient";
+@use "./frontoffice/stylePanier";
+@use "./backoffice/AjouterProduit";
+@use "./backoffice/CreerCompteVendeur";
