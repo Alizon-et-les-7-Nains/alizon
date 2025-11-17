@@ -217,7 +217,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         ?>
                         <article style="margin-top: 5px;">
                             <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
-                            <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
+                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <span><?php echo number_format($value['note'], 1); ?></span>
                                 <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
@@ -265,7 +265,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         ?>
                         <article style="margin-top: 5px;">
                             <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
-                            <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
+                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <span><?php echo number_format($value['note'], 1); ?></span>
                                 <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
@@ -313,7 +313,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         ?>
                         <article style="margin-top: 5px;">
                             <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
-                            <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
+                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <span><?php echo number_format($value['note'], 1); ?></span>
                                 <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
@@ -364,7 +364,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             ?>
                             <article style="margin-top: 5px;">
                                 <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
-                                <h2 class="nomProduit"><?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
+                                <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
                                 <div class="notation">
                                     <span><?php echo number_format($produitRecent['note'], 1); ?></span>
                                     <?php for ($i=0; $i < number_format($produitRecent['note'], 0); $i++) { ?>
