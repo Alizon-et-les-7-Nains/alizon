@@ -758,15 +758,12 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
     <div class="addr-fact-content">
       <h2>Adresse de facturation</h2>
       <div class="form-group">
-        <label>Adresse *</label>
         <input class="adresse-fact-input" type="text" placeholder="Adresse complète" required>
       </div>
       <div class="form-group">
-        <label>Code Postal *</label>
         <input class="code-postal-fact-input" type="text" placeholder="Code postal" required>
       </div>
       <div class="form-group">
-        <label>Ville *</label>
         <input class="ville-fact-input" type="text" placeholder="Ville" required>
       </div>
       <div class="button-group">
