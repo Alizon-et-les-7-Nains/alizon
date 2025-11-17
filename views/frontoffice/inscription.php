@@ -50,7 +50,7 @@
           <input type="email" placeholder="Email*" id="email*" name="email" required/>
           <br />
           <!-- Mot de passe -->
-          <input type="password" placeholder="Mot de passe*" id="mdp" name="motdepasse" required />
+          <input type="password" placeholder="Mot de passe*" id="mdp" name="mdp" required />
           <br />
           <div id="password-requirements-container" class="mt-2 hidden">
               <ul id="password-requirements">
@@ -276,10 +276,10 @@
             });
 
             document.getElementById("monForm").addEventListener("submit", (e) => {
-            const pwdField = document.getElementById("motdepasse");
+            const password = document.getElementById("mdp");
 
             if (typeof vignere !== 'undefined') {
-                pwdField.value = vignere(pwdField.value, cle, 1);
+                password.value = vignere(password.value, cle, 1);
             }
             })
             
