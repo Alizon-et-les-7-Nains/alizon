@@ -1,0 +1,220 @@
+@use '../fonts';
+@use '../colors' as *;
+
+.popUpPromouvoir {
+    background-color: $color-white;
+    border-radius:16px;
+    position: relative;
+    
+
+    .titreEtProduit {
+        display: flex;
+        flex-direction: column;
+        width: 550px;
+        align-items: center;
+    }
+
+    h1 {
+        color: $color-blue;
+        font: {
+            family: 'lora';
+            size: 40px;
+        }
+        text-align: center;
+    }
+
+    .page {
+
+        
+        display: flex;
+
+        .croixFermerLaPage {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            cursor: pointer;
+        }
+        .croixFermerLaPage div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 3px;
+            background-color: #BABABA;
+        }
+        .croixFermerLaPage div:first-of-type {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        .croixFermerLaPage div:last-of-type {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        p {
+            margin: 0;
+        }
+
+        section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid $color-blue;
+            border-radius: 16px;
+            width: 320px;
+            margin: 20px 0;
+            margin-left: 20px;
+
+            article {
+                position: relative;
+            }
+
+            .nomEtEvaluation {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px;
+                align-items: center;
+
+                p {
+                    font-size: 24px;
+                    color: $color-blue;
+                }
+            }
+
+            .evaluation {
+                display: flex;
+                flex-direction: column;
+                height: 40px;
+
+                p {
+                    color: $color-dark-gray;
+                    font: {
+                        family: 'lora';
+                        weight: bold;
+                        style: italic;
+                        size: 16px;
+                    }
+                    text-decoration: underline;
+                    margin-top: 0;
+                }
+
+                div p {
+                    text-decoration: none;
+                    margin: 0;
+                    padding-left: 5px;
+                }
+            }
+
+            .etoiles {
+                display: flex;
+                flex-direction: row;
+                height: 40px;
+            }
+
+            .produit {
+                height: 185px;
+                width: 300px;
+                object-fit: contain;
+                margin-top: 10px;
+                border-radius: 16px;
+            }
+
+            .prix,
+            .prixAuKg {
+                font-size: 24px;
+                color: $color-blue;
+                margin: 0;
+                font-weight: bold;
+            }
+
+            .prixAuKg {
+                font-size: 16px;
+                font-weight: normal;
+                margin-bottom: 10px;
+            }
+        }
+
+        .ligne {
+            border-left: $color-blue solid 2px;
+            margin: 30px;
+        }
+
+        .section2 {
+            border: 0;
+            align-items: flex-start;
+            width: 500px;
+
+            .supprimer {
+                color: $color-blue;
+            }
+
+            h2 {
+                width: 100%;
+                color: $color-blue;
+                font-weight: normal;
+            }
+
+            input {
+                border: 2px solid $color-blue;
+                padding: 15px;
+                border-radius: 10px;
+                width: 160px;
+            }
+
+            input#baniere {
+                display: none;
+                width: 380px;
+            }
+
+            .ajouterBaniere {
+                display: flex;
+                justify-content: center;
+                border: 2px solid $color-blue;
+                padding: 20px;
+                border-radius: 10px;
+                width: 380px;
+                background-color: $color-light-gray;
+
+                img {
+                    width: 50px;
+                }
+            }
+
+            .sousTotal {
+                background-color: $color-pastel-purple;
+                border-radius: 16px;
+                padding: 10px;
+                width: 200px;
+
+                p {
+                    margin-bottom: 5px;
+                }
+            }
+
+            .infoCalcul {
+                display: flex;
+                cursor: pointer;
+                img {
+                    margin: 4px;
+                }
+            }
+
+            button {
+                margin-top: 10px;
+                border: 0;
+                background-color: $color-blue;
+                width: 180px;
+                padding: 15px;
+                color: white;
+                border-radius: 32px;
+                font-family: 'lora';
+                margin-left: 10px;
+            }
+
+            .deuxBoutons {
+                display: flex;
+                justify-content: flex-end;
+                width: 100%;
+            }
+        }
+    }
+}
