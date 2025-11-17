@@ -5,8 +5,12 @@ require_once "../../controllers/pdo.php";
 // CONFIGURATION INITIALE
 // ============================================================================
 
-// ID utilisateur connecté (à remplacer par la gestion de session)
-$idClient = 2; 
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../../views/frontoffice/connexionClient.php');
+    exit;
+}
+
+$idClient = $_SESSION['user_id'];
 
 // ============================================================================
 // FONCTIONS DE GESTION DU PANIER
@@ -240,21 +244,23 @@ $cart = getCurrentCart($pdo, $idClient);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/style.css">
     <title>Alizon - Votre panier</title>
 </head>
+
 <body class="panier">
     <?php include "../../views/frontoffice/partials/headerConnecte.php"; ?>
 
     <main>
         <section class="listeProduit">
             <?php foreach ($cart as $item) { ?>
-                <article>
-                    <div class="imgProduit">
-                        <?php 
+            <article>
+                <div class="imgProduit">
+                    <?php 
                             $idProduit = $item['idProduit'] ?? 0;
                             $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                             $stmtImg->execute([':idProduit' => $idProduit]);
@@ -262,31 +268,31 @@ $cart = getCurrentCart($pdo, $idClient);
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';    
                         ?>
                     <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>">
+                </div>
+                <div class="infoProduit">
+                    <div>
+                        <h2><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></h2>
+                        <h4>En stock</h4>
                     </div>
-                    <div class="infoProduit">
-                        <div>
-                            <h2><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></h2>
-                            <h4>En stock</h4>
-                        </div>
-                        <div class="quantiteProduit">
+                    <div class="quantiteProduit">
                         <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
                             <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
-                        </button>                            
-                        <p class="quantite"><?= htmlspecialchars($item['qty'] ?? 'N/A') ?></p> 
+                        </button>
+                        <p class="quantite"><?= htmlspecialchars($item['qty'] ?? 'N/A') ?></p>
                         <button class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
                             <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
-                        </button> 
-                        </div>
+                        </button>
                     </div>
-                    <div class="prixOpt">
-                    <?= htmlspecialchars($item['prix'] ?? 'N/A') ?>          
+                </div>
+                <div class="prixOpt">
+                    <?= htmlspecialchars($item['prix'] ?? 'N/A') ?>
                     <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
                     </button>
-                    </div>
-                </article> 
+                </div>
+            </article>
             <?php } if ($cart==0) { ?>
-                <h1 class="aucunProduit">Aucun produit</h1>
+            <h1 class="aucunProduit">Aucun produit</h1>
             <?php } else { ?>
         </section>
         <section class="recapPanier">
@@ -338,7 +344,9 @@ $cart = getCurrentCart($pdo, $idClient);
                         </section>
                     </div>
                 </article>
-                <a href="../../views/frontoffice/pagePaiement.php"><p>Passer la commande</p></a>
+                <a href="../../views/frontoffice/pagePaiement.php">
+                    <p>Passer la commande</p>
+                </a>
             </div>
             <a href="" class="viderPanier">Vider le panier</a>
         </section>
@@ -351,4 +359,5 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 </body>
+
 </html>
