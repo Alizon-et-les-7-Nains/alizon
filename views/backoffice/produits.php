@@ -16,38 +16,257 @@
     </head>
 
     <body class="backoffice">
-        <?php require_once './partials/headerMain.php' ?>
+        <?php require_once './partials/header.php' ?>
 
         <?php require_once './partials/aside.php' ?>
 
         <main class="produitBackOffice">
             <h1>Produits en Vente</h1>
-            <section>
-                <article>
-                    <img src="/public/images/rilletes.svg" alt="">
-                    <div class="nomEtEvaluation">
-                        <p>Rillettes</p>
-                        <div class="evaluation">
-                            <div class="etoiles">
-                                <img src="/public/images/etoile.svg"" alt="">
-                                <p>3</p>
+            <div class = "ligneProduit">
+                <section>
+                    <article>
+                        <img class = "produit" src="/public/images/rillettes.png" alt="">
+                        <div class="nomEtEvaluation">
+                            <p>Rillettes</p>
+                            <div class="evaluation">
+                                <div class="etoiles">
+                                    <img src="/public/images/etoile.svg"" alt="">
+                                    <p>3</p>
+                                </div>
+                                <p>200 évaluations</p>
                             </div>
-                            <p>200 évaluation</p>
                         </div>
-                    </div>
-                    <div class="prix">
-                        <p>29.99 €</p>
-                        <p>99.72€ / kg</p>
-                    </div>
-                    <div>
-                        <img src="/public/images/iconeFiltre.svg" alt="">
-                        <button> Options</button>
-                    </div>
+                        <div>
+                            <p class="prix"> 29.99 €</p>
+                            <p class="prixAuKg"> 99.72€ / kg</p>
+                        </div>
+                        <div class = "bouton">
+                            <img src="/public/images/iconeFiltre.svg" alt="">
+                            <button> Options</button>
 
-                </article>
-            </section>
+                            <div class = "hoverBouton">
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconePromouvoir.svg" alt="">
+                                        <button onclick="popUpPromouvoir()">Promouvoir</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconeRemise.svg" alt="">
+                                        <button onclick="popUpRemise()" >Remise</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconeModifier.svg" alt="">
+                                        <button>Modifier</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                    <img src="/public/images/iconePrevisualiser.svg" alt="">
+                                        <button>Prévisualiser</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div>
+                                    <img src="/public/images/iconeRetirerVente.svg" alt="">
+                                    <button>Retirer de la vente</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </article>
+                </section>
+
+                <section>
+                    <article>
+                        <img class = "produit" src="/public/images/kouign_amann.jpg" alt="">
+                        <div class="nomEtEvaluation">
+                            <p>Rillettes</p>
+                            <div class="evaluation">
+                                <div class="etoiles">
+                                    <img src="/public/images/etoile.svg"" alt="">
+                                    <p>3</p>
+                                </div>
+                                <p>200 évaluations</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="prix"> 29.99 €</p>
+                            <p class="prixAuKg"> 99.72€ / kg</p>
+                        </div>
+                        <div class = "bouton">
+                            <img src="/public/images/iconeFiltre.svg" alt="">
+                            <button> Options</button>
+
+                            <div class = "hoverBouton">
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconePromouvoir.svg" alt="">
+                                        <button onclick="popUpPromouvoir()">Promouvoir</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconeRemise.svg" alt="">
+                                        <button onclick="popUpRemise()" >Remise</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconeModifier.svg" alt="">
+                                        <button>Modifier</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                    <img src="/public/images/iconePrevisualiser.svg" alt="">
+                                        <button>Prévisualiser</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div>
+                                    <img src="/public/images/iconeRetirerVente.svg" alt="">
+                                    <button>Retirer de la vente</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </article>
+                </section>
+
+                <section>
+                    <article>
+                        <img class = "produit" src="/public/images/saucisson_chouchen.jpg" alt="">
+                        <div class="nomEtEvaluation">
+                            <p>Rillettes</p>
+                            <div class="evaluation">
+                                <div class="etoiles">
+                                    <img src="/public/images/etoile.svg"" alt="">
+                                    <p>3</p>
+                                </div>
+                                <p>200 évaluations</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="prix"> 29.99 €</p>
+                            <p class="prixAuKg"> 99.72€ / kg</p>
+                        </div>
+                        <div class = "bouton">
+                            <img src="/public/images/iconeFiltre.svg" alt="">
+                            <button> Options</button>
+
+                            <div class = "hoverBouton">
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconePromouvoir.svg" alt="">
+                                        <button onclick="popUpPromouvoir()">Promouvoir</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconeRemise.svg" alt="">
+                                        <button onclick="popUpRemise()" >Remise</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconeModifier.svg" alt="">
+                                        <button>Modifier</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                    <img src="/public/images/iconePrevisualiser.svg" alt="">
+                                        <button>Prévisualiser</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div>
+                                    <img src="/public/images/iconeRetirerVente.svg" alt="">
+                                    <button>Retirer de la vente</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </article>
+                </section>
+
+                <section>
+                    <article>
+                        <img class = "produit" src="/public/images/palets_bretons.jpg" alt="">
+                        <div class="nomEtEvaluation">
+                            <p>Rillettes</p>
+                            <div class="evaluation">
+                                <div class="etoiles">
+                                    <img src="/public/images/etoile.svg"" alt="">
+                                    <p>3</p>
+                                </div>
+                                <p>200 évaluations</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="prix"> 29.99 €</p>
+                            <p class="prixAuKg"> 99.72€ / kg</p>
+                        </div>
+                        <div class = "bouton">
+                            <img src="/public/images/iconeFiltre.svg" alt="">
+                            <button> Options</button>
+
+                            <div class = "hoverBouton">
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconePromouvoir.svg" alt="">
+                                        <button onclick="popUpPromouvoir()">Promouvoir</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconeRemise.svg" alt="">
+                                        <button onclick="popUpRemise()" >Remise</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                        <img src="/public/images/iconeModifier.svg" alt="">
+                                        <button>Modifier</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div class="iconeTexteLigne">
+                                    <div class = "iconeTexte">
+                                    <img src="/public/images/iconePrevisualiser.svg" alt="">
+                                        <button>Prévisualiser</button>
+                                    </div>
+                                    <div class="ligne"></div>
+                                </div>
+                                <div>
+                                    <img src="/public/images/iconeRetirerVente.svg" alt="">
+                                    <button>Retirer de la vente</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </article>
+                </section>
+            </div>
         </main>
 
         <?php require_once './partials/footer.php' ?>
+
+        <script src="../scripts/backoffice/popUpPromouvoir.js"></script>
     </body>
 </html>
