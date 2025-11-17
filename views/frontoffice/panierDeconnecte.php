@@ -136,15 +136,27 @@ require_once "../../controllers/prix.php";
                         </section>
                         <section>
                             <h2>Prix HT</h2>
-                            <h2 class="val"><?= number_format($totals['prixHT'] ?? 0, 2) ?>€</h2>
+                            
+                            <?php
+                            $prixTotal = 0;
+
+                            foreach ($tabIDProduitPanier as $idP) {
+                                $prix = $pdo->query("SELECT prix FROM _produit WHERE idProduit = " . intval($idP));
+                                $panier = $prix ? $prix->fetch(PDO::FETCH_ASSOC) : false;
+
+                                $prixTotal += $panier['prix'] ?? 0;
+                            }
+                            ?>
+
+                            <h2 class="val"><?= number_format($prixTotal, 2) ?>€</h2>
                         </section>
                         <section>
                             <h2>TVA</h2>
-                            <h2 class="val"><?= number_format($totals['prixTotalTvaPanier'] ?? 0, 2) ?>€</h2>
+                            <h2 class="val"><?= number_format($prixTotal * 0.2, 2) ?>€</h2>
                         </section>
                         <section>
                             <h2>Total</h2>
-                            <h2 class="val"><?= number_format($totals['sousTotal'] ?? 0, 2) ?>€</h2>
+                            <h2 class="val"><?= number_format($prixTotal * 1.2, 2) ?>€</h2>
                         </section>
                     </div>
                 </article>
