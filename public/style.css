@@ -2789,7 +2789,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 
 button#haut {
   position: sticky;
-  justify-self: right;
+  float: right;
   transition: all 0.2s;
   width: 150px;
   margin-top: 1em;
