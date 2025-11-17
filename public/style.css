@@ -2995,19 +2995,47 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin-bottom: 15px;
 }
 
+.pageEcrireCommentaire {
+  color: #273469;
+}
 .pageEcrireCommentaire .produit {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 1em;
+  margin-top: 220px;
 }
-.pageEcrireCommentaire .reviewArticle {
+.pageEcrireCommentaire h1 {
+  font-size: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pageEcrireCommentaire h1, .pageEcrireCommentaire h2 {
+  font-weight: 200;
+}
+.pageEcrireCommentaire .produit img {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 8px;
+  margin-right: 2em;
+}
+.pageEcrireCommentaire .reviewArticle form {
   display: flex;
   flex-direction: column;
   position: relative;
   left: 15%;
   width: 70%;
+}
+.pageEcrireCommentaire .reviewArticle ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.pageEcrireCommentaire .reviewArticle ul img {
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
 }
 .pageEcrireCommentaire .etoiles img {
   width: 64px;
@@ -3020,6 +3048,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .pageEcrireCommentaire textarea {
   border: 2px solid #273469;
   border-radius: 8px;
+  padding: 1em 1em;
+}
+.pageEcrireCommentaire textarea::placeholder {
+  color: #6e6e6e;
 }
 .pageEcrireCommentaire #sujet {
   height: 60px;
@@ -3040,6 +3072,70 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .pageEcrireCommentaire .boutonBleu {
   background-color: #273469;
   color: #fffefa;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-self: last baseline;
+}
+@media screen and (max-width: 768px) {
+  .pageEcrireCommentaire h1 {
+    font-size: 36px;
+  }
+  .pageEcrireCommentaire h2 {
+    font-size: 18px;
+  }
+  .pageEcrireCommentaire .etoiles img {
+    width: 48px;
+    height: 48px;
+  }
+  .pageEcrireCommentaire .ajouterPhoto {
+    width: 48px;
+    height: 48px;
+  }
+  .pageEcrireCommentaire .produit {
+    flex-direction: column;
+    margin-top: 100px;
+  }
+  .pageEcrireCommentaire .produit img {
+    margin-right: 0;
+    margin-bottom: 1em;
+  }
+  .pageEcrireCommentaire .reviewArticle form {
+    left: 5%;
+    width: 90%;
+  }
+  .pageEcrireCommentaire .bouton {
+    align-self: center;
+  }
+}
+@media screen and (max-width: 450px) {
+  .pageEcrireCommentaire h1 {
+    font-size: 24px;
+  }
+  .pageEcrireCommentaire h2 {
+    font-size: 16px;
+  }
+  .pageEcrireCommentaire .etoiles img {
+    width: 32px;
+    height: 32px;
+  }
+  .pageEcrireCommentaire .ajouterPhoto {
+    width: 32px;
+    height: 32px;
+  }
+  .pageEcrireCommentaire .produit {
+    flex-direction: column;
+    margin-top: 100px;
+  }
+  .pageEcrireCommentaire .produit img {
+    margin-right: 0;
+    margin-bottom: 1em;
+  }
+  .pageEcrireCommentaire .reviewArticle form {
+    left: 5%;
+    width: 90%;
+  }
 }
 
 .status-red {
