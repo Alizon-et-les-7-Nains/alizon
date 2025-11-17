@@ -754,36 +754,24 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
         // Création de l'overlay pour l'adresse de facturation
         const addrFactOverlay = document.createElement("div");
         addrFactOverlay.className = "addr-fact-overlay";
-        addrFactOverlay.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-  `;
         addrFactOverlay.innerHTML = `
-    <div class="addr-fact-content" style="background: white; padding: 20px; border-radius: 8px; max-width: 500px; width: 90%;">
+    <div class="addr-fact-content">
       <h2>Adresse de facturation</h2>
-      <div class="form-group" style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Adresse *</label>
-        <input class="adresse-fact-input" type="text" placeholder="Adresse complète" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+      <div class="form-group">
+        <label>Adresse *</label>
+        <input class="adresse-fact-input" type="text" placeholder="Adresse complète" required>
       </div>
-      <div class="form-group" style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Code Postal *</label>
-        <input class="code-postal-fact-input" type="text" placeholder="Code postal" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+      <div class="form-group">
+        <label>Code Postal *</label>
+        <input class="code-postal-fact-input" type="text" placeholder="Code postal" required>
       </div>
-      <div class="form-group" style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Ville *</label>
-        <input class="ville-fact-input" type="text" placeholder="Ville" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+      <div class="form-group">
+        <label>Ville *</label>
+        <input class="ville-fact-input" type="text" placeholder="Ville" required>
       </div>
-      <div class="button-group" style="display: flex; gap: 10px; justify-content: flex-end;">
-        <button id="closeAddrFact" class="btn-fermer" style="padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Annuler</button>
-        <button id="validerAddrFact" class="btn-valider" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Valider</button>
+      <div class="button-group">
+        <button id="closeAddrFact" class="btn-fermer">Annuler</button>
+        <button id="validerAddrFact" class="btn-valider">Valider</button>
       </div>
     </div>
   `;
