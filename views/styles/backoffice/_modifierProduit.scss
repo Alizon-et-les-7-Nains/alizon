@@ -1,8 +1,6 @@
 @use '../fonts';
 @use '../colors' as *;
 
-@use "../colors" as *; 
-@use "../fonts" as *; 
 
 .modifierProduit {
     font: {
@@ -88,6 +86,8 @@
     }
 
     .motclé{
+        width: 525px;
+        margin-top: 20px;
         padding: 8px 10px;
         border: 2px solid $color-blue;
         border-radius: 8px;
@@ -124,8 +124,8 @@
 
     textarea{
         font-family: "open-sans";
-        width: 600px;
-        height: 450px;
+        width: 650px;
+        height: 600px;
         padding: 8px 10px;
         border: 2px solid $color-blue;
         border-radius: 8px;
