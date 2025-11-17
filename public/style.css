@@ -172,6 +172,10 @@ body {
     gap: 8px;
   }
 }
+.headerFront .icons {
+  display: flex;
+  align-items: center;
+}
 @media (max-width: 638px) {
   .headerFront .icons {
     display: none;
