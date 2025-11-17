@@ -151,7 +151,7 @@ header.backoffice {
             backdrop-filter: blur(1px);
         }
         
-        button:first-of-type {
+        button:not(header.main dialog nav > button) {
             border: none;
             background: none;
             margin-left: auto;
@@ -177,6 +177,7 @@ header.backoffice {
             display: flex;
             justify-content: space-around;
             justify-items: space-around;
+            width: 100%;
             
             button {
                 padding: {
