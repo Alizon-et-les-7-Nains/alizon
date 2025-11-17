@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_nom'] = $user['nom'];
             
             // Redirection vers la page d'accueil apres connexion
-            header('Location: ../../views/frontoffice/accueil.php'); // corriger la faute de frappe ici
+            header('Location: ../../views/frontoffice/acceuil.php'); // corriger la faute de frappe ici
             exit;
         } else {
             $error = "Identifiants incorrects";
@@ -102,11 +102,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../../controllers/Chiffrement.js"></script>
 
     <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    document.querySelector('.boutonConnexionClient').addEventListener('submit', function(e) {
         e.preventDefault();
 
         const passwordClair = document.getElementById('password_input').value;
-        console.log(vignere("dqW%9mmA]=CDJ", cle, -1));
         const passwordChiffre = vignere(passwordClair, cle, 1);
 
         document.getElementById('password_chiffre').value = passwordChiffre;
