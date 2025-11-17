@@ -212,4 +212,14 @@
     .notation img {
         height: 32px;
     }
+    
+    button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
