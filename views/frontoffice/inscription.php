@@ -274,10 +274,10 @@
                     phoneNumberInput.classList.remove('input-error');
                 }
             });
-             if (typeof vignere !== 'undefined') {
-                const passwordChiffre = vignere(passwordClair, cle, 1);
-                document.getElementById('mdp').value = passwordChiffre;
-                
+
+            if (typeof vignere !== 'undefined') {
+                const passwordChiffre = vignere(passwordInput.value, cle, 1);
+                document.getElementById('mdp').value = passwordChiffre;      
              }
             validateForm(); 
 
