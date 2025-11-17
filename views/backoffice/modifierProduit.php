@@ -16,6 +16,12 @@ $product = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$product) {
     die("Produit introuvable");
 }
+///////////////////////////////////////////////
+//                                           //
+//    Modifier BDD pour poids, mots clés     //
+//                                           //
+///////////////////////////////////////////////
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

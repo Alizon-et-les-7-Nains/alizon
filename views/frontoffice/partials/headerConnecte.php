@@ -23,10 +23,10 @@
     <div class="carousel">
         <div class="group">
             <?php 
-                    //$categorie = ($pdo->query("SELECT * FROM _categorie"))->fetchAll(PDO::FETCH_ASSOC);
-                    //foreach ($categorie as $value) { ?>
-                    <!--    <a class="categorie"><?php //echo $value['nomCategorie']; ?></a> -->
-                <?php //} ?>
+                    $categorie = ($pdo->query("SELECT * FROM _categorie"))->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($categorie as $value) { ?>
+                       <a class="categorie"><?php echo $value['nomCategorie']; ?></a> 
+                <?php } ?>
         </div>
     </div>
 
