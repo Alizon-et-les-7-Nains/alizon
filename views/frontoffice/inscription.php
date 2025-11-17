@@ -23,7 +23,7 @@
 
     <h2>Inscription</h2>
       <main>
-        <form id="monForm" action="../backend/session_start.php" method="post" enctype="multipart/form-data">
+        <form id="monForm" action="../../controllers/session_start.php" method="post" enctype="multipart/form-data">
 
           <!-- Pseudo -->
           <input type="text" placeholder="Pseudo*" id="pseudo" name="pseudo" required />
@@ -303,6 +303,8 @@
                 $mdp = $_POST['motdepasse'] ?? '';
                 $date_naissance = $_POST['birthdate'] ?? '';
                 
+                alert($pseudo);
+
                 $nouveauClient = "INSERT INTO `_client`(`dateNaissance`, `prenom`, `nom`, `email`, `mdp`, `noTelephone`, `pseudo`)
                 VALUES ('$date_naissance', '$prenom', '$nom', '$email', '$mdp', '$num_tel', '$pseudo')";
 
