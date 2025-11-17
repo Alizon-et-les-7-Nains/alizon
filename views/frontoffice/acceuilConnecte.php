@@ -106,7 +106,7 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                    <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
                                 </div>
                             </div>
                         </article>
@@ -152,7 +152,7 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                    <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
                                 </div>
                             </div>
                         </article>
@@ -198,7 +198,7 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                    <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
                                 </div>
                             </div>
                         </article>
@@ -234,7 +234,7 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                             ?>
                             <article style="margin-top: 5px;" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                                <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
+                                <img onclick="event.stopPropagation();" src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
                                 <h2 class="nomProduit"><?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
                                 <div class="notation">
                                     <span><?php echo number_format($produitRecent['note'], 1); ?></span>
@@ -247,7 +247,7 @@ DEFINITION DES FONCTIONS ET DU COOKIE
                                         <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
                                     </div>
                                     <div>
-                                        <a href="" onclick="event.stopPropagation();"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
+                                        <a href=""><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></a>
                                     </div>
                                 </div>
                             </article>
