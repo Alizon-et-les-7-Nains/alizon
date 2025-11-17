@@ -134,10 +134,7 @@ header.backoffice {
         background-color: $color-white;
         border: none;
         border-radius: 16px;
-        padding: {
-            left: 2em; right: 2em;
-            top: 1em; bottom: 1em;
-        }
+        padding: 2em;
         color: $color-blue;
         font-family: 'open-sans';
         
@@ -145,66 +142,91 @@ header.backoffice {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        min-width: 500px; // Assure une largeur minimale
         
         &::backdrop {
             background: rgba(0, 0, 0, 0.25);
             backdrop-filter: blur(1px);
         }
         
-        div {
+        // Bouton de fermeture (X) en haut à droite
+        > button {
+            border: none;
+            background: none;
             margin-left: auto;
             display: block;
             margin-bottom: 1em;
-
-            button {
-                border: none;
-                background: none;
-                transition: all 0.2s;
+            padding: 0;
+            transition: all 0.2s;
+            
+            &:hover {
+                cursor: pointer;
                 
-                &:hover {
-                    cursor: pointer;
-                    
-                    img {
-                        content: url(../../../public/images/croixRouge.svg);
-                    }
+                img {
+                    content: url(../../../public/images/croixRouge.svg);
                 }
             }
         }
         
         h1 {
-            margin-bottom: 1em;
+            margin: 0 0 2em 0;
             text-align: center;
+            font-size: 28px;
         }
         
+        // Container des boutons d'action
         nav {
             display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
+            gap: 1.5em;
+            justify-content: center;
+            align-items: stretch; // Important pour égaliser les hauteurs
             
             button {
-                padding: {
-                    left: 2em; right: 2em;
-                    top: 1em; bottom: 1em;
-                }
-                width: 200px; height: 80px;
-                font-size: 20px;
-                border-radius: 24px;
-                border: none;
-                cursor: pointer;
+                // Reset de tous les styles précédents
+                all: unset;
                 
+                // Styles des boutons
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+                flex: 1; // Même largeur pour les deux boutons
+                min-width: 180px;
+                height: 60px;
+                padding: 1em 2em;
+                
+                font-family: 'open-sans';
+                font-size: 20px;
+                font-weight: 600;
+                text-align: center;
+                
+                border-radius: 24px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                
+                // Bouton "Annuler" (gauche)
                 &:first-child {
                     background-color: $color-pastel-purple;
                     color: $color-blue;
+                    border: 2px solid transparent;
+                    
+                    &:hover {
+                        background-color: $color-pastel-blue;
+                        border-color: $color-blue;
+                    }
                 }
+                
+                // Bouton "Oui" (droite)
                 &:last-child {
                     background-color: $color-blue;
                     color: $color-white;
-                }
-                
-                &:hover {
-                    background-color: $color-pastel-blue;
-                    color: $color-blue;
+                    border: 2px solid $color-blue;
+                    
+                    &:hover {
+                        background-color: darken($color-blue, 8%);
+                        border-color: darken($color-blue, 8%);
+                    }
                 }
             }
         }

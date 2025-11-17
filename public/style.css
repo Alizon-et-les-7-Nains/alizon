@@ -489,70 +489,80 @@ header.backoffice dialog {
   background-color: #fffefa;
   border: none;
   border-radius: 16px;
-  padding-left: 2em;
-  padding-right: 2em;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding: 2em;
   color: #273469;
   font-family: "open-sans";
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  min-width: 500px;
 }
 header.backoffice dialog::backdrop {
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(1px);
 }
-header.backoffice dialog div {
+header.backoffice dialog > button {
+  border: none;
+  background: none;
   margin-left: auto;
   display: block;
   margin-bottom: 1em;
-}
-header.backoffice dialog div button {
-  border: none;
-  background: none;
+  padding: 0;
   transition: all 0.2s;
 }
-header.backoffice dialog div button:hover {
+header.backoffice dialog > button:hover {
   cursor: pointer;
 }
-header.backoffice dialog div button:hover img {
+header.backoffice dialog > button:hover img {
   content: url(../../../public/images/croixRouge.svg);
 }
 header.backoffice dialog h1 {
-  margin-bottom: 1em;
+  margin: 0 0 2em 0;
   text-align: center;
+  font-size: 28px;
 }
 header.backoffice dialog nav {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
+  gap: 1.5em;
+  justify-content: center;
+  align-items: stretch;
 }
 header.backoffice dialog nav button {
-  padding-left: 2em;
-  padding-right: 2em;
-  padding-top: 1em;
-  padding-bottom: 1em;
-  width: 200px;
-  height: 80px;
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 180px;
+  height: 60px;
+  padding: 1em 2em;
+  font-family: "open-sans";
   font-size: 20px;
+  font-weight: 600;
+  text-align: center;
   border-radius: 24px;
-  border: none;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 header.backoffice dialog nav button:first-child {
   background-color: #e4d9ff;
   color: #273469;
+  border: 2px solid transparent;
+}
+header.backoffice dialog nav button:first-child:hover {
+  background-color: #e3f2fe;
+  border-color: #273469;
 }
 header.backoffice dialog nav button:last-child {
   background-color: #273469;
   color: #fffefa;
+  border: 2px solid #273469;
 }
-header.backoffice dialog nav button:hover {
-  background-color: #e3f2fe;
-  color: #273469;
+header.backoffice dialog nav button:last-child:hover {
+  background-color: rgb(27.95, 37.2666666667, 75.25);
+  border-color: rgb(27.95, 37.2666666667, 75.25);
 }
 
 .pageConnexionCLient {
