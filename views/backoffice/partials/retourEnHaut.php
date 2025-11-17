@@ -1,1 +1,1 @@
-<button id="haut">Haut de Page  <script src="/public/script.js"></script></button>
+<button id="haut">Haut de Page</button>

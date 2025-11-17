@@ -2786,8 +2786,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 
 button#haut {
   position: sticky;
-  bottom: 10px;
-  right: 30px;
+  justify-self: right;
+  width: 150px;
+  margin-top: 1em;
+  margin-bottom: 1em;
   border: none;
   padding: 1em;
   color: #fffefa;
