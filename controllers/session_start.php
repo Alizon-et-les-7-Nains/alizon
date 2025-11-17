@@ -10,7 +10,8 @@
         $num_tel = $_POST['telephone'] ?? '';
         $mdp = $_POST['mdp'] ?? '';
         $date_naissance = $_POST['birthdate'] ?? '';
-        
+        $mdp = json_encode($mdp);
+
         $nouveauClient = ("INSERT INTO _client (dateNaissance, prenom, nom, email, mdp, noTelephone, pseudo)
         VALUES ('$date_naissance', '$prenom', '$nom', '$email', '$mdp', '$num_tel', '$pseudo')");
 
