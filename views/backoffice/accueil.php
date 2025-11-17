@@ -6,25 +6,26 @@ require_once '../../controllers/date.php';
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Alizon</title>
 
-        <link rel="stylesheet" href="../../public/style.css">
-        <link rel="icon" href="/public/images/logoBackoffice.svg">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alizon</title>
 
-    <body class="backoffice">
-        <?php require_once './partials/header.php' ?>
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="icon" href="/public/images/logoBackoffice.svg">
+</head>
 
-        <?php require_once './partials/aside.php' ?>
+<body class="backoffice">
+    <?php require_once './partials/header.php' ?>
 
-        <main class="acceuilBackoffice">
-            <section class="stock">
-                <h1>Stocks Faibles</h1>
-                <article>
-<?php
+    <?php require_once './partials/aside.php' ?>
+
+    <main class="acceuilBackoffice">
+        <section class="stock">
+            <h1>Stocks Faibles</h1>
+            <article>
+                <?php
     $stock = ($pdo->query(file_get_contents('../../queries/backoffice/stockFaible.sql')))->fetchAll(PDO::FETCH_ASSOC);
     if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
     foreach ($stock as $produit => $atr) {
@@ -56,14 +57,14 @@ require_once '../../controllers/date.php';
         echo $html;
     }
 ?>
-                </article>
-                <a href="./stock.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-            </section>
+            </article>
+            <a href="./stock.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
+        </section>
 
-            <section class="commandes">
-                <h1>Dernières Commandes</h1>
-                <article>
-<?php
+        <section class="commandes">
+            <h1>Dernières Commandes</h1>
+            <article>
+                <?php
     $commandes = ($pdo->query(file_get_contents('../../queries/backoffice/dernieresCommandes.sql')))->fetchAll(PDO::FETCH_ASSOC);
     if (count($commandes) == 0) echo "<h2>Aucune commande</h2>";
     foreach ($commandes as $commande) {
@@ -92,14 +93,14 @@ require_once '../../controllers/date.php';
         echo $html;
     }
 ?>
-                </article>
-                <a href="./commandes.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-            </section>
+            </article>
+            <a href="./commandes.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
+        </section>
 
-            <section class="avis">
-                <h1>Derniers Avis</h1>
-                <article>
-<?php
+        <section class="avis">
+            <h1>Derniers Avis</h1>
+            <article>
+                <?php
     $avis = ($pdo->query(file_get_contents('../../queries/backoffice/derniersAvis.sql')))->fetchAll(PDO::FETCH_ASSOC);
     if (count($avis) == 0) echo "<h2>Aucun avis</h>";
     foreach ($avis as $avi) {
@@ -138,14 +139,14 @@ require_once '../../controllers/date.php';
         echo $html;
     }
 ?>
-                </article>
-                <a href="./avis.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-            </section>
+            </article>
+            <a href="./avis.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
+        </section>
 
-            <section class="produits">
-                <h1>Produits en Vente</h1>
-                <article>
-<?php
+        <section class="produits">
+            <h1>Produits en Vente</h1>
+            <article>
+                <?php
     $produits = ($pdo->query(file_get_contents('../../queries/backoffice/produitsVente.sql')))->fetchAll(PDO::FETCH_ASSOC);
     foreach ($produits as $produit => $atr) {
         $idProduit = $atr['idProduit'];
@@ -166,15 +167,17 @@ require_once '../../controllers/date.php';
         echo $html;
     }
 ?>
-                </article>
-                <a href="./produits.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-            </section>
+            </article>
+            <a href="./produits.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
+        </section>
 
-            <?php require_once './partials/retourEnHaut.php' ?>
-        </main>
+        <?php require_once './partials/retourEnHaut.php' ?>
+    </main>
 
-        <?php require_once './partials/footer.php' ?>
+    <?php require_once './partials/footer.php' ?>
 
-        <script src="../../public/script.js"></script>
-    </body>
+    <script src="../../public/amd-shim.js"></script>
+    <script src="../../public/script.js"></script>
+</body>
+
 </html>
