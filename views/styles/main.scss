@@ -3,10 +3,14 @@
 @use "./frontoffice/styleTemplate";
 @use "./frontoffice/styleLegales";
 @use "./frontoffice/style404";
+@use "./frontoffice/produit";
+
 @use "./backoffice/header";
 @use "./frontoffice/pageConnexionCLient";
 @use "./backoffice/footer";
 @use "./backoffice/aside";
+@use "./backoffice/ajouterProduit";
+
 @use "./backoffice/structure";
 @use "./frontoffice/inscription";
 @use "./frontoffice/stylePaiement";

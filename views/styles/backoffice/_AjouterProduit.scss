@@ -11,9 +11,7 @@
     color: $color-blue;
     min-height: 100vh;
     padding: {
-        top: 50px;
         bottom: 0;
-        right: 20px;
         left: 0;
     }
 
@@ -32,12 +30,13 @@
 
     .ajouterPhoto {
         border: 2px solid $color-blue; 
-        height: 350px; 
+        height: 400px; 
+        width: 450px;
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
-        margin-bottom: 20px;
+        margin: 3.5em 4em;
         border-radius: 8px;
         cursor: pointer;
 
@@ -89,6 +88,12 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
+        margin-left: 4em;
+    }
+
+    .product-name-input{
+        width: 450px;
+        margin-bottom: 2em;
     }
 
     input[type="text"], textarea {
@@ -96,7 +101,6 @@
         border: 2px solid $color-blue;
         border-radius: 8px;
         font-size: 1rem;
-        width: 100%;
         box-sizing: border-box;
         
         &::placeholder {
@@ -110,7 +114,7 @@
     .price-weight-kg {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 1em;
         
         input {
             width: 30%;
@@ -119,12 +123,12 @@
         .prix-kg-label {
             width: 40%;
             font-weight: bold;
-            text-align: right;
         }
     }
 
     .right-section {
-        width: 50%;
+        width: 35%;
+        margin-top: 3em;
         display: flex;
         flex-direction: column;
         position: relative;
