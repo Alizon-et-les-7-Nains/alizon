@@ -1,7 +1,6 @@
 <?php
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
-require_once "../../controllers/pdo.php";
 
 ob_start();
 
@@ -74,9 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $delta = intval($_POST['delta'] ?? 0);
                 if ($idProduit && $delta != 0) {
                     $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
+                    echo "Réussite";
                     echo json_encode(['success' => $success]);
                 } else {
                     echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
+                    echo "Erreur";
                 }
                 break;
 
