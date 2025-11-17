@@ -163,6 +163,7 @@ header.backoffice {
             width: 100%;
             
             button {
+                transition: all 0.2s;
                 padding: {
                     left: 2em; right: 2em;
                     top: 1em; bottom: 1em;
