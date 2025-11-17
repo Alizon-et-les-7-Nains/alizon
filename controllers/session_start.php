@@ -8,7 +8,7 @@
     $nom = $_POST['nom'] ?? '';
     $email = $_POST['email'] ?? '';
     $num_tel = $_POST['telephone'] ?? '';
-    $mdp = $_POST['motdepasse'] ?? '';
+    $mdp = $_POST['mdp'] ?? '';
     $date_naissance = $_POST['birthdate'] ?? '';
 
     $sql = "INSERT INTO _client 
