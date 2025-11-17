@@ -19,4 +19,15 @@ button#haut {
         color: $color-blue;
     }
     border-radius: 16px;
+
+    &:hover {
+        outline: {
+            style: solid;
+            color: $color-blue;
+            offset: -2px;
+            width: 2px;
+        }
+        color: $color-blue;
+        background-color: $color-pastel-blue;
+    }
 }

@@ -12,6 +12,26 @@ ob_start();
 // ID utilisateur connecté (à remplacer par la gestion de session)
 $idClient = 2; 
 
+function getCurrentCart($pdo, $idClient) {
+    $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
+    $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+
+    $cart = [];
+
+    if ($panier) {
+        $idPanier = intval($panier['idPanier']); 
+
+        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+                FROM _produitAuPanier pa
+                JOIN _produit p ON pa.idProduit = p.idProduit
+                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                WHERE pa.idPanier = " . intval($idPanier);
+        $stmt = $pdo->query($sql);
+        $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+    }
+    
+    return $cart;
+}
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
@@ -60,6 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 }
                 break;
 
+            case 'getCart':
+                $cart = getCurrentCart($pdo, $idClient);
+                echo json_encode($cart);
+                break;
+                
             default:
                 echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
         }
