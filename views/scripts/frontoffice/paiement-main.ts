@@ -38,7 +38,7 @@ if (document.body.classList.contains("pagePaiement")) {
 
   const recapEl = document.getElementById("recap");
 
-  const departments = new Map<string, string>(); // code -> nom du département
+  const departments = new Map<string, string>();
   const citiesByCode = new Map<string, Set<string>>();
   const allCities = new Set<string>();
   const postals = new Map<string, Set<string>>();
@@ -65,7 +65,6 @@ if (document.body.classList.contains("pagePaiement")) {
     });
   }
 
-  // Initialiser le panier à partir des données injectées côté PHP
   let cart: CartItem[] = [];
   if (preloaded.cart && Array.isArray(preloaded.cart)) {
     cart = preloaded.cart.map((it: any) => ({
@@ -83,6 +82,162 @@ if (document.body.classList.contains("pagePaiement")) {
     villeInput,
     maps: { departments, citiesByCode, postals, allCities },
     selectedDepartment,
+  });
+
+  // Création de l'overlay pour l'adresse de facturation
+  const addrFactOverlay = document.createElement("div");
+  addrFactOverlay.className = "addr-fact-overlay";
+  addrFactOverlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  `;
+
+  addrFactOverlay.innerHTML = `
+    <div class="addr-fact-content" style="background: white; padding: 20px; border-radius: 8px; max-width: 500px; width: 90%;">
+      <h2>Adresse de facturation</h2>
+      <div class="form-group" style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Adresse *</label>
+        <input class="adresse-fact-input" type="text" placeholder="Adresse complète" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+      <div class="form-group" style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Code Postal *</label>
+        <input class="code-postal-fact-input" type="text" placeholder="Code postal" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Ville *</label>
+        <input class="ville-fact-input" type="text" placeholder="Ville" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+      <div class="button-group" style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button id="closeAddrFact" class="btn-fermer" style="padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Annuler</button>
+        <button id="validerAddrFact" class="btn-valider" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Valider</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(addrFactOverlay);
+
+  // Gestion des événements de l'overlay
+  const validerAddrFactBtn = addrFactOverlay.querySelector(
+    "#validerAddrFact"
+  ) as HTMLButtonElement | null;
+
+  validerAddrFactBtn?.addEventListener("click", async () => {
+    const adresseFactInput = addrFactOverlay.querySelector(
+      ".adresse-fact-input"
+    ) as HTMLInputElement;
+    const codePostalFactInput = addrFactOverlay.querySelector(
+      ".code-postal-fact-input"
+    ) as HTMLInputElement;
+    const villeFactInput = addrFactOverlay.querySelector(
+      ".ville-fact-input"
+    ) as HTMLInputElement;
+
+    // Validation basique
+    if (
+      !adresseFactInput.value.trim() ||
+      !codePostalFactInput.value.trim() ||
+      !villeFactInput.value.trim()
+    ) {
+      showPopup(
+        "Veuillez remplir tous les champs de l'adresse de facturation",
+        "error"
+      );
+      return;
+    }
+
+    try {
+      // Enregistrer l'adresse de facturation dans la base de données
+      const response = await fetch("", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          action: "saveBillingAddress",
+          adresse: adresseFactInput.value.trim(),
+          codePostal: codePostalFactInput.value.trim(),
+          ville: villeFactInput.value.trim(),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showPopup("Adresse de facturation enregistrée avec succès");
+        addrFactOverlay.style.display = "none";
+
+        // Décocher la checkbox après validation
+        const factAdresseCheckbox = document.querySelector(
+          "#checkboxFactAddr"
+        ) as HTMLInputElement;
+        if (factAdresseCheckbox) {
+          factAdresseCheckbox.checked = false;
+        }
+      } else {
+        showPopup("Erreur lors de l'enregistrement: " + result.error, "error");
+      }
+    } catch (error) {
+      showPopup("Erreur réseau: " + error, "error");
+    }
+  });
+
+  const closeAddrFactBtn = addrFactOverlay.querySelector(
+    "#closeAddrFact"
+  ) as HTMLButtonElement | null;
+
+  closeAddrFactBtn?.addEventListener("click", () => {
+    addrFactOverlay.style.display = "none";
+    // Décocher la checkbox
+    const factAdresseCheckbox = document.querySelector(
+      "#checkboxFactAddr"
+    ) as HTMLInputElement;
+    if (factAdresseCheckbox) {
+      factAdresseCheckbox.checked = false;
+    }
+  });
+
+  // Fermer en cliquant en dehors du contenu
+  addrFactOverlay.addEventListener("click", (e) => {
+    if (e.target === addrFactOverlay) {
+      addrFactOverlay.style.display = "none";
+      const factAdresseCheckbox = document.querySelector(
+        "#checkboxFactAddr"
+      ) as HTMLInputElement;
+      if (factAdresseCheckbox) {
+        factAdresseCheckbox.checked = false;
+      }
+    }
+  });
+
+  // Gestion de la checkbox
+  const factAdresseInput = document.querySelector(
+    "#checkboxFactAddr"
+  ) as HTMLInputElement;
+
+  factAdresseInput?.addEventListener("change", (e) => {
+    const isChecked = (e.target as HTMLInputElement).checked;
+
+    if (isChecked) {
+      addrFactOverlay.style.display = "flex";
+
+      // Focus sur le premier champ
+      const firstInput = addrFactOverlay.querySelector(
+        "input"
+      ) as HTMLInputElement;
+      if (firstInput) {
+        firstInput.focus();
+      }
+    } else {
+      addrFactOverlay.style.display = "none";
+    }
   });
 
   // Gestion des boutons payer

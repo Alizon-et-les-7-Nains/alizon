@@ -1,1 +1,1 @@
-<button id="haut" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">Haut de Page</button>
+<button id="haut">Haut de Page</button>
