@@ -2894,16 +2894,16 @@ button#haut {
   background-color: #273469;
   border-radius: 16px;
 }
-button#haut:hover {
-  opacity: 1;
-  cursor: pointer;
-  color: #273469;
-  background-color: #e3f2fe;
-}
 button#haut.visible {
   transform: translateY(0);
   opacity: 0.75;
   visibility: visible;
+}
+button#haut.visible:hover {
+  opacity: 1;
+  cursor: pointer;
+  color: #273469;
+  background-color: #e3f2fe;
 }
 
 .status-red {

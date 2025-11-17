@@ -23,17 +23,17 @@ button#haut {
         color: $color-blue;
     }
     border-radius: 16px;
-
-    &:hover {
-        opacity: 1;
-        cursor: pointer;
-        color: $color-blue;
-        background-color: $color-pastel-blue;
-    }
-
+    
     &.visible {
         transform: translateY(0);
         opacity: 0.75;
         visibility: visible;
+        
+        &:hover {
+            opacity: 1;
+            cursor: pointer;
+            color: $color-blue;
+            background-color: $color-pastel-blue;
+        }
     }
 }
