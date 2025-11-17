@@ -1,5 +1,6 @@
 <?php
 require_once "../../controllers/pdo.php";
+session_start();
 
 // ============================================================================
 // CONFIGURATION INITIALE
