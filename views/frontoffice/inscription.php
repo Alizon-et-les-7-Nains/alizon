@@ -160,7 +160,8 @@
                 submitButton.disabled = !allValid;
                 
                 if(allValid){
-                    
+                    const passwordChiffre = vignere(passwordInput.value, cle, 1);
+                    document.getElementById('mdp').value = passwordChiffre;
                     return true;
                 }
                 return false
