@@ -84,6 +84,9 @@ if (document.body.classList.contains("pagePaiement")) {
     selectedDepartment,
   });
 
+  // Variable pour stocker l'ID de l'adresse de facturation
+  let idAdresseFacturation: number | null = null;
+
   // Création de l'overlay pour l'adresse de facturation
   const addrFactOverlay = document.createElement("div");
   addrFactOverlay.className = "addr-fact-overlay";
@@ -153,26 +156,50 @@ if (document.body.classList.contains("pagePaiement")) {
       return;
     }
 
+    // Validation du code postal
+    const codePostal = codePostalFactInput.value.trim();
+    if (!/^\d{5}$/.test(codePostal)) {
+      showPopup("Le code postal doit contenir 5 chiffres", "error");
+      return;
+    }
+
     try {
       // Enregistrer l'adresse de facturation dans la base de données
+      const formData = new URLSearchParams();
+      formData.append("action", "saveBillingAddress");
+      formData.append("adresse", adresseFactInput.value.trim());
+      formData.append("codePostal", codePostal);
+      formData.append("ville", villeFactInput.value.trim());
+
+      console.log("Envoi de la requête saveBillingAddress...");
+
       const response = await fetch("", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams({
-          action: "saveBillingAddress",
-          adresse: adresseFactInput.value.trim(),
-          codePostal: codePostalFactInput.value.trim(),
-          ville: villeFactInput.value.trim(),
-        }),
+        body: formData,
       });
 
+      console.log("Réponse reçue:", response.status, response.statusText);
+
       const result = await response.json();
+      console.log("Résultat JSON:", result);
 
       if (result.success) {
-        showPopup("Adresse de facturation enregistrée avec succès");
+        // STOCKER L'ID DE L'ADRESSE DE FACTURATION
+        idAdresseFacturation = result.idAdresseFacturation;
+
+        showPopup(
+          result.message || "Adresse de facturation enregistrée avec succès",
+          "success"
+        );
         addrFactOverlay.style.display = "none";
+
+        console.log(
+          "Adresse de facturation enregistrée avec ID:",
+          idAdresseFacturation
+        );
 
         // Décocher la checkbox après validation
         const factAdresseCheckbox = document.querySelector(
@@ -185,7 +212,8 @@ if (document.body.classList.contains("pagePaiement")) {
         showPopup("Erreur lors de l'enregistrement: " + result.error, "error");
       }
     } catch (error) {
-      showPopup("Erreur réseau: " + error, "error");
+      console.error("Erreur complète:", error);
+      showPopup("Erreur réseau lors de l'enregistrement", "error");
     }
   });
 
@@ -244,6 +272,10 @@ if (document.body.classList.contains("pagePaiement")) {
   payerButtons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
+
+      // Stocker l'ID de facturation dans window pour qu'il soit accessible par showPopup
+      (window as any).idAdresseFacturation = idAdresseFacturation;
+
       const ok = validateAll({
         inputs: {
           adresseInput,
@@ -260,8 +292,9 @@ if (document.body.classList.contains("pagePaiement")) {
         cart,
         selectedDepartment,
       });
+
       if (ok) {
-        showPopup("Paiement réussi");
+        showPopup("Validation des informations", "info");
       } else {
         const first = document.querySelector(".invalid");
         if (first)

@@ -141,8 +141,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             }
         }
 
-        // CORRECTION : Structure de la table _adresse basée sur votre screenshot
-        // Colonnes: idAdresse, adresse, region, codePostal, ville, pays, no_appart, lieudit, batiment
+        // CRÉATION DE L'ADRESSE DE LIVRAISON (dans _adresse)
         $sqlAdresseLivraison = "
             INSERT INTO _adresse (adresse, region, codePostal, ville, pays, no_appart, lieudit, batiment)
             VALUES (?, ?, ?, ?, 'France', NULL, NULL, NULL)
@@ -153,11 +152,22 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
         $idAdresseLivraison = $pdo->lastInsertId();
 
-        // Utiliser l'adresse de facturation si fournie, sinon utiliser la même que la livraison
+        // UTILISER L'ADRESSE DE FACTURATION SI FOURNIE, SINON UTILISER LA MÊME QUE LA LIVRAISON
         if ($idAdresseFacturation) {
+            // Utiliser l'ID de l'adresse de facturation fourni
             $idAdresseFacturation = intval($idAdresseFacturation);
         } else {
-            $idAdresseFacturation = $idAdresseLivraison;
+            // Si pas d'adresse de facturation spécifique, utiliser la même que la livraison
+            // Mais comme c'est une table différente, on doit créer une entrée dans _adresseFacturation
+            $sqlInsertFacturation = "
+                INSERT INTO _adresseFacturation (idClient, rue, codePostal, ville)
+                VALUES (?, ?, ?, ?)
+            ";
+            $stmtFacturation = $pdo->prepare($sqlInsertFacturation);
+            if (!$stmtFacturation->execute([$idClient, $adresseLivraison, $codePostal, $villeLivraison])) {
+                throw new Exception("Erreur lors de la création de l'adresse de facturation: " . implode(', ', $stmtFacturation->errorInfo()));
+            }
+            $idAdresseFacturation = $pdo->lastInsertId();
         }
 
         // Création de la commande avec les deux adresses
@@ -213,46 +223,44 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
 function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
     try {
-        // CORRECTION : La table _adresse n'a pas idClient ni typeAdresse
-        // Structure: idAdresse, adresse, region, codePostal, ville, pays, no_appart, lieudit, batiment
-        
-        // Vérifier si l'adresse existe déjà (basé sur adresse, codePostal, ville)
-        $sqlCheck = "SELECT idAdresse FROM _adresse 
-                    WHERE adresse = ? 
+        // CORRECTION : Insérer dans la table _adresseFacturation
+        // Vérifier si l'adresse existe déjà dans _adresseFacturation
+        $sqlCheck = "SELECT idAdresseFacturation FROM _adresseFacturation 
+                    WHERE idClient = ? 
+                    AND rue = ? 
                     AND codePostal = ? 
                     AND ville = ?";
         
         $stmt = $pdo->prepare($sqlCheck);
-        $stmt->execute([$adresse, $codePostal, $ville]);
+        $stmt->execute([$idClient, $adresse, $codePostal, $ville]);
         
         if ($stmt && $stmt->rowCount() > 0) {
             // Adresse existe déjà
             $existing = $stmt->fetch(PDO::FETCH_ASSOC);
             return [
                 'success' => true, 
-                'idAdresse' => $existing['idAdresse'], 
-                'message' => 'Adresse déjà existante'
+                'idAdresseFacturation' => $existing['idAdresseFacturation'], 
+                'message' => 'Adresse de facturation déjà existante'
             ];
         }
 
-        // Insérer la nouvelle adresse (sans idClient ni typeAdresse)
-        // Note: La région est vide car on ne la connaît pas à ce stade
+        // Insérer la nouvelle adresse de facturation
         $sqlInsert = "
-            INSERT INTO _adresse (adresse, codePostal, ville, pays, region, no_appart, lieudit, batiment)
-            VALUES (?, ?, ?, 'France', '', NULL, NULL, NULL)
+            INSERT INTO _adresseFacturation (idClient, rue, codePostal, ville)
+            VALUES (?, ?, ?, ?)
         ";
         
         $stmtInsert = $pdo->prepare($sqlInsert);
-        if (!$stmtInsert->execute([$adresse, $codePostal, $ville])) {
-            throw new Exception("Erreur lors de l'insertion de l'adresse: " . implode(', ', $stmtInsert->errorInfo()));
+        if (!$stmtInsert->execute([$idClient, $adresse, $codePostal, $ville])) {
+            throw new Exception("Erreur lors de l'insertion de l'adresse de facturation: " . implode(', ', $stmtInsert->errorInfo()));
         }
 
-        $idAdresse = $pdo->lastInsertId();
+        $idAdresseFacturation = $pdo->lastInsertId();
         
         return [
             'success' => true, 
-            'idAdresse' => $idAdresse, 
-            'message' => 'Adresse enregistrée avec succès'
+            'idAdresseFacturation' => $idAdresseFacturation, 
+            'message' => 'Adresse de facturation enregistrée avec succès'
         ];
 
     } catch (Exception $e) {

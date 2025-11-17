@@ -602,6 +602,8 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                 if (!window.vignere) {
                     throw new Error("Système de sécurité non disponible");
                 }
+                // Récupérer l'ID de l'adresse de facturation depuis window
+                const idAdresseFact = window.idAdresseFacturation || null;
                 // Appeler l'API pour créer la commande
                 const orderData = {
                     adresseLivraison: adresse,
@@ -613,6 +615,14 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                     dateExpiration: dateCarte,
                     codePostal: codePostal,
                 };
+                // AJOUT: Inclure l'ID de l'adresse de facturation si disponible
+                if (idAdresseFact) {
+                    orderData.idAdresseFacturation = idAdresseFact;
+                    console.log("Utilisation de l'adresse de facturation ID:", idAdresseFact);
+                }
+                else {
+                    console.log("Aucune adresse de facturation spécifique, utilisation de l'adresse de livraison");
+                }
                 // Utiliser PaymentAPI s'il existe, sinon faire un fetch direct
                 let result;
                 if (window.PaymentAPI &&
@@ -626,10 +636,7 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                         headers: {
                             "Content-Type": "application/x-www-form-urlencoded",
                         },
-                        body: new URLSearchParams({
-                            action: "createOrder",
-                            ...orderData,
-                        }),
+                        body: new URLSearchParams(orderData).toString(),
                     });
                     result = await response.json();
                 }
@@ -742,6 +749,8 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
             maps: { departments, citiesByCode, postals, allCities },
             selectedDepartment,
         });
+        // Variable pour stocker l'ID de l'adresse de facturation
+        let idAdresseFacturation = null;
         // Création de l'overlay pour l'adresse de facturation
         const addrFactOverlay = document.createElement("div");
         addrFactOverlay.className = "addr-fact-overlay";
@@ -792,24 +801,36 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
                 (0, paiement_popup_1.showPopup)("Veuillez remplir tous les champs de l'adresse de facturation", "error");
                 return;
             }
+            // Validation du code postal
+            const codePostal = codePostalFactInput.value.trim();
+            if (!/^\d{5}$/.test(codePostal)) {
+                (0, paiement_popup_1.showPopup)("Le code postal doit contenir 5 chiffres", "error");
+                return;
+            }
             try {
                 // Enregistrer l'adresse de facturation dans la base de données
+                const formData = new URLSearchParams();
+                formData.append("action", "saveBillingAddress");
+                formData.append("adresse", adresseFactInput.value.trim());
+                formData.append("codePostal", codePostal);
+                formData.append("ville", villeFactInput.value.trim());
+                console.log("Envoi de la requête saveBillingAddress...");
                 const response = await fetch("", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
                     },
-                    body: new URLSearchParams({
-                        action: "saveBillingAddress",
-                        adresse: adresseFactInput.value.trim(),
-                        codePostal: codePostalFactInput.value.trim(),
-                        ville: villeFactInput.value.trim(),
-                    }),
+                    body: formData,
                 });
+                console.log("Réponse reçue:", response.status, response.statusText);
                 const result = await response.json();
+                console.log("Résultat JSON:", result);
                 if (result.success) {
-                    (0, paiement_popup_1.showPopup)("Adresse de facturation enregistrée avec succès");
+                    // STOCKER L'ID DE L'ADRESSE DE FACTURATION
+                    idAdresseFacturation = result.idAdresseFacturation;
+                    (0, paiement_popup_1.showPopup)(result.message || "Adresse de facturation enregistrée avec succès", "success");
                     addrFactOverlay.style.display = "none";
+                    console.log("Adresse de facturation enregistrée avec ID:", idAdresseFacturation);
                     // Décocher la checkbox après validation
                     const factAdresseCheckbox = document.querySelector("#checkboxFactAddr");
                     if (factAdresseCheckbox) {
@@ -821,7 +842,8 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
                 }
             }
             catch (error) {
-                (0, paiement_popup_1.showPopup)("Erreur réseau: " + error, "error");
+                console.error("Erreur complète:", error);
+                (0, paiement_popup_1.showPopup)("Erreur réseau lors de l'enregistrement", "error");
             }
         });
         const closeAddrFactBtn = addrFactOverlay.querySelector("#closeAddrFact");
@@ -863,6 +885,8 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
         payerButtons.forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
+                // Stocker l'ID de facturation dans window pour qu'il soit accessible par showPopup
+                window.idAdresseFacturation = idAdresseFacturation;
                 const ok = (0, paiement_validation_2.validateAll)({
                     inputs: {
                         adresseInput,
@@ -880,7 +904,7 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
                     selectedDepartment,
                 });
                 if (ok) {
-                    (0, paiement_popup_1.showPopup)("Paiement réussi");
+                    (0, paiement_popup_1.showPopup)("Validation des informations", "info");
                 }
                 else {
                     const first = document.querySelector(".invalid");

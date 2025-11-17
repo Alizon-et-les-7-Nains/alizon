@@ -13,6 +13,7 @@ declare global {
     PaymentAPI?: any;
     vignere?: (texte: string, cle: string, sens: number) => string;
     CLE_CHIFFREMENT?: string;
+    idAdresseFacturation?: number | null;
   }
 }
 
@@ -164,8 +165,11 @@ export function showPopup(
         throw new Error("Système de sécurité non disponible");
       }
 
+      // Récupérer l'ID de l'adresse de facturation depuis window
+      const idAdresseFact = window.idAdresseFacturation || null;
+
       // Appeler l'API pour créer la commande
-      const orderData = {
+      const orderData: any = {
         adresseLivraison: adresse,
         villeLivraison: ville,
         regionLivraison: region,
@@ -175,6 +179,19 @@ export function showPopup(
         dateExpiration: dateCarte,
         codePostal: codePostal,
       };
+
+      // AJOUT: Inclure l'ID de l'adresse de facturation si disponible
+      if (idAdresseFact) {
+        orderData.idAdresseFacturation = idAdresseFact;
+        console.log(
+          "Utilisation de l'adresse de facturation ID:",
+          idAdresseFact
+        );
+      } else {
+        console.log(
+          "Aucune adresse de facturation spécifique, utilisation de l'adresse de livraison"
+        );
+      }
 
       // Utiliser PaymentAPI s'il existe, sinon faire un fetch direct
       let result;
@@ -190,10 +207,7 @@ export function showPopup(
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: new URLSearchParams({
-            action: "createOrder",
-            ...orderData,
-          }),
+          body: new URLSearchParams(orderData).toString(),
         });
         result = await response.json();
       }
