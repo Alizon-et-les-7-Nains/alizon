@@ -210,7 +210,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <button style="" class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>"
+                                    <button style="" class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
                                         <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                                     </button>
                                 </div>
@@ -258,7 +258,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <button style="" class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>"
+                                    <button style="" class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
                                         <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                                     </button>
                                 </div>
@@ -306,7 +306,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
                                 </div>
                                 <div>
-                                    <button style="" class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>"
+                                    <button style="" class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
                                         <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                                     </button>
                                 </div>
@@ -357,7 +357,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                         <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
                                     </div>
                                     <div>
-                                        <button style="" class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>"
+                                        <button style="" class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
                                             <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                                     </button>
                                     </div>
