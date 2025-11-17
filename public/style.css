@@ -1,10 +1,10 @@
-/* Error: Can't find stylesheet to import.
+/* Error: Expected ".
  *   ,
- * 1 | @use "colors" as *;
- *   | ^^^^^^^^^^^^^^^^^^
+ * 1 | @use " as *;
+ *   |             ^
  *   '
- *   views\styles\backoffice\_retourEnHaut.scss 1:1  @use
- *   views\styles\main.scss 21:1                     root stylesheet */
+ *   views\styles\backoffice\_retourEnHaut.scss 1:13  @use
+ *   views\styles\main.scss 21:1                      root stylesheet */
 
 body::before {
   font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
@@ -14,5 +14,5 @@ body::before {
   padding: 1em;
   margin-bottom: 1em;
   border-bottom: 2px solid black;
-  content: "Error: Can't find stylesheet to import.\a   \2577 \a 1 \2502  @use \"colors\" as *;\d\a   \2502  ^^^^^^^^^^^^^^^^^^\a   \2575 \a   views\\styles\\backoffice\\_retourEnHaut.scss 1:1  @use\a   views\\styles\\main.scss 21:1                     root stylesheet";
+  content: 'Error: Expected ".\a   \2577 \a 1 \2502  @use " as *;\d\a   \2502              ^\a   \2575 \a   views\\styles\\backoffice\\_retourEnHaut.scss 1:13  @use\a   views\\styles\\main.scss 21:1                      root stylesheet';
 }
