@@ -63,9 +63,9 @@ require_once "../../controllers/prix.php";
     $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
 
     // Récupération des informations des produits dans le panier
-    $nbProduit = 0;
+    $nbProduit = count($tabIDProduitPanier);
     foreach ($tabIDProduitPanier as $key => $value) {
-        $totalPrix += $value;
+        $totalProduit += $value;
     }
 
     // ============================================================================
@@ -120,7 +120,7 @@ require_once "../../controllers/prix.php";
                         </button>
                     </div>
                 </article> 
-            <?php } if ($cart==0) { ?>
+            <?php } if ($nbProduit==0) { ?>
                 <h1 class="aucunProduit">Aucun produit</h1>
             <?php } else { ?>
         </section>
