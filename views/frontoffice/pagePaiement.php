@@ -95,7 +95,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idClient = intval($idClient);
 
-        // Recupération du panier actuel
+        // Récupération du panier actuel
         $stmt = $pdo->prepare("SELECT * FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
         $stmt->execute([$idClient]);
         $panier = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -131,8 +131,6 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $checkCarte->execute([$numeroCarte]);
 
         if ($checkCarte->rowCount() === 0) {
-            $nomCarteQ = $pdo->quote($nomCarte);
-            $dateExpQ = $pdo->quote($dateExp);
             $sqlInsertCarte = "
                 INSERT INTO _carteBancaire (numeroCarte, nom, dateExpiration, cvv)
                 VALUES (?, ?, ?, ?)
@@ -143,29 +141,15 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             }
         }
 
-        // Vérifier la structure de la table _adresse
-        $checkAdresseStructure = $pdo->query("SHOW COLUMNS FROM _adresse LIKE 'idClient'");
-        $hasIdClient = $checkAdresseStructure && $checkAdresseStructure->rowCount() > 0;
-
-        // Création de l'adresse de LIVRAISON
-        if ($hasIdClient) {
-            $sqlAdresseLivraison = "
-                INSERT INTO _adresse (adresse, region, codePostal, ville, pays, idClient, typeAdresse)
-                VALUES (?, ?, ?, ?, 'France', ?, 'livraison')
-            ";
-            $stmtAdresse = $pdo->prepare($sqlAdresseLivraison);
-            $stmtAdresse->execute([$adresseLivraison, $regionLivraison, $codePostal, $villeLivraison, $idClient]);
-        } else {
-            $sqlAdresseLivraison = "
-                INSERT INTO _adresse (adresse, region, codePostal, ville, pays, typeAdresse)
-                VALUES (?, ?, ?, ?, 'France', 'livraison')
-            ";
-            $stmtAdresse = $pdo->prepare($sqlAdresseLivraison);
-            $stmtAdresse->execute([$adresseLivraison, $regionLivraison, $codePostal, $villeLivraison]);
-        }
-
-        if (!$stmtAdresse) {
-            throw new Exception("Erreur lors de l'ajout de l'adresse de livraison: " . implode(', ', $pdo->errorInfo()));
+        // CORRECTION : Structure de la table _adresse basée sur votre screenshot
+        // Colonnes: idAdresse, adresse, region, codePostal, ville, pays, no_appart, lieudit, batiment
+        $sqlAdresseLivraison = "
+            INSERT INTO _adresse (adresse, region, codePostal, ville, pays, no_appart, lieudit, batiment)
+            VALUES (?, ?, ?, ?, 'France', NULL, NULL, NULL)
+        ";
+        $stmtAdresse = $pdo->prepare($sqlAdresseLivraison);
+        if (!$stmtAdresse->execute([$adresseLivraison, $regionLivraison, $codePostal, $villeLivraison])) {
+            throw new Exception("Erreur lors de l'ajout de l'adresse de livraison: " . implode(', ', $stmtAdresse->errorInfo()));
         }
         $idAdresseLivraison = $pdo->lastInsertId();
 
@@ -229,54 +213,33 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
 function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
     try {
-        $idClient = intval($idClient);
-
-        // Vérifier la structure de la table _adresse
-        $checkAdresseStructure = $pdo->query("SHOW COLUMNS FROM _adresse LIKE 'idClient'");
-        $hasIdClient = $checkAdresseStructure && $checkAdresseStructure->rowCount() > 0;
-
-        // Vérifier si l'adresse existe déjà
-        if ($hasIdClient) {
-            $sqlCheck = "SELECT idAdresse FROM _adresse 
-                        WHERE idClient = ? 
-                        AND adresse = ? 
-                        AND codePostal = ? 
-                        AND ville = ?";
-            $stmt = $pdo->prepare($sqlCheck);
-            $stmt->execute([$idClient, $adresse, $codePostal, $ville]);
-        } else {
-            $sqlCheck = "SELECT idAdresse FROM _adresse 
-                        WHERE adresse = ? 
-                        AND codePostal = ? 
-                        AND ville = ?";
-            $stmt = $pdo->prepare($sqlCheck);
-            $stmt->execute([$adresse, $codePostal, $ville]);
-        }
+        // CORRECTION : La table _adresse n'a pas idClient ni typeAdresse
+        // Structure: idAdresse, adresse, region, codePostal, ville, pays, no_appart, lieudit, batiment
+        
+        // Vérifier si l'adresse existe déjà (basé sur adresse, codePostal, ville)
+        $sqlCheck = "SELECT idAdresse FROM _adresse 
+                    WHERE adresse = ? 
+                    AND codePostal = ? 
+                    AND ville = ?";
+        
+        $stmt = $pdo->prepare($sqlCheck);
+        $stmt->execute([$adresse, $codePostal, $ville]);
         
         if ($stmt && $stmt->rowCount() > 0) {
+            // Adresse existe déjà
             $existing = $stmt->fetch(PDO::FETCH_ASSOC);
             return ['success' => true, 'idAdresse' => $existing['idAdresse'], 'message' => 'Adresse déjà existante'];
         }
 
-        // Insérer la nouvelle adresse de facturation
-        if ($hasIdClient) {
-            $sqlInsert = "
-                INSERT INTO _adresse (adresse, codePostal, ville, pays, idClient, typeAdresse)
-                VALUES (?, ?, ?, 'France', ?, 'facturation')
-            ";
-            $stmtInsert = $pdo->prepare($sqlInsert);
-            $stmtInsert->execute([$adresse, $codePostal, $ville, $idClient]);
-        } else {
-            $sqlInsert = "
-                INSERT INTO _adresse (adresse, codePostal, ville, pays, typeAdresse)
-                VALUES (?, ?, ?, 'France', 'facturation')
-            ";
-            $stmtInsert = $pdo->prepare($sqlInsert);
-            $stmtInsert->execute([$adresse, $codePostal, $ville]);
-        }
+        // Insérer la nouvelle adresse (sans idClient ni typeAdresse)
+        $sqlInsert = "
+            INSERT INTO _adresse (adresse, codePostal, ville, pays, region, no_appart, lieudit, batiment)
+            VALUES (?, ?, ?, 'France', '', NULL, NULL, NULL)
+        ";
         
-        if (!$stmtInsert) {
-            throw new Exception("Erreur lors de l'insertion de l'adresse: " . implode(', ', $pdo->errorInfo()));
+        $stmtInsert = $pdo->prepare($sqlInsert);
+        if (!$stmtInsert->execute([$adresse, $codePostal, $ville])) {
+            throw new Exception("Erreur lors de l'insertion de l'adresse: " . implode(', ', $stmtInsert->errorInfo()));
         }
 
         $idAdresse = $pdo->lastInsertId();
@@ -328,7 +291,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $nomCarte = $_POST['nomCarte'] ?? 'Client inconnu';
                 $dateExpiration = $_POST['dateExpiration'] ?? '12/30';
 
-                if (empty($adresseLivraison) || empty($villeLivraison) || empty($regionLivraison) || empty($numeroCarte)) {
+                // Validation des champs obligatoires
+                if (empty($adresseLivraison) || empty($villeLivraison) || empty($regionLivraison) || empty($numeroCarte) || empty($codePostal)) {
                     echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
                     break;
                 }
@@ -364,6 +328,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
     exit;
 }
+
 // ============================================================================
 // RÉCUPÉRATION DES DONNÉES POUR LA PAGE
 // ============================================================================
