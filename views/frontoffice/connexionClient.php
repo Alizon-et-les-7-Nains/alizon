@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 
-    <script src="../scripts/frontoffice/Chiffrement.js"></script>
+    <script src="../../controllers/Chiffrement.js"></script>
 
     <script>
     document.getElementById('loginForm').addEventListener('submit', function(e) {
