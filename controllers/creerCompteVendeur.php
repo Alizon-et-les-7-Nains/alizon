@@ -3,7 +3,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $nom_contact = $_POST['nom'] ?? '';
+    $nom = $_POST['nom'] ?? '';
     $prenom = $_POST['prenom'] ?? '';
     $email = $_POST['email'] ?? '';
     $noTelephone = $_POST['noTelephone'] ?? '';

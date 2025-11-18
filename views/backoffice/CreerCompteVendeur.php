@@ -1,4 +1,18 @@
-<?php require_once "../../controllers/pdo.php" ?>
+<?php 
+    require_once "../../controllers/pdo.php"; 
+
+    $nom = $_SESSION['form_data']['nom'] ?? '';
+    $prenom = $_SESSION['form_data']['prenom'] ?? '';
+    $email = $_SESSION['form_data']['email'] ?? '';
+    $noTelephone = $_SESSION['form_data']['noTelephone'] ?? '';
+    $pseudo = $_SESSION['form_data']['pseudo'] ?? '';
+    $dateNaissance = $_SESSION['form_data']['dateNaissance'] ?? '';
+    $noSiren = $_SESSION['form_data']['noSiren'] ?? '';
+    $idAdresse = $_SESSION['form_data']['idAdresse'] ?? '';
+    $raisonSocial = $_SESSION['form_data']['raisonSocial'] ?? '';
+    $message = $_SESSION['form_data']['message'] ?? ''; 
+    unset($_SESSION['form_data']);
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
