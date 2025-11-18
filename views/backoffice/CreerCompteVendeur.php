@@ -1,3 +1,4 @@
+<?php require_once "../../controllers/pdo.php" ?>
 <?php
 $message = "";
 $data = []; 
@@ -51,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
 
         <div class="container">
-            <form method="post" class="form-vendeur">
+            <form method="post" class="form-vendeur" id="monForm" action="../../controllers/creerCompteVendeur.php" enctype="multipart/form-data">
                 <?php if (!empty($message)) : ?>
                     <p class="message"><?= $message ?></p>
                 <?php endif; ?>
