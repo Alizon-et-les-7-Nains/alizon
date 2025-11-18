@@ -796,6 +796,11 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
     </div>
   `;
         document.body.appendChild(addrFactOverlay);
+        addrFactOverlay.style.display = "none";
+        const factAdresseCheckbox = document.querySelector("#checkboxFactAddr");
+        if (factAdresseCheckbox) {
+            factAdresseCheckbox.checked = false;
+        }
         // Gestion des événements de l'overlay
         const validerAddrFactBtn = addrFactOverlay.querySelector("#validerAddrFact");
         validerAddrFactBtn?.addEventListener("click", async () => {

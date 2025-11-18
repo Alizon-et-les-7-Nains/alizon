@@ -111,6 +111,14 @@ if (document.body.classList.contains("pagePaiement")) {
 
   document.body.appendChild(addrFactOverlay);
 
+  addrFactOverlay.style.display = "none";
+  const factAdresseCheckbox = document.querySelector(
+    "#checkboxFactAddr"
+  ) as HTMLInputElement;
+  if (factAdresseCheckbox) {
+    factAdresseCheckbox.checked = false;
+  }
+
   // Gestion des événements de l'overlay
   const validerAddrFactBtn = addrFactOverlay.querySelector(
     "#validerAddrFact"
