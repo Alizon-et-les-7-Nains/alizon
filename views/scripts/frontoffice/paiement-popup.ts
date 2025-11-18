@@ -12,18 +12,31 @@ declare global {
     };
     PaymentAPI?: any;
     vignere?: (texte: string, cle: string, sens: number) => string;
+    CLE_CHIFFREMENT?: string;
+    idAdresseFacturation?: number | null;
   }
 }
 
-// Clé de chiffrement (doit correspondre à celle dans Chiffrement.js)
-const CLE_CHIFFREMENT = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
+// Fonction helper pour le chiffrement avec vérification renforcée
+const chiffrerAvecVignere = (texte: string, sens: number): string => {
+  // Utiliser la clé depuis window ou une valeur par défaut
+  const cle = window.CLE_CHIFFREMENT || "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
+
+  if (typeof window.vignere === "function" && cle && cle.length > 0) {
+    return window.vignere(texte, cle, sens);
+  }
+
+  console.warn(
+    "Fonction vignere non disponible ou clé invalide, retour du texte en clair"
+  );
+  return texte;
+};
 
 export function showPopup(
   message: string,
   type: "error" | "success" | "info" = "info"
 ) {
   const overlay = document.createElement("div");
-  // add a type-specific class for styling (e.g. .payment-overlay.error)
   overlay.className = `payment-overlay ${type}`;
 
   // Récupérer les valeurs des inputs
@@ -57,13 +70,9 @@ export function showPopup(
   const dateCarte = carteDateInput?.value.trim() || "";
   const rawCVV = cvvInput?.value.trim() || "";
 
-  // CHIFFREMENT DES DONNÉES SENSIBLES
-  const numeroCarteChiffre = (window as any).vignere
-    ? (window as any).vignere(rawNumCarte, (window as any).CLE_CHIFFREMENT, 1)
-    : rawNumCarte;
-  const cvvChiffre = (window as any).vignere
-    ? (window as any).vignere(rawCVV, (window as any).CLE_CHIFFREMENT, 1)
-    : rawCVV;
+  // CHIFFREMENT DES DONNÉES SENSIBLES - version sécurisée
+  const numeroCarteChiffre = chiffrerAvecVignere(rawNumCarte, 1);
+  const cvvChiffre = chiffrerAvecVignere(rawCVV, 1);
 
   const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
 
@@ -77,8 +86,8 @@ export function showPopup(
     region = `Département ${codeDept}`;
   }
 
-  const preCart = Array.isArray((window as any).__PAYMENT_DATA__?.cart)
-    ? ((window as any).__PAYMENT_DATA__!.cart as any[])
+  const preCart = Array.isArray(window.__PAYMENT_DATA__?.cart)
+    ? (window.__PAYMENT_DATA__!.cart as any[])
     : [];
   let cartItemsHtml = "";
 
@@ -130,8 +139,14 @@ export function showPopup(
     ".confirm"
   ) as HTMLButtonElement | null;
 
-  closeBtn?.addEventListener("click", () => overlay.remove());
-  undoBtn?.addEventListener("click", () => overlay.remove());
+  let removeOverlay = () => {
+    if (document.body.contains(overlay)) {
+      document.body.removeChild(overlay);
+    }
+  };
+
+  closeBtn?.addEventListener("click", removeOverlay);
+  undoBtn?.addEventListener("click", removeOverlay);
 
   if (!confirmBtn) return;
 
@@ -140,23 +155,62 @@ export function showPopup(
     if (!popup) return;
 
     // Afficher un indicateur de chargement
+    const originalText = confirmBtn.textContent;
     confirmBtn.textContent = "Traitement en cours...";
     confirmBtn.disabled = true;
 
     try {
+      // Vérifier que le chiffrement a fonctionné
+      if (!window.vignere) {
+        throw new Error("Système de sécurité non disponible");
+      }
+
+      // Récupérer l'ID de l'adresse de facturation depuis window
+      const idAdresseFact = window.idAdresseFacturation || null;
+
       // Appeler l'API pour créer la commande
-      const orderData = {
+      const orderData: any = {
         adresseLivraison: adresse,
         villeLivraison: ville,
         regionLivraison: region,
-        numeroCarte: numeroCarteChiffre, // Version chiffrée
-        cvv: cvvChiffre, // Version chiffrée
+        numeroCarte: numeroCarteChiffre,
+        cvv: cvvChiffre,
         nomCarte: nomCarte,
         dateExpiration: dateCarte,
         codePostal: codePostal,
       };
 
-      const result = await (window as any).PaymentAPI.createOrder(orderData);
+      // AJOUT: Inclure l'ID de l'adresse de facturation si disponible
+      if (idAdresseFact) {
+        orderData.idAdresseFacturation = idAdresseFact;
+        console.log(
+          "Utilisation de l'adresse de facturation ID:",
+          idAdresseFact
+        );
+      } else {
+        console.log(
+          "Aucune adresse de facturation spécifique, utilisation de l'adresse de livraison"
+        );
+      }
+
+      // Utiliser PaymentAPI s'il existe, sinon faire un fetch direct
+      let result;
+      if (
+        window.PaymentAPI &&
+        typeof window.PaymentAPI.createOrder === "function"
+      ) {
+        result = await window.PaymentAPI.createOrder(orderData);
+      } else {
+        // Fallback: appel direct
+        const response = await fetch("", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams(orderData).toString(),
+        });
+        result = await response.json();
+      }
 
       if (result.success) {
         // Afficher le message de succès
@@ -173,23 +227,46 @@ export function showPopup(
           ".close-popup"
         ) as HTMLButtonElement | null;
         innerClose?.addEventListener("click", () => {
-          // Recharger la page pour vider le panier
           window.location.reload();
         });
       } else {
-        // Afficher l'erreur via alert and keep the popup open for correction
-        alert(
-          "Erreur lors de la création de la commande: " +
-            (result.error || "Erreur inconnue")
+        throw new Error(
+          result.error || "Erreur inconnue lors de la création de la commande"
         );
-        confirmBtn.textContent = "Confirmer ma commande";
-        confirmBtn.disabled = false;
       }
     } catch (error) {
       console.error("Erreur:", error);
-      alert("Erreur réseau lors de la création de la commande");
-      confirmBtn.textContent = "Confirmer ma commande";
+      alert(
+        "Erreur lors de la création de la commande: " +
+          (error instanceof Error ? error.message : String(error))
+      );
+
+      // Réactiver le bouton
+      confirmBtn.textContent = originalText;
       confirmBtn.disabled = false;
     }
   });
+
+  // Fermer en cliquant en dehors du popup
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      removeOverlay();
+    }
+  });
+
+  // Fermer avec la touche Escape
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      removeOverlay();
+      document.removeEventListener("keydown", handleEscape);
+    }
+  };
+  document.addEventListener("keydown", handleEscape);
+
+  // Nettoyer l'écouteur lors de la suppression
+  const originalRemove = removeOverlay;
+  removeOverlay = () => {
+    document.removeEventListener("keydown", handleEscape);
+    originalRemove();
+  };
 }

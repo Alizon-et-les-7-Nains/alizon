@@ -86,6 +86,10 @@ $produit = [
 <html lang="en">
 <head>
     <!-- sass --watch views/styles/main.scss:public/style.css -->
+    <!-- ssh sae@10.253.5.104
+    su -
+    grognasseEtCompagnie -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
@@ -111,7 +115,7 @@ $produit = [
         </div>
         <!-- Circles container - positioned absolutely -->
         <div id="lesCercles" class="carousel-indicators">
-            <?php if (!empty($images)): ?>
+            <?php if (count($images) > 1): ?> 
                 <?php foreach ($images as $index => $image): ?>
                     <div class="cercleNoir indicator <?php echo $index === 0 ? 'active' : ''; ?>" 
                          data-index="<?php echo $index; ?>"></div>
@@ -149,7 +153,7 @@ $produit = [
     </article>
     <article class="actionsProduit">
     <h2>Vendu par <?php echo htmlspecialchars($produit['prenom_vendeur'] . ' ' . $produit['nom_vendeur']); ?></h2>
-    <p class="underline" id="plusDarticles"><a href="">Plus d'article de Loïc Raison</a></p>
+    <p class="underline" id="plusDarticles"><a href="">Plus d'article de ce vendeur</a></p>
     <br>
     <hr>
     <div class="ligneActions">
@@ -196,6 +200,7 @@ $produit = [
     </div> 
     <label for="activeVoirPlus" class="voirPlus"> </label> 
 </section>
+<hr>
 <section class="sectionAvis">
     <h2>Ce qu'en disent nos clients</h2>
     <?php
@@ -276,7 +281,6 @@ $produit = [
         echo $html;
     ?>
 </section>
-<hr>
 </main>
 <footer>
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
@@ -429,6 +433,9 @@ function changerPouce(element, type) {
         }
     }
 }
+
+
+
 </script>
 
 </script>
