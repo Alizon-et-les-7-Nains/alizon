@@ -11,14 +11,20 @@
 @use "./backoffice/aside";
 
 @use "./backoffice/structure";
+@use './backoffice/acceuil';
+@use './backoffice/produits';
 @use "./frontoffice/inscription";
 @use "./frontoffice/stylePaiement";
-@use "./backoffice/acceuil";
 @use "./frontoffice/styleCompteClient";
 @use "./frontoffice/styleAcceuilConnecte";
 @use "./frontoffice/stylePopUpCompteClient";
 @use "./frontoffice/stylePanier";
 @use "./backoffice/retourEnHaut";
-// @use "./backoffice/AjouterProduit";
-// maj
+@use "./frontoffice/styleEcrireAvis";
+@use "./backoffice/modifierProduit";
+@use "./backoffice/ajouterProduit";
 @use "./backoffice/CreerCompteVendeur";
+@use "./backoffice/stylepopUpPromouvoir";
+@use "./backoffice/stylePopUpInfoCalcul";
+@use "./backoffice/stylePopUpRemise";
+@use "./backoffice/stocks";

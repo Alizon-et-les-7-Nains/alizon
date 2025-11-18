@@ -1,4 +1,28 @@
-<?php // require_once "../../controllers/pdo.php" ?>
+<?php
+require_once "../../controllers/pdo.php"; // Connexion à la BDD
+
+// Vérifier que l'ID est présent
+if (!isset($_GET['id'])) {
+    die("Aucun produit sélectionné");
+}
+
+$productId = (int)$_GET['id']; // Sécuriser l'ID
+
+// Préparer la requête
+$stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = $productId");
+$stmt->execute([$productId]);
+$product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$product) {
+    die("Produit introuvable");
+}
+///////////////////////////////////////////////
+//                                           //
+//    Modifier BDD pour poids, mots clés     //
+//                                           //
+///////////////////////////////////////////////
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,8 +39,9 @@
     </header>
     <?php require_once "./partials/aside.php"?>
        
-    <main class="AjouterProduit"> 
-        <div class="product-content">
+    <main class="modifierProduit"> 
+        <form class="product-content" id="monForm" action="../../controllers/updateProduit.php" method="post" enctype="multipart/form-data">
+>
             <div class="left-section">
                 <div class="ajouterPhoto">
                     <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
@@ -29,42 +54,36 @@
 
                 <div class="form-details">
                     <input type="text" class="product-name-input" placeholder="Intitulé du produit" required>
+                    <?= htmlspecialchars($product['nom']) ?>
                 
                     <div class="price-weight-kg">
-                        <input type="text" placeholder="Prix" required>
-                        <input type="text" placeholder="Poids" required>
+                        <input type="text" placeholder="Prix" required
+                        <?= htmlspecialchars($product['prix']) ?>>
+                        <input type="text" placeholder="Poids" required
+                        <?= htmlspecialchars($product['poids']) ?>>
                         <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
+                    <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)"  required
+                    <?= htmlspecialchars($product['description']) ?>>
 
-                    <!-- <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)"> -->
                 </div>
             </div>
 
             <div class="right-section">
                 <div class="ajouterResume resume-box">
-                    <label for="resume">Résumé du produit</label>
-                    <textarea name="resume" id="resume" placeholder>Décrivez votre produit en quelques mots</textarea>
+                    <label for="resume">Résumé du produit</label><br>   
+                    <textarea name="resume" id="resume" placeholder="Décrivez votre produit en quelques mots"></textarea>
                 </div>
-            <h2>Plus d'informations</h2>
 
-            <div id="sections-container"></div>
 
-                <div class="ajouterSection">
-                    <p>Etoffez la description de votre produit en ajoutant une section</p>
-                    <select id="section-type">
-                        <option value="both">Titre + Description</option>
-                        <option value="title">Titre seulement</option>
-                        <option value="desc">Description seulement</option>
-                    </select>
-                    <button id="add-section-btn" type="button">Ajouter une section</button>
-                </div>
 
             <div class="form-actions">
                 <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
-                <a href="#"><button type="button" class="btn-annuler">Annuler</button></a>
+                <a href="#"><button type="button" class="btn-supprimer">Supprimer</button></a>
                 <a href="#"><button type="submit" class="btn-ajouter">Ajouter le produit</button></a>
+                
             </div>
-        </div>
+        </form>
     </main>
 
     <script>

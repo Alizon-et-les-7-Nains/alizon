@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../../public/style.css">
-    <title>footer</title>
-</head>
-
-<body>
-    <footer class="footerFront">
+<footer class="footerFront">
         <div class="footerPC">
             <div>
                 <a href="../frontoffice/legalesConnecte.php">Conditions générales de vente</a>
@@ -26,7 +15,4 @@
             <a href="../frontoffice/panier.php"><img src="../../../public/images/cartLightBlue.svg" alt="" class="cartLightBlue"></a>
             <a href="" style="margin-right: 0px;"><img src="../../../public/images/burgerLightBlue.svg" alt=""class="burgerLightBlue"></a>
         </div>
-    </footer>
-</body>
-
-</html>
+</footer>

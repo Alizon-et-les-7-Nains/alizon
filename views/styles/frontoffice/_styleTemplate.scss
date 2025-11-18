@@ -176,6 +176,11 @@ body {
     }
   }
 
+  .icons {
+    display: flex;
+    align-items: center;
+  }
+
   @media (max-width: 638px) {
     .icons {
       display: none;
