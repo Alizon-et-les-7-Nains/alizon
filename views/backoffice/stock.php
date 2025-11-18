@@ -1,3 +1,9 @@
+<?php
+    require_once '../../controllers/pdo.php';
+    require_once '../../controllers/prix.php';
+    require_once '../../controllers/date.php';
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -19,6 +25,77 @@
         <section>
             <h1>Produits Épuisés</h1>
             <article>
+<?php
+    $epuises = ($pdo->query('select * from _produit where stock = 0'))->fetchAll(PDO::FETCH_ASSOC);
+    if (count($epuises) == 0) echo "<h2>Aucun produit épuisé</h2>";
+    foreach ($epuises as $epuise) {
+        $image = ($pdo->query('select * from _imageProduit where stock = 0'))->fetchAll(PDO::FETCH_ASSOC);
+        $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        $html = "<div>
+                    <button class='settings'>
+                        <div><div></div></div>
+                        <div><div class='right'></div></div>
+                        <div><div></div></div>
+                    </button>
+
+                    <table>
+                        <tr>
+                            <td rowspan=2>
+                                <table>
+                                    <tr>
+                                        <td rowspan=4><img src='$image'></td>
+                                        <th>" . $epuise['nom'] . "</th>
+                                    </tr>
+                                    <tr>
+                                        <td>" . $epuise['typeProd'] . "</td>
+                                    </tr>
+                                    <tr>
+                                        <th>29,99€</th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <figure>
+                                                <figcaption>3,5</figcaption>
+                                                <img src='/public/images/etoile.svg'>
+                                            </figure>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </td>
+                            <th colspan=2>Dernières commandes</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>
+                                        <ul>
+                                            <li>2</li>
+                                            <li>09/07/2025</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <li>2</li>
+                                            <li>09/07/2025</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <ul>
+                        <li>
+                            <figure>
+                                <img src='/public/images/infoDark.svg'>
+                                <figcaption>Aucun réassort prévu</figcaption>
+                            </figure>
+                        </li>
+                        <li>45 restants</li>
+                    </ul>
+                </div>";
+        echo $html;
+    }
+?>
             </article>
         </section>
 
