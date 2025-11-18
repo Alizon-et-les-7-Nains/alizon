@@ -17,8 +17,10 @@ require_once "../../controllers/prix.php";
         }
     }
 
-    $nbProduit = count($tabIDProduitPanier);
-
+    $nbProduit = 0;
+    foreach ($tabIDProduitPanier as $key => $value) {
+        $nbProduit += $value;
+    }
 
     // Fonction pour ajouter un produit consulte
     function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
@@ -39,13 +41,15 @@ require_once "../../controllers/prix.php";
 
     function modifierQuantitePanier(&$tabIDProduitPanier, $idProduit, $quantite) {
         if (isset($tabIDProduitPanier[$idProduit])) {
-            if ($quantite == 0) {
+            if ($quantite <= 0) {
                 unset($tabIDProduitPanier[$idProduit]);
+                echo "<script>console.log('Produit modifier : $idProduit avec une quantite negative');</script>";
             } else {
                 $tabIDProduitPanier[$idProduit] += $quantite;
             }
         }
         
+        echo "<script>console.log('Produit modifier : $idProduit avec la quantite : $quantite');</script>";
         setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
         return true;
     }
@@ -72,7 +76,7 @@ require_once "../../controllers/prix.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/style.css">
-    <title>Alizon - Votre panier TEST</title>
+    <title>Alizon - Votre panier</title>
 </head>
 <body class="panier">
     <?php include "../../views/frontoffice/partials/headerDeconnecte.php"; ?>
@@ -143,7 +147,7 @@ require_once "../../controllers/prix.php";
                         $stmt = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
                         $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
-                        $prixTotal += $panier['prix'];
+                        $prixTotal += $panier['prix'] * $quantite;
                     }
 
                     ?>
@@ -169,7 +173,7 @@ require_once "../../controllers/prix.php";
                 <a href="../../views/frontoffice/connexionClient.php"><p>Passer la commande</p></a>
             </div>
             <form method="GET" action="../../controllers/viderPanier.php">
-                <button class="viderPanierCookie" name="idUtilisateur" value="<?= htmlspecialchars($_SESSION['user_id'] ?? '') ?>">Vider le panier</button>
+                <button class="viderPanierCookie viderPanier" name="idUtilisateur" value="<?= htmlspecialchars($_SESSION['user_id'] ?? '') ?>">Vider le panier</button>
             </form>
         </section>
         <?php } ?>
