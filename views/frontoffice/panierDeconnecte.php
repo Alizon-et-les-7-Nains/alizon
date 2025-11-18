@@ -50,13 +50,13 @@ require_once "../../controllers/prix.php";
         return true;
     }
 
-    if (isset($_GET['addPanier']) && !empty($_GET['addPanier'])) {
-        $idProduitAjoute = intval($_GET['addPanier']);
-        $quantite = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
+    if (isset($_POST['addPanier']) && !empty($_POST['addPanier'])) {
+        $idProduitAjoute = intval($_POST['addPanier']);
+        $quantite = isset($_POST['qty']) ? intval($_POST['qty']) : 1;
         ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute, $quantite);
         
-        if (isset($_GET['id'])) {
-            header("Location: produit.php?id=" . intval($_GET['id']));
+        if (isset($_POST['id'])) {
+            header("Location: produit.php?id=" . intval($_POST['id']));
             exit;
         }
     }
@@ -102,6 +102,11 @@ require_once "../../controllers/prix.php";
                         </div>
                         <div class="quantiteProduit">
                             <button class="minus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
+                                <?php 
+                                if ($quantite <= 1) {
+                                    unset($tabIDProduitPanier[$idProduit]);
+                                }
+                                ?>
                             <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
                             </button>                            
                             <p class="quantite"><?= htmlspecialchars($quantite ?? 'N/A') ?></p> 
@@ -166,7 +171,6 @@ require_once "../../controllers/prix.php";
 
     <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
 
-    <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 </body>
