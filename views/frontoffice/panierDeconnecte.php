@@ -7,6 +7,9 @@ require_once "../../controllers/prix.php";
     // Récupération du cookie existant ou création d'un tableau vide
     if(!isset($_COOKIE["produitPanier"]) || empty($_COOKIE["produitPanier"])) {
         $tabIDProduitPanier = [];
+    } else {
+        // Récupération des informations des produits dans le panier
+        $nbProduit = count($tabIDProduitPanier);
     }
 
     // Fonction pour ajouter un produit consulte
@@ -49,9 +52,6 @@ require_once "../../controllers/prix.php";
             exit;
         }
     }
-
-    // Récupération des informations des produits dans le panier
-    $nbProduit = count($tabIDProduitPanier);
 
     // ============================================================================
     // AFFICHAGE DE LA PAGE
@@ -111,7 +111,7 @@ require_once "../../controllers/prix.php";
                         </button>
                     </div>
                 </article> 
-            <?php } if ($nbProduit==0) { ?>
+            <?php } if ($nbProduit==0 || $nbProduit == null) { ?>
                 <h1 class="aucunProduit">Aucun produit</h1>
             <?php } else { ?>
         </section>
