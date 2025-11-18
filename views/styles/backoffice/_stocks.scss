@@ -24,9 +24,8 @@ main.backoffice-stocks {
         }
 
         img:not(figure img) {
-            border-top-left-radius: 16px;
-            border-bottom-left-radius: 16px;
             height: 200px;
+            margin: 0.5em;
         }
         
         div:not(button.settings div) {
@@ -126,8 +125,6 @@ main.backoffice-stocks {
                 
                 table {
                     padding-right: 1em;
-                    border-collapse: collapse;
-                    border-spacing: 0;
                     width: 100%;
                     
                     tr:nth-child(2) th {

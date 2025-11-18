@@ -4233,9 +4233,8 @@ main.backoffice-stocks section article {
   font-family: "open-sans";
 }
 main.backoffice-stocks section img:not(figure img) {
-  border-top-left-radius: 16px;
-  border-bottom-left-radius: 16px;
   height: 200px;
+  margin: 0.5em;
 }
 main.backoffice-stocks section div:not(button.settings div) *:not(img) {
   user-select: text;
@@ -4320,8 +4319,6 @@ main.backoffice-stocks section div:not(button.settings div) table table, main.ba
 }
 main.backoffice-stocks section div:not(button.settings div) table table {
   padding-right: 1em;
-  border-collapse: collapse;
-  border-spacing: 0;
   width: 100%;
 }
 main.backoffice-stocks section div:not(button.settings div) table table tr:nth-child(2) th {
