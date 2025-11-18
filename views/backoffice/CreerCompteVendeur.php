@@ -1,40 +1,9 @@
-<?php
-$message = "";
-$data = []; 
-$nom_contact = '';
-$prenom_contact = '';
-$email = '';
-$num_tel = '';
-$nom_utilisateur = '';
-$num_siren = '';
-$adresse_entreprise = '';
-$raison_sociale = '';
-$date_naissance = '';
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nom_contact        = htmlspecialchars(trim($_POST['nom_contact'] ?? ''));
-    $prenom_contact     = htmlspecialchars(trim($_POST['prenom_contact'] ?? ''));
-    $email              = htmlspecialchars(trim($_POST['email'] ?? ''));
-    $num_tel            = htmlspecialchars(trim($_POST['num_tel'] ?? ''));
-    $nom_utilisateur    = htmlspecialchars(trim($_POST['nom_utilisateur'] ?? ''));
-    $mdp                = $_POST['mdp'] ?? '';
-    $confimer_mdp       = $_POST['confimer_mdp'] ?? '';
-    $num_siren          = htmlspecialchars(trim($_POST['num_siren'] ?? ''));
-    $adresse_entreprise = htmlspecialchars(trim($_POST['adresse_entreprise'] ?? ''));
-    $raison_sociale     = htmlspecialchars(trim($_POST['raison_sociale'] ?? ''));
-    $date_naissance     = htmlspecialchars(trim($_POST['date_naissance'] ?? ''));
-    
-    $form_is_valid = true;
-}
-?>
-
+<?php require_once "../../controllers/pdo.php" ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">  
     <link rel="stylesheet" href="../../public/style.css"> 
     <title>Création d'un compte vendeur</title>
 </head>
@@ -51,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
 
         <div class="container">
-            <form method="post" class="form-vendeur">
+            <form method="post" class="form-vendeur" id="monForm" action="../../controllers/creerCompteVendeur.php" enctype="multipart/form-data">
                 <?php if (!empty($message)) : ?>
                     <p class="message"><?= $message ?></p>
                 <?php endif; ?>
