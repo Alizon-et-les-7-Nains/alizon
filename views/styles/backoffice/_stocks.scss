@@ -1,0 +1,216 @@
+@use '../colors' as *;
+@use '../fonts';
+
+main.backoffice-stocks {
+    h1, button, div {
+        user-select: none;
+    }
+    
+    section {
+        color: $color-blue;
+        
+        h1 {
+            font: {
+                family: 'lora';
+                weight: bold;
+            }
+        }
+        
+        article {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+            gap: 1em;
+        }
+        
+        div:not(button.settings div) {
+            *:not(img) {
+                user-select: text;
+            }
+            max-width: max-content;
+            padding: 1em;
+            padding-bottom: 0;
+            background-color: $color-pastel-purple;
+            border-radius: 16px;
+            font-family: 'open-sans';
+
+            table:not(table table) {
+                border-spacing: 2em 0;
+            }
+            
+            button.settings {
+                border: none;
+                background: none;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 23px;
+                justify-self: right;
+                
+                div {
+                    background-color: $color-blue;
+                    border-radius: 8px;
+                    width: 25px; height: 3px;
+                    
+                    div {
+                        transition: all 0.2s ease;
+                        background-color: $color-blue;
+                        width: 7px; height: 7px;
+                        border-radius: 100%;
+                        position: relative;
+                        top: -2px;
+                        left: 4px;
+                        
+                        &.right {
+                            left: 14px;
+                        }
+                    }
+                }
+                
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            
+            figure {
+                display: flex;
+                gap: 0.25em;
+                align-items: center;
+            }
+            
+            ul {
+                list-style: none;
+            }
+            
+            table {
+                width: 100%;
+                
+                th {
+                    text-align: left;
+                }
+                
+                tr {
+                    th {
+                        text-align: left;
+                        font-weight: bold;
+                        font-size: 20px;
+                        justify-items: left;
+                        justify-content: left;
+                        justify-self: center;
+                        padding: 0;
+                    }
+                }
+                
+                figure {
+                    color: $color-yellow;
+                    justify-content: flex-start;
+                    margin: 0;
+                    padding: 0;
+                }
+                
+                table, ul:not(ul ul) {
+                    background-color: $color-white;
+                    border: {
+                        style: solid;
+                        width: 2px;
+                        color: $color-black;
+                        radius: 16px;
+                    }
+                }
+                
+                table {
+                    padding-right: 1em;
+                    width: 100%;
+                    
+                    tr:nth-child(2) th {
+                        padding-top: 1.5em;
+                        padding-bottom: 0;
+                    }
+                    
+                    tr:nth-child(3) th {
+                        padding: 0;
+                        vertical-align: bottom;
+                        height: 60px;
+                    }
+                }
+                
+                ul {
+                    padding-left: 0;
+                    ul {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 1em;
+                        align-items: center;
+                        
+                        li:first-child {
+                            font-size: 30px;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+            
+            > ul {
+                margin-top: -1em;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-right: 3em;
+                margin-left: -2em;
+                font-weight: bold;
+                
+                figure {
+                    img {
+                        height: 20px;
+                    }
+                    gap: 0.25em;
+                }
+                
+                li:last-child {
+                    color: $color-red;
+                }
+            }
+        }
+        
+        &:first-child div:not(button.settings div) {
+            border-left: {
+                style: solid;
+                width: 5px;
+                color: $color-red;
+            }
+
+            > ul {
+                li:last-child {
+                    color: $color-red;
+                }
+            }
+        }
+        &:nth-child(2) div:not(button.settings div) {
+            border-left: {
+                style: solid;
+                width: 5px;
+                color: $color-orange;
+            }
+
+            > ul {
+                li:last-child {
+                    color: $color-orange;
+                }
+            }
+        }
+        &:nth-child(3) div:not(button.settings div) {
+            border-left: {
+                style: solid;
+                width: 5px;
+                color: $color-green;
+            }
+
+            > ul {
+                li:last-child {
+                    color: $color-green;
+                }
+            }
+        }
+    }
+
+    margin-bottom: 2em;
+}

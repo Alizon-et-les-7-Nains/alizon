@@ -437,6 +437,7 @@ body {
   margin: 0;
   padding: 0;
   transition: all 0.3s ease;
+  font-family: "lora", serif;
 }
 .pageProduit main {
   display: flex;
@@ -444,7 +445,6 @@ body {
   position: relative;
 }
 .pageProduit h1, .pageProduit h2, .pageProduit h3, .pageProduit h4, .pageProduit p {
-  font-family: "lora", serif;
   color: #273469;
 }
 .pageProduit #descriptionCourte {
@@ -567,6 +567,9 @@ body {
   width: 40px;
   height: 40px;
 }
+.pageProduit .ligneActions p, .pageProduit .ligneActions a {
+  color: #273469;
+}
 .pageProduit .bouton {
   width: 300px;
   height: 60px;
@@ -662,6 +665,9 @@ body {
 .pageProduit #activeVoirPlus {
   display: none;
 }
+.pageProduit .informations {
+  margin: 2em 0;
+}
 .pageProduit .informations label {
   display: inline-block;
   position: relative;
@@ -683,6 +689,7 @@ body {
 .pageProduit .sectionAvis {
   width: 68%;
   margin-left: 2.5em;
+  margin-top: 2em;
 }
 .pageProduit .sectionAvis h6 {
   color: #273469;
@@ -841,6 +848,7 @@ body {
   display: flex !important;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 1em;
   margin-top: 15px;
   position: absolute;
@@ -867,6 +875,13 @@ body {
 .pageProduit .cercleNoir:hover {
   background-color: #273469 !important;
   transform: scale(1.15);
+}
+.pageProduit hr {
+  border: 0;
+  height: 2px;
+  background-color: #e4e4e4;
+  margin: 0 2.5em;
+  width: 70%;
 }
 
 /* ---- Header ---- */
@@ -4193,6 +4208,174 @@ button#haut.visible:hover {
   background-color: #e4d9ff;
   padding: 10px;
   border-radius: 16px;
+}
+
+main.backoffice-stocks h1, main.backoffice-stocks button, main.backoffice-stocks div {
+  user-select: none;
+}
+main.backoffice-stocks section {
+  color: #273469;
+}
+main.backoffice-stocks section h1 {
+  font-family: "lora";
+  font-weight: bold;
+}
+main.backoffice-stocks section article {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+  gap: 1em;
+}
+main.backoffice-stocks section div:not(button.settings div) *:not(img) {
+  user-select: text;
+}
+main.backoffice-stocks section div:not(button.settings div) {
+  max-width: max-content;
+  padding: 1em;
+  padding-bottom: 0;
+  background-color: #e4d9ff;
+  border-radius: 16px;
+  font-family: "open-sans";
+}
+main.backoffice-stocks section div:not(button.settings div) table:not(table table) {
+  border-spacing: 2em 0;
+}
+main.backoffice-stocks section div:not(button.settings div) button.settings {
+  border: none;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 23px;
+  justify-self: right;
+}
+main.backoffice-stocks section div:not(button.settings div) button.settings div {
+  background-color: #273469;
+  border-radius: 8px;
+  width: 25px;
+  height: 3px;
+}
+main.backoffice-stocks section div:not(button.settings div) button.settings div div {
+  transition: all 0.2s ease;
+  background-color: #273469;
+  width: 7px;
+  height: 7px;
+  border-radius: 100%;
+  position: relative;
+  top: -2px;
+  left: 4px;
+}
+main.backoffice-stocks section div:not(button.settings div) button.settings div div.right {
+  left: 14px;
+}
+main.backoffice-stocks section div:not(button.settings div) button.settings:hover {
+  cursor: pointer;
+}
+main.backoffice-stocks section div:not(button.settings div) figure {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
+}
+main.backoffice-stocks section div:not(button.settings div) ul {
+  list-style: none;
+}
+main.backoffice-stocks section div:not(button.settings div) table {
+  width: 100%;
+}
+main.backoffice-stocks section div:not(button.settings div) table th {
+  text-align: left;
+}
+main.backoffice-stocks section div:not(button.settings div) table tr th {
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+  justify-items: left;
+  justify-content: left;
+  justify-self: center;
+  padding: 0;
+}
+main.backoffice-stocks section div:not(button.settings div) table figure {
+  color: #FFD000;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+}
+main.backoffice-stocks section div:not(button.settings div) table table, main.backoffice-stocks section div:not(button.settings div) table ul:not(ul ul) {
+  background-color: #fffefa;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #000000;
+  border-radius: 16px;
+}
+main.backoffice-stocks section div:not(button.settings div) table table {
+  padding-right: 1em;
+  width: 100%;
+}
+main.backoffice-stocks section div:not(button.settings div) table table tr:nth-child(2) th {
+  padding-top: 1.5em;
+  padding-bottom: 0;
+}
+main.backoffice-stocks section div:not(button.settings div) table table tr:nth-child(3) th {
+  padding: 0;
+  vertical-align: bottom;
+  height: 60px;
+}
+main.backoffice-stocks section div:not(button.settings div) table ul {
+  padding-left: 0;
+}
+main.backoffice-stocks section div:not(button.settings div) table ul ul {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  align-items: center;
+}
+main.backoffice-stocks section div:not(button.settings div) table ul ul li:first-child {
+  font-size: 30px;
+  font-weight: bold;
+}
+main.backoffice-stocks section div:not(button.settings div) > ul {
+  margin-top: -1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 3em;
+  margin-left: -2em;
+  font-weight: bold;
+}
+main.backoffice-stocks section div:not(button.settings div) > ul figure img {
+  height: 20px;
+}
+main.backoffice-stocks section div:not(button.settings div) > ul figure {
+  gap: 0.25em;
+}
+main.backoffice-stocks section div:not(button.settings div) > ul li:last-child {
+  color: #f14e4e;
+}
+main.backoffice-stocks section:first-child div:not(button.settings div) {
+  border-left-style: solid;
+  border-left-width: 5px;
+  border-left-color: #f14e4e;
+}
+main.backoffice-stocks section:first-child div:not(button.settings div) > ul li:last-child {
+  color: #f14e4e;
+}
+main.backoffice-stocks section:nth-child(2) div:not(button.settings div) {
+  border-left-style: solid;
+  border-left-width: 5px;
+  border-left-color: #ffc25a;
+}
+main.backoffice-stocks section:nth-child(2) div:not(button.settings div) > ul li:last-child {
+  color: #ffc25a;
+}
+main.backoffice-stocks section:nth-child(3) div:not(button.settings div) {
+  border-left-style: solid;
+  border-left-width: 5px;
+  border-left-color: #259525;
+}
+main.backoffice-stocks section:nth-child(3) div:not(button.settings div) > ul li:last-child {
+  color: #259525;
+}
+main.backoffice-stocks {
+  margin-bottom: 2em;
 }
 
 /*# sourceMappingURL=style.css.map */

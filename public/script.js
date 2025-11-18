@@ -58,6 +58,29 @@ modal?.addEventListener("click", (e) => {
         modal.close();
     }
 });
+const btnSettings = Array.from(document.getElementsByClassName('settings'));
+btnSettings?.forEach(btn => {
+    btn.addEventListener('mouseover', () => {
+        const subDivs = Array.from(btn.children);
+        subDivs.forEach(div => {
+            if (div instanceof HTMLElement && div.firstElementChild instanceof HTMLElement) {
+                const innerDiv = div.firstElementChild;
+                innerDiv.style.left = innerDiv.classList.contains('right') ? '4px' : '14px';
+            }
+        });
+    });
+});
+btnSettings?.forEach(btn => {
+    btn.addEventListener('mouseout', () => {
+        const subDivs = Array.from(btn.children);
+        subDivs.forEach(div => {
+            if (div instanceof HTMLElement && div.firstElementChild instanceof HTMLElement) {
+                const innerDiv = div.firstElementChild;
+                innerDiv.style.left = innerDiv.classList.contains('right') ? '14px' : '4px';
+            }
+        });
+    });
+});
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });

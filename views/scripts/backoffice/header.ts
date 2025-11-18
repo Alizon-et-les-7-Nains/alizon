@@ -4,9 +4,7 @@ document
     window.location.href = "10.253.5.104/views/backoffice/ajouterProduit.php";
   });
 
-const modal: HTMLDialogElement | null = document.querySelector(
-  "header.backoffice dialog"
-) as HTMLDialogElement;
+const modal: HTMLDialogElement | null = document.querySelector("header.backoffice dialog") as HTMLDialogElement;
 
 document
   .querySelector("header.backoffice figure:nth-child(2)")
