@@ -3,15 +3,15 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $nom_contact = $_POST['nom'] ?? '';
-    $prenom = $_POST['prenom_contact'] ?? '';
+    $nom = $_POST['nom'] ?? '';
+    $prenom = $_POST['prenom'] ?? '';
     $email = $_POST['email'] ?? '';
-    $noTelephone = $_POST['num_tel'] ?? '';
-    $pseudo = $_POST['nom_utilisateur'] ?? '';
+    $noTelephone = $_POST['noTelephone'] ?? '';
+    $pseudo = $_POST['pseudo'] ?? '';
     $mdp = $_POST['mdp'] ?? '';
-    $dateNaissance = $_POST['date_naissance'] ?? '';
-    $noSiren = $_POST['num_siren'] ?? '';
-    $idAdresse = $_POST['adresse_entreprise'] ?? '';
+    $dateNaissance = $_POST['dateNaissance'] ?? '';
+    $noSiren = $_POST['noSiren'] ?? '';
+    $idAdresse = $_POST['idAdresse'] ?? '';
     $raisonSocial = $_POST['raisonSocial'] ?? '';
 
     $sql = "INSERT INTO _vendeur 

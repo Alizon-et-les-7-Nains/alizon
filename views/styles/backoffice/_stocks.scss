@@ -20,6 +20,16 @@ main.backoffice-stocks {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
             gap: 1em;
+            font-family: 'open-sans';
+        }
+
+        img:not(figure img) {
+            height: 200px;
+            margin: {
+                top: 0.5em;
+                left: 0.5em;
+                right: 0.5em;
+            }
         }
         
         div:not(button.settings div) {

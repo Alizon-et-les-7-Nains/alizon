@@ -1,9 +1,26 @@
-<?php require_once "../../controllers/pdo.php" ?>
+<?php 
+    require_once "../../controllers/pdo.php"; 
+
+    $nom = $_SESSION['form_data']['nom'] ?? '';
+    $prenom = $_SESSION['form_data']['prenom'] ?? '';
+    $email = $_SESSION['form_data']['email'] ?? '';
+    $noTelephone = $_SESSION['form_data']['noTelephone'] ?? '';
+    $pseudo = $_SESSION['form_data']['pseudo'] ?? '';
+    $dateNaissance = $_SESSION['form_data']['dateNaissance'] ?? '';
+    $noSiren = $_SESSION['form_data']['noSiren'] ?? '';
+    $idAdresse = $_SESSION['form_data']['idAdresse'] ?? '';
+    $raisonSocial = $_SESSION['form_data']['raisonSocial'] ?? '';
+    $message = $_SESSION['form_data']['message'] ?? ''; 
+    unset($_SESSION['form_data']);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">  
     <link rel="stylesheet" href="../../public/style.css"> 
     <title>Création d'un compte vendeur</title>
 </head>
@@ -28,20 +45,20 @@
                 <div class="row g-3">
                     
                     <div class="col-md-6">
-                        <input type="text" name="nom_contact" placeholder="Nom de contact" required class="form-control" value="<?= $nom_contact ?>">
+                        <input type="text" name="nom" placeholder="Nom de contact" required class="form-control" value="<?= $nom ?>">
                     </div>
                     <div class="col-md-6">
-                        <input type="text" name="prenom_contact" placeholder="Prénom de contact" required class="form-control" value="<?= $prenom_contact ?>">
+                        <input type="text" name="prenom" placeholder="Prénom de contact" required class="form-control" value="<?= $prenom ?>">
                     </div>
                     <div class="col-md-6">
                         <input type="email" name="email" placeholder="Adresse E-Mail" required class="form-control" value="<?= $email ?>">
                     </div>
                     <div class="col-md-6">
-                        <input type="tel" name="num_tel" placeholder="Numéro de téléphone" required class="form-control" value="<?= $num_tel ?>">
+                        <input type="tel" name="noTelephone" placeholder="Numéro de téléphone" required class="form-control" value="<?= $noTelephone ?>">
                     </div>
                     
                     <div class="col-md-6">
-                        <input type="text" name="nom_utilisateur" placeholder="Nom d'utilisateur" required class="form-control" value="<?= $nom_utilisateur ?>">
+                        <input type="text" name="pseudo" placeholder="Nom d'utilisateur" required class="form-control" value="<?= $pseudo ?>">
                     </div>
 
                     <div class="col-md-6">
@@ -60,7 +77,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <input type="date" name="date_naissance" required class="form-control" value="<?= $date_naissance ?>">
+                        <input type="date" name="dateNaissance" required class="form-control" value="<?= $dateNaissance ?>">
                     </div>
                     
                     <div class="col-md-6">
@@ -68,14 +85,14 @@
                     </div>
                     
                     <div class="col-md-6">
-                        <input type="text" name="num_siren" placeholder="Numéro SIREN" required class="form-control" value="<?= $num_siren ?>">
+                        <input type="text" name="noSiren" placeholder="Numéro SIREN" required class="form-control" value="<?= $noSiren ?>">
                     </div>
                     <div class="col-md-6">
-                        <input type="text" name="adresse_entreprise" placeholder="Adresse de l'entreprise" required class="form-control" value="<?= $adresse_entreprise ?>">
+                        <input type="text" name="idAdresse" placeholder="Adresse de l'entreprise" required class="form-control" value="<?= $idAdresse ?>">
                     </div>
                     
                     <div class="col-md-6">
-                        <input type="text" name="raison_sociale" placeholder="Raison sociale" required class="form-control" value="<?= $raison_sociale ?>">
+                        <input type="text" name="raisonSocial" placeholder="Raison sociale" required class="form-control" value="<?= $raisonSocial ?>">
                     </div>
                     <div class="col-md-6"></div> 
 

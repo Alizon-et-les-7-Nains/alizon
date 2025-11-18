@@ -1,11 +1,6 @@
 <?php
 require_once "../../controllers/pdo.php"; // Connexion à la BDD
 
-// Vérifier que l'ID est présent
-if (!isset($_GET['id'])) {
-    die("Aucun produit sélectionné");
-}
-
 $productId = (int)$_GET['id']; // Sécuriser l'ID
 
 // Préparer la requête
@@ -13,9 +8,7 @@ $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = $productId");
 $stmt->execute([$productId]);
 $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$product) {
-    die("Produit introuvable");
-}
+
 ///////////////////////////////////////////////
 //                                           //
 //    Modifier BDD pour poids, mots clés     //
@@ -40,7 +33,7 @@ if (!$product) {
     <?php require_once "./partials/aside.php"?>
        
     <main class="modifierProduit"> 
-        <form class="product-content" id="monForm" action="../../controllers/updateProduit.php" method="post" enctype="multipart/form-data">
+        <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
 >
             <div class="left-section">
                 <div class="ajouterPhoto">
@@ -53,17 +46,17 @@ if (!$product) {
                 </div>
 
                 <div class="form-details">
-                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" required>
+                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required>
                     <?= htmlspecialchars($product['nom']) ?>
                 
                     <div class="price-weight-kg">
-                        <input type="text" placeholder="Prix" required
+                        <input type="text" placeholder="Prix" name="prix" required
                         <?= htmlspecialchars($product['prix']) ?>>
-                        <input type="text" placeholder="Poids" required
+                        <input type="text" placeholder="Poids" name="poids" required 
                         <?= htmlspecialchars($product['poids']) ?>>
                         <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
-                    <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)"  required
+                    <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required
                     <?= htmlspecialchars($product['description']) ?>>
 
                 </div>
