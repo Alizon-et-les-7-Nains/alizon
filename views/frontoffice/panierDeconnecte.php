@@ -10,12 +10,10 @@ require_once "../../controllers/prix.php";
     if (((isset($_COOKIE['produitConsulte'])) && (isset($_COOKIE['produitPanier']))) && (!empty($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitPanier']))) {
         $tabIDProduitConsulte = unserialize($_COOKIE['produitConsulte']);
         $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
-        if (!is_array($tabIDProduitConsulte)) {
-            $tabIDProduitConsulte = [];
-            $tabIDProduitPanier = [];
-        }
-    } else {
+    } else if (!isset($_COOKIE['produitConsulte'])) {
         $tabIDProduitConsulte = [];
+    } else if (!isset($_COOKIE['produitPanier'])) {
+        $tabIDProduitPanier = [];
     }
 
     // Fonction pour ajouter un produit consulte
@@ -57,12 +55,6 @@ require_once "../../controllers/prix.php";
             header("Location: produit.php?id=" . intval($_GET['id']));
             exit;
         }
-    }
-
-    $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
-
-    if ($tabIDProduitPanier == NULL) {
-        $tabIDProduitPanier = [];
     }
 
     // Récupération des informations des produits dans le panier
