@@ -22,7 +22,7 @@ require_once "../../controllers/prix.php";
         $nbProduit += $value;
     }
 
-    // Fonction pour ajouter un produit consulte
+    // Fonction pour ajouterx un produit consulte
     function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
         if (isset($tabIDProduitPanier[$idProduit])) {
             $tabIDProduitPanier[$idProduit] += $quantite;
@@ -43,7 +43,6 @@ require_once "../../controllers/prix.php";
         if (isset($tabIDProduitPanier[$idProduit])) {
             if ($quantite <= 0) {
                 unset($tabIDProduitPanier[$idProduit]);
-                echo "<script>console.log('Produit modifier : $idProduit avec une quantite negative');</script>";
             } else {
                 $tabIDProduitPanier[$idProduit] += $quantite;
             }
