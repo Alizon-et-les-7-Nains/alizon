@@ -884,6 +884,18 @@ body {
   width: 70%;
 }
 
+body.nouveauProduit nav figure:first-child {
+  display: none;
+}
+
+body.monCompte nav figure:nth-child(2), body.monCompte nav figure:nth-child(3) {
+  display: none;
+}
+
+body.nonConnecte nav {
+  display: none;
+}
+
 /* ---- Header ---- */
 header.backoffice {
   display: flex;
@@ -974,12 +986,6 @@ header.backoffice nav figure:nth-child(2) figcaption, header.backoffice nav figu
 }
 header.backoffice nav figure:nth-child(4) img {
   height: 35px;
-}
-header.backoffice.nouveauProduit nav figure:first-child {
-  display: none;
-}
-header.backoffice.nonConnecte nav {
-  display: none;
 }
 header.backoffice dialog {
   background-color: #fffefa;
