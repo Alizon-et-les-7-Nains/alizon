@@ -29,7 +29,7 @@
     $epuises = ($pdo->query('select * from _produit where stock = 0'))->fetchAll(PDO::FETCH_ASSOC);
     if (count($epuises) == 0) echo "<h2>Aucun produit épuisé</h2>";
     foreach ($epuises as $epuise) {
-        $image = ($pdo->query('select * from _imageDeProduit where stock = 0'))->fetchAll(PDO::FETCH_ASSOC);
+        $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $epuise['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $html = "<div>
                     <button class='settings'>
