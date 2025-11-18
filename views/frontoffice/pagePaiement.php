@@ -445,7 +445,10 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                             <input class="ville-input" type="text" placeholder="Ville" aria-label="Ville">
                         </div>
                     </div>
-                    <label><input id="checkboxFactAddr" type="checkbox"> Adresse de facturation différente</label>
+                    <label>
+                        <input id="checkboxFactAddr" type="checkbox">
+                        Adresse de facturation différente
+                    </label>
                 </section>
 
                 <section class="payment">
