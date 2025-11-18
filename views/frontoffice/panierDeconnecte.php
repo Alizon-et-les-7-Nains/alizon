@@ -80,7 +80,6 @@ require_once "../../controllers/prix.php";
     <main>
         <section class="listeProduit">
             <?php foreach ($tabIDProduitPanier as $idProduit => $quantite) { 
-                echo 'alert("ID du produit : ' . htmlspecialchars($idProduit) . '");';
                 $prix = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
                 $panier = $prix ? $prix->fetch(PDO::FETCH_ASSOC) : false;
 
@@ -105,7 +104,7 @@ require_once "../../controllers/prix.php";
                             <button class="minus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
                             <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
                             </button>                            
-                            <p class="quantite"><?= htmlspecialchars($panier['qty'] ?? 'N/A') ?></p> 
+                            <p class="quantite"><?= htmlspecialchars($quantite ?? 'N/A') ?></p> 
                             <button class="plus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 1; ?>'">
                                 <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
                             </button> 
