@@ -16,7 +16,7 @@
     <?php require_once "./partials/aside.php"?>
         
     <main class="AjouterProduit"> 
-        <div class="product-content">
+        <form action="../../controllers/ajouterProduit.php" method="POST" enctype="multipart/form-data" class="product-content" id="formAjoutProduit">
             
             <div class="left-section">
                 <div class="ajouterPhoto" id="zoneUpload">
@@ -38,74 +38,101 @@
                 </div>
 
                 <div class="form-details">
-                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" required>
+                    <input type="text" name="nom_produit" class="product-name-input" placeholder="Intitulé du produit" required>
                 
                     <div class="price-weight-kg">
-                        <input type="text" placeholder="Prix" required>
-                        <input type="text" placeholder="Poids" required>
-                        <span class="prix-kg-label">Prix au Kg:</span>
+                        <input type="number" step="0.01" name="prix" placeholder="Prix" required>
+                        <input type="number" step="0.01" name="poids" placeholder="Poids (kg)" required>
+                        <span class="prix-kg-label">Prix au Kg: -- €</span>
                     </div>
 
-                    <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
+                    <input type="text" name="tags" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
                 </div>
             </div>
 
             <div class="right-section">
                 <div class="product-desc-box">
                     <label for="product-description">Description du produit</label>
-                    <textarea id="product-description" placeholder="Description de votre produit" maxlength="1000"></textarea>
-                    <div class="char-count">0/1000</div> 
+                    <textarea id="product-description" name="description" placeholder="Description de votre produit" maxlength="1000" required></textarea>
+                    <div class="char-count" id="charCount">0/1000</div> 
                 </div>
 
                 <div class="form-actions">
-                    <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
-                    <a href="#"><button type="button" class="btn-annuler">Annuler</button></a>
-                    <a href="#"><button type="submit" class="btn-ajouter">Ajouter le produit</button></a>
+                    <button type="button" class="btn-previsualiser">Prévisualiser</button>
+                    <button type="button" class="btn-annuler" id="btnAnnuler">Annuler</button>
+                    <button type="submit" class="btn-ajouter">Ajouter le produit</button>
                 </div>
             </div>
-        </div>
+        </form>
     </main>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const zoneUpload = document.getElementById('zoneUpload');
-        const photoInput = document.getElementById('photoUpload');
-        const etatVide = document.getElementById('etatVide');
-        const etatPreview = document.getElementById('etatPreview');
-        const imagePreview = document.getElementById('imagePreview');
-
-        // Clic sur la zone déclenche l'input file
-        zoneUpload.addEventListener('click', function() {
-            photoInput.click();
-        });
-
-        // Changement de fichier
-        photoInput.addEventListener('change', function() {
-            const file = this.files[0];
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- VARIABLES ---
+            const zoneUpload = document.getElementById('zoneUpload');
+            const photoInput = document.getElementById('photoUpload');
+            const etatVide = document.getElementById('etatVide');
+            const etatPreview = document.getElementById('etatPreview');
+            const imagePreview = document.getElementById('imagePreview');
             
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
+            const textArea = document.getElementById('product-description');
+            const charCountDisplay = document.getElementById('charCount');
+            const btnAnnuler = document.getElementById('btnAnnuler');
+            const form = document.getElementById('formAjoutProduit');
+
+            // --- 1. GESTION DE L'IMAGE ---
+            
+            // Déclenche l'input file au clic sur la zone
+            zoneUpload.addEventListener('click', function() {
+                photoInput.click();
+            });
+
+            // Au changement de fichier
+            photoInput.addEventListener('change', function() {
+                const file = this.files[0];
                 
-                reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                    // Basculer l'affichage
-                    etatVide.style.display = 'none';
-                    etatPreview.style.display = 'block';
-                    // Ajouter une classe pour le style si besoin
-                    zoneUpload.classList.add('has-image');
-                };
-                
-                reader.readAsDataURL(file);
-            } else {
-                // Réinitialiser si pas d'image ou annulation (optionnel selon le comportement souhaité sur annulation)
-                // Si on veut garder l'ancienne image en cas d'annulation, ne rien faire ici.
-                // Si on veut tout reset en cas de fichier invalide :
-                if(this.files.length > 0) { // Si un fichier invalide a été choisi
-                    alert("Veuillez sélectionner une image valide.");
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        etatVide.style.display = 'none';
+                        etatPreview.style.display = 'block';
+                    };
+                    
+                    reader.readAsDataURL(file);
                 }
-            }
+            });
+
+            // --- 2. COMPTEUR DE CARACTÈRES ---
+            textArea.addEventListener('input', function() {
+                const currentLength = this.value.length;
+                const maxLength = this.getAttribute('maxlength');
+                
+                charCountDisplay.textContent = `${currentLength}/${maxLength}`;
+                
+                if (currentLength >= maxLength) {
+                    charCountDisplay.style.color = 'red';
+                } else {
+                    charCountDisplay.style.color = 'gray';
+                }
+            });
+
+            // --- 3. BOUTON ANNULER ---
+            btnAnnuler.addEventListener('click', function() {
+                // Reset du formulaire
+                form.reset();
+                
+                // Reset manuel de la prévisualisation
+                imagePreview.src = "";
+                etatPreview.style.display = 'none';
+                etatVide.style.display = 'flex'; // Remettre en flex pour centrer
+                
+                // Reset compteur
+                charCountDisplay.textContent = "0/1000";
+                charCountDisplay.style.color = 'gray';
+            });
         });
-    });
     </script>
 
     <?php require_once "./partials/footer.php"?>

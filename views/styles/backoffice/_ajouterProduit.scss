@@ -12,7 +12,7 @@
     min-height: 100vh;
     padding: {
         top: 50px;
-        bottom: 0;
+        bottom: 50px;
         right: 20px;
         left: 0;
     }
@@ -30,16 +30,16 @@
         width: 50%; 
     }
 
-    /* --- REFACTORISATION ZONE PHOTO --- */
+    /* --- ZONE PHOTO CORRIGÉE --- */
     .ajouterPhoto {
-        border: 2px dashed $color-blue; // Pointillés pour suggérer le drop
+        border: 2px dashed $color-blue;
         height: 350px; 
         width: 100%;
         border-radius: 8px;
         overflow: hidden;
-        position: relative; // Important pour le positionnement absolu
+        position: relative;
         cursor: pointer;
-        background-color: #fafafa; // Fond léger
+        background-color: #fafafa;
         transition: background-color 0.3s ease, border-color 0.3s ease;
 
         &:hover {
@@ -47,7 +47,7 @@
             border-color: darken($color-blue, 10%);
         }
 
-        // État vide (Placeholder)
+        // État vide
         .etat-vide {
             display: flex;
             flex-direction: column;
@@ -77,7 +77,7 @@
             }
         }
 
-        // État Preview (Image chargée)
+        // État Preview
         .etat-preview {
             width: 100%;
             height: 100%;
@@ -87,7 +87,7 @@
             img {
                 width: 100%;
                 height: 100%;
-                object-fit: contain; // L'image s'adapte SANS être coupée
+                object-fit: contain; // CORRECTION CRITIQUE: L'image n'est plus coupée
                 display: block;
             }
 
@@ -96,26 +96,23 @@
                 bottom: 0;
                 left: 0;
                 width: 100%;
-                background: rgba(0, 0, 0, 0.6); // Fond semi-transparent noir
+                background: rgba(0, 0, 0, 0.6);
                 color: white;
                 text-align: center;
                 padding: 10px 0;
                 font-size: 0.9rem;
                 font-family: sans-serif;
                 font-style: normal;
-                
-                /* Optionnel : animation au survol */
-                transform: translateY(100%); // Caché par défaut en bas
+                transform: translateY(100%);
                 transition: transform 0.3s ease;
             }
         }
 
-        // Afficher le bandeau "Modifier" au survol de la zone photo
         &:hover .etat-preview .overlay-modifier {
             transform: translateY(0);
         }
     }
-    /* --- FIN REFACTORISATION --- */
+    /* --- FIN ZONE PHOTO --- */
     
     .form-details {
         display: flex;
@@ -123,7 +120,7 @@
         gap: 15px;
     }
 
-    input[type="text"], textarea {
+    input[type="text"], input[type="number"], textarea {
         padding: 8px 10px;
         border: 2px solid $color-blue;
         border-radius: 8px;
@@ -163,17 +160,13 @@
         
         .product-desc-box {
             border: 2px solid $color-blue;
-            padding: {
-                top: 0;
-                bottom: 15px;
-                right: 15px;
-                left: 15px;
-            }
+            padding: 15px;
             display: flex;
             flex-direction: column;
             height: 100%;
             position: relative;
             border-radius: 8px;
+            background-color: $color-white;
             
             label {
                 margin-bottom: 5px;
@@ -181,18 +174,10 @@
                 position: absolute;
                 top: -12px;
                 left: 10px;
-                font: {
-                    size: 1rem;
-                    weight: bold;
-                }
-                padding: {
-                    top: 0;
-                    bottom: 0;
-                    right: 5px;
-                    left: 0;
-                }
+                font-size: 1rem;
+                font-weight: bold;
+                padding: 0 5px;
                 background-color: $color-white;
-                color: $color-blue;
                 z-index: 50;
             }
             
@@ -202,15 +187,12 @@
                 flex-grow: 1; 
                 min-height: 250px; 
                 background-color: $color-white;
+                width: 100%;
 
                 &::placeholder {
-                    padding: {
-                        top: 10px;
-                    }
+                    padding-top: 10px;
                     color: $color-dark-gray;
-                    font: {
-                        weight: bold;
-                    }
+                    font-weight: bold;
                 }
 
                 &:focus {
@@ -224,6 +206,7 @@
                 font-size: 0.8rem;
                 color: gray;
                 margin-top: 5px;
+                font-style: normal;
             }
         }
     }
@@ -239,6 +222,7 @@
             border: none;
             border-radius: 32px;
             cursor: pointer;
+            font-weight: bold;
         }
 
         .btn-previsualiser, .btn-annuler{
