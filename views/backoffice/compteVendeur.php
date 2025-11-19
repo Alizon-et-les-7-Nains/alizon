@@ -1,7 +1,7 @@
 <?php
+session_start();
 require_once '../../controllers/pdo.php';
     
-session_start();
 
 $code_vendeur = 1; //$_SESSION['code_vendeur'];
 
@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ville = $_POST['ville'];
     $region = $_POST['region'] ?? '';
     $pseudo = $_POST['pseudo'] ?? '';
+    $dateNaissance = $_POST['dateNaissance'] ?? '';
 
     // Mettre à jour le vendeur (avec les colonnes existantes)
     $stmt = $pdo->prepare(
@@ -32,7 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         adresse = :adresse,
         ville = :ville,
         region = :region,
-        pseudo = :pseudo
+        pseudo = :pseudo,
+        dateNaissance = :dateNaissance
         WHERE codeVendeur = :code_vendeur"
     );
     
@@ -47,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':ville' => $ville,
         ':region' => $region,
         ':pseudo' => $pseudo,
+        ':dateNaissance' => $dateNaissance,
         ':code_vendeur' => $code_vendeur
     ]);
 
@@ -95,7 +98,7 @@ $adresseVendeur = $vendeur['adresse'] ?? '';
 $villeVendeur = $vendeur['ville'] ?? '';
 $regionVendeur = $vendeur['region'] ?? '';
 $pseudo = $vendeur['pseudo'] ?? '';
-$dateNaissance = $vendeur['dateNaissance'] ?? ''; // Nouveau champ
+$dateNaissance = $vendeur['dateNaissance'] ?? '';
 
 // Variables pour l'adresse
 $pays = '';

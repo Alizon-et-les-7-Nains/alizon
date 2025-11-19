@@ -90,6 +90,10 @@ main.backoffice-stocks {
             ul {
                 list-style: none;
             }
+
+            .type {
+                text-transform: capitalize;
+            }
             
             table {
                 width: 100%;
