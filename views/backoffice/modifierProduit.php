@@ -8,6 +8,9 @@ if (!isset($_GET['id'])) {
 $productId = (int)$_GET['id']; 
 
 // Préparer la requête
+$sql = "INSERT INTO _client 
+        (dateNaissance, prenom, nom, email, mdp, noTelephone, pseudo)
+        VALUES (:dateNaissance, :prenom, :nom, :email, :mdp, :noTelephone, :pseudo)";
 $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :id");
 $stmt->execute(['id' => $productId]);
 $produit = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -46,18 +49,18 @@ if (!$produit) {
                 </div>
 
                 <div class="form-details">
-                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required>
-                    <?= htmlspecialchars($product['nom'] ?? '') ?>
+                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required
+                    value="<?= htmlspecialchars($produit['champ'] ?? '') ?>">
                 
                     <div class="price-weight-kg">
                         <input type="text" placeholder="Prix" name="prix" required
-                        <?= htmlspecialchars($product['prix'] ?? '') ?>>
+                        value="<?= htmlspecialchars($produit['champ'] ?? '') ?>">
                         <input type="text" placeholder="Poids" name="poids" required 
-                        <?= htmlspecialchars($product['poids'] ?? '') ?>>
+                        value="<?= htmlspecialchars($produit['champ'] ?? '') ?>">
                         <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
                     <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required
-                    <?= htmlspecialchars($product['description'] ?? '') ?>>
+                    value="<?= htmlspecialchars($produit['champ'] ?? '') ?>">
 
                 </div>
             </div>
