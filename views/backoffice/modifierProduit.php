@@ -18,9 +18,9 @@ $image = $stmt2->fetch(PDO::FETCH_ASSOC);
 
 
 
-$hasImage = ($image && !empty($image['url']));
+$hasImage = ($image && !empty($image['URL']));
 $imageUrl = $hasImage 
-    ? '../../public' . $image['url'] 
+    ? '../../public' . $image['URL'] 
     : '../../public/images/ajouterPhoto.svg';
 
 if (!$produit) {
