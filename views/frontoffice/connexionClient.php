@@ -29,9 +29,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($user) {
         error_log("MDP en BD: " . $user['mdp']);
-        error_log("Comparaison: " . ($password_chiffre === $user['mdp'] ? 'OK' : 'ÉCHEC'));
         
-        if ($password_chiffre === $user['mdp']) {
+        // SOLUTION AVEC JSON_ENCODE - Gère automatiquement les backslashes
+        $mdp_bd = $user['mdp'];
+        
+        // Normaliser les deux chaînes avec json_encode
+        $mdp_input_normalized = json_encode($password_chiffre);
+        $mdp_bd_normalized = json_encode($mdp_bd);
+        
+        // Retirer les guillemets ajoutés par json_encode
+        $mdp_input_normalized = trim($mdp_input_normalized, '"');
+        $mdp_bd_normalized = trim($mdp_bd_normalized, '"');
+        
+        error_log("MDP input normalisé: " . $mdp_input_normalized);
+        error_log("MDP BD normalisé: " . $mdp_bd_normalized);
+        
+        // Comparaison avec les chaînes normalisées
+        if ($mdp_input_normalized === $mdp_bd_normalized) {
             // Connexion réussie
             $_SESSION['user_id'] = $user['idClient'];
             $_SESSION['user_email'] = $user['email'];

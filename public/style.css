@@ -829,6 +829,7 @@ header.backoffice dialog nav button:hover {
 
 .pageConnexionCLient {
   position: relative;
+  min-height: 100vh;
 }
 .pageConnexionCLient::before {
   content: "";
@@ -844,6 +845,24 @@ header.backoffice dialog nav button:hover {
   z-index: 0;
   pointer-events: none;
 }
+@media (max-width: 768px) {
+  .pageConnexionCLient::before {
+    left: -100px;
+    top: 30px;
+    width: 600px;
+    height: 600px;
+    opacity: 0.2;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient::before {
+    left: -50px;
+    top: 20px;
+    width: 400px;
+    height: 400px;
+    opacity: 0.15;
+  }
+}
 .pageConnexionCLient > * {
   position: relative;
   z-index: 1;
@@ -857,6 +876,19 @@ header.backoffice dialog nav button:hover {
   box-sizing: border-box;
   min-height: 100vh;
 }
+@media (max-width: 768px) {
+  .pageConnexionCLient main {
+    padding: 24px 12px;
+    justify-content: flex-start;
+    padding-top: 60px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main {
+    padding: 20px 8px;
+    padding-top: 40px;
+  }
+}
 .pageConnexionCLient main .profile {
   width: 120px;
   height: 120px;
@@ -867,10 +899,36 @@ header.backoffice dialog nav button:hover {
   justify-content: center;
   margin-bottom: 16px;
 }
+@media (max-width: 768px) {
+  .pageConnexionCLient main .profile {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 12px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main .profile {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 8px;
+  }
+}
 .pageConnexionCLient main .profile img {
   width: 60px;
   height: 60px;
   object-fit: contain;
+}
+@media (max-width: 768px) {
+  .pageConnexionCLient main .profile img {
+    width: 50px;
+    height: 50px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main .profile img {
+    width: 40px;
+    height: 40px;
+  }
 }
 .pageConnexionCLient main h2 {
   text-align: center;
@@ -880,6 +938,20 @@ header.backoffice dialog nav button:hover {
   font-weight: 600;
   font-style: italic;
   margin: 0 0 24px;
+}
+@media (max-width: 768px) {
+  .pageConnexionCLient main h2 {
+    font-size: 24px;
+    margin: 0 0 20px;
+    padding: 0 10px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main h2 {
+    font-size: 20px;
+    margin: 0 0 16px;
+    line-height: 1.3;
+  }
 }
 .pageConnexionCLient main form {
   display: flex;
@@ -891,6 +963,19 @@ header.backoffice dialog nav button:hover {
   margin: 0 auto 24px;
   box-sizing: border-box;
 }
+@media (max-width: 768px) {
+  .pageConnexionCLient main form {
+    gap: 12px;
+    max-width: 100%;
+    padding: 0 20px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main form {
+    gap: 10px;
+    padding: 0 15px;
+  }
+}
 .pageConnexionCLient main form .inputConnexionClient {
   width: 100%;
   padding: 12px 14px;
@@ -901,12 +986,39 @@ header.backoffice dialog nav button:hover {
   box-sizing: border-box;
   background: transparent;
 }
+@media (max-width: 768px) {
+  .pageConnexionCLient main form .inputConnexionClient {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main form .inputConnexionClient {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main form .inputConnexionClient::placeholder {
+    font-size: 12px;
+  }
+}
 .pageConnexionCLient main form > div {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+@media (max-width: 768px) {
+  .pageConnexionCLient main form > div {
+    margin-top: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main form > div {
+    margin-top: 15px;
+  }
 }
 .pageConnexionCLient main form > div .boutonConnexionClient {
   margin-top: 25px;
@@ -921,6 +1033,30 @@ header.backoffice dialog nav button:hover {
   border: none;
   border-radius: 50px;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+.pageConnexionCLient main form > div .boutonConnexionClient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.pageConnexionCLient main form > div .boutonConnexionClient:active {
+  transform: translateY(0);
+}
+@media (max-width: 768px) {
+  .pageConnexionCLient main form > div .boutonConnexionClient {
+    width: 80%;
+    padding: 14px 16px;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main form > div .boutonConnexionClient {
+    width: 90%;
+    padding: 12px 14px;
+    font-size: 14px;
+    margin-top: 15px;
+  }
 }
 .pageConnexionCLient main form > div a {
   color: #273469;
@@ -929,6 +1065,25 @@ header.backoffice dialog nav button:hover {
   text-decoration-thickness: 1px;
   text-decoration-color: #273469;
   margin-top: 8px;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+.pageConnexionCLient main form > div a:hover {
+  color: rgb(25.1875, 33.5833333333, 67.8125);
+}
+@media (max-width: 768px) {
+  .pageConnexionCLient main form > div a {
+    font-size: 13px;
+    margin-top: 6px;
+    padding: 0 10px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main form > div a {
+    font-size: 12px;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
 }
 .pageConnexionCLient main .petitTexte {
   color: #6e6e6e;
@@ -940,7 +1095,58 @@ header.backoffice dialog nav button:hover {
   font-size: 13px;
   line-height: 1.4;
 }
+@media (max-width: 768px) {
+  .pageConnexionCLient main .petitTexte {
+    width: 90%;
+    font-size: 12px;
+    padding: 0 15px;
+  }
+}
+@media (max-width: 480px) {
+  .pageConnexionCLient main .petitTexte {
+    width: 95%;
+    font-size: 11px;
+    line-height: 1.3;
+  }
+}
 
+@media (max-width: 320px) {
+  .pageConnexionCLient main {
+    padding: 15px 5px;
+    padding-top: 30px;
+  }
+  .pageConnexionCLient main h2 {
+    font-size: 18px;
+  }
+  .pageConnexionCLient main form {
+    padding: 0 10px;
+  }
+  .pageConnexionCLient main form .inputConnexionClient {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+}
+@media (max-height: 600px) and (max-width: 768px) {
+  .pageConnexionCLient main {
+    padding-top: 30px;
+    min-height: auto;
+  }
+  .pageConnexionCLient main .profile {
+    width: 70px;
+    height: 70px;
+  }
+  .pageConnexionCLient main .profile img {
+    width: 35px;
+    height: 35px;
+  }
+  .pageConnexionCLient main h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  .pageConnexionCLient main form > div {
+    margin-top: 15px;
+  }
+}
 footer.backoffice {
   display: flex;
   background-color: #e4d9ff;
@@ -3230,15 +3436,12 @@ button#haut.visible:hover {
   box-sizing: border-box;
   overflow-x: hidden;
   font-family: "lora", "Serif";
+  font-weight: bold;
+  font-style: italic;
   background-color: #fffefa;
   color: #273469;
   min-height: 100vh;
   padding: 30px 50px 50px 50px;
-  /* position: absolute;
-  left: 250px; // Exemple si votre aside fait 250px
-  width: calc(100% - 250px);
-  top: 60px; // Exemple si votre header fait 60px
-  */
 }
 .AjouterProduit .product-content {
   display: flex;
@@ -3252,9 +3455,6 @@ button#haut.visible:hover {
   gap: 20px;
   width: 50%;
   max-width: 500px;
-}
-.AjouterProduit {
-  /* --- Zone de la photo --- */
 }
 .AjouterProduit .ajouterPhoto {
   border: 2px solid #273469;
@@ -3275,20 +3475,12 @@ button#haut.visible:hover {
   align-items: center;
   justify-content: center;
 }
-.AjouterProduit .ajouterPhoto .placeholder-photo i.bi-plus-lg {
-  font-size: 3rem;
-  color: rgb(52.8125, 70.4166666667, 142.1875);
-  margin-bottom: 10px;
-}
 .AjouterProduit .ajouterPhoto .placeholder-photo p {
   margin: 0;
   color: #273469;
   font-weight: bold;
   font-style: normal;
   padding-top: 5px;
-}
-.AjouterProduit {
-  /* --- Champs de saisie (input) --- */
 }
 .AjouterProduit .form-details {
   display: flex;
@@ -3325,9 +3517,6 @@ button#haut.visible:hover {
   font-weight: bold;
   text-align: right;
   white-space: nowrap;
-}
-.AjouterProduit {
-  /* --- Section de droite (Description) --- */
 }
 .AjouterProduit .right-section {
   width: 50%;
@@ -3368,9 +3557,6 @@ button#haut.visible:hover {
   color: gray;
   margin-top: 5px;
 }
-.AjouterProduit {
-  /* --- Boutons d'action --- */
-}
 .AjouterProduit .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -3382,13 +3568,12 @@ button#haut.visible:hover {
 .AjouterProduit .form-actions button {
   padding: 8px 15px;
   border: 1px solid #273469;
-  border-radius: 4px;
+  border-radius: 32px;
   font-weight: normal;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 .AjouterProduit .form-actions .btn-previsualiser, .AjouterProduit .form-actions .btn-annuler {
-  background-color: #fffefa;
+  background-color: #e4d9ff;
   color: #273469;
 }
 .AjouterProduit .form-actions .btn-previsualiser:hover, .AjouterProduit .form-actions .btn-annuler:hover {
@@ -3397,7 +3582,6 @@ button#haut.visible:hover {
 .AjouterProduit .form-actions .btn-ajouter {
   background-color: #273469;
   color: #fffefa;
-  font-weight: bold;
 }
 .AjouterProduit .form-actions .btn-ajouter:hover {
   background-color: rgb(25.1875, 33.5833333333, 67.8125);

@@ -3,8 +3,7 @@ session_start();
 require_once '../../controllers/pdo.php' ;
     
 
-$id_client = $_SESSION['id_session'];
-$idAdresse = 1;
+$id_client = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -19,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $adresse1 = $_POST['adresse1'];
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
-    $region = $_POST['region'] ?? '';
+    $region = $_POST['region'];
 
     $stmt = $pdo->query(
     "UPDATE saedb._client 

@@ -14,13 +14,13 @@ $produit = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $stmt2 = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = :id");
 $stmt2->execute(['id' => $productId]);
-$image = $stmt->fetch(PDO::FETCH_ASSOC);
+$image = $stmt2->fetch(PDO::FETCH_ASSOC);
 
-var_dump($image);
 
-$hasImage = ($image && !empty($image['url']));
+
+$hasImage = ($image && !empty($image['URL']));
 $imageUrl = $hasImage 
-    ? '../../public' . $image['url'] 
+    ? '../../public' . $image['URL'] 
     : '../../public/images/ajouterPhoto.svg';
 
 if (!$produit) {
@@ -45,6 +45,9 @@ if (!$produit) {
     <?php require_once "./partials/aside.php"?>
        
     <main class="modifierProduit"> 
+        <?php var_dump($image);
+              var_dump($hasImage);
+              var_dump($imageUrl);?>
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
             <div class="left-section">
                 <div class="ajouterPhoto">

@@ -19,8 +19,13 @@ $bg-opacity: 0.3;
 $content-z: 1;
 $bg-z: 0;
 
+// Variables responsive
+$breakpoint-mobile: 768px;
+$breakpoint-small-mobile: 480px;
+
 .pageConnexionCLient {
   position: relative;
+  min-height: 100vh;
 
   &::before {
     content: "";
@@ -36,6 +41,23 @@ $bg-z: 0;
     opacity: $bg-opacity;
     z-index: $bg-z;
     pointer-events: none;
+
+    // Responsive pour l'arrière-plan
+    @media (max-width: $breakpoint-mobile) {
+      left: -100px;
+      top: 30px;
+      width: 600px;
+      height: 600px;
+      opacity: 0.2;
+    }
+
+    @media (max-width: $breakpoint-small-mobile) {
+      left: -50px;
+      top: 20px;
+      width: 400px;
+      height: 400px;
+      opacity: 0.15;
+    }
   }
 
   > * {
@@ -52,6 +74,18 @@ $bg-z: 0;
     box-sizing: border-box;
     min-height: 100vh;
 
+    // Responsive pour le conteneur principal
+    @media (max-width: $breakpoint-mobile) {
+      padding: 24px 12px;
+      justify-content: flex-start;
+      padding-top: 60px;
+    }
+
+    @media (max-width: $breakpoint-small-mobile) {
+      padding: 20px 8px;
+      padding-top: 40px;
+    }
+
     .profile {
       width: $profile-size;
       height: $profile-size;
@@ -62,10 +96,34 @@ $bg-z: 0;
       justify-content: center;
       margin-bottom: 16px;
 
+      // Responsive pour le profil
+      @media (max-width: $breakpoint-mobile) {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 12px;
+      }
+
+      @media (max-width: $breakpoint-small-mobile) {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 8px;
+      }
+
       img {
         width: $profile-img-size;
         height: $profile-img-size;
         object-fit: contain;
+
+        // Responsive pour l'image du profil
+        @media (max-width: $breakpoint-mobile) {
+          width: 50px;
+          height: 50px;
+        }
+
+        @media (max-width: $breakpoint-small-mobile) {
+          width: 40px;
+          height: 40px;
+        }
       }
     }
 
@@ -77,6 +135,19 @@ $bg-z: 0;
       font-weight: 600;
       font-style: italic;
       margin: 0 0 24px;
+
+      // Responsive pour le titre
+      @media (max-width: $breakpoint-mobile) {
+        font-size: 24px;
+        margin: 0 0 20px;
+        padding: 0 10px;
+      }
+
+      @media (max-width: $breakpoint-small-mobile) {
+        font-size: 20px;
+        margin: 0 0 16px;
+        line-height: 1.3;
+      }
     }
 
     form {
@@ -89,6 +160,18 @@ $bg-z: 0;
       margin: 0 auto 24px;
       box-sizing: border-box;
 
+      // Responsive pour le formulaire
+      @media (max-width: $breakpoint-mobile) {
+        gap: 12px;
+        max-width: 100%;
+        padding: 0 20px;
+      }
+
+      @media (max-width: $breakpoint-small-mobile) {
+        gap: 10px;
+        padding: 0 15px;
+      }
+
       .inputConnexionClient {
         width: 100%;
         padding: $input-padding;
@@ -98,6 +181,24 @@ $bg-z: 0;
         font-size: 14px;
         box-sizing: border-box;
         background: transparent;
+
+        // Responsive pour les inputs
+        @media (max-width: $breakpoint-mobile) {
+          padding: 10px 12px;
+          font-size: 16px; // Évite le zoom sur iOS
+        }
+
+        @media (max-width: $breakpoint-small-mobile) {
+          padding: 8px 10px;
+          font-size: 14px;
+        }
+
+        // Placeholder responsive
+        &::placeholder {
+          @media (max-width: $breakpoint-small-mobile) {
+            font-size: 12px;
+          }
+        }
       }
 
       > div {
@@ -106,6 +207,15 @@ $bg-z: 0;
         flex-direction: column;
         align-items: center;
         width: 100%;
+
+        // Responsive pour le conteneur des liens et bouton
+        @media (max-width: $breakpoint-mobile) {
+          margin-top: 20px;
+        }
+
+        @media (max-width: $breakpoint-small-mobile) {
+          margin-top: 15px;
+        }
 
         .boutonConnexionClient {
           margin-top: 25px;
@@ -120,6 +230,32 @@ $bg-z: 0;
           border: none;
           border-radius: $btn-radius;
           cursor: pointer;
+          transition: all 0.3s ease;
+
+          // États interactifs
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+
+          // Responsive pour le bouton
+          @media (max-width: $breakpoint-mobile) {
+            width: 80%;
+            padding: 14px 16px;
+            font-size: 16px;
+            margin-top: 20px;
+          }
+
+          @media (max-width: $breakpoint-small-mobile) {
+            width: 90%;
+            padding: 12px 14px;
+            font-size: 14px;
+            margin-top: 15px;
+          }
         }
 
         a {
@@ -129,6 +265,26 @@ $bg-z: 0;
           text-decoration-thickness: 1px;
           text-decoration-color: $color-blue;
           margin-top: 8px;
+          text-align: center;
+          transition: color 0.3s ease;
+
+          // États interactifs
+          &:hover {
+            color: darken($color-blue, 10%);
+          }
+
+          // Responsive pour les liens
+          @media (max-width: $breakpoint-mobile) {
+            font-size: 13px;
+            margin-top: 6px;
+            padding: 0 10px;
+          }
+
+          @media (max-width: $breakpoint-small-mobile) {
+            font-size: 12px;
+            margin-top: 4px;
+            line-height: 1.4;
+          }
         }
       }
     }
@@ -142,6 +298,67 @@ $bg-z: 0;
       font-family: fonts.$font-open-sans;
       font-size: 13px;
       line-height: 1.4;
+
+      // Responsive pour le texte supplémentaire
+      @media (max-width: $breakpoint-mobile) {
+        width: 90%;
+        font-size: 12px;
+        padding: 0 15px;
+      }
+
+      @media (max-width: $breakpoint-small-mobile) {
+        width: 95%;
+        font-size: 11px;
+        line-height: 1.3;
+      }
+    }
+  }
+}
+
+// Correction pour les très petits écrans
+@media (max-width: 320px) {
+  .pageConnexionCLient main {
+    padding: 15px 5px;
+    padding-top: 30px;
+
+    h2 {
+      font-size: 18px;
+    }
+
+    form {
+      padding: 0 10px;
+
+      .inputConnexionClient {
+        font-size: 13px;
+        padding: 6px 8px;
+      }
+    }
+  }
+}
+
+// Support pour l'orientation paysage sur mobile
+@media (max-height: 600px) and (max-width: $breakpoint-mobile) {
+  .pageConnexionCLient main {
+    padding-top: 30px;
+    min-height: auto;
+
+    .profile {
+      width: 70px;
+      height: 70px;
+
+      img {
+        width: 35px;
+        height: 35px;
+      }
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    form > div {
+      margin-top: 15px;
     }
   }
 }

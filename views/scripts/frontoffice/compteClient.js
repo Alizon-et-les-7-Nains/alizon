@@ -125,103 +125,12 @@ function popUpModifierMdp() {
     const nouveau = vignere(nouveauMdp.value, cle, 1);
     const confirm = vignere(confirmationMdp.value, cle, 1);
 
-<<<<<<< HEAD
     //Vérification si l'ancien mdp correspond à celui dans la bdd
     if (ancien !== mdp) {
       setError(ancienMdp, "L'ancien mot de passe est incorrect");
     } else {
       clearError(ancienMdp);
       testAncien = true;
-=======
-        //Vérification si le nouveau mdp est valide
-        if (!validerMdp(vignere(nouveau, cle, -1))) {
-            setError(nouveauMdp, "Mot de passe incorrect, il doit respecter les conditions ci-dessous");
-        } else {
-            clearError(nouveauMdp);
-            testNouveau = true;
-        }
-
-        //Vérification si le nouveau mdp correspond à la confirmation
-        if (nouveau !== confirm) {
-            setError(confirmationMdp, "Les mots de passe ne correspondent pas");
-        } else {
-            clearError(confirmationMdp);
-            testConfirm = true;
-        }
-
-        //Désactive le bouton valider si y'a un des cas qui return false Sinon on envoie le nouveau mdp chiffré dans la BDD
-        if (!(testAncien && testNouveau && testConfirm)) {
-            event.preventDefault();
-        } else {
-            nouveauMdp.value = nouveau;
-            confirmationMdp.value = confirm;
-            form.submit();
-        }
-    };
-
-    valider.addEventListener("click", verifMdp )
-}    
-
-function verifierChamp() {
-    const bouton = document.querySelector(".boutonModiferProfil");
-    const champs = document.querySelectorAll("section input");
-    let tousRemplis = true;
-    
-    for (let i = 0; i < champs.length; i++) {
-        let valeur = champs[i].value.trim();
-        
-        // Le champ adresse2 est optionnel
-        if (i !== 5 && valeur === "") {
-            tousRemplis = false;
-            setError(
-                champs[i], "Le champs obligatoire est vide"
-            );
-        }
-
-        // Validation spécifique pour la date de naissance
-        if(i === 3){
-            if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
-                tousRemplis = false;
-                setError(
-                    champs[i], "Format attendu : jj/mm/aaaa"
-                );
-            }
-        }
-
-        // Validation spécifique pour le code postal
-        if(i === 6){
-            if (!/^[0-9]{5}$/.test(valeur)) {
-                tousRemplis = false;
-                setError(
-                    champs[i], "Format attendu : 35500"
-                );
-            }
-        }
-        
-        // Validation spécifique pour le numéro de téléphone
-        if (i === 9) { 
-            if (!/^0[67](\s[0-9]{2}){4}$/.test(valeur)) {
-                tousRemplis = false;
-                setError(
-                    champs[i], "Format attendu : 06 01 02 03 04"
-                );
-            }
-        }
-        
-        // Validation spécifique pour l'email
-        if (i === 10) {
-            if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
-                tousRemplis = false;
-                setError(
-                    champs[i], "Email invalide (ex: nom@domaine.fr)"
-                );
-            }
-        }  
-        //Si c'est pas vide on affiche pas de message d'erreur
-        if ((i === 5 || valeur !== "")) {
-            clearError(champs[i]);
-        }
->>>>>>> backoffice-pageProduit
     }
 
     //Vérification si le nouveau mdp est valide
@@ -261,11 +170,17 @@ function verifierChamp() {
   const champs = document.querySelectorAll("section input");
   let tousRemplis = true;
 
+  if (champs.length === 0) {
+    bouton.disabled = false;
+    return;
+  }
+
+
   for (let i = 0; i < champs.length; i++) {
     let valeur = champs[i].value.trim();
 
     // Le champ adresse2 est optionnel
-    if (i !== 5 && valeur === "") {
+    if (i === 4 && i === 5 && i === 6 && i === 7 && i === 8 && valeur === "") {
       tousRemplis = false;
       setError(champs[i], "Le champs obligatoire est vide");
     }
@@ -298,7 +213,7 @@ function verifierChamp() {
       }
     }
     //Si c'est pas vide on affiche pas de message d'erreur
-    if (i === 5 || valeur !== "") {
+    if (i === 4 && i === 5 && i === 6 && i === 7 && i === 8 || valeur !== "") {
       clearError(champs[i]);
     }
   }
@@ -370,19 +285,19 @@ function modifierProfil(event) {
           input.placeholder = "Date de naissance*";
           break;
         case 4:
-          input.placeholder = "Adresse*";
+          input.placeholder = "Adresse";
           break;
         case 5:
           input.placeholder = "Complément d'adresse";
           break;
         case 6:
-          input.placeholder = "Code postal*";
+          input.placeholder = "Code postal";
           break;
         case 7:
-          input.placeholder = "Ville*";
+          input.placeholder = "Ville";
           break;
         case 8:
-          input.placeholder = "Pays*";
+          input.placeholder = "Pays";
           break;
         case 9:
           input.placeholder = "Numéro de téléphone*";
