@@ -51,7 +51,7 @@
 
 
             <div class="form-actions">
-                <a href="#"><button type="button" class="btn-previsualiser">caca</button></a>
+                <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
                 <a href="#"><button type="button" class="btn-annuler">Annuler</button></a>
                 <a href="#"><button type="submit" class="btn-ajouter">Ajouter le produit</button></a>
                 
