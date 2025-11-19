@@ -31,6 +31,9 @@
     foreach ($epuises as $epuise) {
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $epuise['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
+        $commandes->execute(['idProduit' => $epuise['idProduit']]);
+        $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
                     <button class='settings'>
                         <div><div></div></div>
@@ -50,12 +53,12 @@
                                         <td>" . $epuise['typeProd'] . "</td>
                                     </tr>
                                     <tr>
-                                        <th>" . $epuise['prix'] . "</th>
+                                        <th>" . formatPrice($epuise['prix']) . "</th>
                                     </tr>
                                     <tr>
                                         <th>
                                             <figure>
-                                                <figcaption>" . $epuise['note'] . "</figcaption>
+                                                <figcaption>" . str_replace('.', ',', $epuise['note']) . "</figcaption>
                                                 <img src='/public/images/etoile.svg'>
                                             </figure>
                                         </th>
@@ -66,20 +69,14 @@
                         </tr>
                         <tr>
                             <td>
-                                <ul>
-                                    <li>
-                                        <ul>
-                                            <li>2</li>
-                                            <li>09/07/2025</li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <ul>
-                                            <li>2</li>
-                                            <li>09/07/2025</li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                <ul>";
+                                    foreach ($commandes as $commande) {
+                                        $html .= "<ul>
+                                            <li>" . $commande['quantiteCommande'] . "</li>
+                                            <li>" . formatDate($commande['dateCommande']) . "</li>
+                                        </ul>";
+                                    }
+                                $html .= "</ul>
                             </td>
                         </tr>
                     </table>

@@ -8,9 +8,16 @@ if (!isset($_GET['id'])) {
 $productId = (int)$_GET['id']; 
 
 // Préparer la requête
+$sql = "INSERT INTO _client 
+        (dateNaissance, prenom, nom, email, mdp, noTelephone, pseudo)
+        VALUES (:dateNaissance, :prenom, :nom, :email, :mdp, :noTelephone, :pseudo)";
 $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :id");
 $stmt->execute(['id' => $productId]);
-$product = $stmt->fetch(PDO::FETCH_ASSOC);
+$produit = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$produit) {
+    die("Produit introuvable.");
+}
 ?>
 
 <!DOCTYPE html>
@@ -42,18 +49,18 @@ $product = $stmt->fetch(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="form-details">
-                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required>
-                    <?= htmlspecialchars($product['nom']) ?>
+                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required
+                    value="<?= htmlspecialchars($produit['nom'] ?? '') ?>">
                 
                     <div class="price-weight-kg">
                         <input type="text" placeholder="Prix" name="prix" required
-                        <?= htmlspecialchars($product['prix']) ?>>
+                        value="<?= htmlspecialchars($produit['prix'] ?? '') ?>">
                         <input type="text" placeholder="Poids" name="poids" required 
-                        <?= htmlspecialchars($product['poids']) ?>>
+                        value="<?= htmlspecialchars($produit['poids'] ?? '') ?>">
                         <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
                     <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required
-                    <?= htmlspecialchars($product['description']) ?>>
+                    value="<?= htmlspecialchars($produit['mots_cles'] ?? '') ?>">
 
                 </div>
             </div>

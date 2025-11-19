@@ -1,4 +1,5 @@
 <?php
+    session_start();  
     require_once "pdo.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -15,8 +16,8 @@
     $raisonSocial = $_POST['raisonSocial'] ?? '';
 
     $sql = "INSERT INTO _vendeur 
-        (nom, prenom, email, tel, utilisateur, mdp, dateNaissance, siren, adresse, sociale)
-        VALUES (:nom, :prenom, :email, :tel, :utilisateur, :mdp, :dateNaissance, :siren, :adresse, :sociale)";
+        (nom, prenom, email, noTelephone, pseudo, mdp, dateNaissance, noSiren, idAdresse, raisonSocial)
+        VALUES (:nom, :prenom, :email, :noTelephone, :pseudo, :mdp, :dateNaissance, :noSiren, :idAdresse, :raisonSocial)";
 
     $stmt = $pdo->prepare($sql);
 
@@ -24,18 +25,17 @@
         ':nom' => $nom,
         ':prenom' => $prenom,
         ':email' => $email,
-        ':tel' => $noTelephone,
-        ':utilisateur' => $pseudo, 
+        ':noTelephone' => $noTelephone,
+        ':pseudo' => $pseudo, 
         ':mdp' => $mdp,
         ':dateNaissance' => $dateNaissance,
-        ':siren' => $noSiren,
-        ':adresse' => $idAdresse,
-        ':sociale' => $raisonSocial,
+        ':noSiren' => $noSiren,
+        ':idAdresse' => $idAdresse,
+        ':raisonSocial' => $raisonSocial,
     ]);
     }
 
 
-    session_start();  
     $id_session = session_id();
     $_SESSION['id_session'] = $id_session;
     header('Location: ../views/backoffice/accueil.php');
