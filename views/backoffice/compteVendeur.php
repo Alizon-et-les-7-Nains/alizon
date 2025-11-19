@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
     $region = $_POST['region'] ?? '';
+    $pseudo = $_POST['pseudo'] ?? '';
 
     // Mettre à jour le vendeur (avec les colonnes existantes)
     $stmt = $pdo->prepare(
@@ -30,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         noTelephone = :telephone,
         adresse = :adresse,
         ville = :ville,
-        region = :region
+        region = :region,
+        pseudo = :pseudo
         WHERE codeVendeur = :code_vendeur"
     );
     
@@ -44,33 +46,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':adresse' => $adresse1,
         ':ville' => $ville,
         ':region' => $region,
+        ':pseudo' => $pseudo,
         ':code_vendeur' => $code_vendeur
     ]);
 
     // Mettre à jour l'adresse dans la table _adresse (si elle existe)
-    // On utilise les mêmes clés que le vendeur pour retrouver l'adresse
-    $stmt = $pdo->prepare(
-        "UPDATE _adresse 
-        SET adresse = :adresse,
-        pays = :pays,
-        ville = :ville, 
-        codePostal = :codePostal,
-        region = :region
-        WHERE adresse = :ancienne_adresse 
-        AND ville = :ancienne_ville 
-        AND region = :ancienne_region"
-    );
-    
-    $stmt->execute([
-        ':adresse' => $adresse1,
-        ':pays' => $pays,
-        ':ville' => $ville,
-        ':codePostal' => $codePostal,
-        ':region' => $region,
-        ':ancienne_adresse' => $_POST['ancienne_adresse'],
-        ':ancienne_ville' => $_POST['ancienne_ville'],
-        ':ancienne_region' => $_POST['ancienne_region']
-    ]);
+    if (!empty($_POST['ancienne_adresse']) && !empty($_POST['ancienne_ville']) && !empty($_POST['ancienne_region'])) {
+        $stmt = $pdo->prepare(
+            "UPDATE _adresse 
+            SET adresse = :adresse,
+            pays = :pays,
+            ville = :ville, 
+            codePostal = :codePostal,
+            region = :region
+            WHERE adresse = :ancienne_adresse 
+            AND ville = :ancienne_ville 
+            AND region = :ancienne_region"
+        );
+        
+        $stmt->execute([
+            ':adresse' => $adresse1,
+            ':pays' => $pays,
+            ':ville' => $ville,
+            ':codePostal' => $codePostal,
+            ':region' => $region,
+            ':ancienne_adresse' => $_POST['ancienne_adresse'],
+            ':ancienne_ville' => $_POST['ancienne_ville'],
+            ':ancienne_region' => $_POST['ancienne_region']
+        ]);
+    }
 
     // Redirection pour éviter la resoumission du formulaire
     header("Location: compteVendeur.php");
@@ -90,6 +94,7 @@ $noTelephone = $vendeur['noTelephone'] ?? '';
 $adresseVendeur = $vendeur['adresse'] ?? '';
 $villeVendeur = $vendeur['ville'] ?? '';
 $regionVendeur = $vendeur['region'] ?? '';
+$pseudo = $vendeur['pseudo'] ?? '';
 
 // Variables pour l'adresse
 $pays = '';
@@ -243,6 +248,34 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                         <label for="noSiren">Numéro SIREN</label>
                         <input type="text" id="noSiren" name="noSiren" value="<?php echo htmlspecialchars($noSiren); ?>"
                             readonly>
+                    </div>
+                </article>
+
+                <article class="infos-compte">
+                    <h2>Informations de compte</h2>
+                    <div class="champ">
+                        <label for="pseudo">Nom d'utilisateur</label>
+                        <input type="text" id="pseudo" name="pseudo" value="<?php echo htmlspecialchars($pseudo); ?>"
+                            readonly>
+                    </div>
+                    <div class="champ-mot-de-passe">
+                        <label for="motDePasseActuel">Mot de passe actuel</label>
+                        <input type="password" id="motDePasseActuel" name="motDePasseActuel" placeholder="••••••••"
+                            readonly>
+                    </div>
+                    <div class="champ-mot-de-passe">
+                        <label for="nouveauMotDePasse">Nouveau mot de passe</label>
+                        <input type="password" id="nouveauMotDePasse" name="nouveauMotDePasse" placeholder="••••••••"
+                            readonly>
+                    </div>
+                    <div class="exigences-mot-de-passe">
+                        <h4>Exigences du mot de passe :</h4>
+                        <ul>
+                            <li>Longueur minimale de 12 caractères</li>
+                            <li>Au moins une minuscule / majuscule</li>
+                            <li>Au moins un chiffre</li>
+                            <li>Au moins un caractère spécial</li>
+                        </ul>
                     </div>
                 </article>
 
