@@ -213,7 +213,7 @@ function verifierChamp() {
       }
     }
     //Si c'est pas vide on affiche pas de message d'erreur
-    if (i === 5 || valeur !== "") {
+    if (i === 4 && i === 5 && i === 6 && i === 7 && i === 8 || valeur !== "") {
       clearError(champs[i]);
     }
   }
@@ -285,19 +285,19 @@ function modifierProfil(event) {
           input.placeholder = "Date de naissance*";
           break;
         case 4:
-          input.placeholder = "Adresse*";
+          input.placeholder = "Adresse";
           break;
         case 5:
           input.placeholder = "Complément d'adresse";
           break;
         case 6:
-          input.placeholder = "Code postal*";
+          input.placeholder = "Code postal";
           break;
         case 7:
-          input.placeholder = "Ville*";
+          input.placeholder = "Ville";
           break;
         case 8:
-          input.placeholder = "Pays*";
+          input.placeholder = "Pays";
           break;
         case 9:
           input.placeholder = "Numéro de téléphone*";
