@@ -3224,6 +3224,8 @@ button#haut.visible:hover {
 }
 
 .ajouterProduit {
+  box-sizing: border-box;
+  overflow-x: hidden;
   font-family: "lora", "Serif";
   font-weight: bold;
   font-style: italic;
