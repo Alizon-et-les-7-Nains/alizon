@@ -594,7 +594,3 @@ $cart = getCurrentCart($pdo, $idClient);
 </body>
 
 </html>
-
-<?php
-ob_end_flush();
-?>
