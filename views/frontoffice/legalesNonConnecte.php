@@ -19,7 +19,6 @@
         <h1>Conditions générales de ventes</h1>
 
         <main class="legalesMain">
-            <h1>Conditions générales de ventes</h1>
 
             <section>
                 <h2 class="titreSection">1. Objet</h2>

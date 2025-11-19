@@ -1,7 +1,7 @@
 <?php
+session_start();
 require_once '../../controllers/pdo.php';
     
-session_start();
 
 $code_vendeur = 1; //$_SESSION['code_vendeur'];
 
