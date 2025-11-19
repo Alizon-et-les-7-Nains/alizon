@@ -4,10 +4,10 @@ require_once '../../controllers/pdo.php' ;
     
 
 $id_client = $_SESSION['user_id'];
-if ($_SESSION['user_adress'] == null){
+if (!isset($_SESSION['user_adress'])){
     $idAdresse = 0;
 } else {
-    $idAdresse = $_SESSION['user_adress'];
+    $idAdresse = $_SESSION['user_id'];
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
