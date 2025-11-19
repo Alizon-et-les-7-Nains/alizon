@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
     $region = $_POST['region'] ?? '';
+    $pseudo = $_POST['pseudo'] ?? '';
 
     // Mettre à jour le vendeur (avec les colonnes existantes)
     $stmt = $pdo->prepare(
@@ -30,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         noTelephone = :telephone,
         adresse = :adresse,
         ville = :ville,
-        region = :region
+        region = :region,
+        pseudo = :pseudo
         WHERE codeVendeur = :code_vendeur"
     );
     
@@ -44,33 +46,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':adresse' => $adresse1,
         ':ville' => $ville,
         ':region' => $region,
+        ':pseudo' => $pseudo,
         ':code_vendeur' => $code_vendeur
     ]);
 
     // Mettre à jour l'adresse dans la table _adresse (si elle existe)
-    // On utilise les mêmes clés que le vendeur pour retrouver l'adresse
-    $stmt = $pdo->prepare(
-        "UPDATE _adresse 
-        SET adresse = :adresse,
-        pays = :pays,
-        ville = :ville, 
-        codePostal = :codePostal,
-        region = :region
-        WHERE adresse = :ancienne_adresse 
-        AND ville = :ancienne_ville 
-        AND region = :ancienne_region"
-    );
-    
-    $stmt->execute([
-        ':adresse' => $adresse1,
-        ':pays' => $pays,
-        ':ville' => $ville,
-        ':codePostal' => $codePostal,
-        ':region' => $region,
-        ':ancienne_adresse' => $_POST['ancienne_adresse'],
-        ':ancienne_ville' => $_POST['ancienne_ville'],
-        ':ancienne_region' => $_POST['ancienne_region']
-    ]);
+    if (!empty($_POST['ancienne_adresse']) && !empty($_POST['ancienne_ville']) && !empty($_POST['ancienne_region'])) {
+        $stmt = $pdo->prepare(
+            "UPDATE _adresse 
+            SET adresse = :adresse,
+            pays = :pays,
+            ville = :ville, 
+            codePostal = :codePostal,
+            region = :region
+            WHERE adresse = :ancienne_adresse 
+            AND ville = :ancienne_ville 
+            AND region = :ancienne_region"
+        );
+        
+        $stmt->execute([
+            ':adresse' => $adresse1,
+            ':pays' => $pays,
+            ':ville' => $ville,
+            ':codePostal' => $codePostal,
+            ':region' => $region,
+            ':ancienne_adresse' => $_POST['ancienne_adresse'],
+            ':ancienne_ville' => $_POST['ancienne_ville'],
+            ':ancienne_region' => $_POST['ancienne_region']
+        ]);
+    }
 
     // Redirection pour éviter la resoumission du formulaire
     header("Location: compteVendeur.php");
@@ -90,6 +94,8 @@ $noTelephone = $vendeur['noTelephone'] ?? '';
 $adresseVendeur = $vendeur['adresse'] ?? '';
 $villeVendeur = $vendeur['ville'] ?? '';
 $regionVendeur = $vendeur['region'] ?? '';
+$pseudo = $vendeur['pseudo'] ?? '';
+$dateNaissance = $vendeur['dateNaissance'] ?? ''; // Nouveau champ
 
 // Variables pour l'adresse
 $pays = '';
@@ -168,10 +174,11 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                     <input type="file" id="photoProfilInput" name="photoProfil" accept="image/*" style="display: none;"
                         onchange="this.form.submit()">
                 </div>
-                <h1>Mon Compte Vendeur</h1>
+                <h1>Mon Compte</h1>
             </div>
 
             <section>
+                <!-- Informations Personnelles -->
                 <article class="infos-personnelles">
                     <h2>Informations Personnelles</h2>
                     <div class="champ">
@@ -183,8 +190,14 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                         <input type="text" id="prenom" name="prenom" value="<?php echo htmlspecialchars($prenom); ?>"
                             readonly>
                     </div>
+                    <div class="champ">
+                        <label for="dateNaissance">Date de naissance</label>
+                        <input type="date" id="dateNaissance" name="dateNaissance"
+                            value="<?php echo htmlspecialchars($dateNaissance); ?>" readonly>
+                    </div>
                 </article>
 
+                <!-- Adresse -->
                 <article class="infos-adresse">
                     <h2>Adresse</h2>
                     <div class="champ">
@@ -204,20 +217,9 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                                 readonly>
                         </div>
                     </div>
-                    <div class="double-champ">
-                        <div class="champ">
-                            <label for="pays">Pays</label>
-                            <input type="text" id="pays" name="pays" value="<?php echo htmlspecialchars($pays); ?>"
-                                readonly>
-                        </div>
-                        <div class="champ">
-                            <label for="region">Région</label>
-                            <input type="text" id="region" name="region"
-                                value="<?php echo htmlspecialchars($region); ?>" readonly>
-                        </div>
-                    </div>
                 </article>
 
+                <!-- Contact -->
                 <article class="infos-contact">
                     <h2>Contact</h2>
                     <div class="champ">
@@ -232,6 +234,7 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                     </div>
                 </article>
 
+                <!-- Informations Entreprise -->
                 <article class="infos-entreprise">
                     <h2>Informations Entreprise</h2>
                     <div class="champ">
@@ -246,6 +249,36 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                     </div>
                 </article>
 
+                <!-- Informations de compte -->
+                <article class="infos-compte">
+                    <h2>Informations de compte</h2>
+                    <div class="champ">
+                        <label for="pseudo">Nom d'utilisateur</label>
+                        <input type="text" id="pseudo" name="pseudo" value="<?php echo htmlspecialchars($pseudo); ?>"
+                            readonly>
+                    </div>
+                    <div class="champ-mot-de-passe">
+                        <label for="motDePasseActuel">Mot de passe actuel</label>
+                        <input type="password" id="motDePasseActuel" name="motDePasseActuel" placeholder="••••••••"
+                            readonly>
+                    </div>
+                    <div class="champ-mot-de-passe">
+                        <label for="nouveauMotDePasse">Nouveau mot de passe</label>
+                        <input type="password" id="nouveauMotDePasse" name="nouveauMotDePasse" placeholder="••••••••"
+                            readonly>
+                    </div>
+                    <div class="exigences-mot-de-passe">
+                        <h4>Exigences du mot de passe :</h4>
+                        <ul>
+                            <li>Longueur minimale de 12 caractères</li>
+                            <li>Au moins une minuscule / majuscule</li>
+                            <li>Au moins un chiffre</li>
+                            <li>Au moins un caractère spécial</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <!-- Code vendeur -->
                 <article class="code-vendeur">
                     <div class="champ">
                         <label>Code vendeur</label>

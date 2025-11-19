@@ -1,15 +1,25 @@
 // compteVendeur.js
 let modeEdition = false;
+let anciennesValeurs = {};
 
 function activerModeEdition() {
   modeEdition = true;
 
-  // Activer tous les champs de saisie
-  const inputs = document.querySelectorAll("input[readonly]");
+  // Sauvegarder les anciennes valeurs
+  const inputs = document.querySelectorAll(
+    'input[type="text"], input[type="email"], input[type="tel"]'
+  );
   inputs.forEach((input) => {
-    input.removeAttribute("readonly");
-    input.style.backgroundColor = "white";
-    input.style.color = "#212529";
+    anciennesValeurs[input.id] = input.value;
+  });
+
+  // Activer tous les champs de saisie (sauf code vendeur)
+  inputs.forEach((input) => {
+    if (input.id !== "") {
+      input.removeAttribute("readonly");
+      input.style.backgroundColor = "white";
+      input.style.color = "#212529";
+    }
   });
 
   // Masquer le bouton Modifier et afficher Annuler/Sauvegarder
@@ -24,20 +34,32 @@ function desactiverModeEdition() {
   modeEdition = false;
 
   // Désactiver tous les champs de saisie
-  const inputs = document.querySelectorAll('input:not([type="password"])');
+  const inputs = document.querySelectorAll(
+    'input[type="text"], input[type="email"], input[type="tel"]'
+  );
   inputs.forEach((input) => {
     input.setAttribute("readonly", "true");
     input.style.backgroundColor = "#f8f9fa";
     input.style.color = "#6c757d";
   });
 
-  // Réinitialiser les valeurs originales (vous pourriez vouloir recharger depuis la BDD)
-  // Pour l'instant, on va simplement réafficher les boutons
+  // Réafficher les boutons
   document.querySelector(".boutonModifierProfil").style.display = "block";
   document.querySelector(".boutonAnnuler").style.display = "none";
   document.querySelector(".boutonSauvegarder").style.display = "none";
   document.querySelector(".boutonModifierMdp").style.display = "block";
   document.querySelector(".boutonSupprimerCompte").style.display = "block";
+}
+
+function restaurerAnciennesValeurs() {
+  const inputs = document.querySelectorAll(
+    'input[type="text"], input[type="email"], input[type="tel"]'
+  );
+  inputs.forEach((input) => {
+    if (anciennesValeurs[input.id]) {
+      input.value = anciennesValeurs[input.id];
+    }
+  });
 }
 
 function popUpModifierMdp() {
@@ -57,9 +79,8 @@ function supprimerCompte() {
 }
 
 function boutonAnnuler() {
+  restaurerAnciennesValeurs();
   desactiverModeEdition();
-  // Optionnel: recharger la page pour réinitialiser les valeurs
-  // location.reload();
 }
 
 // Événements
@@ -97,20 +118,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-
-// Fonction pour valider le mot de passe (à utiliser dans la popup de modification)
-function validerMotDePasse(motDePasse) {
-  const minLength = 12;
-  const hasLowercase = /[a-z]/.test(motDePasse);
-  const hasUppercase = /[A-Z]/.test(motDePasse);
-  const hasNumber = /\d/.test(motDePasse);
-  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(motDePasse);
-
-  return (
-    motDePasse.length >= minLength &&
-    hasLowercase &&
-    hasUppercase &&
-    hasNumber &&
-    hasSpecialChar
-  );
-}
