@@ -3468,6 +3468,12 @@ button#haut.visible:hover {
   border-radius: 4px;
   cursor: pointer;
   position: relative;
+  overflow: hidden;
+}
+.AjouterProduit .ajouterPhoto .ajouterPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .AjouterProduit .ajouterPhoto .placeholder-photo {
   display: flex;
@@ -3551,6 +3557,10 @@ button#haut.visible:hover {
   min-height: 250px;
   padding-top: 15px;
 }
+.AjouterProduit .right-section .product-desc-box input:focus, .AjouterProduit .right-section .product-desc-box textarea:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
 .AjouterProduit .right-section .product-desc-box .char-count {
   text-align: right;
   font-size: 0.8rem;
@@ -3567,7 +3577,6 @@ button#haut.visible:hover {
 }
 .AjouterProduit .form-actions button {
   padding: 8px 15px;
-  border: 1px solid #273469;
   border-radius: 32px;
   font-weight: normal;
   cursor: pointer;
