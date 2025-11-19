@@ -84,10 +84,10 @@
                         <li>
                             <figure>
                                 <img src='/public/images/infoDark.svg'>
-                                <figcaption>Aucun réassort prévu</figcaption>
+                                <figcaption>" . $reassort = $epuise['dateReassort'] != NULL ? formatDate($epuise['dateReassort']) : 'Aucun réassort prévu' . "</figcaption>
                             </figure>
                         </li>
-                        <li>Épuisé le 29 août</li>
+                        <li>Épuisé le " . formatDate($epuise['dateStockEpuise']) . "</li>
                     </ul>
                 </div>";
         echo $html;
