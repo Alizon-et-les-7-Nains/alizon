@@ -16,8 +16,8 @@
     $raisonSocial = $_POST['raisonSocial'] ?? '';
 
     $sql = "INSERT INTO _vendeur 
-        (nom, prenom, email, noTelephone, utilisateur, mdp, dateNaissance, siren, adresse, sociale)
-        VALUES (:nom, :prenom, :email, :noTelephone, :utilisateur, :mdp, :dateNaissance, :siren, :adresse, :sociale)";
+        (nom, prenom, email, noTelephone, pseudo, mdp, dateNaissance, siren, adresse, sociale)
+        VALUES (:nom, :prenom, :email, :noTelephone, :pseudo, :mdp, :dateNaissance, :siren, :adresse, :sociale)";
 
     $stmt = $pdo->prepare($sql);
 
@@ -26,7 +26,7 @@
         ':prenom' => $prenom,
         ':email' => $email,
         ':noTelephone' => $noTelephone,
-        ':utilisateur' => $pseudo, 
+        ':pseudo' => $pseudo, 
         ':mdp' => $mdp,
         ':dateNaissance' => $dateNaissance,
         ':siren' => $noSiren,
