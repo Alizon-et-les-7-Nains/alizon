@@ -16,7 +16,7 @@ $stmt2 = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = :id");
 $stmt2->execute(['id' => $productId]);
 $image = $stmt->fetch(PDO::FETCH_ASSOC);
 
-var_dump($image);
+
 
 $hasImage = ($image && !empty($image['url']));
 $imageUrl = $hasImage 
@@ -45,6 +45,7 @@ if (!$produit) {
     <?php require_once "./partials/aside.php"?>
        
     <main class="modifierProduit"> 
+        <?php var_dump($image);?>
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
             <div class="left-section">
                 <div class="ajouterPhoto">
