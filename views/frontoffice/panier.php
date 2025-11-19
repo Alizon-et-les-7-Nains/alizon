@@ -350,7 +350,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 </a>
             </div>
             <form method="POST" action="../../controllers/viderPanier.php">
-                <button class="viderPanierCookie" name="idProduit" value="<?= htmlspecialchars($_SESSION['user_id'] ?? '') ?>">Vider le panier</button>
+                <button class="viderPanierCookie viderPanier" name="idUtilisateur" value="<?= htmlspecialchars($_SESSION['user_id'] ?? '') ?>">Vider le panier</button>
             </form>
         </section>
         <?php } ?>
