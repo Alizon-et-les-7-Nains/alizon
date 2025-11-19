@@ -1441,6 +1441,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 
 .produitBackOffice p {
   margin: 0;
+  font-size: 12px;
 }
 .produitBackOffice h1 {
   color: #273469;
@@ -1458,6 +1459,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .produitBackOffice article {
   position: relative;
+  height: 350px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .produitBackOffice .nomEtEvaluation {
   display: flex;
@@ -1466,14 +1472,21 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   padding: 10px;
   align-items: center;
 }
-.produitBackOffice .nomEtEvaluation p {
+.produitBackOffice .nomEtEvaluation > p {
   font-size: 24px;
   color: #273469;
+  position: absolute;
+  left: 10px;
+  top: 210px;
+  width: 180px;
 }
 .produitBackOffice .evaluation {
   display: flex;
   flex-direction: column;
   height: 40px;
+  position: absolute;
+  right: 10px;
+  top: 210px;
 }
 .produitBackOffice .evaluation p {
   color: #6e6e6e;
@@ -1483,6 +1496,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 16px;
   text-decoration: underline;
   margin-top: 0;
+  width: max-content;
 }
 .produitBackOffice .evaluation div p {
   text-decoration: none;
@@ -1496,10 +1510,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .produitBackOffice .produit {
   height: 185px;
-  width: 300px;
+  width: auto;
   object-fit: contain;
   margin-top: 10px;
-  border-radius: 16px;
+  border-radius: 8px;
 }
 .produitBackOffice .bouton {
   background-color: #273469;
@@ -1514,6 +1528,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   position: absolute;
   right: 0;
   bottom: 10px;
+  margin-right: 10px;
 }
 .produitBackOffice button {
   background-color: transparent;
@@ -1524,20 +1539,23 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .produitBackOffice .ligneProduit {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 30px;
-  justify-items: center;
 }
 .produitBackOffice .prix, .produitBackOffice .prixAuKg {
   font-size: 24px;
   color: #273469;
-  margin: 0;
+  margin: 0 10px;
   font-weight: bold;
+}
+.produitBackOffice .prixEtPrixAuKg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 .produitBackOffice .prixAuKg {
   font-size: 16px;
   font-weight: normal;
-  margin-bottom: 10px;
 }
 .produitBackOffice .hoverBouton {
   display: none;

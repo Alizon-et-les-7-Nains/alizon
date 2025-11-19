@@ -1,3 +1,26 @@
+function setError(element, message) {
+  if (!element) return;
+  element.classList.add("invalid");
+  const container = element.parentElement;
+  if (!container) return;
+  let err = container.querySelector(".error-message");
+  if (!err) {
+    err = document.createElement("small");
+    err.className = "error-message";
+    container.appendChild(err);
+  }
+  err.textContent = message;
+}
+
+function clearError(element) {
+  if (!element) return;
+  element.classList.remove("invalid");
+  const container = element.parentElement;
+  if (!container) return;
+  const err = container.querySelector(".error-message");
+  if (err) err.textContent = "";
+}
+
 function fermerPopUpPromouvoir() {
     const overlay = document.querySelector(".overlaypopUpPromouvoir");
     if (overlay) overlay.remove();
@@ -38,6 +61,14 @@ function popUpInfoCalcul() {
     croixFermer.addEventListener("click", fermerPopUpInfoCalcul);
 }
 
+function verifDate(val){
+    let valeur = element.value.trim();
+    if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
+        setError(val, "Format attendu : jj/mm/aaaa");
+    } else {
+        clearError(val);
+    }
+}
 function popUpRemise(){
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
@@ -87,7 +118,12 @@ function popUpRemise(){
 
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     croixFermer.addEventListener("click", fermerPopUpRemise);
+
+    const dateLimite = overlay.querySelector("#dateLimite");
+    dateLimite.addEventListener("input", () => verifDate(dateLimite));
 }
+
+
 
 function popUpPromouvoir() {
     const overlay = document.createElement("div");

@@ -4,6 +4,7 @@
 .produitBackOffice{
     p{
         margin: 0;
+        font-size:12px ;
     }
     h1 {
         color: $color-blue;
@@ -25,6 +26,11 @@
 
     article {
         position: relative;
+        height: 350px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .nomEtEvaluation{
@@ -33,16 +39,24 @@
         justify-content: space-between;
         padding: 10px;
         align-items: center;
-        p{
+        > p{
             font-size: 24px;
             color: $color-blue;
+            position: absolute;
+            left: 10px;
+            top: 210px;
+            width: 180px;
         }
+
     }
 
     .evaluation{
         display: flex;
         flex-direction: column;
         height: 40px;
+        position: absolute;
+        right: 10px;
+        top: 210px;
         p{
             color: $color-dark-gray;
             font: {
@@ -53,6 +67,7 @@
             }
             text-decoration: underline;
             margin-top: 0;
+            width: max-content;
         }
         div p {
             text-decoration: none;
@@ -69,10 +84,10 @@
 
     .produit{
         height: 185px;
-        width: 300px; 
+        width: auto; 
         object-fit: contain;       
         margin-top: 10px;
-        border-radius: 16px;
+        border-radius: 8px;
     }
 
     .bouton{
@@ -88,6 +103,7 @@
         position: absolute;
         right: 0;
         bottom: 10px;
+        margin-right:10px ;
     }
 
     button{
@@ -96,26 +112,31 @@
         color: white;
         font-family: 'lora';
         cursor: pointer;
+        
     }
 
     .ligneProduit {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 30px;
-        justify-items: center;
     }
 
     .prix, .prixAuKg{
         font-size: 24px;
         color: $color-blue;
-        margin: 0;
+        margin: 0 10px;
         font-weight: bold;
+    }
+
+    .prixEtPrixAuKg{
+        position: absolute;
+        bottom: 0;
+        left: 0;
     }
 
     .prixAuKg{
         font-size: 16px;
         font-weight: normal;
-        margin-bottom: 10px;
     }
 
     .hoverBouton {
