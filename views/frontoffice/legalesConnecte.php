@@ -13,11 +13,11 @@
 <body class="cgucgv">
 
     <?php include "../../views/frontoffice/partials/headerConnecte.php"; ?>
+
     <main class="legalesMain">
+
         <h1>Conditions générales de ventes</h1>
 
-        </header>
-        <!-- -------------------------------------------- FIN HEADER -------------------------------------------- -->
         <main class="legalesMain">
             <h1>Conditions générales de ventes</h1>
 
@@ -230,29 +230,10 @@
                 </p>
             </section>
 
-            <<<<<<< HEAD:views/frontoffice/legales.php </main>
+            </main>
 
-                <!-- -------------------------------------------- DEBUT FOOTER -------------------------------------------- -->
-                <footer>
-                    <div class="footerPC">
-                        <div>
-                            <a href="">Conditions générales de vente</a>
-                            <a href="">Mentions légales</a>
-                            <p>© 2025 Alizon Tous droits réservés.</p>
-                        </div>
-                        <i class="bi bi-envelope fs-2"></i>
-                    </div>
-                    <div class="footerTel">
-                        <a href=""><img src="../public/images/homeLightBlue.svg" alt="" class="homeLightBlue"></a>
-                        <a href=""><img src="../public/images/searchLightBlue.svg" alt="" class="searchLightBlue"></a>
-                        <a href=""><img src="../public/images/cartLightBlue.svg" alt="" class="cartLightBlue"></a>
-                        <a href=""><img src="../public/images/burgerLightBlue.svg" alt="" class="burgerLightBlue"></a>
-                    </div>
-                </footer>
-                <!-- -------------------------------------------- FIN FOOTER -------------------------------------------- -->
-                =======
-                <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
-                >>>>>>> origin/main:views/frontoffice/legalesConnecte.php
+            <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
+
 </body>
 
 </html>

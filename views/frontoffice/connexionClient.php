@@ -85,8 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="hidden" name="password_chiffre" id="password_chiffre">
 
             <div>
-                <a href="inscriptionClient.php">Pas encore client ? Inscrivez-vous ici</a>
-                <a href="#">Mot de passe oublié ? Cliquez ici</a>
+                <a href="inscription.php">Pas encore client ? Inscrivez-vous ici</a>
+                <a href="motDePasseOublie.php">Mot de passe oublié ? Cliquez ici</a>
                 <button type="submit" class="boutonConnexionClient">Se connecter</button>
             </div>
         </form>

@@ -6,6 +6,7 @@
         margin: 0;
         padding: 0;
         transition: all 0.3s ease;
+        font-family: $font-lora;
     }
 
     main{
@@ -15,7 +16,6 @@
     }
 
     h1,h2,h3,h4,p{
-        font-family: $font-lora;
         color: $color-blue;
     }
     #descriptionCourte{
@@ -163,6 +163,10 @@
         height: 40px;
     }
 
+    .ligneActions p, .ligneActions a{
+        color: #273469;
+    }
+
     .bouton{
         width: 300px;
         height: 60px;
@@ -275,6 +279,10 @@
         display: none;
     }
 
+    .informations{
+        margin: 2em 0;
+    }
+
     .informations label{
         display: inline-block;
         position: relative;
@@ -300,6 +308,7 @@
     .sectionAvis{
         width: 68%;
         margin-left: 2.5em;
+        margin-top: 2em;
     }
 
     .sectionAvis h6{
@@ -488,6 +497,7 @@
         display: flex !important;
         flex-direction: row;
         justify-content: center;
+        align-items: center;
         gap: 1em;
         margin-top: 15px;
         position: absolute;
@@ -517,5 +527,13 @@
     .cercleNoir:hover {
         background-color: #273469 !important;
         transform: scale(1.15);
+    }
+
+    hr {
+        border: 0;
+        height: 2px;
+        background-color: $color-light-gray;
+        margin: 0 2.5em;
+        width: 70%; // ou 100% selon votre préférence
     }
 }

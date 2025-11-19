@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../../public/style.css">
-    <title>header</title>
-</head>
-
-<body>
     <header class="headerFront">
 
         <div class="headerMain">
@@ -27,11 +17,11 @@
 
         </div>
             <div class="icons">
+                <a href="../frontoffice/panierDeconnecte.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
                 <div class="seConnecter">
                     <a href="../frontoffice/connexionClient.php"><img src="../../../public/images/utilLightBlue.svg" alt=""></a>
                     <p>Se connecter</p>
                 </div>
-                <a href="../frontoffice/panierDeconnecte.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
             </div>
         </div>
 
@@ -46,7 +36,3 @@
         </div>
 
     </header>
-    
-</body>
-
-</html>

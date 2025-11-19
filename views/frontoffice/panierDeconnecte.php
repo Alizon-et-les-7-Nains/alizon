@@ -2,24 +2,27 @@
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
 
-    const PRODUIT_CONSULTE_MAX_SIZE = 4;
-
     const PRODUIT_DANS_PANIER_MAX_SIZE = 10;
 
     // Récupération du cookie existant ou création d'un tableau vide
-    if (((isset($_COOKIE['produitConsulte'])) && (isset($_COOKIE['produitPanier']))) && (!empty($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitPanier']))) {
-        $tabIDProduitConsulte = unserialize($_COOKIE['produitConsulte']);
-        $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
-        if (!is_array($tabIDProduitConsulte)) {
-            $tabIDProduitConsulte = [];
+    if (!isset($_COOKIE["produitPanier"]) || empty($_COOKIE["produitPanier"])) {
+        $tabIDProduitPanier = [];
+    } else {
+        // On désérialise le cookie pour récupérer le tableau
+        $tabIDProduitPanier = @unserialize($_COOKIE["produitPanier"]);
+        
+        // Sécurisation : si la désérialisation échoue, on remet un tableau vide
+        if (!is_array($tabIDProduitPanier)) {
             $tabIDProduitPanier = [];
         }
-    } else {
-        $tabIDProduitConsulte = [];
-        $tabIDProduitPanier = [];
     }
 
-    // Fonction pour ajouter un produit consulte
+    $nbProduit = 0;
+    foreach ($tabIDProduitPanier as $key => $value) {
+        $nbProduit = $nbProduit + $value;
+    }
+
+    // Fonction pour ajouterx un produit consulte
     function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
         if (isset($tabIDProduitPanier[$idProduit])) {
             $tabIDProduitPanier[$idProduit] += $quantite;
@@ -38,7 +41,7 @@ require_once "../../controllers/prix.php";
 
     function modifierQuantitePanier(&$tabIDProduitPanier, $idProduit, $quantite) {
         if (isset($tabIDProduitPanier[$idProduit])) {
-            if ($quantite == 0) {
+            if ($quantite == 0 || ($tabIDProduitPanier[$idProduit] + $quantite) <= 0) {
                 unset($tabIDProduitPanier[$idProduit]);
             } else {
                 $tabIDProduitPanier[$idProduit] += $quantite;
@@ -46,26 +49,20 @@ require_once "../../controllers/prix.php";
         }
         
         setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
+        
+        header("Location: panierDeconnecte.php");
         return true;
     }
 
     if (isset($_GET['addPanier']) && !empty($_GET['addPanier'])) {
         $idProduitAjoute = intval($_GET['addPanier']);
         $quantite = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
-        ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute, $quantite);
+        modifierQuantitePanier($tabIDProduitPanier, $idProduitAjoute, $quantite);
         
         if (isset($_GET['id'])) {
             header("Location: produit.php?id=" . intval($_GET['id']));
             exit;
         }
-    }
-
-    $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
-
-    // Récupération des informations des produits dans le panier
-    $nbProduit = count($tabIDProduitPanier);
-    foreach ($tabIDProduitPanier as $key => $value) {
-        $totalProduit += $value;
     }
 
     // ============================================================================
@@ -82,45 +79,49 @@ require_once "../../controllers/prix.php";
     <title>Alizon - Votre panier</title>
 </head>
 <body class="panier">
-    <?php include "../../views/frontoffice/partials/headerConnecte.php"; ?>
+    <?php include "../../views/frontoffice/partials/headerDeconnecte.php"; ?>
 
     <main>
         <section class="listeProduit">
-            <?php foreach ($tabIDProduitPanier as $item) { ?>
+            <?php foreach ($tabIDProduitPanier as $idProduit => $quantite) { 
+                $stmt = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
+                $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+
+                ?>
                 <article>
                     <div class="imgProduit">
                         <?php 
-                            $idProduit = $item['idProduit'] ?? 0;
+                            
                             $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                             $stmtImg->execute([':idProduit' => $idProduit]);
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';    
                         ?>
-                        <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>">
+                        <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($panier['nom'] ?? 'N/A') ?>">
                     </div>
                     <div class="infoProduit">
                         <div>
-                            <h2><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></h2>
+                            <h2><?= htmlspecialchars($panier['nom'] ?? 'N/A') ?></h2>
                             <h4>En stock</h4>
                         </div>
                         <div class="quantiteProduit">
-                            <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
+                            <button class="minus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
                             <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
-                        </button>                            
-                        <p class="quantite"><?= htmlspecialchars($item['qty'] ?? 'N/A') ?></p> 
-                        <button class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 1; ?>'">
-                            <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
-                        </button> 
+                            </button>                            
+                            <p class="quantite"><?= htmlspecialchars($quantite ?? 'N/A') ?></p> 
+                            <button class="plus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 1; ?>'">
+                                <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
+                            </button> 
                         </div>
                     </div>
                     <div class="prixOpt">
-                        <?= htmlspecialchars($item['prix'] ?? 'N/A') ?>          
-                        <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
+                        <?= number_format($panier['prix'] ?? 0, 2) ?>          
+                        <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
                         </button>
                     </div>
                 </article> 
-            <?php } if ($nbProduit==0) { ?>
+            <?php } if ($nbProduit<=0) { ?>
                 <h1 class="aucunProduit">Aucun produit</h1>
             <?php } else { ?>
         </section>
@@ -130,34 +131,48 @@ require_once "../../controllers/prix.php";
                 <article>
                     <h2><b>Récapitulatif de votre panier</b></h2>
                     <div class="infoCommande">
+
+                    <?php
+                    
+                        $prixTotal = 0;
+                        
+                        foreach($tabIDProduitPanier as $idProduit => $quantite) {
+                            $stmt = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
+                            $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+                            $prixTotal += $panier['prix'] * $quantite;
+                        }
+
+                    ?>
+
                         <section>
                             <h2>Nombres d'articles</h2>
                             <h2 class="val"><?= $nbProduit ?? 0 ?></h2>
                         </section>
                         <section>
                             <h2>Prix HT</h2>
-                            <h2 class="val"><?= number_format($totals['prixHT'] ?? 0, 2) ?>€</h2>
+                            <h2 class="val"><?= number_format($prixTotal, 2) ?>€</h2>
                         </section>
                         <section>
                             <h2>TVA</h2>
-                            <h2 class="val"><?= number_format($totals['prixTotalTvaPanier'] ?? 0, 2) ?>€</h2>
+                            <h2 class="val"><?= number_format($prixTotal * 0.2, 2) ?>€</h2>
                         </section>
                         <section>
                             <h2>Total</h2>
-                            <h2 class="val"><?= number_format($totals['sousTotal'] ?? 0, 2) ?>€</h2>
+                            <h2 class="val"><?= number_format($prixTotal * 1.2, 2) ?>€</h2>
                         </section>
                     </div>
                 </article>
                 <a href="../../views/frontoffice/connexionClient.php"><p>Passer la commande</p></a>
             </div>
-            <a href="" class="viderPanier">Vider le panier</a>
+            <form method="GET" action="../../controllers/viderPanier.php">
+                <button class="viderPanierCookie viderPanier" name="idUtilisateur">Vider le panier</button>
+            </form>
         </section>
         <?php } ?>
     </main>
 
     <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
 
-    <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 </body>

@@ -349,7 +349,9 @@ $cart = getCurrentCart($pdo, $idClient);
                     <p>Passer la commande</p>
                 </a>
             </div>
-            <a href="" class="viderPanier">Vider le panier</a>
+            <form method="POST" action="../../controllers/viderPanier.php">
+                <button class="viderPanierCookie viderPanier" name="idUtilisateur" value="<?= htmlspecialchars($_SESSION['user_id'] ?? '') ?>">Vider le panier</button>
+            </form>
         </section>
         <?php } ?>
     </main>

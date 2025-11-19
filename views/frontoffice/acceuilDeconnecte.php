@@ -69,11 +69,6 @@ require_once "../../controllers/prix.php";
         $idProduitAjoute = intval($_GET['addPanier']);
         $quantite = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
         ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute);
-        
-        if (isset($_GET['id'])) {
-            header("Location: produit.php?id=" . intval($_GET['id']));
-            exit;
-        }
     }
 
 // ============================================================================
