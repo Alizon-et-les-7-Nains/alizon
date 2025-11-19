@@ -1,10 +1,12 @@
 <?php
-include('/var/www/config/config.php');
+include '../../../config/config.php';
+$dsn = "$driver:host=$server;dbname=$dbname";
 try {
-    $pdo = new PDO("$driver:host=$server;dbname=$dbname", 
-            $user, $pass);
+    $pdo = new PDO($dsn, $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    print "Erreur !: " . $e->getMessage() . "<br/>";
-    die();
+    echo "Erreur !: " . $e->getMessage();
 }
 ?>
+
+

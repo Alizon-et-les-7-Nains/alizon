@@ -1,7 +1,7 @@
-<?php //require_once '/var/www/controllers/pdo.php' ;
-    // $stmt = $pdo->query("SELECT * FROM _client");
-    // $clients = $stmt->fetchAll(PDO::FETCH_ASSOC); 
-    // print_r ($clients);
+<?php 
+    require_once '../../controllers/pdo.php';
+    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imagedeproduit as img on prod.idproduit = img.idproduit WHERE envente = true;");
+    $produitEnVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 ?>
 
 <!DOCTYPE html>
@@ -23,250 +23,177 @@
         <main class="produitBackOffice">
             <h1>Produits en Vente</h1>
             <div class = "ligneProduit">
-                <section>
-                    <article>
-                        <img class = "produit" src="/public/images/rillettes.png" alt="">
-                        <div class="nomEtEvaluation">
-                            <p>Rillettes</p>
-                            <div class="evaluation">
-                                <div class="etoiles">
-                                    <img src="/public/images/etoile.svg"" alt="">
-                                    <p>3</p>
-                                </div>
-                                <p>200 évaluations</p>
+
+            <?php for ($i = 0; $i < count($produitEnVente); $i++) { 
+            $idProduit = $produitEnVente[$i]['idproduit'];
+            
+            $stmt = $pdo->query("SELECT count(prod.idproduit) as evaluation FROM saedb._produit as prod join saedb._avis on prod.idproduit = _avis.idproduit WHERE prod.idproduit = '$idProduit' and envente = true;");
+            $evaluations = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+            ?>
+                
+            <section>
+                <article>
+                    <img class="produit" src="/public/<?php echo $produitEnVente[$i]['url'];?>" alt="">
+
+                    <div class="nomEtEvaluation">
+                        <p><?php echo htmlspecialchars($produitEnVente[$i]['nom']); ?></p>
+
+                        <div class="evaluation">
+                            <div class="etoiles">
+                                <img src="/public/images/etoile.svg" alt="">
+                                <p><?php echo htmlspecialchars($produitEnVente[$i]['note']); ?></p>
+                            </div>
+
+                            <p><?php 
+                                if($evaluations[0]['evaluation'] !== 0){
+                                    echo htmlspecialchars($evaluations[0]['evaluation']) . " évaluations";
+                                } 
+                            ?></p>                                
                             </div>
                         </div>
-                        <div>
-                            <p class="prix"> 29.99 €</p>
-                            <p class="prixAuKg"> 99.72€ / kg</p>
-                        </div>
-                        <div class = "bouton">
-                            <img src="/public/images/iconeFiltre.svg" alt="">
-                            <button> Options</button>
 
-                            <div class = "hoverBouton">
+                        <div class="prixEtPrixAuKg">
+                            <p class="prix"><?php echo htmlspecialchars($produitEnVente[$i]['prix']); ?>€</p>
+                            <p class="prixAuKg">99.72€ / kg</p>
+                        </div>
+
+                        <div class="bouton">
+                            <img src="/public/images/iconeFiltre.svg" alt="">
+                            <button>Options</button>
+
+                            <div class="hoverBouton">
+
                                 <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
+                                    <div class="iconeTexte">
                                         <img src="/public/images/iconePromouvoir.svg" alt="">
                                         <button onclick="popUpPromouvoir()">Promouvoir</button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
+
                                 <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
+                                    <div class="iconeTexte">
                                         <img src="/public/images/iconeRemise.svg" alt="">
-                                        <button onclick="popUpRemise()" >Remise</button>
+                                        <button onclick="popUpRemise()">Remise</button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
+
                                 <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
+                                    <div class="iconeTexte">
                                         <img src="/public/images/iconeModifier.svg" alt="">
                                         <button>Modifier</button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
+
                                 <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                    <img src="/public/images/iconePrevisualiser.svg" alt="">
+                                    <div class="iconeTexte">
+                                        <img src="/public/images/iconePrevisualiser.svg" alt="">
                                         <button>Prévisualiser</button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
-                                <div>
-                                    <img src="/public/images/iconeRetirerVente.svg" alt="">
-                                    <button>Retirer de la vente</button>
-                                </div>
+                                
+                                <form method="POST" action="../../controllers/RetirerDeLaVente.php">
+                                    <div>
+                                        <input type="hidden" name="idproduit" value="<?php echo $produitEnVente[$i]['idproduit']; ?>">
+                                        <img src="/public/images/iconeRetirerVente.svg" alt="">
+                                        <button>Retirer de la vente</button>
+                                    </div>  
+                                </form>
+
+
                             </div>
                         </div>
 
                     </article>
                 </section>
+            <?php } ?>
+            </div>
+            <?php 
+                require_once '../../controllers/pdo.php';
+                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imagedeproduit as img on prod.idproduit = img.idproduit WHERE envente = false;");
+                $produitHorsVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+            ?>
 
-                <section>
-                    <article>
-                        <img class = "produit" src="/public/images/kouign_amann.jpg" alt="">
-                        <div class="nomEtEvaluation">
-                            <p>Rillettes</p>
-                            <div class="evaluation">
-                                <div class="etoiles">
-                                    <img src="/public/images/etoile.svg"" alt="">
-                                    <p>3</p>
-                                </div>
-                                <p>200 évaluations</p>
+            <h1>Produits hors Vente</h1>
+            
+            <div class = "ligneProduit">
+            <?php for ($i = 0; $i < count($produitHorsVente); $i++) { 
+                $idProduit = $produitHorsVente[$i]['idproduit'];
+                
+                $stmt = $pdo->query("SELECT count(prod.idproduit) as evaluation FROM saedb._produit as prod join saedb._avis on prod.idproduit = _avis.idproduit WHERE prod.idproduit = '$idProduit' and envente = false;");
+                $evaluations = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+            ?>
+                
+            <section>
+                <article>
+                    <img class="produit" src="/public/<?php echo $produitHorsVente[$i]['url'];?>" alt="">
+
+                    <div class="nomEtEvaluation">
+                        <p><?php echo htmlspecialchars($produitHorsVente[$i]['nom']); ?></p>
+
+                        <div class="evaluation">
+                            <div class="etoiles">
+                                <img src="/public/images/etoile.svg" alt="">
+                                <p><?php echo htmlspecialchars($produitHorsVente[$i]['note']); ?></p>
+                            </div>
+
+                            <p><?php 
+                                if($evaluations[0]['evaluation'] !== 0){
+                                    echo htmlspecialchars($evaluations[0]['evaluation']) . " évaluations";
+                                } 
+                            ?></p>
                             </div>
                         </div>
-                        <div>
-                            <p class="prix"> 29.99 €</p>
-                            <p class="prixAuKg"> 99.72€ / kg</p>
+
+                        <div class="prixEtPrixAuKg">
+                            <p class="prix"><?php echo htmlspecialchars($produitHorsVente[$i]['prix']); ?>€</p>
+                            <p class="prixAuKg">99.72€ / kg</p>
                         </div>
-                        <div class = "bouton">
+
+                        <div class="bouton">
                             <img src="/public/images/iconeFiltre.svg" alt="">
-                            <button> Options</button>
+                            <button>Options</button>
 
-                            <div class = "hoverBouton">
+                            <div class="hoverBouton">
                                 <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                        <img src="/public/images/iconePromouvoir.svg" alt="">
-                                        <button onclick="popUpPromouvoir()">Promouvoir</button>
-                                    </div>
-                                    <div class="ligne"></div>
-                                </div>
-                                <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                        <img src="/public/images/iconeRemise.svg" alt="">
-                                        <button onclick="popUpRemise()" >Remise</button>
-                                    </div>
-                                    <div class="ligne"></div>
-                                </div>
-                                <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
+                                    <div class="iconeTexte">
                                         <img src="/public/images/iconeModifier.svg" alt="">
                                         <button>Modifier</button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
+
                                 <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                    <img src="/public/images/iconePrevisualiser.svg" alt="">
+                                    <div class="iconeTexte">
+                                        <img src="/public/images/iconePrevisualiser.svg" alt="">
                                         <button>Prévisualiser</button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
-                                <div>
-                                    <img src="/public/images/iconeRetirerVente.svg" alt="">
-                                    <button>Retirer de la vente</button>
-                                </div>
+
+                                <form method="POST" action="../../controllers/mettreEnVente.php">
+                                    <div>
+                                        <input type="hidden" name="idproduit" value="<?php echo $produitHorsVente[$i]['idproduit']; ?>">
+                                        <img src="/public/images/iconeAjouterVente.svg" alt="">
+                                        <button type="submit">Ajouter à la vente</button>
+                                    </div>
+                                </form>
+
+
                             </div>
                         </div>
 
                     </article>
                 </section>
-
-                <section>
-                    <article>
-                        <img class = "produit" src="/public/images/saucisson_chouchen.jpg" alt="">
-                        <div class="nomEtEvaluation">
-                            <p>Rillettes</p>
-                            <div class="evaluation">
-                                <div class="etoiles">
-                                    <img src="/public/images/etoile.svg"" alt="">
-                                    <p>3</p>
-                                </div>
-                                <p>200 évaluations</p>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="prix"> 29.99 €</p>
-                            <p class="prixAuKg"> 99.72€ / kg</p>
-                        </div>
-                        <div class = "bouton">
-                            <img src="/public/images/iconeFiltre.svg" alt="">
-                            <button> Options</button>
-
-                            <div class = "hoverBouton">
-                                <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                        <img src="/public/images/iconePromouvoir.svg" alt="">
-                                        <button onclick="popUpPromouvoir()">Promouvoir</button>
-                                    </div>
-                                    <div class="ligne"></div>
-                                </div>
-                                <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                        <img src="/public/images/iconeRemise.svg" alt="">
-                                        <button onclick="popUpRemise()" >Remise</button>
-                                    </div>
-                                    <div class="ligne"></div>
-                                </div>
-                                <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                        <img src="/public/images/iconeModifier.svg" alt="">
-                                        <button>Modifier</button>
-                                    </div>
-                                    <div class="ligne"></div>
-                                </div>
-                                <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                    <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <button>Prévisualiser</button>
-                                    </div>
-                                    <div class="ligne"></div>
-                                </div>
-                                <div>
-                                    <img src="/public/images/iconeRetirerVente.svg" alt="">
-                                    <button>Retirer de la vente</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </article>
-                </section>
-
-                <section>
-                    <article>
-                        <img class = "produit" src="/public/images/palets_bretons.jpg" alt="">
-                        <div class="nomEtEvaluation">
-                            <p>Rillettes</p>
-                            <div class="evaluation">
-                                <div class="etoiles">
-                                    <img src="/public/images/etoile.svg"" alt="">
-                                    <p>3</p>
-                                </div>
-                                <p>200 évaluations</p>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="prix"> 29.99 €</p>
-                            <p class="prixAuKg"> 99.72€ / kg</p>
-                        </div>
-                        <div class = "bouton">
-                            <img src="/public/images/iconeFiltre.svg" alt="">
-                            <button> Options</button>
-
-                            <div class = "hoverBouton">
-                                <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                        <img src="/public/images/iconePromouvoir.svg" alt="">
-                                        <button onclick="popUpPromouvoir()">Promouvoir</button>
-                                    </div>
-                                    <div class="ligne"></div>
-                                </div>
-                                <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                        <img src="/public/images/iconeRemise.svg" alt="">
-                                        <button onclick="popUpRemise()" >Remise</button>
-                                    </div>
-                                    <div class="ligne"></div>
-                                </div>
-                                <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                        <img src="/public/images/iconeModifier.svg" alt="">
-                                        <button>Modifier</button>
-                                    </div>
-                                    <div class="ligne"></div>
-                                </div>
-                                <div class="iconeTexteLigne">
-                                    <div class = "iconeTexte">
-                                    <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <button>Prévisualiser</button>
-                                    </div>
-                                    <div class="ligne"></div>
-                                </div>
-                                <div>
-                                    <img src="/public/images/iconeRetirerVente.svg" alt="">
-                                    <button>Retirer de la vente</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </article>
-                </section>
+            <?php } ?>
             </div>
         </main>
 
         <?php require_once './partials/footer.php' ?>
 
-        <script src="../scripts/backoffice/popUpPromouvoir.js"></script>
+        <script src="../scripts/backoffice/scriptProduit.js"></script>
     </body>
 </html>

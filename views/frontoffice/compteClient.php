@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prenom = $_POST['prenom'];
     $email = $_POST['email'];
     $dateNaissance = $_POST['dateNaissance'];
-    $telephone = $_POST['telephone'];
+    $telephone = $_POST['noTelephone'];
     $codePostal = $_POST['codePostal'];
     $adresse1 = $_POST['adresse1'];
     $pays = $_POST['pays'];
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $region = $_POST['region'] ?? '';
 
     $stmt = $pdo->query(
-    "UPDATE _client 
+    "UPDATE saedb._client 
     SET pseudo = '$pseudo', 
     nom = '$nom', 
     prenom = '$prenom', 
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     WHERE idClient = '$id_client';");
 
     $stmt = $pdo->query(
-    "UPDATE _adresse 
+    "UPDATE saedb._adresse 
     SET adresse = '$adresse1',
     pays = '$pays',
     ville = '$ville', 
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //verification et upload de la nouvelle photo de profil
     $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png';
     if (file_exists($photoPath)) {
-        unlink($photoPath); // supprime l’ancien fichier
+        unlink($photoPath); // supprime l'ancien fichier
     }
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
@@ -53,24 +53,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //on recupère les infos du user pour les afficher
-    $stmt = $pdo->query("SELECT * FROM _client WHERE idClient = '$id_client'");
+    $stmt = $pdo->query("SELECT * FROM saedb._client WHERE idClient = '$id_client'");
     $client = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $pseudo = $client['pseudo'];
-    $prenom = $client['prenom'];
-    $nom = $client['nom'];
-    $dateNaissance = $client['dateNaissance'];
-    $email = $client['email'];
-    $noTelephone = $client['noTelephone'];
+    $pseudo = $client['pseudo'] ?? '';
+    $prenom = $client['prenom'] ?? '';
+    $nom = $client['nom'] ?? '';
+    $dateNaissance = $client['dateNaissance'] ?? ''; // PostgreSQL met en minuscules
+    $email = $client['email'] ?? '';
+    $noTelephone = $client['notTelephone'] ?? ''; // PostgreSQL met en minuscules
 
     //on recupère les infos d'adresse du user pour les afficher
-    $stmt = $pdo->query("SELECT * FROM _adresse WHERE idAdresse = '$idAdresse'");
+    $stmt = $pdo->query("SELECT * FROM saedb._adresse WHERE idAdresse = '$idAdresse'");
     $adresse = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $pays = $adresse['pays'];
-    $ville = $adresse['ville'];
-    $codePostal = $adresse['codePostal'];
-    $adresse1 = $adresse['adresse'];
+    $pays = $adresse['pays'] ?? '';
+    $ville = $adresse['ville'] ?? '';
+    $codePostal = $adresse['codePostal'] ?? ''; // PostgreSQL met en minuscules
+    $adresse1 = $adresse['adresse'] ?? '';
 
 ?>
 <!DOCTYPE html>
@@ -137,9 +137,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <?php 
         //On récupère le mot de passe de la BDD
-        $stmt = $pdo->query("SELECT mdp FROM _client WHERE idClient = '$id_client'");
+        $stmt = $pdo->query("SELECT mdp FROM saedb._client WHERE idClient = '$id_client'");
         $tabMdp = $stmt->fetch(PDO::FETCH_ASSOC);
-        $mdp = $tabMdp['mdp'];
+        $mdp = $tabMdp['mdp'] ?? '';
     ?>
     <script src="../../controllers/Chiffrement.js"></script>
     <script>

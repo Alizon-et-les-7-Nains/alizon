@@ -433,455 +433,238 @@ body {
   }
 }
 
-.pageProduit body {
-  margin: 0;
-  padding: 0;
-  transition: all 0.3s ease;
-  font-family: "lora", serif;
+.pageCommandes {
+  font-family: "Lora", serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #273469;
 }
-.pageProduit main {
+@media (max-width: 1125px) {
+  .pageCommandes .supprElem {
+    display: none;
+    visibility: hidden;
+  }
+}
+.pageCommandes input[type=search] {
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 25px;
+  border: 2px solid #273469;
+  background-color: #fff;
+  color: #273469;
+  font-family: "Lora", serif;
+  font-size: 20px;
+  font-weight: bold;
+  font-style: italic;
+  box-sizing: border-box;
+}
+.pageCommandes input[type=search]::placeholder {
+  color: #273469;
+  opacity: 0.6;
+}
+.pageCommandes .commande {
+  border: 2px solid #273469;
+  margin-left: 150px;
+  margin-right: 150px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+.pageCommandes .commande h1, .pageCommandes .commande p, .pageCommandes .commande select {
+  margin: 0;
+}
+.pageCommandes .listeBtn {
   display: flex;
   flex-direction: column;
-  position: relative;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  width: 250px;
 }
-.pageProduit h1, .pageProduit h2, .pageProduit h3, .pageProduit h4, .pageProduit p {
-  color: #273469;
-}
-.pageProduit #descriptionCourte {
-  color: black;
-}
-.pageProduit .infoHautProduit {
+.pageCommandes .produit {
   display: flex;
-  flex-direction: row;
-  overflow-y: scroll;
-  position: relative;
-}
-.pageProduit .rect {
-  width: 1440px;
-  height: 224px;
-  background: #273469;
-}
-.pageProduit .rectangleProduit {
-  display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  margin: 3em 2em;
-  padding: 0 1em;
-  width: 550px;
-  height: 480px;
-  border: 1.5px inset #273469;
-  border-radius: 16px;
-  position: relative;
+  border-bottom: 2px solid #273469;
+  padding: 20px;
 }
-.pageProduit #imageBouteille {
-  width: 220px;
-  height: 330px;
+.pageCommandes .produit.dernierProduit {
+  border-bottom: none;
 }
-.pageProduit .infoPreviewProduit {
-  width: 400px;
-  height: 434px;
-  margin-top: 3.5em;
+.pageCommandes .produit img {
+  max-height: 127px;
 }
-.pageProduit .infoPreviewProduit div {
+.pageCommandes .infoProduit {
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  gap: 1em;
-}
-.pageProduit .infoPreviewProduit div h1, .pageProduit .infoPreviewProduit div h2, .pageProduit .infoPreviewProduit div h4 {
-  margin: 1em 0;
-}
-.pageProduit .infoPreviewProduit h1, .pageProduit .infoPreviewProduit h2, .pageProduit .infoPreviewProduit h3, .pageProduit .infoPreviewProduit h4, .pageProduit .infoPreviewProduit p {
-  margin: 0 0;
-}
-.pageProduit .infoPreviewProduit a {
-  text-decoration: underline;
-  float: right;
-  color: #273469;
-}
-.pageProduit #prix h1, .pageProduit #prix h3 {
-  margin: 0.2em 0;
-  font-weight: 300;
-}
-.pageProduit #prix {
-  gap: 0.5em;
-}
-.pageProduit .infoPreviewProduit div img {
-  width: 50px;
-  height: 75px;
-  margin-top: 0.5em;
-}
-.pageProduit .version {
-  margin-top: 1.6em;
-  padding: 0 0;
-}
-.pageProduit .version p {
-  background-color: #e4d9ff;
-  padding: 0.3em 0.7em;
-  border-radius: 8px;
-  margin: 0 0;
-}
-.pageProduit .version h3, .pageProduit .version p {
-  margin: 0.2em 0;
-}
-.pageProduit .voirPlus {
-  color: #273469;
-  text-decoration: underline;
-  float: right;
-}
-.pageProduit .actionsProduit {
-  top: 15em;
-  right: 1em;
-  position: fixed;
-  width: 341px;
-  z-index: 10;
-  height: fit-content;
-  padding: 15px;
-}
-.pageProduit .actionsProduit h2 {
-  margin: 0 0;
-  padding: 0 0;
-}
-.pageProduit .underline {
-  text-decoration: underline;
-}
-.pageProduit #plusDarticles {
-  margin: 0 0;
-}
-.pageProduit .actionsProduit h1, .pageProduit h2, .pageProduit h3, .pageProduit h4 {
-  margin: 0 0;
-}
-.pageProduit .actionsProduit p, .pageProduit .ligneActions {
-  margin: 0.5em 0;
-  color: black;
-}
-.pageProduit .ligneActions {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 1em;
-}
-.pageProduit .ligneActions img {
-  width: 40px;
-  height: 40px;
-}
-.pageProduit .ligneActions p, .pageProduit .ligneActions a {
-  color: #273469;
-}
-.pageProduit .bouton {
-  width: 300px;
-  height: 60px;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 32px;
-  border: none;
-  position: relative;
-}
-.pageProduit #quantiteContainer div button {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.pageProduit #quantiteContainer div {
-  display: flex;
-  flex-direction: row;
-}
-.pageProduit #quantiteContainer {
-  display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
-  align-items: center;
-  width: 300px;
-  height: 60px;
-  font-size: 16px;
-  border-radius: 32px;
-  border: 2px solid #273469;
-  position: relative;
-  margin-bottom: 10px;
+  margin-left: 20px;
 }
-.pageProduit #moins img {
-  display: block;
-  width: 16px;
-  height: 2.25px;
-}
-.pageProduit #plus img {
-  width: 16px;
-  height: 16px;
-}
-.pageProduit #quantite {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5em;
-  padding: 0.5em;
-}
-.pageProduit #quantite p {
-  font-weight: bold;
+.pageCommandes .infoProduit h2 {
   margin: 0;
-  font-size: 16px;
-}
-.pageProduit #quantiteInput {
-  width: 40px;
-  text-align: center;
-  border: none;
-  font-size: 18px;
-  padding: 0.2em;
-  pointer-events: none;
-}
-.pageProduit .boutonRose {
-  background-color: #e4d9ff;
-  color: #273469;
-}
-.pageProduit .boutonBleu {
-  background-color: #273469;
-  color: #fffefa;
-}
-.pageProduit .conteneurTexte {
-  width: 50%;
-  max-height: 600px;
-  margin-left: 2.5em;
-  color: #273469;
-  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-}
-.pageProduit .conteneurTexte h2 {
-  margin-bottom: 1em;
-}
-.pageProduit #activeVoirPlus:checked ~ .conteneurTexte {
-  max-height: 1000px;
-  mask-image: none;
-}
-.pageProduit .voirPlus::after {
-  content: "Voir plus";
-}
-.pageProduit #activeVoirPlus:checked ~ .voirPlus::after {
-  content: "Voir moins";
-}
-.pageProduit #activeVoirPlus {
-  display: none;
-}
-.pageProduit .informations {
-  margin: 2em 0;
-}
-.pageProduit .informations label {
-  display: inline-block;
-  position: relative;
-  right: 60%;
-  font-weight: 500;
-  font-size: 18px;
-  cursor: pointer;
-}
-.pageProduit .informations ul, .pageProduit .informations h3, .pageProduit .informations h4, .pageProduit .informations p {
-  font-size: 18px;
-}
-.pageProduit .informations ul li p {
-  margin: 0 0;
-  padding: 0 0;
-}
-.pageProduit .informations h4 {
-  font-weight: 300;
-}
-.pageProduit .sectionAvis {
-  width: 68%;
-  margin-left: 2.5em;
-  margin-top: 2em;
-}
-.pageProduit .sectionAvis h6 {
-  color: #273469;
-  font-weight: 100;
-}
-.pageProduit .sectionAvis button {
-  margin: 2em 0;
-}
-.pageProduit .sectionAvis article {
-  display: flex;
-  margin-bottom: 2em;
-}
-.pageProduit .sectionAvis article * {
-  margin: 0.5em 0;
-}
-.pageProduit .sectionAvis article div {
-  margin: 0 0;
-}
-.pageProduit .sectionAvis article div h3 {
-  padding-top: 0.2em;
-}
-.pageProduit #pp {
-  margin-right: 0.5em;
-  margin-top: 0.7em;
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: 100%;
-}
-.pageProduit .sectionImagesAvis {
-  display: flex;
-  flex-direction: row;
-  gap: 1em;
-}
-.pageProduit .sectionImagesAvis img {
-  width: 150px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-.pageProduit .horizontal {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-top: 0.2em;
-}
-.pageProduit .vertical {
-  display: flex;
-  flex-direction: column;
-}
-.pageProduit .baselineSpaceBetween {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: baseline;
-}
-.pageProduit .actionsAvis {
-  display: flex;
-  flex-direction: row;
-  gap: 0.8em;
-  justify-content: center;
-  align-items: center;
-}
-.pageProduit .actionsAvis a {
-  text-decoration: underline;
-  color: #6e6e6e;
-}
-.pageProduit .actionsAvis shape {
-  width: 2px;
-  height: 40px;
-  background-color: #273469;
-}
-.pageProduit .product-rating {
-  display: flex;
-  flex-direction: column;
-}
-.pageProduit .rating-number {
   font-size: 24px;
-  font-weight: bold;
-  color: #273469;
-  margin: 0;
 }
-.pageProduit .review-count {
-  text-decoration: underline;
-  color: #6e6e6e;
+.pageCommandes .infoProduit ul {
+  font-weight: lighter;
+  font-size: 13px;
+  margin: 10px 0;
+  padding-left: 20px;
 }
-.pageProduit .star-rating {
-  font-size: 32px;
-  position: relative;
-  display: inline-block;
-  padding: 0 0;
+.pageCommandes .infoProduit ul li {
+  margin-bottom: 5px;
 }
-.pageProduit .stars::before {
-  content: "★★★★★";
-  color: lightgray;
-  padding: 0 0;
-  margin-right: 0.2em;
+.pageCommandes .topRecherche {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  align-items: flex-end;
+  margin-top: 20px;
 }
-.pageProduit .stars::after {
-  content: "★★★★★";
-  color: gold;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(var(--rating) / 5 * 100%);
-  overflow: hidden;
-  padding: 0 0;
+.pageCommandes .topRecherche h1 {
+  margin-top: 30px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  font-size: 48px;
 }
-.pageProduit .pouce-actif {
-  filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(2081%) hue-rotate(202deg) brightness(93%) contrast(91%);
+.pageCommandes .topRecherche * {
+  margin-left: 80px;
+  margin-right: 80px;
 }
-.pageProduit .pouce-inactif {
-  filter: none;
-}
-.pageProduit .carousel-container {
-  position: relative;
-  width: 220px;
-  height: 330px;
-  overflow: visible;
-  border-radius: 10px;
-  background: #f5f5f5;
-  margin-bottom: 50px;
-}
-.pageProduit .carousel-slide {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 10px;
-}
-.pageProduit .carousel-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  pointer-events: none;
-}
-.pageProduit .carousel-image.active {
-  opacity: 1;
-}
-.pageProduit .carousel-arrow {
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  transition: transform 0.3s ease;
-  z-index: 10;
-}
-.pageProduit .carousel-arrow:hover {
-  transform: scale(1.1);
-}
-.pageProduit #lesCercles {
-  display: flex !important;
-  flex-direction: row;
-  justify-content: center;
+.pageCommandes .filtreRecherche {
+  display: flex;
+  margin-left: 80px;
   align-items: center;
-  gap: 1em;
-  margin-top: 15px;
-  position: absolute;
-  bottom: -40px;
-  left: 0;
-  right: 0;
-  z-index: 15;
 }
-.pageProduit .cercleNoir {
-  width: 12px !important;
-  height: 12px !important;
-  border-radius: 50% !important;
-  background-color: #666 !important;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.pageCommandes .filtreRecherche p, .pageCommandes .filtreRecherche select {
+  margin-bottom: 60px;
+  font-size: 16px;
+  margin-top: 30px;
+  margin-right: 10px;
+}
+.pageCommandes .filtreRecherche select {
+  padding: 10px;
   border: 2px solid #273469;
-  display: block !important;
-  flex-shrink: 0;
+  border-radius: 20px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
-.pageProduit .cercleNoir.active {
-  background-color: white !important;
-  transform: scale(1.3);
+.pageCommandes .statutCommande {
+  display: flex;
+  align-items: center;
 }
-.pageProduit .cercleNoir:hover {
-  background-color: #273469 !important;
-  transform: scale(1.15);
+.pageCommandes .statutCommande p {
+  margin-right: 20px;
+  font-weight: normal;
 }
-.pageProduit hr {
-  border: 0;
-  height: 2px;
-  background-color: #e4e4e4;
-  margin: 0 2.5em;
-  width: 70%;
+.pageCommandes .statutCommande a {
+  display: flex;
+  font-size: 14px;
+  text-decoration: none;
+  color: white;
+  background-color: #273469;
+  border: 2px solid #273469;
+  border-radius: 20px;
+  padding: 5px 10px;
+  margin-left: 10px;
+}
+.pageCommandes .statutCommande a img {
+  margin-left: 10px;
+}
+.pageCommandes .listeBtn a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  font-size: 14px;
+  text-decoration: none;
+  color: #273469;
+  background-color: white;
+  border: 2px solid #273469;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-bottom: 5px;
+}
+.pageCommandes .listeBtn a:nth-child(2) {
+  color: white;
+  background-color: #273469;
+}
+.pageCommandes .listeBtn a img {
+  margin-left: 10px;
+}
+.pageCommandes .containerImg {
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+}
+.pageCommandes .footerCommande {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 20px 40px;
+}
+.pageCommandes .footerCommande .infoCommande {
+  display: flex;
+  flex-direction: column;
+}
+.pageCommandes .footerCommande .infoCommande p {
+  margin: 2px 0;
+  font-size: 15px;
+  font-weight: lighter;
+}
+.pageCommandes .footerCommande .liensCommande {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+.pageCommandes .footerCommande .liensCommande a {
+  color: #273469;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: lighter;
+}
+.pageCommandes .footerCommande .liensCommande a:hover {
+  text-decoration: underline;
+}
+.pageCommandes .footerCommande .liensCommande span {
+  margin: 0 10px;
+}
+@media (max-width: 1000px) {
+  .pageCommandes .commande {
+    margin-right: 50px;
+    margin-left: 50px;
+  }
+}
+@media (max-width: 787px) {
+  .pageCommandes .produit {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-between;
+  }
+  .pageCommandes .containerImg, .pageCommandes .listeBtn a {
+    margin-bottom: 10px;
+  }
+  .pageCommandes .containerImg {
+    margin-bottom: 20px;
+    display: block;
+    text-align: center;
+    margin-right: 0;
+  }
+  .pageCommandes .filtreRecherche p, .pageCommandes .filtreRecherche select {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  .pageCommandes .topRecherche h1 {
+    margin-top: 20px;
+    font-size: 32px;
+  }
+}
+@media (max-width: 630px) {
+  .pageCommandes .footerCommande {
+    display: block;
+    padding-top: 0;
+  }
+  .pageCommandes .infoCommande {
+    flex-direction: row !important;
+  }
 }
 
 body.nouveauProduit nav figure:first-child {
@@ -1466,6 +1249,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 
 .produitBackOffice p {
   margin: 0;
+  font-size: 12px;
 }
 .produitBackOffice h1 {
   color: #273469;
@@ -1483,6 +1267,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .produitBackOffice article {
   position: relative;
+  height: 350px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .produitBackOffice .nomEtEvaluation {
   display: flex;
@@ -1491,14 +1280,21 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   padding: 10px;
   align-items: center;
 }
-.produitBackOffice .nomEtEvaluation p {
+.produitBackOffice .nomEtEvaluation > p {
   font-size: 24px;
   color: #273469;
+  position: absolute;
+  left: 10px;
+  top: 210px;
+  width: 180px;
 }
 .produitBackOffice .evaluation {
   display: flex;
   flex-direction: column;
   height: 40px;
+  position: absolute;
+  right: 10px;
+  top: 210px;
 }
 .produitBackOffice .evaluation p {
   color: #6e6e6e;
@@ -1508,6 +1304,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 16px;
   text-decoration: underline;
   margin-top: 0;
+  width: max-content;
 }
 .produitBackOffice .evaluation div p {
   text-decoration: none;
@@ -1521,10 +1318,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .produitBackOffice .produit {
   height: 185px;
-  width: 300px;
+  width: auto;
   object-fit: contain;
   margin-top: 10px;
-  border-radius: 16px;
+  border-radius: 8px;
 }
 .produitBackOffice .bouton {
   background-color: #273469;
@@ -1539,6 +1336,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   position: absolute;
   right: 0;
   bottom: 10px;
+  margin-right: 10px;
 }
 .produitBackOffice button {
   background-color: transparent;
@@ -1549,20 +1347,23 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .produitBackOffice .ligneProduit {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 30px;
-  justify-items: center;
 }
 .produitBackOffice .prix, .produitBackOffice .prixAuKg {
   font-size: 24px;
   color: #273469;
-  margin: 0;
+  margin: 0 10px;
   font-weight: bold;
+}
+.produitBackOffice .prixEtPrixAuKg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 .produitBackOffice .prixAuKg {
   font-size: 16px;
   font-weight: normal;
-  margin-bottom: 10px;
 }
 .produitBackOffice .hoverBouton {
   display: none;
@@ -2916,6 +2717,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   max-height: 660px;
 }
 .panier .recapPanier a {
@@ -2998,6 +2800,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .panier .recapPanier * {
     margin-bottom: 20px;
+  }
+  .panier .recapPanier {
+    align-items: stretch;
   }
 }
 @media (max-width: 767px) {
@@ -4392,9 +4197,9 @@ main.backoffice-stocks {
 }
 
 .mainCompteVendeur {
-  max-width: 800px;
   margin: 2rem auto;
   padding: 0 1rem;
+  max-width: 800px;
 }
 .mainCompteVendeur #titreCompte {
   display: flex;
@@ -4440,13 +4245,14 @@ main.backoffice-stocks {
   padding-bottom: 0.5rem;
 }
 .mainCompteVendeur section article .champ {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 .mainCompteVendeur section article .champ label {
   display: block;
   font-weight: bold;
   margin-bottom: 0.5rem;
   color: #333;
+  font-size: 1rem;
 }
 .mainCompteVendeur section article .champ input {
   width: 100%;
@@ -4469,11 +4275,43 @@ main.backoffice-stocks {
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
+.mainCompteVendeur section article .champ-mot-de-passe {
+  margin-bottom: 1.5rem;
+}
+.mainCompteVendeur section article .champ-mot-de-passe label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1rem;
+}
+.mainCompteVendeur section article .champ-mot-de-passe input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+.mainCompteVendeur section article .champ-mot-de-passe input:read-only {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+.mainCompteVendeur section article .champ-mot-de-passe input:focus {
+  outline: none;
+  border-color: #273469;
+}
 .mainCompteVendeur section article .exigences-mot-de-passe {
   background-color: #f8f9fa;
   padding: 1rem;
   border-radius: 5px;
   margin-top: 1rem;
+}
+.mainCompteVendeur section article .exigences-mot-de-passe h4 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: #333;
+  font-size: 1rem;
 }
 .mainCompteVendeur section article .exigences-mot-de-passe ul {
   margin: 0;
@@ -4488,10 +4326,19 @@ main.backoffice-stocks {
   background-color: #e8f5e8;
   border-left: 4px solid #4caf50;
 }
+.mainCompteVendeur section article.code-vendeur .champ {
+  margin-bottom: 0;
+}
+.mainCompteVendeur section article.code-vendeur .champ label {
+  font-size: 1.1rem;
+  color: #333;
+}
 .mainCompteVendeur section article.code-vendeur .code-vendeur-value {
   font-weight: bold;
   color: #273469;
   font-size: 1.2rem;
+  display: block;
+  margin-top: 0.5rem;
 }
 .mainCompteVendeur #buttonsCompte {
   display: flex;
@@ -4508,6 +4355,7 @@ main.backoffice-stocks {
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: "Lora", serif;
+  min-width: 180px;
 }
 .mainCompteVendeur #buttonsCompte button.boutonModifierProfil, .mainCompteVendeur #buttonsCompte button.boutonSauvegarder {
   background-color: #273469;

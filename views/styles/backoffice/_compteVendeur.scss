@@ -8,9 +8,9 @@ $text-color: #333 !default;
 $success-color: #4caf50 !default;
 
 .mainCompteVendeur {
-  max-width: 800px;
   margin: 2rem auto;
   padding: 0 1rem;
+  max-width: 800px;
 
   #titreCompte {
     display: flex;
@@ -61,13 +61,14 @@ $success-color: #4caf50 !default;
       }
 
       .champ {
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
 
         label {
           display: block;
           font-weight: bold;
           margin-bottom: 0.5rem;
           color: $text-color;
+          font-size: 1rem;
         }
 
         input {
@@ -96,11 +97,49 @@ $success-color: #4caf50 !default;
         gap: 1rem;
       }
 
+      .champ-mot-de-passe {
+        margin-bottom: 1.5rem;
+
+        label {
+          display: block;
+          font-weight: bold;
+          margin-bottom: 0.5rem;
+          color: $text-color;
+          font-size: 1rem;
+        }
+
+        input {
+          width: 100%;
+          padding: 0.75rem;
+          border: 2px solid #ddd;
+          border-radius: 5px;
+          font-size: 1rem;
+          transition: border-color 0.3s ease;
+
+          &:read-only {
+            background-color: #f8f9fa;
+            color: #6c757d;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: $color-blue;
+          }
+        }
+      }
+
       .exigences-mot-de-passe {
         background-color: #f8f9fa;
         padding: 1rem;
         border-radius: 5px;
         margin-top: 1rem;
+
+        h4 {
+          margin-top: 0;
+          margin-bottom: 0.75rem;
+          color: $text-color;
+          font-size: 1rem;
+        }
 
         ul {
           margin: 0;
@@ -118,10 +157,21 @@ $success-color: #4caf50 !default;
         background-color: #e8f5e8;
         border-left: 4px solid $success-color;
 
+        .champ {
+          margin-bottom: 0;
+
+          label {
+            font-size: 1.1rem;
+            color: $text-color;
+          }
+        }
+
         .code-vendeur-value {
           font-weight: bold;
           color: $color-blue;
           font-size: 1.2rem;
+          display: block;
+          margin-top: 0.5rem;
         }
       }
     }
@@ -142,6 +192,7 @@ $success-color: #4caf50 !default;
       cursor: pointer;
       transition: all 0.3s ease;
       font-family: $primary-font;
+      min-width: 180px;
 
       &.boutonModifierProfil,
       &.boutonSauvegarder {

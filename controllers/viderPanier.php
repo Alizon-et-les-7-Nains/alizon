@@ -15,10 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {  
     setcookie("produitPanier", "", time() - 3600, "/");
 
-    // Repondre avec un statut de succes
+    // Statut OK
     http_response_code(200);
 
-    echo "<script>console.log('Debug vider le panier deconnecte');</script>";
+    // Redirection
+    header('Location: /views/frontoffice/panierDeconnecte.php');
+    exit;
 }
 
 ?>
