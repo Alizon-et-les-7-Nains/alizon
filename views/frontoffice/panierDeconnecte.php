@@ -17,10 +17,12 @@ require_once "../../controllers/prix.php";
         }
     }
 
-    $nbProduit = count($tabIDProduitPanier);
+    $nbProduit = 0;
+    foreach ($tabIDProduitPanier as $key => $value) {
+        $nbProduit = $nbProduit + $value;
+    }
 
-
-    // Fonction pour ajouter un produit consulte
+    // Fonction pour ajouterx un produit consulte
     function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
         if (isset($tabIDProduitPanier[$idProduit])) {
             $tabIDProduitPanier[$idProduit] += $quantite;
@@ -39,7 +41,7 @@ require_once "../../controllers/prix.php";
 
     function modifierQuantitePanier(&$tabIDProduitPanier, $idProduit, $quantite) {
         if (isset($tabIDProduitPanier[$idProduit])) {
-            if ($quantite == 0) {
+            if ($quantite == 0 || ($tabIDProduitPanier[$idProduit] + $quantite) <= 0) {
                 unset($tabIDProduitPanier[$idProduit]);
             } else {
                 $tabIDProduitPanier[$idProduit] += $quantite;
@@ -47,13 +49,15 @@ require_once "../../controllers/prix.php";
         }
         
         setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
+        
+        header("Location: panierDeconnecte.php");
         return true;
     }
 
     if (isset($_GET['addPanier']) && !empty($_GET['addPanier'])) {
         $idProduitAjoute = intval($_GET['addPanier']);
         $quantite = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
-        ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute, $quantite);
+        modifierQuantitePanier($tabIDProduitPanier, $idProduitAjoute, $quantite);
         
         if (isset($_GET['id'])) {
             header("Location: produit.php?id=" . intval($_GET['id']));
@@ -75,13 +79,13 @@ require_once "../../controllers/prix.php";
     <title>Alizon - Votre panier</title>
 </head>
 <body class="panier">
-    <?php include "../../views/frontoffice/partials/headerConnecte.php"; ?>
+    <?php include "../../views/frontoffice/partials/headerDeconnecte.php"; ?>
 
     <main>
         <section class="listeProduit">
             <?php foreach ($tabIDProduitPanier as $idProduit => $quantite) { 
-                $prix = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
-                $panier = $prix ? $prix->fetch(PDO::FETCH_ASSOC) : false;
+                $stmt = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
+                $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
                 ?>
                 <article>
@@ -111,13 +115,13 @@ require_once "../../controllers/prix.php";
                         </div>
                     </div>
                     <div class="prixOpt">
-                        <?= htmlspecialchars($panier['prix'] ?? 'N/A') ?>          
+                        <?= number_format($panier['prix'] ?? 0, 2) ?>          
                         <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
                         </button>
                     </div>
                 </article> 
-            <?php } if ($nbProduit==0) { ?>
+            <?php } if ($nbProduit<=0) { ?>
                 <h1 class="aucunProduit">Aucun produit</h1>
             <?php } else { ?>
         </section>
@@ -127,24 +131,25 @@ require_once "../../controllers/prix.php";
                 <article>
                     <h2><b>Récapitulatif de votre panier</b></h2>
                     <div class="infoCommande">
+
+                    <?php
+                    
+                        $prixTotal = 0;
+                        
+                        foreach($tabIDProduitPanier as $idProduit => $quantite) {
+                            $stmt = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
+                            $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+                            $prixTotal += $panier['prix'] * $quantite;
+                        }
+
+                    ?>
+
                         <section>
                             <h2>Nombres d'articles</h2>
                             <h2 class="val"><?= $nbProduit ?? 0 ?></h2>
                         </section>
                         <section>
                             <h2>Prix HT</h2>
-                            
-                            <?php
-                            $prixTotal = 0;
-
-                            foreach ($tabIDProduitPanier as $idP) {
-                                $prix = $pdo->query("SELECT prix FROM _produit WHERE idProduit = " . intval($idP));
-                                $panier = $prix ? $prix->fetch(PDO::FETCH_ASSOC) : false;
-
-                                $prixTotal += $panier['prix'] ?? 0;
-                            }
-                            ?>
-
                             <h2 class="val"><?= number_format($prixTotal, 2) ?>€</h2>
                         </section>
                         <section>
@@ -159,14 +164,15 @@ require_once "../../controllers/prix.php";
                 </article>
                 <a href="../../views/frontoffice/connexionClient.php"><p>Passer la commande</p></a>
             </div>
-            <a href="" class="viderPanier">Vider le panier</a>
+            <form method="GET" action="../../controllers/viderPanier.php">
+                <button class="viderPanierCookie viderPanier" name="idUtilisateur">Vider le panier</button>
+            </form>
         </section>
         <?php } ?>
     </main>
 
     <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
 
-    <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 </body>

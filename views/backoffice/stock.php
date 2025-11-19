@@ -29,7 +29,7 @@
     $epuises = ($pdo->query('select * from _produit where stock = 0'))->fetchAll(PDO::FETCH_ASSOC);
     if (count($epuises) == 0) echo "<h2>Aucun produit épuisé</h2>";
     foreach ($epuises as $epuise) {
-        $image = ($pdo->query('select * from _imageProduit where stock = 0'))->fetchAll(PDO::FETCH_ASSOC);
+        $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $epuise['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $html = "<div>
                     <button class='settings'>
@@ -50,12 +50,12 @@
                                         <td>" . $epuise['typeProd'] . "</td>
                                     </tr>
                                     <tr>
-                                        <th>29,99€</th>
+                                        <th>" . $epuise['prix'] . "</th>
                                     </tr>
                                     <tr>
                                         <th>
                                             <figure>
-                                                <figcaption>3,5</figcaption>
+                                                <figcaption>" . $epuise['note'] . "</figcaption>
                                                 <img src='/public/images/etoile.svg'>
                                             </figure>
                                         </th>
@@ -90,7 +90,7 @@
                                 <figcaption>Aucun réassort prévu</figcaption>
                             </figure>
                         </li>
-                        <li>45 restants</li>
+                        <li>Épuisé le 29 août</li>
                     </ul>
                 </div>";
         echo $html;

@@ -1,31 +1,17 @@
-<?php
-$message = "";
-$data = []; 
-$nom_contact = '';
-$prenom_contact = '';
-$email = '';
-$num_tel = '';
-$nom_utilisateur = '';
-$num_siren = '';
-$adresse_entreprise = '';
-$raison_sociale = '';
-$date_naissance = '';
+<?php 
+    require_once "../../controllers/pdo.php"; 
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nom_contact        = htmlspecialchars(trim($_POST['nom_contact'] ?? ''));
-    $prenom_contact     = htmlspecialchars(trim($_POST['prenom_contact'] ?? ''));
-    $email              = htmlspecialchars(trim($_POST['email'] ?? ''));
-    $num_tel            = htmlspecialchars(trim($_POST['num_tel'] ?? ''));
-    $nom_utilisateur    = htmlspecialchars(trim($_POST['nom_utilisateur'] ?? ''));
-    $mdp                = $_POST['mdp'] ?? '';
-    $confimer_mdp       = $_POST['confimer_mdp'] ?? '';
-    $num_siren          = htmlspecialchars(trim($_POST['num_siren'] ?? ''));
-    $adresse_entreprise = htmlspecialchars(trim($_POST['adresse_entreprise'] ?? ''));
-    $raison_sociale     = htmlspecialchars(trim($_POST['raison_sociale'] ?? ''));
-    $date_naissance     = htmlspecialchars(trim($_POST['date_naissance'] ?? ''));
-    
-    $form_is_valid = true;
-}
+    $nom = $_SESSION['form_data']['nom'] ?? '';
+    $prenom = $_SESSION['form_data']['prenom'] ?? '';
+    $email = $_SESSION['form_data']['email'] ?? '';
+    $noTelephone = $_SESSION['form_data']['noTelephone'] ?? '';
+    $pseudo = $_SESSION['form_data']['pseudo'] ?? '';
+    $dateNaissance = $_SESSION['form_data']['dateNaissance'] ?? '';
+    $noSiren = $_SESSION['form_data']['noSiren'] ?? '';
+    $idAdresse = $_SESSION['form_data']['idAdresse'] ?? '';
+    $raisonSocial = $_SESSION['form_data']['raisonSocial'] ?? '';
+    $message = $_SESSION['form_data']['message'] ?? ''; 
+    unset($_SESSION['form_data']);
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
 
         <div class="container">
-            <form method="post" class="form-vendeur">
+            <form method="post" class="form-vendeur" id="monForm" action="../../controllers/creerCompteVendeur.php"
+                enctype="multipart/form-data">
                 <?php if (!empty($message)) : ?>
                 <p class="message"><?= $message ?></p>
                 <?php endif; ?>

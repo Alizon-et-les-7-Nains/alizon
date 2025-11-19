@@ -1,28 +1,25 @@
 <?php
-require_once "../../controllers/pdo.php"; // Connexion à la BDD
+require_once "../../controllers/pdo.php";
 
-// Vérifier que l'ID est présent
 if (!isset($_GET['id'])) {
     die("Aucun produit sélectionné");
 }
 
-$productId = (int)$_GET['id']; // Sécuriser l'ID
+$productId = (int)$_GET['id']; 
 
 // Préparer la requête
-$stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = $productId");
-$stmt->execute([$productId]);
-$product = $stmt->fetch(PDO::FETCH_ASSOC);
+$sql = "INSERT INTO _client 
+        (dateNaissance, prenom, nom, email, mdp, noTelephone, pseudo)
+        VALUES (:dateNaissance, :prenom, :nom, :email, :mdp, :noTelephone, :pseudo)";
+$stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :id");
+$stmt->execute(['id' => $productId]);
+$produit = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$product) {
-    die("Produit introuvable");
+if (!$produit) {
+    die("Produit introuvable.");
 }
-///////////////////////////////////////////////
-//                                           //
-//    Modifier BDD pour poids, mots clés     //
-//                                           //
-///////////////////////////////////////////////
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,8 +37,7 @@ if (!$product) {
     <?php require_once "./partials/aside.php"?>
        
     <main class="modifierProduit"> 
-        <form class="product-content" id="monForm" action="../../controllers/updateProduit.php" method="post" enctype="multipart/form-data">
->
+        <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
             <div class="left-section">
                 <div class="ajouterPhoto">
                     <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
@@ -53,18 +49,18 @@ if (!$product) {
                 </div>
 
                 <div class="form-details">
-                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" required>
-                    <?= htmlspecialchars($product['nom']) ?>
+                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required
+                    value="<?= htmlspecialchars($produit['champ'] ?? '') ?>">
                 
                     <div class="price-weight-kg">
-                        <input type="text" placeholder="Prix" required
-                        <?= htmlspecialchars($product['prix']) ?>>
-                        <input type="text" placeholder="Poids" required
-                        <?= htmlspecialchars($product['poids']) ?>>
+                        <input type="text" placeholder="Prix" name="prix" required
+                        value="<?= htmlspecialchars($produit['champ'] ?? '') ?>">
+                        <input type="text" placeholder="Poids" name="poids" required 
+                        value="<?= htmlspecialchars($produit['champ'] ?? '') ?>">
                         <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
-                    <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)"  required
-                    <?= htmlspecialchars($product['description']) ?>>
+                    <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required
+                    value="<?= htmlspecialchars($produit['champ'] ?? '') ?>">
 
                 </div>
             </div>
