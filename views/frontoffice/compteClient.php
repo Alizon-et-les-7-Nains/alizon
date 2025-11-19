@@ -59,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pseudo = $client['pseudo'] ?? '';
     $prenom = $client['prenom'] ?? '';
     $nom = $client['nom'] ?? '';
-    $dateNaissance = $client['datenaissance'] ?? ''; // PostgreSQL met en minuscules
+    $dateNaissance = $client['dateNaissance'] ?? ''; // PostgreSQL met en minuscules
     $email = $client['email'] ?? '';
-    $noTelephone = $client['notelephone'] ?? ''; // PostgreSQL met en minuscules
+    $noTelephone = $client['notTelephone'] ?? ''; // PostgreSQL met en minuscules
 
     //on recupère les infos d'adresse du user pour les afficher
     $stmt = $pdo->query("SELECT * FROM saedb._adresse WHERE idAdresse = '$idAdresse'");
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $pays = $adresse['pays'] ?? '';
     $ville = $adresse['ville'] ?? '';
-    $codePostal = $adresse['codepostal'] ?? ''; // PostgreSQL met en minuscules
+    $codePostal = $adresse['codePostal'] ?? ''; // PostgreSQL met en minuscules
     $adresse1 = $adresse['adresse'] ?? '';
 
 ?>
