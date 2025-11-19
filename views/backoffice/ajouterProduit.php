@@ -23,8 +23,8 @@
             <div class="left-section">
                 <div class="ajouterPhoto">
                     <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
+                    <img src="../../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="imagePreview">
                     <div class="placeholder-photo">
-                        <img src="../../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="imagePreview">
                         <p id="placeholderText">Cliquer pour ajouter une photo</p>
                         <div class="overlay-text" id="overlayText">Cliquer pour modifier</div>
                     </div>
@@ -59,54 +59,86 @@
     </main>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const photoUploadInput = document.getElementById('photoUpload');
-        const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
-        const imagePreview = document.getElementById('imagePreview');
-        const placeholderText = document.getElementById('placeholderText');
-        const overlayText = document.getElementById('overlayText');
-        const descriptionTextarea = document.getElementById('description');
-        const charCount = document.querySelector('.char-count');
-        const maxLength = 1000;
+        document.addEventListener('DOMContentLoaded', function() {
+    const photoUploadInput = document.getElementById('photoUpload');
+    const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
+    const imagePreview = document.getElementById('imagePreview');
+    const placeholderText = document.getElementById('placeholderText');
+    const overlayText = document.getElementById('overlayText');
+    const descriptionTextarea = document.getElementById('description');
+    const charCount = document.querySelector('.char-count');
+    const maxLength = 1000;
 
-        const originalImageSrc = imagePreview.src;
+    // Si une image est chargée ou pas 
+    let imageLoaded = false; 
+    overlayText.style.opacity = '0';
+    
+    // Mettre à jour l'état de l'affichage
+    function updatePhotoDisplay(isImageProductLoaded) {
+        imageLoaded = isImageProductLoaded;
+        if (imageLoaded) {
+            placeholderText.style.display = 'none';
+            imagePreview.style.opacity = '1';
+        } else {
+            // Revenir à l'état initial
+            imagePreview.src = imagePreview.getAttribute('data-original-src') || "../../../public/images/ajouterPhoto.svg";
+            placeholderText.style.display = 'block';
+            overlayText.style.opacity = '0';
+        }
+    }
 
-        // Gestion du clic pour upload d'image
-        ajouterPhotoDiv.addEventListener('click', function() {
-            photoUploadInput.click();
-        });
-
-        descriptionTextarea.addEventListener('input', function() {
-            const currentLength = this.value.length;
-            charCount.textContent = `${currentLength}/${maxLength}`;
-        });
-
-        photoUploadInput.addEventListener('change', function() {
-            const files = this.files;
-            if (files && files.length > 0) {
-                const file = files[0];
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imagePreview.src = e.target.result;
-                        placeholderText.style.display = 'none';
-                        overlayText.style.opacity = '1';
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    imagePreview.src = originalImageSrc;
-                    placeholderText.style.display = 'block';
-                    overlayText.style.opacity = '0';
-                    alert("Votre fichier n'est pas une image, merci de réessayer.");
-                }
-            } else {
-                imagePreview.src = originalImageSrc;
-                placeholderText.style.display = 'block';
-                overlayText.style.opacity = '0';
-            }
-        });
+    // Clic photo
+    ajouterPhotoDiv.addEventListener('click', function() {
+        photoUploadInput.click();
     });
 
+    // Survol pour afficher le texte pour modifier
+    ajouterPhotoDiv.addEventListener('mouseenter', function() {
+        if (imageLoaded) {
+            overlayText.style.opacity = '1';
+        }
+    });
+
+    ajouterPhotoDiv.addEventListener('mouseleave', function() {
+        overlayText.style.opacity = '0';
+    });
+
+    //Sauvegarde de la source de l'icône par défaut
+    imagePreview.setAttribute('data-original-src', imagePreview.src);
+    // Vérification si il y a déjà une image de produit
+    if (!imagePreview.src.includes('ajouterPhoto.svg')) {
+         updatePhotoDisplay(true);
+    }
+    
+    // Compteur de caractères
+    descriptionTextarea.addEventListener('input', function() {
+        const currentLength = this.value.length;
+        charCount.textContent = `${currentLength}/${maxLength}`;
+    });
+
+    // Gestion du changement de fichier
+    photoUploadInput.addEventListener('change', function() {
+        const files = this.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    updatePhotoDisplay(true); // Image chargée on masque le placeholder
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Votre fichier n'est pas une image, merci de réessayer.");
+                updatePhotoDisplay(false); // Reviens à l'état initial
+            }
+        } else {
+            if (!imageLoaded) { 
+               updatePhotoDisplay(false);
+            }
+        }
+    });
+});
 
     </script>
     <?php require_once "./partials/footer.php"?>
