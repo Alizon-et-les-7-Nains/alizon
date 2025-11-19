@@ -8,12 +8,13 @@ if (!isset($_GET['id'])) {
 $productId = (int)$_GET['id']; 
 
 // Préparer la requête
-$sql = "INSERT INTO _client 
-        (dateNaissance, prenom, nom, email, mdp, noTelephone, pseudo)
-        VALUES (:dateNaissance, :prenom, :nom, :email, :mdp, :noTelephone, :pseudo)";
 $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :id");
 $stmt->execute(['id' => $productId]);
 $produit = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = :id");
+$stmt->execute(['id' => $productId]);
+$image = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$produit) {
     die("Produit introuvable.");
@@ -42,8 +43,8 @@ if (!$produit) {
                 <div class="ajouterPhoto">
                     <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
                     <div class="placeholder-photo">
-                        <img src="../../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="imagePreview">
-                        <p id="placeholderText">Cliquer pour ajouter une photo</p>
+                        <img src="<?= htmlspecialchars(isset($image['url']) ? '../../../public/' . $image['url'] : '../../../public/images/ajouterPhoto.svg') ?>" id="imagePreview">
+                        <p id="placeholderText" style="<?= $hasImage ? 'display:none;' : '' ?>">
                         <div class="overlay-text" id="overlayText">Cliquer pour modifier</div>
                     </div>
                 </div>
@@ -68,7 +69,7 @@ if (!$produit) {
             <div class="right-section">
                 <div class="ajouterResume resume-box">
                     <label for="resume">Résumé du produit</label><br>   
-                    <textarea name="resume" id="resume" placeholder="Décrivez votre produit en quelques mots"></textarea>
+                    <textarea name="resume" id="resume" placeholder="Décrivez votre produit en quelques mots" value="<?= htmlspecialchars($produit['description'] ?? '') ?>" ></textarea>
                 </div>
 
 
@@ -76,8 +77,7 @@ if (!$produit) {
             <div class="form-actions">
                 <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
                 <a href="#"><button type="button" class="btn-supprimer">Supprimer</button></a>
-                <a href="#"><button type="submit" class="btn-ajouter">Ajouter le produit</button></a>
-                
+                <a href="#"><button type="submit" class="btn-ajouter">Modifier le produit</button></a>
             </div>
         </form>
     </main>
