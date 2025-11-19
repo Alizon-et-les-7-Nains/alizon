@@ -1,148 +1,147 @@
-<?php
-    require_once "../../controllers/pdo.php";
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="stylesheet" href="../../public/style.css"> 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Ajouter un produit au catalogue</title>
 </head>
 <body class="backoffice">
     <header>
-        <?php require_once "./partials/header.php"?>
+        <?php require_once "./partials/headerMain.php"?>
     </header>
     <?php require_once "./partials/aside.php"?>
        
     <main class="AjouterProduit"> 
-
-        <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
+        <div class="product-content">
+            
             <div class="left-section">
                 <div class="ajouterPhoto">
-                    <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
+                    <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;"> 
                     <div class="placeholder-photo">
-                        <img src="../../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="imagePreview">
+                        <img src="../../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="imagePreview"> 
                         <p id="placeholderText">Cliquer pour ajouter une photo</p>
-                        <div class="overlay-text" id="overlayText">Cliquer pour modifier</div>
                     </div>
                 </div>
 
                 <div class="form-details">
-                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required>
+                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" required>
                 
                     <div class="price-weight-kg">
-                        <input type="text" placeholder="Prix" name="prix" required>
-                        <input type="text" placeholder="Poids" name="poids" required>
+                        <input type="text" placeholder="Prix" required>
+                        <input type="text" placeholder="Poids" required>
                         <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
-                    <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required>
+
+                    <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
                 </div>
             </div>
 
             <div class="right-section">
                 <div class="product-desc-box">
-                    <label for="description">Description du produit</label><br>   
-                    <textarea name="description" id="description" placeholder="Décrivez votre produit en quelques mots" maxlength="1000"></textarea>
-                    <div class="char-count">0/1000</div>
+                    <label for="product-description">Description du produit</label>
+                    <textarea id="product-description" placeholder="Description de votre produit" maxlength="1000"></textarea> 
+                    <div class="char-count">0/1000</div> 
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn-previsualiser" onclick="location.href='#'">Prévisualiser</button>
-                    <button type="button" class="btn-annuler" onclick="location.href='#'">Annuler</button>
-                    <button type="submit" class="btn-ajouter" onclick="location.href='#'">Ajouter le produit</button>
+                    <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
+                    <a href="#"><button type="button" class="btn-annuler">Annuler</button></a>
+                    <a href="#"><button type="submit" class="btn-ajouter">Ajouter le produit</button></a>
                 </div>
             </div>
-        </form>
+        </div>
     </main>
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-    const photoUploadInput = document.getElementById('photoUpload');
-    const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
-    const imagePreview = document.getElementById('imagePreview');
-    const placeholderText = document.getElementById('placeholderText');
-    const overlayText = document.getElementById('overlayText');
-    const descriptionTextarea = document.getElementById('description');
-    const charCount = document.querySelector('.char-count');
-    const maxLength = 1000;
+            // --- Logique d'ajout et prévisualisation de photo ---
 
-    // Si une image est chargée ou pas 
-    let imageLoaded = false; 
-    overlayText.style.opacity = '0';
-    
-    // Mettre à jour l'état de l'affichage
-    function updatePhotoDisplay(isImageProductLoaded) {
-        imageLoaded = isImageProductLoaded;
-        if (imageLoaded) {
-            placeholderText.style.display = 'none';
-            imagePreview.style.opacity = '1';
-        } else {
-            // Revenir à l'état initial
-            imagePreview.src = imagePreview.getAttribute('data-original-src') || "../../../public/images/ajouterPhoto.svg";
-            placeholderText.style.display = 'flex';
-            imagePreview.style.opacity='0.5';
-            overlayText.style.opacity = '0';
-        }
-    }
+            // Récupère les éléments
+            const photoUploadInput = document.getElementById('photoUpload');
+            const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
+            const imagePreview = document.getElementById('imagePreview'); // image
+            const placeholderText = document.getElementById('placeholderText'); // paragraphe
+            
+            // Sauvegarde de l'URL par défaut
+            const originalImageSrc = imagePreview.src;
 
-    // Clic photo
-    ajouterPhotoDiv.addEventListener('click', function() {
-        photoUploadInput.click();
-    });
+            // Déclenche le clic sur l'input de fichier
+            ajouterPhotoDiv.addEventListener('click', function() {
+                photoUploadInput.click();
+            });
 
-    // Survol pour afficher le texte pour modifier
-    ajouterPhotoDiv.addEventListener('mouseenter', function() {
-        if (imageLoaded) {
-            overlayText.style.opacity = '1';
-        }
-    });
+            // Gère la sélection du fichier et la prévisualisation
+            photoUploadInput.addEventListener('change', function() {
+                const files = this.files;
+                
+                if (files && files.length > 0) {
+                    const file = files[0];
+                    
+                    if (file.type.startsWith('image/')) {
+                        // Création du lecteur de fichier
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            // Met à jour la source de l'image
+                            imagePreview.src = e.target.result;
+                            // Masque le texte
+                            placeholderText.style.display = 'none';
+                        };
 
-    ajouterPhotoDiv.addEventListener('mouseleave', function() {
-        overlayText.style.opacity = '0';
-    });
+                        // Lit le fichier
+                        reader.readAsDataURL(file);
 
-    //Sauvegarde de la source de l'icône par défaut
-    imagePreview.setAttribute('data-original-src', imagePreview.src);
-    // Vérification si il y a déjà une image de produit
-    if (!imagePreview.src.includes('ajouterPhoto.svg')) {
-         updatePhotoDisplay(true);
-    }
-    
-    // Compteur de caractères
-    descriptionTextarea.addEventListener('input', function() {
-        const currentLength = this.value.length;
-        charCount.textContent = `${currentLength}/${maxLength}`;
-    });
+                    } else {
+                        // Si le fichier n'est pas une image
+                        imagePreview.src = originalImageSrc;
+                        placeholderText.style.display = 'block';
+                        alert("Votre fichier n'est pas une image, merci de réessayer.");
+                    }
+                } else {
+                    // Si la sélection est annulée
+                    imagePreview.src = originalImageSrc;
+                    placeholderText.style.display = 'block';
+                }
+            });
 
-    // Gestion du changement de fichier
-    photoUploadInput.addEventListener('change', function() {
-        const files = this.files;
-        if (files && files.length > 0) {
-            const file = files[0];
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                    updatePhotoDisplay(true); // Image chargée on masque le placeholder
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert("Votre fichier n'est pas une image, merci de réessayer.");
-                updatePhotoDisplay(false); // Reviens à l'état initial
+            // --- Logique de comptage de caractères (Char Count) ---
+
+            const productDescription = document.getElementById('product-description');
+            const charCountDisplay = document.querySelector('.char-count');
+            const MAX_CHARS = 1000;
+
+            // Fonction de mise à jour du compteur
+            function updateCharCount() {
+                let currentLength = productDescription.value.length;
+                
+                // Si on dépasse la limite, on tronque le texte et met à jour la longueur
+                if (currentLength > MAX_CHARS) {
+                    productDescription.value = productDescription.value.substring(0, MAX_CHARS);
+                    currentLength = MAX_CHARS; // S'assure que le compteur affiche la limite
+                }
+
+                // Met à jour l'affichage
+                charCountDisplay.textContent = `${currentLength}/${MAX_CHARS}`;
+                
+                // Optionnel : change la couleur si la limite est atteinte
+                if (currentLength === MAX_CHARS) {
+                    charCountDisplay.style.color = 'red';
+                } else {
+                    charCountDisplay.style.color = 'gray'; // Couleur normale
+                }
             }
-        } else {
-            if (!imageLoaded) { 
-               updatePhotoDisplay(false);
-            }
-        }
-    });
-});
 
-    </script>
+            // Écoute l'événement 'input' (chaque frappe, collage, etc.)
+            productDescription.addEventListener('input', updateCharCount);
+
+            // Initialise le compteur au chargement de la page (utile si la textarea contient déjà du texte)
+            updateCharCount(); 
+        });
+    </script> 
+    
     <?php require_once "./partials/footer.php"?>
 </body>
 </html>
