@@ -12,9 +12,13 @@ $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :id");
 $stmt->execute(['id' => $productId]);
 $produit = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$stmt = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = :id");
 $stmt->execute(['id' => $productId]);
 $image = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$hasImage = ($image && !empty($image['url']));
+$imageUrl = $hasImage 
+    ? '../../public/' . $image['url'] 
+    : '../../public/images/ajouterPhoto.svg';
 
 if (!$produit) {
     die("Produit introuvable.");
@@ -43,13 +47,15 @@ if (!$produit) {
                 <div class="ajouterPhoto">
                     <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
                     <div class="placeholder-photo">
-                        <?php $hasImage = !empty($image['url']); ?>
+                    <img src="<?= htmlspecialchars($imageUrl) ?>" id="imagePreview">
 
-                        <img src="<?= htmlspecialchars(isset($image['url']) ? '../../../public/' . $image['url'] : '../../../public/images/ajouterPhoto.svg') ?>" id="imagePreview">
-                        <p id="placeholderText" style="<?= $hasImage ? 'display:none;' : '' ?>">
-                        <div class="overlay-text" id="overlayText" style="<?= $hasImage ? '' : 'display:none;' ?>">
-                            Cliquer pour modifier
-                        </div>
+                    <p id="placeholderText" style="<?= $hasImage ? 'display:none;' : '' ?>">
+                        Cliquer pour ajouter une image
+                    </p>
+
+                    <div class="overlay-text" id="overlayText" style="<?= $hasImage ? '' : 'display:none;' ?>">
+                        Cliquer pour modifier
+                    </div>
                     </div>
                 </div>
 
