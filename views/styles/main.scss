@@ -3,16 +3,14 @@
 @use "./frontoffice/styleTemplate";
 @use "./frontoffice/styleLegales";
 @use "./frontoffice/style404";
-@use "./frontoffice/produit";
-
+@use "./frontoffice/commandes";
 @use "./backoffice/header";
 @use "./frontoffice/pageConnexionCLient";
 @use "./backoffice/footer";
 @use "./backoffice/aside";
-
 @use "./backoffice/structure";
-@use './backoffice/acceuil';
-@use './backoffice/produits';
+@use "./backoffice/acceuil";
+@use "./backoffice/produits";
 @use "./frontoffice/inscription";
 @use "./frontoffice/stylePaiement";
 @use "./frontoffice/styleCompteClient";
@@ -28,3 +26,4 @@
 @use "./backoffice/stylePopUpInfoCalcul";
 @use "./backoffice/stylePopUpRemise";
 @use "./backoffice/stocks";
+@use "./backoffice/compteVendeur";

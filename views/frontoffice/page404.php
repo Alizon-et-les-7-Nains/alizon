@@ -25,27 +25,10 @@
         </div>
 
         <div>
-            <a href="">Retourner à bon port</a>
+            <a href="../../views/frontoffice/acceuilConnecte.php">Retourner à bon port</a>
         </div>
 
     </main>
-
-    <footer>
-        <div class="footerPC">
-            <div>
-                <a href="">Conditions générales de vente</a>
-                <a href="">Mentions légales</a>
-                <p>© 2025 Alizon Tous droits réservés.</p>
-            </div>
-            <i class="bi bi-envelope fs-2"></i>
-        </div>
-        <div class="footerTel">
-            <a href=""><img src="../public/images/homeLightBlue.svg" alt=""></a>
-            <a href=""><img src="../public/images/searchLightBlue.svg" alt=""></a>
-            <a href=""><img src="../public/images/cartLightBlue.svg" alt=""></a>
-            <a href=""><img src="../public/images/burgerLightBlue.svg" alt=""></a>
-        </div>
-    </footer>
 
 </body>
 

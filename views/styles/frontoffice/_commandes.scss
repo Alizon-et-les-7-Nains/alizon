@@ -1,0 +1,270 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.pageCommandes {
+    font-family: "Lora", serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: $color-blue;
+
+    @media (max-width:1125px) {
+        .supprElem {
+            display: none;
+            visibility: hidden;
+        }
+    }
+
+    input[type="search"] {
+        padding: 10px 20px; // Padding équilibré au lieu de 350px à droite
+        width: 100%; // Ou une largeur spécifique comme 500px si préféré
+        max-width: 600px; // Pour éviter qu'il soit trop large
+        border-radius: 25px;
+        border: 2px solid $color-blue;
+        background-color: #fff;
+        color: $color-blue;
+        font-family: "Lora", serif;
+        font-size: 20px;
+        font-weight: bold;
+        font-style: italic;
+        box-sizing: border-box; // Important pour que le padding soit inclus dans la largeur
+        
+        &::placeholder {
+            color: $color-blue;
+            opacity: 0.6; // Pour un meilleur contraste visuel
+        }
+    }
+    
+    .commande {
+        border: 2px solid $color-blue;
+        margin-left: 150px;
+        margin-right: 150px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        
+        h1, p, select {
+            margin: 0;
+        }
+    }
+    
+    .listeBtn {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-evenly;
+        width: 250px;
+    }
+    
+    .produit {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 2px solid $color-blue;
+
+        padding: 20px;
+        
+        &.dernierProduit {
+            border-bottom: none;
+        }
+        
+        img {
+            max-height: 127px;
+        }
+    }
+    
+    .infoProduit {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        margin-left: 20px;
+        
+        h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        ul {
+            font-weight: lighter;
+            font-size: 13px;
+            margin: 10px 0;
+            padding-left: 20px;
+            
+            li {
+                margin-bottom: 5px;
+            }
+        }
+    }
+    
+    .topRecherche {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        align-items: flex-end;
+        margin-top: 20px;
+        h1 {
+            margin-top: 30px;
+            margin-bottom: 0px;
+            margin-right: 10px;
+            font-size: 48px;
+        }
+        
+        * {
+            margin-left: 80px;
+            margin-right: 80px;
+        }
+    }
+    
+    .filtreRecherche {
+        display: flex;
+        margin-left: 80px;
+        align-items: center;
+        
+        p, select {
+            margin-bottom: 60px;
+            font-size: 16px;
+            margin-top: 30px;
+            margin-right: 10px;
+        }
+        
+        select {
+            padding: 10px;
+            border: 2px solid $color-blue;
+            border-radius: 20px;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+    }
+    
+    .statutCommande {
+        display: flex;
+        align-items: center;
+        
+        p {
+            margin-right: 20px;
+            font-weight: normal;
+        }
+        
+        a {
+            display: flex;
+            font-size: 14px;
+            text-decoration: none;
+            color: white;
+            background-color: $color-blue;
+            border: 2px solid $color-blue;
+            border-radius: 20px;
+            padding: 5px 10px;
+            margin-left: 10px;
+            
+            img {
+                margin-left: 10px;
+            }
+        }
+    }
+    
+    .listeBtn a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 90%;
+        font-size: 14px;
+        text-decoration: none;
+        color: $color-blue;
+        background-color: white;
+        border: 2px solid $color-blue;
+        border-radius: 20px;
+        padding: 8px 15px;
+        margin-bottom: 5px;
+        
+        &:nth-child(2) {
+            color: white;
+            background-color: $color-blue;
+        }
+        
+        img {
+            margin-left: 10px;
+        }
+    }
+    
+    .containerImg {
+        display: flex;
+        align-items: center;
+        margin-right: 50px;
+    }
+
+    .footerCommande {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding: 20px 40px;
+        
+        .infoCommande {
+            display: flex;
+            flex-direction: column;
+            
+            p {
+                margin: 2px 0;
+                font-size: 15px;              
+                font-weight: lighter;
+            }
+        }
+        
+        .liensCommande {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            
+            a {
+                color: $color-blue;
+                text-decoration: none;
+                font-size: 15px;              
+                font-weight: lighter;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+            
+            span {
+                margin: 0 10px;
+            }
+        }
+    }
+    
+    @media (max-width: 1000px) {
+        .commande {
+            margin-right: 50px;
+            margin-left: 50px;
+        }
+    }
+    @media (max-width:787px) {
+        .produit {
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: space-between;
+        }
+        .containerImg, .listeBtn a {
+            margin-bottom: 10px;
+        }
+        .containerImg {
+            margin-bottom: 20px;
+            display: block;
+            text-align: center;
+            margin-right: 0;
+        }
+        .filtreRecherche p, .filtreRecherche select {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        .topRecherche h1 {
+            margin-top: 20px;
+            font-size: 32px;
+        }
+    }
+    @media (max-width:630px) {
+        .footerCommande {
+            display: block;
+            padding-top: 0;
+        }
+        .infoCommande {
+            flex-direction: row !important;
+        }
+    }
+}

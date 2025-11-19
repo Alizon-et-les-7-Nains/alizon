@@ -31,6 +31,9 @@
     foreach ($epuises as $epuise) {
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $epuise['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
+        $commandes->execute(['idProduit' => $epuise['idProduit']]);
+        $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
                     <button class='settings'>
                         <div><div></div></div>
@@ -50,12 +53,12 @@
                                         <td>" . $epuise['typeProd'] . "</td>
                                     </tr>
                                     <tr>
-                                        <th>" . $epuise['prix'] . "</th>
+                                        <th>" . formatPrice($epuise['prix']) . "</th>
                                     </tr>
                                     <tr>
                                         <th>
                                             <figure>
-                                                <figcaption>" . $epuise['note'] . "</figcaption>
+                                                <figcaption>" . str_replace('.', ',', $epuise['note']) . "</figcaption>
                                                 <img src='/public/images/etoile.svg'>
                                             </figure>
                                         </th>
@@ -66,20 +69,14 @@
                         </tr>
                         <tr>
                             <td>
-                                <ul>
-                                    <li>
-                                        <ul>
-                                            <li>2</li>
-                                            <li>09/07/2025</li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <ul>
-                                            <li>2</li>
-                                            <li>09/07/2025</li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                <ul>";
+                                    foreach ($commandes as $commande) {
+                                        $html .= "<ul>
+                                            <li>" . $commande['quantiteCommande'] . "</li>
+                                            <li>" . formatDate($commande['dateCommande']) . "</li>
+                                        </ul>";
+                                    }
+                                $html .= "</ul>
                             </td>
                         </tr>
                     </table>
@@ -87,10 +84,10 @@
                         <li>
                             <figure>
                                 <img src='/public/images/infoDark.svg'>
-                                <figcaption>Aucun réassort prévu</figcaption>
+                                <figcaption>" . $reassort = $epuise['dateReassort'] != NULL ? formatDate($epuise['dateReassort']) : 'Aucun réassort prévu' . "</figcaption>
                             </figure>
                         </li>
-                        <li>Épuisé le 29 août</li>
+                        <li>Épuisé le " . formatDate($epuise['dateStockEpuise']) . "</li>
                     </ul>
                 </div>";
         echo $html;
@@ -102,16 +99,19 @@
         <section>
             <h1>Produits en Alerte</h1>
             <article>
-            </article>
-        </section>
-
-        <section>
-            <h1>Produits en Stock</h1>
-            <article>
-                <div>
-                    <button class="settings">
+<?php
+    $faibles = ($pdo->query('select * from _produit where stock < seuilAlerte'))->fetchAll(PDO::FETCH_ASSOC);
+    if (count($faibles) == 0) echo "<h2>Aucun produit en alerte</h2>";
+    foreach ($faibles as $faible) {
+        $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $faible['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
+        $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
+        $commandes->execute(['idProduit' => $faible['idProduit']]);
+        $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
+        $html = "<div>
+                    <button class='settings'>
                         <div><div></div></div>
-                        <div><div class="right"></div></div>
+                        <div><div class='right'></div></div>
                         <div><div></div></div>
                     </button>
 
@@ -120,59 +120,127 @@
                             <td rowspan=2>
                                 <table>
                                     <tr>
-                                        <td rowspan=4><img src='/public/images/rillettes.png'></td>
-                                        <th colspan>Rillettes de thon caca pipi</th>
+                                        <td rowspan=4><img src='$image'></td>
+                                        <th>" . $faible['nom'] . "</th>
                                     </tr>
                                     <tr>
-                                        <td>Charcuterie</td>
+                                        <td>" . $faible['typeProd'] . "</td>
                                     </tr>
                                     <tr>
-                                        <th>29,99€</th>
+                                        <th>" . formatPrice($faible['prix']) . "</th>
                                     </tr>
                                     <tr>
                                         <th>
                                             <figure>
-                                                <figcaption>3,5</figcaption>
-                                                <img src="/public/images/etoile.svg">
+                                                <figcaption>" . str_replace('.', ',', $faible['note']) . "</figcaption>
+                                                <img src='/public/images/etoile.svg'>
                                             </figure>
                                         </th>
                                     </tr>
                                 </table>
                             </td>
-
                             <th colspan=2>Dernières commandes</th>
                         </tr>
-
                         <tr>
                             <td>
-                                <ul>
-                                    <li>
-                                        <ul>
-                                            <li>2</li>
-                                            <li>09/07/2025</li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <ul>
-                                            <li>2</li>
-                                            <li>09/07/2025</li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                <ul>";
+                                    foreach ($commandes as $commande) {
+                                        $html .= "<ul>
+                                            <li>" . $commande['quantiteCommande'] . "</li>
+                                            <li>" . formatDate($commande['dateCommande']) . "</li>
+                                        </ul>";
+                                    }
+                                $html .= "</ul>
                             </td>
                         </tr>
                     </table>
-
                     <ul>
                         <li>
                             <figure>
-                                <img src="/public/images/infoDark.svg">
-                                <figcaption>Aucun réassort prévu</figcaption>
+                                <img src='/public/images/infoDark.svg'>
+                                <figcaption>" . $reassort = $faible['dateReassort'] != NULL ? formatDate($faible['dateReassort']) : 'Aucun réassort prévu' . "</figcaption>
                             </figure>
                         </li>
-                        <li>45 restants</li>
+                        <li>" . $faible['stock'] . " restants</li>
                     </ul>
-                </div>
+                </div>";
+        echo $html;
+    }
+?>
+            </article>
+        </section>
+
+        <section>
+            <h1>Produits en Stock</h1>
+            <article>
+<?php
+    $faibles = ($pdo->query('select * from _produit where stock >= seuilAlerte'))->fetchAll(PDO::FETCH_ASSOC);
+    if (count($faibles) == 0) echo "<h2>Aucun produit en alerte</h2>";
+    foreach ($faibles as $faible) {
+        $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $faible['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
+        $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
+        $commandes->execute(['idProduit' => $faible['idProduit']]);
+        $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
+        $html = "<div>
+                    <button class='settings'>
+                        <div><div></div></div>
+                        <div><div class='right'></div></div>
+                        <div><div></div></div>
+                    </button>
+
+                    <table>
+                        <tr>
+                            <td rowspan=2>
+                                <table>
+                                    <tr>
+                                        <td rowspan=4><img src='$image'></td>
+                                        <th>" . $faible['nom'] . "</th>
+                                    </tr>
+                                    <tr>
+                                        <td>" . $faible['typeProd'] . "</td>
+                                    </tr>
+                                    <tr>
+                                        <th>" . formatPrice($faible['prix']) . "</th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <figure>
+                                                <figcaption>" . str_replace('.', ',', $faible['note']) . "</figcaption>
+                                                <img src='/public/images/etoile.svg'>
+                                            </figure>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </td>
+                            <th colspan=2>Dernières commandes</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul>";
+                                    foreach ($commandes as $commande) {
+                                        $html .= "<ul>
+                                            <li>" . $commande['quantiteCommande'] . "</li>
+                                            <li>" . formatDate($commande['dateCommande']) . "</li>
+                                        </ul>";
+                                    }
+                                $html .= "</ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <ul>
+                        <li>
+                            <figure>
+                                <img src='/public/images/infoDark.svg'>
+                                <figcaption>" . $reassort = $faible['dateReassort'] != NULL ? formatDate($faible['dateReassort']) : 'Aucun réassort prévu' . "</figcaption>
+                            </figure>
+                        </li>
+                        <li>" . $faible['stock'] . " restants</li>
+                    </ul>
+                </div>";
+        echo $html;
+    }
+?>
             </article>
         </section>
 
