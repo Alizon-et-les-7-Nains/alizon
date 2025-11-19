@@ -82,7 +82,7 @@ if (!$produit) {
             <div class="right-section">
                 <div class="ajouterResume resume-box">
                     <label for="resume">Résumé du produit</label><br>   
-                    <textarea name="resume" id="resume" placeholder="Décrivez votre produit en quelques mots"><?= htmlspecialchars($produit['description'] ?? '') ?></textarea>
+                    <textarea name="description" id="resume" placeholder="Décrivez votre produit en quelques mots"><?= htmlspecialchars($produit['description'] ?? '') ?></textarea>
                 </div>
 
             <div class="form-actions">
