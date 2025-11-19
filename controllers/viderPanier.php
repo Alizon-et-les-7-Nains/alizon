@@ -4,12 +4,23 @@ require_once 'pdo.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idUtilisateur = $_POST['idUtilisateur'];  
+    if (isset($_POST['idUtilisateur'])) {
+        $idUtilisateur = intval($_POST['idUtilisateur']);  
 
-    $stmt = $pdo->prepare("DELETE FROM _panier WHERE idClient = :idClient");
-    $stmt->execute([':idClient' => $idUtilisateur]);
+        $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = :idClient ORDER BY idPanier DESC LIMIT 1");
+        $stmt->execute([':idClient' => $idUtilisateur]);
+        $panier = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    echo "<script>console.log('Debug vider le panier connecte');</script>";
+        if ($panier) {
+            $idPanier = $panier['idPanier'];
+
+            $deleteStmt = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier = :idPanier");
+            $deleteStmt->execute([':idPanier' => $idPanier]);
+        }
+    }
+
+    header('Location: ../views/frontoffice/panier.php');
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {  
