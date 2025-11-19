@@ -3,7 +3,7 @@ session_start();
 require_once '../../controllers/pdo.php' ;
     
 
-$id_client = $id_session;
+$id_client = $_SESSION['id_session'];
 $idAdresse = 1;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
