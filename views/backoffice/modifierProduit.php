@@ -45,9 +45,6 @@ if (!$produit) {
     <?php require_once "./partials/aside.php"?>
        
     <main class="modifierProduit"> 
-        <?php var_dump($image);
-              var_dump($hasImage);
-              var_dump($imageUrl);?>
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
             <div class="left-section">
                 <div class="ajouterPhoto">
@@ -85,7 +82,7 @@ if (!$produit) {
             <div class="right-section">
                 <div class="ajouterResume resume-box">
                     <label for="resume">Résumé du produit</label><br>   
-                    <textarea name="resume" id="resume" placeholder="Décrivez votre produit en quelques mots"><?= htmlspecialchars($produit['description'] ?? '') ?></textarea>
+                    <textarea name="description" id="resume" placeholder="Décrivez votre produit en quelques mots"><?= htmlspecialchars($produit['description'] ?? '') ?></textarea>
                 </div>
 
             <div class="form-actions">

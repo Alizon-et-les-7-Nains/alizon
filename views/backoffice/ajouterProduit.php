@@ -1,9 +1,6 @@
-<?php
-    require_once "../../controllers/pdo.php";
-?>
-
+<?php require_once "../../controllers/pdo.php" ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,42 +14,53 @@
         <?php require_once "./partials/header.php"?>
     </header>
     <?php require_once "./partials/aside.php"?>
-       
+        
     <main class="AjouterProduit"> 
-        <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
+        <form action="../../controllers/ajouterProduit.php" method="POST" enctype="multipart/form-data" class="product-content" id="formAjoutProduit">
+            
             <div class="left-section">
-                <div class="ajouterPhoto">
-                    <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
-                    <img src="../../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="imagePreview">
-                    <div class="placeholder-photo">
-                        <p id="placeholderText">Cliquer pour ajouter une photo</p>
-                        <div class="overlay-text" id="overlayText">Cliquer pour modifier</div>
+                <div class="ajouterPhoto" id="zoneUpload">
+                    <input type="file" id="photoUpload" name="photo" accept="image/*" hidden>
+                    
+                    <div class="etat-vide" id="etatVide">
+                        <div class="icone-wrapper">
+                            <img src="../../../public/images/ajouterPhoto.svg" alt="Icône ajout">
+                        </div>
+                        <p>Cliquer pour ajouter une photo</p>
+                    </div>
+
+                    <div class="etat-preview" id="etatPreview" style="display: none;">
+                        <img src="" alt="Prévisualisation du produit" id="imagePreview">
+                        <div class="overlay-modifier">
+                            <span>Cliquer pour modifier la photo</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-details">
-                    <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required>
+                    <input type="text" name="nom_produit" class="product-name-input" placeholder="Intitulé du produit" required>
                 
                     <div class="price-weight-kg">
-                        <input type="text" placeholder="Prix" name="prix" required>
-                        <input type="text" placeholder="Poids" name="poids" required>
-                        <span class="prix-kg-label">Prix au Kg:</span>
+                        <input type="number" step="0.01" name="prix" placeholder="Prix" required>
+                        <input type="number" step="0.01" name="poids" placeholder="Poids (kg)" required>
+                        <span class="prix-kg-label">Prix au Kg: -- €</span>
                     </div>
-                    <input type="text" class="keywords-input" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required>
+
+                    <input type="text" name="tags" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
                 </div>
             </div>
 
             <div class="right-section">
                 <div class="product-desc-box">
-                    <label for="description">Description du produit</label><br>   
-                    <textarea name="description" id="description" placeholder="Décrivez votre produit en quelques mots"></textarea>
-                    <div class="char-count">0/1000</div>
+                    <label for="product-description">Description du produit</label>
+                    <textarea id="product-description" name="description" placeholder="Description de votre produit" maxlength="1000" required></textarea>
+                    <div class="char-count" id="charCount">0/1000</div> 
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn-previsualiser" onclick="location.href='#'">Prévisualiser</button>
-                    <button type="button" class="btn-annuler" onclick="location.href='#'">Annuler</button>
-                    <button type="submit" class="btn-ajouter" onclick="location.href='#'">Ajouter le produit</button>
+                    <button type="button" class="btn-previsualiser">Prévisualiser</button>
+                    <button type="button" class="btn-annuler" id="btnAnnuler">Annuler</button>
+                    <button type="submit" class="btn-ajouter">Ajouter le produit</button>
                 </div>
             </div>
         </form>
@@ -60,87 +68,73 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-    const photoUploadInput = document.getElementById('photoUpload');
-    const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
-    const imagePreview = document.getElementById('imagePreview');
-    const placeholderText = document.getElementById('placeholderText');
-    const overlayText = document.getElementById('overlayText');
-    const descriptionTextarea = document.getElementById('description');
-    const charCount = document.querySelector('.char-count');
-    const maxLength = 1000;
+            // --- VARIABLES ---
+            const zoneUpload = document.getElementById('zoneUpload');
+            const photoInput = document.getElementById('photoUpload');
+            const etatVide = document.getElementById('etatVide');
+            const etatPreview = document.getElementById('etatPreview');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            const textArea = document.getElementById('product-description');
+            const charCountDisplay = document.getElementById('charCount');
+            const btnAnnuler = document.getElementById('btnAnnuler');
+            const form = document.getElementById('formAjoutProduit');
 
-    // Si une image est chargée ou pas 
-    let imageLoaded = false; 
-    overlayText.style.opacity = '0';
-    
-    // Mettre à jour l'état de l'affichage
-    function updatePhotoDisplay(isImageProductLoaded) {
-        imageLoaded = isImageProductLoaded;
-        if (imageLoaded) {
-            placeholderText.style.display = 'none';
-            imagePreview.style.opacity = '1';
-        } else {
-            // Revenir à l'état initial
-            imagePreview.src = imagePreview.getAttribute('data-original-src') || "../../../public/images/ajouterPhoto.svg";
-            placeholderText.style.display = 'block';
-            overlayText.style.opacity = '0';
-        }
-    }
+            // --- 1. GESTION DE L'IMAGE ---
+            
+            // Déclenche l'input file au clic sur la zone
+            zoneUpload.addEventListener('click', function() {
+                photoInput.click();
+            });
 
-    // Clic photo
-    ajouterPhotoDiv.addEventListener('click', function() {
-        photoUploadInput.click();
-    });
+            // Au changement de fichier
+            photoInput.addEventListener('change', function() {
+                const file = this.files[0];
+                
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        etatVide.style.display = 'none';
+                        etatPreview.style.display = 'block';
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
 
-    // Survol pour afficher le texte pour modifier
-    ajouterPhotoDiv.addEventListener('mouseenter', function() {
-        if (imageLoaded) {
-            overlayText.style.opacity = '1';
-        }
-    });
+            // --- 2. COMPTEUR DE CARACTÈRES ---
+            textArea.addEventListener('input', function() {
+                const currentLength = this.value.length;
+                const maxLength = this.getAttribute('maxlength');
+                
+                charCountDisplay.textContent = `${currentLength}/${maxLength}`;
+                
+                if (currentLength >= maxLength) {
+                    charCountDisplay.style.color = 'red';
+                } else {
+                    charCountDisplay.style.color = 'gray';
+                }
+            });
 
-    ajouterPhotoDiv.addEventListener('mouseleave', function() {
-        overlayText.style.opacity = '0';
-    });
-
-    //Sauvegarde de la source de l'icône par défaut
-    imagePreview.setAttribute('data-original-src', imagePreview.src);
-    // Vérification si il y a déjà une image de produit
-    if (!imagePreview.src.includes('ajouterPhoto.svg')) {
-         updatePhotoDisplay(true);
-    }
-    
-    // Compteur de caractères
-    descriptionTextarea.addEventListener('input', function() {
-        const currentLength = this.value.length;
-        charCount.textContent = `${currentLength}/${maxLength}`;
-    });
-
-    // Gestion du changement de fichier
-    photoUploadInput.addEventListener('change', function() {
-        const files = this.files;
-        if (files && files.length > 0) {
-            const file = files[0];
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                    updatePhotoDisplay(true); // Image chargée on masque le placeholder
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert("Votre fichier n'est pas une image, merci de réessayer.");
-                updatePhotoDisplay(false); // Reviens à l'état initial
-            }
-        } else {
-            if (!imageLoaded) { 
-               updatePhotoDisplay(false);
-            }
-        }
-    });
-});
-
+            // --- 3. BOUTON ANNULER ---
+            btnAnnuler.addEventListener('click', function() {
+                // Reset du formulaire
+                form.reset();
+                
+                // Reset manuel de la prévisualisation
+                imagePreview.src = "";
+                etatPreview.style.display = 'none';
+                etatVide.style.display = 'flex'; // Remettre en flex pour centrer
+                
+                // Reset compteur
+                charCountDisplay.textContent = "0/1000";
+                charCountDisplay.style.color = 'gray';
+            });
+        });
     </script>
+
     <?php require_once "./partials/footer.php"?>
 </body>
 </html>
