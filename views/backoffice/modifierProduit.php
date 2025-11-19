@@ -12,8 +12,11 @@ $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :id");
 $stmt->execute(['id' => $productId]);
 $produit = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$stmt->execute(['id' => $productId]);
+$stmt2 = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = :id");
+$stmt2->execute(['id' => $productId]);
 $image = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$alert($image);
 
 $hasImage = ($image && !empty($image['url']));
 $imageUrl = $hasImage 
