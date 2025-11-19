@@ -19,7 +19,7 @@
 </head>
 <body class="inscription">
 
-  <?php include './partials/headerConnecte.php'; ?>
+  <?php include './partials/headerDeconnecte.php'; ?>
 
     <h2>Inscription</h2>
       <main>
