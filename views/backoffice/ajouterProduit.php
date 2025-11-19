@@ -34,11 +34,11 @@
                     <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required>
                 
                     <div class="price-weight-kg">
-                        <input type="text" placeholder="Prix" name="prix" required?>">
-                        <input type="text" placeholder="Poids" name="poids" required ?>">
+                        <input type="text" placeholder="Prix" name="prix" required>
+                        <input type="text" placeholder="Poids" name="poids" required>
                         <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
-                    <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required?>">
+                    <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required>
                 </div>
             </div>
 
