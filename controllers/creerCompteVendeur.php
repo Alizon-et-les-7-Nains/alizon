@@ -1,4 +1,5 @@
 <?php
+    session_start();  
     require_once "pdo.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -35,7 +36,6 @@
     }
 
 
-    session_start();  
     $id_session = session_id();
     $_SESSION['id_session'] = $id_session;
     header('Location: ../views/backoffice/accueil.php');
