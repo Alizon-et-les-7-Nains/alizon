@@ -126,6 +126,134 @@
                 </div>
             </form>
         </div>
+<<<<<<< HEAD
+        <p class="text-footer">
+            Alizon, en tant que responsable de traitement, traite les données recueillies à des fins de gestion de la relation client, gestion des commandes et des livraisons, 
+            personnalisation des services, prévention de la fraude, marketing et publicité ciblée. 
+            Pour en savoir plus, reportez-vous à la Politique de protection de vos données personnelles
+        </p>
+        
+        <script>
+            // Eléments 
+            const passwordInput = document.getElementById('mdp');
+            const confirmPasswordInput = document.getElementById('confimer_mdp');
+            const submitButton = document.getElementById('btn_inscription');
+            const passwordRequirementsContainer = document.getElementById('password-requirements-container');
+
+            // Critères pour le mdp
+            const reqLength = document.getElementById('req-length');
+            const reqLowercase = document.getElementById('req-lowercase');
+            const reqUppercase = document.getElementById('req-uppercase');
+            const reqNumber = document.getElementById('req-number');
+            const reqSpecial = document.getElementById('req-special');
+            const reqMatch = document.getElementById('req-match');
+
+            // Critères de validation
+            const rules = {
+                length: { element: reqLength, regex: /^.{12,}$/, message: 'Au moins 12 caractères' },
+                lowercase: { element: reqLowercase, regex: /[a-z]/, message: 'Une minuscule' },
+                uppercase: { element: reqUppercase, regex: /[A-Z]/, message: 'Une majuscule' },
+                number: { element: reqNumber, regex: /[0-9]/, message: 'Un chiffre (0-9)' },
+                special: { element: reqSpecial, regex: /[^a-zA-Z0-9]/, message: 'Un caractère spécial (@, !, #, ...)' }
+            };
+
+            // Gestion de l'état d'erreur
+            function toggleErrorStyle(inputElement) {
+                if (inputElement.value.trim() === '') {
+                    inputElement.classList.add('input-error');
+                } else {
+                    inputElement.classList.remove('input-error');
+                }
+            }
+
+            // Affichage des critères avec les coches et les croix
+            function updateRequirement(rule, password) {
+                const isValid = rule.regex.test(password);
+                const iconClass = isValid ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
+                const statusClass = isValid ? 'status-green' : 'status-red';
+
+                rule.element.className = statusClass;
+                rule.element.innerHTML = `<i class="bi ${iconClass}" style="margin-right: 5px;"></i>${rule.message}`;
+                return isValid;
+            }
+
+            // Valide tous les critères et rends le btn inscription ok.
+            function validatePassword() {
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                let allValid = true;
+
+                // Valide chaque règle
+                for (const key in rules) {
+                    if (!updateRequirement(rules[key], password)) {
+                        allValid = false;
+                    }
+                }
+
+                // Correspondance entre les mdp
+                const passwordsMatch = password.length > 0 && password === confirmPassword;
+                const matchIconClass = passwordsMatch ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
+                const matchStatusClass = passwordsMatch ? 'status-green' : 'status-red';
+
+                reqMatch.className = matchStatusClass;
+                reqMatch.innerHTML = `<i class="bi ${matchIconClass}" style="margin-right: 5px;"></i>Les mots de passe correspondent`;
+                
+                if (!passwordsMatch) {
+                    allValid = false;
+                }
+
+                // Activation/Désactivation du bouton
+                submitButton.disabled = !allValid;
+                
+                return allValid;
+            }
+
+            passwordInput.addEventListener('blur', () => {
+                // Masque les critères si le champ est vide
+                if (passwordInput.value.length === 0) {
+                    passwordRequirementsContainer.classList.add('hidden');
+                }
+                toggleErrorStyle(passwordInput);
+            });
+            
+            confirmPasswordInput.addEventListener('blur', () => {
+                // Gère l'état vide du champ Confirmer mdp
+                toggleErrorStyle(confirmPasswordInput);
+            });
+
+
+            passwordInput.addEventListener('focus', () => {
+                passwordRequirementsContainer.classList.remove('hidden');
+                // Enlève l'erreur quand l'utilisateur revient dessus
+                passwordInput.classList.remove('input-error');
+                validatePassword(); 
+            });
+
+            passwordInput.addEventListener('input', () => {
+                passwordInput.classList.remove('input-error');
+                validatePassword(); 
+            });
+            
+            confirmPasswordInput.addEventListener('input', () => {
+                confirmPasswordInput.classList.remove('input-error');
+                validatePassword(); 
+            });
+            
+            // Empêcher la soumission du formulaire si la validation échoue
+            document.querySelector('form').addEventListener('submit', function(e) {
+                // Vérifier si les champs sont vides au moment de la soumission du form
+                toggleErrorStyle(passwordInput);
+                toggleErrorStyle(confirmPasswordInput);
+                
+                if (!validatePassword() || passwordInput.value.trim() === '' || confirmPasswordInput.value.trim() === '') {
+                    e.preventDefault();
+                }
+            });
+
+            validatePassword(); 
+        </script>
+=======
+>>>>>>> 2401e6387257b8e255ae7a8d119177e6ed812a2a
     </main>
     <?php require_once "./partials/footer.php"; ?>
 
