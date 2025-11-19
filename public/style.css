@@ -400,6 +400,9 @@ body {
   .page404 div {
     margin: 50px;
   }
+  .page404 main {
+    margin-left: 90px;
+  }
 }
 
 .bgImgs {
