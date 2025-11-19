@@ -3423,15 +3423,6 @@ button#haut.visible:hover {
   gap: 10px;
   margin-top: 10px;
 }
-.ajouterProduit .right-section .ajouterSection select {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 2px solid #273469;
-  font-weight: bold;
-  background-color: #fffefa;
-  color: #273469;
-  cursor: pointer;
-}
 .ajouterProduit .right-section .ajouterSection #add-section-btn {
   padding: 10px 20px;
   border-radius: 32px;
@@ -4129,6 +4120,7 @@ main.backoffice-stocks section div:not(button.settings div) table table {
   width: 100%;
 }
 main.backoffice-stocks section div:not(button.settings div) table table tr:nth-child(2) th {
+  text-transform: capitalize;
   padding-top: 1.5em;
   padding-bottom: 0;
 }
