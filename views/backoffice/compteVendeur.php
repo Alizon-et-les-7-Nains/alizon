@@ -95,6 +95,7 @@ $adresseVendeur = $vendeur['adresse'] ?? '';
 $villeVendeur = $vendeur['ville'] ?? '';
 $regionVendeur = $vendeur['region'] ?? '';
 $pseudo = $vendeur['pseudo'] ?? '';
+$dateNaissance = $vendeur['dateNaissance'] ?? ''; // Nouveau champ
 
 // Variables pour l'adresse
 $pays = '';
@@ -173,10 +174,11 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                     <input type="file" id="photoProfilInput" name="photoProfil" accept="image/*" style="display: none;"
                         onchange="this.form.submit()">
                 </div>
-                <h1>Mon Compte Vendeur</h1>
+                <h1>Mon Compte</h1>
             </div>
 
             <section>
+                <!-- Informations Personnelles -->
                 <article class="infos-personnelles">
                     <h2>Informations Personnelles</h2>
                     <div class="champ">
@@ -188,8 +190,14 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                         <input type="text" id="prenom" name="prenom" value="<?php echo htmlspecialchars($prenom); ?>"
                             readonly>
                     </div>
+                    <div class="champ">
+                        <label for="dateNaissance">Date de naissance</label>
+                        <input type="date" id="dateNaissance" name="dateNaissance"
+                            value="<?php echo htmlspecialchars($dateNaissance); ?>" readonly>
+                    </div>
                 </article>
 
+                <!-- Adresse -->
                 <article class="infos-adresse">
                     <h2>Adresse</h2>
                     <div class="champ">
@@ -209,20 +217,9 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                                 readonly>
                         </div>
                     </div>
-                    <div class="double-champ">
-                        <div class="champ">
-                            <label for="pays">Pays</label>
-                            <input type="text" id="pays" name="pays" value="<?php echo htmlspecialchars($pays); ?>"
-                                readonly>
-                        </div>
-                        <div class="champ">
-                            <label for="region">Région</label>
-                            <input type="text" id="region" name="region"
-                                value="<?php echo htmlspecialchars($region); ?>" readonly>
-                        </div>
-                    </div>
                 </article>
 
+                <!-- Contact -->
                 <article class="infos-contact">
                     <h2>Contact</h2>
                     <div class="champ">
@@ -237,6 +234,7 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                     </div>
                 </article>
 
+                <!-- Informations Entreprise -->
                 <article class="infos-entreprise">
                     <h2>Informations Entreprise</h2>
                     <div class="champ">
@@ -251,6 +249,7 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                     </div>
                 </article>
 
+                <!-- Informations de compte -->
                 <article class="infos-compte">
                     <h2>Informations de compte</h2>
                     <div class="champ">
@@ -279,6 +278,7 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
                     </div>
                 </article>
 
+                <!-- Code vendeur -->
                 <article class="code-vendeur">
                     <div class="champ">
                         <label>Code vendeur</label>

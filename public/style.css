@@ -4181,6 +4181,7 @@ main.backoffice-stocks {
 .mainCompteVendeur {
   margin: 2rem auto;
   padding: 0 1rem;
+  max-width: 800px;
 }
 .mainCompteVendeur #titreCompte {
   display: flex;
@@ -4226,13 +4227,14 @@ main.backoffice-stocks {
   padding-bottom: 0.5rem;
 }
 .mainCompteVendeur section article .champ {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 .mainCompteVendeur section article .champ label {
   display: block;
   font-weight: bold;
   margin-bottom: 0.5rem;
   color: #333;
+  font-size: 1rem;
 }
 .mainCompteVendeur section article .champ input {
   width: 100%;
@@ -4255,11 +4257,43 @@ main.backoffice-stocks {
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
+.mainCompteVendeur section article .champ-mot-de-passe {
+  margin-bottom: 1.5rem;
+}
+.mainCompteVendeur section article .champ-mot-de-passe label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1rem;
+}
+.mainCompteVendeur section article .champ-mot-de-passe input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+.mainCompteVendeur section article .champ-mot-de-passe input:read-only {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+.mainCompteVendeur section article .champ-mot-de-passe input:focus {
+  outline: none;
+  border-color: #273469;
+}
 .mainCompteVendeur section article .exigences-mot-de-passe {
   background-color: #f8f9fa;
   padding: 1rem;
   border-radius: 5px;
   margin-top: 1rem;
+}
+.mainCompteVendeur section article .exigences-mot-de-passe h4 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: #333;
+  font-size: 1rem;
 }
 .mainCompteVendeur section article .exigences-mot-de-passe ul {
   margin: 0;
@@ -4274,10 +4308,19 @@ main.backoffice-stocks {
   background-color: #e8f5e8;
   border-left: 4px solid #4caf50;
 }
+.mainCompteVendeur section article.code-vendeur .champ {
+  margin-bottom: 0;
+}
+.mainCompteVendeur section article.code-vendeur .champ label {
+  font-size: 1.1rem;
+  color: #333;
+}
 .mainCompteVendeur section article.code-vendeur .code-vendeur-value {
   font-weight: bold;
   color: #273469;
   font-size: 1.2rem;
+  display: block;
+  margin-top: 0.5rem;
 }
 .mainCompteVendeur #buttonsCompte {
   display: flex;
@@ -4294,6 +4337,7 @@ main.backoffice-stocks {
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: "Lora", serif;
+  min-width: 180px;
 }
 .mainCompteVendeur #buttonsCompte button.boutonModifierProfil, .mainCompteVendeur #buttonsCompte button.boutonSauvegarder {
   background-color: #273469;
