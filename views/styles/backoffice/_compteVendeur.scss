@@ -1,284 +1,284 @@
-@use "../colors" as *;
-@use "../fonts" as *;
+// @use "../colors" as *;
+// @use "../fonts" as *;
 
-.mainCompteVendeur {
-  margin: 2rem auto;
-  padding: 0 1rem;
-  max-width: 600px;
+// .mainCompteVendeur {
+//   margin: 2rem auto;
+//   padding: 0 1rem;
+//   max-width: 600px;
 
-  #titreCompte {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
+//   #titreCompte {
+//     display: flex;
+//     align-items: center;
+//     gap: 2rem;
+//     margin-bottom: 3rem;
 
-    .photo-container {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid #ddd;
+//     .photo-container {
+//       width: 80px;
+//       height: 80px;
+//       border-radius: 50%;
+//       overflow: hidden;
+//       border: 2px solid #ddd;
 
-      #imageProfile {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
+//       #imageProfile {
+//         width: 100%;
+//         height: 100%;
+//         object-fit: cover;
+//       }
+//     }
 
-    h1 {
-      color: #333;
-      font-family: $primary-font;
-      font-size: 2rem;
-      margin: 0;
-      font-weight: normal;
-    }
-  }
+//     h1 {
+//       color: $color-blue;
+//       font-family: $primary-font;
+//       font-size: 2rem;
+//       margin: 0;
+//       font-weight: normal;
+//     }
+//   }
 
-  section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+//   section {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 1.5rem;
 
-    article {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      border: 1px solid #e0e0e0;
+//     article {
+//       background: white;
+//       padding: 1.5rem;
+//       border-radius: 8px;
+//       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+//       border: 1px solid #e0e0e0;
 
-      h2 {
-        color: #333;
-        font-family: $primary-font;
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-        font-weight: bold;
-        border-bottom: none;
-        padding-bottom: 0;
-      }
+//       h2 {
+//         color: #333;
+//         font-family: $primary-font;
+//         margin-bottom: 1rem;
+//         font-size: 1.1rem;
+//         font-weight: bold;
+//         border-bottom: none;
+//         padding-bottom: 0;
+//       }
 
-      .champ {
-        margin-bottom: 1rem;
+//       .champ {
+//         margin-bottom: 1rem;
 
-        label {
-          display: block;
-          font-weight: normal;
-          margin-bottom: 0.25rem;
-          color: #666;
-          font-size: 0.9rem;
-        }
+//         label {
+//           display: block;
+//           font-weight: normal;
+//           margin-bottom: 0.25rem;
+//           color: #666;
+//           font-size: 0.9rem;
+//         }
 
-        input {
-          width: 100%;
-          padding: 0.5rem;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          font-size: 0.95rem;
-          transition: border-color 0.3s ease;
-          background-color: #f9f9f9;
+//         input {
+//           width: 100%;
+//           padding: 0.5rem;
+//           border: 1px solid #ccc;
+//           border-radius: 4px;
+//           font-size: 0.95rem;
+//           transition: border-color 0.3s ease;
+//           background-color: #f9f9f9;
 
-          &:read-only {
-            background-color: #f9f9f9;
-            color: #333;
-            border-color: #e0e0e0;
-          }
+//           &:read-only {
+//             background-color: #f9f9f9;
+//             color: #333;
+//             border-color: #e0e0e0;
+//           }
 
-          &:focus {
-            outline: none;
-            border-color: #4a90e2;
-            background-color: white;
-          }
-        }
-      }
+//           &:focus {
+//             outline: none;
+//             border-color: #4a90e2;
+//             background-color: white;
+//           }
+//         }
+//       }
 
-      .double-champ {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-      }
+//       .double-champ {
+//         display: grid;
+//         grid-template-columns: 1fr 1fr;
+//         gap: 1rem;
+//       }
 
-      .champ-mot-de-passe {
-        margin-bottom: 1rem;
+//       .champ-mot-de-passe {
+//         margin-bottom: 1rem;
 
-        label {
-          display: block;
-          font-weight: normal;
-          margin-bottom: 0.25rem;
-          color: #666;
-          font-size: 0.9rem;
-        }
+//         label {
+//           display: block;
+//           font-weight: normal;
+//           margin-bottom: 0.25rem;
+//           color: #666;
+//           font-size: 0.9rem;
+//         }
 
-        input {
-          width: 100%;
-          padding: 0.5rem;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          font-size: 0.95rem;
-          transition: border-color 0.3s ease;
-          background-color: #f9f9f9;
+//         input {
+//           width: 100%;
+//           padding: 0.5rem;
+//           border: 1px solid #ccc;
+//           border-radius: 4px;
+//           font-size: 0.95rem;
+//           transition: border-color 0.3s ease;
+//           background-color: #f9f9f9;
 
-          &:read-only {
-            background-color: #f9f9f9;
-            color: #333;
-            border-color: #e0e0e0;
-          }
+//           &:read-only {
+//             background-color: #f9f9f9;
+//             color: #333;
+//             border-color: #e0e0e0;
+//           }
 
-          &:focus {
-            outline: none;
-            border-color: #4a90e2;
-            background-color: white;
-          }
-        }
-      }
+//           &:focus {
+//             outline: none;
+//             border-color: #4a90e2;
+//             background-color: white;
+//           }
+//         }
+//       }
 
-      .exigences-mot-de-passe {
-        background-color: transparent;
-        padding: 0;
-        border-radius: 0;
-        margin-top: 0.5rem;
+//       .exigences-mot-de-passe {
+//         background-color: transparent;
+//         padding: 0;
+//         border-radius: 0;
+//         margin-top: 0.5rem;
 
-        h4 {
-          display: none;
-        }
+//         h4 {
+//           display: none;
+//         }
 
-        ul {
-          margin: 0;
-          padding-left: 0;
-          color: #666;
-          font-size: 0.85rem;
-          list-style: none;
+//         ul {
+//           margin: 0;
+//           padding-left: 0;
+//           color: #666;
+//           font-size: 0.85rem;
+//           list-style: none;
 
-          li {
-            margin-bottom: 0.25rem;
-            position: relative;
-            padding-left: 1.2rem;
+//           li {
+//             margin-bottom: 0.25rem;
+//             position: relative;
+//             padding-left: 1.2rem;
 
-            &:before {
-              content: "•";
-              position: absolute;
-              left: 0.5rem;
-              color: #666;
-            }
-          }
-        }
-      }
+//             &:before {
+//               content: "•";
+//               position: absolute;
+//               left: 0.5rem;
+//               color: #666;
+//             }
+//           }
+//         }
+//       }
 
-      &.code-vendeur {
-        background-color: #f0f8f0;
-        border: 1px solid #4caf50;
-        text-align: center;
+//       &.code-vendeur {
+//         background-color: #f0f8f0;
+//         border: 1px solid #4caf50;
+//         text-align: center;
 
-        .champ {
-          margin-bottom: 0;
+//         .champ {
+//           margin-bottom: 0;
 
-          label {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.5rem;
-          }
-        }
+//           label {
+//             font-size: 0.9rem;
+//             color: #666;
+//             margin-bottom: 0.5rem;
+//           }
+//         }
 
-        .code-vendeur-value {
-          font-weight: bold;
-          color: #2e7d32;
-          font-size: 1.3rem;
-          display: block;
-        }
-      }
-    }
-  }
+//         .code-vendeur-value {
+//           font-weight: bold;
+//           color: #2e7d32;
+//           font-size: 1.3rem;
+//           display: block;
+//         }
+//       }
+//     }
+//   }
 
-  #buttonsCompte {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 2rem;
-    flex-wrap: wrap;
+//   #buttonsCompte {
+//     display: flex;
+//     gap: 1rem;
+//     justify-content: center;
+//     margin-top: 2rem;
+//     flex-wrap: wrap;
 
-    button {
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 4px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: $primary-font;
-      min-width: 160px;
-      font-weight: normal;
+//     button {
+//       padding: 0.6rem 1.2rem;
+//       border: none;
+//       border-radius: 4px;
+//       font-size: 0.9rem;
+//       cursor: pointer;
+//       transition: all 0.3s ease;
+//       font-family: $primary-font;
+//       min-width: 160px;
+//       font-weight: normal;
 
-      &.boutonModifierProfil,
-      &.boutonSauvegarder {
-        background-color: #4a90e2;
-        color: white;
+//       &.boutonModifierProfil,
+//       &.boutonSauvegarder {
+//         background-color: #4a90e2;
+//         color: white;
 
-        &:hover {
-          background-color: #357abd;
-        }
-      }
+//         &:hover {
+//           background-color: #357abd;
+//         }
+//       }
 
-      &.boutonModifierMdp {
-        background-color: #6c757d;
-        color: white;
+//       &.boutonModifierMdp {
+//         background-color: #6c757d;
+//         color: white;
 
-        &:hover {
-          background-color: #5a6268;
-        }
-      }
+//         &:hover {
+//           background-color: #5a6268;
+//         }
+//       }
 
-      &.boutonAnnuler {
-        background-color: #6c757d;
-        color: white;
+//       &.boutonAnnuler {
+//         background-color: #6c757d;
+//         color: white;
 
-        &:hover {
-          background-color: #5a6268;
-        }
-      }
+//         &:hover {
+//           background-color: #5a6268;
+//         }
+//       }
 
-      &.boutonSupprimerCompte {
-        background-color: #dc3545;
-        color: white;
+//       &.boutonSupprimerCompte {
+//         background-color: #dc3545;
+//         color: white;
 
-        &:hover {
-          background-color: #c82333;
-        }
-      }
-    }
-  }
-}
+//         &:hover {
+//           background-color: #c82333;
+//         }
+//       }
+//     }
+//   }
+// }
 
-// Style pour les états de modification
-body.monCompte.backoffice {
-  input:not(:read-only) {
-    background-color: white !important;
-    border-color: #4a90e2 !important;
-  }
-}
+// // Style pour les états de modification
+// body.monCompte.backoffice {
+//   input:not(:read-only) {
+//     background-color: white !important;
+//     border-color: #4a90e2 !important;
+//   }
+// }
 
-// Responsive
-@media (max-width: 768px) {
-  .mainCompteVendeur {
-    #titreCompte {
-      flex-direction: column;
-      text-align: center;
-      gap: 1rem;
-    }
+// // Responsive
+// @media (max-width: 768px) {
+//   .mainCompteVendeur {
+//     #titreCompte {
+//       flex-direction: column;
+//       text-align: center;
+//       gap: 1rem;
+//     }
 
-    section {
-      article {
-        .double-champ {
-          grid-template-columns: 1fr;
-        }
-      }
-    }
+//     section {
+//       article {
+//         .double-champ {
+//           grid-template-columns: 1fr;
+//         }
+//       }
+//     }
 
-    #buttonsCompte {
-      flex-direction: column;
-      align-items: center;
+//     #buttonsCompte {
+//       flex-direction: column;
+//       align-items: center;
 
-      button {
-        width: 100%;
-        max-width: 300px;
-      }
-    }
-  }
-}
+//       button {
+//         width: 100%;
+//         max-width: 300px;
+//       }
+//     }
+//   }
+// }
