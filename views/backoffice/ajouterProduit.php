@@ -46,7 +46,7 @@
                 <div class="product-desc-box">
                     <label for="description">Description du produit</label><br>   
                     <textarea name="description" id="description" placeholder="Décrivez votre produit en quelques mots"></textarea>
-                    <div class="char-count">230/1000</div>
+                    <div class="char-count">0/1000</div>
                 </div>
 
                 <div class="form-actions">
