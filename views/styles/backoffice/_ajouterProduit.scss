@@ -1,27 +1,21 @@
 @use "../colors" as *; 
 @use "../fonts" as *; 
 
-.AjouterProduit { 
-    // Assurez-vous que l'aside et le header sont gérés par un conteneur parent (ex: le body)
-    // Ici, nous supposons que .AjouterProduit est la zone de contenu principale à côté de l'aside.
+.AjouterProduit {
     
     box-sizing: border-box;
     overflow-x: hidden;
     
-    font-family: 'lora', 'Serif';
-    // J'ai enlevé 'bold' et 'italic' de la police principale pour plus de lisibilité générale
+    font: {
+        family: 'lora', 'Serif';
+        weight: bold;
+        style: italic;
+    }
+
     background-color: $color-white;
     color: $color-blue;
     min-height: 100vh;
     padding: 30px 50px 50px 50px; 
-    
-    // Si ce .AjouterProduit est la balise <main> et qu'il est positionné à côté de l'aside:
-    // Vous devrez peut-être ajuster ces propriétés en fonction de votre layout global (body/wrapper).
-    /* position: absolute;
-    left: 250px; // Exemple si votre aside fait 250px
-    width: calc(100% - 250px);
-    top: 60px; // Exemple si votre header fait 60px
-    */
 
     .product-content {
         display: flex;
@@ -38,33 +32,24 @@
         max-width: 500px;
     }
 
-    /* --- Zone de la photo --- */
     .ajouterPhoto {
         border: 2px solid $color-blue; 
-        height: 350px; // Hauteur ajustée
+        height: 350px;
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
-        margin: 0; // Réinitialiser les marges excessives
+        margin: 0;
         border-radius: 4px; 
         cursor: pointer;
-        position: relative; // Nécessaire si vous voulez superposer une icône "supprimer"
+        position: relative;
 
         .placeholder-photo {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            
-            // Icône de l'appareil photo/plus du design
-            i.bi-plus-lg {
-                font-size: 3rem; 
-                color: lighten($color-blue, 10%);
-                margin-bottom: 10px;
-                // La forme dans l'image est un "appareil photo", nous utilisons le "plus" comme substitut
-            }
 
             p {
                 margin: 0;
@@ -76,7 +61,6 @@
         }
     }
 
-    /* --- Champs de saisie (input) --- */
     .form-details {
         display: flex;
         flex-direction: column;
@@ -91,7 +75,7 @@
     
     input[type="text"], textarea {
         padding: 8px 10px;
-        border: 1px solid $color-blue; // 1px vs 2px pour un look plus élégant
+        border: 1px solid $color-blue;
         border-radius: 4px;
         font-size: 1rem;
         box-sizing: border-box;
@@ -120,7 +104,6 @@
         }
     }
 
-    /* --- Section de droite (Description) --- */
     .right-section {
         width: 50%;
         display: flex;
@@ -128,9 +111,8 @@
         margin-top: 0; 
         
         .product-desc-box {
-            // Utilisation de la classe product-desc-box pour le champ description
             border: 2px solid $color-blue;
-            padding: 10px 15px 5px 15px; // Ajuster le padding interne
+            padding: 10px 15px 5px 15px;
             display: flex;
             flex-direction: column;
             min-height: 400px; 
@@ -138,7 +120,6 @@
             border-radius: 4px;
 
             label {
-                // Style pour le label flottant au-dessus de la bordure
                 color: $color-blue;
                 position: absolute;
                 top: -10px; 
@@ -167,7 +148,6 @@
         }
     }
 
-    /* --- Boutons d'action --- */
     .form-actions {
         display: flex;
         justify-content: flex-end; 
@@ -179,7 +159,7 @@
         button {
             padding: 8px 15px;
             border: 1px solid $color-blue; 
-            border-radius: 4px; // Bordures carrées
+            border-radius: 8px;
             font-weight: normal;
             cursor: pointer;
             transition: background-color 0.3s;
