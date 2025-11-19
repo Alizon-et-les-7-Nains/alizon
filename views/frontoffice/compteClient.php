@@ -4,8 +4,13 @@ require_once '../../controllers/pdo.php' ;
     
 
 $id_client = $_SESSION['user_id'];
-if ($_SESSION['user_adress'] == null){
-    $idAdresse = 0;
+if (!isset($_SESSION['user_adress'])){
+    $stmt = $pdo->query(
+    "INSERT INTO saedb._adresse 
+    (adresse, region, codePostal, ville, pays, complementAdresse)
+    VALUES
+    (NULL,NULL,NULL,NULL,NULL,NULL)"
+    );
 } else {
     $idAdresse = $_SESSION['user_adress'];
 }

@@ -45,9 +45,6 @@ if (!$produit) {
     <?php require_once "./partials/aside.php"?>
        
     <main class="modifierProduit"> 
-        <?php var_dump($image);
-              var_dump($hasImage);
-              var_dump($imageUrl);?>
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
             <div class="left-section">
                 <div class="ajouterPhoto">
