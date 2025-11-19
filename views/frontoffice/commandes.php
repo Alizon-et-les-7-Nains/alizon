@@ -18,6 +18,19 @@
         </section>
         
         <?php
+        //Simuler des données de commandes
+        $commandesEnCours = [
+            [
+                'id' => 'D01-8711879-1493445',
+                'date' => '12 décembre 2027',
+                'total' => '25,50',
+                'statut' => 'En cours de préparation',
+                'produits' => [
+                    ['nom' => 'Cidre Coco d\'Issé', 'image' => '../../../public/images/imageRillettes.png'],
+                    ['nom' => 'Cidre Coco d\'Issé', 'image' => '../../../public/images/imageRillettes.png']
+                ]
+            ]
+        ]; 
         $commandesEnCours = [];
         
         $commandesLivrees2025 = [];
