@@ -50,7 +50,7 @@
                                         <th>" . $epuise['nom'] . "</th>
                                     </tr>
                                     <tr>
-                                        <td>" . $epuise['typeProd'] . "</td>
+                                        <td class='type'>" . $epuise['typeProd'] . "</td>
                                     </tr>
                                     <tr>
                                         <th>" . formatPrice($epuise['prix']) . "</th>
@@ -124,7 +124,7 @@
                                         <th>" . $faible['nom'] . "</th>
                                     </tr>
                                     <tr>
-                                        <td>" . $faible['typeProd'] . "</td>
+                                        <td class='type'>" . $faible['typeProd'] . "</td>
                                     </tr>
                                     <tr>
                                         <th>" . formatPrice($faible['prix']) . "</th>
@@ -198,7 +198,7 @@
                                         <th>" . $faible['nom'] . "</th>
                                     </tr>
                                     <tr>
-                                        <td>" . $faible['typeProd'] . "</td>
+                                        <td class='type'>" . $faible['typeProd'] . "</td>
                                     </tr>
                                     <tr>
                                         <th>" . formatPrice($faible['prix']) . "</th>
