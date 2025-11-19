@@ -1,21 +1,18 @@
 <?php
-require_once "../../controllers/pdo.php"; // Connexion à la BDD
+require_once "../../controllers/pdo.php";
 
-$productId = (int)$_GET['id']; // Sécuriser l'ID
+if (!isset($_GET['id'])) {
+    die("Aucun produit sélectionné");
+}
+
+$productId = (int)$_GET['id']; 
 
 // Préparer la requête
-$stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = $productId");
-$stmt->execute([$productId]);
+$stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :id");
+$stmt->execute(['id' => $productId]);
 $product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-///////////////////////////////////////////////
-//                                           //
-//    Modifier BDD pour poids, mots clés     //
-//                                           //
-///////////////////////////////////////////////
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +31,6 @@ $product = $stmt->fetch(PDO::FETCH_ASSOC);
        
     <main class="modifierProduit"> 
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
->
             <div class="left-section">
                 <div class="ajouterPhoto">
                     <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
