@@ -292,7 +292,7 @@ $cart = getCurrentCart($pdo, $idClient);
                     </button>
                 </div>
             </article>
-            <?php } if ($cart==0) { ?>
+            <?php } if (empty($cart)) { ?>
             <h1 class="aucunProduit">Aucun produit</h1>
             <?php } else { ?>
         </section>
