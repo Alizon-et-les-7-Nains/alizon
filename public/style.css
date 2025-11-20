@@ -359,6 +359,7 @@ body {
 }
 .page404 h1 {
   font-size: 150px;
+  margin: 0;
 }
 .page404 h2 {
   font-size: 80px;
@@ -386,7 +387,6 @@ body {
 @media (max-width: 1300px) {
   .page404 h1 {
     font-size: 60px;
-    margin: 0;
   }
   .page404 h2 {
     font-size: 30px;
