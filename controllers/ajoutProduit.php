@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->beginTransaction();
 
         $sql = "INSERT INTO _produit 
-            (nom, prix, poids, description, mots_cles, idVendeur) 
-                       VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur) 
+            (nom, prix, poids, description, mots_cles) 
+                       VALUES (:nom, :prix, :poids, :description, :mots_cles) 
                        RETURNING idProduit";
         
         $stmt = $pdo->prepare($sql);
@@ -26,8 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':prix' => $prix, 
             ':poids' => $poids, 
             'description' => $description, 
-            'mots_cles' => $mots_cles,
-            ':idVendeur' => $idVendeur
+            'mots_cles' => $mots_cles
         ]);
         
         // Récupération de l'ID généré
@@ -45,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
                 
                 // Insertion dans la table _imageDeProduit
-                $sql = "INSERT INTO imageDeProduit (idProduit, URL) VALUES (:idProduit, :URL)";
+                $sql = "INSERT INTO _imageDeProduit (idProduit, URL) VALUES (:idProduit, :URL)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$idNewProduit, $nouveauNomImage]);
             }
