@@ -5,7 +5,7 @@ session_start();
 $idProd = $_GET['id']; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $pdo->prepare("UPDATE _produit SET nom = :nom, description = :description, prix = :prix, poids = :poids, mots_cles = :mot_cles WHERE idProd = :idProd");
+    $stmt = $pdo->prepare("UPDATE _produit SET nom = :nom, description = :description, prix = :prix, poids = :poids, mots_cles = :mot_cles WHERE idProduit = :idProduit");
     $img = $pdo->prepare("UPDATE _imageDeProduit SET URL = :url WHERE idProd = :idProd");
     $stmt->execute([
         ':nom' => $_POST['nom'],
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':prix' => $_POST['prix'],
         ':poids' => $_POST['poids'],
         ':mot_cles' => $_POST['mots_cles'],
-        ':idProd' => $idProd
+        ':idProduit' => $idProd
     ]);
 
     $img->execute([
