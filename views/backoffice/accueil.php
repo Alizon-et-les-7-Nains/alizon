@@ -1,7 +1,10 @@
 <?php
-require_once '../../controllers/pdo.php';
-require_once '../../controllers/prix.php';
-require_once '../../controllers/date.php';
+    require_once '../../controllers/pdo.php';
+
+    require_once '../../controllers/prix.php';
+    require_once '../../controllers/date.php';
+
+    require_once '../../controllers/auth.php';
 ?>
 
 <!DOCTYPE html>
