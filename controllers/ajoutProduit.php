@@ -2,8 +2,6 @@
 session_start();
 require_once 'pdo.php';
 
-$idVendeur = $_SESSION['idVendeur'] ?? 1; 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // on récupère les données
     $nom = $_POST['nom']; 
