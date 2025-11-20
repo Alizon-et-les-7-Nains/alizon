@@ -14,41 +14,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $pdo->beginTransaction();
 
-        // insertion de produit
+        // Insertion dans _produit
         $sql = "INSERT INTO _produit 
             (nom, prix, poids, description, mots_cles) 
             VALUES (:nom, :prix, :poids, :description, :mots_cles)";
-
+        
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
-            ':nom' => $nom, 
-            ':prix' => $prix, 
-            ':poids' => $poids, 
-            ':description' => $description, 
+            ':nom' => $nom,
+            ':prix' => $prix,
+            ':poids' => $poids,
+            ':description' => $description,
             ':mots_cles' => $mots_cles
         ]);
 
+        // On récupère l'ID généré
         $idNewProduit = $pdo->lastInsertId();
 
-        // Pour les images, insertion dans _imageDeProduit
+        // Gestion des images
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-            
-            $extension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+            $extension = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
             $nouveauNomImage = 'produit_' . $idNewProduit . '_' . time() . '.' . $extension;
-
             $dossierDestination = "../public/images/" . $nouveauNomImage;
-
-            if (move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
-
-                $sql = "INSERT INTO _imageDeProduit (idProduit, URL) 
-                        VALUES (:idProduit, :URL)";
-                
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([
-                    ':idProduit' => $idNewProduit,
-                    ':URL' => $nouveauNomImage
-                ]);
+            // Déplacement du fichier
+            if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
+                throw new Exception("Impossible de déplacer l'image.");
             }
+
+            // Insertion dans _image car sinon l'insertion de l'image dans _imageDeProduit ne pourra pas etre faite
+            $sql = "INSERT INTO _image (URL) VALUES (:URL)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':URL' => $nouveauNomImage]);
+
+            // Insertion dans _imageDeProduit
+            $sql = "INSERT INTO _imageDeProduit (idProduit, URL) VALUES (:idProduit, :URL)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':idProduit' => $idNewProduit,
+                ':URL' => $nouveauNomImage
+            ]);
         }
 
         $pdo->commit();
@@ -56,10 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ../views/backoffice/produits.php?success=1');
         exit();
 
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         $pdo->rollBack();
-        echo "<h3>Erreur SQL :</h3><pre>".$e->getMessage()."</pre>";
-        exit();
+        die("Erreur lors de l'ajout : " . $e->getMessage());
     }
 }
 ?>
