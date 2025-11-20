@@ -1,7 +1,7 @@
 <?php
 
-require_once './pdo.php';
+require_once 'pdo.php';
 
-echo $_SESSION;
+print_r($_SESSION);
 
 ?>
