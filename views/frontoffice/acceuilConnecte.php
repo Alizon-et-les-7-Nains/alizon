@@ -431,7 +431,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 // Cacher après 1,5 secondes (optionnel)
                 setTimeout(() => {
                     popupConfirmation.style.display = "none";
-                }, 1500);
+                }, 5000);
             });
         });
     </script>
