@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFFEFA;
+}
+
+/* -------------------------------------------- DEBUT HEADER -------------------------------------------- */
+
+header a, footer a, header p {
+    text-decoration: none;
+    color: #E3F2FE;
+}
+
+header p, footer p {
+    margin-bottom: 0;
+}
+
+header h1 {
+    color: #E3F2FE;
+    font-family: "Berkshire Swash", serif;
+    font-weight: 200;
+    font-style: normal;
+}
+
+header h1 a b {
+   color: #E3F2FE; 
+}
+
+header {
+    background-color: #273469;
+    padding: 20px 0px 20px 0px;
+    position: sticky;
+    top: 0;
+}
+
+header .headerMain {
+    padding: 10px 25px;
+    display: flex;
+    align-items: end;       
+    justify-content: space-between;
+}
+
+header .logoNom {
+    display: flex;
+    align-items: end;                    
+}
+
+header .headerMain div *, .categorie {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+header .logoNom h1 {
+    line-height: 1;
+    margin: 0;
+}
+
+header img {
+    width: 50px;
+}
+
+header .seConnecter img {
+    height: 40px;
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-wrapper i {
+    position: absolute;
+    right: 15px;              
+    color: #273469;          
+    font-size: 1rem;
+    pointer-events: none;      
+}
+
+.search-wrapper input[type="search"] {
+    padding: 10px 450px 10px 20px; 
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    background-color: #fff;
+    color: #273469;
+    font-family: "Lora", serif;
+    font-size: 20px;
+    font-weight: bold;  
+    font-style: italic;  
+}
+
+.search-wrapper input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.carousel {
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+    visibility: hidden;
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header .categorie {
+    flex: 0 0 5em;
+    text-decoration: none;
+    background-color: #E3F2FE;
+    color: #273469;
+    border-radius: 30px;
+    font-family: "Lora", serif;
+    font-optical-sizing: auto;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 15px 40px;
+}
+
+.seConnecter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+@media (max-width: 1300px) { 
+    .search-wrapper input[type="search"] {
+        padding: 10px 0px 10px 10px; 
+    }
+    header .headerMain {
+        justify-content: space-between;
+    }
+    header .headerMain div * {
+        margin-left: 1.5px;
+        margin-right: 1.5px;
+    }
+    header .categorie {
+        padding: 8px 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .icons {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+@media (max-width: 428px) {
+    header b {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+/* -------------------------------------------- FIN HEADER -------------------------------------------- */
+
+/* -------------------------------------------- DEBUT FOOTER -------------------------------------------- */
+
+footer .footerTel {
+    display: none;
+    visibility: hidden;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+footer, footer div {
+    background-color: #273469;
+    color: white;
+    font-style: italic;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    font-family: "Lora", serif;
+    font-size: 13px;
+    font-weight: bold;   
+    font-style: italic;  
+    align-items: center;
+}
+
+footer a, footer p {
+    padding: 10px 10px;
+}
+
+.homeDarkBlue, .searchDarkBlue, .cartDarkBlue, .burgerDarkBlue {
+    display: none;
+    visibility: hidden;
+}
+
+@media (max-width: 1300px) {
+    footer {
+        position: sticky;
+        width:100%;
+        bottom:0px;
+        padding: 0;
+        justify-content: space-around;
+    }
+
+    footer .footerPC {
+        display: none;
+        visibility: hidden;
+    }
+
+    footer .footerTel {
+        display: contents;
+        visibility: visible;
+    }
+
+    .footerTel {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .footerTel img {
+        width: 41px;
+        height: 41px;
+    }
+
+    .footerTel a:focus {
+        transition: 0.2s;
+        background-color: #E3F2FE;
+    }
+
+    .footerTel a {
+        padding: 20px;
+    } 
+}
+
+/* -------------------------------------------- FIN FOOTER -------------------------------------------- */
