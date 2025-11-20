@@ -1,6 +1,5 @@
 <?php 
 session_start();
-$currentPage=basename(FILE);
 require_once "../../controllers/pdo.php";
 
     $nom = $_SESSION['form_data']['nom'] ?? '';
@@ -29,7 +28,10 @@ require_once "../../controllers/pdo.php";
     <header>
         <?php require_once "./partials/header.php"?>
     </header>
-    <?php require_once "./partials/aside.php"?>
+    <?php 
+        $currentPage = basename(__FILE__);
+        require_once "./partials/aside.php"
+    ?>
         
     <main class="AjouterProduit"> 
         <form action="../../controllers/ajouterProduit.php" method="POST" enctype="multipart/form-data" class="product-content" id="formAjout">
