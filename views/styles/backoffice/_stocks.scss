@@ -149,6 +149,9 @@ main.backoffice-stocks {
                 }
                 
                 ul {
+                    h3 {
+                        margin: 0.5em;
+                    }
                     padding-left: 0;
                     ul {
                         display: flex;
@@ -160,12 +163,16 @@ main.backoffice-stocks {
                             font-size: 30px;
                             font-weight: bold;
                         }
+                        li:last-child {
+                            font-style: italic;
+                            color: $color-dark-gray;
+                        }
                     }
                 }
             }
             
             > ul {
-                margin-top: -1em;
+                margin-top: -0.5em;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;

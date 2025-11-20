@@ -1,94 +1,102 @@
 <?php
-// require_once "../../controllers/pdo.php";
-// Connexion à la base de données
-// try {
-//     $pdo = new PDO("mysql:host=localhost;dbname=saedb;charset=utf8mb4", "username", "password", [
-//     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, 
-//     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-// ]);
+include '../../controllers/pdo.php';
+session_start();
 
-// } catch(PDOException $e) {
-//     die("Erreur connexion : " . $e->getMessage());
-// }
+$productId = intval($_GET['id']) ?? 0;
 
-// // Récupérer l'ID depuis l'URL
-// $productId = intval($_GET['id']) ?? 0;
+if($productId == 0) {
+    die("Produit non spécifié");
+}
 
-// if($productId == 0) {
-//     die("Produit non spécifié");
-// }
+$sqlProduit = "SELECT 
+                p.idProduit,
+                p.nom AS nom_produit,
+                p.description, 
+                p.prix,
+                p.note,
+                p.stock,
+                v.prenom AS prenom_vendeur,
+                v.nom AS nom_vendeur,
+                v.raisonSocial
+               FROM _produit p 
+               JOIN _vendeur v ON p.idVendeur = v.codeVendeur 
+               WHERE p.idProduit = $productId";
 
-// // REQUÊTE SIMPLE : Récupérer le produit ET le vendeur en une fois
+$result = $pdo->query($sqlProduit);
+$produit = $result->fetch(PDO::FETCH_ASSOC);
 
-// $sqlProduit = "SELECT 
-//                 p.idProduit,
-//                 p.nom AS nom_produit,
-//                 p.description, 
-//                 p.prix,
-//                 p.note,
-//                 p.stock,
-//                 v.prenom AS prenom_vendeur,
-//                 v.nom AS nom_vendeur,
-//                 v.raisonSocial
-//                FROM _produit p 
-//                JOIN _vendeur v ON p.idVendeur = v.codeVendeur 
-//                WHERE p.idProduit = $productId";
+if (!$produit) {
+    echo "<p>Produit introuvable.</p>";
+    exit;
+}
 
-// $result = $pdo->query($sqlProduit);
-// $produit = $result->fetch(PDO::FETCH_ASSOC);
+// Récupérer les images
+$sqlImages = "SELECT i.* 
+              FROM _image i
+              JOIN _imageDeProduit ip ON i.URL = ip.URL
+              WHERE ip.idProduit = $productId";
 
-// if (!$produit) {
-//     echo "<p>Produit introuvable.</p>";
-//     exit;
-// }
-
-// // Récupérer les images
-// $sqlImages = "SELECT i.* 
-//               FROM _image i
-//               JOIN _imageDeProduit ip ON i.URL = ip.URL
-//               WHERE ip.idProduit = $productId";
-
-// $resultImages = $pdo->query($sqlImages);
-// $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
+$resultImages = $pdo->query($sqlImages);
+$images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 
 // $sqlAvis = "SELECT a.*
-//             FROM _avis 
+//             FROM _avis a
 //             WHERE a.idProduit = $productId";
 
 // $resultAvis = $pdo->query($sqlAvis);
 // $lesAvis = $resultAvis->fetch(PDO::FETCH_ASSOC);
 
-$images = [
-    [
-        'URL' => 'cidre.png',
-        'title' => 'Premium Cidre'
-    ],
-    [
-        'URL' => 'rillettes.png', 
-        'title' => 'Artisanal Cidre'
-    ],
-    [
-        'URL' => 'defaultImageProduit.png',
-        'title' => 'Traditional Cidre'
-    ]
-];
+// // Calcul de la note moyenne
+// $sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
+// $stmt = $pdo->prepare($sqlNoteMoyenne);
+// $stmt->execute([$productId]);
+// $resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
+// $noteMoyenne = $resultNote['moyenne_note'] ?? 0;
+
+// // Calcul du nombre d'avis
+// $sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
+// $stmt = $pdo->prepare($sqlNbAvis);
+// $stmt->execute([$productId]);
+// $resultNbAvis = $stmt->fetch(PDO::FETCH_ASSOC);
+// $nombreAvis = $resultNbAvis['nb_avis'] ?? 0;
+
+
+
+// $images = [
+//     [
+//         'URL' => 'cidre.png',
+//         'title' => 'Premium Cidre'
+//     ],
+//     [
+//         'URL' => 'rillettes.png', 
+//         'title' => 'Artisanal Cidre'
+//     ],
+//     [
+//         'URL' => 'defaultImageProduit.png',
+//         'title' => 'Traditional Cidre'
+//     ]
+// ];
 
 // Your existing product data (mock)
-$produit = [
-    'nom_produit' => 'Cidre Artisanal Breton',
-    'description' => 'Un cidre artisanal produit selon les méthodes traditionnelles bretonnes...',
-    'prix' => 12.50,
-    'prenom_vendeur' => 'Jean',
-    'nom_vendeur' => 'Dupont',
-    'stock' => 20 ];
+// $produit = [
+//     'nom_produit' => 'Cidre Artisanal Breton de merde',
+//     'description' => 'Un cidre artisanal produit selon les méthodes traditionnelles bretonnes...',
+//     'prix' => 12.50,
+//     'prenom_vendeur' => 'Jean',
+//     'nom_vendeur' => 'Dupont',
+//     'stock' => 20 ];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- sass --watch views/styles/main.scss:public/style.css -->
     <!-- ssh sae@10.253.5.104
     su -
-    grognasseEtCompagnie -->
+    grognasseEtCompagnie
+    cd /docker/data/web/html
+    git pull -->
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,7 +104,9 @@ $produit = [
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body class="pageProduit">
+<header>
 <?php // include "../../views/frontoffice/partials/headerConnecte.php" ?>
+</header>
 <main>
 <section class="infoHautProduit">
 <article class="rectangleProduit">
@@ -105,7 +115,7 @@ $produit = [
         <div class="carousel-slide">
             <?php if (!empty($images)): ?>
                 <?php foreach ($images as $index => $image): ?>
-                    <img src="../../public/images/<?php echo htmlspecialchars($image['URL']); ?>" 
+                    <img src="<?php echo htmlspecialchars($image['URL']); ?>" 
                          alt="Image produit <?php echo $index + 1; ?>"
                          class="carousel-image <?php echo $index === 0 ? 'active' : ''; ?>">
                 <?php endforeach; ?>
@@ -113,7 +123,6 @@ $produit = [
                 <img src="../../public/images/placeholder.jpg" alt="Pas d'image trouvée" class="carousel-image active">
             <?php endif; ?>
         </div>
-        <!-- Circles container - positioned absolutely -->
         <div id="lesCercles" class="carousel-indicators">
             <?php if (count($images) > 1): ?> 
                 <?php foreach ($images as $index => $image): ?>
@@ -126,7 +135,24 @@ $produit = [
     <img src="../../public/images/flecheDroite.svg" alt="Next" class="carousel-arrow next-arrow">
 </article>
     <article class="infoPreviewProduit">
-        <h1><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
+            <?php
+                $note = 4.2; // Exemple de note moyenne A CHANGER
+                $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
+            ?>
+        <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
+            <div class="product-rating">
+                <div>
+                    <div class="star-rating">
+                        <div class="stars" style="--rating: <?php echo $note; ?>"></div>
+                    </div>
+                    <span class="rating-number"><?php echo number_format($note, 1); ?>/5</span>
+                </div>
+                <span class="review-count" id="reviewCountHautProduit"><?php echo $nombreAvis; ?> évaluations</span>
+            </div>
+            <?php 
+            $note = $produit['note'];
+            echo htmlspecialchars($note);
+            ?>
         <div id="prix">
             <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
             <h3>40.99€</h3>
@@ -170,23 +196,24 @@ $produit = [
     </div>
     <hr>
     <br>
-        <div id="quantite">
-            <form action="panier.php" method="POST">
-                <div id="quantiteContainer">
-                    <p>Quantité</p>
-                    <div>
-                        <button type="button" id="moins"><img src="../../public/images/moins.svg " alt=""></button>
-                        <input type="text" id="quantiteInput" name="quantite" value="1" readonly>
-                        <button type="button" id="plus"><img src="../../public/images/plus.svg " alt=""></button>
-                    </div>
+    <div id="quantite">
+        <form action="panier.php" method="POST">
+            <div id="quantiteContainer">
+                <p>Quantité</p>
+                <div>
+                    <button type="button" id="moins"><img src="../../public/images/moins.svg " alt=""></button>
+                    <input type="text" id="quantiteInput" name="quantite" value="1" readonly>
+                    <button type="button" id="plus"><img src="../../public/images/plus.svg " alt=""></button>
                 </div>
-                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-                <button class="bouton boutonRose" type="submit">Ajouter au panier</button>
-            </form>
-            <form action="pagePaiement.php" method="POST">
-                <button class="bouton boutonBleu" >Acheter maintenant</button>
-            </form>
-        </div>
+            </div>
+            <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+            <button class="bouton boutonRose" type="submit">Ajouter au panier</button>
+        </form>
+        <form action="pagePaiement.php" method="POST">
+            <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+            <button class="bouton boutonBleu" >Acheter maintenant</button>
+        </form>
+    </div>
 </article>
 </section>
 <hr>
@@ -194,9 +221,11 @@ $produit = [
     <input type="checkbox" id="activeVoirPlus">
     <div class="conteneurTexte" id="conteneurTexte">
         <h2>Plus d'informations sur l'article</h2>
+        <p>
         <?php 
-        echo htmlspecialchars($produit['description']);
+            echo htmlspecialchars($produit['description']);
         ?>
+        </p>
     </div> 
     <label for="activeVoirPlus" class="voirPlus"> </label> 
 </section>
@@ -220,7 +249,10 @@ $produit = [
     $note = $produit['note'];
     echo htmlspecialchars($note);
     ?>
-    <button>Ecrire un commentaire</button>
+    <form action="ecrireUnCommentaire.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+        <button type="submit">Ecrire un commentaire</button>
+    </form>
 
     <?php
         $html = "
@@ -280,6 +312,26 @@ $produit = [
         </article>";
         echo $html;
     ?>
+
+</section>
+<section class="stickyTelephone">
+    <img src="../../public/images/<?php echo htmlspecialchars($image['URL']); ?>" alt="<?php echo htmlspecialchars($image['URL']); ?>">
+    <article>
+        <aside>
+            <h3><?php echo htmlspecialchars($produit['nom_produit']);?></h3>
+            <h2 id="prixTelephone"><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h2>
+        </aside>
+        <aside>
+            <form action="panier.php" method="POST">
+                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                <button class="bouton boutonRose" type="submit">Ajouter au panier</button>
+            </form>
+            <form action="pagePaiement.php" method="POST">
+                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                <button class="bouton boutonBleu" >Acheter maintenant</button>
+            </form>
+        </aside>
+    </article>
 </section>
 </main>
 <footer>
@@ -293,16 +345,16 @@ class ProductCarousel {
         this.images = document.querySelectorAll('.carousel-image');
         this.init();
     }
-    
+
     init() {
         this.setupEventListeners();
         this.showImage(this.currentImageIndex);
     }
-    
+
     setupEventListeners() {
         const prevArrow = document.querySelector('.prev-arrow');
         const nextArrow = document.querySelector('.next-arrow');
-        
+
         if (prevArrow) {
             prevArrow.addEventListener('click', () => this.prevImage());
         }

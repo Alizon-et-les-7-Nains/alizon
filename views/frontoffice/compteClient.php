@@ -4,15 +4,21 @@ require_once '../../controllers/pdo.php' ;
     
 
 $id_client = $_SESSION['user_id'];
-if (!isset($_SESSION['user_adress'])){
+
+$stmt = $pdo->query(
+    "SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client' ");
+    $client = $stmt->fetch(PDO::FETCH_ASSOC);
+    $idAdresse = $client['idAdresse'];
+
+if (!$idAdresse) {
+    // Le client n'a pas d'adresse, on en crée une
+    $pdo->query("INSERT INTO saedb._adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) VALUES (NULL,NULL,NULL,NULL,NULL,NULL)");
     $stmt = $pdo->query(
-    "INSERT INTO saedb._adresse 
-    (adresse, region, codePostal, ville, pays, complementAdresse)
-    VALUES
-    (NULL,NULL,NULL,NULL,NULL,NULL)"
-    );
-} else {
-    $idAdresse = $_SESSION['user_adress'];
+    "SELECT adr.idAdresse FROM _adresseClient AS adr JOIN _client AS cli ON adr.idAdresse = cli.idClient WHERE idClient = '$id_client'; ");
+    $client = $stmt->fetch(PDO::FETCH_ASSOC);
+    $idAdresse = $client['idAdresse'];  
+    $pdo->query("UPDATE saedb._client SET idAdresse = $idAdresse WHERE idClient = $id_client");
+
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -26,9 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telephone = $_POST['telephone'];
     $codePostal = $_POST['codePostal'];
     $adresse1 = $_POST['adresse1'];
+    $adresse2 = $_POST['adresse2'];
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
-    $region = $_POST['region'];
 
     $stmt = $pdo->query(
     "UPDATE saedb._client 
@@ -37,22 +43,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     prenom = '$prenom', 
     email =  '$email', 
     dateNaissance = '$dateNaissance',
-    noTelephone = '$telephone'
+    noTelephone = '$telephone',
+    idAdresse = '$idAdresse'
     WHERE idClient = '$id_client';");
 
     $stmt = $pdo->query(
-    "UPDATE saedb._adresse 
+    "UPDATE saedb._adresseClient 
     SET adresse = '$adresse1',
     pays = '$pays',
     ville = '$ville', 
     codePostal = '$codePostal',
-    region = '$region'
+    complementAdresse = '$adresse2'
     WHERE idAdresse = '$idAdresse';");
 
 }   
 
     //verification et upload de la nouvelle photo de profil
-    $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png';
+    $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id_client.'.svg';
     if (file_exists($photoPath)) {
         unlink($photoPath); // supprime l'ancien fichier
     }
@@ -71,6 +78,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dateNaissance = $client['dateNaissance'] ?? '';
     $email = $client['email'] ?? '';
     $noTelephone = $client['noTelephone'] ?? '';
+
+    $stmt = $pdo->query("SELECT * FROM saedb._adresseClient WHERE idAdresse = '$idAdresse'");
+    $adresse = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $adresse1 = $adresse['adresse'] ?? '';
+    $adresse2 = $adresse['complementAdresse'] ?? '';
+    $codePostal = $adresse['codePostal'] ?? '';
+    $ville = $adresse['ville'] ?? '';
+    $pays = $adresse['pays'] ?? '';
+
 
 ?>
 <!DOCTYPE html>
@@ -109,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <article>
                     <div><p><?php echo htmlspecialchars($adresse1 ?? ''); ?></p></div>
-                    <div><p><?php echo htmlspecialchars(" "); ?></p></div>
+                    <div><p><?php echo htmlspecialchars($adresse2 ?? ''); ?></p></div>
                     <div class="double-champ">
                         <div><p><?php echo htmlspecialchars($codePostal ?? ''); ?></p></div>
                         <div><p><?php echo htmlspecialchars($ville ?? ''); ?></p></div>

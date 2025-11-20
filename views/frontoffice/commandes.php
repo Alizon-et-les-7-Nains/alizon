@@ -134,10 +134,13 @@ if ($filtre === '2025') {
             <?php foreach ($commandesAffichees as $commande): ?>
                 <section class="commande">
                     <?php 
-                    $nombreProduits = count($commande['produits']);
-                    if ($nombreProduits === 0) {
-                        echo "<div style='padding:20px;'>Détails des produits indisponibles</div>";
-                    }
+                        $nombreProduits = count($commande['produits']);
+                        echo "<script>console.log(" . json_encode($commande) . ");</script>";
+                        echo "<script>console.log(" . json_encode($commandesAffichees) . ");</script>";
+
+                    // if ($nombreProduits === 0) {
+                    //     echo "<div style='padding:20px;'>Détails des produits indisponibles</div>";
+                    // }
                     
                     foreach ($commande['produits'] as $index => $produit): 
                         $imgSrc = !empty($produit['image']) ? htmlspecialchars($produit['image']) : '../../public/images/defaultImageProduit.png';

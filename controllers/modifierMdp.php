@@ -2,7 +2,7 @@
 require_once 'pdo.php';
 session_start();
 
-$idClient = 1; 
+$idClient = $_SESSION['user_id']; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nouveauMdp = $_POST['nouveauMdp'];
