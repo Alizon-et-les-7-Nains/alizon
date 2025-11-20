@@ -178,6 +178,7 @@
     $stocks = ($pdo->query('select * from _produit where stock >= seuilAlerte'))->fetchAll(PDO::FETCH_ASSOC);
     if (count($stocks) == 0) echo "<h2>Aucun produit en stock</h2>";
     foreach ($stocks as $stock) {
+        $reassort = $stock['dateReassort'] != NULL ? formatDate($stock['dateReassort']) : 'Aucun réassort prévu';
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $stock['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
@@ -218,14 +219,14 @@
                         </tr>
                         <tr>
                             <td>
-                                ";
-                                    // foreach ($commandes as $commande) {
-                                    //     $html .= "<ul>
-                                    //         <li>" . $commande['quantiteCommande'] . "</li>
-                                    //         <li>" . formatDate($commande['dateCommande']) . "</li>
-                                    //     </ul>";
-                                    // }
-                                $html .= "
+                                <ul>";
+                                    foreach ($commandes as $commande) {
+                                        $html .= "<ul>
+                                            <li>" . $commande['quantiteCommande'] . "</li>
+                                            <li>" . formatDate($commande['dateCommande']) . "</li>
+                                        </ul>";
+                                    }
+                                $html .= "</ul>
                             </td>
                         </tr>
                     </table>
@@ -233,7 +234,7 @@
                         <li>
                             <figure>
                                 <img src='/public/images/infoDark.svg'>
-                                <figcaption>" . $reassort = $stock['dateReassort'] != NULL ? formatDate($stock['dateReassort']) : 'Aucun réassort prévu' . "</figcaption>
+                                <figcaption>" . $reassort . "</figcaption>
                             </figure>
                         </li>
                         <li>" . $stock['stock'] . " restants</li>
