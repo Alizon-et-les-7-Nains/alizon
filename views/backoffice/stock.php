@@ -100,7 +100,7 @@
             <h1>Produits en Alerte</h1>
             <article>
 <?php
-    $faibles = ($pdo->query('select * from _produit where stock < seuilAlerte'))->fetchAll(PDO::FETCH_ASSOC);
+    $faibles = ($pdo->query('select * from _produit where stock <> 0 and stock < seuilAlerte'))->fetchAll(PDO::FETCH_ASSOC);
     if (count($faibles) == 0) echo "<h2>Aucun produit en alerte</h2>";
     foreach ($faibles as $faible) {
         $reassort = $faible['dateReassort'] != NULL ? formatDate($faible['dateReassort']) : 'Aucun réassort prévu';
