@@ -4322,7 +4322,7 @@ main.backoffice-stocks section div:not(button.settings div) table table tr:nth-c
   height: 60px;
 }
 main.backoffice-stocks section div:not(button.settings div) table ul h2 {
-  margin: 1em;
+  margin: 0.5em;
 }
 main.backoffice-stocks section div:not(button.settings div) table ul {
   padding-left: 0;
@@ -4336,6 +4336,10 @@ main.backoffice-stocks section div:not(button.settings div) table ul ul {
 main.backoffice-stocks section div:not(button.settings div) table ul ul li:first-child {
   font-size: 30px;
   font-weight: bold;
+}
+main.backoffice-stocks section div:not(button.settings div) table ul ul li:last-child {
+  font-style: italic;
+  color: #6e6e6e;
 }
 main.backoffice-stocks section div:not(button.settings div) > ul {
   margin-top: -0.5em;

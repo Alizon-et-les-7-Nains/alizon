@@ -150,7 +150,7 @@ main.backoffice-stocks {
                 
                 ul {
                     h2 {
-                        margin: 1em;
+                        margin: 0.5em;
                     }
                     padding-left: 0;
                     ul {
@@ -162,6 +162,10 @@ main.backoffice-stocks {
                         li:first-child {
                             font-size: 30px;
                             font-weight: bold;
+                        }
+                        li:last-child {
+                            font-style: italic;
+                            color: $color-dark-gray;
                         }
                     }
                 }
