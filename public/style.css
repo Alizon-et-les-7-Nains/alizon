@@ -4335,7 +4335,6 @@ main.backoffice-stocks section div:not(button.settings div) table ul ul li:first
   font-weight: bold;
 }
 main.backoffice-stocks section div:not(button.settings div) > ul {
-  margin-top: -1em;
   display: flex;
   align-items: center;
   justify-content: space-between;
