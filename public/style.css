@@ -2746,7 +2746,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
+  display: none;
   flex-direction: column;
   border: 3px solid #259525;
   border-radius: 8px;
