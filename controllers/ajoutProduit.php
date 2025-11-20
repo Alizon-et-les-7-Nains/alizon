@@ -58,7 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $pdo->commit();
 
-        header('Location: ../views/backoffice/produits.php?success=1');
+        $id_session = session_id();
+        $_SESSION['id_session'] = $id_session;
+        header('Location: ../views/backoffice/accueil.php');
         exit();
 
     } catch (Exception $e) {
