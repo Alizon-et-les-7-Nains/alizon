@@ -115,7 +115,7 @@ $produit = [
         <div class="carousel-slide">
             <?php if (!empty($images)): ?>
                 <?php foreach ($images as $index => $image): ?>
-                    <img src="../../public/images/<?php echo htmlspecialchars($image['URL']); ?>" 
+                    <img src="../../public/images<?php echo htmlspecialchars($image['URL']); ?>" 
                          alt="Image produit <?php echo $index + 1; ?>"
                          class="carousel-image <?php echo $index === 0 ? 'active' : ''; ?>">
                 <?php endforeach; ?>
