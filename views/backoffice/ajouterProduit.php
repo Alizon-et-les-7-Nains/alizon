@@ -34,7 +34,7 @@ require_once "../../controllers/pdo.php";
     ?>
         
     <main class="AjouterProduit"> 
-        <form action="../../controllers/ajouterProduit.php" method="POST" enctype="multipart/form-data" class="product-content" id="formAjout">
+        <form action="../../controllers/ajoutProduit.php" method="POST" enctype="multipart/form-data" class="product-content" id="formAjout">
             
             <div class="left-section">
                 <div class="ajouterPhoto" id="zoneUpload">
