@@ -39,26 +39,26 @@ $sqlImages = "SELECT i.*
 $resultImages = $pdo->query($sqlImages);
 $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 
-$sqlAvis = "SELECT a.*
-            FROM _avis a
-            WHERE a.idProduit = $productId";
+// $sqlAvis = "SELECT a.*
+//             FROM _avis a
+//             WHERE a.idProduit = $productId";
 
-$resultAvis = $pdo->query($sqlAvis);
-$lesAvis = $resultAvis->fetch(PDO::FETCH_ASSOC);
+// $resultAvis = $pdo->query($sqlAvis);
+// $lesAvis = $resultAvis->fetch(PDO::FETCH_ASSOC);
 
-// Calcul de la note moyenne
-$sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
-$stmt = $pdo->prepare($sqlNoteMoyenne);
-$stmt->execute([$productId]);
-$resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
-$noteMoyenne = $resultNote['moyenne_note'] ?? 0;
+// // Calcul de la note moyenne
+// $sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
+// $stmt = $pdo->prepare($sqlNoteMoyenne);
+// $stmt->execute([$productId]);
+// $resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
+// $noteMoyenne = $resultNote['moyenne_note'] ?? 0;
 
-// Calcul du nombre d'avis
-$sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
-$stmt = $pdo->prepare($sqlNbAvis);
-$stmt->execute([$productId]);
-$resultNbAvis = $stmt->fetch(PDO::FETCH_ASSOC);
-$nombreAvis = $resultNbAvis['nb_avis'] ?? 0;
+// // Calcul du nombre d'avis
+// $sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
+// $stmt = $pdo->prepare($sqlNbAvis);
+// $stmt->execute([$productId]);
+// $resultNbAvis = $stmt->fetch(PDO::FETCH_ASSOC);
+// $nombreAvis = $resultNbAvis['nb_avis'] ?? 0;
 
 
 
