@@ -71,6 +71,7 @@
                         <tr>
                             <td>
                                 <ul>";
+                                    if (count($commandes) == 0) $html .= "<li><h3>Aucune commande</h3></li>";
                                     foreach ($commandes as $commande) {
                                         $html .= "<ul>
                                             <li>" . $commande['quantiteCommande'] . "</li>
@@ -146,6 +147,7 @@
                         <tr>
                             <td>
                                 <ul>";
+                                    if (count($commandes) == 0) $html .= "<li><h3>Aucune commande</h3></li>";
                                     foreach ($commandes as $commande) {
                                         $html .= "<ul>
                                             <li>" . $commande['quantiteCommande'] . "</li>
@@ -177,7 +179,7 @@
             <article>
 <?php
     $stocks = ($pdo->query('select * from _produit where stock >= seuilAlerte'))->fetchAll(PDO::FETCH_ASSOC);
-    if (count($stocks) == 0) echo "<h2>Aucun produit en stock</h2>";
+    if (count($stocks) == 0) echo "<h3>Aucun produit en stock</h3>";
     foreach ($stocks as $stock) {
         $reassort = $stock['dateReassort'] != NULL ? "Réassort prévu le " . formatDate($stock['dateReassort']) : 'Aucun réassort prévu';
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $stock['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
@@ -221,6 +223,7 @@
                         <tr>
                             <td>
                                 <ul>";
+                                    if (count($commandes) == 0) $html .= "<li><h3>Aucune commande</h3></li>";
                                     foreach ($commandes as $commande) {
                                         $html .= "<ul>
                                             <li>" . $commande['quantiteCommande'] . "</li>
