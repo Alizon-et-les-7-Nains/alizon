@@ -2743,23 +2743,31 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .acceuil .confirmationAjout {
   position: fixed;
-  top: 50%;
+  top: 100px;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
+  display: none;
   flex-direction: column;
   border: 3px solid #259525;
   border-radius: 8px;
-  padding: 10px 20px;
+  padding: 5px 60px;
   justify-content: center;
   max-width: 90vw;
-  z-index: 999;
+  z-index: 1067;
+  transition: 0.3s;
+  background-color: white;
+  text-align: center;
+}
+.acceuil .confirmationAjout::after {
+  transition: 0.3s;
 }
 .acceuil .confirmationAjout h4 {
   color: #259525;
   font-style: bold;
   font-size: 24px;
   font-family: "Lora", serif;
+  padding: 0;
+  margin: 0;
 }
 .acceuil .confirmationAjout article {
   flex-direction: row;
@@ -2804,10 +2812,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .acceuil .confirmationAjout .infoProduit p {
   margin: 0px 30px;
 }
-@media (max-width: 500px) {
+@media (max-width: 1100px) {
   .acceuil .confirmationAjout {
-    max-width: 95vw;
-    padding: 10px 5px;
+    font-size: 16px;
   }
 }
 
@@ -3398,70 +3405,6 @@ button#haut.visible:hover {
   font-size: 0.8rem;
   color: gray;
   margin-top: 5px;
-}
-.modifierProduit .right-section #sections-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-top: 15px;
-}
-.modifierProduit .right-section #sections-container .new-section-box {
-  border: 2px solid #273469;
-  padding: 15px;
-  border-radius: 8px;
-  background-color: white;
-}
-.modifierProduit .right-section #sections-container .new-section-box .input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.modifierProduit .right-section #sections-container .new-section-box .input-group label {
-  font-weight: bold;
-  color: #273469;
-}
-.modifierProduit .right-section #sections-container .new-section-box .input-group input[type=text], .modifierProduit .right-section #sections-container .new-section-box .input-group textarea {
-  border: 2px solid #273469;
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 1rem;
-  width: 100%;
-}
-.modifierProduit .right-section #sections-container .new-section-box .input-group input[type=text]::placeholder, .modifierProduit .right-section #sections-container .new-section-box .input-group textarea::placeholder {
-  color: #6e6e6e;
-  font-weight: bold;
-}
-.modifierProduit .right-section #sections-container .new-section-box .input-group textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-.modifierProduit .right-section .ajouterSection {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-}
-.modifierProduit .right-section .ajouterSection select {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 2px solid #273469;
-  font-weight: bold;
-  background-color: #fffefa;
-  color: #273469;
-  cursor: pointer;
-}
-.modifierProduit .right-section .ajouterSection #add-section-btn {
-  padding: 10px 20px;
-  border-radius: 32px;
-  border: none;
-  background-color: #e4d9ff;
-  color: #273469;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-.modifierProduit .right-section .ajouterSection #add-section-btn:hover {
-  background-color: rgb(209.8815789474, 191.5, 255);
 }
 .modifierProduit .form-actions {
   display: flex;

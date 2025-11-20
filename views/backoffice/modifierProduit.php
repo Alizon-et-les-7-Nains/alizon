@@ -48,7 +48,7 @@ if (!$produit) {
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
             <div class="left-section">
                 <div class="ajouterPhoto">
-                    <input type="file" id="photoUpload" name="photo" accept="image/*" style="display: none;">
+                    <input type="file" id="photoUpload" name="url" accept="image/*" style="display: none;">
                     <div class="placeholder-photo">
                     <img src="<?= htmlspecialchars($imageUrl) ?>" id="imagePreview">
 
@@ -65,13 +65,13 @@ if (!$produit) {
                 <div class="form-details">
                     <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required
                     value="<?= htmlspecialchars($produit['nom'] ?? '') ?>">
-                
+
                     <div class="price-weight-kg">
                         <input type="text" placeholder="Prix" name="prix" required
                         value="<?= htmlspecialchars($produit['prix'] ?? '') ?>">
+                        
                         <input type="text" placeholder="Poids" name="poids" required 
                         value="<?= htmlspecialchars($produit['poids'] ?? '') ?>">
-                        <span class="prix-kg-label">Prix au Kg:</span>
                     </div>
                     <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required
                     value="<?= htmlspecialchars($produit['mots_cles'] ?? '') ?>">
