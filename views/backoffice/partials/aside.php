@@ -1,6 +1,6 @@
 <aside class="backoffice">
     <ul>
-        <?php $class = $currentPage == 'acceuil.php' ? 'here' : ''; echo basename(__FILE__); ?>
+        <?php $class = $currentPage == 'acceuil.php' ? 'here' : ''; ?>
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
                 <img src="/public/images/homeDarkBlue.svg">
