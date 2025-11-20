@@ -40,9 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
                 
                 // Insertion dans la table _imageDeProduit
-                $sqlImage = "INSERT INTO imageDeProduit (idProduit, URL) VALUES (:idProduit, :URL)";
-                $stmtImage = $pdo->prepare($sql);
-                $stmtImage->execute([$idNewProduit, $nouveauNomImage]);
+                $sql = "INSERT INTO imageDeProduit (idProduit, URL) VALUES (:idProduit, :URL)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$idNewProduit, $nouveauNomImage]);
             }
         }
 
