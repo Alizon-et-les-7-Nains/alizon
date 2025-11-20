@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 session_start();
 require_once 'pdo.php';
 
@@ -24,7 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $stmt = $pdo->prepare($sql);
 
-        $stmt->execute([$nom, $prix, $poids, $description, $mots_cles, $idVendeur]);
+        $stmt->execute([
+            ':nom' => $nom, 
+            ':prix' => $prix, 
+            ':poids' => $poids, 
+            'description' => $description, 
+            'mots_cles' => $mots_cles,
+            ':idVendeur' => $idVendeur
+        ]);
         
         // Récupération de l'ID généré
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
