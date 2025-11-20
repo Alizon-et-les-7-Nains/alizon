@@ -2756,6 +2756,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   z-index: 1067;
   transition: 0.3s;
   background-color: white;
+  text-align: center;
 }
 .acceuil .confirmationAjout::after {
   transition: 0.3s;
@@ -2765,6 +2766,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-style: bold;
   font-size: 24px;
   font-family: "Lora", serif;
+  padding: 0;
+  margin: 0;
 }
 .acceuil .confirmationAjout article {
   flex-direction: row;
@@ -2809,10 +2812,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .acceuil .confirmationAjout .infoProduit p {
   margin: 0px 30px;
 }
-@media (max-width: 500px) {
+@media (max-width: 1100px) {
   .acceuil .confirmationAjout {
-    max-width: 95vw;
-    padding: 10px 5px;
+    font-size: 16px;
   }
 }
 
