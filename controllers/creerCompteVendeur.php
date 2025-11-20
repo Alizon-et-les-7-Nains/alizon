@@ -12,12 +12,12 @@
         $mdp = $_POST['mdp'] ?? '';
         $dateNaissance = $_POST['dateNaissance'] ?? '';
         $noSiren = $_POST['noSiren'] ?? '';
-        $idAdresse = $_POST['idAdresse'] ?? '';
+        $Adresse = $_POST['Adresse'] ?? '';
         $raisonSocial = $_POST['raisonSocial'] ?? '';
 
         $sql = "INSERT INTO _vendeur 
-            (nom, prenom, email, noTelephone, pseudo, mdp, dateNaissance, noSiren, idAdresse, raisonSocial)
-            VALUES (:nom, :prenom, :email, :noTelephone, :pseudo, :mdp, :dateNaissance, :noSiren, :idAdresse, :raisonSocial)";
+            (nom, prenom, email, noTelephone, pseudo, mdp, dateNaissance, noSiren, Adresse, raisonSocial)
+            VALUES (:nom, :prenom, :email, :noTelephone, :pseudo, :mdp, :dateNaissance, :noSiren, :Adresse, :raisonSocial)";
 
         $stmt = $pdo->prepare($sql);
 
@@ -30,7 +30,7 @@
             ':mdp' => $mdp,
             ':dateNaissance' => $dateNaissance,
             ':noSiren' => $noSiren,
-            ':idAdresse' => $idAdresse,
+            ':Adresse' => $Adresse,
             ':raisonSocial' => $raisonSocial,
         ]);
     }
