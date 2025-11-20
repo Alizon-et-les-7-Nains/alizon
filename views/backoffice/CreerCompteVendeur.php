@@ -27,7 +27,7 @@
 </head>
 <?php
         require_once "./partials/header.php";
-    ?>
+?>
 
 <body>
     <main class="CreerCompteVendeur">
