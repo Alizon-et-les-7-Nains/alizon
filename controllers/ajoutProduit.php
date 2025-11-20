@@ -29,7 +29,7 @@
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $idNewProduit = $result['idProduit'];
 
-        // Gestion de l'image du produit
+        /* Gestion de l'image du produit
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
                 
             $extension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
@@ -44,7 +44,7 @@
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$idNewProduit, $nouveauNomImage]);
             }
-        }
+        }*/
 
         $pdo->commit();
 
