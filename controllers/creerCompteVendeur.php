@@ -4,37 +4,36 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $nom = $_POST['nom'] ?? '';
-    $prenom = $_POST['prenom'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $noTelephone = $_POST['noTelephone'] ?? '';
-    $pseudo = $_POST['pseudo'] ?? '';
-    $mdp = $_POST['mdp'] ?? '';
-    $dateNaissance = $_POST['dateNaissance'] ?? '';
-    $noSiren = $_POST['noSiren'] ?? '';
-    $idAdresse = $_POST['idAdresse'] ?? '';
-    $raisonSocial = $_POST['raisonSocial'] ?? '';
+        $nom = $_POST['nom'] ?? '';
+        $prenom = $_POST['prenom'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $noTelephone = $_POST['noTelephone'] ?? '';
+        $pseudo = $_POST['pseudo'] ?? '';
+        $mdp = $_POST['mdp'] ?? '';
+        $dateNaissance = $_POST['dateNaissance'] ?? '';
+        $noSiren = $_POST['noSiren'] ?? '';
+        $idAdresse = $_POST['idAdresse'] ?? '';
+        $raisonSocial = $_POST['raisonSocial'] ?? '';
 
-    $sql = "INSERT INTO _vendeur 
-        (nom, prenom, email, noTelephone, pseudo, mdp, dateNaissance, noSiren, idAdresse, raisonSocial)
-        VALUES (:nom, :prenom, :email, :noTelephone, :pseudo, :mdp, :dateNaissance, :noSiren, :idAdresse, :raisonSocial)";
+        $sql = "INSERT INTO _vendeur 
+            (nom, prenom, email, noTelephone, pseudo, mdp, dateNaissance, noSiren, idAdresse, raisonSocial)
+            VALUES (:nom, :prenom, :email, :noTelephone, :pseudo, :mdp, :dateNaissance, :noSiren, :idAdresse, :raisonSocial)";
 
-    $stmt = $pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
 
-    $stmt->execute([
-        ':nom' => $nom,
-        ':prenom' => $prenom,
-        ':email' => $email,
-        ':noTelephone' => $noTelephone,
-        ':pseudo' => $pseudo, 
-        ':mdp' => $mdp,
-        ':dateNaissance' => $dateNaissance,
-        ':noSiren' => $noSiren,
-        ':idAdresse' => $idAdresse,
-        ':raisonSocial' => $raisonSocial,
-    ]);
+        $stmt->execute([
+            ':nom' => $nom,
+            ':prenom' => $prenom,
+            ':email' => $email,
+            ':noTelephone' => $noTelephone,
+            ':pseudo' => $pseudo, 
+            ':mdp' => $mdp,
+            ':dateNaissance' => $dateNaissance,
+            ':noSiren' => $noSiren,
+            ':idAdresse' => $idAdresse,
+            ':raisonSocial' => $raisonSocial,
+        ]);
     }
-
 
     $id_session = session_id();
     $_SESSION['id_session'] = $id_session;
