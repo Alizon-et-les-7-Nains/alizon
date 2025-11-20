@@ -52,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
             $_SESSION['user_prenom'] = $user['prenom'];
             $_SESSION['user_nom'] = $user['nom'];
-            $_SESSION['user_adress'] = $_SESSION['user_id'];
             
             header('Location: ../../views/frontoffice/acceuilConnecte.php');
             exit;
