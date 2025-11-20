@@ -1,5 +1,5 @@
 document.querySelector("header.backoffice figure:first-child")?.addEventListener("click", () => {
-    window.location.href = "./ajouterProduit.php";
+    window.location.href = "10.253.5.104/views/backoffice/ajouterProduit.php";
 });
 
 const modal: HTMLDialogElement | null = document.querySelector("header.backoffice dialog") as HTMLDialogElement;
@@ -23,5 +23,5 @@ modal?.addEventListener("click", (e) => {
 });
 
 document.querySelector('header.backoffice figure:nth(child(3)')?.addEventListener('click', () => {
-    window.location.href = './compteVendeur.php'
+    window.location.href = '10.253.5.104/views/backoffice/compteVendeur.php'
 });

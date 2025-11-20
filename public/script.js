@@ -28,7 +28,7 @@ window.addEventListener('scroll', () => {
     }
 });
 document.querySelector("header.backoffice figure:first-child")?.addEventListener("click", () => {
-    window.location.href = "./ajouterProduit.php";
+    window.location.href = "10.253.5.104/views/backoffice/ajouterProduit.php";
 });
 const modal = document.querySelector("header.backoffice dialog");
 document.querySelector("header.backoffice figure:nth-child(2)")?.addEventListener("click", () => {
@@ -49,7 +49,7 @@ modal?.addEventListener("click", (e) => {
     }
 });
 document.querySelector('header.backoffice figure:nth(child(3)')?.addEventListener('click', () => {
-    window.location.href = './compteVendeur.php';
+    window.location.href = '10.253.5.104/views/backoffice/compteVendeur.php';
 });
 const btnSettings = Array.from(document.getElementsByClassName('settings'));
 btnSettings?.forEach(btn => {
