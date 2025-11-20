@@ -417,6 +417,17 @@ $cart = getCurrentCart($pdo, $idClient);
     
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
+    <script>
+        const popupConfirmation = document.querySelector(".confirmationAjout");
+        const cliqueAjoutPanier = document.querySelectorAll(".listeArticle");
+
+        cliqueAjoutPanier.forEach(element => {
+            popupConfirmation.addEventListener("click", function(e) {
+                popupConfirmation.style.display = "block";
+                console.log("Clique bouton ajouter panier");
+            })
+        });
+    </script>
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
