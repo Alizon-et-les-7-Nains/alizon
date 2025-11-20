@@ -70,12 +70,11 @@
                         <tr>
                             <td>
                                 <ul>";
-                                    if (count($commandes) == 0) $html .= "<li><h2>Aucune commande</h2></li>";
                                     foreach ($commandes as $commande) {
-                                        $html .= "<li><ul>
+                                        $html .= "<ul>
                                             <li>" . $commande['quantiteCommande'] . "</li>
                                             <li>" . formatDate($commande['dateCommande']) . "</li>
-                                        </ul></li>";
+                                        </ul>";
                                     }
                                 $html .= "</ul>
                             </td>
@@ -145,12 +144,11 @@
                         <tr>
                             <td>
                                 <ul>";
-                                    if (count($commandes) == 0) $html .= "<li><h2>Aucune commande</h2></li>";
                                     foreach ($commandes as $commande) {
-                                        $html .= "<li><ul>
+                                        $html .= "<ul>
                                             <li>" . $commande['quantiteCommande'] . "</li>
                                             <li>" . formatDate($commande['dateCommande']) . "</li>
-                                        </ul></li>";
+                                        </ul>";
                                     }
                                 $html .= "</ul>
                             </td>
@@ -220,12 +218,11 @@
                         <tr>
                             <td>
                                 <ul>";
-                                    if (count($commandes) == 0) $html .= "<li><h2>Aucune commande</h2></li>";
                                     foreach ($commandes as $commande) {
-                                        $html .= "<li><ul>
+                                        $html .= "<ul>
                                             <li>" . $commande['quantiteCommande'] . "</li>
                                             <li>" . formatDate($commande['dateCommande']) . "</li>
-                                        </ul></li>";
+                                        </ul>";
                                     }
                                 $html .= "</ul>
                             </td>
