@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }   
 
     //verification et upload de la nouvelle photo de profil
-    $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png';
+    $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id_client.'.svg';
     if (file_exists($photoPath)) {
         unlink($photoPath); // supprime l'ancien fichier
     }
