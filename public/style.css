@@ -4213,7 +4213,7 @@ main.backoffice-stocks section h1 {
 }
 main.backoffice-stocks section article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(fit-content, 1fr));
   gap: 1em;
   font-family: "open-sans";
 }
