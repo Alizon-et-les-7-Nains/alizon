@@ -1,7 +1,6 @@
 <?php
-session_start();
 include '../../controllers/pdo.php';
-
+session_start();
 // Récupérer l'ID depuis l'URL
 $productId = intval($_GET['id']) ?? 0;
 
