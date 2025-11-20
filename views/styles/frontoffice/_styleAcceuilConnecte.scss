@@ -230,7 +230,7 @@
         flex-direction: column;
         border: 3px solid $color-green;
         border-radius: 8px;
-        padding: 5px 60px;
+        padding: 10px 60px;
         justify-content: center;
         max-width: 90vw;
         z-index: 1067;
@@ -300,7 +300,8 @@
 
     @media (max-width: 1100px) {
         .confirmationAjout {
-            font-size: 16px
+            font-size: 12px;
+            padding: 5px 30px;
         }
     }
 }

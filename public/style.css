@@ -386,22 +386,21 @@ body {
 @media (max-width: 1300px) {
   .page404 h1 {
     font-size: 60px;
+    margin: 0;
   }
   .page404 h2 {
     font-size: 30px;
+    margin-bottom: 0;
   }
   .page404 a {
     font-size: 30px;
     padding: 5px 15px;
   }
   .page404 img {
-    width: 525px;
+    width: 420px;
   }
   .page404 div {
     margin: 50px;
-  }
-  .page404 main {
-    margin-left: 90px;
   }
 }
 
@@ -2750,7 +2749,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: column;
   border: 3px solid #259525;
   border-radius: 8px;
-  padding: 5px 60px;
+  padding: 10px 60px;
   justify-content: center;
   max-width: 90vw;
   z-index: 1067;
@@ -2814,7 +2813,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 @media (max-width: 1100px) {
   .acceuil .confirmationAjout {
-    font-size: 16px;
+    font-size: 12px;
+    padding: 5px 30px;
   }
 }
 
