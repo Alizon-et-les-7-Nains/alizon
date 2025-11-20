@@ -2,7 +2,7 @@
 session_start();
 require_once 'pdo.php';
 
-$id_vendeur = $_SESSION['idVendeur'] ?? 1; 
+$idVendeur = $_SESSION['idVendeur'] ?? 1; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // on récupère les données
