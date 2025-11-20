@@ -67,11 +67,12 @@ if (!$produit) {
                     value="<?= htmlspecialchars($produit['nom'] ?? '') ?>">
                 
                     <div class="price-weight-kg">
+                        <label>Prix :</label>
                         <input type="text" placeholder="Prix" name="prix" required
-                        value="<?= htmlspecialchars($produit['prix'] . '€' ?? '') ?>">
+                        value="<?= htmlspecialchars($produit['prix'] ?? '') ?>">
+                        <label>Poids :</label>
                         <input type="text" placeholder="Poids" name="poids" required 
-                        value="<?= htmlspecialchars($produit['poids'] . 'kg' ?? '') ?>">
-                        <span class="prix-kg-label">Prix au Kg:</span>
+                        value="<?= htmlspecialchars($produit['poids'] ?? '') ?>">
                     </div>
                     <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required
                     value="<?= htmlspecialchars($produit['mots_cles'] ?? '') ?>">
