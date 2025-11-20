@@ -1,5 +1,5 @@
 // ============================================================================
-// FICHIER PRINCIPAL - Initialisation et coordination
+// FICHIER PRINCIPAL - Communication avec le backend
 // ============================================================================
 
 // API de paiement - Communication avec le backend
@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (this.classList.contains("plus")) {
           PaymentAPI.updateQuantity(id, 1);
+          console.log("API contacté, ajout produit");
         } else if (this.classList.contains("minus")) {
           PaymentAPI.updateQuantity(id, -1);
         } else if (this.classList.contains("delete")) {
@@ -113,20 +114,5 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-  // Gestion des boutons payer
-  document.querySelectorAll(".payer").forEach((btn) => {
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      showPopup("Confirmation de commande");
-    });
-  });
-
   console.log("Page de paiement initialisée avec succès");
 });
-
-// Gestion des erreurs globales
-// window.addEventListener("error", function (e) {
-//   console.error("Erreur globale:", e.error);
-// });
-
-console.log("Test");
