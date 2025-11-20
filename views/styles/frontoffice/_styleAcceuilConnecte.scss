@@ -223,18 +223,24 @@
     }
     .confirmationAjout {
         position: fixed;
-        top: 50%;
+        top: 100px;
         left: 50%;
         transform: translate(-50%, -50%);
         display: none;
         flex-direction: column;
         border: 3px solid $color-green;
         border-radius: 8px;
-        padding: 10px 20px;
+        padding: 5px 60px;
         justify-content: center;
         max-width: 90vw;
-        z-index: 999;
+        z-index: 1067;
+        transition: 0.3s;
+        background-color: white;
         
+        &::after {
+            transition: 0.3s;
+        }
+
         h4 {
             color: $color-green;
             font-style: bold;

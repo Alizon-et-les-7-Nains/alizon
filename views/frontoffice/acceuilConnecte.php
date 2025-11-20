@@ -412,7 +412,7 @@ $cart = getCurrentCart($pdo, $idClient);
     </main>
 
     <section class="confirmationAjout">
-        <h3>Produit ajouté au panier !</h3>
+        <h4>Produit ajouté au panier !</h4>
     </section>
     
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
@@ -431,7 +431,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 // Cacher après 1,5 secondes (optionnel)
                 setTimeout(() => {
                     popupConfirmation.style.display = "none";
-                }, 1500);
+                }, 5000);
             });
         });
     </script>
