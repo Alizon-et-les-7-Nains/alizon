@@ -146,6 +146,7 @@
                         <tr>
                             <td>
                                 <ul>";
+                                    if (count($commandes) == 0) $html .= "<li><h2>Aucune commande</h2></li>";
                                     foreach ($commandes as $commande) {
                                         $html .= "<ul>
                                             <li>" . $commande['quantiteCommande'] . "</li>
