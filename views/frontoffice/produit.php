@@ -1,14 +1,12 @@
 <?php
 include '../../controllers/pdo.php';
 session_start();
-// Récupérer l'ID depuis l'URL
+
 $productId = intval($_GET['id']) ?? 0;
 
 if($productId == 0) {
     die("Produit non spécifié");
 }
-
-// REQUÊTE SIMPLE : Récupérer le produit ET le vendeur en une fois
 
 $sqlProduit = "SELECT 
                 p.idProduit,
@@ -48,8 +46,19 @@ $sqlAvis = "SELECT a.*
 $resultAvis = $pdo->query($sqlAvis);
 $lesAvis = $resultAvis->fetch(PDO::FETCH_ASSOC);
 
-$note = "AVG(note) FROM _avis WHERE idProduit = $productId";
-$note = "COUNT(note) FROM _avis WHERE idProduit = $productId";
+// Calcul de la note moyenne
+$sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
+$stmt = $pdo->prepare($sqlNoteMoyenne);
+$stmt->execute([$productId]);
+$resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
+$noteMoyenne = $resultNote['moyenne_note'] ?? 0;
+
+// Calcul du nombre d'avis
+$sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
+$stmt = $pdo->prepare($sqlNbAvis);
+$stmt->execute([$productId]);
+$resultNbAvis = $stmt->fetch(PDO::FETCH_ASSOC);
+$nombreAvis = $resultNbAvis['nb_avis'] ?? 0;
 
 
 
