@@ -10,6 +10,8 @@
         $description = $_POST['description'];
         $mots_cles = $_POST['mots_cles'];
 
+        $pdo->beginTransaction();
+
         $sql = "INSERT INTO _produit 
             (nom, prix, poids, description, mots_cles) 
                 VALUES (:nom, :prix, :poids, :description, :mots_cles) 
@@ -21,8 +23,8 @@
             ':nom' => $nom, 
             ':prix' => $prix, 
             ':poids' => $poids, 
-            'description' => $description, 
-            'mots_cles' => $mots_cles
+            ':description' => $description, 
+            ':mots_cles' => $mots_cles
         ]);
             
         /* Récupération de l'ID généré
