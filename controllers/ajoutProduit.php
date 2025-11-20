@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nouveauNomImage = 'produit_' . $idNewProduit . '_' . time() . '.' . $extension;
             $dossierDestination = "../public/images/" . $nouveauNomImage;
             // Déplacement du fichier
+            var_dump($_FILES['photo']);
             if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
                 throw new Exception("Impossible de déplacer l'image.");
             }
