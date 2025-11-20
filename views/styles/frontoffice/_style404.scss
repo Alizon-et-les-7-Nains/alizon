@@ -21,12 +21,12 @@
   }
 
   h1 {
-    font-size: 150px;
+    font-size: 120px;
     margin: 0;
   }
 
   h2 {
-    font-size: 80px;
+    font-size: 50px;
   }
 
   a {
@@ -37,6 +37,7 @@
     font-size: 50px;
     padding: 10px 50px;
     transition: 0.3s;
+    text-decoration: none;
 
     &:hover {
       color: $color-blue;
