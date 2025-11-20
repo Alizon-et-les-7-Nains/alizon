@@ -29,7 +29,7 @@
     $epuises = ($pdo->query('select * from _produit where stock = 0'))->fetchAll(PDO::FETCH_ASSOC);
     if (count($epuises) == 0) echo "<h2>Aucun produit épuisé</h2>";
     foreach ($epuises as $epuise) {
-        $reassort = $epuise['dateReassort'] != NULL ? formatDate($epuise['dateReassort']) : 'Aucun réassort prévu';
+        $reassort = $epuise['dateReassort'] != NULL ? "Réassort prévu le " . formatDate($epuise['dateReassort']) : 'Aucun réassort prévu';
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $epuise['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
@@ -104,7 +104,7 @@
     $faibles = ($pdo->query('select * from _produit where stock <> 0 and stock < seuilAlerte'))->fetchAll(PDO::FETCH_ASSOC);
     if (count($faibles) == 0) echo "<h2>Aucun produit en alerte</h2>";
     foreach ($faibles as $faible) {
-        $reassort = $faible['dateReassort'] != NULL ? formatDate($faible['dateReassort']) : 'Aucun réassort prévu';
+        $reassort = $faible['dateReassort'] != NULL ? "Réassort prévu le " . formatDate($faible['dateReassort']) : 'Aucun réassort prévu';
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $faible['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
@@ -179,7 +179,7 @@
     $stocks = ($pdo->query('select * from _produit where stock >= seuilAlerte'))->fetchAll(PDO::FETCH_ASSOC);
     if (count($stocks) == 0) echo "<h2>Aucun produit en stock</h2>";
     foreach ($stocks as $stock) {
-        $reassort = $stock['dateReassort'] != NULL ? formatDate($stock['dateReassort']) : 'Aucun réassort prévu';
+        $reassort = $stock['dateReassort'] != NULL ? "Réassort prévu le " . formatDate($stock['dateReassort']) : 'Aucun réassort prévu';
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $stock['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
