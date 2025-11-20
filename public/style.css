@@ -4321,7 +4321,7 @@ main.backoffice-stocks section div:not(button.settings div) table table tr:nth-c
   vertical-align: bottom;
   height: 60px;
 }
-main.backoffice-stocks section div:not(button.settings div) table ul h2 {
+main.backoffice-stocks section div:not(button.settings div) table ul h3 {
   margin: 0.5em;
 }
 main.backoffice-stocks section div:not(button.settings div) table ul {
