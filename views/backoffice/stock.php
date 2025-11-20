@@ -218,12 +218,12 @@
                         <tr>
                             <td>
                                 <ul>";
-                                    foreach ($commandes as $commande) {
-                                        $html .= "<ul>
-                                            <li>" . $commande['quantiteCommande'] . "</li>
-                                            <li>" . formatDate($commande['dateCommande']) . "</li>
-                                        </ul>";
-                                    }
+                                    // foreach ($commandes as $commande) {
+                                    //     $html .= "<ul>
+                                    //         <li>" . $commande['quantiteCommande'] . "</li>
+                                    //         <li>" . formatDate($commande['dateCommande']) . "</li>
+                                    //     </ul>";
+                                    // }
                                 $html .= "</ul>
                             </td>
                         </tr>
