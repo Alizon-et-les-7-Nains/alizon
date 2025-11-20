@@ -18,7 +18,7 @@
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
                 <img src="/public/images/boiteDark.svg">
-                <figcaption>Stock</figcaption>
+                <figcaption>Stocks</figcaption>
             </figure>
         </li>
         <?php $class = $currentPage == 'avis.php' ? 'here' : ''; ?>
