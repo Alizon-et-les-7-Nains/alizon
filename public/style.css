@@ -4212,8 +4212,8 @@ main.backoffice-stocks section h1 {
   font-weight: bold;
 }
 main.backoffice-stocks section article {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(fit-content, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1em;
   font-family: "open-sans";
 }
