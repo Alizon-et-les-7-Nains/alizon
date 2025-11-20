@@ -6,7 +6,7 @@ $idProd = $_GET['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("UPDATE _produit SET nom = :nom, description = :description, prix = :prix, poids = :poids, mots_cles = :mot_cles WHERE idProduit = :idProduit");
-    $img = $pdo->prepare("UPDATE _imageDeProduit SET URL = :url WHERE idProd = :idProd");
+    $img = $pdo->prepare("UPDATE _imageDeProduit SET URL = :url WHERE idProduit = :idProduit");
     $stmt->execute([
         ':nom' => $_POST['nom'],
         ':description' => $_POST['description'],
