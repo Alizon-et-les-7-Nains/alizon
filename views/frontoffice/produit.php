@@ -78,13 +78,13 @@ $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 // ];
 
 // Your existing product data (mock)
-$produit = [
-    'nom_produit' => 'Cidre Artisanal Breton de merde',
-    'description' => 'Un cidre artisanal produit selon les méthodes traditionnelles bretonnes...',
-    'prix' => 12.50,
-    'prenom_vendeur' => 'Jean',
-    'nom_vendeur' => 'Dupont',
-    'stock' => 20 ];
+// $produit = [
+//     'nom_produit' => 'Cidre Artisanal Breton de merde',
+//     'description' => 'Un cidre artisanal produit selon les méthodes traditionnelles bretonnes...',
+//     'prix' => 12.50,
+//     'prenom_vendeur' => 'Jean',
+//     'nom_vendeur' => 'Dupont',
+//     'stock' => 20 ];
 ?>
 
 <!DOCTYPE html>
