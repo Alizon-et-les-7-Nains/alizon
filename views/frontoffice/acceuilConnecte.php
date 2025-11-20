@@ -419,13 +419,20 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <script>
         const popupConfirmation = document.querySelector(".confirmationAjout");
-        const cliqueAjoutPanier = document.querySelectorAll(".listeArticle");
+        const boutonsAjout = document.querySelectorAll(".plus");
 
-        cliqueAjoutPanier.forEach(element => {
-            popupConfirmation.addEventListener("click", function(e) {
+        boutonsAjout.forEach(btn => {
+            btn.addEventListener("click", function(e) {
+
+                // Afficher le popup
                 popupConfirmation.style.display = "block";
                 console.log("Clique bouton ajouter panier");
-            })
+
+                // Cacher après 1,5 secondes (optionnel)
+                setTimeout(() => {
+                    popupConfirmation.style.display = "none";
+                }, 1500);
+            });
         });
     </script>
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
