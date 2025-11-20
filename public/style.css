@@ -392,14 +392,16 @@ body {
   margin: 0;
   padding: 0;
   transition: all 0.3s ease;
+  font-family: "lora", serif;
+  width: 100%;
 }
 .pageProduit main {
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 100%;
 }
 .pageProduit h1, .pageProduit h2, .pageProduit h3, .pageProduit h4, .pageProduit p {
-  font-family: "lora", serif;
   color: #273469;
 }
 .pageProduit #descriptionCourte {
@@ -423,8 +425,8 @@ body {
   align-items: center;
   margin: 3em 2em;
   padding: 0 1em;
-  width: 550px;
-  height: 480px;
+  width: 37%;
+  min-height: 480px;
   border: 1.5px inset #273469;
   border-radius: 16px;
   position: relative;
@@ -434,7 +436,7 @@ body {
   height: 330px;
 }
 .pageProduit .infoPreviewProduit {
-  width: 400px;
+  width: 27%;
   height: 434px;
   margin-top: 3.5em;
 }
@@ -489,7 +491,7 @@ body {
   top: 15em;
   right: 1em;
   position: fixed;
-  width: 341px;
+  width: 24%;
   z-index: 10;
   height: fit-content;
   padding: 15px;
@@ -522,8 +524,10 @@ body {
   width: 40px;
   height: 40px;
 }
+.pageProduit .ligneActions p, .pageProduit .ligneActions a {
+  color: #273469;
+}
 .pageProduit .bouton {
-  width: 300px;
   height: 60px;
   padding: 10px;
   font-size: 16px;
@@ -549,7 +553,7 @@ body {
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  width: 300px;
+  width: 100%;
   height: 60px;
   font-size: 16px;
   border-radius: 32px;
@@ -575,7 +579,7 @@ body {
 }
 .pageProduit #quantite p {
   font-weight: bold;
-  margin: 0;
+  margin: 1em;
   font-size: 16px;
 }
 .pageProduit #quantiteInput {
@@ -586,6 +590,15 @@ body {
   padding: 0.2em;
   pointer-events: none;
 }
+.pageProduit #quantite {
+  width: 100%;
+}
+.pageProduit #quantite * {
+  width: 90%;
+}
+.pageProduit #quantite form button {
+  width: 90%;
+}
 .pageProduit .boutonRose {
   background-color: #e4d9ff;
   color: #273469;
@@ -595,7 +608,7 @@ body {
   color: #fffefa;
 }
 .pageProduit .conteneurTexte {
-  width: 50%;
+  width: 100%;
   max-height: 600px;
   margin-left: 2.5em;
   color: #273469;
@@ -616,6 +629,9 @@ body {
 }
 .pageProduit #activeVoirPlus {
   display: none;
+}
+.pageProduit .informations {
+  margin: 2em 0;
 }
 .pageProduit .informations label {
   display: inline-block;
@@ -638,6 +654,7 @@ body {
 .pageProduit .sectionAvis {
   width: 68%;
   margin-left: 2.5em;
+  margin-top: 2em;
 }
 .pageProduit .sectionAvis h6 {
   color: #273469;
@@ -701,6 +718,14 @@ body {
   justify-content: center;
   align-items: center;
 }
+.pageProduit .sectionAvis form button {
+  border: 2px solid #273469;
+  background-color: white;
+  border-radius: 32px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-size: 16px;
+}
 .pageProduit .actionsAvis a {
   text-decoration: underline;
   color: #6e6e6e;
@@ -758,7 +783,6 @@ body {
   height: 330px;
   overflow: visible;
   border-radius: 10px;
-  background: #f5f5f5;
   margin-bottom: 50px;
 }
 .pageProduit .carousel-slide {
@@ -778,6 +802,7 @@ body {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
   pointer-events: none;
+  border-radius: 10px;
 }
 .pageProduit .carousel-image.active {
   opacity: 1;
@@ -796,6 +821,7 @@ body {
   display: flex !important;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 1em;
   margin-top: 15px;
   position: absolute;
@@ -822,6 +848,231 @@ body {
 .pageProduit .cercleNoir:hover {
   background-color: #273469 !important;
   transform: scale(1.15);
+}
+.pageProduit hr {
+  border: 0;
+  height: 2px;
+  background-color: #e4e4e4;
+  margin: 0 2.5em;
+  width: 70%;
+}
+.pageProduit .stickyTelephone {
+  display: none;
+  background-color: white;
+  flex-direction: row;
+  position: fixed;
+  bottom: 104px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 114px;
+  border: 2px solid #273469;
+}
+.pageProduit .stickyTelephone article {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 75%;
+}
+.pageProduit .stickyTelephone img {
+  width: 75px;
+  height: 75px;
+  margin-top: 17px;
+}
+.pageProduit .stickyTelephone article aside form {
+  width: 45%;
+}
+.pageProduit .stickyTelephone article aside form button {
+  width: 100%;
+  height: 39px;
+  font-size: 14px;
+}
+.pageProduit .stickyTelephone article aside {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.pageProduit .stickyTelephone article aside:nth-child(1) {
+  justify-content: space-around;
+}
+.pageProduit .stickyTelephone article aside:nth-child(1) h3 {
+  padding-right: 3em;
+}
+.pageProduit .stickyTelephone article aside:nth-child(2) {
+  justify-content: space-around;
+}
+.pageProduit #prixTelephone {
+  font-size: 32px;
+}
+@media (max-width: 1440px) {
+  .pageProduit main {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .pageProduit h1 {
+    font-size: 36px;
+  }
+  .pageProduit h2 {
+    font-size: 24px;
+  }
+  .pageProduit h3 {
+    font-size: 18.7px;
+  }
+  .pageProduit p {
+    font-size: 16px;
+  }
+  .pageProduit .listeProduit article {
+    max-width: none;
+  }
+  .pageProduit .recapPanier * {
+    margin-bottom: 20px;
+  }
+}
+@media (max-width: 1200px) {
+  .pageProduit main {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .pageProduit .rectangleProduit {
+    width: 30%;
+  }
+  .pageProduit .carousel-image {
+    left: 10%;
+    top: 20%;
+    width: 80%;
+    height: 80%;
+  }
+  .pageProduit h1 {
+    font-size: 30px;
+  }
+  .pageProduit h2 {
+    font-size: 20px;
+  }
+  .pageProduit h3 {
+    font-size: 16px;
+  }
+  .pageProduit p {
+    font-size: 12px;
+  }
+  .pageProduit .infoPreviewProduit div img {
+    width: 40px;
+    height: 60px;
+    margin-top: 0.5em;
+  }
+  .pageProduit .listeProduit article {
+    max-width: none;
+  }
+  .pageProduit .recapPanier * {
+    margin-bottom: 20px;
+  }
+  .pageProduit .product-rating {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .pageProduit .infoHautProduit.review-count {
+    margin-top: -1em;
+  }
+}
+@media (max-width: 1000px) {
+  .pageProduit main {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .pageProduit .listeProduit article {
+    max-width: none;
+  }
+  .pageProduit .recapPanier * {
+    margin-bottom: 20px;
+  }
+}
+@media (max-width: 800px) {
+  .pageProduit .stickyTelephone {
+    display: flex;
+  }
+  .pageProduit .infoHautProduit {
+    display: block;
+  }
+  .pageProduit .rectangleProduit {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 3em;
+  }
+  .pageProduit .infoPreviewProduit {
+    width: 80%;
+    margin: 2em auto;
+    height: fit-content;
+  }
+  .pageProduit .actionsProduit {
+    position: static;
+    width: 80%;
+    margin: 2em auto;
+  }
+  .pageProduit .infoPreviewProduit .product-rating {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    top: 5em;
+    left: 20px;
+  }
+  .pageProduit .nomProduit {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    top: 1.5em;
+    left: 20px;
+  }
+  .pageProduit .actionsProduit hr {
+    display: none;
+  }
+  .pageProduit #quantite {
+    display: none;
+  }
+  .pageProduit .infoPreviewProduit {
+    margin-top: -2em;
+  }
+  .pageProduit .sectionAvis {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5em;
+  }
+  .pageProduit .sectionAvis article {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .pageProduit .sectionImagesAvis img {
+    width: 100px;
+    height: 66px;
+  }
+  .pageProduit .baselineSpaceBetween {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  .pageProduit .actionsAvis {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 500px) {
+  .pageProduit h1 {
+    font-size: 26px;
+  }
+  .pageProduit h2 {
+    font-size: 24px;
+  }
+  .pageProduit h3 {
+    font-size: 12px;
+  }
+  .pageProduit p {
+    font-size: 10px;
+  }
 }
 
 /* ---- Header ---- */
