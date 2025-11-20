@@ -62,20 +62,20 @@ $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 
 
 
-$images = [
-    [
-        'URL' => 'cidre.png',
-        'title' => 'Premium Cidre'
-    ],
-    [
-        'URL' => 'rillettes.png', 
-        'title' => 'Artisanal Cidre'
-    ],
-    [
-        'URL' => 'defaultImageProduit.png',
-        'title' => 'Traditional Cidre'
-    ]
-];
+// $images = [
+//     [
+//         'URL' => 'cidre.png',
+//         'title' => 'Premium Cidre'
+//     ],
+//     [
+//         'URL' => 'rillettes.png', 
+//         'title' => 'Artisanal Cidre'
+//     ],
+//     [
+//         'URL' => 'defaultImageProduit.png',
+//         'title' => 'Traditional Cidre'
+//     ]
+// ];
 
 // Your existing product data (mock)
 $produit = [
