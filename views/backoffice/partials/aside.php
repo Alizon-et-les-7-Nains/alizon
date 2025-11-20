@@ -14,7 +14,7 @@
                 <figcaption>Produits</figcaption>
             </figure>
         </li>
-        <?php $class = $currentPage == 'stock.php' ? 'here' : ''; ?>
+        <?php $class = $currentPage == 'stocks.php' ? 'here' : ''; ?>
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
                 <img src="/public/images/boiteDark.svg">
