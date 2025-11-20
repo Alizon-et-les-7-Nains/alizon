@@ -143,14 +143,16 @@
                             <th colspan=2>Dernières commandes</th>
                         </tr>
                         <tr>
-                            <td>";
-                                foreach ($commandes as $commande) {
-                                    $html .= "<ul>
-                                        <li>" . $commande['quantiteCommande'] . "</li>
+                            <td>
+                                <ul>";
+                                    foreach ($commandes as $commande) {
+                                        $html .= "<ul>
+                                            <li>" . $commande['quantiteCommande'] . "</li>
                                         <li>" . formatDate($commande['dateCommande']) . "</li>
                                     </ul>";
                                 }
-                            $html .= "</td>
+                                $html .= "</ul>
+                            </td>
                         </tr>
                     </table>
                     <ul>
