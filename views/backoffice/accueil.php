@@ -1,7 +1,10 @@
 <?php
-require_once '../../controllers/pdo.php';
-require_once '../../controllers/prix.php';
-require_once '../../controllers/date.php';
+    require_once '../../controllers/pdo.php';
+
+    require_once '../../controllers/prix.php';
+    require_once '../../controllers/date.php';
+
+    require_once '../../controllers/auth.php';
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +22,10 @@ require_once '../../controllers/date.php';
 <body class="backoffice">
     <?php require_once './partials/header.php' ?>
 
-    <?php require_once './partials/aside.php' ?>
+    <?php
+        $currentPage = basename(__FILE__);
+        require_once './partials/aside.php';
+    ?>
 
     <main class="acceuilBackoffice">
         <section class="stock">

@@ -1,4 +1,19 @@
-<?php require_once "../../controllers/pdo.php" ?>
+<?php 
+session_start();
+require_once "../../controllers/pdo.php";
+
+    $nom = $_SESSION['form_data']['nom'] ?? '';
+    $prenom = $_SESSION['form_data']['prenom'] ?? '';
+    $email = $_SESSION['form_data']['email'] ?? '';
+    $noTelephone = $_SESSION['form_data']['noTelephone'] ?? '';
+    $pseudo = $_SESSION['form_data']['pseudo'] ?? '';
+    $dateNaissance = $_SESSION['form_data']['dateNaissance'] ?? '';
+    $noSiren = $_SESSION['form_data']['noSiren'] ?? '';
+    $idAdresse = $_SESSION['form_data']['idAdresse'] ?? '';
+    $raisonSocial = $_SESSION['form_data']['raisonSocial'] ?? '';
+    $message = $_SESSION['form_data']['message'] ?? ''; 
+    unset($_SESSION['form_data']);
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -13,10 +28,13 @@
     <header>
         <?php require_once "./partials/header.php"?>
     </header>
-    <?php require_once "./partials/aside.php"?>
+    <?php 
+        $currentPage = basename(__FILE__);
+        require_once "./partials/aside.php"
+    ?>
         
     <main class="AjouterProduit"> 
-        <form action="../../controllers/ajouterProduit.php" method="POST" enctype="multipart/form-data" class="product-content" id="formAjoutProduit">
+        <form action="../../controllers/ajoutProduit.php" method="POST" enctype="multipart/form-data" class="product-content" id="formAjout">
             
             <div class="left-section">
                 <div class="ajouterPhoto" id="zoneUpload">
@@ -24,13 +42,13 @@
                     
                     <div class="etat-vide" id="etatVide">
                         <div class="icone-wrapper">
-                            <img src="../../../public/images/ajouterPhoto.svg" alt="Icône ajout">
+                            <img src="../../public/images/ajouterPhoto.svg" alt="Icône ajout">
                         </div>
                         <p>Cliquer pour ajouter une photo</p>
                     </div>
 
                     <div class="etat-preview" id="etatPreview" style="display: none;">
-                        <img src="" alt="Prévisualisation du produit" id="imagePreview">
+                        <img src="" alt="Prévisualisation" id="imagePreview">
                         <div class="overlay-modifier">
                             <span>Cliquer pour modifier la photo</span>
                         </div>
@@ -38,15 +56,15 @@
                 </div>
 
                 <div class="form-details">
-                    <input type="text" name="nom_produit" class="product-name-input" placeholder="Intitulé du produit" required>
+                    <input type="text" name="nom" class="product-name-input" placeholder="Intitulé du produit" required>
                 
                     <div class="price-weight-kg">
-                        <input type="number" step="0.01" name="prix" placeholder="Prix" required>
-                        <input type="number" step="0.01" name="poids" placeholder="Poids (kg)" required>
-                        <span class="prix-kg-label">Prix au Kg: -- €</span>
+                        <input type="number" step="0.01" name="prix" id="inputPrix" placeholder="Prix (€)" required>
+                        <input type="number" step="0.01" name="poids" id="inputPoids" placeholder="Poids (kg)" required>
+                        <span class="prix-kg-label" id="labelPrixKg">Prix au Kg: -- €</span>
                     </div>
 
-                    <input type="text" name="tags" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
+                    <input type="text" name="mots_cles" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
                 </div>
             </div>
 
@@ -67,72 +85,78 @@
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- VARIABLES ---
-            const zoneUpload = document.getElementById('zoneUpload');
-            const photoInput = document.getElementById('photoUpload');
-            const etatVide = document.getElementById('etatVide');
-            const etatPreview = document.getElementById('etatPreview');
-            const imagePreview = document.getElementById('imagePreview');
-            
-            const textArea = document.getElementById('product-description');
-            const charCountDisplay = document.getElementById('charCount');
-            const btnAnnuler = document.getElementById('btnAnnuler');
-            const form = document.getElementById('formAjoutProduit');
+    document.addEventListener('DOMContentLoaded', function() {
+        const zoneUpload = document.getElementById('zoneUpload');
+        const photoInput = document.getElementById('photoUpload');
+        const etatVide = document.getElementById('etatVide');
+        const etatPreview = document.getElementById('etatPreview');
+        const imagePreview = document.getElementById('imagePreview');
+        
+        const textArea = document.getElementById('product-description');
+        const charCountDisplay = document.getElementById('charCount');
+        const btnAnnuler = document.getElementById('btnAnnuler');
+        const form = document.getElementById('formAjout');
 
-            // --- 1. GESTION DE L'IMAGE ---
-            
-            // Déclenche l'input file au clic sur la zone
-            zoneUpload.addEventListener('click', function() {
-                photoInput.click();
-            });
+        // calcul du prix
+        const inputPrix = document.getElementById('inputPrix');
+        const inputPoids = document.getElementById('inputPoids');
+        const labelPrixKg = document.getElementById('labelPrixKg');
 
-            // Au changement de fichier
-            photoInput.addEventListener('change', function() {
-                const file = this.files[0];
-                
-                if (file && file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    
-                    reader.onload = function(e) {
-                        imagePreview.src = e.target.result;
-                        etatVide.style.display = 'none';
-                        etatPreview.style.display = 'block';
-                    };
-                    
-                    reader.readAsDataURL(file);
-                }
-            });
+        // pour la photo
+        zoneUpload.addEventListener('click', () => photoInput.click());
 
-            // --- 2. COMPTEUR DE CARACTÈRES ---
-            textArea.addEventListener('input', function() {
-                const currentLength = this.value.length;
-                const maxLength = this.getAttribute('maxlength');
-                
-                charCountDisplay.textContent = `${currentLength}/${maxLength}`;
-                
-                if (currentLength >= maxLength) {
-                    charCountDisplay.style.color = 'red';
-                } else {
-                    charCountDisplay.style.color = 'gray';
-                }
-            });
-
-            // --- 3. BOUTON ANNULER ---
-            btnAnnuler.addEventListener('click', function() {
-                // Reset du formulaire
-                form.reset();
-                
-                // Reset manuel de la prévisualisation
-                imagePreview.src = "";
-                etatPreview.style.display = 'none';
-                etatVide.style.display = 'flex'; // Remettre en flex pour centrer
-                
-                // Reset compteur
-                charCountDisplay.textContent = "0/1000";
-                charCountDisplay.style.color = 'gray';
-            });
+        photoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    etatVide.style.display = 'none';
+                    etatPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
         });
+
+        // comptage carac pour la description
+        textArea.addEventListener('input', function() {
+            const currentLength = this.value.length;
+            charCountDisplay.textContent = `${currentLength}/1000`;
+            charCountDisplay.style.color = currentLength >= 1000 ? '#e74c3c' : 'gray';
+        });
+
+        // calcul du prix au kg 
+        function calculerPrixKg() {
+            const prix = parseFloat(inputPrix.value);
+            const poids = parseFloat(inputPoids.value);
+
+            if (!isNaN(prix) && !isNaN(poids) && poids > 0) {
+                const prixKg = (prix / poids).toFixed(2);
+                labelPrixKg.textContent = `Prix au Kg: ${prixKg} €`;
+                labelPrixKg.style.color = '#1D3B54';
+            } else {
+                labelPrixKg.textContent = "Prix au Kg: -- €";
+                labelPrixKg.style.color = 'gray';
+            }
+        }
+
+        inputPrix.addEventListener('input', calculerPrixKg);
+        inputPoids.addEventListener('input', calculerPrixKg);
+
+        // Btn annuler
+        btnAnnuler.addEventListener('click', function() {
+            form.reset();
+            // Reset image
+            imagePreview.src = "";
+            etatPreview.style.display = 'none';
+            etatVide.style.display = 'flex';
+            // Reset compteur
+            charCountDisplay.textContent = "0/1000";
+            charCountDisplay.style.color = 'gray';
+            // Reset Prix Kg
+            labelPrixKg.textContent = "Prix au Kg: -- €";
+        });
+    });
     </script>
 
     <?php require_once "./partials/footer.php"?>

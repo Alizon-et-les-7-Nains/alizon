@@ -27,36 +27,29 @@ window.addEventListener('scroll', () => {
         boutonHaut?.classList.remove('visible');
     }
 });
-document
-    .querySelector("header.backoffice figure:first-child")
-    ?.addEventListener("click", () => {
+document.querySelector("header.backoffice figure:first-child")?.addEventListener("click", () => {
     window.location.href = "10.253.5.104/views/backoffice/ajouterProduit.php";
 });
 const modal = document.querySelector("header.backoffice dialog");
-document
-    .querySelector("header.backoffice figure:nth-child(2)")
-    ?.addEventListener("click", () => {
+document.querySelector("header.backoffice figure:nth-child(2)")?.addEventListener("click", () => {
     modal?.showModal();
 });
-document
-    .querySelector("header.backoffice dialog button")
-    ?.addEventListener("click", () => {
+document.querySelector("header.backoffice dialog button")?.addEventListener("click", () => {
     modal?.close();
 });
-document
-    .querySelector("header.backoffice dialog nav button:first-child")
-    ?.addEventListener("click", () => {
+document.querySelector("header.backoffice dialog nav button:first-child")?.addEventListener("click", () => {
     modal?.close();
 });
-document
-    .querySelector("header.backoffice dialog nav button:last-child")
-    ?.addEventListener("click", () => {
-    window.location.href = "10.253.5.104/views/backoffice/connexion.php";
+document.querySelector("header.backoffice dialog nav button:last-child")?.addEventListener("click", () => {
+    window.location.href = "./connexion.php";
 });
 modal?.addEventListener("click", (e) => {
     if (e.target === modal) {
         modal.close();
     }
+});
+document.querySelector('header.backoffice figure:nth(child(3)')?.addEventListener('click', () => {
+    window.location.href = '10.253.5.104/views/backoffice/compteVendeur.php';
 });
 const btnSettings = Array.from(document.getElementsByClassName('settings'));
 btnSettings?.forEach(btn => {

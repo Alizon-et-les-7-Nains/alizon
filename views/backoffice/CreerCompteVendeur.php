@@ -1,4 +1,5 @@
 <?php 
+    $currentPage = basename(__FILE__);
     require_once "../../controllers/pdo.php"; 
 
     $nom = $_SESSION['form_data']['nom'] ?? '';
@@ -27,7 +28,7 @@
 </head>
 <?php
         require_once "./partials/header.php";
-    ?>
+?>
 
 <body>
     <main class="CreerCompteVendeur">
