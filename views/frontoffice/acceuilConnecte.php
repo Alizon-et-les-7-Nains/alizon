@@ -411,6 +411,10 @@ $cart = getCurrentCart($pdo, $idClient);
         </section>
     </main>
 
+    <section class="confirmationAjout">
+        <h3>Produit ajouté au panier !</h3>
+    </section>
+    
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
