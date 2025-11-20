@@ -16,7 +16,7 @@ require_once "../../controllers/pdo.php";
     <header>
         <?php require_once "./partials/header.php"?>
     </header>
-    <?php //require_once "./partials/aside.php"?>
+    <?php // require_once "./partials/aside.php"?>
         
     <main class="AjouterProduit"> 
         <form action="../../controllers/ajouterProduit.php" method="POST" enctype="multipart/form-data" class="product-content" id="formAjout">
@@ -27,7 +27,7 @@ require_once "../../controllers/pdo.php";
                     
                     <div class="etat-vide" id="etatVide">
                         <div class="icone-wrapper">
-                            <img src="../../../public/images/ajouterPhoto.svg" alt="Icône ajout">
+                            <img src="../../public/images/ajouterPhoto.svg" alt="Icône ajout">
                         </div>
                         <p>Cliquer pour ajouter une photo</p>
                     </div>
@@ -44,9 +44,9 @@ require_once "../../controllers/pdo.php";
                     <input type="text" name="libelle" class="product-name-input" placeholder="Intitulé du produit" required>
                 
                     <div class="price-weight-kg">
-                        <input type="number" step="0.01" name="prix" placeholder="Prix (€)" required>
-                        <input type="number" step="0.01" name="poids" placeholder="Poids (kg)" required>
-                        <span class="prix-kg-label">Prix au Kg: -- €</span>
+                        <input type="number" step="0.01" name="prix" id="inputPrix" placeholder="Prix (€)" required>
+                        <input type="number" step="0.01" name="poids" id="inputPoids" placeholder="Poids (kg)" required>
+                        <span class="prix-kg-label" id="labelPrixKg">Prix au Kg: -- €</span>
                     </div>
 
                     <input type="text" name="tags" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
@@ -82,6 +82,12 @@ require_once "../../controllers/pdo.php";
         const btnAnnuler = document.getElementById('btnAnnuler');
         const form = document.getElementById('formAjout');
 
+        // calcul du prix
+        const inputPrix = document.getElementById('inputPrix');
+        const inputPoids = document.getElementById('inputPoids');
+        const labelPrixKg = document.getElementById('labelPrixKg');
+
+        // pour la photo
         zoneUpload.addEventListener('click', () => photoInput.click());
 
         photoInput.addEventListener('change', function() {
@@ -97,18 +103,43 @@ require_once "../../controllers/pdo.php";
             }
         });
 
+        // comptage carac pour la description
         textArea.addEventListener('input', function() {
             const currentLength = this.value.length;
             charCountDisplay.textContent = `${currentLength}/1000`;
             charCountDisplay.style.color = currentLength >= 1000 ? '#e74c3c' : 'gray';
         });
 
+        // calcul du prix au kg 
+        function calculerPrixKg() {
+            const prix = parseFloat(inputPrix.value);
+            const poids = parseFloat(inputPoids.value);
+
+            if (!isNaN(prix) && !isNaN(poids) && poids > 0) {
+                const prixKg = (prix / poids).toFixed(2);
+                labelPrixKg.textContent = `Prix au Kg: ${prixKg} €`;
+                labelPrixKg.style.color = '#1D3B54';
+            } else {
+                labelPrixKg.textContent = "Prix au Kg: -- €";
+                labelPrixKg.style.color = 'gray';
+            }
+        }
+
+        inputPrix.addEventListener('input', calculerPrixKg);
+        inputPoids.addEventListener('input', calculerPrixKg);
+
+        // Btn annuler
         btnAnnuler.addEventListener('click', function() {
             form.reset();
+            // Reset image
             imagePreview.src = "";
             etatPreview.style.display = 'none';
             etatVide.style.display = 'flex';
+            // Reset compteur
             charCountDisplay.textContent = "0/1000";
+            charCountDisplay.style.color = 'gray';
+            // Reset Prix Kg
+            labelPrixKg.textContent = "Prix au Kg: -- €";
         });
     });
     </script>
