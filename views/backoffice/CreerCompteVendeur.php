@@ -1,4 +1,5 @@
 <?php 
+    $currentPage=basename(FILE);
     require_once "../../controllers/pdo.php"; 
 
     $nom = $_SESSION['form_data']['nom'] ?? '';
