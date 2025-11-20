@@ -103,6 +103,7 @@
     $faibles = ($pdo->query('select * from _produit where stock < seuilAlerte'))->fetchAll(PDO::FETCH_ASSOC);
     if (count($faibles) == 0) echo "<h2>Aucun produit en alerte</h2>";
     foreach ($faibles as $faible) {
+        $reassort = $faible['dateReassort'] != NULL ? formatDate($faible['dateReassort']) : 'Aucun réassort prévu';
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $faible['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
@@ -158,7 +159,7 @@
                         <li>
                             <figure>
                                 <img src='/public/images/infoDark.svg'>
-                                <figcaption>" . $reassort = $faible['dateReassort'] != NULL ? formatDate($faible['dateReassort']) : 'Aucun réassort prévu' . "</figcaption>
+                                <figcaption>" . $reassort . "</figcaption>
                             </figure>
                         </li>
                         <li>" . $faible['stock'] . " restants</li>
