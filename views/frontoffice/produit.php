@@ -1,56 +1,56 @@
 <?php
-// Connexion à la base de données
-// include '../../controllers/pdo.php';
+session_start();
+include '../../controllers/pdo.php';
 
-// // Récupérer l'ID depuis l'URL
-// $productId = intval($_GET['id']) ?? 0;
+// Récupérer l'ID depuis l'URL
+$productId = intval($_GET['id']) ?? 0;
 
-// if($productId == 0) {
-//     die("Produit non spécifié");
-// }
+if($productId == 0) {
+    die("Produit non spécifié");
+}
 
-// // REQUÊTE SIMPLE : Récupérer le produit ET le vendeur en une fois
+// REQUÊTE SIMPLE : Récupérer le produit ET le vendeur en une fois
 
-// $sqlProduit = "SELECT 
-//                 p.idProduit,
-//                 p.nom AS nom_produit,
-//                 p.description, 
-//                 p.prix,
-//                 p.note,
-//                 p.stock,
-//                 v.prenom AS prenom_vendeur,
-//                 v.nom AS nom_vendeur,
-//                 v.raisonSocial
-//                FROM _produit p 
-//                JOIN _vendeur v ON p.idVendeur = v.codeVendeur 
-//                WHERE p.idProduit = $productId";
+$sqlProduit = "SELECT 
+                p.idProduit,
+                p.nom AS nom_produit,
+                p.description, 
+                p.prix,
+                p.note,
+                p.stock,
+                v.prenom AS prenom_vendeur,
+                v.nom AS nom_vendeur,
+                v.raisonSocial
+               FROM _produit p 
+               JOIN _vendeur v ON p.idVendeur = v.codeVendeur 
+               WHERE p.idProduit = $productId";
 
-// $result = $pdo->query($sqlProduit);
-// $produit = $result->fetch(PDO::FETCH_ASSOC);
+$result = $pdo->query($sqlProduit);
+$produit = $result->fetch(PDO::FETCH_ASSOC);
 
-// if (!$produit) {
-//     echo "<p>Produit introuvable.</p>";
-//     exit;
-// }
+if (!$produit) {
+    echo "<p>Produit introuvable.</p>";
+    exit;
+}
 
-// // Récupérer les images
-// $sqlImages = "SELECT i.* 
-//               FROM _image i
-//               JOIN _imageDeProduit ip ON i.URL = ip.URL
-//               WHERE ip.idProduit = $productId";
+// Récupérer les images
+$sqlImages = "SELECT i.* 
+              FROM _image i
+              JOIN _imageDeProduit ip ON i.URL = ip.URL
+              WHERE ip.idProduit = $productId";
 
-// $resultImages = $pdo->query($sqlImages);
-// $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
+$resultImages = $pdo->query($sqlImages);
+$images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 
-// $sqlAvis = "SELECT a.*
-//             FROM _avis 
-//             WHERE a.idProduit = $productId";
+$sqlAvis = "SELECT a.*
+            FROM _avis 
+            WHERE a.idProduit = $productId";
 
-// $resultAvis = $pdo->query($sqlAvis);
-// $lesAvis = $resultAvis->fetch(PDO::FETCH_ASSOC);
+$resultAvis = $pdo->query($sqlAvis);
+$lesAvis = $resultAvis->fetch(PDO::FETCH_ASSOC);
 
-// $note = "AVG(note) FROM _avis WHERE idProduit = $productId";
-// $note = "COUNT(note) FROM _avis WHERE idProduit = $productId";
+$note = "AVG(note) FROM _avis WHERE idProduit = $productId";
+$note = "COUNT(note) FROM _avis WHERE idProduit = $productId";
 
 
 
@@ -85,7 +85,10 @@ $produit = [
     <!-- sass --watch views/styles/main.scss:public/style.css -->
     <!-- ssh sae@10.253.5.104
     su -
-    grognasseEtCompagnie -->
+    grognasseEtCompagnie
+    cd /docker/data/web/html
+    git pull -->
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
