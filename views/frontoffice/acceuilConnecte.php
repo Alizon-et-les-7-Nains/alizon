@@ -412,7 +412,7 @@ $cart = getCurrentCart($pdo, $idClient);
     </main>
 
     <section class="confirmationAjout">
-        <h3>Produit ajouté au panier !</h3>
+        <h4>Produit ajouté au panier !</h4>
     </section>
     
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>

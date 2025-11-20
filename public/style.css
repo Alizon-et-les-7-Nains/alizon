@@ -2750,7 +2750,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: column;
   border: 3px solid #259525;
   border-radius: 8px;
-  padding: 10px 60px;
+  padding: 5px 60px;
   justify-content: center;
   max-width: 90vw;
   z-index: 1067;
@@ -2760,7 +2760,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .acceuil .confirmationAjout::after {
   transition: 0.3s;
 }
-.acceuil .confirmationAjout h3 {
+.acceuil .confirmationAjout h4 {
   color: #259525;
   font-style: bold;
   font-size: 24px;

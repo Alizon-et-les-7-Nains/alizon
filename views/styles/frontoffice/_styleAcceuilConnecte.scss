@@ -230,7 +230,7 @@
         flex-direction: column;
         border: 3px solid $color-green;
         border-radius: 8px;
-        padding: 10px 60px;
+        padding: 5px 60px;
         justify-content: center;
         max-width: 90vw;
         z-index: 1067;
@@ -241,7 +241,7 @@
             transition: 0.3s;
         }
 
-        h3 {
+        h4 {
             color: $color-green;
             font-style: bold;
             font-size: 24px;
