@@ -356,6 +356,7 @@ body {
   color: #273469;
   font-family: "berkshire", serif;
   font-style: normal;
+  text-decoration: none;
 }
 .page404 h1 {
   font-size: 120px;
