@@ -22,7 +22,10 @@
 <body class="backoffice">
     <?php require_once './partials/header.php' ?>
 
-    <?php require_once './partials/aside.php' ?>
+    <?php
+        $currentPage = basename(__FILE__);
+        require_once './partials/aside.php';
+    ?>
 
     <main class="acceuilBackoffice">
         <section class="stock">
