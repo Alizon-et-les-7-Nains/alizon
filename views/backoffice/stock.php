@@ -144,14 +144,14 @@
                         </tr>
                         <tr>
                             <td>
-                                ";
-                                    // foreach ($commandes as $commande) {
-                                    //     $html .= "<ul>
-                                    //         <li>" . $commande['quantiteCommande'] . "</li>
-                                    //         <li>" . formatDate($commande['dateCommande']) . "</li>
-                                    //     </ul>";
-                                    // }
-                                $html .= "
+                                <ul>";
+                                    foreach ($commandes as $commande) {
+                                        $html .= "<ul>
+                                            <li>" . $commande['quantiteCommande'] . "</li>
+                                        <li>" . formatDate($commande['dateCommande']) . "</li>
+                                    </ul>";
+                                }
+                                $html .= "</ul>
                             </td>
                         </tr>
                     </table>
