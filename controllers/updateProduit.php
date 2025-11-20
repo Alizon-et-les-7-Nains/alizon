@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $img->execute([
         ':url' => $_POST['url'],
-        ':idProd' => $idProd
+        ':idProduit' => $idProd
     ]);
 }
 
