@@ -1,5 +1,5 @@
 <?php 
-session_start(); /* INDISPENSABLE : permet au header de lire les infos du compte connecté */
+session_start();
 require_once "../../controllers/pdo.php";
 ?>
 <!DOCTYPE html>
@@ -71,7 +71,6 @@ require_once "../../controllers/pdo.php";
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // --- VARIABLES ---
         const zoneUpload = document.getElementById('zoneUpload');
         const photoInput = document.getElementById('photoUpload');
         const etatVide = document.getElementById('etatVide');
@@ -83,7 +82,6 @@ require_once "../../controllers/pdo.php";
         const btnAnnuler = document.getElementById('btnAnnuler');
         const form = document.getElementById('formAjout');
 
-        // --- 1. GESTION DE LA PHOTO (Preview instantanée) ---
         zoneUpload.addEventListener('click', () => photoInput.click());
 
         photoInput.addEventListener('change', function() {
@@ -93,24 +91,20 @@ require_once "../../controllers/pdo.php";
                 reader.onload = function(e) {
                     imagePreview.src = e.target.result;
                     etatVide.style.display = 'none';
-                    etatPreview.style.display = 'block'; // Affiche la preview
+                    etatPreview.style.display = 'block';
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        // --- 2. COMPTEUR DE CARACTÈRES ---
         textArea.addEventListener('input', function() {
             const currentLength = this.value.length;
             charCountDisplay.textContent = `${currentLength}/1000`;
-            // Changement de couleur si on approche de la limite
             charCountDisplay.style.color = currentLength >= 1000 ? '#e74c3c' : 'gray';
         });
 
-        // --- 3. BOUTON ANNULER ---
         btnAnnuler.addEventListener('click', function() {
-            form.reset(); // Vide les champs
-            // Reset visuel de l'image
+            form.reset();
             imagePreview.src = "";
             etatPreview.style.display = 'none';
             etatVide.style.display = 'flex';
