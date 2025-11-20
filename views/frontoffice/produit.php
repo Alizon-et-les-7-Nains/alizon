@@ -40,7 +40,7 @@ $resultImages = $pdo->query($sqlImages);
 $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 
 $sqlAvis = "SELECT a.*
-            FROM _avis 
+            FROM _avis a
             WHERE a.idProduit = $productId";
 
 $resultAvis = $pdo->query($sqlAvis);
