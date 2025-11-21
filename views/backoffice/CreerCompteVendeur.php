@@ -40,8 +40,7 @@
         </div>
 
         <div class="container">
-            <form method="post" class="form-vendeur" id="monForm" action="../../controllers/creerCompteVendeur.php"
-                enctype="multipart/form-data">
+            <form method="post" class="form-vendeur" id="monForm" action="../../controllers/creerCompteVendeur.php" enctype="multipart/form-data">
                 <?php if (!empty($message)) : ?>
                 <p class="message"><?= $message ?></p>
                 <?php endif; ?>
