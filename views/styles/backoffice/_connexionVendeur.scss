@@ -1,0 +1,141 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.connexionVendeur {
+    font: {
+        family: 'lora', 'Serif';
+        weight: bold;
+        style: italic;
+    }
+    background-color: $color-white;
+    color: $color-blue;
+    min-height: 80vh;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+    z-index: 1;
+
+    h1 {
+        margin: {
+            top: 10px;
+            bottom: 30px;
+            left: 30px;
+        }
+        text-align: left;
+        font-weight: 600;
+    }
+
+    .triskiel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 1100px;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    .pdp_title {
+        width: 100%;
+        max-width: 900px;
+        padding: 0 20px;
+        margin: {
+            top: 50px;
+            bottom: 50px;
+            left: auto;
+            right: auto;
+        }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img[alt="photo de profil"] {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+    }
+
+    .information_connexion {
+        width: 100%;
+        max-width: 900px;
+        z-index: 2;
+
+        .form-vendeur {
+            input.form-control {
+                padding: 12px 15px;
+                border: 2px solid $color-blue;
+                border-radius: 8px;
+                font-size: 1rem;
+                color: $color-blue;
+                background-color: rgba(255, 255, 255, 0.9);
+
+                &::placeholder {
+                    color: $color-dark-gray;
+                }
+
+                &:focus {
+                    box-shadow: 0 0 0 0.25rem rgba($color-blue, 0.25);
+                }
+            }
+        }
+
+        .btn_connexion {
+            background-color: $color-pastel-purple;
+            max-width: 300px;
+            width: 100%;
+            border-radius: 24px;
+            color: $color-blue;
+            padding: 12px 20px;
+            border: 0;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: scale(1.02);
+            }
+        }
+
+        .mdp_oublie, .inscription_lien {
+            font: {
+                family: 'lora', 'Serif';
+                weight: normal;
+                style: normal;
+            }
+            color: $color-blue;
+            text-decoration: underline;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+
+            &:hover {
+                color: darken($color-blue, 10%);
+            }
+        }
+        
+        .inscription_lien {
+            font-weight: bold;
+        }
+    }
+
+    .text-footer {
+        max-width: 800px;
+        text-align: center;
+        font: {
+            size: 0.8rem;
+            style: normal;
+            weight: normal;
+        }
+        color: $color-dark-gray;
+        margin-top: auto;
+        padding: 40px 20px 0 20px;
+    }
+}
