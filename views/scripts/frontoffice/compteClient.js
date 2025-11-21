@@ -180,7 +180,7 @@ function verifierChamp() {
     let valeur = champs[i].value.trim();
 
     // Le champ adresse2 est optionnel
-    if (i === 4 && i === 5 && i === 6 && i === 7 && i === 8 && valeur === "") {
+    if (i === 0 && valeur === "") {
       tousRemplis = false;
       setError(champs[i], "Le champs obligatoire est vide");
     }
