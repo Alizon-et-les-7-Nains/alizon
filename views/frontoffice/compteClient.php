@@ -5,20 +5,16 @@ require_once '../../controllers/pdo.php' ;
 
 $id_client = $_SESSION['user_id'];
 
-$stmt = $pdo->query(
-    "SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client' ");
-    $client = $stmt->fetch(PDO::FETCH_ASSOC);
-    $idAdresse = $client['idAdresse'];
+$stmt = $pdo->query("SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client'");
+$client = $stmt->fetch(PDO::FETCH_ASSOC);
+$idAdresse = $client['idAdresse'] ?? null;
+
 
 if (!$idAdresse) {
-    // Le client n'a pas d'adresse, on en crée une
-    $pdo->query("INSERT INTO saedb._adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) VALUES (NULL,NULL,NULL,NULL,NULL,NULL)");
-    $stmt = $pdo->query(
-    "SELECT adr.idAdresse FROM _adresseClient AS adr JOIN _client AS cli ON adr.idAdresse = cli.idClient WHERE idClient = '$id_client'; ");
-    $client = $stmt->fetch(PDO::FETCH_ASSOC);
-    $idAdresse = $client['idAdresse'];  
+    $pdo->query("INSERT INTO saedb._adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) 
+                 VALUES (NULL, NULL, NULL, NULL, NULL, NULL)");
+    $idAdresse = $pdo->lastInsertId();
     $pdo->query("UPDATE saedb._client SET idAdresse = $idAdresse WHERE idClient = $id_client");
-
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -36,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
 
-    $stmt = $pdo->query(" 
-    UPDATE saedb._client 
+    $stmt = $pdo->query( 
+    "UPDATE saedb._client 
     SET pseudo = '$pseudo', 
         nom = '$nom', 
         prenom = '$prenom', 
