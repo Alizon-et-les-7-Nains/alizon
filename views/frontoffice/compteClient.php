@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }   
 
     //verification et upload de la nouvelle photo de profil
-    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client.'.svg';
+    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
     if (file_exists($photoPath)) {
         unlink($photoPath); // supprime l'ancien fichier
     }
