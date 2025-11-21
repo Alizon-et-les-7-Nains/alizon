@@ -258,10 +258,11 @@
 
     <?php require_once './partials/footer.php' ?>
 
-    <dialog>
+    <dialog open>
         <h1>Paramètres de réassort</h1>
-        <input type="text">
-        
+        <input type="text" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
+        <input type="date" placeholder="Date du réassort" name="Date du réassort" id="dateReassort">
+        <input type="text" placeholder="Réassortir" name="Reassoertir" id ="reassort">
     </dialog>
 
     <script src="../../public/amd-shim.js"></script>
