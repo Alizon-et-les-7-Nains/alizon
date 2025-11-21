@@ -31,7 +31,7 @@ if (!$produit) {
 }
 
 // Récupérer les images
-$sqlImages = "SELECT i.* 
+$sqlImages = "SELECT ip.* 
               FROM _imageDeProduit ip
               WHERE ip.idProduit = $productId";
 
