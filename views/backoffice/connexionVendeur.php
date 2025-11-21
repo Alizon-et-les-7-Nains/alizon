@@ -42,7 +42,7 @@
 
                 <div class="inputs-container">
                     <div class="mb-4">
-                        <input type="text" name="identifiant" placeholder="Nom d'utilisateur" required class="form-control custom-input">
+                        <input type="text" name="pseudo" placeholder="Nom d'utilisateur" required class="form-control custom-input">
                     </div>
 
                     <div class="mb-2">
@@ -51,8 +51,8 @@
                 </div>
 
                 <div class="liens-utiles">
-                    <a href="creerCompteVendeur.php">Pas encore vendeur ? Inscrivez vous ici</a>
-                    <a href="motDePasseOublie.php">Mot de passe oublié ? Cliquez ici</a>
+                    <a href="CreerCompteVendeur.php">Pas encore vendeur ? Inscrivez vous ici</a>
+                    <a href="#">Mot de passe oublié ? Cliquez ici</a>
                 </div>
 
                 <div class="actions">
@@ -62,7 +62,9 @@
         </div>
 
         <p class="text-footer">
-            Alizon, en tant que responsable de traitement, traite les données recueillies à des fins de gestion de la relation client, gestion des commandes et des livraisons, personnalisation des services, prévention de la fraude, marketing et publicité ciblée. Pour en savoir plus, reportez-vous à la Politique de protection de vos données personnelles.
+            Alizon, en tant que responsable de traitement, traite les données recueillies à des fins de gestion de la relation client, 
+            gestion des commandes et des livraisons, personnalisation des services, prévention de la fraude, marketing et publicité ciblée. 
+            Pour en savoir plus, reportez-vous à la Politique de protection de vos données personnelles.
         </p>
     </main>
     
