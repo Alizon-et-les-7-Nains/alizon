@@ -164,27 +164,22 @@
       padding-top: 40px; // Espace depuis le haut
 
       .actions {
+        grid-column: 1 / -1;
         display: flex;
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
+        gap: 18px;
+        justify-content: flex-end;
+        margin-top: 35px;
+        flex-wrap: wrap;
 
         button {
-          padding: 14px 20px;
+          padding: 14px 30px;
           border-radius: 26px;
           font-weight: 600;
           cursor: pointer;
           border: none;
           font-size: 15px;
           transition: all 0.3s ease;
-          width: 100%;
-          text-align: center;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-          &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-          }
+          min-width: 120px;
 
           &:active {
             transform: translateY(0);
@@ -198,64 +193,34 @@
           }
         }
 
-        // STYLES VIOLETS
         .modifier {
-          background: linear-gradient(135deg, #6d5dfc 0%, #5d4fd8 100%);
-          color: white;
-          border: 2px solid #6d5dfc;
-
-          &:hover {
-            background: linear-gradient(135deg, #5d4fd8 0%, #4d41b4 100%);
-          }
+          background-color: #dcd8f9;
+          color: #3d2d86;
         }
 
         .sauvegarder {
-          background: linear-gradient(135deg, #8b7aff 0%, #7a6afc 100%);
-          color: white;
-          border: 2px solid #8b7aff;
-
-          &:hover {
-            background: linear-gradient(135deg, #7a6afc 0%, #6a5ae8 100%);
-          }
+          background: #eceaff;
+          color: #3d2d86;
         }
 
         .annuler {
-          background: linear-gradient(135deg, #a59aff 0%, #958aff 100%);
-          color: white;
-          border: 2px solid #a59aff;
-
-          &:hover {
-            background: linear-gradient(135deg, #958aff 0%, #857af4 100%);
-          }
+          background: #eceaff;
+          color: #3d2d86;
         }
 
         .modifier-mdp {
-          background: linear-gradient(135deg, #6d5dfc 0%, #5d4fd8 100%);
-          color: white;
-          border: 2px solid #6d5dfc;
-
-          &:hover {
-            background: linear-gradient(135deg, #5d4fd8 0%, #4d41b4 100%);
-          }
+          background-color: #dcd8f9;
+          color: #3d2d86;
 
           &.annuler-mdp {
-            background: linear-gradient(135deg, #a59aff 0%, #958aff 100%);
-            border: 2px solid #a59aff;
-
-            &:hover {
-              background: linear-gradient(135deg, #958aff 0%, #857af4 100%);
-            }
+            background: #eceaff;
+            color: #3d2d86;
           }
         }
 
         .supprimer {
-          background: linear-gradient(135deg, #e4574d 0%, #d4473d 100%);
+          background: #e4574d;
           color: white;
-          border: 2px solid #e4574d;
-
-          &:hover {
-            background: linear-gradient(135deg, #d4473d 0%, #c4372d 100%);
-          }
         }
       }
     }
