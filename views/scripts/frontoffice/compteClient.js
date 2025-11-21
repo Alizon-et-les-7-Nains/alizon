@@ -221,7 +221,6 @@ function verifierChamp() {
   bouton.disabled = !tousRemplis;
 }
 
-document.querySelector("section").addEventListener("input", verifierChamp);
 let enModif = false;
 
 // Création de l'input pour la photo de profil
@@ -326,6 +325,8 @@ function modifierProfil(event) {
 
     bnAnnuler[0].style.display = "block";
     bnAnnuler[0].style.color = "white";
+
+    document.querySelector("section").addEventListener("input", verifierChamp);
     verifierChamp();
   } else {
     // Soumettre le formulaire pour enregistrer les modifications
