@@ -180,7 +180,7 @@ function verifierChamp() {
     let valeur = champs[i].value.trim();
 
     // Le champ adresse2 est optionnel
-    if (i === 4 || i === 5 || i === 6 || i === 7 || i === 8 && valeur === "") {
+    if ((i === 4 && i === 5 && i === 6 && i === 7 && i === 8 ) && valeur === "") {
       tousRemplis = false;
       setError(champs[i], "Le champs obligatoire est vide");
     }
@@ -213,7 +213,7 @@ function verifierChamp() {
       }
     }
     //Si c'est pas vide on affiche pas de message d'erreur
-    if (i === 4 && i === 5 && i === 6 && i === 7 && i === 8 || valeur !== "") {
+    if ((i === 0 || i === 1 || i === 2 || i === 3 || i === 9 || i === 10) && valeur !== "") {
       clearError(champs[i]);
     }
   }

@@ -54,11 +54,12 @@
     }
   }
 
+  // NOUVELLE GRILLE DE 3 COLONNES
   .form-compte {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr; // 3 colonnes
     gap: 50px;
-    width: 60%;
+    width: 100%; // Prend toute la largeur
 
     .col {
       display: flex;
@@ -152,6 +153,75 @@
       font-weight: bold;
       color: $color-blue;
     }
+
+    // TROISIÈME COLONNE POUR LES BOUTONS
+    .col-actions {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; // Aligne les boutons en bas
+      gap: 18px;
+      padding-bottom: 20px;
+
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+
+        button {
+          padding: 14px 20px;
+          border-radius: 26px;
+          font-weight: 600;
+          cursor: pointer;
+          border: none;
+          font-size: 15px;
+          transition: all 0.3s ease;
+          width: 100%;
+          text-align: center;
+
+          &:active {
+            transform: translateY(0);
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+          }
+        }
+
+        .modifier {
+          background-color: #dcd8f9;
+          color: #3d2d86;
+        }
+
+        .sauvegarder {
+          background: #eceaff;
+          color: #3d2d86;
+        }
+
+        .annuler {
+          background: #eceaff;
+          color: #3d2d86;
+        }
+
+        .modifier-mdp {
+          background-color: #dcd8f9;
+          color: #3d2d86;
+
+          &.annuler-mdp {
+            background: #eceaff;
+            color: #3d2d86;
+          }
+        }
+
+        .supprimer {
+          background: #e4574d;
+          color: white;
+        }
+      }
+    }
   }
 }
 
@@ -169,73 +239,6 @@
   }
 }
 
-// NOUVELLE SECTION POUR LES ACTIONS - Positionnée en dehors du formulaire
-.form-actions-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 35px;
-  width: 100%;
-  padding-right: 80px; // Alignement avec le padding de la page
-
-  .actions {
-    display: flex;
-    gap: 18px;
-    flex-wrap: wrap;
-
-    button {
-      padding: 14px 30px;
-      border-radius: 26px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      font-size: 15px;
-      transition: all 0.3s ease;
-      min-width: 120px;
-
-      &:active {
-        transform: translateY(0);
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-      }
-    }
-
-    .modifier {
-      background-color: #dcd8f9;
-      color: #3d2d86;
-    }
-
-    .sauvegarder {
-      background: #eceaff;
-      color: #3d2d86;
-    }
-
-    .annuler {
-      background: #eceaff;
-      color: #3d2d86;
-    }
-
-    .modifier-mdp {
-      background-color: #dcd8f9;
-      color: #3d2d86;
-
-      &.annuler-mdp {
-        background: #eceaff;
-        color: #3d2d86;
-      }
-    }
-
-    .supprimer {
-      background: #e4574d;
-      color: white;
-    }
-  }
-}
-
 /* ============================ */
 /* RESPONSIVE DESIGN */
 /* ============================ */
@@ -246,12 +249,8 @@
     padding: 50px 60px;
 
     .form-compte {
-      width: 70%;
+      gap: 40px;
     }
-  }
-
-  .form-actions-container {
-    padding-right: 60px;
   }
 }
 
@@ -274,17 +273,12 @@
     }
 
     .form-compte {
-      width: 80%;
-      gap: 40px;
+      gap: 35px;
     }
-  }
-
-  .form-actions-container {
-    padding-right: 50px;
   }
 }
 
-/* Tablettes */
+/* Tablettes - Passage à 2 colonnes */
 @media (max-width: 900px) {
   .page-compte {
     padding: 35px 40px;
@@ -312,13 +306,33 @@
       }
     }
 
+    // PASSAGE À 2 COLONNES
     .form-compte {
-      width: 90%;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr; // 2 colonnes
       gap: 30px;
 
       .col {
         gap: 18px;
+      }
+
+      // La troisième colonne devient la deuxième ligne
+      .col-actions {
+        grid-column: 1 / -1; // Prend toute la largeur
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-bottom: 0;
+        margin-top: 10px;
+
+        .actions {
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+
+          button {
+            width: auto;
+            min-width: 140px;
+          }
+        }
       }
     }
 
@@ -330,24 +344,10 @@
         width: 100%;
       }
     }
-
-    .form-actions-container {
-      padding-right: 40px;
-
-      .actions {
-        justify-content: flex-end;
-
-        button {
-          padding: 12px 25px;
-          font-size: 14px;
-          min-width: 110px;
-        }
-      }
-    }
   }
 }
 
-/* Mobiles */
+/* Mobiles - Passage à 1 colonne */
 @media (max-width: 768px) {
   .page-compte {
     padding: 25px 30px;
@@ -373,8 +373,9 @@
       }
     }
 
+    // PASSAGE À 1 COLONNE
     .form-compte {
-      width: 100%;
+      grid-template-columns: 1fr; // 1 colonne
       gap: 25px;
 
       .col {
@@ -410,20 +411,15 @@
       .code-vendeur {
         font-size: 16px;
       }
-    }
 
-    .form-actions-container {
-      padding-right: 30px;
-      margin-top: 25px;
-
-      .actions {
-        gap: 12px;
-
-        button {
-          padding: 10px 20px;
-          font-size: 13px;
-          min-width: 100px;
-          border-radius: 20px;
+      .col-actions {
+        .actions {
+          button {
+            padding: 10px 20px;
+            font-size: 13px;
+            min-width: 120px;
+            border-radius: 20px;
+          }
         }
       }
     }
@@ -488,21 +484,18 @@
       .code-vendeur {
         font-size: 15px;
       }
-    }
 
-    .form-actions-container {
-      padding-right: 15px;
-      margin-top: 20px;
+      .col-actions {
+        .actions {
+          flex-direction: column;
+          gap: 8px;
 
-      .actions {
-        gap: 8px;
-        justify-content: flex-end;
-
-        button {
-          padding: 10px 15px;
-          font-size: 12px;
-          min-width: auto;
-          border-radius: 20px;
+          button {
+            padding: 10px 15px;
+            font-size: 12px;
+            min-width: 100%;
+            border-radius: 20px;
+          }
         }
       }
     }
@@ -542,15 +535,13 @@
           }
         }
       }
-    }
 
-    .form-actions-container {
-      padding-right: 10px;
-
-      .actions {
-        button {
-          padding: 8px 12px;
-          font-size: 11px;
+      .col-actions {
+        .actions {
+          button {
+            padding: 8px 12px;
+            font-size: 11px;
+          }
         }
       }
     }
@@ -578,23 +569,25 @@
     }
 
     .form-compte {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr; // 2 colonnes en paysage
       gap: 20px;
 
       .col {
         gap: 12px;
       }
-    }
 
-    .form-actions-container {
-      padding-right: 30px;
-      margin-top: 20px;
+      .col-actions {
+        grid-column: 1 / -1;
+        flex-direction: row;
 
-      .actions {
-        button {
-          padding: 8px 15px;
-          font-size: 12px;
-          min-width: 90px;
+        .actions {
+          flex-direction: row;
+
+          button {
+            padding: 8px 15px;
+            font-size: 12px;
+            min-width: 120px;
+          }
         }
       }
     }
