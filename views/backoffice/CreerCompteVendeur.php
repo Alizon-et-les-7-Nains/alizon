@@ -40,8 +40,7 @@
         </div>
 
         <div class="container">
-            <form method="post" class="form-vendeur" id="monForm" action="../../controllers/creerCompteVendeur.php"
-                enctype="multipart/form-data">
+            <form method="post" class="form-vendeur" id="monForm" action="../../controllers/creerCompteVendeur.php" enctype="multipart/form-data">
                 <?php if (!empty($message)) : ?>
                 <p class="message"><?= $message ?></p>
                 <?php endif; ?>
@@ -119,7 +118,7 @@
 
                     <div class="col-12 d-flex flex-column align-items-center mt-3">
                         <p class="code_vendeur"> Code vendeur : <strong>VD640</strong> </p>
-                        <a class="connexion_lien" href="#">Déjà vendeur ? Connectez vous ici</a>
+                        <a class="connexion_lien" href="connexionVendeur.php">Déjà vendeur ? Connectez vous ici</a>
 
                         <button type="submit" id="btn_inscription" class="btn_inscription" disabled>S'inscrire</button>
                     </div>

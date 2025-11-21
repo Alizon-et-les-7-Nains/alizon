@@ -253,6 +253,19 @@
             </article>
         </section>
 
+        <dialog>
+            <h1>Paramètres de réassort</h1>
+            <form action="" method="post">
+                <input type="text" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
+                <input type="date" placeholder="Date du réassort" value="2025-11-05" name="Date du réassort" id="dateReassort">
+                <input type="text" placeholder="Réassortir" name="Reassoertir" id ="reassort">
+                <ul>
+                    <li><input type="button" value="Annuler"></li>
+                    <li><input type="submit" value="Valider"></li>
+                </ul>
+            </form>
+        </dialog>
+
         <?php require_once './partials/retourEnHaut.php' ?>
     </main>
 

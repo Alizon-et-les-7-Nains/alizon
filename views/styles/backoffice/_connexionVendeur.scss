@@ -1,0 +1,148 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.connexionVendeur {
+    position: relative; 
+    background-color: $color-white;
+    color: $color-blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    padding: 40px 20px;
+
+    .triskiel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: auto;
+        max-height: 85vh; 
+        z-index: 0; 
+        pointer-events: none;
+    }
+    
+    .pdp_title {
+        position: relative;
+        z-index: 1;        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 30px;
+        text-align: center;
+
+        .cercle-pdp {
+            background-color: $color-dark-gray;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid $color-blue;
+            margin-bottom: 25px;
+            
+            img {
+                width: 55%;
+                height: auto;
+            }
+        }
+
+        h1 {
+            font-family: 'lora', serif; 
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: $color-blue;
+            margin-top: 10px;
+        }
+    }
+
+    .information_connexion {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 500px;
+
+        .form-vendeur {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .inputs-container {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+
+            .custom-input {
+                background-color: $color-white;
+                border: 2px solid $color-blue;
+                border-radius: 6px; 
+                padding: 12px 15px;
+                font-size: 1rem;
+                font-weight: 600;
+                color: $color-blue;
+
+                &::placeholder {
+                    color: $color-blue;
+                    font-family: 'lora', serif; 
+                    font-weight: 600;
+                    font-style: italic; 
+                    opacity: 0.7;
+                }
+            }
+
+            .liens-utiles {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 15px 0 35px 0;
+                gap: 10px;
+
+                a {
+                    color: $color-blue;
+                    font-size: 0.9rem;
+                    text-decoration: underline;
+                    font-family: 'lora', serif;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
+            }
+
+            .actions {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+
+                .btn_connexion {
+                    background-color: $color-pastel-purple;
+                    color: $color-blue;
+                    border: none;
+                    border-radius: 24px;
+                    padding: 12px 80px;
+                    font-size: 1.2rem;
+                    font-family: 'lora', serif;
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    transition: transform 0.2s;
+                    
+                    &:hover {
+                        transform: scale(1.02);
+                        opacity: 0.9;
+                    }
+                }
+            }
+        }
+    }
+
+    .text-footer {
+        position: relative;
+        z-index: 1;
+        margin-top: 60px;
+        max-width: 800px;
+        text-align: center;
+        font-size: 0.65rem;
+        color: $color-light-gray;
+        line-height: 1.4;
+    }
+}

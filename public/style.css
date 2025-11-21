@@ -671,18 +671,6 @@ body {
   }
 }
 
-body.nouveauProduit nav figure:first-child {
-  display: none;
-}
-
-body.monCompte nav figure:nth-child(2), body.monCompte nav figure:nth-child(3) {
-  display: none;
-}
-
-body.nonConnecte nav {
-  display: none;
-}
-
 /* ---- Header ---- */
 header.backoffice {
   display: flex;
@@ -826,6 +814,18 @@ header.backoffice dialog nav button:last-child {
 header.backoffice dialog nav button:hover {
   background-color: #e3f2fe;
   color: #273469;
+}
+
+body.backoffice.nouveauProduit nav figure:first-child {
+  display: none;
+}
+
+body.backoffice.monCompte nav figure:nth-child(2), body.backoffice.monCompte nav figure:nth-child(3) {
+  display: none;
+}
+
+body.backoffice.nonConnecte nav {
+  display: none;
 }
 
 .pageConnexionCLient {
@@ -4385,10 +4385,551 @@ main.backoffice-stocks section:nth-child(3) div:not(button.settings div) {
 main.backoffice-stocks section:nth-child(3) div:not(button.settings div) > ul li:last-child {
   color: #259525;
 }
+main.backoffice-stocks dialog {
+  background-color: #fffefa;
+  border: none;
+  border-radius: 16px;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  color: #273469;
+  font-family: "open-sans";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+main.backoffice-stocks dialog::backdrop {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(1px);
+}
+main.backoffice-stocks dialog h1 {
+  margin-bottom: 1em;
+  text-align: center;
+}
+main.backoffice-stocks dialog form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+  width: 100%;
+}
+main.backoffice-stocks dialog form ul {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  list-style: none;
+}
+main.backoffice-stocks dialog form ul li input {
+  transition: all 0.2s;
+  border-style: hidden;
+}
+main.backoffice-stocks dialog form ul li input:hover {
+  background-color: #e3f2fe;
+  color: #273469;
+  cursor: pointer;
+}
+main.backoffice-stocks dialog form ul li:first-child input {
+  background-color: #e4d9ff;
+  color: #273469;
+}
+main.backoffice-stocks dialog form ul li:last-child input {
+  background-color: #273469;
+  color: #fffefa;
+}
+main.backoffice-stocks dialog form input {
+  color: #273469;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  width: 200px;
+  font-size: 20px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #273469;
+  border-radius: 24px;
+}
 main.backoffice-stocks {
   margin-bottom: 2em;
 }
 
+.page-compte {
+  padding: 60px 80px;
+  position: relative;
+}
+.page-compte::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -400px;
+  width: 1000px;
+  height: 1000px;
+  background: url("../../public/images/symboleRose.png") no-repeat center center;
+  background-size: contain;
+  transform: rotate(-20deg);
+  opacity: 0.42;
+  pointer-events: none;
+  z-index: 0;
+}
+.page-compte .header-compte {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  margin-bottom: 40px;
+}
+.page-compte .header-compte .photo-profil {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e3e3e3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.page-compte .header-compte .photo-profil img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.page-compte .header-compte h1 {
+  font-family: "Lora", serif;
+  font-size: 42px;
+  color: #273469;
+  font-weight: 600;
+}
+.page-compte .form-compte {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 50px;
+  width: 100%;
+  align-items: start;
+}
+.page-compte .form-compte .col {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.page-compte .form-compte .col .champ {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.page-compte .form-compte .col .champ label {
+  font-size: 16px;
+  color: #1b1b1b;
+  font-weight: 600;
+}
+.page-compte .form-compte .col .champ input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  border: 2px solid #273469;
+  border-radius: 12px;
+  background: white;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+.page-compte .form-compte .col .champ input[readonly] {
+  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+  cursor: not-allowed;
+  border-color: #dee2e6;
+}
+.page-compte .form-compte .col .champ input:not([readonly]) {
+  background-color: white !important;
+  color: #212529 !important;
+  border-color: #273469;
+}
+.page-compte .form-compte .col .champ input:focus:not([readonly]) {
+  border-color: rgb(25.1875, 33.5833333333, 67.8125);
+  box-shadow: 0 0 0 3px rgba(39, 52, 105, 0.1);
+}
+.page-compte .form-compte .col .champ input.error {
+  border-color: #e4574d;
+  background-color: #fff5f5;
+}
+.page-compte .form-compte .col .champ input.error:focus {
+  border-color: #e4574d;
+  box-shadow: 0 0 0 3px rgba(228, 87, 77, 0.1);
+}
+.page-compte .form-compte .col .champ .field-error {
+  height: 20px;
+  margin-top: 4px;
+  display: none;
+}
+.page-compte .form-compte .col .champ .field-error p {
+  color: #e4574d;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+}
+.page-compte .form-compte .col .champ .field-error.show {
+  display: block;
+}
+.page-compte .form-compte .col .mpd-rules {
+  margin-top: 4px;
+  padding-left: 22px;
+  font-size: 14px;
+}
+.page-compte .form-compte .col .mpd-rules li {
+  margin: 4px 0;
+  transition: color 0.3s ease;
+}
+.page-compte .form-compte .code-vendeur {
+  font-size: 18px;
+  font-weight: bold;
+  color: #273469;
+}
+.page-compte .form-compte .col-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100%;
+  gap: 18px;
+  padding-top: 40px;
+}
+.page-compte .form-compte .col-actions .actions {
+  grid-column: 1/-1;
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  margin-top: 35px;
+  flex-wrap: wrap;
+}
+.page-compte .form-compte .col-actions .actions button {
+  padding: 14px 30px;
+  border-radius: 26px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+.page-compte .form-compte .col-actions .actions button:active {
+  transform: translateY(0);
+}
+.page-compte .form-compte .col-actions .actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.page-compte .form-compte .col-actions .actions .modifier {
+  background-color: #dcd8f9;
+  color: #3d2d86;
+}
+.page-compte .form-compte .col-actions .actions .sauvegarder {
+  background: #eceaff;
+  color: #3d2d86;
+}
+.page-compte .form-compte .col-actions .actions .annuler {
+  background: #eceaff;
+  color: #3d2d86;
+}
+.page-compte .form-compte .col-actions .actions .modifier-mdp {
+  background-color: #dcd8f9;
+  color: #3d2d86;
+}
+.page-compte .form-compte .col-actions .actions .modifier-mdp.annuler-mdp {
+  background: #eceaff;
+  color: #3d2d86;
+}
+.page-compte .form-compte .col-actions .actions .supprimer {
+  background: #e4574d;
+  color: white;
+}
+
+.champ-double {
+  display: flex;
+  gap: 12px;
+}
+.champ-double .champ {
+  flex: 1;
+}
+.champ-double .champ input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ============================ */
+/* RESPONSIVE DESIGN */
+/* ============================ */
+/* Tablettes et petits écrans d'ordinateur */
+@media (max-width: 1200px) {
+  .page-compte {
+    padding: 50px 60px;
+  }
+  .page-compte .form-compte {
+    gap: 40px;
+  }
+}
+@media (max-width: 1024px) {
+  .page-compte {
+    padding: 40px 50px;
+  }
+  .page-compte .header-compte {
+    gap: 30px;
+    margin-bottom: 35px;
+  }
+  .page-compte .header-compte .photo-profil {
+    width: 130px;
+    height: 130px;
+  }
+  .page-compte .header-compte h1 {
+    font-size: 36px;
+  }
+  .page-compte .form-compte {
+    gap: 35px;
+  }
+}
+/* Tablettes - Passage à 2 colonnes */
+@media (max-width: 900px) {
+  .page-compte {
+    padding: 35px 40px;
+  }
+  .page-compte::before {
+    top: -300px;
+    width: 800px;
+    height: 800px;
+    opacity: 0.3;
+  }
+  .page-compte .header-compte {
+    flex-direction: column;
+    text-align: center;
+    gap: 25px;
+    margin-bottom: 30px;
+  }
+  .page-compte .header-compte .photo-profil {
+    width: 120px;
+    height: 120px;
+  }
+  .page-compte .header-compte h1 {
+    font-size: 32px;
+  }
+  .page-compte .form-compte {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  .page-compte .form-compte .col {
+    gap: 18px;
+  }
+  .page-compte .form-compte .col-actions {
+    grid-column: 1/-1;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-top: 20px;
+    min-height: auto;
+  }
+  .page-compte .form-compte .col-actions .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 15px;
+  }
+  .page-compte .form-compte .col-actions .actions button {
+    width: auto;
+    min-width: 160px;
+    padding: 12px 25px;
+  }
+  .page-compte .champ-double {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .page-compte .champ-double .champ {
+    width: 100%;
+  }
+}
+/* Mobiles - Passage à 1 colonne */
+@media (max-width: 768px) {
+  .page-compte {
+    padding: 25px 30px;
+  }
+  .page-compte::before {
+    top: -200px;
+    width: 600px;
+    height: 600px;
+    opacity: 0.2;
+  }
+  .page-compte .header-compte {
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+  .page-compte .header-compte .photo-profil {
+    width: 100px;
+    height: 100px;
+  }
+  .page-compte .header-compte h1 {
+    font-size: 28px;
+  }
+  .page-compte .form-compte {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .page-compte .form-compte .col {
+    gap: 16px;
+  }
+  .page-compte .form-compte .col .champ {
+    gap: 5px;
+  }
+  .page-compte .form-compte .col .champ label {
+    font-size: 15px;
+  }
+  .page-compte .form-compte .col .champ input {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+  .page-compte .form-compte .col .champ .field-error {
+    height: 18px;
+  }
+  .page-compte .form-compte .col .champ .field-error p {
+    font-size: 12px;
+  }
+  .page-compte .form-compte .col .mpd-rules {
+    font-size: 13px;
+    padding-left: 18px;
+  }
+  .page-compte .form-compte .code-vendeur {
+    font-size: 16px;
+  }
+  .page-compte .form-compte .col-actions {
+    padding-top: 15px;
+  }
+  .page-compte .form-compte .col-actions .actions button {
+    padding: 10px 20px;
+    font-size: 13px;
+    min-width: 140px;
+    border-radius: 20px;
+  }
+}
+/* Petits mobiles */
+@media (max-width: 480px) {
+  .page-compte {
+    padding: 20px 15px;
+  }
+  .page-compte::before {
+    display: none;
+  }
+  .page-compte .header-compte {
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  .page-compte .header-compte .photo-profil {
+    width: 80px;
+    height: 80px;
+  }
+  .page-compte .header-compte h1 {
+    font-size: 24px;
+  }
+  .page-compte .form-compte {
+    gap: 20px;
+  }
+  .page-compte .form-compte .col {
+    gap: 14px;
+  }
+  .page-compte .form-compte .col .champ input {
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+  .page-compte .form-compte .col .champ .field-error {
+    height: 16px;
+  }
+  .page-compte .form-compte .col .champ .field-error p {
+    font-size: 11px;
+  }
+  .page-compte .form-compte .col .mpd-rules {
+    font-size: 12px;
+    padding-left: 15px;
+  }
+  .page-compte .form-compte .col .mpd-rules li {
+    margin: 3px 0;
+  }
+  .page-compte .form-compte .code-vendeur {
+    font-size: 15px;
+  }
+  .page-compte .form-compte .col-actions .actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .page-compte .form-compte .col-actions .actions button {
+    padding: 10px 15px;
+    font-size: 12px;
+    min-width: 100%;
+    border-radius: 20px;
+  }
+}
+/* Très petits mobiles */
+@media (max-width: 360px) {
+  .page-compte {
+    padding: 15px 10px;
+  }
+  .page-compte .header-compte .photo-profil {
+    width: 70px;
+    height: 70px;
+  }
+  .page-compte .header-compte h1 {
+    font-size: 22px;
+  }
+  .page-compte .form-compte .col .champ input {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+  .page-compte .form-compte .col .champ .field-error {
+    height: 15px;
+  }
+  .page-compte .form-compte .col .champ .field-error p {
+    font-size: 10px;
+  }
+  .page-compte .form-compte .col-actions .actions button {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+}
+/* Mode paysage sur mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .page-compte {
+    padding: 20px 30px;
+  }
+  .page-compte .header-compte {
+    flex-direction: row;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  .page-compte .header-compte .photo-profil {
+    width: 60px;
+    height: 60px;
+  }
+  .page-compte .header-compte h1 {
+    font-size: 24px;
+  }
+  .page-compte .form-compte {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .page-compte .form-compte .col {
+    gap: 12px;
+  }
+  .page-compte .form-compte .col-actions {
+    grid-column: 1/-1;
+    flex-direction: row;
+    padding-top: 15px;
+  }
+  .page-compte .form-compte .col-actions .actions {
+    flex-direction: row;
+  }
+  .page-compte .form-compte .col-actions .actions button {
+    padding: 8px 15px;
+    font-size: 12px;
+    min-width: 140px;
+  }
+}
 .pageProduit body {
   margin: 0;
   padding: 0;
