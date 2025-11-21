@@ -4433,6 +4433,7 @@ dialog.reassort form ul {
 dialog.reassort form ul li input {
   transition: all 0.2s;
   border-style: hidden;
+  font-weight: normal;
 }
 dialog.reassort form ul li:first-child input {
   background-color: #e4d9ff;
@@ -4454,6 +4455,7 @@ dialog.reassort form ul li:last-child input:hover {
 }
 dialog.reassort form label {
   color: #f14e4e;
+  margin-top: -1em;
 }
 dialog.reassort form input {
   color: #273469;
@@ -5647,9 +5649,9 @@ dialog.reassort form input {
   position: absolute;
   top: 0;
   right: 0;
+  width: 1100px;
   height: 100%;
-  width: auto;
-  max-height: 85vh;
+  object-fit: cover;
   z-index: 0;
   pointer-events: none;
 }

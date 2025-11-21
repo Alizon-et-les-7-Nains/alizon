@@ -57,7 +57,7 @@
                             <p class="prixAuKg">99.72€ / kg</p>
                         </div>
 
-                        <div class="bouton">
+                        <div class="bouton" data-id="<?= htmlspecialchars($produitEnVente[$i]['idProduit'] ?? '') ?>">
                             <img src="/public/images/iconeFiltre.svg" alt="">
                             <button>Options</button>
 
@@ -66,7 +66,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePromouvoir.svg" alt="">
-                                        <button onclick="popUpPromouvoir()">Promouvoir</button>
+                                        <button onclick="popUpPromouvoir($produitEnVente[$i]['idProduit'])">Promouvoir</button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>

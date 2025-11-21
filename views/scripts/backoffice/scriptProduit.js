@@ -125,8 +125,9 @@ function popUpRemise(){
 
 
 
-function popUpPromouvoir() {
+function popUpPromouvoir(id) {
     const overlay = document.createElement("div");
+    console.log("ID DU PRODUIT : ", id);
     overlay.className = "overlaypopUpPromouvoir";
     overlay.innerHTML = `
         <main class="popUpPromouvoir">
