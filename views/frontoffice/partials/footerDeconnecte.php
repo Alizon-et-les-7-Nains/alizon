@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="footerTel">
-            <a href="../frontoffice/acceuilDeconnecte.php"><img src="../../../public/images/homeLightBlue.svg" alt=""class="homeLightBlue"></a>
+            <a href="../frontoffice/accueilDeconnecte.php"><img src="../../../public/images/homeLightBlue.svg" alt=""class="homeLightBlue"></a>
             <a href=""><img src="../../../public/images/searchLightBlue.svg" alt="" class="searchLightBlue"></a>
             <a href="../frontoffice/panier.php"><img src="../../../public/images/cartLightBlue.svg" alt="" class="cartLightBlue"></a>
             <a href="../frontoffice/inscription.php" style="margin-right: 0px;">

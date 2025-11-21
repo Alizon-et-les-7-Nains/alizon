@@ -356,13 +356,14 @@ body {
   color: #273469;
   font-family: "berkshire", serif;
   font-style: normal;
+  text-decoration: none;
 }
 .page404 h1 {
-  font-size: 150px;
+  font-size: 120px;
   margin: 0;
 }
 .page404 h2 {
-  font-size: 80px;
+  font-size: 50px;
 }
 .page404 a {
   color: #fffefa;
@@ -372,6 +373,7 @@ body {
   font-size: 50px;
   padding: 10px 50px;
   transition: 0.3s;
+  text-decoration: none;
 }
 .page404 a:hover {
   color: #273469;
