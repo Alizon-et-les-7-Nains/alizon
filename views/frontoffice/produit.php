@@ -26,8 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         // exit;
     }
     
-    // Recharger la page pour afficher le message
-    header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $productId);
     exit;
 }
 
