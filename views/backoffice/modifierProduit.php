@@ -42,7 +42,10 @@ if (!$produit) {
     <header>
         <?php require_once "./partials/header.php"?>
     </header>
-    <?php require_once "./partials/aside.php"?>
+
+    <?php 
+    $current_page = basename(__FILE__);
+    require_once "./partials/aside.php"?>
        
     <main class="modifierProduit"> 
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
@@ -86,11 +89,23 @@ if (!$produit) {
                 </div>
 
             <div class="form-actions">
-                <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
-                <a href="#"><button type="button" class="btn-supprimer">Supprimer</button></a>
-                <a href="#"><button type="submit" class="btn-ajouter">Modifier le produit</button></a>
+                <button type="button" class="btn-previsualiser">Prévisualiser</button>
+                <button type="submit" class="btn-ajouter">Modifier le produit</button>
+            </form>
+                <form class="supprimerProduit" id="monForm" action="../../controllers/deleteProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">            
+                        <button type="submit" class="btn-supprimer">Supprimer</button>
+                         <dialog>
+                            <h1>Êtes-vous sûr de vouloir vous déconnecter ?</h1>
+                            <nav>
+                                <button>Annuler</button>
+                                <button autofocus>Oui</button>
+                            </nav>
+                        </dialog>
+                    </a>
+                   
+                </form>
             </div>
-        </form>
+        
     </main>
 
     <script>
