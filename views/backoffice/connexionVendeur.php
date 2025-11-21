@@ -22,10 +22,7 @@
         <img class="triskiel" src="../../public/images/triskiel gris.svg" alt="">
 
         <div class="pdp_title">
-            <div class="cercle-pdp">
-                <img src="../../public/images/pdp_user.svg" alt="Avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                <i class="bi bi-person-fill fallback-icon" style="font-size: 3rem; color: white; display: none;"></i>
-            </div>
+            <img src="../../public/images/pdp_user.svg" alt="Avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
             <h1>Connexion à votre compte vendeur Alizon</h1>
         </div>
 

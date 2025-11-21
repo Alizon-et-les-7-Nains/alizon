@@ -244,6 +244,10 @@ main.backoffice-stocks {
         }
         color: $color-blue;
         font-family: 'open-sans';
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1em;
         
         position: fixed;
         top: 50%;
@@ -276,20 +280,26 @@ main.backoffice-stocks {
                 li input {
                     transition: all 0.2s;
                     border-style: hidden;
-                    
+                }
+                li:first-child input {
+                    background-color: $color-pastel-purple;
+                    color: $color-blue;
+
                     &:hover {
                         background-color: $color-pastel-blue;
                         color: $color-blue;
                         cursor: pointer;
                     }
                 }
-                li:first-child input {
-                    background-color: $color-pastel-purple;
-                    color: $color-blue;
-                }
                 li:last-child input {
                     background-color: $color-blue;
                     color: $color-white;
+
+                    &:hover {
+                        background-color: $color-pastel-blue;
+                        color: $color-blue;
+                        cursor: pointer;
+                    }
                 }
             }
             
