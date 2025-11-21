@@ -67,7 +67,8 @@
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePromouvoir.svg" alt="">
                                         <?php $idProd = $produitEnVente[$i]['idproduit'] ?>
-                                        <button onclick="popUpPromouvoir(<?php echo $idProd ?>)">Promouvoir</button>
+                                        <?php $nom = $produitEnVente[$i]['nom'] ?>
+                                        <button onclick="popUpPromouvoir(<?php echo $idProd ?>, <?php echo $nom ?>)">Promouvoir</button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
