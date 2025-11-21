@@ -4403,7 +4403,7 @@ main.backoffice-stocks dialog {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 50%);
+  transform: translate(-25%, 25%);
 }
 main.backoffice-stocks dialog::backdrop {
   background: rgba(0, 0, 0, 0.25);
