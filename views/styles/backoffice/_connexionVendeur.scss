@@ -5,12 +5,13 @@
     position: relative; 
     background-color: $color-white;
     color: $color-blue;
-    min-height: 100vh;
+    min-height: calc(100vh - 100px);
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     overflow-x: hidden;
-    padding-bottom: 40px;
+    padding: 40px 20px;
 
     .triskiel {
         position: absolute;
@@ -18,52 +19,49 @@
         right: 0;
         height: 100%;
         width: auto;
-        max-width: 65%;
-        object-fit: cover;
-        z-index: -100; 
+        max-height: 85vh; 
+        z-index: 0; 
         pointer-events: none;
-        opacity: 0.8; 
     }
     
     .pdp_title {
         position: relative;
         z-index: 1;        
-        
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 60px;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         text-align: center;
 
         .cercle-pdp {
-            background-color: #ccc; 
-            width: 120px;
-            height: 120px;
+            background-color: $color-dark-gray;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid $color-blue;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             
             img {
-                width: 60%;
+                width: 55%;
                 height: auto;
             }
         }
 
         h1 {
-            font-family: 'lora', serif;
+            font-family: 'lora', serif; 
             font-size: 1.8rem;
             font-weight: bold;
             color: $color-blue;
+            margin-top: 10px;
         }
     }
 
     .information_connexion {
         position: relative;
-        
+        z-index: 1;
         width: 100%;
         max-width: 500px;
 
@@ -74,20 +72,24 @@
 
             .inputs-container {
                 width: 100%;
-                margin-bottom: 10px;
+                margin-bottom: 15px;
             }
 
             .custom-input {
+                background-color: $color-white;
                 border: 2px solid $color-blue;
-                border-radius: 8px;
+                border-radius: 6px; 
                 padding: 12px 15px;
                 font-size: 1rem;
-                font-weight: bold;
+                font-weight: 600;
                 color: $color-blue;
 
                 &::placeholder {
-                    color: lighten($color-blue, 20%);
-                    font-style: italic;
+                    color: $color-blue;
+                    font-family: 'lora', serif; 
+                    font-weight: 600;
+                    font-style: italic; 
+                    opacity: 0.7;
                 }
             }
 
@@ -95,14 +97,15 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                margin: 10px 0 25px 0;
-                gap: 5px;
+                margin: 15px 0 35px 0;
+                gap: 10px;
 
                 a {
                     color: $color-blue;
                     font-size: 0.9rem;
                     text-decoration: underline;
-                    font-weight: bold;
+                    font-family: 'lora', serif;
+                    font-weight: 600;
                     cursor: pointer;
                 }
             }
@@ -116,13 +119,18 @@
                     background-color: $color-pastel-purple;
                     color: $color-blue;
                     border: none;
-                    border-radius: 50px;
-                    padding: 12px 60px;
-                    font-size: 1.1rem;
-                    font-weight: normal;
+                    border-radius: 24px;
+                    padding: 12px 80px;
+                    font-size: 1.2rem;
+                    font-family: 'lora', serif;
                     cursor: pointer;
                     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
                     transition: transform 0.2s;
+                    
+                    &:hover {
+                        transform: scale(1.02);
+                        opacity: 0.9;
+                    }
                 }
             }
         }
@@ -130,13 +138,12 @@
 
     .text-footer {
         position: relative;
-        margin-top: auto;
-        padding-top: 50px;
+        z-index: 1;
+        margin-top: 60px;
         max-width: 800px;
         text-align: center;
-        font-size: 0.7rem;
-        color: grey;
-        padding-left: 20px;
-        padding-right: 20px;
+        font-size: 0.65rem;
+        color: $color-light-gray;
+        line-height: 1.4;
     }
 }

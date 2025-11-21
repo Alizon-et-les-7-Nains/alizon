@@ -2,7 +2,6 @@
     $currentPage = basename(__FILE__);
     require_once "../../controllers/pdo.php"; 
 
-    // Gestion des messages d'erreur (similaire à la page inscription)
     $message = $_SESSION['message'] ?? ''; 
     unset($_SESSION['message']);
 ?>
@@ -17,16 +16,17 @@
     <link rel="stylesheet" href="../../public/style.css">
     <title>Connexion à un compte vendeur</title>
 </head>
-<?php
-        require_once "./partials/header.php";
-?>
+
+<?php require_once "./partials/header.php"; ?>
+
 <body>
     <main class="connexionVendeur">
         <img class="triskiel" src="../../public/images/triskiel gris.svg" alt="">
 
         <div class="pdp_title">
             <div class="cercle-pdp">
-                <img src="../../public/images/pdp_user.svg" alt="photo de profil">
+                <img src="../../public/images/pdp_user.svg" alt="Avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                <i class="bi bi-person-fill fallback-icon" style="font-size: 3rem; color: white; display: none;"></i>
             </div>
             <h1>Connexion à votre compte vendeur Alizon</h1>
         </div>
