@@ -234,92 +234,97 @@ main.backoffice-stocks {
         }
     }
     
-    dialog {
-        background-color: $color-white;
-        border: none;
-        border-radius: 16px;
-        padding: {
-            left: 2em; right: 2em;
-            top: 1em; bottom: 1em;
-        }
-        color: $color-blue;
-        font-family: 'open-sans';
+    margin-bottom: 2em;
+}
+
+dialog.reassort {
+    background-color: $color-white;
+    border: none;
+    border-radius: 16px;
+    padding: {
+        left: 2em; right: 2em;
+        top: 1em; bottom: 1em;
+    }
+    color: $color-blue;
+    font-family: 'open-sans';
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    &::backdrop {
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(1px);
+    }
+    
+    h1 {
+        margin-bottom: 1em;
+        text-align: center;
+    }
+    
+    form {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1em;
+        gap: 2em;
+        width: 100%;
         
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        
-        &::backdrop {
-            background: rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(1px);
-        }
-        
-        h1 {
-            margin-bottom: 1em;
-            text-align: center;
-        }
-        
-        form {
+        ul {
             display: flex;
-            flex-direction: column;
             align-items: center;
             gap: 2em;
-            width: 100%;
+            list-style: none;
             
-            ul {
-                display: flex;
-                align-items: center;
-                gap: 2em;
-                list-style: none;
-
-                li input {
-                    transition: all 0.2s;
-                    border-style: hidden;
-                }
-                li:first-child input {
-                    background-color: $color-pastel-purple;
+            li input {
+                transition: all 0.2s;
+                border-style: hidden;
+            }
+            li:first-child input {
+                background-color: $color-pastel-purple;
+                color: $color-blue;
+                
+                &:hover {
+                    background-color: $color-pastel-blue;
                     color: $color-blue;
-
-                    &:hover {
-                        background-color: $color-pastel-blue;
-                        color: $color-blue;
-                        cursor: pointer;
-                    }
-                }
-                li:last-child input {
-                    background-color: $color-blue;
-                    color: $color-white;
-
-                    &:hover {
-                        background-color: $color-pastel-blue;
-                        color: $color-blue;
-                        cursor: pointer;
-                    }
+                    cursor: pointer;
                 }
             }
-            
-            input {
-                color: $color-blue;
-                padding: {
-                    left: 2em; right: 2em;
-                    top: 1em; bottom: 1em;
-                }
-                width: 200px;
-                font-size: 20px;
-                border: {
-                    style: solid;
-                    width: 2px;
+            li:last-child input {
+                background-color: $color-blue;
+                color: $color-white;
+                
+                &:hover {
+                    background-color: $color-pastel-blue;
                     color: $color-blue;
-                    radius: 24px;
+                    cursor: pointer;
                 }
+            }
+        }
+
+        label {
+            color: $color-red;
+        }
+        
+        input {
+            color: $color-blue;
+            font-weight: bold;
+            padding: {
+                left: 2em; right: 2em;
+                top: 1em; bottom: 1em;
+            }
+            width: 200px;
+            font-size: 25px;
+            border: {
+                style: solid;
+                width: 2px;
+                color: $color-blue;
+                radius: 24px;
             }
         }
     }
-    
-    margin-bottom: 2em;
 }
