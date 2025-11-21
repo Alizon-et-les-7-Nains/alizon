@@ -244,6 +244,10 @@ main.backoffice-stocks {
         }
         color: $color-blue;
         font-family: 'open-sans';
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1em;
         
         position: fixed;
         top: 50%;
@@ -273,15 +277,17 @@ main.backoffice-stocks {
                 gap: 2em;
                 list-style: none;
 
-                li input {
-                    transition: all 0.2s;
-                    border-style: hidden;
-                    
+                input {
                     &:hover {
                         background-color: $color-pastel-blue;
                         color: $color-blue;
                         cursor: pointer;
                     }
+                }
+
+                li input {
+                    transition: all 0.2s;
+                    border-style: hidden;
                 }
                 li:first-child input {
                     background-color: $color-pastel-purple;

@@ -2,14 +2,12 @@
 include '../../controllers/pdo.php';
 session_start();
 
-// Gestion de l'ajout au panier
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
     
-    // Vérifier si l'utilisateur est connecté
-    // if (isset($_SESSION['idClient'])) {
-        $idClient = $_SESSION['idClient'];
+    if (isset($_SESSION['idClient'])) {
+        $idClient = $_SESSION['user_id'];
         
         // Appeler la fonction pour mettre à jour la quantité
         $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
@@ -19,15 +17,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         } else {
             $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
         }
-    // } else {
-    //     $_SESSION['message_panier'] = "Veuillez vous connecter pour ajouter des articles au panier.";
-    //     // Rediriger vers la page de connexion si nécessaire
-    //     // header('Location: connexion.php');
-    //     // exit;
+    } else {
+        $_SESSION['message_panier'] = "Veuillez vous connecter pour ajouter des articles au panier.";
+        // Rediriger vers la page de connexion si nécessaire
+        // header('Location: connexion.php');
+        // exit;
     }
     
-//     exit;
-// }
+    exit;
+}
 
 $productId = intval($_GET['id']) ?? 0;
 
@@ -174,7 +172,6 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     cd /docker/data/web/html
     git pull -->
 
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
@@ -269,15 +266,15 @@ if (isset($_SESSION['message_panier'])) {
     <br>
     <hr>
     <div class="ligneActions">
-        <img src="../../../images/camion.png" alt="">
+        <img src="../../public/images/camion.png" alt="">
         <p>Livraison <b>GRATUITE</b> - Expédié par <b>mondial relais</b>. Arrivée entre le <b>mar. 21 septembre - ven. 24 septembre</b></p>
     </div>
     <div class="ligneActions">
-        <img src="../../../images/emplacement.png" alt="">
+        <img src="../../public/images/emplacement.png" alt="">
         <p>Livré a <a href=""><b>Clermont-ferrand 63000</b>, 10 place saint-michel</a></p>   
     </div>
     <div class="ligneActions">
-        <img src="../../../images/tec.png" alt="">
+        <img src="../../public/images/tec.png" alt="">
         <p>Consulter les <b><a href="">conditions générales de vente</a></b></p>
     </div>
     <hr>
