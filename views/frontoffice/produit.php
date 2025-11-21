@@ -279,7 +279,7 @@ if (isset($_SESSION['message_panier'])) {
         } else { 
             echo '<a href="legalesNonConnecte.php">conditions générales de vente</a>';
         } ?>
-        </p>
+        </b></p>
     </div>
     <hr>
     <br>
