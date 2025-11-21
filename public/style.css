@@ -4391,6 +4391,7 @@ main.backoffice-stocks {
 }
 
 dialog.reassort {
+  transition: all 0.2s ease;
   background-color: #fffefa;
   border: none;
   border-radius: 16px;
