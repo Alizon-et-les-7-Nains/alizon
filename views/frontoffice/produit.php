@@ -273,7 +273,13 @@ if (isset($_SESSION['message_panier'])) {
     </div>
     <div class="ligneActions">
         <img src="../../public/images/tec.png" alt="">
-        <p>Consulter les <b><a href="">conditions générales de vente</a></b></p>
+        <p>
+            Consulter les <b><?php if (isset($_SESSION['user_id'])) {
+            echo '<a href="legalesConnecte.php">conditions générales de vente</a>';
+        } else { 
+            echo '<a href="legalesNonConnecte.php">conditions générales de vente</a>';
+        } ?>
+        </p>
     </div>
     <hr>
     <br>
