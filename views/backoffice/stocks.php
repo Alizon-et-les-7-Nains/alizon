@@ -258,7 +258,7 @@
 
     <?php require_once './partials/footer.php' ?>
 
-    <dialog class="reassort">
+    <dialog class="reassort" close>
         <h1>Paramètres de réassort</h1>
         <form action="" method="post">
             <input type="number" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
