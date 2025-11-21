@@ -260,13 +260,14 @@ main.backoffice-stocks {
             text-align: center;
         }
         
-        nav {
+        form {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             gap: 2em;
             width: 100%;
             
-            button {
+            input {
                 transition: all 0.2s;
                 padding: {
                     left: 2em; right: 2em;
