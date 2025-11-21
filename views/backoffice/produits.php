@@ -68,7 +68,8 @@
                                         <img src="/public/images/iconePromouvoir.svg" alt="">
                                         <?php $idProd = $produitEnVente[$i]['idproduit'] ?>
                                         <?php $nom = $produitEnVente[$i]['nom'] ?>
-                                        <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>')">
+                                        <?php $nbEval = $evaluations[0]['evaluation'] ?>
+                                        <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo $nbEval ?>, <?php $produitEnVente[$i]['note'] ?>)">
                                             Promouvoir
                                         </button>
                                     </div>

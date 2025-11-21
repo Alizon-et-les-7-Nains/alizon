@@ -24,7 +24,7 @@ $fileName = $_FILES['url']['name'];
 $tmpPath = $_FILES['url']['tmp_name'];
 
 move_uploaded_file($tmpPath, "../public/images/$fileName");
-$url = "../public/images/$fileName";
+$url = "/images/$fileName";
 try{
         $imgDeProd->execute([
             ':url' => $url,
