@@ -4426,11 +4426,6 @@ main.backoffice-stocks dialog form ul {
   gap: 2em;
   list-style: none;
 }
-main.backoffice-stocks dialog form ul input:hover {
-  background-color: #e3f2fe;
-  color: #273469;
-  cursor: pointer;
-}
 main.backoffice-stocks dialog form ul li input {
   transition: all 0.2s;
   border-style: hidden;
@@ -4439,9 +4434,19 @@ main.backoffice-stocks dialog form ul li:first-child input {
   background-color: #e4d9ff;
   color: #273469;
 }
+main.backoffice-stocks dialog form ul li:first-child input:hover {
+  background-color: #e3f2fe;
+  color: #273469;
+  cursor: pointer;
+}
 main.backoffice-stocks dialog form ul li:last-child input {
   background-color: #273469;
   color: #fffefa;
+}
+main.backoffice-stocks dialog form ul li:last-child input:hover {
+  background-color: #e3f2fe;
+  color: #273469;
+  cursor: pointer;
 }
 main.backoffice-stocks dialog form input {
   color: #273469;
@@ -5652,21 +5657,6 @@ main.backoffice-stocks {
   margin-bottom: 30px;
   text-align: center;
 }
-.connexionVendeur .pdp_title .cercle-pdp {
-  background-color: #6e6e6e;
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #273469;
-  margin-bottom: 25px;
-}
-.connexionVendeur .pdp_title .cercle-pdp img {
-  width: 55%;
-  height: auto;
-}
 .connexionVendeur .pdp_title h1 {
   font-family: "lora", serif;
   font-size: 1.8rem;
@@ -5742,14 +5732,16 @@ main.backoffice-stocks {
   opacity: 0.9;
 }
 .connexionVendeur .text-footer {
-  position: relative;
-  z-index: 1;
-  margin-top: 60px;
-  max-width: 800px;
+  max-width: 1000px;
   text-align: center;
-  font-size: 0.65rem;
-  color: #e4e4e4;
-  line-height: 1.4;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: normal;
+  color: #6e6e6e;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
 }
 
 /*# sourceMappingURL=style.css.map */
