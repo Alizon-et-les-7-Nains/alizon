@@ -2,14 +2,12 @@
 include '../../controllers/pdo.php';
 session_start();
 
-// Gestion de l'ajout au panier
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
     
-    // Vérifier si l'utilisateur est connecté
     if (isset($_SESSION['idClient'])) {
-        $idClient = $_SESSION['idClient'];
+        $idClient = $_SESSION['user_id'];
         
         // Appeler la fonction pour mettre à jour la quantité
         $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
@@ -238,7 +236,6 @@ if (isset($_SESSION['message_panier'])) {
             </div>
             <?php 
             $note = $produit['note'];
-            echo htmlspecialchars($note);
             ?>
         <div id="prix">
             <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
