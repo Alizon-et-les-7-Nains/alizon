@@ -64,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
         $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+        $extension = '.'.$extension;
         move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
     }
 
