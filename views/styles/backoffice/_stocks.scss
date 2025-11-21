@@ -22,7 +22,7 @@ main.backoffice-stocks {
             gap: 1em;
             font-family: 'open-sans';
         }
-
+        
         img:not(figure img) {
             height: 200px;
             margin: {
@@ -42,7 +42,7 @@ main.backoffice-stocks {
             background-color: $color-pastel-purple;
             border-radius: 16px;
             font-family: 'open-sans';
-
+            
             table:not(table table) {
                 border-spacing: 2em 0;
             }
@@ -90,7 +90,7 @@ main.backoffice-stocks {
             ul {
                 list-style: none;
             }
-
+            
             .type {
                 text-transform: capitalize;
             }
@@ -199,7 +199,7 @@ main.backoffice-stocks {
                 width: 5px;
                 color: $color-red;
             }
-
+            
             > ul {
                 li:last-child {
                     color: $color-red;
@@ -212,7 +212,7 @@ main.backoffice-stocks {
                 width: 5px;
                 color: $color-orange;
             }
-
+            
             > ul {
                 li:last-child {
                     color: $color-orange;
@@ -225,7 +225,7 @@ main.backoffice-stocks {
                 width: 5px;
                 color: $color-green;
             }
-
+            
             > ul {
                 li:last-child {
                     color: $color-green;
@@ -233,7 +233,7 @@ main.backoffice-stocks {
             }
         }
     }
-
+    
     dialog {
         background-color: $color-white;
         border: none;
@@ -267,34 +267,50 @@ main.backoffice-stocks {
             gap: 2em;
             width: 100%;
             
+            ul {
+                display: flex;
+                align-items: center;
+                gap: 2em;
+                list-style: none;
+
+                li input {
+                    transition: all 0.2s;
+                    border-style: hidden;
+                    
+                    &:first-child {
+                        background-color: $color-pastel-purple;
+                        color: $color-blue;
+                    }
+                    &:last-child {
+                        background-color: $color-blue;
+                        color: $color-white;
+                    }
+                    
+                    &:hover {
+                        background-color: $color-pastel-blue;
+                        color: $color-blue;
+                        cursor: pointer;
+                    }
+                }
+            }
+            
             input {
-                transition: all 0.2s;
+                color: $color-blue;
                 padding: {
                     left: 2em; right: 2em;
                     top: 1em; bottom: 1em;
                 }
                 width: 200px;
                 font-size: 20px;
-                border-radius: 24px;
-                border: none;
-                cursor: pointer;
-                
-                &:first-child {
-                    background-color: $color-pastel-purple;
+                border: {
+                    style: solid;
+                    width: 2px;
                     color: $color-blue;
-                }
-                &:last-child {
-                    background-color: $color-blue;
-                    color: $color-white;
-                }
-                
-                &:hover {
-                    background-color: $color-pastel-blue;
-                    color: $color-blue;
+                    radius: 24px;
                 }
             }
         }
     }
-
+    
     margin-bottom: 2em;
 }
