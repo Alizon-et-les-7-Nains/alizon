@@ -4425,18 +4425,18 @@ main.backoffice-stocks dialog form ul li input {
   transition: all 0.2s;
   border-style: hidden;
 }
-main.backoffice-stocks dialog form ul li input:first-child {
-  background-color: #e4d9ff;
-  color: #273469;
-}
-main.backoffice-stocks dialog form ul li input:last-child {
-  background-color: #273469;
-  color: #fffefa;
-}
 main.backoffice-stocks dialog form ul li input:hover {
   background-color: #e3f2fe;
   color: #273469;
   cursor: pointer;
+}
+main.backoffice-stocks dialog form ul li:first-child input {
+  background-color: #e4d9ff;
+  color: #273469;
+}
+main.backoffice-stocks dialog form ul li:last-child input {
+  background-color: #273469;
+  color: #fffefa;
 }
 main.backoffice-stocks dialog form input {
   color: #273469;
