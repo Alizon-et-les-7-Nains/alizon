@@ -69,8 +69,9 @@ function verifDate(val){
         clearError(val);
     }
 }
-function popUpRemise(){
+function popUpRemise(id){
         const overlay = document.createElement("div");
+        console.log("ID DU PRODUIT : ", id);
         overlay.className = "overlayPopUpRemise";
         overlay.innerHTML = `
         <main class="popUpRemise">
