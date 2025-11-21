@@ -40,3 +40,7 @@ modalReassort?.addEventListener("click", (e) => {
 document.querySelector('input#annuler')?.addEventListener('click', () => {
     modalReassort.close();
 })
+
+document.addEventListener('DOMContentLoaded', () => {
+    modalReassort?.close();
+});

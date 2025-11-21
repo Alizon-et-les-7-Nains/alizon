@@ -1,119 +1,119 @@
 <?php
 require_once 'pdo.php';
 
-// Debug: logger la requête
-error_log("Upload photo - Méthode: " . $_SERVER['REQUEST_METHOD']);
-error_log("FILES: " . print_r($_FILES, true));
-error_log("POST: " . print_r($_POST, true));
+// Endpoint pour uploader la photo de profil vendeur
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_FILES['photoProfil'])) {
+    echo json_encode(['success' => false, 'message' => 'Méthode non autorisée ou pas de fichier']);
+    exit;
+}
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    // Vérifier si un fichier a été uploadé
-    if (!isset($_FILES['photoProfil']) || $_FILES['photoProfil']['error'] === UPLOAD_ERR_NO_FILE) {
-        echo json_encode(['success' => false, 'message' => 'Aucun fichier reçu']);
-        exit;
-    }
-    
-    $code_vendeur = $_POST['codeVendeur'] ?? null;
-    
-    if (!$code_vendeur) {
-        echo json_encode(['success' => false, 'message' => 'Code vendeur manquant']);
-        exit;
+$code_vendeur = $_POST['codeVendeur'] ?? null;
+if (!$code_vendeur) {
+    echo json_encode(['success' => false, 'message' => 'Code vendeur manquant']);
+    exit;
+}
+
+// Chemin final (public) — s'assurer que le dossier existe
+$photoDir = __DIR__ . '/../../public/images/photoDeProfil/';
+if (!is_dir($photoDir) && !mkdir($photoDir, 0755, true)) {
+    echo json_encode(['success' => false, 'message' => 'Impossible de créer le dossier images']);
+    exit;
+}
+
+$photoFilename = 'photo_profil_vendeur' . $code_vendeur . '.png';
+$photoPath = $photoDir . $photoFilename;
+
+// Vérifier les erreurs d'upload
+if ($_FILES['photoProfil']['error'] !== UPLOAD_ERR_OK) {
+    $uploadErrors = [
+        UPLOAD_ERR_INI_SIZE => 'Fichier trop volumineux',
+        UPLOAD_ERR_FORM_SIZE => 'Fichier trop volumineux',
+        UPLOAD_ERR_PARTIAL => 'Upload partiel',
+        UPLOAD_ERR_NO_FILE => 'Aucun fichier',
+        UPLOAD_ERR_NO_TMP_DIR => 'Dossier temporaire manquant',
+        UPLOAD_ERR_CANT_WRITE => 'Erreur d\'écriture',
+        UPLOAD_ERR_EXTENSION => 'Extension non autorisée'
+    ];
+    $err = $uploadErrors[$_FILES['photoProfil']['error']] ?? 'Erreur upload';
+    echo json_encode(['success' => false, 'message' => $err]);
+    exit;
+}
+
+// Vérifier type et taille
+$allowed = ['image/jpeg','image/png','image/gif','image/webp'];
+$type = mime_content_type($_FILES['photoProfil']['tmp_name']);
+if (!in_array($type, $allowed)) {
+    echo json_encode(['success' => false, 'message' => 'Type non autorisé: '.$type]);
+    exit;
+}
+if ($_FILES['photoProfil']['size'] > 5 * 1024 * 1024) {
+    echo json_encode(['success' => false, 'message' => 'Taille maximale 5MB']);
+    exit;
+}
+
+// Supprimer ancienne photo si existe
+if (file_exists($photoPath)) {
+    @unlink($photoPath);
+}
+
+// Essayer de convertir et sauvegarder en PNG pour uniformiser
+try {
+    switch ($type) {
+        case 'image/jpeg':
+        case 'image/jpg':
+            $img = imagecreatefromjpeg($_FILES['photoProfil']['tmp_name']);
+            break;
+        case 'image/png':
+            $img = imagecreatefrompng($_FILES['photoProfil']['tmp_name']);
+            break;
+        case 'image/gif':
+            $img = imagecreatefromgif($_FILES['photoProfil']['tmp_name']);
+            break;
+        case 'image/webp':
+            if (function_exists('imagecreatefromwebp')) {
+                $img = imagecreatefromwebp($_FILES['photoProfil']['tmp_name']);
+            } else {
+                $img = null;
+            }
+            break;
+        default:
+            $img = null;
     }
 
-    // Chemin pour stocker les photos
-    $photoDir = __DIR__ . '/../../images/photoProfilVendeur/';
-    
-    // Créer le dossier s'il n'existe pas
-    if (!is_dir($photoDir)) {
-        if (!mkdir($photoDir, 0755, true)) {
-            echo json_encode(['success' => false, 'message' => 'Impossible de créer le dossier']);
-            exit;
-        }
-    }
-    
-    $photoFilename = 'photo_profil' . $code_vendeur . '.png';
-    $photoPath = $photoDir . $photoFilename;
-
-    // Vérifier les erreurs d'upload
-    if ($_FILES['photoProfil']['error'] !== UPLOAD_ERR_OK) {
-        $uploadErrors = [
-            UPLOAD_ERR_INI_SIZE => 'Fichier trop volumineux',
-            UPLOAD_ERR_FORM_SIZE => 'Fichier trop volumineux',
-            UPLOAD_ERR_PARTIAL => 'Upload partiel',
-            UPLOAD_ERR_NO_FILE => 'Aucun fichier',
-            UPLOAD_ERR_NO_TMP_DIR => 'Dossier temporaire manquant',
-            UPLOAD_ERR_CANT_WRITE => 'Erreur d\'écriture',
-            UPLOAD_ERR_EXTENSION => 'Extension non autorisée'
-        ];
-        $errorMsg = $uploadErrors[$_FILES['photoProfil']['error']] ?? 'Erreur inconnue';
-        echo json_encode(['success' => false, 'message' => 'Erreur upload: ' . $errorMsg]);
-        exit;
-    }
-
-    // Vérifier le type de fichier
-    $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-    $fileType = mime_content_type($_FILES['photoProfil']['tmp_name']);
-    
-    if (!in_array($fileType, $allowedTypes)) {
-        echo json_encode(['success' => false, 'message' => 'Type de fichier non autorisé: ' . $fileType]);
-        exit;
-    }
-
-    // Vérifier la taille (max 5MB)
-    if ($_FILES['photoProfil']['size'] > 5 * 1024 * 1024) {
-        echo json_encode(['success' => false, 'message' => 'Fichier trop volumineux (max 5MB)']);
-        exit;
-    }
-
-    // Supprimer l'ancienne photo si elle existe
-    if (file_exists($photoPath)) {
-        if (!unlink($photoPath)) {
-            echo json_encode(['success' => false, 'message' => 'Erreur suppression ancienne photo']);
-            exit;
-        }
-    }
-
-    // Convertir et redimensionner l'image si nécessaire
-    try {
-        // Créer une image à partir du fichier uploadé
-        switch ($fileType) {
-            case 'image/jpeg':
-            case 'image/jpg':
-                $image = imagecreatefromjpeg($_FILES['photoProfil']['tmp_name']);
-                break;
-            case 'image/png':
-                $image = imagecreatefrompng($_FILES['photoProfil']['tmp_name']);
-                break;
-            case 'image/gif':
-                $image = imagecreatefromgif($_FILES['photoProfil']['tmp_name']);
-                break;
-            default:
-                throw new Exception('Type non supporté');
-        }
-        
-        if (!$image) {
-            throw new Exception('Impossible de créer l\'image');
-        }
-        
-        // Sauvegarder en PNG
-        if (imagepng($image, $photoPath)) {
-            imagedestroy($image);
-            echo json_encode(['success' => true, 'message' => 'Photo mise à jour avec succès']);
-        } else {
+    if ($img) {
+        // Optionnel: redimensionner pour garder un format carré (160x160 par ex.)
+        $w = imagesx($img);
+        $h = imagesy($img);
+        $size = 320; // résolution cible
+        $thumb = imagecreatetruecolor($size, $size);
+        imagealphablending($thumb, false);
+        imagesavealpha($thumb, true);
+        // Remplir de transparent
+        $transparent = imagecolorallocatealpha($thumb, 0, 0, 0, 127);
+        imagefilledrectangle($thumb, 0, 0, $size, $size, $transparent);
+        // Calculer crop central
+        $min = min($w, $h);
+        $srcX = intval(($w - $min) / 2);
+        $srcY = intval(($h - $min) / 2);
+        imagecopyresampled($thumb, $img, 0, 0, $srcX, $srcY, $size, $size, $min, $min);
+        if (!imagepng($thumb, $photoPath)) {
             throw new Exception('Erreur sauvegarde image');
         }
-        
-    } catch (Exception $e) {
-        // Fallback: utiliser move_uploaded_file si la conversion échoue
-        if (move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath)) {
-            echo json_encode(['success' => true, 'message' => 'Photo mise à jour (fallback)']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Erreur: ' . $e->getMessage()]);
-        }
+        imagedestroy($thumb);
+        imagedestroy($img);
+        echo json_encode(['success' => true, 'message' => 'Photo mise à jour']);
+        exit;
     }
-    
-} else {
-    echo json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
+} catch (Throwable $e) {
+    // continue vers fallback
 }
+
+// Fallback : move_uploaded_file
+if (move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath)) {
+    echo json_encode(['success' => true, 'message' => 'Photo mise à jour (fallback)']);
+    exit;
+}
+
+echo json_encode(['success' => false, 'message' => 'Impossible de sauvegarder le fichier']);
+exit;
 ?>

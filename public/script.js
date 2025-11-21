@@ -88,6 +88,9 @@ modalReassort?.addEventListener("click", (e) => {
 document.querySelector('input#annuler')?.addEventListener('click', () => {
     modalReassort.close();
 });
+document.addEventListener('DOMContentLoaded', () => {
+    modalReassort?.close();
+});
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
