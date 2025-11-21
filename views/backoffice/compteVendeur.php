@@ -48,11 +48,29 @@ $region        = $vendeur['region'] ?? '';
 $pays          = $vendeur['pays'] ?? '';
 $idAdresse     = $vendeur['idAdresse'] ?? '';
 
-// Chemin de la photo de profil
-$photoDir = '../../images/photoProfilVendeur/';
-$photoFilename = 'photo_profil' . $code_vendeur . '.png';
-$photoPath = $photoDir . $photoFilename;
-$photoFullPath = '/var/www/html/images/photoProfilVendeur/' . $photoFilename;
+  //verification et upload de la nouvelle photo de profil
+    $photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil'.$code_vendeur;
+
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $extension = '';
+
+    foreach ($extensionsPossibles as $ext) {
+        if (file_exists($photoPath . '.' . $ext)) {
+            $extension = '.' . $ext;
+            break;
+        }
+    }
+
+    if (file_exists($photoPath)) {
+        unlink($photoPath); // supprime l'ancien fichier
+    }
+
+    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+        $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+        $extension = '.'.$extension;
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
+    }
+
 ?>
 
 $region        = $vendeur['region'] ?? '';
@@ -117,12 +135,12 @@ $photoFullPath = '/var/www/html/images/photoProfilVendeur/' . $photoFilename;
         <div class="header-compte">
             <div class="photo-profil">
                 <?php 
-                    if (file_exists($photoFullPath)) {
-                        echo '<img src="' . $photoPath . '" alt="photoProfil" id="imageProfile">';
-                    } else {
-                        echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
-                    }
-                ?>
+                        if (file_exists($photoPath.$extension)) {
+                            echo '<img src="/images/photoProfilVendeur/photo_profil'.$code_vendeur.$extension.'" alt="photoProfil" id="imageProfile">';
+                        } else {
+                            echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
+                        }
+                    ?>
             </div>
             <input type="file" id="uploadPhoto" name="photoProfil" accept="image/*" hidden>
             <h1>Mon compte</h1>
