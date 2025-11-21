@@ -2435,7 +2435,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient #titreCompte img {
   border-radius: 100%;
   width: 150px;
-  height: auto;
+  width: 150px;
+  object-fit: cover;
 }
 .mainCompteClient section {
   display: flex;
