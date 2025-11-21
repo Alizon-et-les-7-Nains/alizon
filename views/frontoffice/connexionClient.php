@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_prenom'] = $user['prenom'];
             $_SESSION['user_nom'] = $user['nom'];
             
-            header('Location: ../../views/frontoffice/acceuilConnecte.php');
+            header('Location: ../../views/frontoffice/accueilConnecte.php');
             exit;
         } else {
             $error = "Mot de passe incorrect";
