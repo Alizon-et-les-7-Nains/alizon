@@ -4439,6 +4439,7 @@ main.backoffice-stocks dialog form ul li input:hover {
   cursor: pointer;
 }
 main.backoffice-stocks dialog form input {
+  color: #273469;
   padding-left: 2em;
   padding-right: 2em;
   padding-top: 1em;
