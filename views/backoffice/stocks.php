@@ -261,7 +261,7 @@
     <dialog open>
         <h1>Paramètres de réassort</h1>
         <input type="text" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
-        <input type="date" placeholder="Date du réassort" name="Date du réassort" id="dateReassort">
+        <input type="date" placeholder="Date du réassort" value="2025-11-05" name="Date du réassort" id="dateReassort">
         <input type="text" placeholder="Réassortir" name="Reassoertir" id ="reassort">
     </dialog>
 
