@@ -1,24 +1,6 @@
 @use '../colors.scss' as *;
 @use '../fonts.scss';
 
-body.nouveauProduit {
-    nav figure:first-child {
-        display: none;
-    }
-}
-
-body.monCompte {
-    nav figure:nth-child(2), nav figure:nth-child(3) {
-        display: none;
-    }
-}
-
-body.nonConnecte {
-    nav {
-        display: none;
-    }
-}
-
 /* ---- Header ---- */
 header.backoffice {
     display: flex;
@@ -195,5 +177,23 @@ header.backoffice {
                 }
             }
         }
+    }
+}
+
+body.backoffice.nouveauProduit {
+    nav figure:first-child {
+        display: none;
+    }
+}
+
+body.backoffice.monCompte {
+    nav figure:nth-child(2), nav figure:nth-child(3) {
+        display: none;
+    }
+}
+
+body.backoffice.nonConnecte {
+    nav {
+        display: none;
     }
 }
