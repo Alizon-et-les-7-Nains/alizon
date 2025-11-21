@@ -180,7 +180,7 @@ function verifierChamp() {
     let valeur = champs[i].value.trim();
 
     // Le champ adresse2 est optionnel
-    if (i === 4 && i === 5 && i === 6 && i === 7 && i === 8 && valeur === "") {
+    if (i === 4 || i === 5 || i === 6 || i === 7 || i === 8 && valeur === "") {
       tousRemplis = false;
       setError(champs[i], "Le champs obligatoire est vide");
     }
@@ -199,7 +199,7 @@ function verifierChamp() {
 
     // Validation spécifique pour le numéro de téléphone
     if (i === 9) {
-      if (!/^0[0-9](\s[0-9]{2}){4}$/.test(valeur) || !/^0[0-9]([0-9]{2}){4}$/.test(valeur)) {
+      if (!/^0[0-9](\s[0-9]{2}){4}$/.test(valeur) && !/^0[0-9]([0-9]{2}){4}$/.test(valeur)) {
         tousRemplis = false;
         setError(champs[i], "Format attendu : 06 01 02 03 04 ou 0601020304");
       }
