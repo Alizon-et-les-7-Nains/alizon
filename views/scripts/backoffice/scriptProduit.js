@@ -123,8 +123,6 @@ function popUpRemise(){
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
 }
 
-
-
 function popUpPromouvoir(id) {
     const overlay = document.createElement("div");
     console.log("ID DU PRODUIT : ", id);
