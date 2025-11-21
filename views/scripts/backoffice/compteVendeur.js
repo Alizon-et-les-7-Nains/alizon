@@ -160,7 +160,6 @@ function activerModeEdition() {
     input.style.color = "#212529";
 
     // Ajouter écouteurs s'ils ne sont pas déjà attachés
-    // (safe approach: clone and replace to remove duplicates, then add listeners)
     const clean = input.cloneNode(true);
     input.parentNode.replaceChild(clean, input);
     clean.addEventListener("input", function () {
@@ -170,6 +169,12 @@ function activerModeEdition() {
       validerChamp(this.id, this.value);
     });
   });
+
+  // Afficher le bouton pour changer la photo
+  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
+  if (boutonChangerPhoto) {
+    boutonChangerPhoto.style.display = "block";
+  }
 
   // Masquer le bouton Modifier et afficher Annuler/Sauvegarder
   const btnModifier = document.querySelector(".boutonModifierProfil");
@@ -216,6 +221,12 @@ function desactiverModeEdition() {
     const newInput = input.cloneNode(true);
     input.parentNode.replaceChild(newInput, input);
   });
+
+  // Cacher le bouton pour changer la photo
+  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
+  if (boutonChangerPhoto) {
+    boutonChangerPhoto.style.display = "none";
+  }
 
   // Réafficher les boutons
   const btnModifier = document.querySelector(".boutonModifierProfil");
@@ -403,6 +414,46 @@ function afficherMessageCriteresMdp() {
   });
 }
 
+function initialiserUploadPhoto() {
+  const uploadInput = document.getElementById("uploadPhoto");
+  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
+  const imageProfile = document.getElementById("imageProfile");
+
+  if (!uploadInput || !boutonChangerPhoto || !imageProfile) return;
+
+  // Clic sur le bouton déclenche l'input file
+  boutonChangerPhoto.addEventListener("click", function () {
+    uploadInput.click();
+  });
+
+  // Prévisualisation de l'image sélectionnée
+  uploadInput.addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (file) {
+      // Vérifier le type de fichier
+      if (!file.type.match("image.*")) {
+        alert("Veuillez sélectionner une image valide (PNG, JPG, JPEG, WebP)");
+        uploadInput.value = "";
+        return;
+      }
+
+      // Vérifier la taille (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("L'image ne doit pas dépasser 5MB");
+        uploadInput.value = "";
+        return;
+      }
+
+      // Prévisualisation
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        imageProfile.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
 function boutonAnnuler() {
   restaurerAnciennesValeurs();
   desactiverModeEdition();
@@ -418,6 +469,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   desactiverModeEdition();
   afficherMessageCriteresMdp();
+  initialiserUploadPhoto();
 
   const btnModifier = document.querySelector(".boutonModifierProfil");
   const btnAnnuler = document.querySelector(".boutonAnnuler");
