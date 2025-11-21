@@ -39,6 +39,60 @@ $sqlImages = "SELECT i.*
 $resultImages = $pdo->query($sqlImages);
 $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 
+function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+    $idProduit = intval($idProduit);
+    $idClient = intval($idClient);
+    
+    // Récupérer le panier actuel
+    $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmtPanier->execute([$idClient]);
+    $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$panier) {
+        // Créer un nouveau panier si nécessaire
+        $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+        $stmtCreate->execute([$idClient]);
+        $idPanier = $pdo->lastInsertId();
+    } else {
+        $idPanier = $panier['idPanier'];
+    }
+
+    // Vérifier si le produit existe déjà dans le panier
+    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
+            WHERE idProduit = ? AND idPanier = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idProduit, $idPanier]);
+    $current = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($current) {
+        // Produit existe : mettre à jour la quantité
+        $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
+        
+        if ($newQty > 0) {
+            $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
+                    WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$newQty, $idProduit, $idPanier]);
+        } else {
+            // Supprimer si quantité = 0
+            $sql = "DELETE FROM _produitAuPanier WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$idProduit, $idPanier]);
+        }
+    } else {
+        // Produit n'existe pas : l'ajouter si delta > 0
+        if ($delta > 0) {
+            $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$idProduit, $idPanier, $delta]);
+        } else {
+            $success = false;
+        }
+    }
+    
+    return $success;
+}
+
 // $sqlAvis = "SELECT a.*
 //             FROM _avis a
 //             WHERE a.idProduit = $productId";
@@ -207,7 +261,7 @@ $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-            <button class="bouton boutonRose" type="submit">Ajouter au panier</button>
+            <button class="bouton boutonRose" type="submit"<?php updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta); ?>>Ajouter au panier</button>
         </form>
         <form action="pagePaiement.php" method="POST">
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
