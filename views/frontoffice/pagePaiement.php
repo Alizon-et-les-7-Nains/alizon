@@ -89,7 +89,7 @@ function removeFromCartInDatabase($pdo, $idClient, $idProduit) {
     return $res !== false;
 }
 
-function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000', $idAdresseFacturation = null) {
+function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000', $idAdresseFacturation = null) {
     try {
         $pdo->beginTransaction();
 
@@ -137,22 +137,14 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             }
         }
 
-        // CORRECTION : CRÉATION DE L'ADRESSE DE LIVRAISON DANS adresse_livraison
-        // Récupérer le nom et prénom du client pour l'adresse de livraison
-        $sqlClient = $pdo->prepare("SELECT nom, prenom FROM _client WHERE idClient = ?");
-        $sqlClient->execute([$idClient]);
-        $client = $sqlClient->fetch(PDO::FETCH_ASSOC);
-        $nomClient = $client['nom'] ?? '';
-        $prenomClient = $client['prenom'] ?? '';
-
-        // CORRECTION : Requête avec le bon nombre de paramètres
+        // CORRECTION : CRÉATION DE L'ADRESSE DE LIVRAISON DANS _adresseLivraison
         $sqlAdresseLivraison = "
-            INSERT INTO adresse_livraison (idClient, adresse, region, codePostal, ville, pays, complementAdresse, nom, prenom, estAdressePrincipale)
-            VALUES (?, ?, ?, ?, ?, 'France', '', ?, ?, FALSE)
+            INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
+            VALUES (?, ?, ?, ?)
         ";
         $stmtAdresse = $pdo->prepare($sqlAdresseLivraison);
         
-        if (!$stmtAdresse->execute([$idClient, $adresseLivraison, $regionLivraison, $codePostal, $villeLivraison, $nomClient, $prenomClient])) {
+        if (!$stmtAdresse->execute([$idClient, $adresseLivraison, $codePostal, $villeLivraison])) {
             throw new Exception("Erreur lors de l'ajout de l'adresse de livraison: " . implode(', ', $stmtAdresse->errorInfo()));
         }
         $idAdresseLivraison = $pdo->lastInsertId();
@@ -160,7 +152,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         // CORRECTION : GESTION ADRESSE FACTURATION
         // Si une adresse de facturation différente est fournie
         if ($idAdresseFacturation) {
-            // Utiliser l'ID de l'adresse de facturation fourni (déjà dans adresse_livraison)
+            // Utiliser l'ID de l'adresse de facturation fourni (déjà dans _adresseLivraison)
             $idAdresseFacturation = intval($idAdresseFacturation);
         } else {
             // Si pas d'adresse de facturation spécifique, utiliser la même que la livraison
@@ -218,10 +210,10 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
     }
 }
 
-function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville, $region = '') {
+function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
     try {
-        // CORRECTION : Insérer dans la table adresse_livraison pour l'adresse de facturation
-        $sqlCheck = "SELECT idAdresseLivraison FROM adresse_livraison 
+        // CORRECTION : Insérer dans la table _adresseLivraison pour l'adresse de facturation
+        $sqlCheck = "SELECT idAdresseLivraison FROM _adresseLivraison 
                     WHERE idClient = ? 
                     AND adresse = ? 
                     AND codePostal = ? 
@@ -240,21 +232,14 @@ function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville, $reg
             ];
         }
 
-        // Récupérer le nom et prénom du client
-        $sqlClient = $pdo->prepare("SELECT nom, prenom FROM _client WHERE idClient = ?");
-        $sqlClient->execute([$idClient]);
-        $client = $sqlClient->fetch(PDO::FETCH_ASSOC);
-        $nomClient = $client['nom'] ?? '';
-        $prenomClient = $client['prenom'] ?? '';
-
-        // CORRECTION : Requête avec le bon nombre de paramètres
+        // CORRECTION : Requête avec les bonnes colonnes
         $sqlInsert = "
-            INSERT INTO adresse_livraison (idClient, adresse, region, codePostal, ville, pays, complementAdresse, nom, prenom, estAdressePrincipale)
-            VALUES (?, ?, ?, ?, ?, 'France', '', ?, ?, FALSE)
+            INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
+            VALUES (?, ?, ?, ?)
         ";
         
         $stmtInsert = $pdo->prepare($sqlInsert);
-        if (!$stmtInsert->execute([$idClient, $adresse, $region, $codePostal, $ville, $nomClient, $prenomClient])) {
+        if (!$stmtInsert->execute([$idClient, $adresse, $codePostal, $ville])) {
             throw new Exception("Erreur lors de l'insertion de l'adresse de facturation: " . implode(', ', $stmtInsert->errorInfo()));
         }
 
@@ -277,10 +262,10 @@ function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville, $reg
 
 function getClientDeliveryAddresses($pdo, $idClient) {
     try {
-        $sql = "SELECT idAdresseLivraison, adresse, region, codePostal, ville, complementAdresse, nom, prenom, estAdressePrincipale 
-                FROM adresse_livraison 
+        $sql = "SELECT idAdresseLivraison, adresse, codePostal, ville 
+                FROM _adresseLivraison 
                 WHERE idClient = ? 
-                ORDER BY estAdressePrincipale DESC, idAdresseLivraison DESC";
+                ORDER BY idAdresseLivraison DESC";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$idClient]);
@@ -291,6 +276,7 @@ function getClientDeliveryAddresses($pdo, $idClient) {
         return [];
     }
 }
+
 // ============================================================================
 // GESTION DES ACTIONS AJAX
 // ============================================================================
@@ -324,7 +310,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             case 'createOrder':
                 $adresseLivraison = $_POST['adresseLivraison'] ?? '';
                 $villeLivraison = $_POST['villeLivraison'] ?? '';
-                $regionLivraison = $_POST['regionLivraison'] ?? '';
                 $numeroCarte = $_POST['numeroCarte'] ?? '';
                 $cvv = $_POST['cvv'] ?? '';
                 $codePostal = $_POST['codePostal'] ?? '';
@@ -332,12 +317,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $dateExpiration = $_POST['dateExpiration'] ?? '12/30';
 
                 // Validation des champs obligatoires
-                if (empty($adresseLivraison) || empty($villeLivraison) || empty($regionLivraison) || empty($numeroCarte) || empty($codePostal)) {
+                if (empty($adresseLivraison) || empty($villeLivraison) || empty($numeroCarte) || empty($codePostal)) {
                     echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
                     break;
                 }
 
-                $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExpiration, $cvv);
+                $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExpiration, $cvv);
                 echo json_encode(['success' => true, 'idCommande' => $idCommande]);
                 break;
 
@@ -458,7 +443,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                     </div>
                     <div class="ligne">
                         <div class="input-field fixed-110">
-                            <input class="code-postal-input" type="text" placeholder="Code département ou postal"
+                            <input class="code-postal-input" type="text" placeholder="Code postal"
                                 aria-label="Code postal">
                         </div>
                         <div class="input-field flex-1">

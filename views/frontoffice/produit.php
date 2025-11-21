@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
     
-    if (isset($_SESSION['idClient'])) {
+    if (isset($_SESSION['user_id'])) {
         $idClient = $_SESSION['user_id'];
         
         // Appeler la fonction pour mettre à jour la quantité
@@ -23,8 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         // header('Location: connexion.php');
         // exit;
     }
-    
-    exit;
 }
 
 $productId = intval($_GET['id']) ?? 0;
@@ -172,7 +170,6 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     cd /docker/data/web/html
     git pull -->
 
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
@@ -267,16 +264,22 @@ if (isset($_SESSION['message_panier'])) {
     <br>
     <hr>
     <div class="ligneActions">
-        <img src="../../../images/camion.png" alt="">
+        <img src="../../public/images/camion.png" alt="">
         <p>Livraison <b>GRATUITE</b> - Expédié par <b>mondial relais</b>. Arrivée entre le <b>mar. 21 septembre - ven. 24 septembre</b></p>
     </div>
     <div class="ligneActions">
-        <img src="../../../images/emplacement.png" alt="">
+        <img src="../../public/images/emplacement.png" alt="">
         <p>Livré a <a href=""><b>Clermont-ferrand 63000</b>, 10 place saint-michel</a></p>   
     </div>
     <div class="ligneActions">
-        <img src="../../../images/tec.png" alt="">
-        <p>Consulter les <b><a href="">conditions générales de vente</a></b></p>
+        <img src="../../public/images/tec.png" alt="">
+        <p>
+            Consulter les <b><?php if (isset($_SESSION['user_id'])) {
+            echo '<a href="legalesConnecte.php">conditions générales de vente</a>';
+        } else { 
+            echo '<a href="legalesNonConnecte.php">conditions générales de vente</a>';
+        } ?>
+        </p>
     </div>
     <hr>
     <br>

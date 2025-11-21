@@ -18,7 +18,7 @@
     <body class="backoffice">
         <?php require_once './partials/header.php' ?>
 
-        <?php require_once './partials/aside.php' ?>
+        <?php $currentPage = basename(__FILE__); require_once './partials/aside.php' ?>
 
         <main class="produitBackOffice">
             <h1>Produits en Vente</h1>
@@ -66,7 +66,11 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePromouvoir.svg" alt="">
-                                        <button onclick="popUpPromouvoir()">Promouvoir</button>
+                                        <?php $idProd = $produitEnVente[$i]['idproduit'] ?>
+                                        <?php $nom = $produitEnVente[$i]['nom'] ?>
+                                        <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>')">
+                                            Promouvoir
+                                        </button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -113,7 +117,7 @@
             </div>
             <?php 
                 require_once '../../controllers/pdo.php';
-                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imagedeproduit as img on prod.idproduit = img.idproduit WHERE envente = false;");
+                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = false;");
                 $produitHorsVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             ?>
 

@@ -5,22 +5,25 @@
     position: relative; 
     background-color: $color-white;
     color: $color-blue;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
-    padding: 40px 20px;
+    padding: 20px;
 
     .triskiel {
         position: absolute;
-        top: 0;
-        right: 0;
+        top: 15%;
+        right: -5%;
         height: 100%;
         width: auto;
-        max-height: 85vh; 
-        z-index: 0; 
+        max-height: 100vh;
+        object-fit: cover;
+        z-index: 0;
         pointer-events: none;
+        opacity: 0.8;
     }
     
     .pdp_title {
@@ -31,23 +34,6 @@
         align-items: center;
         margin-bottom: 30px;
         text-align: center;
-
-        .cercle-pdp {
-            background-color: $color-dark-gray;
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid $color-blue;
-            margin-bottom: 25px;
-            
-            img {
-                width: 55%;
-                height: auto;
-            }
-        }
 
         h1 {
             font-family: 'lora', serif; 
@@ -62,26 +48,32 @@
         position: relative;
         z-index: 1;
         width: 100%;
-        max-width: 500px;
+        max-width: 450px;
 
         .form-vendeur {
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
 
             .inputs-container {
+                display: flex;
+                flex-direction: column;
                 width: 100%;
-                margin-bottom: 15px;
+                margin-bottom: 20px;
+                gap: 20px;
             }
 
             .custom-input {
+                width: 100%;
                 background-color: $color-white;
                 border: 2px solid $color-blue;
-                border-radius: 6px; 
+                border-radius: 8px; 
                 padding: 12px 15px;
                 font-size: 1rem;
                 font-weight: 600;
                 color: $color-blue;
+                box-sizing: border-box;
 
                 &::placeholder {
                     color: $color-blue;
@@ -96,8 +88,8 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                margin: 15px 0 35px 0;
-                gap: 10px;
+                margin: 10px 0 30px 0;
+                gap: 8px;
 
                 a {
                     color: $color-blue;
@@ -120,15 +112,14 @@
                     border: none;
                     border-radius: 24px;
                     padding: 12px 80px;
-                    font-size: 1.2rem;
+                    font-size: 1.1rem;
                     font-family: 'lora', serif;
+                    font-weight: 600;
                     cursor: pointer;
-                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                    transition: transform 0.2s;
                     
-                    &:hover {
-                        transform: scale(1.02);
-                        opacity: 0.9;
+                    &:disabled {
+                        cursor: not-allowed;
+                        opacity: 0.8;
                     }
                 }
             }
@@ -138,11 +129,12 @@
     .text-footer {
         position: relative;
         z-index: 1;
-        margin-top: 60px;
         max-width: 800px;
         text-align: center;
-        font-size: 0.65rem;
-        color: $color-light-gray;
+        font-size: 0.7rem;
+        color: $color-dark-gray;
+        margin-top: 50px;
+        padding: 0 20px;
         line-height: 1.4;
     }
 }
