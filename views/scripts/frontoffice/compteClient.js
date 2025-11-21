@@ -175,59 +175,51 @@ function verifierChamp() {
     return;
   }
 
+
   for (let i = 0; i < champs.length; i++) {
     let valeur = champs[i].value.trim();
 
-    // Les champs adresse (indices 4-8) sont optionnels
-    const estChampOptional = (i >= 4 && i <= 8);
-
-    // Si le champ est vide et obligatoire
-    if (valeur === "" && !estChampOptional) {
+    // Le champ adresse2 est optionnel
+    if (i === 4 && i === 5 && i === 6 && i === 7 && i === 8 && valeur === "") {
       tousRemplis = false;
-      setError(champs[i], "Le champ obligatoire est vide");
-      continue;
+      setError(champs[i], "Le champs obligatoire est vide");
     }
 
-    // Si le champ est optionnel et vide, on passe au suivant sans erreur
-    if (estChampOptional && valeur === "") {
-      clearError(champs[i]);
-      continue;
-    }
-
-    // Validation spécifique pour la date de naissance (index 3)
-    if (i === 3 && valeur !== "") {
-      if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
+    // Validation spécifique pour la date de naissance
+    if (i === 3) {
+      if (
+        !/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(
+          valeur
+        )
+      ) {
         tousRemplis = false;
         setError(champs[i], "Format attendu : jj/mm/aaaa");
-        continue;
       }
     }
 
-    // Validation spécifique pour le numéro de téléphone (index 9)
-    if (i === 9 && valeur !== "") {
-      if (!/^0[0-9](\s[0-9]{2}){4}$/.test(valeur) && !/^0[0-9]([0-9]{2}){4}$/.test(valeur)) {
+    // Validation spécifique pour le numéro de téléphone
+    if (i === 9) {
+      if (!/^0[67](\s[0-9]{2}){4}$/.test(valeur)) {
         tousRemplis = false;
-        setError(champs[i], "Format attendu : 06 01 02 03 04 ou 0601020304");
-        continue;
+        setError(champs[i], "Format attendu : 06 01 02 03 04");
       }
     }
 
-    // Validation spécifique pour l'email (index 10)
-    if (i === 10 && valeur !== "") {
+    // Validation spécifique pour l'email
+    if (i === 10) {
       if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
         tousRemplis = false;
         setError(champs[i], "Email invalide (ex: nom@domaine.fr)");
-        continue;
       }
     }
-
-    // Si on arrive ici, le champ est valide
-    clearError(champs[i]);
+    //Si c'est pas vide on affiche pas de message d'erreur
+    if (i === 4 && i === 5 && i === 6 && i === 7 && i === 8 || valeur !== "") {
+      clearError(champs[i]);
+    }
   }
 
   bouton.disabled = !tousRemplis;
 }
-
 let enModif = false;
 
 // Création de l'input pour la photo de profil
