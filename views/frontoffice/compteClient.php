@@ -5,9 +5,6 @@ require_once '../../controllers/pdo.php' ;
 
 $id_client = $_SESSION['user_id'];
 
-echo $id_client;
-
-
 $stmt = $pdo->query("SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client'");
 $client = $stmt->fetch(PDO::FETCH_ASSOC);
 $idAdresse = $client['idAdresse'] ?? null;
@@ -108,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="photo-container">
                     <?php 
                         if (file_exists($photoPath)) {
-                            echo "<img src=".$photoPath." alt=photoProfil id=imageProfile>";
+                            echo "<img src=/images/photoProfilClient/photo_profil".$id_client.".svg alt=photoProfil id=imageProfile>";
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
