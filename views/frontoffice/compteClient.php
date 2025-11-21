@@ -5,20 +5,16 @@ require_once '../../controllers/pdo.php' ;
 
 $id_client = $_SESSION['user_id'];
 
-$stmt = $pdo->query(
-    "SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client' ");
-    $client = $stmt->fetch(PDO::FETCH_ASSOC);
-    $idAdresse = $client['idAdresse'];
+$stmt = $pdo->query("SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client'");
+$client = $stmt->fetch(PDO::FETCH_ASSOC);
+$idAdresse = $client['idAdresse'] ?? null;
+
 
 if (!$idAdresse) {
-    // Le client n'a pas d'adresse, on en crée une
-    $pdo->query("INSERT INTO saedb._adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) VALUES (NULL,NULL,NULL,NULL,NULL,NULL)");
-    $stmt = $pdo->query(
-    "SELECT adr.idAdresse FROM _adresseClient AS adr JOIN _client AS cli ON adr.idAdresse = cli.idClient WHERE idClient = '$id_client'; ");
-    $client = $stmt->fetch(PDO::FETCH_ASSOC);
-    $idAdresse = $client['idAdresse'];  
+    $pdo->query("INSERT INTO saedb._adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) 
+                 VALUES (NULL, NULL, NULL, NULL, NULL, NULL)");
+    $idAdresse = $pdo->lastInsertId();
     $pdo->query("UPDATE saedb._client SET idAdresse = $idAdresse WHERE idClient = $id_client");
-
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -36,16 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
 
-    $stmt = $pdo->query(
+    $stmt = $pdo->query( 
     "UPDATE saedb._client 
     SET pseudo = '$pseudo', 
-    nom = '$nom', 
-    prenom = '$prenom', 
-    email =  '$email', 
-    dateNaissance = '$dateNaissance',
-    noTelephone = '$telephone',
-    idAdresse = '$idAdresse'
-    WHERE idClient = '$id_client';");
+        nom = '$nom', 
+        prenom = '$prenom', 
+        email = '$email', 
+        dateNaissance = '$dateNaissance',
+        noTelephone = '$telephone',
+        idAdresse = '$idAdresse'
+        WHERE idClient = '$id_client';
+    ");
+
 
     $stmt = $pdo->query(
     "UPDATE saedb._adresseClient 
@@ -54,18 +52,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ville = '$ville', 
     codePostal = '$codePostal',
     complementAdresse = '$adresse2'
-    WHERE idAdresse = '$idAdresse';");
+     WHERE idAdresse = '$idAdresse';");
 
 }   
 
     //verification et upload de la nouvelle photo de profil
-    $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id_client.'.svg';
+    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
     if (file_exists($photoPath)) {
         unlink($photoPath); // supprime l'ancien fichier
     }
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png');
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.'.svg');
     }
 
     //on recupère les infos du user pour les afficher
@@ -107,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="photo-container">
                     <?php 
                         if (file_exists($photoPath)) {
-                            echo "<img src=".$photoPath." alt=photoProfil id=imageProfile>";
+                            echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.'.svg" alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }

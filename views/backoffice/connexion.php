@@ -19,8 +19,14 @@ session_start();
     <link rel="stylesheet" href="/public/style.css">
 </head>
 
-<body>
-    
+<body class="backoffice nonConnecte">
+    <?php require_once 'partials/header.php'; ?>
+
+    <main class="backoffice-connexion">
+        
+    </main>
+
+    <?php require_once 'partials/footer.php'; ?>
 </body>
 
 </html>

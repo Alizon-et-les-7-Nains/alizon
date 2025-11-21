@@ -2,6 +2,33 @@
 include '../../controllers/pdo.php';
 session_start();
 
+// Gestion de l'ajout au panier
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
+    $idProduit = intval($_POST['idProduit']);
+    $quantite = intval($_POST['quantite']);
+    
+    // Vérifier si l'utilisateur est connecté
+    if (isset($_SESSION['idClient'])) {
+        $idClient = $_SESSION['idClient'];
+        
+        // Appeler la fonction pour mettre à jour la quantité
+        $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+        
+        if ($success) {
+            $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
+        } else {
+            $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
+        }
+    } else {
+        $_SESSION['message_panier'] = "Veuillez vous connecter pour ajouter des articles au panier.";
+        // Rediriger vers la page de connexion si nécessaire
+        // header('Location: connexion.php');
+        // exit;
+    }
+    
+    exit;
+}
+
 $productId = intval($_GET['id']) ?? 0;
 
 if($productId == 0) {
@@ -31,13 +58,63 @@ if (!$produit) {
 }
 
 // Récupérer les images
-$sqlImages = "SELECT i.* 
-              FROM _image i
-              JOIN _imageDeProduit ip ON i.URL = ip.URL
+$sqlImages = "SELECT ip.* 
+              FROM _imageDeProduit ip
               WHERE ip.idProduit = $productId";
 
 $resultImages = $pdo->query($sqlImages);
 $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
+
+function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+    $idProduit = intval($idProduit);
+    $idClient = intval($idClient);
+    $delta = intval($delta);
+    
+    if ($idClient <= 0 || $idProduit <= 0 || $delta <= 0) {
+        return false;
+    }
+    
+    try {
+        // Récupérer le panier actuel
+        $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+        $stmtPanier->execute([$idClient]);
+        $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$panier) {
+            // Créer un nouveau panier si nécessaire
+            $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+            $stmtCreate->execute([$idClient]);
+            $idPanier = $pdo->lastInsertId();
+        } else {
+            $idPanier = $panier['idPanier'];
+        }
+
+        // Vérifier si le produit existe déjà dans le panier
+        $sql = "SELECT quantiteProduit FROM _produitAuPanier 
+                WHERE idProduit = ? AND idPanier = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idProduit, $idPanier]);
+        $current = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($current) {
+            // Produit existe : mettre à jour la quantité
+            $newQty = intval($current['quantiteProduit']) + $delta;
+            
+            $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
+                    WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            return $stmt->execute([$newQty, $idProduit, $idPanier]);
+        } else {
+            // Produit n'existe pas : l'ajouter
+            $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            return $stmt->execute([$idProduit, $idPanier, $delta]);
+        }
+    } catch (PDOException $e) {
+        error_log("Erreur panier: " . $e->getMessage());
+        return false;
+    }
+}
 
 // $sqlAvis = "SELECT a.*
 //             FROM _avis a
@@ -77,7 +154,7 @@ $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 //     ]
 // ];
 
-// Your existing product data (mock)
+// // Your existing product data (mock)
 // $produit = [
 //     'nom_produit' => 'Cidre Artisanal Breton de merde',
 //     'description' => 'Un cidre artisanal produit selon les méthodes traditionnelles bretonnes...',
@@ -85,7 +162,7 @@ $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 //     'prenom_vendeur' => 'Jean',
 //     'nom_vendeur' => 'Dupont',
 //     'stock' => 20 ];
-?>
+// ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -108,6 +185,16 @@ $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 <?php // include "../../views/frontoffice/partials/headerConnecte.php" ?>
 </header>
 <main>
+<main>
+<?php
+// Afficher les messages de confirmation
+if (isset($_SESSION['message_panier'])) {
+    echo '<div class="message-panier" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">';
+    echo htmlspecialchars($_SESSION['message_panier']);
+    echo '</div>';
+    unset($_SESSION['message_panier']); // Supprimer le message après affichage
+}
+?>
 <section class="infoHautProduit">
 <article class="rectangleProduit">
     <img src="../../public/images/flecheGauche.svg" alt="Previous" class="carousel-arrow prev-arrow">
@@ -197,21 +284,18 @@ $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
     <hr>
     <br>
     <div id="quantite">
-        <form action="panier.php" method="POST">
+        <form action="" method="POST">
             <div id="quantiteContainer">
                 <p>Quantité</p>
                 <div>
-                    <button type="button" id="moins"><img src="../../public/images/moins.svg " alt=""></button>
+                    <button type="button" id="moins"><img src="../../public/images/moins.svg" alt=""></button>
                     <input type="text" id="quantiteInput" name="quantite" value="1" readonly>
-                    <button type="button" id="plus"><img src="../../public/images/plus.svg " alt=""></button>
+                    <button type="button" id="plus"><img src="../../public/images/plus.svg" alt=""></button>
                 </div>
             </div>
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-            <button class="bouton boutonRose" type="submit">Ajouter au panier</button>
-        </form>
-        <form action="pagePaiement.php" method="POST">
-            <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-            <button class="bouton boutonBleu" >Acheter maintenant</button>
+            <input type="hidden" name="action" value="ajouter_panier">
+            <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
         </form>
     </div>
 </article>
@@ -266,7 +350,7 @@ $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <h3> Une fraîcheur authentique " . htmlspecialchars($atr['titreAvis']) . "</h3>
                     </div>
-                    <h6>Avis déposé le 10/06/24" . htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
+                    <h6>Avis déposé le **/**/**" . htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
                 </div>
                 <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($atr['contenuAvis']) . "</p>
                 <div class=\"baselineSpaceBetween\">
@@ -315,20 +399,22 @@ $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 
 </section>
 <section class="stickyTelephone">
-    <img src="../../public/images/<?php echo htmlspecialchars($image['URL']); ?>" alt="<?php echo htmlspecialchars($image['URL']); ?>">
+    <img src="../../public/images/<?php echo !empty($images[0]['URL']) ? htmlspecialchars($images[0]['URL']) : 'placeholder.jpg'; ?>" alt="<?php echo htmlspecialchars($produit['nom_produit']); ?>">
     <article>
         <aside>
             <h3><?php echo htmlspecialchars($produit['nom_produit']);?></h3>
             <h2 id="prixTelephone"><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h2>
         </aside>
         <aside>
-            <form action="panier.php" method="POST">
+            <form action="" method="POST">
                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-                <button class="bouton boutonRose" type="submit">Ajouter au panier</button>
+                <input type="hidden" name="quantite" value="1">
+                <input type="hidden" name="action" value="ajouter_panier">
+                <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
             </form>
             <form action="pagePaiement.php" method="POST">
                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-                <button class="bouton boutonBleu" >Acheter maintenant</button>
+                <button class="bouton boutonBleu">Acheter maintenant</button>
             </form>
         </aside>
     </article>

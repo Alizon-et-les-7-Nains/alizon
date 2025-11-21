@@ -28,31 +28,32 @@ window.addEventListener('scroll', () => {
     }
 });
 document.querySelector("header.backoffice figure:first-child")?.addEventListener("click", () => {
-    window.location.href = "10.253.5.104/views/backoffice/ajouterProduit.php";
+    window.location.href = "ajouterProduit.php";
 });
-const modal = document.querySelector("header.backoffice dialog");
+const modalDeconnexion = document.querySelector("header.backoffice dialog");
 document.querySelector("header.backoffice figure:nth-child(2)")?.addEventListener("click", () => {
-    modal?.showModal();
+    modalDeconnexion?.showModal();
 });
 document.querySelector("header.backoffice dialog button")?.addEventListener("click", () => {
-    modal?.close();
+    modalDeconnexion?.close();
 });
 document.querySelector("header.backoffice dialog nav button:first-child")?.addEventListener("click", () => {
-    modal?.close();
+    modalDeconnexion?.close();
 });
 document.querySelector("header.backoffice dialog nav button:last-child")?.addEventListener("click", () => {
-    window.location.href = "./connexion.php";
+    window.location.href = "connexion.php";
 });
-modal?.addEventListener("click", (e) => {
-    if (e.target === modal) {
-        modal.close();
+modalDeconnexion?.addEventListener("click", (e) => {
+    if (e.target === modalDeconnexion) {
+        modalDeconnexion.close();
     }
 });
-document.querySelector('header.backoffice figure:nth(child(3)')?.addEventListener('click', () => {
-    window.location.href = '10.253.5.104/views/backoffice/compteVendeur.php';
+document.querySelector('header.backoffice figure:nth-child(3)')?.addEventListener('click', () => {
+    window.location.href = 'compteVendeur.php';
 });
 const btnSettings = Array.from(document.getElementsByClassName('settings'));
-btnSettings?.forEach(btn => {
+const modalReassort = document.querySelector("main.backoffice-stocks dialog");
+btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);
         subDivs.forEach(div => {
@@ -63,7 +64,7 @@ btnSettings?.forEach(btn => {
         });
     });
 });
-btnSettings?.forEach(btn => {
+btnSettings.forEach(btn => {
     btn.addEventListener('mouseout', () => {
         const subDivs = Array.from(btn.children);
         subDivs.forEach(div => {
@@ -72,6 +73,11 @@ btnSettings?.forEach(btn => {
                 innerDiv.style.left = innerDiv.classList.contains('right') ? '14px' : '4px';
             }
         });
+    });
+});
+btnSettings.forEach(btn => {
+    btn.addEventListener('click', () => {
+        modalReassort.showModal();
     });
 });
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
