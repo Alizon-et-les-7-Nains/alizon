@@ -1,5 +1,5 @@
 const btnSettings: Element[] = Array.from(document.getElementsByClassName('settings'));
-const modalReassort: HTMLDialogElement | null = document.querySelector("main.backoffice-stocks dialog") as HTMLDialogElement;
+const modalReassort: HTMLDialogElement | null = document.querySelector("dialog.reassort") as HTMLDialogElement;
 
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
@@ -30,3 +30,9 @@ btnSettings.forEach(btn => {
         modalReassort.showModal();
     })
 })
+
+modalReassort?.addEventListener("click", (e) => {
+    if (e.target === modalReassort) {
+        modalReassort.close();
+    }
+});

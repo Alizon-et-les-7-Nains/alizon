@@ -4386,7 +4386,11 @@ main.backoffice-stocks section:nth-child(3) div:not(button.settings div) {
 main.backoffice-stocks section:nth-child(3) div:not(button.settings div) > ul li:last-child {
   color: #259525;
 }
-main.backoffice-stocks dialog {
+main.backoffice-stocks {
+  margin-bottom: 2em;
+}
+
+dialog.reassort {
   background-color: #fffefa;
   border: none;
   border-radius: 16px;
@@ -4403,61 +4407,67 @@ main.backoffice-stocks dialog {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 50%);
+  transform: translate(-50%, -50%);
 }
-main.backoffice-stocks dialog::backdrop {
+dialog.reassort::backdrop {
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(1px);
 }
-main.backoffice-stocks dialog h1 {
+dialog.reassort h1 {
   margin-bottom: 1em;
   text-align: center;
 }
-main.backoffice-stocks dialog form {
+dialog.reassort form {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2em;
   width: 100%;
 }
-main.backoffice-stocks dialog form ul {
+dialog.reassort form ul {
   display: flex;
   align-items: center;
   gap: 2em;
   list-style: none;
 }
-main.backoffice-stocks dialog form ul input:hover {
+dialog.reassort form ul li input {
+  transition: all 0.2s;
+  border-style: hidden;
+}
+dialog.reassort form ul li:first-child input {
+  background-color: #e4d9ff;
+  color: #273469;
+}
+dialog.reassort form ul li:first-child input:hover {
   background-color: #e3f2fe;
   color: #273469;
   cursor: pointer;
 }
-main.backoffice-stocks dialog form ul li input {
-  transition: all 0.2s;
-  border-style: hidden;
-}
-main.backoffice-stocks dialog form ul li:first-child input {
-  background-color: #e4d9ff;
-  color: #273469;
-}
-main.backoffice-stocks dialog form ul li:last-child input {
+dialog.reassort form ul li:last-child input {
   background-color: #273469;
   color: #fffefa;
 }
-main.backoffice-stocks dialog form input {
+dialog.reassort form ul li:last-child input:hover {
+  background-color: #e3f2fe;
   color: #273469;
+  cursor: pointer;
+}
+dialog.reassort form label {
+  color: #f14e4e;
+}
+dialog.reassort form input {
+  color: #273469;
+  font-weight: bold;
   padding-left: 2em;
   padding-right: 2em;
   padding-top: 1em;
   padding-bottom: 1em;
   width: 200px;
-  font-size: 20px;
+  font-size: 25px;
   border-style: solid;
   border-width: 2px;
   border-color: #273469;
   border-radius: 24px;
-}
-main.backoffice-stocks {
-  margin-bottom: 2em;
 }
 
 .page-compte {
@@ -5652,21 +5662,6 @@ main.backoffice-stocks {
   margin-bottom: 30px;
   text-align: center;
 }
-.connexionVendeur .pdp_title .cercle-pdp {
-  background-color: #6e6e6e;
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #273469;
-  margin-bottom: 25px;
-}
-.connexionVendeur .pdp_title .cercle-pdp img {
-  width: 55%;
-  height: auto;
-}
 .connexionVendeur .pdp_title h1 {
   font-family: "lora", serif;
   font-size: 1.8rem;
@@ -5722,34 +5717,36 @@ main.backoffice-stocks {
 }
 .connexionVendeur .information_connexion .form-vendeur .actions {
   width: 100%;
-  display: flex;
   justify-content: center;
 }
 .connexionVendeur .information_connexion .form-vendeur .actions .btn_connexion {
   background-color: #e4d9ff;
-  color: #273469;
-  border: none;
+  max-width: 300px;
   border-radius: 24px;
-  padding: 12px 80px;
-  font-size: 1.2rem;
-  font-family: "lora", serif;
+  color: #273469;
+  padding: 12px 20px;
+  border: 0;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
 }
-.connexionVendeur .information_connexion .form-vendeur .actions .btn_connexion:hover {
-  transform: scale(1.02);
-  opacity: 0.9;
+.connexionVendeur .information_connexion .form-vendeur .actions .btn_connexion:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 .connexionVendeur .text-footer {
-  position: relative;
-  z-index: 1;
-  margin-top: 60px;
-  max-width: 800px;
+  max-width: 1000px;
   text-align: center;
-  font-size: 0.65rem;
-  color: #e4e4e4;
-  line-height: 1.4;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: normal;
+  color: #6e6e6e;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
 }
 
 /*# sourceMappingURL=style.css.map */

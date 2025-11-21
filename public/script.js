@@ -52,7 +52,7 @@ document.querySelector('header.backoffice figure:nth-child(3)')?.addEventListene
     window.location.href = 'compteVendeur.php';
 });
 const btnSettings = Array.from(document.getElementsByClassName('settings'));
-const modalReassort = document.querySelector("main.backoffice-stocks dialog");
+const modalReassort = document.querySelector("dialog.reassort");
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);
@@ -79,6 +79,11 @@ btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
         modalReassort.showModal();
     });
+});
+modalReassort?.addEventListener("click", (e) => {
+    if (e.target === modalReassort) {
+        modalReassort.close();
+    }
 });
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";

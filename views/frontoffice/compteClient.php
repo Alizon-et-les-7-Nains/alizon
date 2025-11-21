@@ -4,7 +4,6 @@ require_once '../../controllers/pdo.php' ;
     
 
 $id_client = $_SESSION['user_id'];
-$extension = '';
 
 $stmt = $pdo->query("SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client'");
 $client = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -59,6 +58,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //verification et upload de la nouvelle photo de profil
     $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
+
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $extension = '';
+
+    foreach ($extensionsPossibles as $ext) {
+        if (file_exists($photoPath . '.' . $ext)) {
+            $extension = '.' . $ext;
+            break;
+        }
+    }
+
     if (file_exists($photoPath)) {
         unlink($photoPath); // supprime l'ancien fichier
     }
