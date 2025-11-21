@@ -123,9 +123,8 @@ function popUpRemise(){
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
 }
 
-function popUpPromouvoir(id) {
+function popUpPromouvoir(id, nom) {
     const overlay = document.createElement("div");
-    console.log("ID DU PRODUIT : ", id);
     overlay.className = "overlaypopUpPromouvoir";
     overlay.innerHTML = `
         <main class="popUpPromouvoir">
@@ -140,7 +139,7 @@ function popUpPromouvoir(id) {
                         <article>
                             <img class="produit" src="/public/images/rillettes.png" alt="">
                             <div class="nomEtEvaluation">
-                                <p>Rillettes</p>
+                                <p>${nom}</p>
                                 <div class="evaluation">
                                     <div class="etoiles">
                                         <img src="/public/images/etoile.svg" alt="">
