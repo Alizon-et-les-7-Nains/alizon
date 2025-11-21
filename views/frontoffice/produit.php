@@ -261,7 +261,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
                 </div>
             </div>
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-            <button class="bouton boutonRose" type="submit"updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);>Ajouter au panier</button>
+            <button class="bouton boutonRose" type="submit"<?php updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta); ?>>Ajouter au panier</button>
         </form>
         <form action="pagePaiement.php" method="POST">
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
