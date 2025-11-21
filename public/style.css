@@ -5642,22 +5642,25 @@ dialog.reassort form input {
   position: relative;
   background-color: #fffefa;
   color: #273469;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow-x: hidden;
-  padding: 40px 20px;
+  padding: 20px;
 }
 .connexionVendeur .triskiel {
   position: absolute;
   top: 0;
-  right: 0;
-  width: 1100px;
+  right: -10%;
   height: 100%;
+  width: auto;
+  max-height: 100vh;
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
+  opacity: 0.8;
 }
 .connexionVendeur .pdp_title {
   position: relative;
@@ -5679,27 +5682,31 @@ dialog.reassort form input {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 500px;
+  max-width: 450px;
 }
 .connexionVendeur .information_connexion .form-vendeur {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 .connexionVendeur .information_connexion .form-vendeur .inputs-container {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  gap: 20px;
 }
 .connexionVendeur .information_connexion .form-vendeur .custom-input {
+  width: 100%;
   background-color: #fffefa;
   border: 2px solid #273469;
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 12px 15px;
   font-size: 1rem;
   font-weight: 600;
   color: #273469;
+  box-sizing: border-box;
 }
 .connexionVendeur .information_connexion .form-vendeur .custom-input::placeholder {
   color: #273469;
@@ -5712,8 +5719,8 @@ dialog.reassort form input {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 15px 0 35px 0;
-  gap: 10px;
+  margin: 10px 0 30px 0;
+  gap: 8px;
 }
 .connexionVendeur .information_connexion .form-vendeur .liens-utiles a {
   color: #273469;
@@ -5725,36 +5732,35 @@ dialog.reassort form input {
 }
 .connexionVendeur .information_connexion .form-vendeur .actions {
   width: 100%;
+  display: flex;
   justify-content: center;
 }
 .connexionVendeur .information_connexion .form-vendeur .actions .btn_connexion {
   background-color: #e4d9ff;
-  max-width: 300px;
-  border-radius: 24px;
   color: #273469;
-  padding: 12px 20px;
-  border: 0;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 80px;
+  font-size: 1.1rem;
+  font-family: "lora", serif;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 20px;
-  margin-right: auto;
-  margin-left: auto;
-  display: block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
 }
-.connexionVendeur .information_connexion .form-vendeur .actions .btn_connexion:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.connexionVendeur .information_connexion .form-vendeur .actions .btn_connexion:hover {
+  transform: scale(1.02);
 }
 .connexionVendeur .text-footer {
-  max-width: 1000px;
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
   text-align: center;
-  font-size: 0.8rem;
-  font-style: normal;
-  font-weight: normal;
-  color: #6e6e6e;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
+  font-size: 0.7rem;
+  color: gray;
+  margin-top: 50px;
   padding: 0 20px;
+  line-height: 1.4;
 }
 
 /*# sourceMappingURL=style.css.map */
