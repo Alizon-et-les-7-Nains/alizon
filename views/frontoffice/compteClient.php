@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$id_client.'.png');
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.'.svg');
     }
 
     //on recupère les infos du user pour les afficher
