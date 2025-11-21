@@ -4408,13 +4408,14 @@ main.backoffice-stocks dialog h1 {
   margin-bottom: 1em;
   text-align: center;
 }
-main.backoffice-stocks dialog nav {
+main.backoffice-stocks dialog form {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 2em;
   width: 100%;
 }
-main.backoffice-stocks dialog nav button {
+main.backoffice-stocks dialog form input {
   transition: all 0.2s;
   padding-left: 2em;
   padding-right: 2em;
@@ -4426,15 +4427,15 @@ main.backoffice-stocks dialog nav button {
   border: none;
   cursor: pointer;
 }
-main.backoffice-stocks dialog nav button:first-child {
+main.backoffice-stocks dialog form input:first-child {
   background-color: #e4d9ff;
   color: #273469;
 }
-main.backoffice-stocks dialog nav button:last-child {
+main.backoffice-stocks dialog form input:last-child {
   background-color: #273469;
   color: #fffefa;
 }
-main.backoffice-stocks dialog nav button:hover {
+main.backoffice-stocks dialog form input:hover {
   background-color: #e3f2fe;
   color: #273469;
 }
