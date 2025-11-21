@@ -199,9 +199,9 @@ function verifierChamp() {
 
     // Validation spécifique pour le numéro de téléphone
     if (i === 9) {
-      if (!/^0[67](\s[0-9]{2}){4}$/.test(valeur)) {
+      if (!/^0[0-9](\s[0-9]{2}){4}$/.test(valeur) || !/^0[0-9]([0-9]{2}){4}$/.test(valeur)) {
         tousRemplis = false;
-        setError(champs[i], "Format attendu : 06 01 02 03 04");
+        setError(champs[i], "Format attendu : 06 01 02 03 04 ou 0601020304");
       }
     }
 
