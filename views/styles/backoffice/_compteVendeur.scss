@@ -54,12 +54,13 @@
     }
   }
 
-  // NOUVELLE GRILLE DE 3 COLONNES
+  // GRILLE DE 3 COLONNES
   .form-compte {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr; // 3 colonnes
     gap: 50px;
-    width: 100%; // Prend toute la largeur
+    width: 100%;
+    align-items: start; // Aligne tout en haut
 
     .col {
       display: flex;
@@ -106,7 +107,6 @@
             box-shadow: 0 0 0 3px rgba($color-blue, 0.1);
           }
 
-          // Style pour les champs en erreur
           &.error {
             border-color: #e4574d;
             background-color: #fff5f5;
@@ -154,13 +154,14 @@
       color: $color-blue;
     }
 
-    // TROISIÈME COLONNE POUR LES BOUTONS
+    // TROISIÈME COLONNE POUR LES BOUTONS - STYLE VIOLET
     .col-actions {
       display: flex;
       flex-direction: column;
       justify-content: flex-end; // Aligne les boutons en bas
+      min-height: 100%; // Prend toute la hauteur
       gap: 18px;
-      padding-bottom: 20px;
+      padding-top: 40px; // Espace depuis le haut
 
       .actions {
         display: flex;
@@ -178,6 +179,12 @@
           transition: all 0.3s ease;
           width: 100%;
           text-align: center;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          }
 
           &:active {
             transform: translateY(0);
@@ -191,34 +198,64 @@
           }
         }
 
+        // STYLES VIOLETS
         .modifier {
-          background-color: #dcd8f9;
-          color: #3d2d86;
+          background: linear-gradient(135deg, #6d5dfc 0%, #5d4fd8 100%);
+          color: white;
+          border: 2px solid #6d5dfc;
+
+          &:hover {
+            background: linear-gradient(135deg, #5d4fd8 0%, #4d41b4 100%);
+          }
         }
 
         .sauvegarder {
-          background: #eceaff;
-          color: #3d2d86;
+          background: linear-gradient(135deg, #8b7aff 0%, #7a6afc 100%);
+          color: white;
+          border: 2px solid #8b7aff;
+
+          &:hover {
+            background: linear-gradient(135deg, #7a6afc 0%, #6a5ae8 100%);
+          }
         }
 
         .annuler {
-          background: #eceaff;
-          color: #3d2d86;
+          background: linear-gradient(135deg, #a59aff 0%, #958aff 100%);
+          color: white;
+          border: 2px solid #a59aff;
+
+          &:hover {
+            background: linear-gradient(135deg, #958aff 0%, #857af4 100%);
+          }
         }
 
         .modifier-mdp {
-          background-color: #dcd8f9;
-          color: #3d2d86;
+          background: linear-gradient(135deg, #6d5dfc 0%, #5d4fd8 100%);
+          color: white;
+          border: 2px solid #6d5dfc;
+
+          &:hover {
+            background: linear-gradient(135deg, #5d4fd8 0%, #4d41b4 100%);
+          }
 
           &.annuler-mdp {
-            background: #eceaff;
-            color: #3d2d86;
+            background: linear-gradient(135deg, #a59aff 0%, #958aff 100%);
+            border: 2px solid #a59aff;
+
+            &:hover {
+              background: linear-gradient(135deg, #958aff 0%, #857af4 100%);
+            }
           }
         }
 
         .supprimer {
-          background: #e4574d;
+          background: linear-gradient(135deg, #e4574d 0%, #d4473d 100%);
           color: white;
+          border: 2px solid #e4574d;
+
+          &:hover {
+            background: linear-gradient(135deg, #d4473d 0%, #c4372d 100%);
+          }
         }
       }
     }
@@ -320,17 +357,19 @@
         grid-column: 1 / -1; // Prend toute la largeur
         flex-direction: row;
         justify-content: flex-end;
-        padding-bottom: 0;
-        margin-top: 10px;
+        padding-top: 20px;
+        min-height: auto;
 
         .actions {
           flex-direction: row;
           flex-wrap: wrap;
           justify-content: flex-end;
+          gap: 15px;
 
           button {
             width: auto;
-            min-width: 140px;
+            min-width: 160px;
+            padding: 12px 25px;
           }
         }
       }
@@ -413,11 +452,13 @@
       }
 
       .col-actions {
+        padding-top: 15px;
+
         .actions {
           button {
             padding: 10px 20px;
             font-size: 13px;
-            min-width: 120px;
+            min-width: 140px;
             border-radius: 20px;
           }
         }
@@ -488,7 +529,7 @@
       .col-actions {
         .actions {
           flex-direction: column;
-          gap: 8px;
+          gap: 10px;
 
           button {
             padding: 10px 15px;
@@ -579,6 +620,7 @@
       .col-actions {
         grid-column: 1 / -1;
         flex-direction: row;
+        padding-top: 15px;
 
         .actions {
           flex-direction: row;
@@ -586,7 +628,7 @@
           button {
             padding: 8px 15px;
             font-size: 12px;
-            min-width: 120px;
+            min-width: 140px;
           }
         }
       }
