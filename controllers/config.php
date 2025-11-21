@@ -1,5 +1,5 @@
 <?php
-    $server = 'mariadb';
+    $server = 'localhost';
     $driver = 'mysql';
     $dbname = 'saedb';
     $user   = 'sae';
