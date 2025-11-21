@@ -267,7 +267,7 @@
             <input type="number" name="Reassortir" id="reassort">
             <label for="Reassortir">Doit être un entier</label>
             <ul>
-                <li><input type="button" value="Annuler"></li>
+                <li><input type="button" value="Annuler" id="annuler"></li>
                 <li><input type="submit" value="Valider"></li>
             </ul>
         </form>
