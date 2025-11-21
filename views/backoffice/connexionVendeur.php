@@ -17,9 +17,9 @@
     <title>Connexion à un compte vendeur</title>
 </head>
 
-<?php require_once "./partials/header.php"; ?>
 
 <body>
+    <?php require_once "./partials/header.php"; ?>
     <main class="connexionVendeur">
         <img class="triskiel" src="../../public/images/triskiel gris.svg" alt="">
 
@@ -31,7 +31,7 @@
             <h1>Connexion à votre compte vendeur Alizon</h1>
         </div>
 
-        <div class="information_connexion container">
+        <div class="information_connexion">
             <form method="post" class="form-vendeur" id="monForm" action="../../controllers/connexionCompteVendeur.php">
                 
                 <?php if (!empty($message)) : ?>
