@@ -297,6 +297,10 @@ if (isset($_SESSION['message_panier'])) {
             <input type="hidden" name="action" value="ajouter_panier">
             <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
         </form>
+        <form action="pagePaiement.php" method="POST">
+            <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+            <button class="bouton boutonBleu" >Acheter maintenant</button>
+        </form>
     </div>
 </article>
 </section>
