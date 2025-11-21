@@ -1,4 +1,3 @@
-
 let modeEdition = false;
 let modeModificationMdp = false;
 let anciennesValeurs = {};
@@ -410,11 +409,10 @@ function uploadPhotoProfil(file) {
   formData.append("photoProfil", file);
   formData.append("codeVendeur", codeVendeur);
 
-  console.log("Upload photo en cours...", {
-    codeVendeur: codeVendeur,
-    fileName: file.name,
-    fileSize: file.size,
-    fileType: file.type,
+  console.debug("Upload photo en cours", {
+    codeVendeur,
+    name: file.name,
+    size: file.size,
   });
 
   fetch("../../controllers/addPhotoVendeur.php", {
@@ -422,24 +420,24 @@ function uploadPhotoProfil(file) {
     body: formData,
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error("Erreur HTTP: " + response.status);
-      }
+      if (!response.ok) throw new Error("HTTP " + response.status);
       return response.json();
     })
     .then((data) => {
-      console.log("Réponse upload:", data);
-      if (data.success) {
+      if (data && data.success) {
         console.log("Photo mise à jour avec succès");
         showNotification("Photo de profil mise à jour avec succès", "success");
       } else {
-        console.error("Erreur lors du téléchargement:", data.message);
-        showNotification("Erreur: " + data.message, "error");
+        console.error("Erreur lors du téléchargement:", data && data.message);
+        showNotification(
+          "Erreur: " + (data && data.message ? data.message : "Erreur serveur"),
+          "error"
+        );
       }
     })
-    .catch((error) => {
-      console.error("Erreur fetch:", error);
-      showNotification("Erreur réseau lors du téléchargement", "error");
+    .catch((err) => {
+      console.error("Erreur upload photo:", err);
+      showNotification("Erreur lors du téléchargement de la photo", "error");
     });
 }
 
