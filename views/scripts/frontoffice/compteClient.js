@@ -318,6 +318,7 @@ function modifierProfil(event) {
 
     imageProfile.style.cursor = "pointer";
     imageProfile.onclick = () => ajoutPhoto.click();
+    bnModifier[0].disabled = false;
 
     enModif = true;
 
