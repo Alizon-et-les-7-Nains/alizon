@@ -23,8 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         // header('Location: connexion.php');
         // exit;
     }
-    
-    exit;
 }
 
 $productId = intval($_GET['id']) ?? 0;
