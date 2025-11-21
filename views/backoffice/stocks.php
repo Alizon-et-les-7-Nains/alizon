@@ -253,7 +253,7 @@
             </article>
         </section>
 
-        <dialog open>
+        <dialog>
             <h1>Paramètres de réassort</h1>
             <form action="" method="post">
                 <input type="text" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
