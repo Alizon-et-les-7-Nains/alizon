@@ -106,10 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="titreCompte">
                 <div class="photo-container">
                     <?php 
-                        if (file_exists($photoPath)) {
+                        if (file_exists($photoPath.$extension)) {
                             echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'" alt="photoProfil" id="imageProfile">';
                         } else {
-                            echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'" alt="photoProfil" id="imageProfile">';
+                            echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
                     ?>
                 </div>

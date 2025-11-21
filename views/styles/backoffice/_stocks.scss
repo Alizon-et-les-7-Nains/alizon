@@ -277,20 +277,19 @@ main.backoffice-stocks {
                     transition: all 0.2s;
                     border-style: hidden;
                     
-                    &:first-child {
-                        background-color: $color-pastel-purple;
-                        color: $color-blue;
-                    }
-                    &:last-child {
-                        background-color: $color-blue;
-                        color: $color-white;
-                    }
-                    
                     &:hover {
                         background-color: $color-pastel-blue;
                         color: $color-blue;
                         cursor: pointer;
                     }
+                }
+                li:first-child input {
+                    background-color: $color-pastel-purple;
+                    color: $color-blue;
+                }
+                li:last-child input {
+                    background-color: $color-blue;
+                    color: $color-white;
                 }
             }
             
