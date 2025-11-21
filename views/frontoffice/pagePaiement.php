@@ -147,7 +147,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         // CORRECTION : Requête avec le bon nombre de paramètres
         $sqlAdresseLivraison = "
-            INSERT INTO adresse_livraison (idClient, adresse, region, codePostal, ville, pays, complementAdresse, nom, prenom, estAdressePrincipale)
+            INSERT INTO _adresseLivraison (idClient, adresse, region, codePostal, ville, pays, complementAdresse, nom, prenom, estAdressePrincipale)
             VALUES (?, ?, ?, ?, ?, 'France', '', ?, ?, FALSE)
         ";
         $stmtAdresse = $pdo->prepare($sqlAdresseLivraison);
@@ -221,7 +221,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville, $region = '') {
     try {
         // CORRECTION : Insérer dans la table adresse_livraison pour l'adresse de facturation
-        $sqlCheck = "SELECT idAdresseLivraison FROM adresse_livraison 
+        $sqlCheck = "SELECT idAdresseLivraison FROM _adresseLivraison 
                     WHERE idClient = ? 
                     AND adresse = ? 
                     AND codePostal = ? 
@@ -249,7 +249,7 @@ function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville, $reg
 
         // CORRECTION : Requête avec le bon nombre de paramètres
         $sqlInsert = "
-            INSERT INTO adresse_livraison (idClient, adresse, region, codePostal, ville, pays, complementAdresse, nom, prenom, estAdressePrincipale)
+            INSERT INTO _adresseLivraison (idClient, adresse, region, codePostal, ville, pays, complementAdresse, nom, prenom, estAdressePrincipale)
             VALUES (?, ?, ?, ?, ?, 'France', '', ?, ?, FALSE)
         ";
         
