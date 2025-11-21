@@ -32,8 +32,7 @@ if (!$produit) {
 
 // Récupérer les images
 $sqlImages = "SELECT i.* 
-              FROM _image i
-              JOIN _imageDeProduit ip ON i.URL = ip.URL
+              FROM _imageDeProduit ip
               WHERE ip.idProduit = $productId";
 
 $resultImages = $pdo->query($sqlImages);
