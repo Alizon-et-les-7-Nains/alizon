@@ -1,8 +1,8 @@
-<?php
+<?php 
     $currentPage = basename(__FILE__);
     require_once "../../controllers/pdo.php"; 
 
-    // Récupération des messages d'erreur s'il y en a (comme sur ta page inscription)
+    // Gestion des messages d'erreur (similaire à la page inscription)
     $message = $_SESSION['message'] ?? ''; 
     unset($_SESSION['message']);
 ?>
@@ -25,7 +25,9 @@
         <img class="triskiel" src="../../public/images/triskiel gris.svg" alt="">
 
         <div class="pdp_title">
-            <img src="../../public/images/pdp_user.svg" alt="photo de profil">
+            <div class="cercle-pdp">
+                <img src="../../public/images/pdp_user.svg" alt="photo de profil">
+            </div>
             <h1>Connexion à votre compte vendeur Alizon</h1>
         </div>
 
@@ -38,30 +40,32 @@
                     </div>
                 <?php endif; ?>
 
-                <div class="row g-3 justify-content-center">
-                    <div class="col-md-8 col-lg-6">
-                        <input type="email" name="email" placeholder="Adresse E-Mail" required class="form-control">
+                <div class="inputs-container">
+                    <div class="mb-4">
+                        <input type="text" name="identifiant" placeholder="Nom d'utilisateur" required class="form-control custom-input">
                     </div>
 
-                    <div class="w-100"></div> <div class="col-md-8 col-lg-6">
-                        <input type="password" name="mdp" placeholder="Mot de passe" required class="form-control">
+                    <div class="mb-2">
+                        <input type="password" name="mdp" placeholder="Mot de passe" required class="form-control custom-input">
                     </div>
+                </div>
 
-                    <div class="col-12 d-flex flex-column align-items-center mt-4">
-                        <button type="submit" class="btn_connexion">Se connecter</button>
-                        
-                        <a class="mdp_oublie mt-3" href="motDePasseOublie.php">Mot de passe oublié ?</a>
-                        <a class="inscription_lien mt-2" href="creerCompteVendeur.php">Pas encore vendeur ? Inscrivez-vous ici</a>
-                    </div>
+                <div class="liens-utiles">
+                    <a href="creerCompteVendeur.php">Pas encore vendeur ? Inscrivez vous ici</a>
+                    <a href="motDePasseOublie.php">Mot de passe oublié ? Cliquez ici</a>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn_connexion">Se connecter</button>
                 </div>
             </form>
         </div>
 
         <p class="text-footer">
-            Alizon traite les données recueillies à des fins de gestion de la relation client et des commandes.
-            Pour en savoir plus, reportez-vous à la Politique de protection de vos données personnelles.
+            Alizon, en tant que responsable de traitement, traite les données recueillies à des fins de gestion de la relation client, gestion des commandes et des livraisons, personnalisation des services, prévention de la fraude, marketing et publicité ciblée. Pour en savoir plus, reportez-vous à la Politique de protection de vos données personnelles.
         </p>
     </main>
+    
     <?php require_once "./partials/footer.php"; ?>
 </body>
 </html>
