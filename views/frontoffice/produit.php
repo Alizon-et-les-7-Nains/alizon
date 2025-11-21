@@ -131,7 +131,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 //     ]
 // ];
 
-// Your existing product data (mock)
+// // Your existing product data (mock)
 // $produit = [
 //     'nom_produit' => 'Cidre Artisanal Breton de merde',
 //     'description' => 'Un cidre artisanal produit selon les méthodes traditionnelles bretonnes...',
@@ -139,7 +139,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 //     'prenom_vendeur' => 'Jean',
 //     'nom_vendeur' => 'Dupont',
 //     'stock' => 20 ];
-?>
+// ?>
 
 <!DOCTYPE html>
 <html lang="en">

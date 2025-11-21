@@ -170,7 +170,7 @@ $photoFullPath = '/var/www/html/images/photoProfilVendeur/' . $photoFilename;
                 </div>
 
                 <!-- Section modification mot de passe -->
-                <div class="champ">
+                <!-- <div class="champ">
                     <input type="password" id="ancienMdp" name="ancienMdp" placeholder="Ancien mot de passe" readonly>
                     <div class="field-error">
                         <p>L'ancien mot de passe est obligatoire</p>
@@ -198,7 +198,7 @@ $photoFullPath = '/var/www/html/images/photoProfilVendeur/' . $photoFilename;
                     <li>Au moins une minuscule / majuscule</li>
                     <li>Au moins un chiffre</li>
                     <li>Au moins un caractère spécial</li>
-                </ul>
+                </ul> -->
 
                 <div class="champ">
                     <span class="field-label">Code vendeur :</span>
