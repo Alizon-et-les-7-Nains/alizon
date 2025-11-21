@@ -36,16 +36,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
 
-    $stmt = $pdo->query(
-    "UPDATE saedb._client 
+    $stmt = $pdo->query(" 
+    UPDATE saedb._client 
     SET pseudo = '$pseudo', 
-    nom = '$nom', 
-    prenom = '$prenom', 
-    email =  '$email', 
-    dateNaissance = '$dateNaissance',
-    noTelephone = '$telephone',
-    idAdresse = '$idAdresse'
-    WHERE idClient = '$id_client';");
+        nom = '$nom', 
+        prenom = '$prenom', 
+        email = '$email', 
+        dateNaissance = '$dateNaissance',
+        noTelephone = '$telephone',
+        idAdresse = '$idAdresse'
+        WHERE idClient = '$id_client';
+    ");
+
 
     $stmt = $pdo->query(
     "UPDATE saedb._adresseClient 
@@ -54,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ville = '$ville', 
     codePostal = '$codePostal',
     complementAdresse = '$adresse2'
-    WHERE idAdresse = '$idAdresse';");
+     WHERE idAdresse = '$idAdresse';");
 
 }   
 
