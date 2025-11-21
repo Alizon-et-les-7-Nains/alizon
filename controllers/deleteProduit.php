@@ -9,9 +9,10 @@ $idProd = $_GET['id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("DELETE FROM _produit WHERE idProduit = :idProduit");
     $imgDeProd = $pdo->prepare("DELETE FROM _imageDeProduit WHERE idProduit = :idProduit");
+    $supPanier = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idProduit = :idProduit");
 
 try{
-    $stmt->execute([
+    $supPanier->execute([
         ':idProduit' => $idProd
     ]);
 }
@@ -28,8 +29,18 @@ catch(PDOException $e){
     echo "Erreur SQL : " . $e->getMessage();
 }
 }
+
+try{
+    $stmt->execute([
+        ':idProduit' => $idProd
+    ]);
+}
+catch(PDOException $e){
+    echo "Erreur SQL : " . $e->getMessage();
+}
+
     
 
-header("Location: ../views/backoffice/accueil.php"); 
+//header("Location: ../views/backoffice/accueil.php"); 
 exit();
 ?>

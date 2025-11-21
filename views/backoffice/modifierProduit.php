@@ -86,13 +86,23 @@ if (!$produit) {
                 </div>
 
             <div class="form-actions">
-                <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
-                <form class="product-content" id="monForm" action="../../controllers/deleteProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
-                    <a href="#"><button type="submit" class="btn-supprimer">Supprimer</button></a>
-                <form>
-                <a href="#"><button type="submit" class="btn-ajouter">Modifier le produit</button></a>
+                <button type="button" class="btn-previsualiser">Prévisualiser</button>
+                <button type="submit" class="btn-ajouter">Modifier le produit</button>
+            </form>
+                <form class="supprimerProduit" id="monForm" action="../../controllers/deleteProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">            
+                        <button type="submit" class="btn-supprimer">Supprimer</button>
+                         <dialog>
+                            <h1>Êtes-vous sûr de vouloir vous déconnecter ?</h1>
+                            <nav>
+                                <button>Annuler</button>
+                                <button autofocus>Oui</button>
+                            </nav>
+                        </dialog>
+                    </a>
+                   
+                </form>
             </div>
-        </form>
+        
     </main>
 
     <script>
