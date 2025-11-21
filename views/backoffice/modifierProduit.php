@@ -44,7 +44,7 @@ if (!$produit) {
     </header>
 
     <?php 
-    $current_page = basename(__FILE__);
+    $currentPage = basename(__FILE__);
     require_once "./partials/aside.php"?>
        
     <main class="modifierProduit"> 
