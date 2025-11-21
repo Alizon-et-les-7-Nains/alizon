@@ -16,10 +16,10 @@
     .triskiel {
         position: absolute;
         top: 15%;
-        right: -5%;
+        right: 0;
         height: 100%;
         width: auto;
-        max-height: 100vh;
+        max-height: 80vh;
         object-fit: cover;
         z-index: 0;
         pointer-events: none;
@@ -107,7 +107,7 @@
                 justify-content: center;
 
                 .btn_connexion {
-                    background-color: red !important;
+                    background-color: $color-pastel-purple;
                     color: $color-blue;
                     border: none;
                     border-radius: 24px;
