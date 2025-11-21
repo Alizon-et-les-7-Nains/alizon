@@ -4492,9 +4492,9 @@ main.backoffice-stocks {
 }
 .page-compte .form-compte {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 50px;
-  width: 60%;
+  width: 100%;
 }
 .page-compte .form-compte .col {
   display: flex;
@@ -4573,6 +4573,63 @@ main.backoffice-stocks {
   font-weight: bold;
   color: #273469;
 }
+.page-compte .form-compte .col-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 18px;
+  padding-bottom: 20px;
+}
+.page-compte .form-compte .col-actions .actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+.page-compte .form-compte .col-actions .actions button {
+  padding: 14px 20px;
+  border-radius: 26px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+.page-compte .form-compte .col-actions .actions button:active {
+  transform: translateY(0);
+}
+.page-compte .form-compte .col-actions .actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.page-compte .form-compte .col-actions .actions .modifier {
+  background-color: #dcd8f9;
+  color: #3d2d86;
+}
+.page-compte .form-compte .col-actions .actions .sauvegarder {
+  background: #eceaff;
+  color: #3d2d86;
+}
+.page-compte .form-compte .col-actions .actions .annuler {
+  background: #eceaff;
+  color: #3d2d86;
+}
+.page-compte .form-compte .col-actions .actions .modifier-mdp {
+  background-color: #dcd8f9;
+  color: #3d2d86;
+}
+.page-compte .form-compte .col-actions .actions .modifier-mdp.annuler-mdp {
+  background: #eceaff;
+  color: #3d2d86;
+}
+.page-compte .form-compte .col-actions .actions .supprimer {
+  background: #e4574d;
+  color: white;
+}
 
 .champ-double {
   display: flex;
@@ -4586,58 +4643,6 @@ main.backoffice-stocks {
   box-sizing: border-box;
 }
 
-.actions {
-  grid-column: 1/-1;
-  display: flex;
-  gap: 18px;
-  justify-content: flex-end;
-  margin-top: 35px;
-  flex-wrap: wrap;
-}
-.actions button {
-  padding: 14px 30px;
-  border-radius: 26px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  font-size: 15px;
-  transition: all 0.3s ease;
-  min-width: 120px;
-}
-.actions button:active {
-  transform: translateY(0);
-}
-.actions button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-.actions .modifier {
-  background-color: #dcd8f9;
-  color: #3d2d86;
-}
-.actions .sauvegarder {
-  background: #eceaff;
-  color: #3d2d86;
-}
-.actions .annuler {
-  background: #eceaff;
-  color: #3d2d86;
-}
-.actions .modifier-mdp {
-  background-color: #dcd8f9;
-  color: #3d2d86;
-}
-.actions .modifier-mdp.annuler-mdp {
-  background: #eceaff;
-  color: #3d2d86;
-}
-.actions .supprimer {
-  background: #e4574d;
-  color: white;
-}
-
 /* ============================ */
 /* RESPONSIVE DESIGN */
 /* ============================ */
@@ -4647,7 +4652,7 @@ main.backoffice-stocks {
     padding: 50px 60px;
   }
   .page-compte .form-compte {
-    width: 70%;
+    gap: 40px;
   }
 }
 @media (max-width: 1024px) {
@@ -4666,11 +4671,10 @@ main.backoffice-stocks {
     font-size: 36px;
   }
   .page-compte .form-compte {
-    width: 80%;
-    gap: 40px;
+    gap: 35px;
   }
 }
-/* Tablettes */
+/* Tablettes - Passage à 2 colonnes */
 @media (max-width: 900px) {
   .page-compte {
     padding: 35px 40px;
@@ -4695,12 +4699,27 @@ main.backoffice-stocks {
     font-size: 32px;
   }
   .page-compte .form-compte {
-    width: 90%;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 30px;
   }
   .page-compte .form-compte .col {
     gap: 18px;
+  }
+  .page-compte .form-compte .col-actions {
+    grid-column: 1/-1;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-bottom: 0;
+    margin-top: 10px;
+  }
+  .page-compte .form-compte .col-actions .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .page-compte .form-compte .col-actions .actions button {
+    width: auto;
+    min-width: 140px;
   }
   .page-compte .champ-double {
     flex-direction: column;
@@ -4709,16 +4728,8 @@ main.backoffice-stocks {
   .page-compte .champ-double .champ {
     width: 100%;
   }
-  .page-compte .actions {
-    justify-content: flex-end;
-  }
-  .page-compte .actions button {
-    padding: 12px 25px;
-    font-size: 14px;
-    min-width: 110px;
-  }
 }
-/* Mobiles */
+/* Mobiles - Passage à 1 colonne */
 @media (max-width: 768px) {
   .page-compte {
     padding: 25px 30px;
@@ -4741,7 +4752,7 @@ main.backoffice-stocks {
     font-size: 28px;
   }
   .page-compte .form-compte {
-    width: 100%;
+    grid-template-columns: 1fr;
     gap: 25px;
   }
   .page-compte .form-compte .col {
@@ -4770,15 +4781,10 @@ main.backoffice-stocks {
   .page-compte .form-compte .code-vendeur {
     font-size: 16px;
   }
-  .page-compte .actions {
-    justify-content: flex-end;
-    margin-top: 25px;
-    gap: 12px;
-  }
-  .page-compte .actions button {
+  .page-compte .form-compte .col-actions .actions button {
     padding: 10px 20px;
     font-size: 13px;
-    min-width: 100px;
+    min-width: 120px;
     border-radius: 20px;
   }
 }
@@ -4828,15 +4834,14 @@ main.backoffice-stocks {
   .page-compte .form-compte .code-vendeur {
     font-size: 15px;
   }
-  .page-compte .actions {
-    justify-content: flex-end;
-    margin-top: 20px;
+  .page-compte .form-compte .col-actions .actions {
+    flex-direction: column;
     gap: 8px;
   }
-  .page-compte .actions button {
+  .page-compte .form-compte .col-actions .actions button {
     padding: 10px 15px;
     font-size: 12px;
-    min-width: auto;
+    min-width: 100%;
     border-radius: 20px;
   }
 }
@@ -4862,7 +4867,7 @@ main.backoffice-stocks {
   .page-compte .form-compte .col .champ .field-error p {
     font-size: 10px;
   }
-  .page-compte .actions button {
+  .page-compte .form-compte .col-actions .actions button {
     padding: 8px 12px;
     font-size: 11px;
   }
@@ -4891,14 +4896,17 @@ main.backoffice-stocks {
   .page-compte .form-compte .col {
     gap: 12px;
   }
-  .page-compte .actions {
-    justify-content: flex-end;
-    margin-top: 20px;
+  .page-compte .form-compte .col-actions {
+    grid-column: 1/-1;
+    flex-direction: row;
   }
-  .page-compte .actions button {
+  .page-compte .form-compte .col-actions .actions {
+    flex-direction: row;
+  }
+  .page-compte .form-compte .col-actions .actions button {
     padding: 8px 15px;
     font-size: 12px;
-    min-width: 90px;
+    min-width: 120px;
   }
 }
 .pageProduit body {
