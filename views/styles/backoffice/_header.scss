@@ -1,19 +1,19 @@
 @use '../colors.scss' as *;
 @use '../fonts.scss';
 
-body.nouveauProduit {
+body.backoffice.nouveauProduit {
     nav figure:first-child {
         display: none;
     }
 }
 
-body.monCompte {
+body.backoffice.monCompte {
     nav figure:nth-child(2), nav figure:nth-child(3) {
         display: none;
     }
 }
 
-body.nonConnecte {
+body.backoffice.nonConnecte {
     nav {
         display: none;
     }

@@ -671,15 +671,15 @@ body {
   }
 }
 
-body.nouveauProduit nav figure:first-child {
+body.backoffice.nouveauProduit nav figure:first-child {
   display: none;
 }
 
-body.monCompte nav figure:nth-child(2), body.monCompte nav figure:nth-child(3) {
+body.backoffice.monCompte nav figure:nth-child(2), body.backoffice.monCompte nav figure:nth-child(3) {
   display: none;
 }
 
-body.nonConnecte nav {
+body.backoffice.nonConnecte nav {
   display: none;
 }
 
