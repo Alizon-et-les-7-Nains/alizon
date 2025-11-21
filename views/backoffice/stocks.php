@@ -253,23 +253,25 @@
             </article>
         </section>
 
-        <dialog>
-            <h1>Paramètres de réassort</h1>
-            <form action="" method="post">
-                <input type="text" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
-                <input type="date" placeholder="Date du réassort" value="2025-11-05" name="Date du réassort" id="dateReassort">
-                <input type="text" placeholder="Réassortir" name="Reassoertir" id ="reassort">
-                <ul>
-                    <li><input type="button" value="Annuler"></li>
-                    <li><input type="submit" value="Valider"></li>
-                </ul>
-            </form>
-        </dialog>
-
         <?php require_once './partials/retourEnHaut.php' ?>
     </main>
 
     <?php require_once './partials/footer.php' ?>
+
+    <dialog class="reassort">
+        <h1>Paramètres de réassort</h1>
+        <form action="" method="post">
+            <input type="number" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
+            <label for="Seuil d'alerte">Doit être un entier</label>
+            <input type="date" placeholder="Date du réassort" value="2025-11-05" name="Date du réassort" id="dateReassort">
+            <input type="number" name="Reassortir" id="reassort">
+            <label for="Reassortir">Doit être un entier</label>
+            <ul>
+                <li><input type="button" value="Annuler"></li>
+                <li><input type="submit" value="Valider"></li>
+            </ul>
+        </form>
+    </dialog>
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
