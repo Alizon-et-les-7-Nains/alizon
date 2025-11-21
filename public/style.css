@@ -4416,7 +4416,6 @@ main.backoffice-stocks dialog form {
   width: 100%;
 }
 main.backoffice-stocks dialog form input {
-  transition: all 0.2s;
   padding-left: 2em;
   padding-right: 2em;
   padding-top: 1em;
@@ -4425,19 +4424,22 @@ main.backoffice-stocks dialog form input {
   font-size: 20px;
   border-radius: 24px;
   border: none;
-  cursor: pointer;
 }
-main.backoffice-stocks dialog form input:first-child {
+main.backoffice-stocks dialog form input[type=button], main.backoffice-stocks dialog form input[type=submit] {
+  transition: all 0.2s;
+}
+main.backoffice-stocks dialog form input[type=button]:first-child, main.backoffice-stocks dialog form input[type=submit]:first-child {
   background-color: #e4d9ff;
   color: #273469;
 }
-main.backoffice-stocks dialog form input:last-child {
+main.backoffice-stocks dialog form input[type=button]:last-child, main.backoffice-stocks dialog form input[type=submit]:last-child {
   background-color: #273469;
   color: #fffefa;
 }
-main.backoffice-stocks dialog form input:hover {
+main.backoffice-stocks dialog form input[type=button]:hover, main.backoffice-stocks dialog form input[type=submit]:hover {
   background-color: #e3f2fe;
   color: #273469;
+  cursor: pointer;
 }
 main.backoffice-stocks {
   margin-bottom: 2em;
