@@ -283,6 +283,7 @@ dialog.reassort {
             li input {
                 transition: all 0.2s;
                 border-style: hidden;
+                font-weight: normal;
             }
             li:first-child input {
                 background-color: $color-pastel-purple;
@@ -308,6 +309,7 @@ dialog.reassort {
 
         label {
             color: $color-red;
+            margin-top: -1em;
         }
         
         input {
