@@ -4398,7 +4398,6 @@ main.backoffice-stocks dialog {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
 }
 main.backoffice-stocks dialog::backdrop {
   background: rgba(0, 0, 0, 0.25);
@@ -4421,19 +4420,19 @@ main.backoffice-stocks dialog form ul {
   gap: 2em;
   list-style: none;
 }
-main.backoffice-stocks dialog form ul input {
+main.backoffice-stocks dialog form ul liinput {
   transition: all 0.2s;
   border-style: hidden;
 }
-main.backoffice-stocks dialog form ul input:first-child {
+main.backoffice-stocks dialog form ul liinput:first-child {
   background-color: #e4d9ff;
   color: #273469;
 }
-main.backoffice-stocks dialog form ul input:last-child {
+main.backoffice-stocks dialog form ul liinput:last-child {
   background-color: #273469;
   color: #fffefa;
 }
-main.backoffice-stocks dialog form ul input:hover {
+main.backoffice-stocks dialog form ul liinput:hover {
   background-color: #e3f2fe;
   color: #273469;
   cursor: pointer;
