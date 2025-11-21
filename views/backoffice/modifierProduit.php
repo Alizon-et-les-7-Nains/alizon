@@ -42,7 +42,10 @@ if (!$produit) {
     <header>
         <?php require_once "./partials/header.php"?>
     </header>
-    <?php require_once "./partials/aside.php"?>
+
+    <?php 
+    $current_page = basename(__FILE__);
+    require_once "./partials/aside.php"?>
        
     <main class="modifierProduit"> 
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
