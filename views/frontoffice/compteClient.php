@@ -36,16 +36,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
 
-    $stmt = $pdo->query(
-    "UPDATE saedb._client 
+    $stmt = $pdo->query(" 
+    UPDATE saedb._client 
     SET pseudo = '$pseudo', 
-    nom = '$nom', 
-    prenom = '$prenom', 
-    email =  '$email', 
-    dateNaissance = '$dateNaissance',
-    noTelephone = '$telephone',
-    idAdresse = '$idAdresse'
-    WHERE idClient = '$id_client';");
+        nom = '$nom', 
+        prenom = '$prenom', 
+        email = '$email', 
+        dateNaissance = '$dateNaissance',
+        noTelephone = '$telephone',
+        idAdresse = '$idAdresse'
+        WHERE idClient = '$id_client';
+    ");
+
 
     $stmt = $pdo->query(
     "UPDATE saedb._adresseClient 
@@ -54,18 +56,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ville = '$ville', 
     codePostal = '$codePostal',
     complementAdresse = '$adresse2'
-    WHERE idAdresse = '$idAdresse';");
+     WHERE idAdresse = '$idAdresse';");
 
 }   
 
     //verification et upload de la nouvelle photo de profil
-    $photoPath = '../../public/images/photoDeProfil/photo_profil'.$id_client.'.svg';
+    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client.'.svg';
     if (file_exists($photoPath)) {
         unlink($photoPath); // supprime l'ancien fichier
     }
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], '../../public/images/photoDeProfil/photo_profil'.$id_client.'.png');
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$id_client.'.png');
     }
 
     //on recupère les infos du user pour les afficher
