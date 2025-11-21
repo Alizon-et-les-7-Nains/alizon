@@ -4586,15 +4586,19 @@ main.backoffice-stocks {
   box-sizing: border-box;
 }
 
-.actions {
-  grid-column: 1/-1;
+.form-actions-container {
   display: flex;
-  gap: 18px;
   justify-content: flex-end;
   margin-top: 35px;
+  width: 100%;
+  padding-right: 80px;
+}
+.form-actions-container .actions {
+  display: flex;
+  gap: 18px;
   flex-wrap: wrap;
 }
-.actions button {
+.form-actions-container .actions button {
   padding: 14px 30px;
   border-radius: 26px;
   font-weight: 600;
@@ -4604,36 +4608,36 @@ main.backoffice-stocks {
   transition: all 0.3s ease;
   min-width: 120px;
 }
-.actions button:active {
+.form-actions-container .actions button:active {
   transform: translateY(0);
 }
-.actions button:disabled {
+.form-actions-container .actions button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
-.actions .modifier {
+.form-actions-container .actions .modifier {
   background-color: #dcd8f9;
   color: #3d2d86;
 }
-.actions .sauvegarder {
+.form-actions-container .actions .sauvegarder {
   background: #eceaff;
   color: #3d2d86;
 }
-.actions .annuler {
+.form-actions-container .actions .annuler {
   background: #eceaff;
   color: #3d2d86;
 }
-.actions .modifier-mdp {
+.form-actions-container .actions .modifier-mdp {
   background-color: #dcd8f9;
   color: #3d2d86;
 }
-.actions .modifier-mdp.annuler-mdp {
+.form-actions-container .actions .modifier-mdp.annuler-mdp {
   background: #eceaff;
   color: #3d2d86;
 }
-.actions .supprimer {
+.form-actions-container .actions .supprimer {
   background: #e4574d;
   color: white;
 }
@@ -4648,6 +4652,9 @@ main.backoffice-stocks {
   }
   .page-compte .form-compte {
     width: 70%;
+  }
+  .form-actions-container {
+    padding-right: 60px;
   }
 }
 @media (max-width: 1024px) {
@@ -4668,6 +4675,9 @@ main.backoffice-stocks {
   .page-compte .form-compte {
     width: 80%;
     gap: 40px;
+  }
+  .form-actions-container {
+    padding-right: 50px;
   }
 }
 /* Tablettes */
@@ -4709,10 +4719,13 @@ main.backoffice-stocks {
   .page-compte .champ-double .champ {
     width: 100%;
   }
-  .page-compte .actions {
+  .page-compte .form-actions-container {
+    padding-right: 40px;
+  }
+  .page-compte .form-actions-container .actions {
     justify-content: flex-end;
   }
-  .page-compte .actions button {
+  .page-compte .form-actions-container .actions button {
     padding: 12px 25px;
     font-size: 14px;
     min-width: 110px;
@@ -4770,12 +4783,14 @@ main.backoffice-stocks {
   .page-compte .form-compte .code-vendeur {
     font-size: 16px;
   }
-  .page-compte .actions {
-    justify-content: flex-end;
+  .page-compte .form-actions-container {
+    padding-right: 30px;
     margin-top: 25px;
+  }
+  .page-compte .form-actions-container .actions {
     gap: 12px;
   }
-  .page-compte .actions button {
+  .page-compte .form-actions-container .actions button {
     padding: 10px 20px;
     font-size: 13px;
     min-width: 100px;
@@ -4828,12 +4843,15 @@ main.backoffice-stocks {
   .page-compte .form-compte .code-vendeur {
     font-size: 15px;
   }
-  .page-compte .actions {
-    justify-content: flex-end;
+  .page-compte .form-actions-container {
+    padding-right: 15px;
     margin-top: 20px;
-    gap: 8px;
   }
-  .page-compte .actions button {
+  .page-compte .form-actions-container .actions {
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  .page-compte .form-actions-container .actions button {
     padding: 10px 15px;
     font-size: 12px;
     min-width: auto;
@@ -4862,7 +4880,10 @@ main.backoffice-stocks {
   .page-compte .form-compte .col .champ .field-error p {
     font-size: 10px;
   }
-  .page-compte .actions button {
+  .page-compte .form-actions-container {
+    padding-right: 10px;
+  }
+  .page-compte .form-actions-container .actions button {
     padding: 8px 12px;
     font-size: 11px;
   }
@@ -4891,11 +4912,11 @@ main.backoffice-stocks {
   .page-compte .form-compte .col {
     gap: 12px;
   }
-  .page-compte .actions {
-    justify-content: flex-end;
+  .page-compte .form-actions-container {
+    padding-right: 30px;
     margin-top: 20px;
   }
-  .page-compte .actions button {
+  .page-compte .form-actions-container .actions button {
     padding: 8px 15px;
     font-size: 12px;
     min-width: 90px;

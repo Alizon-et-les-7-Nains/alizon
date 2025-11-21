@@ -169,64 +169,70 @@
   }
 }
 
-.actions {
-  grid-column: 1 / -1;
+// NOUVELLE SECTION POUR LES ACTIONS - Positionnée en dehors du formulaire
+.form-actions-container {
   display: flex;
-  gap: 18px;
   justify-content: flex-end;
   margin-top: 35px;
-  flex-wrap: wrap;
+  width: 100%;
+  padding-right: 80px; // Alignement avec le padding de la page
 
-  button {
-    padding: 14px 30px;
-    border-radius: 26px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    min-width: 120px;
+  .actions {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
 
-    &:active {
-      transform: translateY(0);
+    button {
+      padding: 14px 30px;
+      border-radius: 26px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      min-width: 120px;
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
     }
 
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
+    .modifier {
+      background-color: #dcd8f9;
+      color: #3d2d86;
     }
-  }
 
-  .modifier {
-    background-color: #dcd8f9;
-    color: #3d2d86;
-  }
-
-  .sauvegarder {
-    background: #eceaff;
-    color: #3d2d86;
-  }
-
-  .annuler {
-    background: #eceaff;
-    color: #3d2d86;
-  }
-
-  .modifier-mdp {
-    background-color: #dcd8f9;
-    color: #3d2d86;
-
-    &.annuler-mdp {
+    .sauvegarder {
       background: #eceaff;
       color: #3d2d86;
     }
-  }
 
-  .supprimer {
-    background: #e4574d;
-    color: white;
+    .annuler {
+      background: #eceaff;
+      color: #3d2d86;
+    }
+
+    .modifier-mdp {
+      background-color: #dcd8f9;
+      color: #3d2d86;
+
+      &.annuler-mdp {
+        background: #eceaff;
+        color: #3d2d86;
+      }
+    }
+
+    .supprimer {
+      background: #e4574d;
+      color: white;
+    }
   }
 }
 
@@ -242,6 +248,10 @@
     .form-compte {
       width: 70%;
     }
+  }
+
+  .form-actions-container {
+    padding-right: 60px;
   }
 }
 
@@ -267,6 +277,10 @@
       width: 80%;
       gap: 40px;
     }
+  }
+
+  .form-actions-container {
+    padding-right: 50px;
   }
 }
 
@@ -317,13 +331,17 @@
       }
     }
 
-    .actions {
-      justify-content: flex-end;
+    .form-actions-container {
+      padding-right: 40px;
 
-      button {
-        padding: 12px 25px;
-        font-size: 14px;
-        min-width: 110px;
+      .actions {
+        justify-content: flex-end;
+
+        button {
+          padding: 12px 25px;
+          font-size: 14px;
+          min-width: 110px;
+        }
       }
     }
   }
@@ -394,16 +412,19 @@
       }
     }
 
-    .actions {
-      justify-content: flex-end;
+    .form-actions-container {
+      padding-right: 30px;
       margin-top: 25px;
-      gap: 12px;
 
-      button {
-        padding: 10px 20px;
-        font-size: 13px;
-        min-width: 100px;
-        border-radius: 20px;
+      .actions {
+        gap: 12px;
+
+        button {
+          padding: 10px 20px;
+          font-size: 13px;
+          min-width: 100px;
+          border-radius: 20px;
+        }
       }
     }
   }
@@ -469,16 +490,20 @@
       }
     }
 
-    .actions {
-      justify-content: flex-end;
+    .form-actions-container {
+      padding-right: 15px;
       margin-top: 20px;
-      gap: 8px;
 
-      button {
-        padding: 10px 15px;
-        font-size: 12px;
-        min-width: auto;
-        border-radius: 20px;
+      .actions {
+        gap: 8px;
+        justify-content: flex-end;
+
+        button {
+          padding: 10px 15px;
+          font-size: 12px;
+          min-width: auto;
+          border-radius: 20px;
+        }
       }
     }
   }
@@ -519,10 +544,14 @@
       }
     }
 
-    .actions {
-      button {
-        padding: 8px 12px;
-        font-size: 11px;
+    .form-actions-container {
+      padding-right: 10px;
+
+      .actions {
+        button {
+          padding: 8px 12px;
+          font-size: 11px;
+        }
       }
     }
   }
@@ -557,14 +586,16 @@
       }
     }
 
-    .actions {
-      justify-content: flex-end;
+    .form-actions-container {
+      padding-right: 30px;
       margin-top: 20px;
 
-      button {
-        padding: 8px 15px;
-        font-size: 12px;
-        min-width: 90px;
+      .actions {
+        button {
+          padding: 8px 15px;
+          font-size: 12px;
+          min-width: 90px;
+        }
       }
     }
   }
