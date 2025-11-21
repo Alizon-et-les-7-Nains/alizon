@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
     
-    if (isset($_SESSION['idClient'])) {
+    if (isset($_SESSION['user_id'])) {
         $idClient = $_SESSION['user_id'];
         
         // Appeler la fonction pour mettre à jour la quantité
@@ -23,8 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         // header('Location: connexion.php');
         // exit;
     }
-    
-    exit;
 }
 
 $productId = intval($_GET['id']) ?? 0;
