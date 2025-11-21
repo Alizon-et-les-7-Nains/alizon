@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $quantite = intval($_POST['quantite']);
     
     // Vérifier si l'utilisateur est connecté
-    if (isset($_SESSION['idClient'])) {
+    // if (isset($_SESSION['idClient'])) {
         $idClient = $_SESSION['idClient'];
         
         // Appeler la fonction pour mettre à jour la quantité
@@ -19,15 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         } else {
             $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
         }
-    } else {
-        $_SESSION['message_panier'] = "Veuillez vous connecter pour ajouter des articles au panier.";
-        // Rediriger vers la page de connexion si nécessaire
-        // header('Location: connexion.php');
-        // exit;
+    // } else {
+    //     $_SESSION['message_panier'] = "Veuillez vous connecter pour ajouter des articles au panier.";
+    //     // Rediriger vers la page de connexion si nécessaire
+    //     // header('Location: connexion.php');
+    //     // exit;
     }
     
-    exit;
-}
+//     exit;
+// }
 
 $productId = intval($_GET['id']) ?? 0;
 
@@ -238,7 +238,6 @@ if (isset($_SESSION['message_panier'])) {
             </div>
             <?php 
             $note = $produit['note'];
-            echo htmlspecialchars($note);
             ?>
         <div id="prix">
             <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
