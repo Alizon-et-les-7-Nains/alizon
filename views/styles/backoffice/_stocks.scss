@@ -266,6 +266,12 @@ main.backoffice-stocks {
             align-items: center;
             gap: 2em;
             width: 100%;
+
+            ul {
+                display: flex;
+                align-items: center;
+                gap: 2em;
+            }
             
             input {
                 padding: {
@@ -274,11 +280,16 @@ main.backoffice-stocks {
                 }
                 width: 200px;
                 font-size: 20px;
-                border-radius: 24px;
-                border: none;
+                border: {
+                    style: solid;
+                    width: 2px;
+                    color: $color-blue;
+                    radius: 24px;
+                }
                 
                 &[type=button], &[type=submit] {
                     transition: all 0.2s;
+                    border-style: hidden;
                     
                     &:first-child {
                         background-color: $color-pastel-purple;

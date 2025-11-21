@@ -4415,6 +4415,11 @@ main.backoffice-stocks dialog form {
   gap: 2em;
   width: 100%;
 }
+main.backoffice-stocks dialog form ul {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
 main.backoffice-stocks dialog form input {
   padding-left: 2em;
   padding-right: 2em;
@@ -4422,11 +4427,14 @@ main.backoffice-stocks dialog form input {
   padding-bottom: 1em;
   width: 200px;
   font-size: 20px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #273469;
   border-radius: 24px;
-  border: none;
 }
 main.backoffice-stocks dialog form input[type=button], main.backoffice-stocks dialog form input[type=submit] {
   transition: all 0.2s;
+  border-style: hidden;
 }
 main.backoffice-stocks dialog form input[type=button]:first-child, main.backoffice-stocks dialog form input[type=submit]:first-child {
   background-color: #e4d9ff;
