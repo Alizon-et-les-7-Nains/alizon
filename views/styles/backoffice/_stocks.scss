@@ -266,28 +266,14 @@ main.backoffice-stocks {
             align-items: center;
             gap: 2em;
             width: 100%;
-
+            
             ul {
                 display: flex;
                 align-items: center;
                 gap: 2em;
-            }
-            
-            input {
-                padding: {
-                    left: 2em; right: 2em;
-                    top: 1em; bottom: 1em;
-                }
-                width: 200px;
-                font-size: 20px;
-                border: {
-                    style: solid;
-                    width: 2px;
-                    color: $color-blue;
-                    radius: 24px;
-                }
-                
-                &[type=button], &[type=submit] {
+                list-style: none;
+
+                li input {
                     transition: all 0.2s;
                     border-style: hidden;
                     
@@ -305,6 +291,22 @@ main.backoffice-stocks {
                         color: $color-blue;
                         cursor: pointer;
                     }
+                }
+            }
+            
+            input {
+                color: $color-blue;
+                padding: {
+                    left: 2em; right: 2em;
+                    top: 1em; bottom: 1em;
+                }
+                width: 200px;
+                font-size: 20px;
+                border: {
+                    style: solid;
+                    width: 2px;
+                    color: $color-blue;
+                    radius: 24px;
                 }
             }
         }

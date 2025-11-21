@@ -4419,8 +4419,27 @@ main.backoffice-stocks dialog form ul {
   display: flex;
   align-items: center;
   gap: 2em;
+  list-style: none;
+}
+main.backoffice-stocks dialog form ul li input {
+  transition: all 0.2s;
+  border-style: hidden;
+}
+main.backoffice-stocks dialog form ul li input:first-child {
+  background-color: #e4d9ff;
+  color: #273469;
+}
+main.backoffice-stocks dialog form ul li input:last-child {
+  background-color: #273469;
+  color: #fffefa;
+}
+main.backoffice-stocks dialog form ul li input:hover {
+  background-color: #e3f2fe;
+  color: #273469;
+  cursor: pointer;
 }
 main.backoffice-stocks dialog form input {
+  color: #273469;
   padding-left: 2em;
   padding-right: 2em;
   padding-top: 1em;
@@ -4431,23 +4450,6 @@ main.backoffice-stocks dialog form input {
   border-width: 2px;
   border-color: #273469;
   border-radius: 24px;
-}
-main.backoffice-stocks dialog form input[type=button], main.backoffice-stocks dialog form input[type=submit] {
-  transition: all 0.2s;
-  border-style: hidden;
-}
-main.backoffice-stocks dialog form input[type=button]:first-child, main.backoffice-stocks dialog form input[type=submit]:first-child {
-  background-color: #e4d9ff;
-  color: #273469;
-}
-main.backoffice-stocks dialog form input[type=button]:last-child, main.backoffice-stocks dialog form input[type=submit]:last-child {
-  background-color: #273469;
-  color: #fffefa;
-}
-main.backoffice-stocks dialog form input[type=button]:hover, main.backoffice-stocks dialog form input[type=submit]:hover {
-  background-color: #e3f2fe;
-  color: #273469;
-  cursor: pointer;
 }
 main.backoffice-stocks {
   margin-bottom: 2em;
