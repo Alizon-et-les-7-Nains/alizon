@@ -277,14 +277,6 @@ main.backoffice-stocks {
                 gap: 2em;
                 list-style: none;
 
-                input {
-                    &:hover {
-                        background-color: $color-pastel-blue;
-                        color: $color-blue;
-                        cursor: pointer;
-                    }
-                }
-
                 li input {
                     transition: all 0.2s;
                     border-style: hidden;
@@ -292,10 +284,22 @@ main.backoffice-stocks {
                 li:first-child input {
                     background-color: $color-pastel-purple;
                     color: $color-blue;
+
+                    &:hover {
+                        background-color: $color-pastel-blue;
+                        color: $color-blue;
+                        cursor: pointer;
+                    }
                 }
                 li:last-child input {
                     background-color: $color-blue;
                     color: $color-white;
+
+                    &:hover {
+                        background-color: $color-pastel-blue;
+                        color: $color-blue;
+                        cursor: pointer;
+                    }
                 }
             }
             
