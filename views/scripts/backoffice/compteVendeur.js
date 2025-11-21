@@ -410,15 +410,28 @@ function uploadPhotoProfil(file) {
   formData.append("photoProfil", file);
   formData.append("codeVendeur", codeVendeur);
 
-  fetch("../../controllers/uploadPhotoVendeur.php", {
+  console.log("Upload photo en cours...", {
+    codeVendeur: codeVendeur,
+    fileName: file.name,
+    fileSize: file.size,
+    fileType: file.type,
+  });
+
+  fetch("../../controllers/addPhotoVendeur.php", {
     method: "POST",
     body: formData,
+    // Important: ne pas set Content-Type, FormData le fait automatiquement
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erreur HTTP: " + response.status);
+      }
+      return response.json();
+    })
     .then((data) => {
+      console.log("Réponse upload:", data);
       if (data.success) {
         console.log("Photo mise à jour avec succès");
-        // Optionnel: afficher un message de succès
         showNotification("Photo de profil mise à jour avec succès", "success");
       } else {
         console.error("Erreur lors du téléchargement:", data.message);
@@ -426,8 +439,8 @@ function uploadPhotoProfil(file) {
       }
     })
     .catch((error) => {
-      console.error("Erreur:", error);
-      showNotification("Erreur lors du téléchargement de la photo", "error");
+      console.error("Erreur fetch:", error);
+      showNotification("Erreur réseau lors du téléchargement", "error");
     });
 }
 
