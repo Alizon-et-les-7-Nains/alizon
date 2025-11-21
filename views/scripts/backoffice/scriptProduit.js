@@ -70,8 +70,6 @@ function verifDate(val){
     }
 }
 function popUpRemise(){
-        console.log("ID reçu :", id);
-        console.log("Nom reçu :", nom);
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
         overlay.innerHTML = `
@@ -87,7 +85,7 @@ function popUpRemise(){
                         <article>
                             <img class="produit" src="/public/images/rillettes.png" alt="">
                             <div class="nomEtEvaluation">
-                                <p>${nom}</p>
+                                <p>Rillettes</p>
                                 <div class="evaluation">
                                     <div class="etoiles">
                                         <img src="/public/images/etoile.svg" alt="">
@@ -125,7 +123,9 @@ function popUpRemise(){
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
 }
 
-function popUpPromouvoir(id, nom) {
+function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
+    console.log("ID reçu :", id);
+    console.log("Nom reçu :", nom);
     const overlay = document.createElement("div");
     overlay.className = "overlaypopUpPromouvoir";
     overlay.innerHTML = `
@@ -139,20 +139,19 @@ function popUpPromouvoir(id, nom) {
                     <h1> Ajouter une promotion pour ce produit </h1>
                     <section>
                         <article>
-                            <img class="produit" src="/public/images/rillettes.png" alt="">
+                            <img class="produit" src="${imgURL}" alt="">
                             <div class="nomEtEvaluation">
                                 <p>${nom}</p>
                                 <div class="evaluation">
                                     <div class="etoiles">
                                         <img src="/public/images/etoile.svg" alt="">
-                                        <p>3</p>
+                                        <p>${note}</p>
                                     </div>
-                                    <p>200 évaluation</p>
+                                    <p>${nbEval} évaluation</p>
                                 </div>
                             </div>
                             <div>
-                                <p class="prix"> 29.99 €</p>
-                                <p class="prixAuKg"> 99.72€ / kg</p>
+                                <p class="prix"> ${prix} €</p>
                             </div>
                         </article>
                     </section>
