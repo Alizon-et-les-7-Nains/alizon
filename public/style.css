@@ -4385,6 +4385,59 @@ main.backoffice-stocks section:nth-child(3) div:not(button.settings div) {
 main.backoffice-stocks section:nth-child(3) div:not(button.settings div) > ul li:last-child {
   color: #259525;
 }
+main.backoffice-stocks dialog {
+  background-color: #fffefa;
+  border: none;
+  border-radius: 16px;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  color: #273469;
+  font-family: "open-sans";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+main.backoffice-stocks dialog::backdrop {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(1px);
+}
+main.backoffice-stocks dialog h1 {
+  margin-bottom: 1em;
+  text-align: center;
+}
+main.backoffice-stocks dialog nav {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  width: 100%;
+}
+main.backoffice-stocks dialog nav button {
+  transition: all 0.2s;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  width: 200px;
+  font-size: 20px;
+  border-radius: 24px;
+  border: none;
+  cursor: pointer;
+}
+main.backoffice-stocks dialog nav button:first-child {
+  background-color: #e4d9ff;
+  color: #273469;
+}
+main.backoffice-stocks dialog nav button:last-child {
+  background-color: #273469;
+  color: #fffefa;
+}
+main.backoffice-stocks dialog nav button:hover {
+  background-color: #e3f2fe;
+  color: #273469;
+}
 main.backoffice-stocks {
   margin-bottom: 2em;
 }
