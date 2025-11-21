@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     
     // Vérifier si l'utilisateur est connecté
     // if (isset($_SESSION['idClient'])) {
-        $idClient = $_SESSION['idClient'];
+        $idClient = $_SESSION['user_id'];
         
         // Appeler la fonction pour mettre à jour la quantité
         $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
