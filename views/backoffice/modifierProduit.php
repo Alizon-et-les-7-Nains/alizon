@@ -87,7 +87,9 @@ if (!$produit) {
 
             <div class="form-actions">
                 <a href="#"><button type="button" class="btn-previsualiser">Prévisualiser</button></a>
-                <a href="#"><button type="button" class="btn-supprimer">Supprimer</button></a>
+                <form class="product-content" id="monForm" action="../../controllers/deleteProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
+                    <a href="#"><button type="submit" class="btn-supprimer">Supprimer</button></a>
+                <form>
                 <a href="#"><button type="submit" class="btn-ajouter">Modifier le produit</button></a>
             </div>
         </form>
