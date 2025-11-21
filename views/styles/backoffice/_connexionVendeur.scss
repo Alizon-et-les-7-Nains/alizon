@@ -2,140 +2,160 @@
 @use "../fonts" as *;
 
 .connexionVendeur {
-    font: {
-        family: 'lora', 'Serif';
-        weight: bold;
-        style: italic;
-    }
+    // Important : sert de référentiel pour l'image absolute
+    position: relative; 
+    
     background-color: $color-white;
     color: $color-blue;
-    min-height: 80vh;
-    padding-bottom: 50px;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
-    overflow-x: hidden;
-    z-index: 1;
+    overflow-x: hidden; // Empêche le scroll horizontal si l'image dépasse
+    padding-bottom: 40px;
 
-    h1 {
-        margin: {
-            top: 10px;
-            bottom: 30px;
-            left: 30px;
-        }
-        text-align: left;
-        font-weight: 600;
-    }
-
+    // --- GESTION DE L'IMAGE DE FOND ---
     .triskiel {
-        position: absolute;
+        position: absolute; // Sort l'image du flux : elle ne pousse plus rien
         top: 0;
         right: 0;
-        width: 1100px;
-        height: 100%;
+        height: 100%; // Prend toute la hauteur
+        width: auto;  // Garde ses proportions
+        max-width: 65%; // Ajuste selon la capture (environ 2/3 de l'écran)
+        
         object-fit: cover;
-        z-index: -1;
-        pointer-events: none;
-        opacity: 0.6;
+        z-index: 0; // Plan le plus bas (fond)
+        pointer-events: none; // On peut cliquer au travers
+        opacity: 0.8; 
     }
 
+    // --- GESTION DU CONTENU (TEXTE/FORMULAIRE) ---
+    // On applique z-index: 1 sur tous les blocs de contenu pour qu'ils passent DEVANT l'image
+    
     .pdp_title {
-        width: 100%;
-        max-width: 900px;
-        padding: 0 20px;
-        margin: {
-            top: 50px;
-            bottom: 50px;
-            left: auto;
-            right: auto;
-        }
+        position: relative; // Nécessaire pour que le z-index fonctionne
+        z-index: 1;         // Passe devant l'image
+        
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
+        margin-top: 60px;
+        margin-bottom: 40px;
+        text-align: center;
 
-        img[alt="photo de profil"] {
+        .cercle-pdp {
+            background-color: #ccc; 
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid $color-blue;
+            margin-bottom: 20px;
+            
+            // S'assurer que l'image de profil ne soit pas transparente
+            background-color: white; 
+
+            img {
+                width: 60%;
+                height: auto;
+            }
+        }
+
+        h1 {
+            font-family: 'lora', serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: $color-blue;
         }
     }
 
     .information_connexion {
+        position: relative; // Nécessaire
+        z-index: 1;         // Passe devant l'image
+        
         width: 100%;
-        max-width: 900px;
-        z-index: 2;
+        max-width: 500px;
 
         .form-vendeur {
-            input.form-control {
-                padding: 12px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .inputs-container {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .custom-input {
                 border: 2px solid $color-blue;
                 border-radius: 8px;
+                padding: 12px 15px;
                 font-size: 1rem;
+                font-weight: bold;
                 color: $color-blue;
-                background-color: rgba(255, 255, 255, 0.9);
+                // Fond blanc semi-transparent pour que le texte reste lisible si le triskiel passe dessous
+                background-color: rgba(255, 255, 255, 0.85); 
 
                 &::placeholder {
-                    color: $color-dark-gray;
-                }
-
-                &:focus {
-                    box-shadow: 0 0 0 0.25rem rgba($color-blue, 0.25);
+                    color: lighten($color-blue, 20%);
+                    font-style: italic;
                 }
             }
-        }
 
-        .btn_connexion {
-            background-color: $color-pastel-purple;
-            max-width: 300px;
-            width: 100%;
-            border-radius: 24px;
-            color: $color-blue;
-            padding: 12px 20px;
-            border: 0;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: transform 0.2s ease;
+            .liens-utiles {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 10px 0 25px 0;
+                gap: 5px;
 
-            &:hover {
-                transform: scale(1.02);
+                a {
+                    color: $color-blue;
+                    font-size: 0.9rem;
+                    text-decoration: underline;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
             }
-        }
 
-        .mdp_oublie, .inscription_lien {
-            font: {
-                family: 'lora', 'Serif';
-                weight: normal;
-                style: normal;
-            }
-            color: $color-blue;
-            text-decoration: underline;
-            text-align: center;
-            cursor: pointer;
-            font-size: 0.9rem;
+            .actions {
+                width: 100%;
+                display: flex;
+                justify-content: center;
 
-            &:hover {
-                color: darken($color-blue, 10%);
+                .btn_connexion {
+                    background-color: $color-pastel-purple;
+                    color: $color-blue;
+                    border: none;
+                    border-radius: 50px;
+                    padding: 12px 60px;
+                    font-size: 1.1rem;
+                    font-weight: normal;
+                    cursor: pointer;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    transition: transform 0.2s;
+
+                    &:hover {
+                        transform: scale(1.02);
+                    }
+                }
             }
-        }
-        
-        .inscription_lien {
-            font-weight: bold;
         }
     }
 
     .text-footer {
+        position: relative; // Nécessaire
+        z-index: 1;         // Passe devant l'image
+        
+        margin-top: auto;
+        padding-top: 50px;
         max-width: 800px;
         text-align: center;
-        font: {
-            size: 0.8rem;
-            style: normal;
-            weight: normal;
-        }
-        color: $color-dark-gray;
-        margin-top: auto;
-        padding: 40px 20px 0 20px;
+        font-size: 0.7rem;
+        color: grey;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 }
