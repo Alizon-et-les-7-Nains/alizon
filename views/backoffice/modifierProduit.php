@@ -112,7 +112,8 @@ if (!$produit) {
         
     </main>
 
-    <script>
+    <script src="/public/script.js">
+        
     document.addEventListener('DOMContentLoaded', function() {
         const photoUploadInput = document.getElementById('photoUpload');
         const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
