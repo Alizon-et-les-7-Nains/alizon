@@ -21,7 +21,7 @@
 
 <body>
     <main class="connexionVendeur">
-        <img class="triskiel" src="../../public/images/triskiel gris.svg" alt="">
+        
 
         <div class="pdp_title">
             <div class="cercle-pdp">
