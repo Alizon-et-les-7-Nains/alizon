@@ -3,10 +3,13 @@ require_once 'pdo.php';
 session_start();
 
 $idProd = $_GET['id']; 
+// Si il y a eu un formulare de remplie, on fait 2 requêtes 
+// La première requête permet de mettre à jour les informations du produit sur lequel le formulaire à été rempli
+// La deuxième permet de mettre à jour l'image d'un produit
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("UPDATE _produit SET nom = :nom, description = :description, prix = :prix, poids = :poids, mots_cles = :mot_cles WHERE idProduit = :idProduit");
-    $img = $pdo->prepare("UPDATE _imageDeProduit SET URL = :url WHERE idProduit = :idProduit");
+    $imgDeProd = $pdo->prepare("UPDATE _imageDeProduit SET URL = :url WHERE idProduit = :idProduit");
     $stmt->execute([
         ':nom' => $_POST['nom'],
         ':description' => $_POST['description'],
@@ -16,12 +19,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':idProduit' => $idProd
     ]);
 
-    $img->execute([
-        ':url' => $_POST['url'],
-        ':idProduit' => $idProd
-    ]);
-}
+// On construit le chemin de la nouvelle image 
+$fileName = $_FILES['url']['name'];
+$tmpPath = $_FILES['url']['tmp_name'];
 
-header("Location: ../views/frontoffice/compteClient.php"); 
+move_uploaded_file($tmpPath, "../public/images/$fileName");
+$url = "../public/images/$fileName";
+try{
+        $imgDeProd->execute([
+            ':url' => $url,
+            ':idProduit' => $idProd
+        ]);
+    }
+catch(PDOException $e){
+    echo "Erreur SQL : " . $e->getMessage();
+}
+}
+    
+
+header("Location: ../views/backoffice/accueil.php"); 
 exit();
 ?>

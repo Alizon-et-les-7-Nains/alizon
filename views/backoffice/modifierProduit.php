@@ -36,7 +36,7 @@ if (!$produit) {
     <link rel="stylesheet" href="../../public/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <title>Ajouter un produit au catalogue</title>
+    <title>Modifer un produit du catalogue</title>
 </head>
 <body class="backoffice">
     <header>
@@ -48,7 +48,7 @@ if (!$produit) {
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
             <div class="left-section">
                 <div class="ajouterPhoto">
-                    <input type="file" id="photoUpload" name="url" accept="image/*" value="<?= htmlspecialchars($imageUrl) ?>" style="display: none;">
+                    <input type="file" id="photoUpload" name="url" accept="image/*" style="display: none;">
                     <div class="placeholder-photo">
                     <img src="<?= htmlspecialchars($imageUrl) ?>" id="imagePreview">
 
