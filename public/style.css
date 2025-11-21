@@ -671,18 +671,6 @@ body {
   }
 }
 
-body.backoffice.nouveauProduit nav figure:first-child {
-  display: none;
-}
-
-body.backoffice.monCompte nav figure:nth-child(2), body.backoffice.monCompte nav figure:nth-child(3) {
-  display: none;
-}
-
-body.backoffice.nonConnecte nav {
-  display: none;
-}
-
 /* ---- Header ---- */
 header.backoffice {
   display: flex;
@@ -826,6 +814,18 @@ header.backoffice dialog nav button:last-child {
 header.backoffice dialog nav button:hover {
   background-color: #e3f2fe;
   color: #273469;
+}
+
+body.backoffice.nouveauProduit nav figure:first-child {
+  display: none;
+}
+
+body.backoffice.monCompte nav figure:nth-child(2), body.backoffice.monCompte nav figure:nth-child(3) {
+  display: none;
+}
+
+body.backoffice.nonConnecte nav {
+  display: none;
 }
 
 .pageConnexionCLient {
