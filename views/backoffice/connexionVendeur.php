@@ -50,8 +50,8 @@
                     <a href="#">Mot de passe oublié ? Cliquez ici</a>
                 </div>
 
-                <div class="actions">
-                    <button type="submit" class="btn_connexion">Se connecter</button>
+                <div>
+                    <button type="submit" class="btn_connexion" disabled>Se connecter</button>
                 </div>
             </form>
         </div>
