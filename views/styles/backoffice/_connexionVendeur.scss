@@ -121,13 +121,19 @@
     }
 
     .text-footer {
-        position: relative;
-        z-index: 1;
-        margin-top: 60px;
-        max-width: 800px;
+        max-width: 1000px;
         text-align: center;
-        font-size: 0.65rem;
-        color: $color-light-gray;
-        line-height: 1.4;
+        font: {
+            size: 0.8rem;
+            style: normal;
+            weight: normal;
+        }
+        color: $color-dark-gray;
+        margin: {
+            top: 20px;
+            left: auto;
+            right: auto;
+        }
+        padding: 0 20px;
     }
 }
