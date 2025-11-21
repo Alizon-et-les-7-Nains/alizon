@@ -313,6 +313,9 @@ dialog.reassort {
         }
         
         input {
+            &::placeholder {
+                font-weight: normal;
+            }
             color: $color-blue;
             font-weight: bold;
             padding: {

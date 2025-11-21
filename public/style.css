@@ -4457,6 +4457,9 @@ dialog.reassort form label {
   color: #f14e4e;
   margin-top: -1em;
 }
+dialog.reassort form input::placeholder {
+  font-weight: normal;
+}
 dialog.reassort form input {
   color: #273469;
   font-weight: bold;
