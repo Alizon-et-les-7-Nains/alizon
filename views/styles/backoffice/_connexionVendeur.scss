@@ -14,7 +14,7 @@
 
     .triskiel{
         position: absolute;
-        top: 0;
+        top: 50px;
         right: 0;
         width: 1100px;
         height: 100%;
@@ -94,10 +94,13 @@
                 }
             }
 
+            .actions {
+                width: 100%;
+                justify-content: center;
+
                 .btn_connexion{
                     background-color: $color-pastel-purple;
                     max-width: 300px;
-                    width: auto;
                     border-radius: 24px;
                     color: $color-blue;
                     padding: 12px 20px;
@@ -114,6 +117,7 @@
                         cursor: not-allowed;
                     }
                 }
+            }
         }
     }
 

@@ -258,7 +258,7 @@
 
     <?php require_once './partials/footer.php' ?>
 
-    <dialog class="reassort">
+    <dialog class="reassort" close>
         <h1>Paramètres de réassort</h1>
         <form action="" method="post">
             <input type="number" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
@@ -267,7 +267,7 @@
             <input type="number" name="Reassortir" id="reassort">
             <label for="Reassortir">Doit être un entier</label>
             <ul>
-                <li><input type="button" value="Annuler"></li>
+                <li><input type="button" value="Annuler" id="annuler"></li>
                 <li><input type="submit" value="Valider"></li>
             </ul>
         </form>
