@@ -2,23 +2,23 @@ document.querySelector("header.backoffice figure:first-child")?.addEventListener
     window.location.href = "ajouterProduit.php";
 });
 
-const modal: HTMLDialogElement | null = document.querySelector("header.backoffice dialog") as HTMLDialogElement;
+const modalDeconnexion: HTMLDialogElement | null = document.querySelector("header.backoffice dialog") as HTMLDialogElement;
 
 document.querySelector("header.backoffice figure:nth-child(2)")?.addEventListener("click", () => {
-    modal?.showModal();
+    modalDeconnexion?.showModal();
 });
 document.querySelector("header.backoffice dialog button")?.addEventListener("click", () => {
-    modal?.close();
+    modalDeconnexion?.close();
 });
 document.querySelector("header.backoffice dialog nav button:first-child")?.addEventListener("click", () => {
-    modal?.close();
+    modalDeconnexion?.close();
 });
 document.querySelector("header.backoffice dialog nav button:last-child")?.addEventListener("click", () => {
     window.location.href = "connexion.php";
 });
-modal?.addEventListener("click", (e) => {
-    if (e.target === modal) {
-        modal.close();
+modalDeconnexion?.addEventListener("click", (e) => {
+    if (e.target === modalDeconnexion) {
+        modalDeconnexion.close();
     }
 });
 

@@ -1,6 +1,7 @@
 const btnSettings: Element[] = Array.from(document.getElementsByClassName('settings'));
+const modalReassort: HTMLDialogElement | null = document.querySelector("main.backoffice-stocks dialog") as HTMLDialogElement;
 
-btnSettings?.forEach(btn => {
+btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs: Element[] = Array.from(btn.children);
         subDivs.forEach(div => {
@@ -12,7 +13,7 @@ btnSettings?.forEach(btn => {
     })
 })
 
-btnSettings?.forEach(btn => {
+btnSettings.forEach(btn => {
     btn.addEventListener('mouseout', () => {
         const subDivs: Element[] = Array.from(btn.children);
         subDivs.forEach(div => {
@@ -21,5 +22,11 @@ btnSettings?.forEach(btn => {
                 innerDiv.style.left = innerDiv.classList.contains('right') ? '14px' : '4px';
             }
         })
+    })
+})
+
+btnSettings.forEach(btn => {
+    btn.addEventListener('click', () => {
+        modalReassort.showModal();
     })
 })
