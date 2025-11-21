@@ -14,7 +14,7 @@
 
     .triskiel{
         position: absolute;
-        top: 50px;
+        top: 0;
         right: 0;
         width: 1100px;
         height: 100%;
@@ -58,10 +58,7 @@
                 display: flex;
                 flex-direction: column;
                 width: 100%;
-                padding: 30px;
-                justify-content: center;
-                align-items: center;
-            }
+                margin-bottom: 30px;
 
             .custom-input {
                 background-color: $color-white;
