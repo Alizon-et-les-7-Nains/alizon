@@ -26,7 +26,7 @@
 
         <div>
             <a href="../../views/frontoffice/accueilConnecte.php">Retourner à bon port</a>
-        </div>
+        </div> 
 
     </main>
 
