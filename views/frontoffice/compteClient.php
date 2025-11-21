@@ -5,6 +5,8 @@ require_once '../../controllers/pdo.php' ;
 
 $id_client = $_SESSION['user_id'];
 
+echo $id_client;
+
 $stmt = $pdo->query("SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client'");
 $client = $stmt->fetch(PDO::FETCH_ASSOC);
 $idAdresse = $client['idAdresse'] ?? null;
