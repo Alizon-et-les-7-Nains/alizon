@@ -258,6 +258,12 @@
 
     <?php require_once './partials/footer.php' ?>
 
+    <dialog>
+        <h1>Paramètres de réassort</h1>
+        <input type="text">
+        
+    </dialog>
+
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 </body>
