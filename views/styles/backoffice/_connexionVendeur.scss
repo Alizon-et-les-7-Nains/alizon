@@ -118,10 +118,8 @@
                     cursor: pointer;
                     
                     &:disabled {
-                        background-color: $color-pastel-purple;
-                        color: $color-blue;
                         cursor: not-allowed;
-                        box-shadow: none;
+                        opacity: 0.8;
                     }
                 }
             }
