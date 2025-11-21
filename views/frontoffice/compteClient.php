@@ -1,172 +1,166 @@
-function setError(element, message) {
-  if (!element) return;
-  element.classList.add("invalid");
-  const container = element.parentElement;
-  if (!container) return;
-  let err = container.querySelector(".error-message");
-  if (!err) {
-    err = document.createElement("small");
-    err.className = "error-message";
-    container.appendChild(err);
-  }
-  err.textContent = message;
-}
-
-function clearError(element) {
-  if (!element) return;
-  element.classList.remove("invalid");
-  const container = element.parentElement;
-  if (!container) return;
-  const err = container.querySelector(".error-message");
-  if (err) err.textContent = "";
-}
-
-function verifierChamp() {
-  const bouton = document.querySelector(".boutonModiferProfil");
-  const champs = document.querySelectorAll("section input");
-  let tousValides = true;
-
-  if (champs.length === 0) {
-    bouton.disabled = false;
-    return;
-  }
-
-  // Définir quels champs sont obligatoires
-  const champsObligatoires = [0, 1, 2, 3, 9, 10]; // pseudo, prenom, nom, dateNaissance, telephone, email
-  // Les champs 4, 5, 6, 7, 8 (adresse1, adresse2, codePostal, ville, pays) sont optionnels
-
-  for (let i = 0; i < champs.length; i++) {
-    let valeur = champs[i].value.trim();
-    let champObligatoire = champsObligatoires.includes(i);
-
-    // Vérifier si le champ obligatoire est vide
-    if (champObligatoire && valeur === "") {
-      tousValides = false;
-      setError(champs[i], "Ce champ est obligatoire");
-      continue;
-    }
-
-    // Si le champ est vide mais non obligatoire, on passe au suivant
-    if (valeur === "" && !champObligatoire) {
-      clearError(champs[i]);
-      continue;
-    }
-
-    // Validations spécifiques pour les champs remplis
-    if (i === 3 && valeur !== "") {
-      // Validation date de naissance
-      if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
-        tousValides = false;
-        setError(champs[i], "Format attendu : jj/mm/aaaa");
-      } else {
-        clearError(champs[i]);
-      }
-    } else if (i === 9 && valeur !== "") {
-      // Validation téléphone
-      if (!/^0[0-9](\s[0-9]{2}){4}$/.test(valeur) && !/^0[0-9]([0-9]{2}){4}$/.test(valeur)) {
-        tousValides = false;
-        setError(champs[i], "Format attendu : 06 01 02 03 04 ou 0601020304");
-      } else {
-        clearError(champs[i]);
-      }
-    } else if (i === 10 && valeur !== "") {
-      // Validation email
-      if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
-        tousValides = false;
-        setError(champs[i], "Email invalide (ex: nom@domaine.fr)");
-      } else {
-        clearError(champs[i]);
-      }
-    } else {
-      // Pour tous les autres champs valides
-      clearError(champs[i]);
-    }
-  }
-
-  bouton.disabled = !tousValides;
-}
-
-function modifierProfil(event) {
-  event.preventDefault();
-
-  if (!enModif) {
-    // Remplacer les <p> par des <input> pour modification
-    let elems = document.querySelectorAll("section p");
-    const nomsChamps = [
-      "pseudo",
-      "prenom",
-      "nom",
-      "dateNaissance",
-      "adresse1",
-      "adresse2",
-      "codePostal",
-      "ville",
-      "pays",
-      "telephone",
-      "email",
-    ];
-
-    for (let i = 0; i < elems.length; i++) {
-      let texteActuel = elems[i].innerText;
-      let input = document.createElement("input");
-      input.value = texteActuel;
-      input.name = nomsChamps[i];
-      input.id = nomsChamps[i];
-      input.autocomplete = nomsChamps[i];
-
-      // Définir le type d'input approprié
-      if (i === 9) input.type = "tel";
-      else if (i === 10) input.type = "email";
-      else input.type = "text";
-
-      // Définir les placeholders avec * pour les champs obligatoires
-      const placeholders = [
-        "Pseudo*",
-        "Prénom*",
-        "Nom*",
-        "Date de naissance*",
-        "Adresse",
-        "Complément d'adresse",
-        "Code postal",
-        "Ville",
-        "Pays",
-        "Numéro de téléphone*",
-        "Email*"
-      ];
-      input.placeholder = placeholders[i];
-
-      elems[i].parentNode.replaceChild(input, elems[i]);
-    }
-
-    // Modifier le bouton "Modifier" en "Enregistrer"
-    bnModifier[0].innerHTML = "Enregistrer";
-    bnModifier[0].style.backgroundColor = "#64a377";
-    bnModifier[0].style.color = "#FFFEFA";
-    conteneur.appendChild(ajoutPhoto);
-
-    imageProfile.style.cursor = "pointer";
-    imageProfile.onclick = () => ajoutPhoto.click();
-
-    enModif = true;
-
-    bnAnnuler[0].style.display = "block";
-    bnAnnuler[0].style.color = "white";
-
-    // Ajouter les événements de validation
-    document.querySelector("section").addEventListener("input", verifierChamp);
-    document.querySelector("section").addEventListener("blur", verifierChamp, true);
+<?php
+session_start();
+require_once '../../controllers/pdo.php' ;
     
-    // Vérifier immédiatement les champs
-    verifierChamp();
-  } else {
-    // Vérifier une dernière fois avant de soumettre
-    verifierChamp();
-    
-    // Soumettre uniquement si tous les champs sont valides
-    if (!bnModifier[0].disabled) {
-      document.querySelector("form").submit();
-    }
-  }
+
+$id_client = $_SESSION['user_id'];
+
+$stmt = $pdo->query("SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client'");
+$client = $stmt->fetch(PDO::FETCH_ASSOC);
+$idAdresse = $client['idAdresse'] ?? null;
+
+
+if (!$idAdresse) {
+    $pdo->query("INSERT INTO saedb._adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) 
+                 VALUES (NULL, NULL, NULL, NULL, NULL, NULL)");
+    $idAdresse = $pdo->lastInsertId();
+    $pdo->query("UPDATE saedb._client SET idAdresse = $idAdresse WHERE idClient = $id_client");
 }
 
-bnModifier[0].addEventListener("click", modifierProfil);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    //update la BDD avec les nouvelles infos du user
+    $pseudo = $_POST['pseudo'];
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $email = $_POST['email'];
+    $dateNaissance = $_POST['dateNaissance'];
+    $telephone = $_POST['telephone'];
+    $codePostal = $_POST['codePostal'];
+    $adresse1 = $_POST['adresse1'];
+    $adresse2 = $_POST['adresse2'];
+    $pays = $_POST['pays'];
+    $ville = $_POST['ville'];
+
+    $stmt = $pdo->query( 
+    "UPDATE saedb._client 
+    SET pseudo = '$pseudo', 
+        nom = '$nom', 
+        prenom = '$prenom', 
+        email = '$email', 
+        dateNaissance = '$dateNaissance',
+        noTelephone = '$telephone',
+        idAdresse = '$idAdresse'
+        WHERE idClient = '$id_client';
+    ");
+
+
+    $stmt = $pdo->query(
+    "UPDATE saedb._adresseClient 
+    SET adresse = '$adresse1',
+    pays = '$pays',
+    ville = '$ville', 
+    codePostal = '$codePostal',
+    complementAdresse = '$adresse2'
+     WHERE idAdresse = '$idAdresse';");
+
+}   
+
+    //verification et upload de la nouvelle photo de profil
+    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client.'.svg';
+    if (file_exists($photoPath)) {
+        unlink($photoPath); // supprime l'ancien fichier
+    }
+
+    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.'.svg');
+    }
+
+    //on recupère les infos du user pour les afficher
+    $stmt = $pdo->query("SELECT * FROM saedb._client WHERE idClient = '$id_client'");
+    $client = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $pseudo = $client['pseudo'] ?? '';
+    $prenom = $client['prenom'] ?? '';
+    $nom = $client['nom'] ?? '';
+    $dateNaissance = $client['dateNaissance'] ?? '';
+    $email = $client['email'] ?? '';
+    $noTelephone = $client['noTelephone'] ?? '';
+
+    $stmt = $pdo->query("SELECT * FROM saedb._adresseClient WHERE idAdresse = '$idAdresse'");
+    $adresse = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $adresse1 = $adresse['adresse'] ?? '';
+    $adresse2 = $adresse['complementAdresse'] ?? '';
+    $codePostal = $adresse['codePostal'] ?? '';
+    $ville = $adresse['ville'] ?? '';
+    $pays = $adresse['pays'] ?? '';
+
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Compte</title>
+    <link rel="stylesheet" href="../../public/style.css">
+</head>
+<body>
+    <?php include 'partials/headerConnecte.php'; ?>
+
+    <main class="mainCompteClient">
+        <form method="POST" enctype="multipart/form-data" action="">
+            <div id="titreCompte">
+                <div class="photo-container">
+                    <?php 
+                        if (file_exists($photoPath)) {
+                            echo "<img src=".$photoPath." alt=photoProfil id=imageProfile>";
+                        } else {
+                            echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
+                        }
+                    ?>
+                </div>
+                <h1>Mon Compte</h1>
+            </div>
+
+            <section>
+                <article>
+                    <div><p><?php echo htmlspecialchars($pseudo ?? ''); ?></p></div>
+                   <div><p><?php echo htmlspecialchars($prenom ?? ''); ?></p></div>
+                   <div><p><?php echo htmlspecialchars($nom ?? ''); ?></p></div>
+                   <div><p><?php echo htmlspecialchars($dateNaissance ?? ''); ?></p></div>
+                </article>
+
+                <article>
+                    <div><p><?php echo htmlspecialchars($adresse1 ?? ''); ?></p></div>
+                    <div><p><?php echo htmlspecialchars($adresse2 ?? ''); ?></p></div>
+                    <div class="double-champ">
+                        <div><p><?php echo htmlspecialchars($codePostal ?? ''); ?></p></div>
+                        <div><p><?php echo htmlspecialchars($ville ?? ''); ?></p></div>
+                    </div>
+                    <div><p><?php echo htmlspecialchars($pays ?? ''); ?></p></div>
+                </article>
+
+                <article>
+                    <div><p><?php echo htmlspecialchars($noTelephone ?? ''); ?></p></div>
+                    <div><p><?php echo htmlspecialchars($email ?? ''); ?></p></div>
+                </article> 
+            </section>
+
+            <div id="buttonsCompte">
+                <button type="button" onclick="popUpModifierMdp()" class="boutonModifierMdp">Modifier le mot de passe</button>
+                <button class="boutonAnnuler" type="button" onclick="boutonAnnuler()">Annuler</button>
+                <button type="button" class="boutonModiferProfil">Modifier</button>
+            </div>
+        </form>
+
+    </main>
+    
+    <?php include 'partials/footerConnecte.php'; ?>
+
+    
+    <?php 
+        //On récupère le mot de passe de la BDD
+        $stmt = $pdo->query("SELECT mdp FROM saedb._client WHERE idClient = '$id_client'");
+        $tabMdp = $stmt->fetch(PDO::FETCH_ASSOC);
+        $mdp = $tabMdp['mdp'] ?? '';
+    ?>
+    <script src="../../controllers/Chiffrement.js"></script>
+    <script>
+        //On récupère le mot de passe de la BDD et on utilise json_encode pour que les caratères comme \ soient considérés
+        const mdp = <?php echo json_encode($mdp); ?>;
+    </script>
+    <script src="../scripts/frontoffice/compteClient.js"></script>
+</body>
+</html>

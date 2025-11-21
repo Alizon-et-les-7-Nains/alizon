@@ -21,225 +21,72 @@ function clearError(element) {
   if (err) err.textContent = "";
 }
 
-function validerMdp(mdp) {
-  //On regarde si il y a plus de 12 char
-  if (mdp.length < 12) {
-    return false;
-  }
-
-  const contientUneMaj = /[A-Z]/.test(mdp);
-
-  const contientUnChiffre = /[0-9]/.test(mdp);
-
-  const contientUnCharSpe = /[^a-zA-Z0-9]/.test(mdp);
-
-  //On regarde si il le mdp a minimum 1 maj 1 chiffre et 1 char spé
-  return contientUneMaj && contientUnChiffre && contientUnCharSpe;
-}
-
-function fermerPopUp() {
-  const overlay = document.querySelector(".overlayPopUpCompteClient");
-  if (overlay) overlay.remove();
-}
-
-function popUpModifierMdp() {
-  const overlay = document.createElement("div");
-  overlay.className = "overlayPopUpCompteClient";
-  overlay.innerHTML = `
-                <main class="mainPopUpCompteClient">
-                <div class="croixFermerLaPage">
-                    <div></div>
-                    <div></div>
-                </div> 
-                <h1>Modification de votre mot de passe</h1>
-                <section>
-                    <div class="formulaireMdp">
-                        <form id="formMdp" method="POST" action="../../controllers/modifierMdp.php">
-                            <div class="input"><input type="password" name="ancienMdp" placeholder="Ancien mot de passe"></div>
-                            <div class="input"><input type="password" name="nouveauMdp" placeholder="Nouveau mot de passe"></div>
-                            <div class="input"><input type="password" name="confirmationMdp" placeholder="Confirmer le nouveau mot de passe"></div>
-                            
-                        
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Longueur minimale de 12 charactères</p>
-                            </article>
-    
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Au moins une minuscule / majuscule</p>
-                            </article>
-    
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Au moins un chiffre</p>
-                            </article>
-    
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div>  
-                                <p>Au moins un charactères spéciale</p>
-                            </article>
-                        </div>
-                            <button type="submit">Valider</button>
-                        </form>
-                    </section>
-                </main>`;
-  document.body.appendChild(overlay);
-
-  let croixFermerLaPage = overlay.getElementsByClassName("croixFermerLaPage");
-  croixFermerLaPage = croixFermerLaPage[0];
-  //Appel de la fonction fermer la pop up quand on clique sur la croix
-  croixFermerLaPage.addEventListener("click", fermerPopUp);
-
-  let form = overlay.querySelector("form");
-
-  let button = overlay.querySelectorAll("button");
-  let valider = button[0];
-
-  let input = overlay.querySelectorAll("input");
-
-  //On récupère les 3 inputs
-  let ancienMdp = input[0];
-  let nouveauMdp = input[1];
-  let confirmationMdp = input[2];
-
-  function verifMdp(event) {
-    let testAncien = false;
-    let testNouveau = false;
-    let testConfirm = false;
-
-    //On chiffre les 3 inputs
-    const ancien = vignere(ancienMdp.value, cle, 1);
-    const nouveau = vignere(nouveauMdp.value, cle, 1);
-    const confirm = vignere(confirmationMdp.value, cle, 1);
-
-    //Vérification si l'ancien mdp correspond à celui dans la bdd
-    if (ancien !== mdp) {
-      setError(ancienMdp, "L'ancien mot de passe est incorrect");
-    } else {
-      clearError(ancienMdp);
-      testAncien = true;
-    }
-
-    //Vérification si le nouveau mdp est valide
-    if (!validerMdp(vignere(nouveau, cle, -1))) {
-      setError(
-        nouveauMdp,
-        "Mot de passe incorrect, il doit respecter les conditions ci-dessous"
-      );
-    } else {
-      clearError(nouveauMdp);
-      testNouveau = true;
-    }
-
-    //Vérification si le nouveau mdp correspond à la confirmation
-    if (nouveau !== confirm) {
-      setError(confirmationMdp, "Les mots de passe ne correspondent pas");
-    } else {
-      clearError(confirmationMdp);
-      testConfirm = true;
-    }
-
-    //Désactive le bouton valider si y'a un des cas qui return false Sinon on envoie le nouveau mdp chiffré dans la BDD
-    if (!(testAncien && testNouveau && testConfirm)) {
-      event.preventDefault();
-    } else {
-      nouveauMdp.value = nouveau;
-      confirmationMdp.value = confirm;
-      form.submit();
-    }
-  }
-
-  valider.addEventListener("click", verifMdp);
-}
-
 function verifierChamp() {
   const bouton = document.querySelector(".boutonModiferProfil");
   const champs = document.querySelectorAll("section input");
-  let tousRemplis = true;
+  let tousValides = true;
 
   if (champs.length === 0) {
     bouton.disabled = false;
     return;
   }
 
+  // Définir quels champs sont obligatoires
+  const champsObligatoires = [0, 1, 2, 3, 9, 10]; // pseudo, prenom, nom, dateNaissance, telephone, email
+  // Les champs 4, 5, 6, 7, 8 (adresse1, adresse2, codePostal, ville, pays) sont optionnels
 
   for (let i = 0; i < champs.length; i++) {
     let valeur = champs[i].value.trim();
+    let champObligatoire = champsObligatoires.includes(i);
 
-    // Le champ adresse2 est optionnel
-    if ((i === 0 || i === 1 || i === 2 || i === 3 || i === 9 || i === 10) && valeur === "") {
-      tousRemplis = false;
-      setError(champs[i], "Le champs obligatoire est vide");
+    // Vérifier si le champ obligatoire est vide
+    if (champObligatoire && valeur === "") {
+      tousValides = false;
+      setError(champs[i], "Ce champ est obligatoire");
+      continue;
     }
 
-    // Validation spécifique pour la date de naissance
-    if (i === 3) {
-      if (
-        !/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(
-          valeur
-        )
-      ) {
-        tousRemplis = false;
+    // Si le champ est vide mais non obligatoire, on passe au suivant
+    if (valeur === "" && !champObligatoire) {
+      clearError(champs[i]);
+      continue;
+    }
+
+    // Validations spécifiques pour les champs remplis
+    if (i === 3 && valeur !== "") {
+      // Validation date de naissance
+      if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
+        tousValides = false;
         setError(champs[i], "Format attendu : jj/mm/aaaa");
+      } else {
+        clearError(champs[i]);
       }
-    }
-
-    // Validation spécifique pour le numéro de téléphone
-    if (i === 9) {
+    } else if (i === 9 && valeur !== "") {
+      // Validation téléphone
       if (!/^0[0-9](\s[0-9]{2}){4}$/.test(valeur) && !/^0[0-9]([0-9]{2}){4}$/.test(valeur)) {
-        tousRemplis = false;
+        tousValides = false;
         setError(champs[i], "Format attendu : 06 01 02 03 04 ou 0601020304");
+      } else {
+        clearError(champs[i]);
       }
-    }
-
-    // Validation spécifique pour l'email
-    if (i === 10) {
+    } else if (i === 10 && valeur !== "") {
+      // Validation email
       if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
-        tousRemplis = false;
+        tousValides = false;
         setError(champs[i], "Email invalide (ex: nom@domaine.fr)");
+      } else {
+        clearError(champs[i]);
       }
-    }
-    //Si c'est pas vide on affiche pas de message d'erreur
-    if ((i === 0 || i === 1 || i === 2 || i === 3 || i === 9 || i === 10) && valeur !== "") {
+    } else {
+      // Pour tous les autres champs valides
       clearError(champs[i]);
     }
   }
 
-  bouton.disabled = !tousRemplis;
+  bouton.disabled = !tousValides;
 }
 
-let enModif = false;
-
-// Création de l'input pour la photo de profil
-let ajoutPhoto = document.createElement("input");
-ajoutPhoto.type = "file";
-ajoutPhoto.id = "photoProfil";
-ajoutPhoto.name = "photoProfil";
-ajoutPhoto.accept = "image/*";
-ajoutPhoto.style.display = "none";
-ajoutPhoto.autocomplete = "off";
-
-let conteneur = document.getElementById("titreCompte");
-let imageProfile = document.getElementById("imageProfile");
-let bnModifier = document.getElementsByClassName("boutonModiferProfil");
-let bnModifMdp = document.getElementsByClassName("boutonModifierMdp");
-let bnAnnuler = document.getElementsByClassName("boutonAnnuler");
-
 function modifierProfil(event) {
-  // Empêche le comportement par défaut du bouton
   event.preventDefault();
 
   if (!enModif) {
@@ -272,41 +119,21 @@ function modifierProfil(event) {
       else if (i === 10) input.type = "email";
       else input.type = "text";
 
-      switch (i) {
-        case 0:
-          input.placeholder = "Pseudo*";
-          break;
-        case 1:
-          input.placeholder = "Nom*";
-          break;
-        case 2:
-          input.placeholder = "Prénom*";
-          break;
-        case 3:
-          input.placeholder = "Date de naissance*";
-          break;
-        case 4:
-          input.placeholder = "Adresse";
-          break;
-        case 5:
-          input.placeholder = "Complément d'adresse";
-          break;
-        case 6:
-          input.placeholder = "Code postal";
-          break;
-        case 7:
-          input.placeholder = "Ville";
-          break;
-        case 8:
-          input.placeholder = "Pays";
-          break;
-        case 9:
-          input.placeholder = "Numéro de téléphone*";
-          break;
-        case 10:
-          input.placeholder = "Email*";
-          break;
-      }
+      // Définir les placeholders avec * pour les champs obligatoires
+      const placeholders = [
+        "Pseudo*",
+        "Prénom*",
+        "Nom*",
+        "Date de naissance*",
+        "Adresse",
+        "Complément d'adresse",
+        "Code postal",
+        "Ville",
+        "Pays",
+        "Numéro de téléphone*",
+        "Email*"
+      ];
+      input.placeholder = placeholders[i];
 
       elems[i].parentNode.replaceChild(input, elems[i]);
     }
@@ -319,48 +146,27 @@ function modifierProfil(event) {
 
     imageProfile.style.cursor = "pointer";
     imageProfile.onclick = () => ajoutPhoto.click();
-    bnModifier[0].disabled = false;
 
     enModif = true;
 
     bnAnnuler[0].style.display = "block";
     bnAnnuler[0].style.color = "white";
 
+    // Ajouter les événements de validation
     document.querySelector("section").addEventListener("input", verifierChamp);
+    document.querySelector("section").addEventListener("blur", verifierChamp, true);
+    
+    // Vérifier immédiatement les champs
     verifierChamp();
   } else {
-    // Soumettre le formulaire pour enregistrer les modifications
-    document.querySelector("form").submit();
+    // Vérifier une dernière fois avant de soumettre
+    verifierChamp();
+    
+    // Soumettre uniquement si tous les champs sont valides
+    if (!bnModifier[0].disabled) {
+      document.querySelector("form").submit();
+    }
   }
 }
 
 bnModifier[0].addEventListener("click", modifierProfil);
-
-const valeursInitiales = Array.from(document.querySelectorAll("section p"));
-
-function boutonAnnuler() {
-  let inputs = document.querySelectorAll("section input");
-
-  for (let i = 0; i < inputs.length; i++) {
-    let p = document.createElement("p");
-    p.innerText = valeursInitiales[i].innerText;
-
-    let currentParent = inputs[i].parentNode;
-
-    currentParent.replaceChild(p, inputs[i]);
-  }
-
-  document.getElementById("photoProfil").remove();
-
-  enModif = false;
-
-  bnModifier[0].innerHTML = "Modifier";
-  bnModifier[0].style.backgroundColor = "#e4d9ff";
-  bnModifier[0].style.color = "#273469";
-  bnModifier[0].disabled = false;
-
-  bnAnnuler[0].style.display = "none";
-
-  imageProfile.style.cursor = "default";
-  imageProfile.onclick = null;
-}
