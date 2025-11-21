@@ -405,124 +405,6 @@ function boutonAnnuler() {
   desactiverModeEdition();
 }
 
-function uploadPhotoProfil(file) {
-  const formData = new FormData();
-  formData.append("photoProfil", file);
-  formData.append("codeVendeur", codeVendeur);
-
-  fetch("../../controllers/uploadPhotoVendeur.php", {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        console.log("Photo mise à jour avec succès");
-        // Optionnel: afficher un message de succès
-        showNotification("Photo de profil mise à jour avec succès", "success");
-      } else {
-        console.error("Erreur lors du téléchargement:", data.message);
-        showNotification("Erreur: " + data.message, "error");
-      }
-    })
-    .catch((error) => {
-      console.error("Erreur:", error);
-      showNotification("Erreur lors du téléchargement de la photo", "error");
-    });
-}
-
-function initialiserGestionPhoto() {
-  const photoProfil = document.querySelector(".photo-profil");
-  const inputFile = document.getElementById("uploadPhoto");
-
-  if (photoProfil && inputFile) {
-    photoProfil.addEventListener("click", function () {
-      if (modeEdition) {
-        inputFile.click();
-      }
-    });
-
-    inputFile.addEventListener("change", function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        // Vérifier le type de fichier
-        if (!file.type.match("image.*")) {
-          alert("Veuillez sélectionner une image.");
-          return;
-        }
-
-        // Vérifier la taille du fichier (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-          alert("L'image est trop volumineuse. Taille maximale : 5MB.");
-          return;
-        }
-
-        // Afficher la preview immédiatement
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const img = photoProfil.querySelector("img");
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-
-        // Uploader la photo
-        uploadPhotoProfil(file);
-      }
-    });
-  }
-}
-
-function showNotification(message, type) {
-  // Créer une notification simple
-  const notification = document.createElement("div");
-  notification.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 20px;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-    z-index: 10000;
-    transition: opacity 0.3s;
-    background-color: ${type === "success" ? "#28a745" : "#dc3545"};
-  `;
-  notification.textContent = message;
-
-  document.body.appendChild(notification);
-
-  // Supprimer après 3 secondes
-  setTimeout(() => {
-    notification.style.opacity = "0";
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.parentNode.removeChild(notification);
-      }
-    }, 300);
-  }, 3000);
-}
-
-function afficherMessagesSession() {
-  // Vérifier s'il y a des messages de session à afficher
-  const urlParams = new URLSearchParams(window.location.search);
-  const success = urlParams.get("success");
-  const error = urlParams.get("error");
-
-  if (success) {
-    showNotification(success, "success");
-    // Nettoyer l'URL
-    const newUrl = window.location.pathname;
-    window.history.replaceState({}, document.title, newUrl);
-  }
-
-  if (error) {
-    showNotification("Erreur: " + error, "error");
-    // Nettoyer l'URL
-    const newUrl = window.location.pathname;
-    window.history.replaceState({}, document.title, newUrl);
-  }
-}
-
 // Événements
 document.addEventListener("DOMContentLoaded", function () {
   // Initialisation - cacher toutes les erreurs au chargement
@@ -533,8 +415,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   desactiverModeEdition();
   afficherMessageCriteresMdp();
-  initialiserGestionPhoto();
-  afficherMessagesSession();
 
   // Bouton Modifier
   document
