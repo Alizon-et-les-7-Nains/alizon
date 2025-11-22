@@ -338,7 +338,7 @@ if (isset($_SESSION['message_panier'])) {
     <div class="product-rating">
         <div class="horizontal">
             <div class="star-rating">
-                <div class="stars" style="--rating: <?php echo $note; ?>"></div>
+                <div class="stars" style="--rating: <?php echo "3"; ?>"></div>
             </div>
             <span class="rating-number"><?php echo number_format($note, 1); ?>/5</span>
         </div>
