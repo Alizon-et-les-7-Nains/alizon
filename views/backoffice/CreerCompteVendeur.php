@@ -251,7 +251,7 @@
 
             validatePassword(); 
         </script>
-        <script src="../scripts/backoffice/compteVendeur.js"></script>
+        <script src="../scripts/backoffice/compteVendeur.php"></script>
     </main>
     <?php require_once "./partials/footer.php"; ?>
 </body>
