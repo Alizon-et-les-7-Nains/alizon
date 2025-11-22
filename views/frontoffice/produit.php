@@ -222,8 +222,8 @@ if (isset($_SESSION['message_panier'])) {
 </article>
     <article class="infoPreviewProduit">
             <?php
-                $note = 4.2; // Exemple de note moyenne A CHANGER
-                $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
+                // $note = 4.2; // Exemple de note moyenne A CHANGER
+                // $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
             ?>
         <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
             <div class="product-rating">
