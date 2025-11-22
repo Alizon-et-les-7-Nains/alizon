@@ -408,7 +408,7 @@ if (isset($_SESSION['message_panier'])) {
                 </div>
                 </div>
             </div>
-        </article>;
+        </article>";
         echo $html;
     ?>
 
