@@ -117,7 +117,7 @@ $sqlAvis = "SELECT a.*
             WHERE a.idProduit = $productId";
 
 $resultAvis = $pdo->query($sqlAvis);
-$lesAvis = $resultAvis->fetch(PDO::FETCH_ASSOC);
+$lesAvis = $resultAvis->fetchAll(PDO::FETCH_ASSOC);
 
 // Calcul de la note moyenne
 $sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
@@ -338,7 +338,7 @@ if (isset($_SESSION['message_panier'])) {
     <div class="product-rating">
         <div class="horizontal">
             <div class="star-rating">
-                <div class="stars" style="--rating: <?php echo "3"; ?>"></div>
+                <div class="stars" style="--rating: <?php echo $note; ?>"></div>
             </div>
             <span class="rating-number"><?php echo number_format($note, 1); ?>/5</span>
         </div>
@@ -353,37 +353,38 @@ if (isset($_SESSION['message_panier'])) {
         <button type="submit">Ecrire un commentaire</button>
     </form>
 
-    <?php
-        $html = "
-        <article>
-            <img src=\"../../public/images/pp.png\" id=\"pp\">
-            <div>
-                <div class=\"vertical\">
-                    <div class=\"horizontal\">
-                        <div class=\"star-rating\">
-                            <div class=\"stars\" style=\"--rating: " . htmlspecialchars($lesAvis['note']) . "\"></div>
+    <?php if (!empty($lesAvis)): ?>
+        <?php foreach ($lesAvis as $avis): ?>
+            <article>
+                <img src="../../public/images/pp.png" id="pp">
+                <div>
+                    <div class="vertical">
+                        <div class="horizontal">
+                            <div class="star-rating">
+                                <div class="stars" style="--rating: <?php echo htmlspecialchars($avis['note']); ?>"></div>
+                            </div>
+                            <h3><?php echo htmlspecialchars($avis['titreAvis']); ?></h3>
                         </div>
-                        <h3>" . htmlspecialchars($lesAvis['titreAvis']) . "</h3>
+                        <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?></h6>
                     </div>
-                    <h6>Avis déposé le " . htmlspecialchars($lesAvis['dateAvis']) . " par Nathan</h6>
+                    <p><?php echo htmlspecialchars($avis['contenuAvis']); ?></p>
+                    <div class="baselineSpaceBetween">
+                        <div class="sectionImagesAvis">
+                            <!-- Ici vous pourriez ajouter les images liées à l'avis si disponibles -->
+                        </div>   
+                        <div class="actionsAvis">
+                            <img src="../../public/images/pouceHaut.png" alt="Like" onclick="changerPouce(this, 'haut')" class="pouce">
+                            <img src="../../public/images/pouceBas.png" alt="Dislike" onclick="changerPouce(this, 'bas')" class="pouce">
+                            <shape></shape>
+                            <a href="#">Signaler</a>
+                        </div>
+                    </div>
                 </div>
-                <p>" . htmlspecialchars($lesAvis['contenuAvis']) . "</p>
-                <div class=\"baselineSpaceBetween\">
-                <div class =\"sectionImagesAvis\">
-                    <img src=\"../../public/images/cidre.png\" alt=\"\">
-                    <img src=\"../../public/images/cidre.png\" alt=\"\">
-                </div>   
-                <div class=\"actionsAvis\">
-                    <img src=\"../../public/images/pouceHaut.png\" alt=\"Like\" onclick=\"changerPouce(this, 'haut')\" class=\"pouce\">
-                    <img src=\"../../public/images/pouceBas.png\" alt=\"Dislike\" onclick=\"changerPouce(this, 'bas')\" class=\"pouce\">
-                    <shape></shape>
-                    <a href=\"#\">Signaler</a>
-                </div>
-                </div>
-            </div>
-        </article>";
-        echo $html;
-    ?>
+            </article>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Aucun avis pour ce produit.</p>
+    <?php endif; ?>
 
 </section>
 <section class="stickyTelephone">
