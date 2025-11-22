@@ -363,7 +363,7 @@ if (isset($_SESSION['message_panier'])) {
                         <div class=\"star-rating\">
                             <div class=\"stars\" style=\"--rating:3.7\"></div>
                         </div>
-                        <h3> Une fraîcheur authentique " . htmlspecialchars($lesAvis[1]['titreAvis']) . "</h3>
+                        <h3> Une fraîcheur authentique " . htmlspecialchars($lesAvis[0]['titreAvis']) . "</h3>
                     </div>
                     <h6>Avis déposé le **/**/**" . @htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
                 </div>
