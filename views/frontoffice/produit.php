@@ -250,17 +250,17 @@ if (isset($_SESSION['message_panier'])) {
         <a href="#conteneurTexte">Voir plus sur le produit</a>
         <div class="version">
             <h3>Version :</h3>
-            <p>50cl</p>
+            <!-- <p>50cl</p>
             <p>1L</p>
-            <p>1.5L</p>
+            <p>1.5L</p> -->
         </div>
         <h3>Choisir un type de produit :</h3>
-        <div>
+        <!-- <div>
             <img src="../../public/images/Image_bouteille.svg" alt="">
             <img src="../../public/images/Image_bouteille.svg" alt="">
             <img src="../../public/images/Image_bouteille.svg" alt="">
             <img src="../../public/images/Image_bouteille.svg" alt="">
-        </div>
+        </div> -->
     </article>
     <article class="actionsProduit">
     <h2>Vendu par <?php echo htmlspecialchars($produit['prenom_vendeur'] . ' ' . $produit['nom_vendeur']); ?></h2>
@@ -348,7 +348,7 @@ if (isset($_SESSION['message_panier'])) {
     // $note = $produit['note'];
     // echo htmlspecialchars($note);
     ?>
-    <form action="ecrireUnCommentaire.php" method="POST" enctype="multipart/form-data">
+    <form action="ecrireAvis.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
         <button type="submit">Ecrire un commentaire</button>
     </form>
