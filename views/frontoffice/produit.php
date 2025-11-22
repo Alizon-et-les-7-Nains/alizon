@@ -361,7 +361,7 @@ if (isset($_SESSION['message_panier'])) {
                 <div class=\"vertical\">
                     <div class=\"horizontal\">
                         <div class=\"star-rating\">
-                            <div class=\"stars\" style=\"--rating:3.7\"></div>
+                            <div class=\"stars\" style=\"--rating: " . htmlspecialchars($lesAvis['noteAvis']) . "\"></div>
                         </div>
                         <h3> Une fraîcheur authentique " . htmlspecialchars($lesAvis['titreAvis']) . "</h3>
                     </div>
