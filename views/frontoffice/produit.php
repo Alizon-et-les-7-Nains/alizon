@@ -363,11 +363,11 @@ if (isset($_SESSION['message_panier'])) {
                         <div class=\"star-rating\">
                             <div class=\"stars\" style=\"--rating:3.7\"></div>
                         </div>
-                        <h3> Une fraîcheur authentique " . htmlspecialchars($lesAvis[0]['titreAvis']) . "</h3>
+                        <h3> Une fraîcheur authentique " . htmlspecialchars($lesAvis['titreAvis']) . "</h3>
                     </div>
-                    <h6>Avis déposé le **/**/**" . @htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
+                    <h6>Avis déposé le **/**/**" . htmlspecialchars($lesAvis['dateAvis']) . " par Nathan</h6>
                 </div>
-                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($atr['contenuAvis']) . "</p>
+                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($lesAvis['contenuAvis']) . "</p>
                 <div class=\"baselineSpaceBetween\">
                 <div class =\"sectionImagesAvis\">
                     <img src=\"../../public/images/cidre.png\" alt=\"\">
@@ -390,25 +390,25 @@ if (isset($_SESSION['message_panier'])) {
                         <div class=\"star-rating\">
                             <div class=\"stars\" style=\"--rating:3.7\"></div>
                         </div>
-                        <h3> Une fraîcheur authentique " . @htmlspecialchars($atr['titreAvis']) . "</h3>
+                        <h3> Une fraîcheur authentique " . htmlspecialchars($lesAvis['titreAvis']) . "</h3>
                     </div>
-                    <h6>Avis déposé le 10/06/24" . @htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
+                    <h6>Avis déposé le **/**/**" . htmlspecialchars($lesAvis['dateAvis']) . " par Nathan</h6>
                 </div>
-                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . @htmlspecialchars($atr['contenuAvis']) . "</p>
+                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($lesAvis['contenuAvis']) . "</p>
                 <div class=\"baselineSpaceBetween\">
                 <div class =\"sectionImagesAvis\">
                     <img src=\"../../public/images/cidre.png\" alt=\"\">
                     <img src=\"../../public/images/cidre.png\" alt=\"\">
                 </div>   
-                    <div class=\"actionsAvis\">
-                        <img src=\"../../public/images/pouceHaut.png\" alt=\"\">
-                        <img src=\"../../public/images/pouceBas.png\" alt=\"\">
-                        <shape></shape>
-                        <a href=\"#\">Signaler</a>
-                    </div>
+                <div class=\"actionsAvis\">
+                    <img src=\"../../public/images/pouceHaut.png\" alt=\"Like\" onclick=\"changerPouce(this, 'haut')\" class=\"pouce\">
+                    <img src=\"../../public/images/pouceBas.png\" alt=\"Dislike\" onclick=\"changerPouce(this, 'bas')\" class=\"pouce\">
+                    <shape></shape>
+                    <a href=\"#\">Signaler</a>
+                </div>
                 </div>
             </div>
-        </article>";
+        </article>;
         echo $html;
     ?>
 
