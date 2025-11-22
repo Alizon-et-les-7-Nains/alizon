@@ -88,6 +88,8 @@
         object-fit: contain;       
         margin-top: 10px;
         border-radius: 8px;
+        max-width: 290px;
+        object-fit : inherit;
     }
 
     .bouton{

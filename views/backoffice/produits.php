@@ -18,7 +18,7 @@
     <body class="backoffice">
         <?php require_once './partials/header.php' ?>
 
-        <?php require_once './partials/aside.php' ?>
+        <?php $currentPage = basename(__FILE__); require_once './partials/aside.php' ?>
 
         <main class="produitBackOffice">
             <h1>Produits en Vente</h1>
@@ -45,9 +45,7 @@
                             </div>
 
                             <p><?php 
-                                if($evaluations[0]['evaluation'] !== 0){
-                                    echo htmlspecialchars($evaluations[0]['evaluation']) . " évaluations";
-                                } 
+                                echo htmlspecialchars($evaluations[0]['evaluation']) . " évaluations";
                             ?></p>                                
                             </div>
                         </div>
@@ -141,9 +139,7 @@
                             </div>
 
                             <p><?php 
-                                if($evaluations[0]['evaluation'] !== 0){
                                     echo htmlspecialchars($evaluations[0]['evaluation']) . " évaluations";
-                                } 
                             ?></p>
                             </div>
                         </div>
