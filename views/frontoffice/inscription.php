@@ -204,7 +204,7 @@
 
             function validatePhoneNumber() { 
                 const phoneNumber = phoneNumberInput.value.trim();
-                if (!/^0[67](\s[0-9]{2}){4}$/.test(phoneNumber)) {
+                if (!/^0[67](\s[0-9]{2}){4}$/.test(phoneNumber) && !/^0[67]([0-9]{2}){4}$/.test(phoneNumber)) {
                     return false;
                 }
                 return true;

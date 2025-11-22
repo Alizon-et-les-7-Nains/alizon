@@ -1,6 +1,6 @@
 <?php 
     require_once '../../controllers/pdo.php';
-    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imagedeproduit as img on prod.idproduit = img.idproduit WHERE envente = true;");
+    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true;");
     $produitEnVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 ?>
 
@@ -111,7 +111,7 @@
             </div>
             <?php 
                 require_once '../../controllers/pdo.php';
-                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imagedeproduit as img on prod.idproduit = img.idproduit WHERE envente = false;");
+                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = false;");
                 $produitHorsVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             ?>
 

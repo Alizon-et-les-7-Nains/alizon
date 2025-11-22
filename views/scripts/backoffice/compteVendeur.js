@@ -1,4 +1,4 @@
-// compteVendeur.js
+
 let modeEdition = false;
 let modeModificationMdp = false;
 let anciennesValeurs = {};
@@ -420,7 +420,6 @@ function uploadPhotoProfil(file) {
   fetch("../../controllers/addPhotoVendeur.php", {
     method: "POST",
     body: formData,
-    // Important: ne pas set Content-Type, FormData le fait automatiquement
   })
     .then((response) => {
       if (!response.ok) {

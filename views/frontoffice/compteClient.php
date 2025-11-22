@@ -57,13 +57,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }   
 
     //verification et upload de la nouvelle photo de profil
-    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client.'.svg';
+    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
+
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $extension = '';
+
+    foreach ($extensionsPossibles as $ext) {
+        if (file_exists($photoPath . '.' . $ext)) {
+            $extension = '.' . $ext;
+            break;
+        }
+    }
+
     if (file_exists($photoPath)) {
         unlink($photoPath); // supprime l'ancien fichier
     }
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.'.svg');
+        $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+        $extension = '.'.$extension;
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
     }
 
     //on recupère les infos du user pour les afficher
@@ -104,8 +117,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="titreCompte">
                 <div class="photo-container">
                     <?php 
-                        if (file_exists($photoPath)) {
-                            echo "<img src=".$photoPath." alt=photoProfil id=imageProfile>";
+                        if (file_exists($photoPath.$extension)) {
+                            echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'" alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
