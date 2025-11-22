@@ -15,14 +15,16 @@
     <title>Connexion à un compte vendeur</title>
 </head>
 
-
 <body>
     <?php require_once "./partials/header.php"; ?>
+
     <main class="connexionVendeur">
         <img class="triskiel" src="../../public/images/triskiel gris.svg" alt="">
 
         <div class="pdp_title">
-            <img src="../../public/images/pdp_user.svg" alt="Avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+            <div class="cercle-pdp">
+                <img src="../../public/images/pdp_user.svg" alt="Avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+            </div>
             <h1>Connexion à votre compte vendeur Alizon</h1>
         </div>
 
@@ -30,18 +32,18 @@
             <form method="post" class="form-vendeur" id="monForm" action="../../controllers/connexionCompteVendeur.php">
                 
                 <?php if (!empty($message)) : ?>
-                    <div class="alert alert-danger text-center" role="alert">
+                    <div class="alert alert-danger text-center w-100 mb-3" role="alert">
                         <?= $message ?>
                     </div>
                 <?php endif; ?>
 
                 <div class="inputs-container">
                     <div class="mb-4">
-                        <input type="text" name="pseudo" placeholder="Nom d'utilisateur" required class="form-control custom-input">
+                        <input type="text" id="pseudo" name="pseudo" placeholder="Nom d'utilisateur" required class="form-control custom-input">
                     </div>
 
                     <div class="mb-2">
-                        <input type="password" name="mdp" placeholder="Mot de passe" required class="form-control custom-input">
+                        <input type="password" id="mdp" name="mdp" placeholder="Mot de passe" required class="form-control custom-input">
                     </div>
                 </div>
 
@@ -50,8 +52,8 @@
                     <a href="#">Mot de passe oublié ? Cliquez ici</a>
                 </div>
 
-                <div>
-                    <button type="submit" class="btn_connexion" disabled>Se connecter</button>
+                <div class="actions">
+                    <button type="submit" id="btnConnexion" class="btn_connexion" disabled>Se connecter</button>
                 </div>
             </form>
         </div>
@@ -64,5 +66,28 @@
     </main>
     
     <?php require_once "./partials/footer.php"; ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // éléments
+            const pseudoInput = document.getElementById('pseudo');
+            const mdpInput = document.getElementById('mdp');
+            const btnConnexion = document.getElementById('btnConnexion');
+
+            // vérification
+            function verifierChamps() {
+                // Si pseudo et mdp sont remplis
+                if (pseudoInput.value.trim() !== "" && mdpInput.value.trim() !== "") {
+                    btnConnexion.disabled = false; // On active le bouton
+                } else {
+                    btnConnexion.disabled = true;  // On désactive le bouton
+                }
+            }
+
+            // tapage utilisateur
+            pseudoInput.addEventListener('input', verifierChamps);
+            mdpInput.addEventListener('input', verifierChamps);
+        });
+    </script>
 </body>
 </html>

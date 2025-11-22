@@ -4525,10 +4525,9 @@ dialog.reassort form input {
 }
 .page-compte .form-compte {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 50px;
-  width: 100%;
-  align-items: start;
+  width: 60%;
 }
 .page-compte .form-compte .col {
   display: flex;
@@ -4607,65 +4606,6 @@ dialog.reassort form input {
   font-weight: bold;
   color: #273469;
 }
-.page-compte .form-compte .col-actions {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  min-height: 100%;
-  gap: 18px;
-  padding-top: 40px;
-}
-.page-compte .form-compte .col-actions .actions {
-  grid-column: 1/-1;
-  display: flex;
-  gap: 18px;
-  justify-content: flex-end;
-  margin-top: 35px;
-  flex-wrap: wrap;
-}
-.page-compte .form-compte .col-actions .actions button {
-  padding: 14px 30px;
-  border-radius: 26px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  font-size: 15px;
-  transition: all 0.3s ease;
-  min-width: 120px;
-}
-.page-compte .form-compte .col-actions .actions button:active {
-  transform: translateY(0);
-}
-.page-compte .form-compte .col-actions .actions button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-.page-compte .form-compte .col-actions .actions .modifier {
-  background-color: #dcd8f9;
-  color: #3d2d86;
-}
-.page-compte .form-compte .col-actions .actions .sauvegarder {
-  background: #eceaff;
-  color: #3d2d86;
-}
-.page-compte .form-compte .col-actions .actions .annuler {
-  background: #eceaff;
-  color: #3d2d86;
-}
-.page-compte .form-compte .col-actions .actions .modifier-mdp {
-  background-color: #dcd8f9;
-  color: #3d2d86;
-}
-.page-compte .form-compte .col-actions .actions .modifier-mdp.annuler-mdp {
-  background: #eceaff;
-  color: #3d2d86;
-}
-.page-compte .form-compte .col-actions .actions .supprimer {
-  background: #e4574d;
-  color: white;
-}
 
 .champ-double {
   display: flex;
@@ -4679,6 +4619,58 @@ dialog.reassort form input {
   box-sizing: border-box;
 }
 
+.actions {
+  grid-column: 1/-1;
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  margin-top: 35px;
+  flex-wrap: wrap;
+}
+.actions button {
+  padding: 14px 30px;
+  border-radius: 26px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+.actions button:active {
+  transform: translateY(0);
+}
+.actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.actions .modifier {
+  background-color: #dcd8f9;
+  color: #3d2d86;
+}
+.actions .sauvegarder {
+  background: #eceaff;
+  color: #3d2d86;
+}
+.actions .annuler {
+  background: #eceaff;
+  color: #3d2d86;
+}
+.actions .modifier-mdp {
+  background-color: #dcd8f9;
+  color: #3d2d86;
+}
+.actions .modifier-mdp.annuler-mdp {
+  background: #eceaff;
+  color: #3d2d86;
+}
+.actions .supprimer {
+  background: #e4574d;
+  color: white;
+}
+
 /* ============================ */
 /* RESPONSIVE DESIGN */
 /* ============================ */
@@ -4688,7 +4680,7 @@ dialog.reassort form input {
     padding: 50px 60px;
   }
   .page-compte .form-compte {
-    gap: 40px;
+    width: 70%;
   }
 }
 @media (max-width: 1024px) {
@@ -4707,10 +4699,11 @@ dialog.reassort form input {
     font-size: 36px;
   }
   .page-compte .form-compte {
-    gap: 35px;
+    width: 80%;
+    gap: 40px;
   }
 }
-/* Tablettes - Passage à 2 colonnes */
+/* Tablettes */
 @media (max-width: 900px) {
   .page-compte {
     padding: 35px 40px;
@@ -4735,29 +4728,12 @@ dialog.reassort form input {
     font-size: 32px;
   }
   .page-compte .form-compte {
-    grid-template-columns: 1fr 1fr;
+    width: 90%;
+    grid-template-columns: 1fr;
     gap: 30px;
   }
   .page-compte .form-compte .col {
     gap: 18px;
-  }
-  .page-compte .form-compte .col-actions {
-    grid-column: 1/-1;
-    flex-direction: row;
-    justify-content: flex-end;
-    padding-top: 20px;
-    min-height: auto;
-  }
-  .page-compte .form-compte .col-actions .actions {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 15px;
-  }
-  .page-compte .form-compte .col-actions .actions button {
-    width: auto;
-    min-width: 160px;
-    padding: 12px 25px;
   }
   .page-compte .champ-double {
     flex-direction: column;
@@ -4766,8 +4742,16 @@ dialog.reassort form input {
   .page-compte .champ-double .champ {
     width: 100%;
   }
+  .page-compte .actions {
+    justify-content: flex-end;
+  }
+  .page-compte .actions button {
+    padding: 12px 25px;
+    font-size: 14px;
+    min-width: 110px;
+  }
 }
-/* Mobiles - Passage à 1 colonne */
+/* Mobiles */
 @media (max-width: 768px) {
   .page-compte {
     padding: 25px 30px;
@@ -4790,7 +4774,7 @@ dialog.reassort form input {
     font-size: 28px;
   }
   .page-compte .form-compte {
-    grid-template-columns: 1fr;
+    width: 100%;
     gap: 25px;
   }
   .page-compte .form-compte .col {
@@ -4819,13 +4803,15 @@ dialog.reassort form input {
   .page-compte .form-compte .code-vendeur {
     font-size: 16px;
   }
-  .page-compte .form-compte .col-actions {
-    padding-top: 15px;
+  .page-compte .actions {
+    justify-content: flex-end;
+    margin-top: 25px;
+    gap: 12px;
   }
-  .page-compte .form-compte .col-actions .actions button {
+  .page-compte .actions button {
     padding: 10px 20px;
     font-size: 13px;
-    min-width: 140px;
+    min-width: 100px;
     border-radius: 20px;
   }
 }
@@ -4875,14 +4861,15 @@ dialog.reassort form input {
   .page-compte .form-compte .code-vendeur {
     font-size: 15px;
   }
-  .page-compte .form-compte .col-actions .actions {
-    flex-direction: column;
-    gap: 10px;
+  .page-compte .actions {
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 8px;
   }
-  .page-compte .form-compte .col-actions .actions button {
+  .page-compte .actions button {
     padding: 10px 15px;
     font-size: 12px;
-    min-width: 100%;
+    min-width: auto;
     border-radius: 20px;
   }
 }
@@ -4908,7 +4895,7 @@ dialog.reassort form input {
   .page-compte .form-compte .col .champ .field-error p {
     font-size: 10px;
   }
-  .page-compte .form-compte .col-actions .actions button {
+  .page-compte .actions button {
     padding: 8px 12px;
     font-size: 11px;
   }
@@ -4937,18 +4924,14 @@ dialog.reassort form input {
   .page-compte .form-compte .col {
     gap: 12px;
   }
-  .page-compte .form-compte .col-actions {
-    grid-column: 1/-1;
-    flex-direction: row;
-    padding-top: 15px;
+  .page-compte .actions {
+    justify-content: flex-end;
+    margin-top: 20px;
   }
-  .page-compte .form-compte .col-actions .actions {
-    flex-direction: row;
-  }
-  .page-compte .form-compte .col-actions .actions button {
+  .page-compte .actions button {
     padding: 8px 15px;
     font-size: 12px;
-    min-width: 140px;
+    min-width: 90px;
   }
 }
 .pageProduit body {
@@ -5653,14 +5636,14 @@ dialog.reassort form input {
 .connexionVendeur .triskiel {
   position: absolute;
   top: 0;
-  right: -10%;
+  right: 0;
   height: 100%;
   width: auto;
-  max-height: 100vh;
+  max-width: 100vw;
+  max-height: 80vh;
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.8;
 }
 .connexionVendeur .pdp_title {
   position: relative;
@@ -5745,11 +5728,10 @@ dialog.reassort form input {
   font-family: "lora", serif;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
 }
-.connexionVendeur .information_connexion .form-vendeur .actions .btn_connexion:hover {
-  transform: scale(1.02);
+.connexionVendeur .information_connexion .form-vendeur .actions .btn_connexion:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
 }
 .connexionVendeur .text-footer {
   position: relative;
