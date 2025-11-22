@@ -129,7 +129,7 @@
         <p class="text-footer">
             Alizon, en tant que responsable de traitement, traite les données recueillies à des fins de gestion de la relation client, gestion des commandes et des livraisons, 
             personnalisation des services, prévention de la fraude, marketing et publicité ciblée. 
-            Pour en savoir plus, reportez-vous à la Politique de protection de vos données personnelles
+            Pour en savoir plus, reportez-vous à la Politique de protection de vos données personnelles
         </p>
         
         <script>
