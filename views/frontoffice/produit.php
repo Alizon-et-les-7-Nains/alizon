@@ -2,9 +2,6 @@
 include '../../controllers/pdo.php';
 session_start();
 
-// Or suppress specific lines:
-@htmlspecialchars($atr['key']); // Not recommended
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
@@ -366,9 +363,9 @@ if (isset($_SESSION['message_panier'])) {
                         <div class=\"star-rating\">
                             <div class=\"stars\" style=\"--rating:3.7\"></div>
                         </div>
-                        <h3> Une fraîcheur authentique " . htmlspecialchars($atr['titreAvis']) . "</h3>
+                        <h3> Une fraîcheur authentique " . @htmlspecialchars($atr['titreAvis']) . "</h3>
                     </div>
-                    <h6>Avis déposé le **/**/**" . htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
+                    <h6>Avis déposé le **/**/**" . @htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
                 </div>
                 <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($atr['contenuAvis']) . "</p>
                 <div class=\"baselineSpaceBetween\">
@@ -393,11 +390,11 @@ if (isset($_SESSION['message_panier'])) {
                         <div class=\"star-rating\">
                             <div class=\"stars\" style=\"--rating:3.7\"></div>
                         </div>
-                        <h3> Une fraîcheur authentique " . htmlspecialchars($atr['titreAvis']) . "</h3>
+                        <h3> Une fraîcheur authentique " . @htmlspecialchars($atr['titreAvis']) . "</h3>
                     </div>
-                    <h6>Avis déposé le 10/06/24" . htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
+                    <h6>Avis déposé le 10/06/24" . @htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
                 </div>
-                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($atr['contenuAvis']) . "</p>
+                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . @htmlspecialchars($atr['contenuAvis']) . "</p>
                 <div class=\"baselineSpaceBetween\">
                 <div class =\"sectionImagesAvis\">
                     <img src=\"../../public/images/cidre.png\" alt=\"\">
