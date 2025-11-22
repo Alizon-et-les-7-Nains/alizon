@@ -345,8 +345,8 @@ if (isset($_SESSION['message_panier'])) {
         <span class="review-count"><?php echo $nombreAvis; ?> évaluations</span>
     </div>
     <?php 
-    $note = $produit['note'];
-    echo htmlspecialchars($note);
+    // $note = $produit['note'];
+    // echo htmlspecialchars($note);
     ?>
     <form action="ecrireUnCommentaire.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
