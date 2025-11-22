@@ -363,38 +363,11 @@ if (isset($_SESSION['message_panier'])) {
                         <div class=\"star-rating\">
                             <div class=\"stars\" style=\"--rating: " . htmlspecialchars($lesAvis['note']) . "\"></div>
                         </div>
-                        <h3> Une fraîcheur authentique " . htmlspecialchars($lesAvis['titreAvis']) . "</h3>
+                        <h3>" . htmlspecialchars($lesAvis['titreAvis']) . "</h3>
                     </div>
-                    <h6>Avis déposé le **/**/**" . htmlspecialchars($lesAvis['dateAvis']) . " par Nathan</h6>
+                    <h6>Avis déposé le " . htmlspecialchars($lesAvis['dateAvis']) . " par Nathan</h6>
                 </div>
-                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($lesAvis['contenuAvis']) . "</p>
-                <div class=\"baselineSpaceBetween\">
-                <div class =\"sectionImagesAvis\">
-                    <img src=\"../../public/images/cidre.png\" alt=\"\">
-                    <img src=\"../../public/images/cidre.png\" alt=\"\">
-                </div>   
-                <div class=\"actionsAvis\">
-                    <img src=\"../../public/images/pouceHaut.png\" alt=\"Like\" onclick=\"changerPouce(this, 'haut')\" class=\"pouce\">
-                    <img src=\"../../public/images/pouceBas.png\" alt=\"Dislike\" onclick=\"changerPouce(this, 'bas')\" class=\"pouce\">
-                    <shape></shape>
-                    <a href=\"#\">Signaler</a>
-                </div>
-                </div>
-            </div>
-        </article>
-        <article>
-            <img src=\"../../public/images/pp.png\" id=\"pp\">
-            <div>
-                <div class=\"vertical\">
-                    <div class=\"horizontal\">
-                        <div class=\"star-rating\">
-                            <div class=\"stars\" style=\"--rating:3.7\"></div>
-                        </div>
-                        <h3> Une fraîcheur authentique " . htmlspecialchars($lesAvis['titreAvis']) . "</h3>
-                    </div>
-                    <h6>Avis déposé le **/**/**" . htmlspecialchars($lesAvis['dateAvis']) . " par Nathan</h6>
-                </div>
-                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($lesAvis['contenuAvis']) . "</p>
+                <p>" . htmlspecialchars($lesAvis['contenuAvis']) . "</p>
                 <div class=\"baselineSpaceBetween\">
                 <div class =\"sectionImagesAvis\">
                     <img src=\"../../public/images/cidre.png\" alt=\"\">
