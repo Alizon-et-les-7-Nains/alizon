@@ -2,6 +2,9 @@
 include '../../controllers/pdo.php';
 session_start();
 
+// Or suppress specific lines:
+@htmlspecialchars($atr['key']); // Not recommended
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
@@ -84,7 +87,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         } else {
             $idPanier = $panier['idPanier'];
         }
-
+        
         // Vérifier si le produit existe déjà dans le panier
         $sql = "SELECT quantiteProduit FROM _produitAuPanier 
                 WHERE idProduit = ? AND idPanier = ?";
@@ -177,7 +180,11 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 </head>
 <body class="pageProduit">
 <header>
-<?php // include "../../views/frontoffice/partials/headerConnecte.php" ?>
+<?php if (isset($_SESSION['user_id'])) {
+    include '../../views/frontoffice/partials/headerConnecte.php';
+} else { 
+    include '../../views/frontoffice/partials/headerDeconnecte.php';
+} ?>
 </header>
 <main>
 <main>
@@ -279,7 +286,7 @@ if (isset($_SESSION['message_panier'])) {
         } else { 
             echo '<a href="legalesNonConnecte.php">conditions générales de vente</a>';
         } ?>
-        </p>
+        </b></p>
     </div>
     <hr>
     <br>
@@ -297,10 +304,17 @@ if (isset($_SESSION['message_panier'])) {
             <input type="hidden" name="action" value="ajouter_panier">
             <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
         </form>
-        <form action="pagePaiement.php" method="POST">
-            <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-            <button class="bouton boutonBleu" >Acheter maintenant</button>
-        </form>
+        <?php if (isset($_SESSION['user_id'])) {
+            echo '  <form action="pagePaiement.php" method="POST">
+                        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                        <button class="bouton boutonBleu" >Acheter maintenant</button>
+                    </form>';
+        } else { 
+            echo '  <form action="connexionClient.php" method="POST">
+                        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                        <button class="bouton boutonBleu" >Acheter maintenant</button>
+                    </form>';
+        } ?>
     </div>
 </article>
 </section>
@@ -425,7 +439,11 @@ if (isset($_SESSION['message_panier'])) {
 </section>
 </main>
 <footer>
-    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
+<?php if (isset($_SESSION['user_id'])) {
+    include '../../views/frontoffice/partials/footerConnecte.php';
+} else { 
+    include '../../views/frontoffice/partials/footerDeconnecte.php';
+} ?>
 </footer> 
 </body>
 <script>
