@@ -250,8 +250,8 @@
             });
 
             validatePassword(); 
-            src="../scripts/backoffice/compteVendeur.js">
         </script>
+        <script src="../scripts/backoffice/compteVendeur.js"></script>
     </main>
     <?php require_once "./partials/footer.php"; ?>
 </body>
