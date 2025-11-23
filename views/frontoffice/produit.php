@@ -351,12 +351,12 @@ if (isset($_SESSION['message_panier'])) {
     ?>
     <?php if (isset($_SESSION['user_id'])) {
     echo 
-    '<a href="ecrireCommentaire.php?id=<?php echo $productId; ?>" class="bouton">
+    '<a href="ecrireCommentaire.php?id=<?php echo $productId; ?>" class="boutonCommentaire">
         Écrire un commentaire
     </a>';
     } else {
     echo     
-    '<a href="connexionClient.php" class="bouton">
+    '<a href="connexionClient.php" class="boutonCommentaire">
         Écrire un commentaire
     </a>';
     }
