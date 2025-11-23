@@ -370,7 +370,6 @@ if (isset($_SESSION['message_panier'])) {
                     <p><?php echo htmlspecialchars($avis['contenuAvis']); ?></p>
                     <div class="baselineSpaceBetween">
                         <div class="sectionImagesAvis">
-                            <!-- Ici vous pourriez ajouter les images liées à l'avis si disponibles -->
                         </div>   
                         <div class="actionsAvis">
                             <img src="../../public/images/pouceHaut.png" alt="Like" onclick="changerPouce(this, 'haut')" class="pouce">

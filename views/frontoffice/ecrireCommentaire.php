@@ -1,7 +1,7 @@
 <?php 
-// session_start();
+session_start();
 
-// // require_once "../../controllers/pdo.php";
+require_once "../../controllers/pdo.php";
 
 // if (!empty($_FILES['photo']['name'])) {
 //     $targetDir = "../../public/images/";

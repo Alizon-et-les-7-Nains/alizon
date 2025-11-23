@@ -3234,6 +3234,10 @@ button#haut.visible:hover {
 }
 
 .pageEcrireCommentaire {
+  background-image: url("../../../public/images/triskel.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  font-family: "lora";
   color: #273469;
 }
 .pageEcrireCommentaire .produit {
