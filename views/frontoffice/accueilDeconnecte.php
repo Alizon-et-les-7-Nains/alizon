@@ -71,6 +71,19 @@ require_once "../../controllers/prix.php";
         ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute);
     }
 
+    // Récupérer les promotions
+
+    $stmt = $pdo -> prepare("SELECT * FROM _promotion");
+    $stmt -> execute();
+    $arrayProduit = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $nbPromo = count($arrayProduit);
+    if($nbPromo == 0) {
+        $choixAleatoirePromo = "N/A";
+    } else {
+        $choixAleatoirePromo = $arrayProduit[array_rand($arrayProduit)]['idProduit'];
+    }
+
 // ============================================================================
 // AFFICHAGE DE LA PAGE
 // ============================================================================
@@ -89,8 +102,25 @@ require_once "../../controllers/prix.php";
     <?php include '../../views/frontoffice/partials/headerDeconnecte.php'; ?>
 
     <section class="banniere">
-        <h1>Plus de promotion à venir !</h1>
-        <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
+        <?php if($choixAleatoirePromo == "N/A") { ?>
+            <h1>Plus de promotion à venir !</h1>
+            <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
+        <?php } else { 
+                     
+            $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+            $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
+            $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+            $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+
+            $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :idProduit");
+            $stmt->execute([':idProduit' => $choixAleatoirePromo]);
+            $produitEnPromo = $stmt->fetch(PDO::FETCH_ASSOC);
+            ?>
+            
+            <h1><?php echo htmlspecialchars($produitEnPromo['nom']); ?></h1>
+            <img src="<?php echo htmlspecialchars($image); ?>" alt="Image du produit">
+
+        <?php } ?>
     </section>
 
     <main>
