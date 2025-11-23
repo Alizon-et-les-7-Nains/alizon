@@ -46,23 +46,6 @@ foreach ($extensionsPossibles as $ext) {
         break;
     }
 }
-
-// Traitement de l'upload (devrait être dans le contrôleur de mise à jour)
-if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-    // Supprimer l'ancienne photo avec toutes les extensions
-    foreach ($extensionsPossibles as $ext) {
-        $oldPhotoPath = $photoFullPath . '.' . $ext;
-        if (file_exists($oldPhotoPath)) {
-            unlink($oldPhotoPath);
-        }
-    }
-    
-    // Uploader la nouvelle photo
-    $newExtension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-    $newExtension = '.' . $newExtension;
-    move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoFullPath . $newExtension);
-    $extension = $newExtension;
-}
 ?>
 
 <!DOCTYPE html>
@@ -79,17 +62,23 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
 
     <main class="page-compte">
         <div class="header-compte">
-            <div class="photo-profil">
-                <?php 
-                $photoWebPath = '/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension;
-                if ($extension && file_exists($photoFullPath . $extension)) {
-                    echo '<img src="' . $photoWebPath . '" alt="photoProfil" id="imageProfile">';
-                } else {
-                    echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
-                }
-                ?>
+            <div class="photo-profil-container">
+                <div class="photo-profil">
+                    <?php 
+                    $photoWebPath = '/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension;
+                    if ($extension && file_exists($photoFullPath . $extension)) {
+                        echo '<img src="' . $photoWebPath . '" alt="photoProfil" id="imageProfile">';
+                    } else {
+                        echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
+                    }
+                    ?>
+                </div>
+                <button type="button" class="changer-photo" id="boutonChangerPhoto" style="display: none;">
+                    Changer la photo
+                </button>
             </div>
-            <input type="file" id="uploadPhoto" name="photoProfil" accept="image/*" hidden>
+            <input type="file" id="uploadPhoto" name="photoProfil" accept="image/png, image/jpg, image/jpeg, image/webp"
+                hidden>
             <h1>Mon compte</h1>
         </div>
 
