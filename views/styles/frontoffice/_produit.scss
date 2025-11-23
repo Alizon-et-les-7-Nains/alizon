@@ -338,16 +338,13 @@
         border-radius: 32px;
         padding: 0.5em 1em;
         cursor: pointer;
+        margin: 1em 0;
         font-size: 16px;
         text-decoration: none; // Enlever le soulignement
         color: $color-blue;
         text-align: center;
         transition: all 0.3s ease;
-        
-        &:hover {
-            background-color: $color-blue;
-            color: white;
-        }
+    
     }
 
     // Garder aussi l'ancien style pour les vrais boutons si nécessaire
