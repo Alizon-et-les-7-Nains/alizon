@@ -1,88 +1,81 @@
 <?php 
 session_start();
-
 require_once "../../controllers/pdo.php";
 
-// if (!empty($_FILES['photo']['name'])) {
-//     $targetDir = "../../public/images/";
-//     $fileName = basename($_FILES["photo"]["name"]);
-//     $targetFile = $targetDir . $fileName;
+// Database connection
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}
 
-//     if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
-//         $_SESSION['uploaded_image'] = $fileName;
-//     }
-// }
+// Insert review (only once!)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        $productId = intval($_GET['id'] ?? 0);
+        $clientId = intval($_SESSION['idClient'] ?? 0);
+        $note = intval($_POST['note'] ?? 0);
+        $sujet = trim($_POST['sujet'] ?? '');
+        $message = trim($_POST['message'] ?? '');
 
-// try {
-//     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-//     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-// } catch(PDOException $e) {
-//     die("Erreur de connexion : " . $e->getMessage());
-// }
+        // Validation
+        if ($clientId === 0) {
+            die("Vous devez être connecté pour laisser un avis.");
+        }
+        if ($productId === 0) {
+            die("Produit invalide.");
+        }
+        if (empty($sujet) || empty($message) || $note === 0) {
+            die("Veuillez remplir tous les champs obligatoires.");
+        }
 
-// try{
-//     $productId = intval($_GET['id']) ?? 0;
-//     $clientId = $_SESSION['idClient'] ?? 0;
+        // Handle file upload
+        $fileName = null;
+        if (!empty($_FILES['photo']['name'])) {
+            $targetDir = "../../public/images/";
+            $fileName = basename($_FILES["photo"]["name"]);
+            $targetFile = $targetDir . $fileName;
 
-//     $note = intval($_POST['note'] ?? 0);
-//     $sujet = trim($_POST['sujet'] ?? '');
-//     $message = trim($_POST['message'] ?? '');
+            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
+                // File uploaded successfully
+            } else {
+                $fileName = null;
+            }
+        }
 
+        // Insert review
+        $sqlAvis = "INSERT INTO saedb._avis (idProduit, idClient, titreAvis, contenuAvis, note, dateAvis) 
+        VALUES (:idProduit, :idClient, :titre, :contenu, :note, CURDATE())";
+        $stmt = $pdo->prepare($sqlAvis);
+        $stmt->execute([
+            ':idProduit' => $productId,
+            ':idClient' => $clientId,
+            ':titre' => $sujet,
+            ':contenu' => $message,
+            ':note' => $note
+        ]);
 
-//     $sqlAvis = "INSERT INTO saedb._avis (idProduit, idClient, titreAvis, contenuAvis, note, dateAvis) 
-//     VALUES (:idProduit, :idClient, :titre, :contenu, :note, CURDATE())";
-//     $stmt = $pdo->prepare($sqlAvis);
-//     $stmt->execute([
-//         ':idProduit' => $productId,
-//         ':idClient' => $clientId,
-//         ':titre' => $sujet,
-//         ':contenu' => $message,
-//         ':note' => $note
-//     ]);
+        // Only insert image if one was uploaded
+        if ($fileName) {
+            $sqlImageAvis = "INSERT INTO saedb._imageAvis (idProduit, idClient, URL) 
+                            VALUES (:idProduit, :idClient, :urlImage)";
+            $stmtImageAvis = $pdo->prepare($sqlImageAvis);
+            $stmtImageAvis->execute([
+                ':idProduit' => $productId,
+                ':idClient' => $clientId,
+                ':urlImage' => '/images/' . $fileName  // Added path prefix
+            ]);
+        }
 
-//     $sqlImage = "INSERT IGNORE INTO saedb._image (URL, alt, titre) 
-//                 VALUES (:url, :alt, :titre)";
-//     $stmtImage = $pdo->prepare($sqlImage);
-//     $stmtImage->execute([
-//         ':url' => $fileName,
-//         ':alt' => 'Photo avis ' . $sujet,
-//         ':titre' => $sujet
-//     ]);
+        // Redirect after successful submission
+        header("Location: product.php?id=" . $productId);
+        exit;
 
-//     $sqlImageAvis = "INSERT INTO saedb._imageAvis (idProduit , idClient , URL) VALUES (:idProduit, :idClient, :urlImage)";
-//     $stmtImageAvis = $pdo->prepare($sqlImageAvis);
-//     $stmtImageAvis->execute([
-//         ':idProduit' => $productId,
-//         ':idClient' => $clientId,
-//         ':urlImage' => $_SESSION['uploaded_image'] ?? null
-//     ]);
-
-// } catch(PDOException $e) {
-//     die("Erreur lors de l'insertion de l'avis : " . $e->getMessage());
-// }
-
-$images = [
-    [
-        'URL' => 'cidre.png',
-        'title' => 'Premium Cidre'
-    ],
-    [
-        'URL' => 'rillettes.png', 
-        'title' => 'Artisanal Cidre'
-    ],
-    [
-        'URL' => 'defaultImageProduit.png',
-        'title' => 'Traditional Cidre'
-    ]
-];
-
-$produit = [
-    'nom_produit' => 'Cidre Artisanal Breton',
-    'description' => 'Un cidre artisanal produit selon les méthodes traditionnelles bretonnes...',
-    'prix' => 12.50,
-    'prenom_vendeur' => 'Jean',
-    'nom_vendeur' => 'Dupont',
-    'stock' => 20 ];
+    } catch(PDOException $e) {
+        die("Erreur lors de l'insertion de l'avis : " . $e->getMessage());
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -114,7 +107,7 @@ $produit = [
             <h2>Ajouter des photos : </h2>
             <ul>
                 <img src="../../public/images/ajouterPhoto.svg" alt="" id="ajouterPhoto">
-                    <input type="file" id="inputPhoto" accept="image/*" style="display:none">
+                    <input type="file" id="inputPhoto" accept="image/*" style="display:none" name="photo">
                     <button type="submit" id="submitBtn" style="display:none"></button>
                 <div id="preview"></div>
             </ul>
