@@ -69,6 +69,7 @@ function verifDate(val){
         clearError(val);
     }
 }
+
 function popUpRemise(){
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
@@ -124,83 +125,113 @@ function popUpRemise(){
 }
 
 function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
-
-    console.log("ID reçu :", id);
-    console.log("Nom reçu :", nom);
-
+    const prixProduit = parseFloat(prix); // Sécurise le prix en nombre
     const overlay = document.createElement("div");
     overlay.className = "overlaypopUpPromouvoir";
+
+    // On utilise <input type="date"> pour simplifier la vie
     overlay.innerHTML = `
         <main class="popUpPromouvoir">
             <div class="page">
-                <div class="croixFermerLaPage">
-                    <div></div>
-                    <div></div>
-                </div>
+                <div class="croixFermerLaPage"><div></div><div></div></div>
                 <div class="titreEtProduit">
-                    <h1> Ajouter une promotion pour ce produit </h1>
+                    <h1>Ajouter une promotion</h1>
                     <section>
-                        <article>
-                            <img class="produit" src="${imgURL}" alt="">
+                        <article style="padding: 20px;">
+                            <img class="produit" src="${imgURL}" alt="Produit">
                             <div class="nomEtEvaluation">
                                 <p>${nom}</p>
                                 <div class="evaluation">
-                                    <div class="etoiles">
-                                        <img src="/public/images/etoile.svg" alt="">
-                                        <p>${note}</p>
-                                    </div>
-                                    <p>${nbEval} évaluation</p>
+                                    <p>★ ${note} (${nbEval} avis)</p>
                                 </div>
                             </div>
-                            <div>
-                                <p class="prix"> ${prix} €</p>
-                            </div>
+                            <p class="prix">${prixProduit} €</p>
                         </article>
                     </section>
                 </div>
                 
-            <div class="ligne"></div>
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
-                        <input type="text" id="inputDate" name="date_limite" placeholder="Date limite">
-                        <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
-                        <div class="ajouterBaniere">
-                            <input type="file" id="baniere" name="baniere" accept="image/*">
-                            <img src="../../public/images/iconeAjouterBaniere.svg" alt="">
+                        <label>Date de fin :</label>
+                        <input type="date" id="dateLimite" name="date_limite" min="${new Date().toISOString().split('T')[0]}" required>
+                        
+                        <h2>Ajouter une bannière (+5€/j) :</h2>
+                        <div class="ajouterBaniere" id="zoneBaniere" style="cursor:pointer">
+                            <input type="file" id="baniere" name="baniere" accept="image/*" style="display:none">
+                            <img id="previewImg" src="../../public/images/iconeAjouterBaniere.svg" style="max-height: 50px;">
                         </div>
-                        <p class="supprimer">supprimer ...</p>
-                        <p><strong>Format accepté </strong>: 21:4 (1440x275 pixels minimum)</p>
-                        <h2><strong>Sous total : </strong></h2>
+
                         <div class="sousTotal">
-                            <p>Promotion : 3€</p>
-                            <p>Baniere : 0€</p>
-                            <p>Durée : 0 jours</p>
-                            <p><strong>Total : 3€</strong></p>
+                            <p>Durée : <span id="nbJours">0</span> jours</p>
+                            <p><strong>Total à payer : <span id="prixTotal">0</span> €</strong></p>
                         </div>
+
                         <div class="infoCalcul">
-                            <img src="../../public/images/iconeInfo.svg" alt="">
-                            <p class="supprimer"> Comment sont calculés les prix ? </p>
+                            <img src="../../public/images/iconeInfo.svg">
+                            <p>Comment sont calculés les prix ?</p>
                         </div>
+
                         <div class="deuxBoutons">
                             <input type="hidden" name="id" value="${id}">
-                            <button type="submit">Promouvoir</button>
+                            <button type="submit" id="btnValider" disabled style="opacity: 0.5;">Promouvoir</button>
                         </div>
                     </section>
                 </form>
             </div>
         </main>`;
+
     document.body.appendChild(overlay);
 
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
-    croixFermer.addEventListener("click", fermerPopUpPromouvoir);
+    croixFermer.addEventListener("click", fermerPopUpRemise);
 
-    function cliqueBaniere(){
-        document.getElementById('baniere').click();
+    const dateInput = overlay.querySelector("#dateLimite");
+    const fileInput = overlay.querySelector("#baniere");
+    const previewImg = overlay.querySelector("#previewImg");
+    const btnValider = overlay.querySelector("#btnValider");
+    const spanJours = overlay.querySelector("#nbJours");
+    const spanTotal = overlay.querySelector("#prixTotal");
+    const zoneBaniere = overlay.querySelector("#zoneBaniere");
+
+    zoneBaniere.onclick = () => fileInput.click();
+    
+    fileInput.onchange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (ev) => previewImg.src = ev.target.result;
+            reader.readAsDataURL(e.target.files[0]);
+            calculerPrix();
+        }
+    };
+
+    function calculerPrix() {
+        if (!dateInput.value) return;
+
+        const dateFin = new Date(dateInput.value);
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        const diffTime = dateFin - today;
+        const jours = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (jours > 0) {
+            const coutPromo = (prixProduit * 0.10) * jours;
+            const coutBaniere = (fileInput.files.length > 0) ? (5 * jours) : 0;
+            
+            spanJours.innerText = jours;
+            spanTotal.innerText = (coutPromo + coutBaniere).toFixed(2);
+            
+            btnValider.disabled = false;
+            btnValider.style.opacity = "1";
+        } else {
+            spanJours.innerText = "0";
+            spanTotal.innerText = "0";
+            btnValider.disabled = true;
+            btnValider.style.opacity = "0.5";
+        }
     }
 
-    document.querySelector('.ajouterBaniere').addEventListener('click', cliqueBaniere);
+    dateInput.addEventListener("input", calculerPrix);
 
-
-    const infoCalcBtn = overlay.querySelector('.infoCalcul');
-    infoCalcBtn.addEventListener('click', popUpInfoCalcul);
+    overlay.querySelector('.infoCalcul').onclick = popUpInfoCalcul; 
 }
