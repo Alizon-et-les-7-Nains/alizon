@@ -198,8 +198,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
     const inputBaniere = document.querySelector('#baniere');
 
     inputBaniere.addEventListener('change', () => {
-        const file = inputBaniere.files[0];
-        
+        console.log('Fichier image changement detecté');
     });
 
     const dateLimite = overlay.querySelector("#dateLimite");
@@ -210,7 +209,6 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
     }
 
     document.querySelector('.ajouterBaniere').addEventListener('click', cliqueBaniere);
-
 
     const infoCalcBtn = overlay.querySelector('.infoCalcul');
     infoCalcBtn.addEventListener('click', popUpInfoCalcul);
