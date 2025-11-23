@@ -73,12 +73,11 @@ require_once "../../controllers/prix.php";
 
     // Récupérer les promotions
 
-    $stmt = $pdo -> prepare("SELECT * FROM _promotion");
-    $stmt -> execute();
-    $arrayProduit = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare("SELECT * FROM _promotion");
+    $stmt->execute();
+    $arrayProduit = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $nbPromo = count($arrayProduit);
-    if($nbPromo == 0) {
+    if (count($arrayProduit) === 0) {
         $choixAleatoirePromo = "N/A";
     } else {
         $choixAleatoirePromo = $arrayProduit[array_rand($arrayProduit)]['idProduit'];
