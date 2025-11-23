@@ -3980,6 +3980,9 @@ button#haut.visible:hover {
   border-radius: 16px;
   position: relative;
 }
+.popUpPromouvoir .prixRes {
+  display: flex;
+}
 .popUpPromouvoir .titreEtProduit {
   display: flex;
   flex-direction: column;
