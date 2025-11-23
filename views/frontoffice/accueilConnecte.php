@@ -188,6 +188,7 @@ $cart = getCurrentCart($pdo, $idClient);
     <link rel="stylesheet" href="../../public/style.css">
 
     <link rel="icon" type="image/png" href="/public/images/favicon.png">
+    <link rel="icon" href="/public/images/logoBackoffice.svg">
 
     <title>Alizon - Accueil</title>
 </head>
