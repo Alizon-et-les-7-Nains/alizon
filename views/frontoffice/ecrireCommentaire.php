@@ -2,14 +2,6 @@
 session_start();
 require_once "../../controllers/pdo.php";
 
-// Database connection
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    die("Erreur de connexion : " . $e->getMessage());
-}
-
 // Insert review (only once!)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
