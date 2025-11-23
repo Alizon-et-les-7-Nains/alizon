@@ -5411,7 +5411,7 @@ dialog.reassort form input {
   justify-content: center;
   align-items: center;
 }
-.pageProduit .sectionAvis form button {
+.pageProduit .sectionAvis a {
   border: 2px solid #273469;
   background-color: white;
   border-radius: 32px;
