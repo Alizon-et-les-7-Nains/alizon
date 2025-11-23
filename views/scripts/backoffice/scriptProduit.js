@@ -163,7 +163,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
             <div class="ligne"></div>
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
-                        <input type="text" id="inputDate" name="date_limite" placeholder="Date limite : Jour/Mois/Année">
+                        <input type="text" id="dateLimite" name="date_limite" placeholder="Date limite : Jour/Mois/Année">
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">
                             <input type="file" id="baniere" name="baniere" accept="image/*">
@@ -203,12 +203,6 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
 
     const dateLimite = overlay.querySelector("#dateLimite");
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
-
-    function cliqueBaniere(){
-        document.getElementById('baniere').click();
-    }
-
-    document.querySelector('.ajouterBaniere').addEventListener('click', cliqueBaniere);
 
     const infoCalcBtn = overlay.querySelector('.infoCalcul');
     infoCalcBtn.addEventListener('click', popUpInfoCalcul);
