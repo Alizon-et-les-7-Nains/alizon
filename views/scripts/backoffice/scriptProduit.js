@@ -124,8 +124,15 @@ function popUpRemise(){
 }
 
 function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
+
     console.log("ID reçu :", id);
     console.log("Nom reçu :", nom);
+
+    const dataJson = JSON.stringify({
+        id: id,
+        
+    });
+
     const overlay = document.createElement("div");
     overlay.className = "overlaypopUpPromouvoir";
     overlay.innerHTML = `
@@ -156,32 +163,35 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                         </article>
                     </section>
                 </div>
-                <div class="ligne"></div>
-                <section class="section2">
-                    <input type="text" placeholder="Date limite">
-                    <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
-                    <div class="ajouterBaniere">
-                        <input type="file" id="baniere" name="baniere" accept="image/*">
-                        <img src="../../public/images/iconeAjouterBaniere.svg" alt="">
-                    </div>
-                    <p class="supprimer">supprimer ...</p>
-                    <p><strong>Format accepté </strong>: 21:4 (1440x275 pixels minimum)</p>
-                    <h2><strong>Sous total : </strong></h2>
-                    <div class="sousTotal">
-                        <p>Promotion : 3€</p>
-                        <p>Baniere : 0€</p>
-                        <p>Durée : 0 jours</p>
-                        <p><strong>Total : 3€</strong></p>
-                    </div>
-                    <div class="infoCalcul">
-                        <img src="../../public/images/iconeInfo.svg" alt="">
-                        <p class="supprimer"> Comment sont calculés les prix ? </p>
-                    </div>
-                    <div class="deuxBoutons">
-                        <button>Ajouter une remise</button>
-                        <button>Promouvoir</button>
-                    </div>
-                </section>
+                
+            <div class="ligne"></div>
+                <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
+                    <section class="section2">
+                        <input type="text" id="inputDate" name="date_limite" placeholder="Date limite">
+                        <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
+                        <div class="ajouterBaniere">
+                            <input type="file" id="baniere" name="baniere" accept="image/*">
+                            <img src="../../public/images/iconeAjouterBaniere.svg" alt="">
+                        </div>
+                        <p class="supprimer">supprimer ...</p>
+                        <p><strong>Format accepté </strong>: 21:4 (1440x275 pixels minimum)</p>
+                        <h2><strong>Sous total : </strong></h2>
+                        <div class="sousTotal">
+                            <p>Promotion : 3€</p>
+                            <p>Baniere : 0€</p>
+                            <p>Durée : 0 jours</p>
+                            <p><strong>Total : 3€</strong></p>
+                        </div>
+                        <div class="infoCalcul">
+                            <img src="../../public/images/iconeInfo.svg" alt="">
+                            <p class="supprimer"> Comment sont calculés les prix ? </p>
+                        </div>
+                        <div class="deuxBoutons">
+                            <input type="hidden" name="id" value="${id}">
+                            <button type="submit">Promouvoir</button>
+                        </div>
+                    </section>
+                </form>
             </div>
         </main>`;
     document.body.appendChild(overlay);
