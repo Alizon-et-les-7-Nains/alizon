@@ -329,9 +329,8 @@
         font-weight: 100;
     }
 
-    // Style pour le lien "Écrire un commentaire" - remplace l'ancien bouton
-    .sectionAvis a.bouton {
-        display: inline-block; // Important pour que padding/height fonctionnent
+    .boutonCommentaire {
+        display: inline-block;
         margin: 2em 0;
         border: 2px solid $color-blue;
         background-color: white;
@@ -340,14 +339,12 @@
         cursor: pointer;
         margin: 1em 0;
         font-size: 16px;
-        text-decoration: none; // Enlever le soulignement
+        text-decoration: none;
         color: $color-blue;
         text-align: center;
         transition: all 0.3s ease;
     
     }
-
-    // Garder aussi l'ancien style pour les vrais boutons si nécessaire
     .sectionAvis button {
         margin: 2em 0;
         border: 2px solid $color-blue;
@@ -357,10 +354,6 @@
         cursor: pointer;
         font-size: 16px;
         
-        &:hover {
-            background-color: $color-blue;
-            color: white;
-        }
     }
 
     .sectionAvis article{

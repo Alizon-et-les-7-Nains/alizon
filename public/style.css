@@ -5353,7 +5353,7 @@ dialog.reassort form input {
   color: #273469;
   font-weight: 100;
 }
-.pageProduit .sectionAvis a.bouton {
+.pageProduit .boutonCommentaire {
   display: inline-block;
   margin: 2em 0;
   border: 2px solid #273469;
@@ -5376,10 +5376,6 @@ dialog.reassort form input {
   padding: 0.5em 1em;
   cursor: pointer;
   font-size: 16px;
-}
-.pageProduit .sectionAvis button:hover {
-  background-color: #273469;
-  color: white;
 }
 .pageProduit .sectionAvis article {
   display: flex;
