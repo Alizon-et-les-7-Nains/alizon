@@ -349,10 +349,18 @@ if (isset($_SESSION['message_panier'])) {
     // $note = $produit['note'];
     // echo htmlspecialchars($note);
     ?>
-    <form action="ecrireAvis.php" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-        <button type="submit">Ecrire un commentaire</button>
-    </form>
+    <?php if (isset($_SESSION['user_id'])) {
+    echo 
+    '<a href="ecrireCommentaire.php?id=<?php echo $productId; ?>" class="bouton boutonBleu">
+        Écrire un commentaire
+    </a>';
+    } else {
+    echo     
+    '<a href="connexionClient.php" class="bouton boutonBleu">
+        Écrire un commentaire
+    </a>';
+    }
+    ?>
 
     <?php if (!empty($lesAvis)): ?>
         <?php foreach ($lesAvis as $avis): ?>
