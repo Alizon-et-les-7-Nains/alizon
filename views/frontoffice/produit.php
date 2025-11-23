@@ -356,7 +356,7 @@ if (isset($_SESSION['message_panier'])) {
     </a>';
     } else {
     echo     
-    '<a href="connexionClient.php" class="bouton">
+    '<a href="connexionClient.php" class="boutonCommentaire">
         Écrire un commentaire
     </a>';
     }
