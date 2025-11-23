@@ -329,7 +329,7 @@
         font-weight: 100;
     }
 
-    .boutonCommentaire {
+    a.boutonCommentaire {
         display: inline-block;
         margin: 2em 0;
         border: 2px solid $color-blue;
@@ -345,7 +345,7 @@
         transition: all 0.3s ease;
     
     }
-    
+
     .sectionAvis button {
         margin: 2em 0;
         border: 2px solid $color-blue;
