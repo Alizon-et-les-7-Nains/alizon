@@ -128,11 +128,6 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
     console.log("ID reçu :", id);
     console.log("Nom reçu :", nom);
 
-    const dataJson = JSON.stringify({
-        id: id,
-        
-    });
-
     const overlay = document.createElement("div");
     overlay.className = "overlaypopUpPromouvoir";
     overlay.innerHTML = `

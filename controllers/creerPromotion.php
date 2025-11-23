@@ -13,10 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("INSERT INTO _promotion(idProduit, debutPromotion, finPromotion) VALUES (:idProd, CURDATE(), :dateLimite)");
 
         $stmt->execute([':idProd' => $idProd,':dateLimite' => $dateSql]);
-
     }
 
-    header('Location: ../views/frontoffice/produit.php');
+    header('Location: ../views/backoffice/produits.php');
     exit;
 }
 
