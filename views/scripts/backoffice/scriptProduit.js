@@ -175,22 +175,22 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                         <div class="sousTotal">
                             <div class="prixRes">
                                 <p>Promotion : </p>
-                                <p><strong class="dataPromo">0</strong></p>
+                                <p><strong class="dataPromo">&nbsp 0</strong></p>
                                 <p><strong>€</strong></p>
                             </div>
                             <div class="prixRes">
                                 <p>Baniere : </p>
-                                <p><strong class="dataBaniere">0</strong></p>
+                                <p><strong class="dataBaniere">&nbsp 0</strong></p>
                                 <p><strong>€</strong></p>
                             </div>
                             <div class="prixRes">
                                 <p>Durée : </p>
-                                <p><strong class="dataDuree">0</strong></p>
-                                <p><strong> jours</strong></p>
+                                <p><strong class="dataDuree">&nbsp 0</strong></p>
+                                <p><strong>&nbsp jours</strong></p>
                             </div>
                             <div class="prixRes">
                                 <p>Total : </p>
-                                <p><strong class="dataTotal">0</strong></p>
+                                <p><strong class="dataTotal">&nbsp 0</strong></p>
                                 <p><strong>€</strong></p>
                             </div>
                         </div>
