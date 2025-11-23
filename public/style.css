@@ -5353,8 +5353,36 @@ dialog.reassort form input {
   color: #273469;
   font-weight: 100;
 }
+.pageProduit .sectionAvis a.bouton {
+  display: inline-block;
+  margin: 2em 0;
+  border: 2px solid #273469;
+  background-color: white;
+  border-radius: 32px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  color: #273469;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.pageProduit .sectionAvis a.bouton:hover {
+  background-color: #273469;
+  color: white;
+}
 .pageProduit .sectionAvis button {
   margin: 2em 0;
+  border: 2px solid #273469;
+  background-color: white;
+  border-radius: 32px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-size: 16px;
+}
+.pageProduit .sectionAvis button:hover {
+  background-color: #273469;
+  color: white;
 }
 .pageProduit .sectionAvis article {
   display: flex;
@@ -5410,14 +5438,6 @@ dialog.reassort form input {
   gap: 0.8em;
   justify-content: center;
   align-items: center;
-}
-.pageProduit .sectionAvis a {
-  border: 2px solid #273469;
-  background-color: white;
-  border-radius: 32px;
-  padding: 0.5em 1em;
-  cursor: pointer;
-  font-size: 16px;
 }
 .pageProduit .actionsAvis a {
   text-decoration: underline;
