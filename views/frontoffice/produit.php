@@ -54,9 +54,9 @@ if (!$produit) {
 }
 
 // Récupérer les images
-$sqlImages = "SELECT ip.* 
-              FROM _imageDeProduit ip
-              WHERE ip.idProduit = $productId";
+$sqlImages = "SELECT * 
+              FROM _imageDeProduit 
+              WHERE idProduit = $productId";
 
 $resultImages = $pdo->query($sqlImages);
 $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
