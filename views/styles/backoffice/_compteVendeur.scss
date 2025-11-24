@@ -2,7 +2,7 @@
 @use "../fonts" as *;
 
 /* Variables utiles */
-$max-page-width: 1200px;
+$max-page-width: 100%;
 $page-padding-large: 60px;
 $page-padding-medium: 40px;
 $page-padding-small: 20px;
@@ -11,10 +11,11 @@ $page-padding-small: 20px;
 .page-compte {
   padding: clamp(20px, 5vw, 60px);
   max-width: $max-page-width;
-  margin: 0 auto;
+  margin: 0;
   position: relative;
   box-sizing: border-box;
   z-index: 1;
+  overflow-x: hidden;
 
   &::before {
     content: "";
@@ -23,12 +24,11 @@ $page-padding-small: 20px;
     top: -20vw;
     width: 60vw;
     height: 60vw;
-    background: url("../../public/images/symboleRose.png") no-repeat
-      center/contain;
+    background: url("../../public/images/symboleRose.png") no-repeat;
     transform: rotate(-20deg);
     opacity: 0.42;
     pointer-events: none;
-    z-index: 0;
+    z-index: 999;
   }
 
   /* Le formulaire occupe l'espace au-dessus du background décoratif */
@@ -38,7 +38,7 @@ $page-padding-small: 20px;
     display: flex;
     flex-direction: column;
     gap: 40px;
-    width: 100%;
+    width: 60%;
     box-sizing: border-box;
 
     /* Header qui prend toute la largeur au-dessus des colonnes */
@@ -291,9 +291,12 @@ $page-padding-small: 20px;
 @media (max-width: 900px) {
   .page-compte {
     padding: clamp(16px, 4vw, 40px);
+    margin: 0 auto;
+    width: 100%;
 
     .form-compte {
       gap: 20px;
+      width: 100%;
 
       .header-compte {
         flex-direction: column;
