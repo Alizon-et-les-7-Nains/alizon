@@ -4631,11 +4631,12 @@ dialog.reassort form input {
 /* Layout principal */
 .page-compte {
   padding: clamp(20px, 5vw, 60px);
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   position: relative;
   box-sizing: border-box;
   z-index: 1;
+  overflow-x: hidden;
 }
 .page-compte::before {
   content: "";
@@ -4644,11 +4645,11 @@ dialog.reassort form input {
   top: -20vw;
   width: 60vw;
   height: 60vw;
-  background: url("../../public/images/symboleRose.png") no-repeat center/contain;
+  background: url("../../public/images/symboleRose.png") no-repeat;
   transform: rotate(-20deg);
   opacity: 0.42;
   pointer-events: none;
-  z-index: 0;
+  z-index: 999;
 }
 .page-compte {
   /* Le formulaire occupe l'espace au-dessus du background décoratif */
@@ -4659,7 +4660,7 @@ dialog.reassort form input {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  width: 100%;
+  width: 60%;
   box-sizing: border-box;
   /* Header qui prend toute la largeur au-dessus des colonnes */
 }
@@ -4887,9 +4888,12 @@ dialog.reassort form input {
 @media (max-width: 900px) {
   .page-compte {
     padding: clamp(16px, 4vw, 40px);
+    margin: 0 auto;
+    width: 100%;
   }
   .page-compte .form-compte {
     gap: 20px;
+    width: 100%;
   }
   .page-compte .form-compte .header-compte {
     flex-direction: column;
