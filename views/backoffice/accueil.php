@@ -161,7 +161,7 @@ $avis = $avisSTMT->fetchAll(PDO::FETCH_ASSOC);
 $produitsSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/produitsVente.sql'));
 $produitsSTMT->execute([':idVendeur' => $_SESSION['id']]);
 $produits = $produitsSTMT->fetchAll(PDO::FETCH_ASSOC);
-if (count($produits) == 0) echo "<h2>Aucun produit en vente</h2>";if (count($avis) == 0) echo "<h2>Aucun avis</h>";
+if (count($produits) == 0) echo "<h2>Aucun produit en vente</h2>";
     foreach ($produits as $produit => $atr) {
         $idProduit = $atr['idProduit'];
         $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
