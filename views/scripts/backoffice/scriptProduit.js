@@ -84,7 +84,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
                     <h1> Ajouter une remise pour ce produit </h1>
                     <section>
                         <article>
-                            <img class="produit" src="/public/${imgURL}" alt="">
+                            <img class="produit" src="/public${imgURL}" alt="">
                             <div class="nomEtEvaluation">
                                 <p>${nom}</p>
                                 <div class="evaluation">
