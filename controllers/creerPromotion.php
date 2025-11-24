@@ -14,13 +14,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $extensionsPossibles = ['jpg'];
         $extension = '';
 
+        $d = DateTime::createFromFormat('d/m/Y', $dateLimite);
+
+        if (!$d) {
+            $d = DateTime::createFromFormat('Y-m-d', $dateLimite);
+        }
+
+        if (!$d) {
+             header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd);
+             exit;
+        }
+
         try {
-            $dateSql = DateTime::createFromFormat('d/m/Y', $dateLimite)->format('Y-m-d');
+            $dateSql = $d->format('Y-m-d');
             $stmt = $pdo->prepare("INSERT INTO _promotion(idProduit, debutPromotion, finPromotion) VALUES (:idProd, CURDATE(), :dateLimite)");
             $stmt->execute([':idProd' => $idProd,':dateLimite' => $dateSql]);
-
         } catch (Exception $e) {
-            header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd.'.php');
+            header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd);
             exit;
         }
 
@@ -43,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $extension = '.'.$extension;
             move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension);
         }
-    
 
     }
 
