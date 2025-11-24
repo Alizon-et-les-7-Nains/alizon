@@ -201,5 +201,6 @@
         <?php require_once './partials/footer.php' ?>
 
         <script src="../scripts/backoffice/scriptProduit.js"></script>
+        <script src="/public/script.js"></script>
     </body>
 </html>
