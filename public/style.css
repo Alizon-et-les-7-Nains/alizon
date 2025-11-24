@@ -3233,6 +3233,153 @@ button#haut.visible:hover {
   color: #fffefa;
 }
 
+.pageEcrireCommentaire {
+  background-image: url("../../../public/images/triskel.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  font-family: "lora";
+  color: #273469;
+}
+.pageEcrireCommentaire .produit {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 220px;
+}
+.pageEcrireCommentaire h1 {
+  font-size: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pageEcrireCommentaire h1, .pageEcrireCommentaire h2 {
+  font-weight: 200;
+}
+.pageEcrireCommentaire .produit img {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 8px;
+  margin-right: 2em;
+}
+.pageEcrireCommentaire .reviewArticle form {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  left: 15%;
+  width: 70%;
+}
+.pageEcrireCommentaire .reviewArticle ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.pageEcrireCommentaire .reviewArticle ul img {
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+}
+.pageEcrireCommentaire .etoiles img {
+  width: 64px;
+  height: 64px;
+}
+.pageEcrireCommentaire #ajouterPhoto {
+  width: 64px;
+  height: 64px;
+}
+.pageEcrireCommentaire textarea {
+  border: 2px solid #273469;
+  border-radius: 8px;
+  padding: 1em 1em;
+}
+.pageEcrireCommentaire textarea::placeholder {
+  color: #6e6e6e;
+}
+.pageEcrireCommentaire #sujet {
+  height: 60px;
+}
+.pageEcrireCommentaire #message {
+  min-height: 230px;
+  max-height: 300px;
+}
+.pageEcrireCommentaire .bouton {
+  width: 300px;
+  height: 60px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 32px;
+  border: none;
+  position: relative;
+}
+.pageEcrireCommentaire .boutonBleu {
+  background-color: #273469;
+  color: #fffefa;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-self: last baseline;
+}
+@media screen and (max-width: 768px) {
+  .pageEcrireCommentaire h1 {
+    font-size: 36px;
+  }
+  .pageEcrireCommentaire h2 {
+    font-size: 18px;
+  }
+  .pageEcrireCommentaire .etoiles img {
+    width: 48px;
+    height: 48px;
+  }
+  .pageEcrireCommentaire .ajouterPhoto {
+    width: 48px;
+    height: 48px;
+  }
+  .pageEcrireCommentaire .produit {
+    flex-direction: column;
+    margin-top: 100px;
+  }
+  .pageEcrireCommentaire .produit img {
+    margin-right: 0;
+    margin-bottom: 1em;
+  }
+  .pageEcrireCommentaire .reviewArticle form {
+    left: 5%;
+    width: 90%;
+  }
+  .pageEcrireCommentaire .bouton {
+    align-self: center;
+  }
+}
+@media screen and (max-width: 450px) {
+  .pageEcrireCommentaire h1 {
+    font-size: 24px;
+  }
+  .pageEcrireCommentaire h2 {
+    font-size: 16px;
+  }
+  .pageEcrireCommentaire .etoiles img {
+    width: 32px;
+    height: 32px;
+  }
+  .pageEcrireCommentaire .ajouterPhoto {
+    width: 32px;
+    height: 32px;
+  }
+  .pageEcrireCommentaire .produit {
+    flex-direction: column;
+    margin-top: 100px;
+  }
+  .pageEcrireCommentaire .produit img {
+    margin-right: 0;
+    margin-bottom: 1em;
+  }
+  .pageEcrireCommentaire .reviewArticle form {
+    left: 5%;
+    width: 90%;
+  }
+}
+
 .modifierProduit {
   font-family: "lora", "Serif";
   font-weight: bold;
@@ -3833,6 +3980,9 @@ button#haut.visible:hover {
   border-radius: 16px;
   position: relative;
 }
+.popUpPromouvoir .prixRes {
+  display: flex;
+}
 .popUpPromouvoir .titreEtProduit {
   display: flex;
   flex-direction: column;
@@ -3959,7 +4109,7 @@ button#haut.visible:hover {
   border: 2px solid #273469;
   padding: 15px;
   border-radius: 10px;
-  width: 160px;
+  width: 175px;
 }
 .popUpPromouvoir .page .section2 input#baniere {
   display: none;
@@ -5206,8 +5356,34 @@ dialog.reassort form input {
   color: #273469;
   font-weight: 100;
 }
+<<<<<<< HEAD
 .pageProduit .sectionAvis button {
   margin: 2em 0;
+=======
+.pageProduit .sectionAvis a {
+  display: inline-block;
+  margin: 2em 0;
+  border: 2px solid #273469;
+  background-color: white;
+  border-radius: 32px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  margin: 1em 0;
+  font-size: 16px;
+  text-decoration: none;
+  color: #273469;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.pageProduit .sectionAvis button {
+  margin: 2em 0;
+  border: 2px solid #273469;
+  background-color: white;
+  border-radius: 32px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-size: 16px;
+>>>>>>> bf251b2d9350bfe3e7451e3da29da414de6ebc8f
 }
 .pageProduit .sectionAvis article {
   display: flex;
@@ -5264,6 +5440,7 @@ dialog.reassort form input {
   justify-content: center;
   align-items: center;
 }
+<<<<<<< HEAD
 .pageProduit .sectionAvis form button {
   border: 2px solid #273469;
   background-color: white;
@@ -5272,6 +5449,8 @@ dialog.reassort form input {
   cursor: pointer;
   font-size: 16px;
 }
+=======
+>>>>>>> bf251b2d9350bfe3e7451e3da29da414de6ebc8f
 .pageProduit .actionsAvis a {
   text-decoration: underline;
   color: #6e6e6e;
@@ -5635,6 +5814,7 @@ dialog.reassort form input {
 }
 .connexionVendeur .triskiel {
   position: absolute;
+<<<<<<< HEAD
   top: 15%;
   right: -5%;
   height: 100%;
@@ -5644,6 +5824,17 @@ dialog.reassort form input {
   z-index: 0;
   pointer-events: none;
   opacity: 0.8;
+=======
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: auto;
+  max-width: 100vw;
+  max-height: 80vh;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+>>>>>>> bf251b2d9350bfe3e7451e3da29da414de6ebc8f
 }
 .connexionVendeur .pdp_title {
   position: relative;
@@ -5719,7 +5910,7 @@ dialog.reassort form input {
   justify-content: center;
 }
 .connexionVendeur .information_connexion .form-vendeur .actions .btn_connexion {
-  background-color: red !important;
+  background-color: #e4d9ff;
   color: #273469;
   border: none;
   border-radius: 24px;
