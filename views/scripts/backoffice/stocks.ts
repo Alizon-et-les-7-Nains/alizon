@@ -35,13 +35,11 @@ btnSettings.forEach(btn => {
 modalReassort?.addEventListener("click", (e) => {
     if (e.target === modalReassort) {
         modalReassort.close();
+        modalReassort.style.display = 'flex';
     }
 });
 
 document.querySelector('input#annuler')?.addEventListener('click', () => {
     modalReassort.close();
+    modalReassort.style.display = 'flex';
 })
-
-document.addEventListener('DOMContentLoaded', () => {
-    modalReassort?.close();
-});
