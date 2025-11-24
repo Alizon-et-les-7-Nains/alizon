@@ -61,16 +61,21 @@ function popUpInfoCalcul() {
     croixFermer.addEventListener("click", fermerPopUpInfoCalcul);
 }
 
+<<<<<<< HEAD
 function verifDate(val){
     let valeur = val.value.trim();
+=======
+function verifDate(input){
+    let valeur = input.value.trim();
+>>>>>>> backoffice-pageProduit
     if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
-        setError(val, "Format attendu : jj/mm/aaaa");
+        setError(input, "Format attendu : jj/mm/aaaa");
     } else {
-        clearError(val);
+        clearError(input);
     }
 }
 
-function popUpRemise(){
+function popUpRemise(id, nom, imgURL, prix, nbEval, note){
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
         overlay.innerHTML = `
@@ -84,37 +89,38 @@ function popUpRemise(){
                     <h1> Ajouter une remise pour ce produit </h1>
                     <section>
                         <article>
-                            <img class="produit" src="/public/images/rillettes.png" alt="">
+                            <img class="produit" src="/public/${imgURL}" alt="">
                             <div class="nomEtEvaluation">
-                                <p>Rillettes</p>
+                                <p>${nom}</p>
                                 <div class="evaluation">
                                     <div class="etoiles">
                                         <img src="/public/images/etoile.svg" alt="">
-                                        <p>3</p>
+                                        <p>${note}</p>
                                     </div>
-                                    <p>200 évaluation</p>
+                                    <p>${nbEval} évaluation</p>
                                 </div>
                             </div>
                             <div>
-                                <p class="prix"> 29.99 €</p>
+                                <p class="prix"> ${prix} €</p>
                                 <p class="prixAuKg"> 99.72€ / kg</p>
                             </div>
                         </article>
                     </section>
                 </div>
                 <div class="ligne"></div>
-                <section class="section2">
+                <form method="POST" action="../../controllers/creerRemise.php">
                     <div>
                         <input type="text" name="dateLimite" id="dateLimite" placeholder="Date limite">
                     </div>
                     <div>
-                        <input type="text" name="nouveauPrix" id="nouveauPrix" placeholder="Nouveau prix">
-                        <input type="reduction" name="" id="reduction" placeholder="Reduction(%)">
+                        <input type="float" name="nouveauPrix" id="nouveauPrix" placeholder="Nouveau prix">
+                        <input type="float" name="reduction" id="reduction" placeholder="Reduction(%)">
                     </div>
                     <h2>Récapitulatif :</h2>
-                    <p>Abaissement de <strong> 15€ </strong></p>
-                    <button>Appliquer la remise </button>
-                </section>
+                    <p class = "recap"> </p>
+                    <input type="hidden" name="id" value="${id}">
+                    <button type="submit">Appliquer la remise </button>
+                </form>
             </div>
         </main>`;
     document.body.appendChild(overlay);
@@ -124,6 +130,37 @@ function popUpRemise(){
 
     const dateLimite = overlay.querySelector("#dateLimite");
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
+
+    function updatePrixFromReduction(prix, nouveauPrixInput, reductionInput, recap) {
+        if (reductionInput.value !== "") {
+            const nouveauPrix = (prix * (100 - reductionInput.value) / 100).toFixed(2);
+            nouveauPrixInput.value = nouveauPrix;
+            recap.textContent = "Abaissement de " + (prix - nouveauPrix).toFixed(2) + "€";
+        } else {
+            nouveauPrixInput.value = "";
+            recap.textContent = "Abaissement de 0€";
+        }
+    }
+
+    function updateReductionFromPrix(prix, nouveauPrixInput, reductionInput, recap) {
+        if (nouveauPrixInput.value !== "") {
+            const reduction = (100 - (nouveauPrixInput.value) * 100 / prix).toFixed(2);
+            reductionInput.value = reduction;
+            recap.textContent = "Abaissement de " + (prix - nouveauPrixInput.value).toFixed(2) + "€";
+        } else {
+            reductionInput.value = "";
+            recap.textContent = "Abaissement de 0€";
+        }
+    }
+    
+    const nouveauPrix = overlay.querySelector("#nouveauPrix");
+    const reduction = overlay.querySelector("#reduction");
+    const recap = overlay.querySelector(".recap");
+
+    nouveauPrix.addEventListener("input", () => updateReductionFromPrix(prix, nouveauPrix, reduction, recap));
+    reduction.addEventListener("input", () => updatePrixFromReduction(prix, nouveauPrix, reduction, recap));
+
+
 }
 
 function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
