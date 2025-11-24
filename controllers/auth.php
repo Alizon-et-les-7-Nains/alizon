@@ -13,11 +13,11 @@ try {
     $isValid = $isValidSTMT->fetchColumn();
 
     if (!$_SESSION['id_session'] || !$isValid) {
-        header('Location: ../views/backoffice/connexions.php?error=3');
+        header('Location: ../backoffice/connexion.php?error=3');
         die();
     }
 } catch (Exception $e) {
-    header('Location: ../views/backoffice/connexions.php?error=0');
+    header('Location: ../backoffice/connexion.php?error=0');
     die();
 }
 
