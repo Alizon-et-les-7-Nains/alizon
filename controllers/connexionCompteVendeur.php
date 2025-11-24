@@ -16,12 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $vendeurSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/vendeur.sql'));
             $vendeurSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
             $vendeur = $vendeurSTMT->fetch(PDO::FETCH_ASSOC);
-
             $pdo->commit();
-
-            var_dump($vendeur);
-
-            die();
 
             session_start();
             $_SESSION['id'] = $vendeur['codeVendeur'];
