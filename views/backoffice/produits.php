@@ -1,15 +1,16 @@
 <?php 
 
+    require_once '../../controllers/pdo.php';
+
     if(isset($_GET['error']) && isset($_GET['id'])) {
         $idProduit = $_GET['id'];
         $codeErreur = $_GET['error'];
-
-        echo "<script>popUpErreur($idProduit, $codeErreur);</script>";
+        echo "<script>window.addEventListener('load', () => popUpErreur($idProduit, $codeErreur));</script>";
     }
 
-    require_once '../../controllers/pdo.php';
     $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true;");
     $produitEnVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    
 ?>
 
 <!DOCTYPE html>
