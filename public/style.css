@@ -2583,6 +2583,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .acceuil .banniere {
   text-align: center;
   justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .acceuil .banniere * {
   margin: 0px 30px;

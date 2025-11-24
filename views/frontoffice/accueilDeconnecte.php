@@ -109,7 +109,7 @@ require_once "../../controllers/prix.php";
             $cheminSysteme = "/var/www/html/images/baniere/" . $choixAleatoirePromo . ".jpg";
 
             if (file_exists($cheminSysteme)) {
-                $image = "../../public/images/baniere/" . $choixAleatoirePromo . ".jpg";
+                $image = "/images/baniere/" . $choixAleatoirePromo . ".jpg";
             } else {
                 $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                 $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
