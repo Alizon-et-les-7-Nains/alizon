@@ -376,7 +376,7 @@ if (isset($_SESSION['message_panier'])) {
                         </div>
                         <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?></h6>
                     </div>
-                    <p><?php echo htmlspecialchars($avis['contenuAvis']); ?></p>
+                    <p><?php echo htmlspecialchars($avis['contenuAvis']); ?> par <?php echo htmlspecialchars($avis['idClient']); ?></p>
                     <div class="baselineSpaceBetween">
                         <div class="sectionImagesAvis">
                         </div>   
