@@ -1,5 +1,3 @@
-// Cleaned and bug-fixed version of compteVendeur.js
-
 let modeEdition = false;
 let modeModificationMdp = false;
 let anciennesValeurs = {};
@@ -170,6 +168,18 @@ function activerModeEdition() {
     });
   });
 
+  // Activer la modification de la photo de profil
+  const imageProfile = document.getElementById("imageProfile");
+  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
+
+  if (imageProfile) {
+    imageProfile.style.cursor = "pointer";
+  }
+
+  if (boutonChangerPhoto) {
+    boutonChangerPhoto.style.display = "block";
+  }
+
   // Masquer le bouton Modifier et afficher Annuler/Sauvegarder
   const btnModifier = document.querySelector(".boutonModifierProfil");
   const btnAnnuler = document.querySelector(".boutonAnnuler");
@@ -215,6 +225,23 @@ function desactiverModeEdition() {
     const newInput = input.cloneNode(true);
     input.parentNode.replaceChild(newInput, input);
   });
+
+  // Désactiver la modification de la photo de profil
+  const imageProfile = document.getElementById("imageProfile");
+  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
+
+  if (imageProfile) {
+    imageProfile.style.cursor = "default";
+    // Réinitialiser l'aperçu si annulation
+    const uploadPhoto = document.getElementById("photoProfil");
+    if (uploadPhoto) {
+      uploadPhoto.value = ""; // Réinitialiser le input file
+    }
+  }
+
+  if (boutonChangerPhoto) {
+    boutonChangerPhoto.style.display = "none";
+  }
 
   // Réafficher les boutons
   const btnModifier = document.querySelector(".boutonModifierProfil");
@@ -407,81 +434,10 @@ function boutonAnnuler() {
   desactiverModeEdition();
 }
 
-// Événements DOM
-document.addEventListener("DOMContentLoaded", function () {
-  // Initialisation - cacher toutes les erreurs au chargement
-  const erreurs = document.querySelectorAll(".field-error");
-  erreurs.forEach((erreur) => {
-    erreur.style.display = "none";
-  });
-
-  desactiverModeEdition();
-  afficherMessageCriteresMdp();
-
-  const btnModifier = document.querySelector(".boutonModifierProfil");
-  const btnAnnuler = document.querySelector(".boutonAnnuler");
-  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
-  const form = document.querySelector("form");
-
-  if (btnModifier) btnModifier.addEventListener("click", activerModeEdition);
-  if (btnAnnuler) btnAnnuler.addEventListener("click", boutonAnnuler);
-  if (btnModifierMdp)
-    btnModifierMdp.addEventListener("click", function (e) {
-      e.preventDefault();
-      toggleModificationMdp();
-    });
-
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      if (!validerFormulaire()) {
-        e.preventDefault();
-        return false;
-      }
-
-      // Afficher un indicateur de chargement
-      const boutonSauvegarder = document.querySelector(".boutonSauvegarder");
-      if (boutonSauvegarder) {
-        boutonSauvegarder.dataset._originalText = boutonSauvegarder.textContent;
-        boutonSauvegarder.textContent = "Sauvegarde...";
-        boutonSauvegarder.disabled = true;
-      }
-
-      // Réactiver temporairement les champs pour l'envoi du formulaire
-      const inputsReadonly = document.querySelectorAll("input[readonly]");
-      inputsReadonly.forEach((input) => input.removeAttribute("readonly"));
-    });
-  }
-
-  // Empêcher la soumission du formulaire avec Enter sauf en mode édition
-  document.querySelectorAll("input").forEach((input) => {
-    input.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" && !modeEdition) {
-        e.preventDefault();
-      }
-    });
-  });
-});
-
-// Export pour les tests (Node)
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = {
-    activerModeEdition,
-    desactiverModeEdition,
-    activerModificationMdp,
-    desactiverModificationMdp,
-    validerFormulaire,
-    validerCriteresMotDePasse,
-    validerChamp,
-    afficherErreur,
-    restaurerAnciennesValeurs,
-    toggleModificationMdp,
-  };
-}
-
 // Fonction pour gérer le changement de photo de profil
 function initialiserPhotoProfil() {
   const imageProfile = document.getElementById("imageProfile");
-  const uploadPhoto = document.getElementById("uploadPhoto");
+  const uploadPhoto = document.getElementById("photoProfil");
   const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
 
   if (!imageProfile || !uploadPhoto) return;
@@ -552,141 +508,7 @@ function initialiserPhotoProfil() {
   });
 }
 
-// Modifier la fonction activerModeEdition pour activer la modification de photo
-function activerModeEdition() {
-  modeEdition = true;
-
-  // Sauvegarder les anciennes valeurs (text, email, tel, date)
-  const inputsToSave = document.querySelectorAll(
-    'input[type="text"], input[type="email"], input[type="tel"], input[type="date"]'
-  );
-  anciennesValeurs = {}; // reset
-  inputsToSave.forEach((input) => {
-    if (input.id) {
-      anciennesValeurs[input.id] = input.value;
-    }
-  });
-
-  // Activer tous les champs de saisie ciblés
-  const inputsEditables = document.querySelectorAll(
-    'input[type="text"], input[type="email"], input[type="tel"], input[type="date"]'
-  );
-  inputsEditables.forEach((input) => {
-    if (!input.id) return;
-    input.removeAttribute("readonly");
-    input.style.backgroundColor = "white";
-    input.style.color = "#212529";
-
-    // Ajouter écouteurs s'ils ne sont pas déjà attachés
-    const clean = input.cloneNode(true);
-    input.parentNode.replaceChild(clean, input);
-    clean.addEventListener("input", function () {
-      validerChamp(this.id, this.value);
-    });
-    clean.addEventListener("blur", function () {
-      validerChamp(this.id, this.value);
-    });
-  });
-
-  // Activer la modification de la photo de profil
-  const imageProfile = document.getElementById("imageProfile");
-  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
-
-  if (imageProfile) {
-    imageProfile.style.cursor = "pointer";
-    // Afficher le bouton changer photo au survol
-    imageProfile.addEventListener("mouseenter", function () {
-      if (boutonChangerPhoto) {
-        boutonChangerPhoto.style.display = "block";
-      }
-    });
-  }
-
-  if (boutonChangerPhoto) {
-    boutonChangerPhoto.style.display = "block";
-  }
-
-  // Masquer le bouton Modifier et afficher Annuler/Sauvegarder
-  const btnModifier = document.querySelector(".boutonModifierProfil");
-  const btnAnnuler = document.querySelector(".boutonAnnuler");
-  const btnSauvegarder = document.querySelector(".boutonSauvegarder");
-  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
-
-  if (btnModifier) btnModifier.style.display = "none";
-  if (btnAnnuler) btnAnnuler.style.display = "block";
-  if (btnSauvegarder) btnSauvegarder.style.display = "block";
-  if (btnModifierMdp) btnModifierMdp.style.display = "none";
-}
-
-// Modifier la fonction desactiverModeEdition pour désactiver la modification de photo
-function desactiverModeEdition() {
-  modeEdition = false;
-  modeModificationMdp = false;
-
-  // Cacher toutes les erreurs
-  const erreurs = document.querySelectorAll(".field-error");
-  erreurs.forEach((erreur) => {
-    erreur.classList.remove("show");
-    erreur.style.display = "none";
-  });
-
-  // Retirer classes d'erreur des inputs
-  const allInputs = document.querySelectorAll("input");
-  allInputs.forEach((input) => input.classList.remove("error"));
-
-  // Désactiver tous les champs de saisie (incl. password)
-  const inputsEditables = document.querySelectorAll(
-    'input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="password"]'
-  );
-  inputsEditables.forEach((input) => {
-    input.setAttribute("readonly", "true");
-    input.style.backgroundColor = "#f8f9fa";
-    input.style.color = "#6c757d";
-
-    // Vider les champs de mot de passe
-    if (input.type === "password") {
-      input.value = "";
-    }
-
-    // Retirer les écouteurs d'événements en remplaçant par clone
-    const newInput = input.cloneNode(true);
-    input.parentNode.replaceChild(newInput, input);
-  });
-
-  // Désactiver la modification de la photo de profil
-  const imageProfile = document.getElementById("imageProfile");
-  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
-
-  if (imageProfile) {
-    imageProfile.style.cursor = "default";
-    // Réinitialiser l'aperçu si annulation
-    const uploadPhoto = document.getElementById("uploadPhoto");
-    if (uploadPhoto) {
-      uploadPhoto.value = ""; // Réinitialiser le input file
-    }
-  }
-
-  if (boutonChangerPhoto) {
-    boutonChangerPhoto.style.display = "none";
-  }
-
-  // Réafficher les boutons
-  const btnModifier = document.querySelector(".boutonModifierProfil");
-  const btnAnnuler = document.querySelector(".boutonAnnuler");
-  const btnSauvegarder = document.querySelector(".boutonSauvegarder");
-  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
-
-  if (btnModifier) btnModifier.style.display = "block";
-  if (btnAnnuler) btnAnnuler.style.display = "none";
-  if (btnSauvegarder) btnSauvegarder.style.display = "none";
-  if (btnModifierMdp) {
-    btnModifierMdp.style.display = "block";
-    btnModifierMdp.textContent = "Modifier le mot de passe";
-    btnModifierMdp.classList.remove("annuler-mdp");
-  }
-}
-
-// Modifier la section des événements DOM pour initialiser la photo de profil
+// Événements DOM
 document.addEventListener("DOMContentLoaded", function () {
   // Initialisation - cacher toutes les erreurs au chargement
   const erreurs = document.querySelectorAll(".field-error");
@@ -715,6 +537,9 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", function (e) {
       if (!validerFormulaire()) {
         e.preventDefault();
+        alert(
+          "Veuillez corriger les erreurs dans le formulaire avant de sauvegarder."
+        );
         return false;
       }
 
@@ -729,6 +554,9 @@ document.addEventListener("DOMContentLoaded", function () {
       // Réactiver temporairement les champs pour l'envoi du formulaire
       const inputsReadonly = document.querySelectorAll("input[readonly]");
       inputsReadonly.forEach((input) => input.removeAttribute("readonly"));
+
+      // Le formulaire peut maintenant être soumis normalement
+      console.log("Formulaire validé, soumission en cours...");
     });
   }
 
@@ -741,3 +569,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+// Export pour les tests (Node)
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    activerModeEdition,
+    desactiverModeEdition,
+    activerModificationMdp,
+    desactiverModificationMdp,
+    validerFormulaire,
+    validerCriteresMotDePasse,
+    validerChamp,
+    afficherErreur,
+    restaurerAnciennesValeurs,
+    toggleModificationMdp,
+  };
+}
