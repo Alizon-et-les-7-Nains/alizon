@@ -236,9 +236,6 @@ if (isset($_SESSION['message_panier'])) {
                 </div>
                 <span class="review-count" id="reviewCountHautProduit"><?php echo $nombreAvis; ?> évaluations</span>
             </div>
-            <?php 
-            $note = $produit['note'];
-            ?>
         <div id="prix">
             <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
             <h3>40.99€</h3>
