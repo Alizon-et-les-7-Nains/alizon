@@ -162,9 +162,9 @@ function popUpErreur(id, code) {
     console.log("Erreur ID produit:", id, "Code erreur:", code);
 
     const messages = {
-        1: "Une erreur est survenue lors du traitement de la date.",
-        2: "Le format de l'image n'est pas valide (.jpg uniquement).",
-        3: "Le fichier est trop volumineux.",
+        1: "Une erreur est survenue lors du traitement de la date. Respectez le format jj/mm/aaaa et réessayez.",
+        2: "Le format de l'image n'est pas valide. Revérifiez les critères et réessayez.",
+        3: "L'image est trop volumineuse.",
         404: "Le produit demandé est introuvable.",
         'default': "Une erreur inattendue s'est produite. Veuillez réessayer."
     };
@@ -180,15 +180,8 @@ function popUpErreur(id, code) {
                 <div></div>
                 <div></div>
             </div>
-            
-            <!-- Optionnel : Icône d'alerte visuelle -->
-            <div class="icon-warning">!</div> 
-
             <h1>Oups !</h1>
-            
-            <p>${messageErreur}</p>
-
-            <!-- Bouton OK qui ferme la pop-up -->
+            <p><strong>${messageErreur}</strong></p>
             <button class="btnFermer">Compris</button>
         </main>`;
 
@@ -252,7 +245,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
                         <div>
-                            <input type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
+                            <input type="date" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
                         </div>
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">
