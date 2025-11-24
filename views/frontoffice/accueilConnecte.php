@@ -174,6 +174,18 @@ $cart = getCurrentCart($pdo, $idClient);
         }
     }
 
+    // Récupérer les promotions
+
+    $stmt = $pdo->prepare("SELECT * FROM _promotion");
+    $stmt->execute();
+    $arrayProduit = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (count($arrayProduit) === 0) {
+        $choixAleatoirePromo = "N/A";
+    } else {
+        $choixAleatoirePromo = $arrayProduit[array_rand($arrayProduit)]['idProduit'];
+    }
+
 // ============================================================================
 // AFFICHAGE DE LA PAGE
 // ============================================================================
@@ -188,6 +200,7 @@ $cart = getCurrentCart($pdo, $idClient);
     <link rel="stylesheet" href="../../public/style.css">
 
     <link rel="icon" type="image/png" href="/public/images/favicon.png">
+    <link rel="icon" href="/public/images/logoBackoffice.svg">
 
     <title>Alizon - Accueil</title>
 </head>
@@ -196,8 +209,25 @@ $cart = getCurrentCart($pdo, $idClient);
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
     <section class="banniere">
-        <h1>Plus de promotion à venir !</h1>
-        <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
+        <?php if($choixAleatoirePromo == "N/A") { ?>
+            <h1>Plus de promotion à venir !</h1>
+            <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
+        <?php } else { 
+                     
+            $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+            $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
+            $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+            $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+
+            $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :idProduit");
+            $stmt->execute([':idProduit' => $choixAleatoirePromo]);
+            $produitEnPromo = $stmt->fetch(PDO::FETCH_ASSOC);
+            ?>
+            
+            <h1><?php echo htmlspecialchars($produitEnPromo['nom']); ?></h1>
+            <img src="<?php echo htmlspecialchars($image); ?>" alt="Image du produit">
+
+        <?php } ?>
     </section>
 
     <main>
@@ -431,7 +461,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 popupConfirmation.style.display = "block";
                 console.log("Clique bouton ajouter panier");
 
-                // Cacher après 1,5 secondes (optionnel)
+                // Cacher après 1,5 secondes
                 setTimeout(() => {
                     popupConfirmation.style.display = "none";
                 }, 5000);

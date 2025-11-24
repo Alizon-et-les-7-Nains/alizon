@@ -64,7 +64,12 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePromouvoir.svg" alt="">
-                                        <button onclick="popUpPromouvoir()">Promouvoir</button>
+                                        <?php $idProd = $produitEnVente[$i]['idproduit'] ?>
+                                        <?php $nom = $produitEnVente[$i]['nom'] ?>
+                                        <?php $nbEval = $evaluations[0]['evaluation'] ?>
+                                        <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>)">
+                                            Promouvoir
+                                        </button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -146,7 +151,6 @@
 
                         <div class="prixEtPrixAuKg">
                             <p class="prix"><?php echo htmlspecialchars($produitHorsVente[$i]['prix']); ?>€</p>
-                            <p class="prixAuKg">99.72€ / kg</p>
                         </div>
 
                         <div class="bouton">

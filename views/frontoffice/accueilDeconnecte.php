@@ -71,6 +71,18 @@ require_once "../../controllers/prix.php";
         ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute);
     }
 
+    // Récupérer les promotions
+
+    $stmt = $pdo->prepare("SELECT * FROM _promotion");
+    $stmt->execute();
+    $arrayProduit = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (count($arrayProduit) === 0) {
+        $choixAleatoirePromo = "N/A";
+    } else {
+        $choixAleatoirePromo = $arrayProduit[array_rand($arrayProduit)]['idProduit'];
+    }
+
 // ============================================================================
 // AFFICHAGE DE LA PAGE
 // ============================================================================
@@ -81,6 +93,7 @@ require_once "../../controllers/prix.php";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/public/images/logoBackoffice.svg">
   <link rel="stylesheet" href="../../public/style.css">
   <title>Alizon - Accueil</title>
 </head>
@@ -88,8 +101,25 @@ require_once "../../controllers/prix.php";
     <?php include '../../views/frontoffice/partials/headerDeconnecte.php'; ?>
 
     <section class="banniere">
-        <h1>Plus de promotion à venir !</h1>
-        <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
+        <?php if($choixAleatoirePromo == "N/A") { ?>
+            <h1>Plus de promotion à venir !</h1>
+            <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
+        <?php } else { 
+                     
+            $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+            $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
+            $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+            $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+
+            $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :idProduit");
+            $stmt->execute([':idProduit' => $choixAleatoirePromo]);
+            $produitEnPromo = $stmt->fetch(PDO::FETCH_ASSOC);
+            ?>
+            
+            <h1><?php echo htmlspecialchars($produitEnPromo['nom']); ?></h1>
+            <img src="<?php echo htmlspecialchars($image); ?>" alt="Image du produit">
+
+        <?php } ?>
     </section>
 
     <main>
@@ -289,6 +319,29 @@ require_once "../../controllers/prix.php";
             </div>
         </section>
     </main>
+
+    <section class="confirmationAjout">
+        <h4>Produit ajouté au panier !</h4>
+    </section>
+
+    <script>
+        const popupConfirmation = document.querySelector(".confirmationAjout");
+        const boutonsAjout = document.querySelectorAll(".plus");
+
+        boutonsAjout.forEach(btn => {
+            btn.addEventListener("click", function(e) {
+
+                // Afficher le popup
+                popupConfirmation.style.display = "block";
+                console.log("Clique bouton ajouter panier");
+
+                // Cacher après 1,5 secondes
+                setTimeout(() => {
+                    popupConfirmation.style.display = "none";
+                }, 5000);
+            });
+        });
+    </script>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 

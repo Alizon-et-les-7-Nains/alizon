@@ -94,6 +94,9 @@
 
                 &::placeholder {
                     color: $color-dark-gray;
+                    font: {
+                        family: 'Lora','Serif';
+                    }
                 }
                 
                 &.input-error {
@@ -155,6 +158,19 @@
                     bottom: 10px;
                     top: 10px;
                 }
+            }
+
+            .connexion_lien a {
+                color: $color-blue;
+                text-decoration: underline;
+            }
+
+            .connexion_lien a:visited {
+                color: $color-blue;
+            }
+
+            .connexion_lien a:hover {
+                color: darken($color-blue, 10%);
             }
 
             .inscriptions_autres{

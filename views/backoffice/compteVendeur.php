@@ -15,6 +15,7 @@ $stmt = $pdo->prepare("
 $stmt->execute([':id' => $code_vendeur]);
 $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Extraction des données une seule fois
 $raisonSociale = $vendeur['raisonSocial'] ?? '';
 $noSiren       = $vendeur['noSiren'] ?? '';
 $prenom        = $vendeur['prenom'] ?? '';
@@ -30,11 +31,100 @@ $region        = $vendeur['region'] ?? '';
 $pays          = $vendeur['pays'] ?? '';
 $idAdresse     = $vendeur['idAdresse'] ?? '';
 
-// Chemin de la photo de profil
-$photoDir = '../../images/photoProfilVendeur/';
-$photoFilename = 'photo_profil' . $code_vendeur . '.png';
-$photoPath = $photoDir . $photoFilename;
-$photoFullPath = '/var/www/html/images/photoProfilVendeur/' . $photoFilename;
+// Gestion de la photo de profil - version simplifiée comme client
+$photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil' . $code_vendeur;
+$extension = '';
+
+$extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+foreach ($extensionsPossibles as $ext) {
+    if (file_exists($photoPath . '.' . $ext)) {
+        $extension = '.' . $ext;
+        break;
+    }
+}
+
+
+// Traitement de l'upload de photo si formulaire soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+    
+    foreach ($extensionsPossibles as $ext) {
+        $oldFile = $photoPath . '.' . $ext;
+        if (file_exists($oldFile)) {
+            unlink($oldFile);
+        }
+    }
+    
+    // Uploader la nouvelle photo
+    $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+    move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
+}
+
+
+// Traitement des autres données du formulaire
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Récupération des données du formulaire
+    $pseudo = $_POST['pseudo'] ?? '';
+    $nom = $_POST['nom'] ?? '';
+    $prenom = $_POST['prenom'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $dateNaissance = $_POST['dateNaissance'] ?? '';
+    $telephone = $_POST['telephone'] ?? '';
+    $codePostal = $_POST['codePostal'] ?? '';
+    $adresse = $_POST['adresse'] ?? '';
+    $pays = $_POST['pays'] ?? '';
+    $ville = $_POST['ville'] ?? '';
+    $region = $_POST['region'] ?? '';
+    $raisonSociale = $_POST['raisonSociale'] ?? '';
+    $noSiren = $_POST['noSiren'] ?? '';
+
+    // Mise à jour des informations du vendeur
+    $stmt = $pdo->prepare("
+        UPDATE saedb._vendeur 
+        SET pseudo = :pseudo, 
+            nom = :nom, 
+            prenom = :prenom, 
+            email = :email, 
+            dateNaissance = :dateNaissance,
+            noTelephone = :telephone,
+            raisonSocial = :raisonSociale,
+            noSiren = :noSiren
+        WHERE codeVendeur = :code_vendeur
+    ");
+
+    $stmt->execute([
+        ':pseudo' => $pseudo,
+        ':nom' => $nom,
+        ':prenom' => $prenom,
+        ':email' => $email,
+        ':dateNaissance' => $dateNaissance,
+        ':telephone' => $telephone,
+        ':raisonSociale' => $raisonSociale,
+        ':noSiren' => $noSiren,
+        ':code_vendeur' => $code_vendeur
+    ]);
+
+    // Mise à jour de l'adresse
+    if ($idAdresse) {
+        $stmt = $pdo->prepare("
+            UPDATE saedb._adresseVendeur 
+            SET adresse = :adresse,
+                pays = :pays,
+                ville = :ville, 
+                codePostal = :codePostal,
+                region = :region
+            WHERE idAdresse = :idAdresse
+        ");
+
+        $stmt->execute([
+            ':adresse' => $adresse,
+            ':pays' => $pays,
+            ':ville' => $ville,
+            ':codePostal' => $codePostal,
+            ':region' => $region,
+            ':idAdresse' => $idAdresse
+        ]);
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -47,32 +137,30 @@ $photoFullPath = '/var/www/html/images/photoProfilVendeur/' . $photoFilename;
 </head>
 
 <body class="monCompte backoffice">
-
     <?php include 'partials/header.php'; ?>
 
     <main class="page-compte">
-
         <div class="header-compte">
-            <div class="photo-profil">
-                <?php 
-                    if (file_exists($photoFullPath)) {
-                        echo '<img src="' . $photoPath . '" alt="photoProfil" id="imageProfile">';
+            <div class="photo-profil-container">
+                <div class="photo-profil">
+                    <?php 
+                    if (file_exists($photoPath . $extension)) {
+                        echo '<img src="/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension . '" alt="photoProfil" id="imageProfile">';
                     } else {
                         echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                     }
-                ?>
+                    ?>
+                </div>
             </div>
-            <input type="file" id="uploadPhoto" name="photoProfil" accept="image/*" hidden>
             <h1>Mon compte</h1>
         </div>
 
-        <form class="form-compte" method="POST" action="../../controllers/majVendeur.php" enctype="multipart/form-data">
+        <form class="form-compte" method="POST" action="" enctype="multipart/form-data">
             <input type="hidden" name="code_vendeur" value="<?= $code_vendeur ?>">
             <input type="hidden" name="id_adresse" value="<?= $idAdresse ?>">
 
             <!-- Colonne gauche -->
             <article class="col">
-
                 <div class="champ">
                     <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($nom) ?>" readonly>
                     <div class="field-error">
@@ -141,12 +229,10 @@ $photoFullPath = '/var/www/html/images/photoProfilVendeur/' . $photoFilename;
                         <p>L'email n'est pas valide</p>
                     </div>
                 </div>
-
             </article>
 
             <!-- Colonne droite -->
             <article class="col">
-
                 <div class="champ">
                     <input type="text" id="raisonSociale" name="raisonSociale"
                         value="<?= htmlspecialchars($raisonSociale) ?>" readonly>
@@ -204,7 +290,6 @@ $photoFullPath = '/var/www/html/images/photoProfilVendeur/' . $photoFilename;
                     <span class="field-label">Code vendeur :</span>
                     <span class="code-vendeur">VD<?= str_pad($code_vendeur, 3, '0', STR_PAD_LEFT) ?></span>
                 </div>
-
             </article>
 
             <div class="actions">
@@ -214,16 +299,16 @@ $photoFullPath = '/var/www/html/images/photoProfilVendeur/' . $photoFilename;
                 <button type="button" class="modifier-mdp boutonModifierMdp">Modifier le mot de passe</button>
             </div>
         </form>
-
     </main>
 
     <?php include 'partials/footer.php'; ?>
 
     <?php 
-        // On récupère le mot de passe de la BDD
-        $stmt = $pdo->query("SELECT mdp FROM _vendeur WHERE codeVendeur = '$code_vendeur'");
-        $tabMdp = $stmt->fetch(PDO::FETCH_ASSOC);
-        $mdp = $tabMdp['mdp'] ?? '';
+    // Récupération du mot de passe pour le JavaScript
+    $stmt = $pdo->prepare("SELECT mdp FROM _vendeur WHERE codeVendeur = :code_vendeur");
+    $stmt->execute([':code_vendeur' => $code_vendeur]);
+    $tabMdp = $stmt->fetch(PDO::FETCH_ASSOC);
+    $mdp = $tabMdp['mdp'] ?? '';
     ?>
 
     <script src="../../controllers/Chiffrement.js"></script>

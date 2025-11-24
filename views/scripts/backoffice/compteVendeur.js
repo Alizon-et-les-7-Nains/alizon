@@ -1,11 +1,24 @@
-
 let modeEdition = false;
 let modeModificationMdp = false;
 let anciennesValeurs = {};
 
+// Création de l'input pour la photo de profil (comme client)
+let ajoutPhoto = document.createElement("input");
+ajoutPhoto.type = "file";
+ajoutPhoto.id = "photoProfil";
+ajoutPhoto.name = "photoProfil";
+ajoutPhoto.accept = "image/*";
+ajoutPhoto.style.display = "none";
+ajoutPhoto.autocomplete = "off";
+
+let conteneur = document.querySelector(".header-compte");
+let imageProfile = document.getElementById("imageProfile");
+
 function afficherErreur(champId, afficher) {
   const champ = document.getElementById(champId);
+  if (!champ || !champ.parentElement) return;
   const erreurElement = champ.parentElement.querySelector(".field-error");
+  if (!erreurElement) return;
 
   if (afficher) {
     champ.classList.add("error");
@@ -19,6 +32,7 @@ function afficherErreur(champId, afficher) {
 }
 
 function validerChamp(champId, valeur) {
+  valeur = valeur == null ? "" : String(valeur);
   switch (champId) {
     case "nom":
     case "prenom":
@@ -72,17 +86,19 @@ function validerChamp(champId, valeur) {
     case "dateNaissance":
       if (valeur) {
         const dateNaissance = new Date(valeur);
+        if (isNaN(dateNaissance.getTime())) {
+          afficherErreur(champId, true);
+          return false;
+        }
         const aujourdhui = new Date();
-        const age = aujourdhui.getFullYear() - dateNaissance.getFullYear();
+        let age = aujourdhui.getFullYear() - dateNaissance.getFullYear();
         const mois = aujourdhui.getMonth() - dateNaissance.getMonth();
-
         if (
           mois < 0 ||
           (mois === 0 && aujourdhui.getDate() < dateNaissance.getDate())
         ) {
           age--;
         }
-
         if (age < 18) {
           afficherErreur(champId, true);
           return false;
@@ -114,7 +130,8 @@ function validerChamp(champId, valeur) {
 
     case "confirmationMdp":
       if (modeModificationMdp) {
-        const nouveauMdp = document.getElementById("nouveauMdp").value;
+        const nouveauMdpEl = document.getElementById("nouveauMdp");
+        const nouveauMdp = nouveauMdpEl ? nouveauMdpEl.value : "";
         if (valeur !== nouveauMdp) {
           afficherErreur(champId, true);
           return false;
@@ -131,40 +148,56 @@ function validerChamp(champId, valeur) {
 function activerModeEdition() {
   modeEdition = true;
 
-  // Sauvegarder les anciennes valeurs
-  const inputs = document.querySelectorAll(
+  // Sauvegarder les anciennes valeurs (text, email, tel, date)
+  const inputsToSave = document.querySelectorAll(
     'input[type="text"], input[type="email"], input[type="tel"], input[type="date"]'
   );
-  inputs.forEach((input) => {
-    anciennesValeurs[input.id] = input.value;
+  anciennesValeurs = {}; // reset
+  inputsToSave.forEach((input) => {
+    if (input.id) {
+      anciennesValeurs[input.id] = input.value;
+    }
   });
 
-  // Activer tous les champs de saisie
+  // Activer tous les champs de saisie ciblés
   const inputsEditables = document.querySelectorAll(
     'input[type="text"], input[type="email"], input[type="tel"], input[type="date"]'
   );
   inputsEditables.forEach((input) => {
-    if (input.id !== "") {
-      input.removeAttribute("readonly");
-      input.style.backgroundColor = "white";
-      input.style.color = "#212529";
+    if (!input.id) return;
+    input.removeAttribute("readonly");
+    input.style.backgroundColor = "white";
+    input.style.color = "#212529";
 
-      // Ajouter les écouteurs d'événements pour la validation en temps réel
-      input.addEventListener("input", function () {
-        validerChamp(this.id, this.value);
-      });
-
-      input.addEventListener("blur", function () {
-        validerChamp(this.id, this.value);
-      });
-    }
+    // Ajouter écouteurs s'ils ne sont pas déjà attachés
+    const clean = input.cloneNode(true);
+    input.parentNode.replaceChild(clean, input);
+    clean.addEventListener("input", function () {
+      validerChamp(this.id, this.value);
+    });
+    clean.addEventListener("blur", function () {
+      validerChamp(this.id, this.value);
+    });
   });
 
+  // Activer la modification de la photo de profil (comme client)
+  conteneur.appendChild(ajoutPhoto);
+
+  if (imageProfile) {
+    imageProfile.style.cursor = "pointer";
+    imageProfile.onclick = () => ajoutPhoto.click();
+  }
+
   // Masquer le bouton Modifier et afficher Annuler/Sauvegarder
-  document.querySelector(".boutonModifierProfil").style.display = "none";
-  document.querySelector(".boutonAnnuler").style.display = "block";
-  document.querySelector(".boutonSauvegarder").style.display = "block";
-  document.querySelector(".boutonModifierMdp").style.display = "none";
+  const btnModifier = document.querySelector(".boutonModifierProfil");
+  const btnAnnuler = document.querySelector(".boutonAnnuler");
+  const btnSauvegarder = document.querySelector(".boutonSauvegarder");
+  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
+
+  if (btnModifier) btnModifier.style.display = "none";
+  if (btnAnnuler) btnAnnuler.style.display = "block";
+  if (btnSauvegarder) btnSauvegarder.style.display = "block";
+  if (btnModifierMdp) btnModifierMdp.style.display = "none";
 }
 
 function desactiverModeEdition() {
@@ -178,12 +211,11 @@ function desactiverModeEdition() {
     erreur.style.display = "none";
   });
 
-  const inputs = document.querySelectorAll("input");
-  inputs.forEach((input) => {
-    input.classList.remove("error");
-  });
+  // Retirer classes d'erreur des inputs
+  const allInputs = document.querySelectorAll("input");
+  allInputs.forEach((input) => input.classList.remove("error"));
 
-  // Désactiver tous les champs de saisie
+  // Désactiver tous les champs de saisie (incl. password)
   const inputsEditables = document.querySelectorAll(
     'input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="password"]'
   );
@@ -196,59 +228,69 @@ function desactiverModeEdition() {
     if (input.type === "password") {
       input.value = "";
     }
-
-    // Retirer les écouteurs d'événements
+    
     const newInput = input.cloneNode(true);
     input.parentNode.replaceChild(newInput, input);
   });
 
-  // Réafficher les boutons
-  document.querySelector(".boutonModifierProfil").style.display = "block";
-  document.querySelector(".boutonAnnuler").style.display = "none";
-  document.querySelector(".boutonSauvegarder").style.display = "none";
-  document.querySelector(".boutonModifierMdp").style.display = "block";
+  if (document.getElementById("photoProfil")) {
+    document.getElementById("photoProfil").remove();
+  }
 
-  // Remettre le texte original du bouton modifier mot de passe
-  const boutonMdp = document.querySelector(".boutonModifierMdp");
-  boutonMdp.textContent = "Modifier le mot de passe";
-  boutonMdp.classList.remove("annuler-mdp");
+  if (imageProfile) {
+    imageProfile.style.cursor = "default";
+    imageProfile.onclick = null;
+  }
+
+  // Réafficher les boutons
+  const btnModifier = document.querySelector(".boutonModifierProfil");
+  const btnAnnuler = document.querySelector(".boutonAnnuler");
+  const btnSauvegarder = document.querySelector(".boutonSauvegarder");
+  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
+
+  if (btnModifier) btnModifier.style.display = "block";
+  if (btnAnnuler) btnAnnuler.style.display = "none";
+  if (btnSauvegarder) btnSauvegarder.style.display = "none";
+  if (btnModifierMdp) {
+    btnModifierMdp.style.display = "block";
+    btnModifierMdp.textContent = "Modifier le mot de passe";
+    btnModifierMdp.classList.remove("annuler-mdp");
+  }
 }
 
 function activerModificationMdp() {
   modeModificationMdp = true;
 
-  // Activer les champs de mot de passe
   const champsMdp = document.querySelectorAll('input[type="password"]');
   champsMdp.forEach((input) => {
     input.removeAttribute("readonly");
     input.style.backgroundColor = "white";
     input.style.color = "#212529";
 
-    // Ajouter les écouteurs d'événements pour la validation en temps réel
-    input.addEventListener("input", function () {
+    const clean = input.cloneNode(true);
+    input.parentNode.replaceChild(clean, input);
+    clean.addEventListener("input", function () {
       validerChamp(this.id, this.value);
     });
-
-    input.addEventListener("blur", function () {
+    clean.addEventListener("blur", function () {
       validerChamp(this.id, this.value);
     });
   });
 
-  // Changer le texte du bouton
-  document.querySelector(".boutonModifierMdp").textContent =
-    "Annuler modification mot de passe";
-  document.querySelector(".boutonModifierMdp").classList.add("annuler-mdp");
+  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
+  if (btnModifierMdp) {
+    btnModifierMdp.textContent = "Annuler modification mot de passe";
+    btnModifierMdp.classList.add("annuler-mdp");
+  }
 }
 
 function desactiverModificationMdp() {
   modeModificationMdp = false;
 
-  // Cacher les erreurs de mot de passe
   ["ancienMdp", "nouveauMdp", "confirmationMdp"].forEach((champId) => {
     afficherErreur(champId, false);
   });
 
-  // Désactiver et vider les champs de mot de passe
   const champsMdp = document.querySelectorAll('input[type="password"]');
   champsMdp.forEach((input) => {
     input.setAttribute("readonly", "true");
@@ -256,24 +298,22 @@ function desactiverModificationMdp() {
     input.style.color = "#6c757d";
     input.value = "";
 
-    // Retirer les écouteurs d'événements
     const newInput = input.cloneNode(true);
     input.parentNode.replaceChild(newInput, input);
   });
 
-  // Remettre le texte original du bouton
-  document.querySelector(".boutonModifierMdp").textContent =
-    "Modifier le mot de passe";
-  document.querySelector(".boutonModifierMdp").classList.remove("annuler-mdp");
+  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
+  if (btnModifierMdp) {
+    btnModifierMdp.textContent = "Modifier le mot de passe";
+    btnModifierMdp.classList.remove("annuler-mdp");
+  }
 }
 
 function toggleModificationMdp() {
   if (modeModificationMdp) {
     desactiverModificationMdp();
   } else {
-    // Si on est déjà en mode édition générale, activer juste la modification mdp
     if (!modeEdition) {
-      // Sinon, activer le mode édition pour permettre la modification
       activerModeEdition();
     }
     activerModificationMdp();
@@ -285,9 +325,8 @@ function restaurerAnciennesValeurs() {
     'input[type="text"], input[type="email"], input[type="tel"], input[type="date"]'
   );
   inputs.forEach((input) => {
-    if (anciennesValeurs[input.id]) {
+    if (input.id && anciennesValeurs.hasOwnProperty(input.id)) {
       input.value = anciennesValeurs[input.id];
-      // Valider la valeur restaurée
       validerChamp(input.id, input.value);
     }
   });
@@ -296,7 +335,6 @@ function restaurerAnciennesValeurs() {
 function validerFormulaire() {
   let formulaireValide = true;
 
-  // Valider tous les champs
   const champs = [
     "nom",
     "prenom",
@@ -312,18 +350,21 @@ function validerFormulaire() {
     "pseudo",
   ];
 
-  champs.forEach((champId) => {
-    const valeur = document.getElementById(champId).value;
+  for (const champId of champs) {
+    const el = document.getElementById(champId);
+    const valeur = el ? el.value : "";
     if (!validerChamp(champId, valeur)) {
       formulaireValide = false;
     }
-  });
+  }
 
-  // Validation du mot de passe si modification en cours
   if (modeModificationMdp) {
-    const ancienMdp = document.getElementById("ancienMdp").value;
-    const nouveauMdp = document.getElementById("nouveauMdp").value;
-    const confirmationMdp = document.getElementById("confirmationMdp").value;
+    const ancienEl = document.getElementById("ancienMdp");
+    const nouveauEl = document.getElementById("nouveauMdp");
+    const confirmEl = document.getElementById("confirmationMdp");
+    const ancienMdp = ancienEl ? ancienEl.value : "";
+    const nouveauMdp = nouveauEl ? nouveauEl.value : "";
+    const confirmationMdp = confirmEl ? confirmEl.value : "";
 
     if (
       !validerChamp("ancienMdp", ancienMdp) ||
@@ -333,14 +374,21 @@ function validerFormulaire() {
       formulaireValide = false;
     }
 
-    // Vérifier l'ancien mot de passe (déchiffrement côté client pour la validation)
+    // Vérifier l'ancien mot de passe si possible (variables présentes)
     if (formulaireValide) {
       try {
-        const mdpDecrypte = vignere(mdpCrypte, cle, -1);
-        if (ancienMdp !== mdpDecrypte) {
-          afficherErreur("ancienMdp", true);
-          formulaireValide = false;
+        if (
+          typeof vignere === "function" &&
+          typeof mdpCrypte !== "undefined" &&
+          typeof cle !== "undefined"
+        ) {
+          const mdpDecrypte = vignere(mdpCrypte, cle, -1);
+          if (ancienMdp !== mdpDecrypte) {
+            afficherErreur("ancienMdp", true);
+            formulaireValide = false;
+          }
         }
+        // else: skip client-side check if not available
       } catch (error) {
         console.error("Erreur lors du chiffrement/déchiffrement:", error);
         alert("Erreur lors de la validation du mot de passe.");
@@ -353,51 +401,31 @@ function validerFormulaire() {
 }
 
 function validerCriteresMotDePasse(mdp) {
-  // Longueur minimale de 12 caractères
-  if (mdp.length < 12) {
-    return false;
-  }
-
-  // Au moins une minuscule
-  if (!/[a-z]/.test(mdp)) {
-    return false;
-  }
-
-  // Au moins une majuscule
-  if (!/[A-Z]/.test(mdp)) {
-    return false;
-  }
-
-  // Au moins un chiffre
-  if (!/\d/.test(mdp)) {
-    return false;
-  }
-
-  // Au moins un caractère spécial
-  if (!/[^a-zA-Z0-9]/.test(mdp)) {
-    return false;
-  }
-
+  if (!mdp || typeof mdp !== "string") return false;
+  if (mdp.length < 12) return false;
+  if (!/[a-z]/.test(mdp)) return false;
+  if (!/[A-Z]/.test(mdp)) return false;
+  if (!/\d/.test(mdp)) return false;
+  if (!/[^a-zA-Z0-9]/.test(mdp)) return false;
   return true;
 }
 
 function afficherMessageCriteresMdp() {
   const nouveauMdp = document.getElementById("nouveauMdp");
   const reglesMdp = document.querySelector(".mpd-rules");
+  if (!nouveauMdp || !reglesMdp) return;
 
-  if (nouveauMdp && reglesMdp) {
-    nouveauMdp.addEventListener("input", function () {
-      const mdp = this.value;
-
-      // Mettre à jour l'affichage des règles
-      const regles = reglesMdp.querySelectorAll("li");
+  nouveauMdp.addEventListener("input", function () {
+    const mdp = this.value || "";
+    const regles = reglesMdp.querySelectorAll("li");
+    if (regles.length >= 4) {
       regles[0].style.color = mdp.length >= 12 ? "green" : "inherit";
       regles[1].style.color =
         /[a-z]/.test(mdp) && /[A-Z]/.test(mdp) ? "green" : "inherit";
       regles[2].style.color = /\d/.test(mdp) ? "green" : "inherit";
       regles[3].style.color = /[^a-zA-Z0-9]/.test(mdp) ? "green" : "inherit";
-    });
-  }
+    }
+  });
 }
 
 function boutonAnnuler() {
@@ -405,137 +433,7 @@ function boutonAnnuler() {
   desactiverModeEdition();
 }
 
-function uploadPhotoProfil(file) {
-  const formData = new FormData();
-  formData.append("photoProfil", file);
-  formData.append("codeVendeur", codeVendeur);
-
-  console.log("Upload photo en cours...", {
-    codeVendeur: codeVendeur,
-    fileName: file.name,
-    fileSize: file.size,
-    fileType: file.type,
-  });
-
-  fetch("../../controllers/addPhotoVendeur.php", {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Erreur HTTP: " + response.status);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Réponse upload:", data);
-      if (data.success) {
-        console.log("Photo mise à jour avec succès");
-        showNotification("Photo de profil mise à jour avec succès", "success");
-      } else {
-        console.error("Erreur lors du téléchargement:", data.message);
-        showNotification("Erreur: " + data.message, "error");
-      }
-    })
-    .catch((error) => {
-      console.error("Erreur fetch:", error);
-      showNotification("Erreur réseau lors du téléchargement", "error");
-    });
-}
-
-function initialiserGestionPhoto() {
-  const photoProfil = document.querySelector(".photo-profil");
-  const inputFile = document.getElementById("uploadPhoto");
-
-  if (photoProfil && inputFile) {
-    photoProfil.addEventListener("click", function () {
-      if (modeEdition) {
-        inputFile.click();
-      }
-    });
-
-    inputFile.addEventListener("change", function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        // Vérifier le type de fichier
-        if (!file.type.match("image.*")) {
-          alert("Veuillez sélectionner une image.");
-          return;
-        }
-
-        // Vérifier la taille du fichier (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-          alert("L'image est trop volumineuse. Taille maximale : 5MB.");
-          return;
-        }
-
-        // Afficher la preview immédiatement
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const img = photoProfil.querySelector("img");
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-
-        // Uploader la photo
-        uploadPhotoProfil(file);
-      }
-    });
-  }
-}
-
-function showNotification(message, type) {
-  // Créer une notification simple
-  const notification = document.createElement("div");
-  notification.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 20px;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-    z-index: 10000;
-    transition: opacity 0.3s;
-    background-color: ${type === "success" ? "#28a745" : "#dc3545"};
-  `;
-  notification.textContent = message;
-
-  document.body.appendChild(notification);
-
-  // Supprimer après 3 secondes
-  setTimeout(() => {
-    notification.style.opacity = "0";
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.parentNode.removeChild(notification);
-      }
-    }, 300);
-  }, 3000);
-}
-
-function afficherMessagesSession() {
-  // Vérifier s'il y a des messages de session à afficher
-  const urlParams = new URLSearchParams(window.location.search);
-  const success = urlParams.get("success");
-  const error = urlParams.get("error");
-
-  if (success) {
-    showNotification(success, "success");
-    // Nettoyer l'URL
-    const newUrl = window.location.pathname;
-    window.history.replaceState({}, document.title, newUrl);
-  }
-
-  if (error) {
-    showNotification("Erreur: " + error, "error");
-    // Nettoyer l'URL
-    const newUrl = window.location.pathname;
-    window.history.replaceState({}, document.title, newUrl);
-  }
-}
-
-// Événements
+// Événements DOM
 document.addEventListener("DOMContentLoaded", function () {
   // Initialisation - cacher toutes les erreurs au chargement
   const erreurs = document.querySelectorAll(".field-error");
@@ -545,50 +443,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
   desactiverModeEdition();
   afficherMessageCriteresMdp();
-  initialiserGestionPhoto();
-  afficherMessagesSession();
 
-  // Bouton Modifier
-  document
-    .querySelector(".boutonModifierProfil")
-    .addEventListener("click", activerModeEdition);
+  const btnModifier = document.querySelector(".boutonModifierProfil");
+  const btnAnnuler = document.querySelector(".boutonAnnuler");
+  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
+  const form = document.querySelector("form");
 
-  // Bouton Annuler
-  document
-    .querySelector(".boutonAnnuler")
-    .addEventListener("click", boutonAnnuler);
-
-  // Bouton Modifier mot de passe
-  document
-    .querySelector(".boutonModifierMdp")
-    .addEventListener("click", toggleModificationMdp);
-
-  // Validation du formulaire avant soumission
-  document.querySelector("form").addEventListener("submit", function (e) {
-    if (!validerFormulaire()) {
+  if (btnModifier) btnModifier.addEventListener("click", activerModeEdition);
+  if (btnAnnuler) btnAnnuler.addEventListener("click", boutonAnnuler);
+  if (btnModifierMdp)
+    btnModifierMdp.addEventListener("click", function (e) {
       e.preventDefault();
-      return false;
-    }
-
-    // Afficher un indicateur de chargement
-    const boutonSauvegarder = document.querySelector(".boutonSauvegarder");
-    const texteOriginal = boutonSauvegarder.textContent;
-    boutonSauvegarder.textContent = "Sauvegarde...";
-    boutonSauvegarder.disabled = true;
-
-    // Réactiver temporairement les champs pour l'envoi du formulaire
-    const inputs = document.querySelectorAll("input[readonly]");
-    inputs.forEach((input) => {
-      input.removeAttribute("readonly");
+      toggleModificationMdp();
     });
 
-    // La désactivation du mode édition se fera après la soumission réussie
-    // car le formulaire va recharger la page
-  });
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      if (!validerFormulaire()) {
+        e.preventDefault();
+        alert(
+          "Veuillez corriger les erreurs dans le formulaire avant de sauvegarder."
+        );
+        return false;
+      }
+
+      // Afficher un indicateur de chargement
+      const boutonSauvegarder = document.querySelector(".boutonSauvegarder");
+      if (boutonSauvegarder) {
+        boutonSauvegarder.dataset._originalText = boutonSauvegarder.textContent;
+        boutonSauvegarder.textContent = "Sauvegarde...";
+        boutonSauvegarder.disabled = true;
+      }
+
+      // Réactiver temporairement les champs pour l'envoi du formulaire
+      const inputsReadonly = document.querySelectorAll("input[readonly]");
+      inputsReadonly.forEach((input) => input.removeAttribute("readonly"));
+
+      // Le formulaire peut maintenant être soumis normalement
+      console.log("Formulaire validé, soumission en cours...");
+    });
+  }
 
   // Empêcher la soumission du formulaire avec Enter sauf en mode édition
   document.querySelectorAll("input").forEach((input) => {
-    input.addEventListener("keypress", function (e) {
+    input.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && !modeEdition) {
         e.preventDefault();
       }
@@ -596,7 +494,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// Export pour les tests
+// Export pour les tests (Node)
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     activerModeEdition,
@@ -607,5 +505,7 @@ if (typeof module !== "undefined" && module.exports) {
     validerCriteresMotDePasse,
     validerChamp,
     afficherErreur,
+    restaurerAnciennesValeurs,
+    toggleModificationMdp,
   };
 }

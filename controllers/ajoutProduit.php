@@ -42,11 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception("Impossible de déplacer l'image.");
             }
 
-            // Insertion dans _image car sinon l'insertion de l'image dans _imageDeProduit ne pourra pas etre faite
-            $sql = "INSERT INTO _image (URL) VALUES (:URL)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([':URL' => $nouveauNomImage]);
-
             // Insertion dans _imageDeProduit
             $sql = "INSERT INTO _imageDeProduit (idProduit, URL) VALUES (:idProduit, :URL)";
             $stmt = $pdo->prepare($sql);
