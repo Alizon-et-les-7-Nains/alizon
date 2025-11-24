@@ -4656,21 +4656,17 @@ dialog.reassort form input {
 .page-compte .form-compte {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* deux colonnes égales pour les inputs */
-  grid-template-rows: auto 1fr; /* header en première ligne, colonnes en deuxième */
+  display: flex;
+  flex-direction: column;
   gap: 40px;
-  align-items: start;
   width: 100%;
   box-sizing: border-box;
   /* Header qui prend toute la largeur au-dessus des colonnes */
 }
 .page-compte .form-compte .header-compte {
-  grid-column: 1/-1; /* span across both columns */
   display: flex;
   align-items: center;
   gap: 28px;
-  margin-bottom: 0; /* géré par le grid gap */
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -4705,13 +4701,22 @@ dialog.reassort form input {
   margin: 0;
 }
 .page-compte .form-compte {
+  /* CONTENEUR DES COLONNES */
+}
+.page-compte .form-compte .colonnes-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.page-compte .form-compte {
   /* Colonnes pour les champs */
 }
 .page-compte .form-compte .col {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  /* chaque .col occupe une colonne du grid (auto par défaut) */
+  width: 100%;
 }
 .page-compte .form-compte .col .champ {
   display: flex;
@@ -4808,7 +4813,6 @@ dialog.reassort form input {
   /* Actions sur la ligne du bas */
 }
 .page-compte .form-compte .actions {
-  grid-column: 1/-1; /* occupe toute la largeur */
   display: flex;
   gap: 16px;
   justify-content: flex-end;
@@ -4875,6 +4879,9 @@ dialog.reassort form input {
   .page-compte .form-compte .header-compte h1 {
     font-size: clamp(20px, 3vw, 36px);
   }
+  .page-compte .form-compte .colonnes-container {
+    gap: 28px;
+  }
 }
 /* Tablette portrait / mobile large : basculer en une colonne */
 @media (max-width: 900px) {
@@ -4882,8 +4889,6 @@ dialog.reassort form input {
     padding: clamp(16px, 4vw, 40px);
   }
   .page-compte .form-compte {
-    grid-template-columns: 1fr; /* une seule colonne */
-    grid-template-rows: auto;
     gap: 20px;
   }
   .page-compte .form-compte .header-compte {
@@ -4891,8 +4896,9 @@ dialog.reassort form input {
     text-align: center;
     align-items: center;
   }
-  .page-compte .form-compte .col {
-    width: 100%;
+  .page-compte .form-compte .colonnes-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
   .page-compte .form-compte .champ-double {
     flex-direction: column;
@@ -4919,6 +4925,9 @@ dialog.reassort form input {
   }
   .page-compte .form-compte .header-compte h1 {
     font-size: 20px;
+  }
+  .page-compte .form-compte .colonnes-container {
+    gap: 16px;
   }
   .page-compte .form-compte .actions {
     gap: 10px;
@@ -4954,6 +4963,9 @@ dialog.reassort form input {
   }
   .page-compte .form-compte .header-compte h1 {
     font-size: 18px;
+  }
+  .page-compte .form-compte .colonnes-container {
+    gap: 12px;
   }
 }
 .pageProduit main {
