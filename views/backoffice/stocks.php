@@ -264,7 +264,7 @@
             <input type="number" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
             <label for="Seuil d'alerte">Doit être un entier</label>
             <input type="date" placeholder="Date du réassort" value="2025-11-05" name="Date du réassort" id="dateReassort">
-            <input type="number" name="Reassortir" id="reassort">
+            <input type="number" placeholder="Réassortir" name="Reassortir" id="reassort">
             <label for="Reassortir">Doit être un entier</label>
             <ul>
                 <li><input type="button" value="Annuler" id="annuler"></li>

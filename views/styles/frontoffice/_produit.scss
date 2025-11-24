@@ -2,14 +2,6 @@
 @use "../fonts" as *;
 
 .pageProduit{
-    body{
-        margin: 0;
-        padding: 0;
-        transition: all 0.3s ease;
-        font-family: $font-lora;
-        width: 100%;
-    }
-
     main{
         display: flex;
         flex-direction: column;
@@ -264,7 +256,7 @@
     }
 
     .boutonCommentaire {
-        display: inline-block; // ← Important pour les liens
+        display: inline-block;
         margin: 2em 0;
         border: 2px solid $color-blue;
         background-color: white;
@@ -272,10 +264,11 @@
         padding: 0.5em 1em;
         cursor: pointer;
         font-size: 16px;
-        text-decoration: none; // ← Enlever le soulignement du lien
-        color: $color-blue; // ← Couleur du texte
-        transition: all 0.3s ease; // ← Animation douce
-
+        text-decoration: none;
+        color: $color-blue;
+        transition: all 0.3s ease;
+    }
+    
     .conteneurTexte{
         width: 100%;
         max-height: 600px;

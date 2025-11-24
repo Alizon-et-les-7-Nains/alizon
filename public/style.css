@@ -3569,18 +3569,11 @@ button#haut.visible:hover {
   border-radius: 32px;
   cursor: pointer;
 }
-.modifierProduit .form-actions .btn-previsualiser {
-  background-color: #e4d9ff;
-  color: #273469;
-  width: 200px;
-}
-.modifierProduit .form-actions .btn-previsualiser:hover {
-  background-color: rgb(209.8815789474, 191.5, 255);
-}
 .modifierProduit .form-actions .btn-supprimer {
   background-color: #f14e4e;
   color: #fffefa;
   width: 200px;
+  margin-top: 13px;
 }
 .modifierProduit .form-actions .btn-supprimer:hover {
   background-color: rgb(209.8815789474, 191.5, 255);
@@ -3887,6 +3880,7 @@ button#haut.visible:hover {
 }
 .CreerCompteVendeur .container .form-vendeur input.form-control::placeholder {
   color: #6e6e6e;
+  font-family: "Lora", "Serif";
 }
 .CreerCompteVendeur .container .form-vendeur input.form-control.input-error {
   border-color: #f14e4e !important;
@@ -4556,9 +4550,6 @@ dialog.reassort {
   align-items: center;
   gap: 1em;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 dialog.reassort::backdrop {
   background: rgba(0, 0, 0, 0.25);
@@ -5084,13 +5075,6 @@ dialog.reassort form input {
     min-width: 90px;
   }
 }
-.pageProduit body {
-  margin: 0;
-  padding: 0;
-  transition: all 0.3s ease;
-  font-family: "lora", serif;
-  width: 100%;
-}
 .pageProduit main {
   display: flex;
   flex-direction: column;
@@ -5302,6 +5286,19 @@ dialog.reassort form input {
 .pageProduit .boutonBleu {
   background-color: #273469;
   color: #fffefa;
+}
+.pageProduit .boutonCommentaire {
+  display: inline-block;
+  margin: 2em 0;
+  border: 2px solid #273469;
+  background-color: white;
+  border-radius: 32px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  color: #273469;
+  transition: all 0.3s ease;
 }
 .pageProduit .conteneurTexte {
   width: 100%;
@@ -5854,11 +5851,10 @@ dialog.reassort form input {
   gap: 8px;
 }
 .connexionVendeur .information_connexion .form-vendeur .liens-utiles a {
-  color: #273469;
-  font-size: 0.9rem;
   text-decoration: underline;
-  font-family: "lora", serif;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: normal;
+  font-style: normal;
   cursor: pointer;
 }
 .connexionVendeur .information_connexion .form-vendeur .actions {

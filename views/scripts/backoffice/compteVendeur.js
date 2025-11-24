@@ -2,6 +2,18 @@ let modeEdition = false;
 let modeModificationMdp = false;
 let anciennesValeurs = {};
 
+// Création de l'input pour la photo de profil (comme client)
+let ajoutPhoto = document.createElement("input");
+ajoutPhoto.type = "file";
+ajoutPhoto.id = "photoProfil";
+ajoutPhoto.name = "photoProfil";
+ajoutPhoto.accept = "image/*";
+ajoutPhoto.style.display = "none";
+ajoutPhoto.autocomplete = "off";
+
+let conteneur = document.querySelector(".header-compte");
+let imageProfile = document.getElementById("imageProfile");
+
 function afficherErreur(champId, afficher) {
   const champ = document.getElementById(champId);
   if (!champ || !champ.parentElement) return;
@@ -168,16 +180,12 @@ function activerModeEdition() {
     });
   });
 
-  // Activer la modification de la photo de profil
-  const imageProfile = document.getElementById("imageProfile");
-  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
+  // Activer la modification de la photo de profil (comme client)
+  conteneur.appendChild(ajoutPhoto);
 
   if (imageProfile) {
     imageProfile.style.cursor = "pointer";
-  }
-
-  if (boutonChangerPhoto) {
-    boutonChangerPhoto.style.display = "block";
+    imageProfile.onclick = () => ajoutPhoto.click();
   }
 
   // Masquer le bouton Modifier et afficher Annuler/Sauvegarder
@@ -226,21 +234,14 @@ function desactiverModeEdition() {
     input.parentNode.replaceChild(newInput, input);
   });
 
-  // Désactiver la modification de la photo de profil
-  const imageProfile = document.getElementById("imageProfile");
-  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
+  // Désactiver la modification de la photo de profil (comme client)
+  if (document.getElementById("photoProfil")) {
+    document.getElementById("photoProfil").remove();
+  }
 
   if (imageProfile) {
     imageProfile.style.cursor = "default";
-    // Réinitialiser l'aperçu si annulation
-    const uploadPhoto = document.getElementById("photoProfil");
-    if (uploadPhoto) {
-      uploadPhoto.value = ""; // Réinitialiser le input file
-    }
-  }
-
-  if (boutonChangerPhoto) {
-    boutonChangerPhoto.style.display = "none";
+    imageProfile.onclick = null;
   }
 
   // Réafficher les boutons
@@ -434,80 +435,6 @@ function boutonAnnuler() {
   desactiverModeEdition();
 }
 
-// Fonction pour gérer le changement de photo de profil
-function initialiserPhotoProfil() {
-  const imageProfile = document.getElementById("imageProfile");
-  const uploadPhoto = document.getElementById("photoProfil");
-  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
-
-  if (!imageProfile || !uploadPhoto) return;
-
-  // Afficher le bouton "Changer la photo" au survol
-  imageProfile.addEventListener("mouseenter", function () {
-    if (modeEdition && boutonChangerPhoto) {
-      boutonChangerPhoto.style.display = "block";
-    }
-  });
-
-  imageProfile.addEventListener("mouseleave", function () {
-    if (boutonChangerPhoto) {
-      boutonChangerPhoto.style.display = "none";
-    }
-  });
-
-  // Clic sur l'image pour changer la photo
-  imageProfile.addEventListener("click", function () {
-    if (modeEdition) {
-      uploadPhoto.click();
-    }
-  });
-
-  // Clic sur le bouton "Changer la photo"
-  if (boutonChangerPhoto) {
-    boutonChangerPhoto.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (modeEdition) {
-        uploadPhoto.click();
-      }
-    });
-  }
-
-  // Gestion du changement de fichier
-  uploadPhoto.addEventListener("change", function (e) {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-
-      // Validation du type de fichier
-      const typesAutorises = [
-        "image/png",
-        "image/jpg",
-        "image/jpeg",
-        "image/webp",
-      ];
-      if (!typesAutorises.includes(file.type)) {
-        alert(
-          "Format de fichier non supporté. Utilisez PNG, JPG, JPEG ou WebP."
-        );
-        return;
-      }
-
-      // Validation de la taille (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("La taille du fichier ne doit pas dépasser 5MB.");
-        return;
-      }
-
-      // Aperçu de l'image
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        imageProfile.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-}
-
 // Événements DOM
 document.addEventListener("DOMContentLoaded", function () {
   // Initialisation - cacher toutes les erreurs au chargement
@@ -518,7 +445,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   desactiverModeEdition();
   afficherMessageCriteresMdp();
-  initialiserPhotoProfil(); // Initialiser la gestion de la photo
 
   const btnModifier = document.querySelector(".boutonModifierProfil");
   const btnAnnuler = document.querySelector(".boutonAnnuler");

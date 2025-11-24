@@ -230,20 +230,11 @@
             border-radius: 32px;
             cursor: pointer;
         }
-
-        .btn-previsualiser{
-            background-color: $color-pastel-purple;
-            color: $color-blue;
-            width: 200px;
-
-            &:hover {
-                background-color: darken($color-pastel-purple, 5%);
-            }
-        }
         .btn-supprimer{
             background-color: $color-red;
             color: $color-white;
             width: 200px;
+            margin-top: 13px;
 
             &:hover {
                 background-color: darken($color-pastel-purple, 5%);
