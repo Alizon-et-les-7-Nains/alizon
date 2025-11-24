@@ -14,6 +14,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $extensionsPossibles = ['jpg'];
         $extension = '';
 
+        try {
+            $dateSql = DateTime::createFromFormat('d/m/Y', $dateLimite)->format('Y-m-d');
+            $stmt = $pdo->prepare("INSERT INTO _promotion(idProduit, debutPromotion, finPromotion) VALUES (:idProd, CURDATE(), :dateLimite)");
+            $stmt->execute([':idProd' => $idProd,':dateLimite' => $dateSql]);
+
+        } catch (Exception $e) {
+            header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd.'.php');
+            exit;
+        }
+
         foreach ($extensionsPossibles as $ext) {
             if (file_exists($photoPath . '.' . $ext)) {
                 $extension = '.' . $ext;
@@ -28,22 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        try {
-            $dateSql = DateTime::createFromFormat('d/m/Y', $dateLimite)->format('Y-m-d');
-        } catch (Exception $e) {
-            header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd.'.php');
-            exit;
-        }
-
         if (isset($_FILES['baniere']) && $_FILES['baniere']['tmp_name'] != '') {
             $extension = pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
             $extension = '.'.$extension;
             move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension);
         }
-        
-        $stmt = $pdo->prepare("INSERT INTO _promotion(idProduit, debutPromotion, finPromotion) VALUES (:idProd, CURDATE(), :dateLimite)");
-
-        $stmt->execute([':idProd' => $idProd,':dateLimite' => $dateSql]);
+    
 
     }
 
