@@ -1,5 +1,3 @@
-// Cleaned and bug-fixed version of compteVendeur.js
-
 let modeEdition = false;
 let modeModificationMdp = false;
 let anciennesValeurs = {};
@@ -170,8 +168,14 @@ function activerModeEdition() {
     });
   });
 
-  // Afficher le bouton pour changer la photo
+  // Activer la modification de la photo de profil
+  const imageProfile = document.getElementById("imageProfile");
   const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
+
+  if (imageProfile) {
+    imageProfile.style.cursor = "pointer";
+  }
+
   if (boutonChangerPhoto) {
     boutonChangerPhoto.style.display = "block";
   }
@@ -222,8 +226,19 @@ function desactiverModeEdition() {
     input.parentNode.replaceChild(newInput, input);
   });
 
-  // Cacher le bouton pour changer la photo
+  // Désactiver la modification de la photo de profil
+  const imageProfile = document.getElementById("imageProfile");
   const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
+
+  if (imageProfile) {
+    imageProfile.style.cursor = "default";
+    // Réinitialiser l'aperçu si annulation
+    const uploadPhoto = document.getElementById("photoProfil");
+    if (uploadPhoto) {
+      uploadPhoto.value = ""; // Réinitialiser le input file
+    }
+  }
+
   if (boutonChangerPhoto) {
     boutonChangerPhoto.style.display = "none";
   }
@@ -414,37 +429,76 @@ function afficherMessageCriteresMdp() {
   });
 }
 
-function initialiserUploadPhoto() {
-  const uploadInput = document.getElementById("uploadPhoto");
-  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
+function boutonAnnuler() {
+  restaurerAnciennesValeurs();
+  desactiverModeEdition();
+}
+
+// Fonction pour gérer le changement de photo de profil
+function initialiserPhotoProfil() {
   const imageProfile = document.getElementById("imageProfile");
+  const uploadPhoto = document.getElementById("photoProfil");
+  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
 
-  if (!uploadInput || !boutonChangerPhoto || !imageProfile) return;
+  if (!imageProfile || !uploadPhoto) return;
 
-  // Clic sur le bouton déclenche l'input file
-  boutonChangerPhoto.addEventListener("click", function () {
-    uploadInput.click();
+  // Afficher le bouton "Changer la photo" au survol
+  imageProfile.addEventListener("mouseenter", function () {
+    if (modeEdition && boutonChangerPhoto) {
+      boutonChangerPhoto.style.display = "block";
+    }
   });
 
-  // Prévisualisation de l'image sélectionnée
-  uploadInput.addEventListener("change", function (e) {
-    const file = e.target.files[0];
-    if (file) {
-      // Vérifier le type de fichier
-      if (!file.type.match("image.*")) {
-        alert("Veuillez sélectionner une image valide (PNG, JPG, JPEG, WebP)");
-        uploadInput.value = "";
+  imageProfile.addEventListener("mouseleave", function () {
+    if (boutonChangerPhoto) {
+      boutonChangerPhoto.style.display = "none";
+    }
+  });
+
+  // Clic sur l'image pour changer la photo
+  imageProfile.addEventListener("click", function () {
+    if (modeEdition) {
+      uploadPhoto.click();
+    }
+  });
+
+  // Clic sur le bouton "Changer la photo"
+  if (boutonChangerPhoto) {
+    boutonChangerPhoto.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (modeEdition) {
+        uploadPhoto.click();
+      }
+    });
+  }
+
+  // Gestion du changement de fichier
+  uploadPhoto.addEventListener("change", function (e) {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+
+      // Validation du type de fichier
+      const typesAutorises = [
+        "image/png",
+        "image/jpg",
+        "image/jpeg",
+        "image/webp",
+      ];
+      if (!typesAutorises.includes(file.type)) {
+        alert(
+          "Format de fichier non supporté. Utilisez PNG, JPG, JPEG ou WebP."
+        );
         return;
       }
 
-      // Vérifier la taille (max 5MB)
+      // Validation de la taille (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert("L'image ne doit pas dépasser 5MB");
-        uploadInput.value = "";
+        alert("La taille du fichier ne doit pas dépasser 5MB.");
         return;
       }
 
-      // Prévisualisation
+      // Aperçu de l'image
       const reader = new FileReader();
       reader.onload = function (e) {
         imageProfile.src = e.target.result;
@@ -452,11 +506,6 @@ function initialiserUploadPhoto() {
       reader.readAsDataURL(file);
     }
   });
-}
-
-function boutonAnnuler() {
-  restaurerAnciennesValeurs();
-  desactiverModeEdition();
 }
 
 // Événements DOM
@@ -469,7 +518,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   desactiverModeEdition();
   afficherMessageCriteresMdp();
-  initialiserUploadPhoto();
+  initialiserPhotoProfil(); // Initialiser la gestion de la photo
 
   const btnModifier = document.querySelector(".boutonModifierProfil");
   const btnAnnuler = document.querySelector(".boutonAnnuler");
@@ -488,6 +537,9 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", function (e) {
       if (!validerFormulaire()) {
         e.preventDefault();
+        alert(
+          "Veuillez corriger les erreurs dans le formulaire avant de sauvegarder."
+        );
         return false;
       }
 
@@ -503,7 +555,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const inputsReadonly = document.querySelectorAll("input[readonly]");
       inputsReadonly.forEach((input) => input.removeAttribute("readonly"));
 
-      // Let the form submit normally (page reload)
+      // Le formulaire peut maintenant être soumis normalement
+      console.log("Formulaire validé, soumission en cours...");
     });
   }
 

@@ -15,6 +15,21 @@ Array.from(document.getElementsByClassName('aside-btn')).forEach(asideButton => 
         }
     });
 });
+const modalSupprProduit = document.querySelector("main.modifierProduit dialog");
+document.querySelector("main.modifierProduit .btn-supprimer")?.addEventListener("click", () => {
+    modalSupprProduit?.showModal();
+});
+document.querySelector("main.modifierProduit dialog button")?.addEventListener("click", () => {
+    modalSupprProduit?.close();
+});
+document.querySelector("main.modifierProduit dialog nav button:first-child")?.addEventListener("click", () => {
+    modalSupprProduit?.close();
+});
+modalSupprProduit?.addEventListener("click", (e) => {
+    if (e.target === modalSupprProduit) {
+        modalSupprProduit.close();
+    }
+});
 const boutonHaut = document.getElementById('haut');
 boutonHaut?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -78,18 +93,18 @@ btnSettings.forEach(btn => {
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
         modalReassort.showModal();
+        modalReassort.style.display = 'flex';
     });
 });
 modalReassort?.addEventListener("click", (e) => {
     if (e.target === modalReassort) {
         modalReassort.close();
+        modalReassort.style.display = 'none';
     }
 });
 document.querySelector('input#annuler')?.addEventListener('click', () => {
     modalReassort.close();
-});
-document.addEventListener('DOMContentLoaded', () => {
-    modalReassort?.close();
+    modalReassort.style.display = 'none';
 });
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";
