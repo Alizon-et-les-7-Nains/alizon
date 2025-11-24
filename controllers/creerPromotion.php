@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $photoPath = '/var/www/html/images/baniere/'.$idProd;
 
-        $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+        $extensionsPossibles = ['jpg'];
         $extension = '';
 
         foreach ($extensionsPossibles as $ext) {
@@ -40,7 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $extension = '.'.$extension;
             move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension);
         }
-            
+        
+        $stmt = $pdo->prepare("INSERT INTO _promotion(idProduit, debutPromotion, finPromotion) VALUES (:idProd, CURDATE(), :dateLimite)");
+
+        $stmt->execute([':idProd' => $idProd,':dateLimite' => $dateSql]);
+
     }
 
     header('Location: ../views/backoffice/produits.php');

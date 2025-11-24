@@ -106,10 +106,16 @@ require_once "../../controllers/prix.php";
             <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
         <?php } else { 
                      
-            $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
-            $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
-            $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
-            $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+            $cheminSysteme = "/docker/data/web/html/images/baniere/" . $choixAleatoirePromo . ".jpg";
+
+            if (file_exists($cheminSysteme)) {
+                $image = "../../public/images/baniere/" . $choixAleatoirePromo . ".jpg";
+            } else {
+                $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+                $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
+                $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+                $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+            }
 
             $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :idProduit");
             $stmt->execute([':idProduit' => $choixAleatoirePromo]);
