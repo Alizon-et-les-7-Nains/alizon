@@ -101,14 +101,14 @@
                         style: normal;
                     }    
                     cursor: pointer;
-                }
+                    
+                    :visited {
+                        color: $color-blue !important;
+                    }
 
-                a:visited {
-                    color: $color-blue;
-                }
-
-                a:hover {
-                    color: darken($color: $color-blue, $amount: 10%);
+                    :hover {
+                        color: darken($color: $color-blue, $amount: 10%);
+                    }
                 }
             }
 

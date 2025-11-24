@@ -160,17 +160,19 @@
                 }
             }
 
-            .connexion_lien a {
-                color: $color-blue;
-                text-decoration: underline;
-            }
+            .connexion_lien {
+                a {
+                    color: $color-blue;
+                    text-decoration: underline;
 
-            .connexion_lien a:visited {
-                color: $color-blue;
-            }
+                    :visited {
+                        color: $color-blue !important;
+                    }
 
-            .connexion_lien a:hover {
-                color: darken($color-blue, 10%);
+                    :hover {
+                        color: darken($color-blue, 10%);
+                    }
+                }
             }
 
             .inscriptions_autres{
