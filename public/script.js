@@ -93,18 +93,18 @@ btnSettings.forEach(btn => {
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
         modalReassort.showModal();
+        modalReassort.style.display = 'flex';
     });
 });
 modalReassort?.addEventListener("click", (e) => {
     if (e.target === modalReassort) {
         modalReassort.close();
+        modalReassort.style.display = 'none';
     }
 });
 document.querySelector('input#annuler')?.addEventListener('click', () => {
     modalReassort.close();
-});
-document.addEventListener('DOMContentLoaded', () => {
-    modalReassort?.close();
+    modalReassort.style.display = 'none';
 });
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";

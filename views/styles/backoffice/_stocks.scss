@@ -248,7 +248,7 @@ dialog.reassort {
     }
     color: $color-blue;
     font-family: 'open-sans';
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     gap: 1em;
@@ -307,7 +307,7 @@ dialog.reassort {
                 }
             }
         }
-
+        
         label {
             color: $color-red;
             margin-top: -1em;
