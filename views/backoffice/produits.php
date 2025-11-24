@@ -1,7 +1,9 @@
 <?php 
 
     if (isset($_GET['error']) && $_GET['error'] = 1) {
-        echo "<script>console.log('Erreur lors de l ajout de la promotion dans la BDD');</script>";
+        echo "<script>console.log('Erreur ajout promotion BDD');</script>";
+    } else if (isset($_GET['error']) && $_GET['error'] = 2) {
+        echo "<script>console.log('Erreur ajout de l image');</script>";
     }
 
     require_once '../../controllers/pdo.php';
