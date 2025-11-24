@@ -158,6 +158,60 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
 
 }
 
+function popUpErreur(id, code) {
+    console.log("Erreur ID produit:", id, "Code erreur:", code);
+
+    const messages = {
+        1: "Une erreur est survenue lors du traitement de la date.",
+        2: "Le format de l'image n'est pas valide (.jpg uniquement).",
+        3: "Le fichier est trop volumineux.",
+        404: "Le produit demandé est introuvable.",
+        'default': "Une erreur inattendue s'est produite. Veuillez réessayer."
+    };
+
+    const messageErreur = messages[code] || messages['default'];
+
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpErreur";
+    
+    overlay.innerHTML = `
+        <main class="popUpErreur">
+            <div class="croixFermerLaPage">
+                <div></div>
+                <div></div>
+            </div>
+            
+            <!-- Optionnel : Icône d'alerte visuelle -->
+            <div class="icon-warning">!</div> 
+
+            <h1>Oups !</h1>
+            
+            <p>${messageErreur}</p>
+
+            <!-- Bouton OK qui ferme la pop-up -->
+            <button class="btnFermer">Compris</button>
+        </main>`;
+
+    document.body.appendChild(overlay);
+
+    const fermerPopUp = () => {
+        overlay.remove();
+        window.history.replaceState({}, document.title, window.location.pathname);
+    };
+
+    const croixFermer = overlay.querySelector(".croixFermerLaPage");
+    const btnFermer = overlay.querySelector(".btnFermer");
+
+    croixFermer.addEventListener("click", fermerPopUp);
+    btnFermer.addEventListener("click", fermerPopUp);
+    
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUp();
+        }
+    });
+}
+
 function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
 
     console.log("ID reçu :", id);

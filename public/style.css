@@ -5807,4 +5807,86 @@ dialog.reassort form input {
   line-height: 1.4;
 }
 
+.overlayPopUpErreur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popUpErreur {
+  background-color: #fffefa;
+  border-radius: 16px;
+  position: relative;
+  width: 400px;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.popUpErreur .croixFermerLaPage {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+.popUpErreur .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.popUpErreur .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.popUpErreur .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.popUpErreur h1 {
+  color: #273469;
+  font-family: "lora", serif;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+.popUpErreur .icon-warning {
+  font-size: 40px;
+  color: #273469;
+  margin-bottom: 15px;
+}
+.popUpErreur p {
+  font-family: "lora", sans-serif;
+  color: #6e6e6e;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+.popUpErreur button {
+  border: 0;
+  background-color: #273469;
+  padding: 12px 40px;
+  color: white;
+  border-radius: 32px;
+  font-family: "lora", serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.popUpErreur button:hover {
+  opacity: 0.9;
+}
+
 /*# sourceMappingURL=style.css.map */

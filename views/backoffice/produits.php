@@ -1,9 +1,10 @@
 <?php 
 
-    if (isset($_GET['error']) && $_GET['error'] = 1) {
-        echo "<script>console.log('Erreur ajout promotion BDD');</script>";
-    } else if (isset($_GET['error']) && $_GET['error'] = 2) {
-        echo "<script>console.log('Erreur ajout de l image');</script>";
+    if(isset($_GET['error']) && isset($_GET['id'])) {
+        $idProduit = $_GET['id'];
+        $codeErreur = $_GET['error'];
+
+        echo "<script>popUpErreur($idProduit, $codeErreur);</script>";
     }
 
     require_once '../../controllers/pdo.php';
