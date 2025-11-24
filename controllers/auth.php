@@ -12,7 +12,7 @@ try {
     $isValidSTMT->execute([':id' => $_SESSION['id'], ':pass' => $_SESSION['pass']]);
     $isValid = $isValidSTMT->fetchColumn();
 
-    if (!$_SESSION['id_session'] || !$isValid) {
+    if (!$_SESSION['session_id'] || !$isValid) {
         header('Location: ../backoffice/connexion.php?error=3');
         die();
     }
