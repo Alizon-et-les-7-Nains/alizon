@@ -5,7 +5,7 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
 
-    if(isset($_POST['date_limite']) && isset($_FILES['baniere']) && isset($_POST['id'])) {
+    if(isset($_POST['date_limite']) && isset($_POST['id'])) {
         $idProd = intval($_POST['id']); 
         $dateLimite = $_POST['date_limite'];
         $dateSql = DateTime::createFromFormat('d/m/Y', $dateLimite)->format('Y-m-d');

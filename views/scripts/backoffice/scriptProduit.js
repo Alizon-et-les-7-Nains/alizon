@@ -69,6 +69,7 @@ function verifDate(val){
         clearError(val);
     }
 }
+
 function popUpRemise(){
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
@@ -140,13 +141,13 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                 <div class="titreEtProduit">
                     <h1> Ajouter une promotion pour ce produit </h1>
                     <section>
-                        <article>
-                            <img class="produit" src="${imgURL}" alt="">
+                        <article style="padding-right: 20px; padding-top: 20px; padding-left: 20px; padding-bottom: 20px;">
+                            <img class="produit" src="${imgURL}" alt="Image du produit">
                             <div class="nomEtEvaluation">
                                 <p>${nom}</p>
                                 <div class="evaluation">
                                     <div class="etoiles">
-                                        <img src="/public/images/etoile.svg" alt="">
+                                        <img src="/public/images/etoile.svg" alt="Image notation étoile">
                                         <p>${note}</p>
                                     </div>
                                     <p>${nbEval} évaluation</p>
@@ -162,7 +163,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
             <div class="ligne"></div>
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
-                        <input type="text" id="inputDate" name="date_limite" placeholder="Date limite">
+                        <input type="text" id="dateLimite" name="date_limite" placeholder="Date limite : Jour/Mois/Année">
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">
                             <input type="file" id="baniere" name="baniere" accept="image/*">
@@ -172,10 +173,26 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                         <p><strong>Format accepté </strong>: 21:4 (1440x275 pixels minimum)</p>
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
-                            <p>Promotion : 3€</p>
-                            <p>Baniere : 0€</p>
-                            <p>Durée : 0 jours</p>
-                            <p><strong>Total : 3€</strong></p>
+                            <div class="prixRes">
+                                <p>Promotion : </p>
+                                <p><strong class="dataPromo">0</strong></p>
+                                <p><strong>€</strong></p>
+                            </div>
+                            <div class="prixRes">
+                                <p>Baniere : </p>
+                                <p><strong class="dataBaniere">0</strong></p>
+                                <p><strong>€</strong></p>
+                            </div>
+                            <div class="prixRes">
+                                <p>Durée : </p>
+                                <p><strong class="dataDuree">0</strong></p>
+                                <p><strong>&nbsp jours</strong></p>
+                            </div>
+                            <div class="prixRes">
+                                <p>Total : </p>
+                                <p><strong class="dataTotal">0</strong></p>
+                                <p><strong>€</strong></p>
+                            </div>
                         </div>
                         <div class="infoCalcul">
                             <img src="../../public/images/iconeInfo.svg" alt="">
@@ -200,7 +217,40 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
 
     document.querySelector('.ajouterBaniere').addEventListener('click', cliqueBaniere);
 
+    const dateLimite = overlay.querySelector("#dateLimite");
+    dateLimite.addEventListener("input", () => verifDate(dateLimite));
 
     const infoCalcBtn = overlay.querySelector('.infoCalcul');
     infoCalcBtn.addEventListener('click', popUpInfoCalcul);
+
+    // Section calcul de prix 
+    const txtPromo = document.querySelector('.dataPromo');
+    const txtBaniere = document.querySelector('.dataBaniere');
+    const txtDuree = document.querySelector('.dataDuree');
+    const txtTotal = document.querySelector('.dataTotal');
+
+    function parseFrDate(date) {
+        const [d, m, y] = date.split("/").map(Number);
+        return new Date(y, m - 1, d);
+    }
+
+    function diffDays(d1, d2) {
+        return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+    }
+
+    dateLimite.addEventListener('change', () => {
+        const dateLimiteValue = dateLimite.value;
+        const currentDate = new Date();
+
+        const d2 = parseFrDate(dateLimiteValue);
+        const nbJourDiff = diffDays(currentDate, d2);
+
+        const nbJours = Math.max(0, nbJourDiff);
+        const coutParJour = prix * 0.1;
+        const totalPromo = (coutParJour * nbJours).toFixed(2);
+
+        txtPromo.textContent = totalPromo;
+        txtDuree.textContent = nbJours;
+        txtTotal.textContent = totalPromo; // Ajouter plus tard prix de la bannière
+    });
 }
