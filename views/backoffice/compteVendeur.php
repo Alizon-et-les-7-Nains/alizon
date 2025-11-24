@@ -32,37 +32,28 @@ $pays          = $vendeur['pays'] ?? '';
 $idAdresse     = $vendeur['idAdresse'] ?? '';
 
 // Gestion de la photo de profil
-$photoDir = '../../images/photoProfilVendeur/';
-$photoBaseName = 'photo_profil' . $code_vendeur;
-$photoFullPath = '/var/www/html/images/photoProfilVendeur/' . $photoBaseName;
+//verification et upload de la nouvelle photo de profil
+    $photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil'.$code_vendeur;
 
-$extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-$extension = '';
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $extension = '';
 
-// Recherche de l'extension existante
-foreach ($extensionsPossibles as $ext) {
-    if (file_exists($photoFullPath . '.' . $ext)) {
-        $extension = '.' . $ext;
-        break;
-    }
-}
-
-// Traitement de l'upload (devrait être dans le contrôleur de mise à jour)
-if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-    // Supprimer l'ancienne photo avec toutes les extensions
     foreach ($extensionsPossibles as $ext) {
-        $oldPhotoPath = $photoFullPath . '.' . $ext;
-        if (file_exists($oldPhotoPath)) {
-            unlink($oldPhotoPath);
+        if (file_exists($photoPath . '.' . $ext)) {
+            $extension = '.' . $ext;
+            break;
         }
     }
-    
-    // Uploader la nouvelle photo
-    $newExtension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-    $newExtension = '.' . $newExtension;
-    move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoFullPath . $newExtension);
-    $extension = $newExtension;
-}
+
+    if (file_exists($photoPath)) {
+        unlink($photoPath); // supprime l'ancien fichier
+    }
+
+    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+        $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+        $extension = '.'.$extension;
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -79,17 +70,22 @@ if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
 
     <main class="page-compte">
         <div class="header-compte">
-            <div class="photo-profil">
-                <?php 
-                $photoWebPath = '/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension;
-                if ($extension && file_exists($photoFullPath . $extension)) {
-                    echo '<img src="' . $photoWebPath . '" alt="photoProfil" id="imageProfile">';
-                } else {
-                    echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
-                }
-                ?>
+            <div class="photo-profil-container">
+                <div class="photo-profil">
+                    <?php 
+                        if (file_exists($photoPath.$extension)) {
+                            echo '<img src="/images/photoProfilVendeur/photo_profil'.$code_vendeur.$extension.'" alt="photoProfil" id="imageProfile">';
+                        } else {
+                            echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
+                        }
+                    ?>
+                </div>
+                <button type="button" class="changer-photo" id="boutonChangerPhoto" style="display: none;">
+                    Changer la photo
+                </button>
             </div>
-            <input type="file" id="uploadPhoto" name="photoProfil" accept="image/*" hidden>
+            <input type="file" id="uploadPhoto" name="photoProfil" accept="image/png, image/jpg, image/jpeg, image/webp"
+                hidden>
             <h1>Mon compte</h1>
         </div>
 

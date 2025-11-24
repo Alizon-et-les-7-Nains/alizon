@@ -76,6 +76,7 @@ require_once "../../controllers/prix.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/style.css">
+    <link rel="icon" href="/public/images/logoBackoffice.svg">
     <title>Alizon - Votre panier</title>
 </head>
 <body class="panier">

@@ -401,6 +401,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../../public/style.css">
+    <link rel="icon" href="/public/images/logoBackoffice.svg">
     <title>Paiement - Alizon</title>
 </head>
 

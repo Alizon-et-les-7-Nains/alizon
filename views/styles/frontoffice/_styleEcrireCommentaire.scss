@@ -1,0 +1,180 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.pageEcrireCommentaire{
+    background-image: url("../../../public/images/triskel.png");
+    background-repeat: no-repeat;
+    background-size:contain;
+    font-family: 'lora';
+    color: $color-blue;
+
+    .produit{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 220px;
+    }
+
+    h1{
+        font-size: 48px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h1,h2{
+        font-weight: 200;
+    }
+
+    .produit img{
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 8px;
+        margin-right: 2em;
+    }
+
+    .reviewArticle form{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        left: 15%;
+        width: 70%;
+    }
+
+    .reviewArticle ul{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .reviewArticle ul img{
+        width: 64px;
+        height: 64px;
+        cursor: pointer;
+    }
+
+    .etoiles img{
+        width: 64px;
+        height: 64px;
+    }
+
+    #ajouterPhoto{
+        width: 64px;
+        height: 64px;
+    }
+
+    textarea{
+        border: 2px solid $color-blue;
+        border-radius: 8px;
+        padding: 1em 1em;
+    }
+
+    textarea::placeholder{
+        color: $color-dark-gray;
+    }
+
+    #sujet{
+        height: 60px;
+    }
+
+    #message{
+        min-height: 230px;
+        max-height: 300px;
+    }
+
+    .bouton{
+        width: 300px;
+        height: 60px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 32px;
+        border: none;
+        position: relative;
+    }
+
+    .boutonBleu{
+        background-color: $color-blue;
+        color: $color-white;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        align-self: last baseline;
+    }
+
+    @media screen and (max-width: 768px){
+        h1{
+            font-size: 36px;
+        }
+
+        h2{
+            font-size: 18px;
+        }
+
+        .etoiles img{
+            width: 48px;
+            height: 48px;
+        }
+
+        .ajouterPhoto{
+            width: 48px;
+            height: 48px;
+        }
+
+        .produit{
+            flex-direction: column;
+            margin-top: 100px;
+        }
+
+        .produit img{
+            margin-right: 0;
+            margin-bottom: 1em;
+        }
+
+        .reviewArticle form{
+            left: 5%;
+            width: 90%;
+        }
+
+        .bouton{
+            align-self: center;
+        }
+    }
+
+        @media screen and (max-width: 450px){
+        h1{
+            font-size: 24px;
+        }
+
+        h2{
+            font-size: 16px;
+        }
+        
+        .etoiles img{
+            width: 32px;
+            height: 32px;
+        }
+
+        .ajouterPhoto{
+            width: 32px;
+            height: 32px;
+        }
+
+        .produit{
+            flex-direction: column;
+            margin-top: 100px;
+        }
+
+        .produit img{
+            margin-right: 0;
+            margin-bottom: 1em;
+        }
+
+        .reviewArticle form{
+            left: 5%;
+            width: 90%;
+        }
+    }
+}
