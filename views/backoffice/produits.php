@@ -1,5 +1,6 @@
 <?php 
     require_once '../../controllers/pdo.php';
+    require_once '../../controllers/auth.php';
 
     if(isset($_GET['error']) && isset($_GET['idProduit'])) {
         $idProduit = $_GET['idProduit'];

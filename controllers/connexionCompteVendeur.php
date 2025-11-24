@@ -19,6 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->commit();
 
             session_start();
+            $id_session = session_id();
+            $_SESSION['session_id'] = $id_session;
             $_SESSION['id'] = $vendeur['codeVendeur'];
             $_SESSION['pass'] = $_POST['mdp'];
 
