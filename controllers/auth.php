@@ -1,5 +1,7 @@
 <?php
 
+ob_start();
+
 require_once 'pdo.php';
 
 session_start();
