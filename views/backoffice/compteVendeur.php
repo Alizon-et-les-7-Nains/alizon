@@ -43,9 +43,10 @@ foreach ($extensionsPossibles as $ext) {
     }
 }
 
+
 // Traitement de l'upload de photo si formulaire soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-    // Supprimer l'ancienne photo
+    
     foreach ($extensionsPossibles as $ext) {
         $oldFile = $photoPath . '.' . $ext;
         if (file_exists($oldFile)) {
@@ -57,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photoProfil']) && $_
     $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
     move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
 }
+
 
 // Traitement des autres données du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -150,7 +152,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ?>
                 </div>
             </div>
-            <input type="file" id="photoProfil" name="photoProfil" accept="image/*" style="display: none;">
             <h1>Mon compte</h1>
         </div>
 
