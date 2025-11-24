@@ -84,7 +84,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         } else {
             $idPanier = $panier['idPanier'];
         }
-
+        
         // Vérifier si le produit existe déjà dans le panier
         $sql = "SELECT quantiteProduit FROM _produitAuPanier 
                 WHERE idProduit = ? AND idPanier = ?";
@@ -112,26 +112,26 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     }
 }
 
-// $sqlAvis = "SELECT a.*
-//             FROM _avis a
-//             WHERE a.idProduit = $productId";
+$sqlAvis = "SELECT a.*
+            FROM _avis a
+            WHERE a.idProduit = $productId";
 
-// $resultAvis = $pdo->query($sqlAvis);
-// $lesAvis = $resultAvis->fetch(PDO::FETCH_ASSOC);
+$resultAvis = $pdo->query($sqlAvis);
+$lesAvis = $resultAvis->fetchAll(PDO::FETCH_ASSOC);
 
-// // Calcul de la note moyenne
-// $sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
-// $stmt = $pdo->prepare($sqlNoteMoyenne);
-// $stmt->execute([$productId]);
-// $resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
-// $noteMoyenne = $resultNote['moyenne_note'] ?? 0;
+// Calcul de la note moyenne
+$sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
+$stmt = $pdo->prepare($sqlNoteMoyenne);
+$stmt->execute([$productId]);
+$resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
+$note = $resultNote['moyenne_note'] ?? 0;
 
-// // Calcul du nombre d'avis
-// $sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
-// $stmt = $pdo->prepare($sqlNbAvis);
-// $stmt->execute([$productId]);
-// $resultNbAvis = $stmt->fetch(PDO::FETCH_ASSOC);
-// $nombreAvis = $resultNbAvis['nb_avis'] ?? 0;
+// Calcul du nombre d'avis
+$sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
+$stmt = $pdo->prepare($sqlNbAvis);
+$stmt->execute([$productId]);
+$resultNbAvis = $stmt->fetch(PDO::FETCH_ASSOC);
+$nombreAvis = $resultNbAvis['nb_avis'] ?? 0;
 
 
 
@@ -173,11 +173,16 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
+    <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body class="pageProduit">
 <header>
-<?php // include "../../views/frontoffice/partials/headerConnecte.php" ?>
+<?php if (isset($_SESSION['user_id'])) {
+    include '../../views/frontoffice/partials/headerConnecte.php';
+} else { 
+    include '../../views/frontoffice/partials/headerDeconnecte.php';
+} ?>
 </header>
 <main>
 <main>
@@ -218,8 +223,8 @@ if (isset($_SESSION['message_panier'])) {
 </article>
     <article class="infoPreviewProduit">
             <?php
-                $note = 4.2; // Exemple de note moyenne A CHANGER
-                $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
+                // $note = 4.2; // Exemple de note moyenne A CHANGER
+                // $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
             ?>
         <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
             <div class="product-rating">
@@ -246,17 +251,17 @@ if (isset($_SESSION['message_panier'])) {
         <a href="#conteneurTexte">Voir plus sur le produit</a>
         <div class="version">
             <h3>Version :</h3>
-            <p>50cl</p>
+            <!-- <p>50cl</p>
             <p>1L</p>
-            <p>1.5L</p>
+            <p>1.5L</p> -->
         </div>
         <h3>Choisir un type de produit :</h3>
-        <div>
+        <!-- <div>
             <img src="../../public/images/Image_bouteille.svg" alt="">
             <img src="../../public/images/Image_bouteille.svg" alt="">
             <img src="../../public/images/Image_bouteille.svg" alt="">
             <img src="../../public/images/Image_bouteille.svg" alt="">
-        </div>
+        </div> -->
     </article>
     <article class="actionsProduit">
     <h2>Vendu par <?php echo htmlspecialchars($produit['prenom_vendeur'] . ' ' . $produit['nom_vendeur']); ?></h2>
@@ -279,7 +284,7 @@ if (isset($_SESSION['message_panier'])) {
         } else { 
             echo '<a href="legalesNonConnecte.php">conditions générales de vente</a>';
         } ?>
-        </p>
+        </b></p>
     </div>
     <hr>
     <br>
@@ -297,10 +302,17 @@ if (isset($_SESSION['message_panier'])) {
             <input type="hidden" name="action" value="ajouter_panier">
             <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
         </form>
-        <form action="pagePaiement.php" method="POST">
-            <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-            <button class="bouton boutonBleu" >Acheter maintenant</button>
-        </form>
+        <?php if (isset($_SESSION['user_id'])) {
+            echo '  <form action="pagePaiement.php" method="POST">
+                        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                        <button class="bouton boutonBleu" >Acheter maintenant</button>
+                    </form>';
+        } else { 
+            echo '  <form action="connexionClient.php" method="POST">
+                        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                        <button class="bouton boutonBleu" >Acheter maintenant</button>
+                    </form>';
+        } ?>
     </div>
 </article>
 </section>
@@ -321,8 +333,8 @@ if (isset($_SESSION['message_panier'])) {
 <section class="sectionAvis">
     <h2>Ce qu'en disent nos clients</h2>
     <?php
-    $note = 4.2; // Exemple de note moyenne A CHANGER
-    $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
+    // $note = $produit['note']; // Exemple de note moyenne A CHANGER
+    // $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
     ?>
     <div class="product-rating">
         <div class="horizontal">
@@ -334,72 +346,53 @@ if (isset($_SESSION['message_panier'])) {
         <span class="review-count"><?php echo $nombreAvis; ?> évaluations</span>
     </div>
     <?php 
-    $note = $produit['note'];
-    echo htmlspecialchars($note);
+    // $note = $produit['note'];
+    // echo htmlspecialchars($note);
     ?>
-    <form action="ecrireUnCommentaire.php" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-        <button type="submit">Ecrire un commentaire</button>
-    </form>
+    <?php if (isset($_SESSION['user_id'])) {
+    echo 
+    '<a href="ecrireCommentaire.php?id=<?php echo $productId; ?>" class="boutonCommentaire">
+        Écrire un commentaire
+    </a>';
+    } else {
+    echo     
+    '<a href="connexionClient.php" class="boutonCommentaire">
+        Écrire un commentaire
+    </a>';
+    }
+    ?>
 
-    <?php
-        $html = "
-        <article>
-            <img src=\"../../public/images/pp.png\" id=\"pp\">
-            <div>
-                <div class=\"vertical\">
-                    <div class=\"horizontal\">
-                        <div class=\"star-rating\">
-                            <div class=\"stars\" style=\"--rating:3.7\"></div>
+    <?php if (!empty($lesAvis)): ?>
+        <?php foreach ($lesAvis as $avis): ?>
+            <article>
+                <img src="../../public/images/pp.png" id="pp">
+                <div>
+                    <div class="vertical">
+                        <div class="horizontal">
+                            <div class="star-rating">
+                                <div class="stars" style="--rating: <?php echo htmlspecialchars($avis['note']); ?>"></div>
+                            </div>
+                            <h3><?php echo htmlspecialchars($avis['titreAvis']); ?></h3>
                         </div>
-                        <h3> Une fraîcheur authentique " . htmlspecialchars($atr['titreAvis']) . "</h3>
+                        <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?></h6>
                     </div>
-                    <h6>Avis déposé le **/**/**" . htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
-                </div>
-                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($atr['contenuAvis']) . "</p>
-                <div class=\"baselineSpaceBetween\">
-                <div class =\"sectionImagesAvis\">
-                    <img src=\"../../public/images/cidre.png\" alt=\"\">
-                    <img src=\"../../public/images/cidre.png\" alt=\"\">
-                </div>   
-                <div class=\"actionsAvis\">
-                    <img src=\"../../public/images/pouceHaut.png\" alt=\"Like\" onclick=\"changerPouce(this, 'haut')\" class=\"pouce\">
-                    <img src=\"../../public/images/pouceBas.png\" alt=\"Dislike\" onclick=\"changerPouce(this, 'bas')\" class=\"pouce\">
-                    <shape></shape>
-                    <a href=\"#\">Signaler</a>
-                </div>
-                </div>
-            </div>
-        </article>
-        <article>
-            <img src=\"../../public/images/pp.png\" id=\"pp\">
-            <div>
-                <div class=\"vertical\">
-                    <div class=\"horizontal\">
-                        <div class=\"star-rating\">
-                            <div class=\"stars\" style=\"--rating:3.7\"></div>
+                    <p><?php echo htmlspecialchars($avis['contenuAvis']); ?></p>
+                    <div class="baselineSpaceBetween">
+                        <div class="sectionImagesAvis">
+                        </div>   
+                        <div class="actionsAvis">
+                            <img src="../../public/images/pouceHaut.png" alt="Like" onclick="changerPouce(this, 'haut')" class="pouce">
+                            <img src="../../public/images/pouceBas.png" alt="Dislike" onclick="changerPouce(this, 'bas')" class="pouce">
+                            <shape></shape>
+                            <a href="#">Signaler</a>
                         </div>
-                        <h3> Une fraîcheur authentique " . htmlspecialchars($atr['titreAvis']) . "</h3>
-                    </div>
-                    <h6>Avis déposé le 10/06/24" . htmlspecialchars($atr['dateAvis']) . " par Nathan</h6>
-                </div>
-                <p> Un cidre à la robe dorée, aux fines bulles légères et au nez fruité. En bouche, l’équilibre parfait entre la douceur naturelle de la pomme et une pointe d’amertume apporte fraîcheur et caractère. Idéal à l’apéritif ou pour accompagner des mets traditionnels comme des crêpes ou des fromages." . htmlspecialchars($atr['contenuAvis']) . "</p>
-                <div class=\"baselineSpaceBetween\">
-                <div class =\"sectionImagesAvis\">
-                    <img src=\"../../public/images/cidre.png\" alt=\"\">
-                    <img src=\"../../public/images/cidre.png\" alt=\"\">
-                </div>   
-                    <div class=\"actionsAvis\">
-                        <img src=\"../../public/images/pouceHaut.png\" alt=\"\">
-                        <img src=\"../../public/images/pouceBas.png\" alt=\"\">
-                        <shape></shape>
-                        <a href=\"#\">Signaler</a>
                     </div>
                 </div>
-            </div>
-        </article>";
-        echo $html;
-    ?>
+            </article>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Aucun avis pour ce produit.</p>
+    <?php endif; ?>
 
 </section>
 <section class="stickyTelephone">
@@ -425,7 +418,11 @@ if (isset($_SESSION['message_panier'])) {
 </section>
 </main>
 <footer>
-    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
+<?php if (isset($_SESSION['user_id'])) {
+    include '../../views/frontoffice/partials/footerConnecte.php';
+} else { 
+    include '../../views/frontoffice/partials/footerDeconnecte.php';
+} ?>
 </footer> 
 </body>
 <script>

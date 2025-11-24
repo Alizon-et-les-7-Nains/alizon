@@ -1,5 +1,10 @@
 <?php
-require_once "../../controllers/pdo.php";
+    require_once '../../controllers/pdo.php';
+
+    require_once '../../controllers/prix.php';
+    require_once '../../controllers/date.php';
+
+    require_once '../../controllers/auth.php';
 
 if (!isset($_GET['id'])) {
     die("Aucun produit sélectionné");
@@ -39,13 +44,12 @@ if (!$produit) {
     <title>Modifer un produit du catalogue</title>
 </head>
 <body class="backoffice">
-    <header>
-        <?php require_once "./partials/header.php"?>
-    </header>
+    <?php require_once './partials/header.php' ?>
 
-    <?php 
-    $current_page = basename(__FILE__);
-    require_once "./partials/aside.php"?>
+    <?php
+        $currentPage = basename(__FILE__);
+        require_once './partials/aside.php';
+    ?>
        
     <main class="modifierProduit"> 
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
@@ -108,7 +112,8 @@ if (!$produit) {
         
     </main>
 
-    <script>
+    <script src="/public/script.js">
+        
     document.addEventListener('DOMContentLoaded', function() {
         const photoUploadInput = document.getElementById('photoUpload');
         const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
