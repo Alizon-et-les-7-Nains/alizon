@@ -111,7 +111,7 @@
     if (count($avis) == 0) echo "<h2>Aucun avis</h>";
     foreach ($avis as $avi) {
         $imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
-        $imageClient = "/images/photoProfilClient/photo_profil]";
+        $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'];
         $html = "
         <table>
             <tr>
