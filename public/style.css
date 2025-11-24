@@ -4310,6 +4310,7 @@ button#haut.visible:hover {
   color: #273469;
   margin: 0;
   font-weight: bold;
+  margin-left: 10px;
 }
 .popUpRemise .page section .prixAuKg {
   font-size: 16px;
@@ -4320,7 +4321,7 @@ button#haut.visible:hover {
   border-left: #273469 solid 2px;
   margin: 30px;
 }
-.popUpRemise .page .section2 {
+.popUpRemise .page form {
   border: 0;
   display: flex;
   flex-direction: column;
@@ -4328,11 +4329,11 @@ button#haut.visible:hover {
   align-items: flex-start;
   width: 500px;
 }
-.popUpRemise .page .section2 h2 {
+.popUpRemise .page form h2 {
   font-size: 24px;
   color: #273469;
 }
-.popUpRemise .page .section2 input {
+.popUpRemise .page form input {
   padding: 10px;
   width: 200px;
   border: 2px solid #273469;
@@ -4340,10 +4341,10 @@ button#haut.visible:hover {
   font-family: "lora";
   margin: 10px;
 }
-.popUpRemise .page .section2 div input {
+.popUpRemise .page form div input {
   width: 110px;
 }
-.popUpRemise .page .section2 button {
+.popUpRemise .page form button {
   background-color: #273469;
   padding: 15px;
   border-radius: 32px;
@@ -4353,11 +4354,15 @@ button#haut.visible:hover {
   position: absolute;
   right: 30px;
   bottom: 30px;
+  cursor: pointer;
 }
-.popUpRemise .page .section2 p {
+.popUpRemise .page form p {
   background-color: #e4d9ff;
   padding: 10px;
   border-radius: 16px;
+}
+.popUpRemise .page form .error-message {
+  color: red;
 }
 
 main.backoffice-stocks h1, main.backoffice-stocks button, main.backoffice-stocks div {
