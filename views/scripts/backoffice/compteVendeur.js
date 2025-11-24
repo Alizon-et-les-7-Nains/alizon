@@ -233,7 +233,7 @@ function desactiverModeEdition() {
   if (imageProfile) {
     imageProfile.style.cursor = "default";
     // Réinitialiser l'aperçu si annulation
-    const uploadPhoto = document.getElementById("uploadPhoto");
+    const uploadPhoto = document.getElementById("photoProfil");
     if (uploadPhoto) {
       uploadPhoto.value = ""; // Réinitialiser le input file
     }
@@ -437,7 +437,7 @@ function boutonAnnuler() {
 // Fonction pour gérer le changement de photo de profil
 function initialiserPhotoProfil() {
   const imageProfile = document.getElementById("imageProfile");
-  const uploadPhoto = document.getElementById("uploadPhoto");
+  const uploadPhoto = document.getElementById("photoProfil");
   const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
 
   if (!imageProfile || !uploadPhoto) return;
