@@ -106,7 +106,7 @@ require_once "../../controllers/prix.php";
             <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
         <?php } else { 
                      
-            $cheminSysteme = "/docker/data/web/html/images/baniere/" . $choixAleatoirePromo . ".jpg";
+            $cheminSysteme = "/var/www/html/images/baniere/" . $choixAleatoirePromo . ".jpg";
 
             if (file_exists($cheminSysteme)) {
                 $image = "../../public/images/baniere/" . $choixAleatoirePromo . ".jpg";
