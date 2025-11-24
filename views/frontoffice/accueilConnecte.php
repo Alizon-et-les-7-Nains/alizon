@@ -461,7 +461,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 popupConfirmation.style.display = "block";
                 console.log("Clique bouton ajouter panier");
 
-                // Cacher après 1,5 secondes (optionnel)
+                // Cacher après 1,5 secondes
                 setTimeout(() => {
                     popupConfirmation.style.display = "none";
                 }, 5000);
