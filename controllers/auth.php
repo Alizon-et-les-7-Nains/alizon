@@ -6,7 +6,7 @@ session_start();
 
 try {
     $pdo->beginTransaction();
-    $isValidSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/connexion.sql'));
+    $isValidSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/connexion.sql'));
     $isValidSTMT->execute([':pseudo' => $_SESSION['pseudo'], ':mdp' => $_SESSION['mdp']]);
     $isValid = $isValidSTMT->fetchColumn();
 
