@@ -61,13 +61,8 @@ function popUpInfoCalcul() {
     croixFermer.addEventListener("click", fermerPopUpInfoCalcul);
 }
 
-<<<<<<< HEAD
-function verifDate(val){
-    let valeur = val.value.trim();
-=======
 function verifDate(input){
     let valeur = input.value.trim();
->>>>>>> backoffice-pageProduit
     if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
         setError(input, "Format attendu : jj/mm/aaaa");
     } else {
