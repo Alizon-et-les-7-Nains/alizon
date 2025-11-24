@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $isValidSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
         $isValid = $isValidSTMT->fetchColumn();
 
-        if ($valid) {
+        if ($isValid) {
             $vendeurSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/vendeur.sql'));
             $vendeurSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
             $vendeur = $vendeurSTMT->fetchAll(PDO::FETCH_ASSOC);
@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['pass'] = $_POST['mdp'];
         } else {
             $pdo->rollback();
+            ob_start();
             header('Location: ../views/backoffice/connexion.php?error=1');
             die();
         }
