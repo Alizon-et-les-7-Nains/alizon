@@ -15,21 +15,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        if(isset($_FILES['baniere']['tmp_name']) && !empty($_FILES['baniere']['tmp_name'])) {
-            $ext = pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
+        $photoPath = '/docker/data/web/html/images/baniere/'.$id;
 
-            if(!in_array(strtolower($ext), ['jpg', 'jpeg', 'png'])) {
-                header('Location: ../views/backoffice/produits.php?error=2&idProduit='.$idProd);
-                exit;
+        $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+        $extension = '';
+
+        foreach ($extensionsPossibles as $ext) {
+            if (file_exists($photoPath . '.' . $ext)) {
+                $extension = '.' . $ext;
+                break;
             }
+        }
 
-            $baniereData = file_get_contents($_FILES['baniere']['tmp_name']);
-            move_uploaded_file($_FILES['baniere']['tmp_name'], './images/baniere/' . $idProd . $_FILES['baniere']['name']);
+        if (file_exists($photoPath)) {
+            unlink($photoPath);
+        }
+
+        if (isset($_FILES['baniere']) && $_FILES['baniere']['tmp_name'] != '') {
+            $extension = pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
+            $extension = '.'.$extension;
+            move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension);
         }
             
-        $stmt = $pdo->prepare("INSERT INTO _promotion(idProduit, debutPromotion, finPromotion) VALUES (:idProd, CURDATE(), :dateLimite)");
-
-        $stmt->execute([':idProd' => $idProd,':dateLimite' => $dateSql]);
     }
 
     header('Location: ../views/backoffice/produits.php');
