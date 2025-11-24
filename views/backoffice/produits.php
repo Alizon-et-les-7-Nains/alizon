@@ -1,8 +1,8 @@
 <?php 
     require_once '../../controllers/pdo.php';
 
-    if(isset($_GET['error']) && isset($_GET['id'])) {
-        $idProduit = $_GET['id'];
+    if(isset($_GET['error']) && isset($_GET['idProduit'])) {
+        $idProduit = $_GET['idProduit'];
         $codeErreur = $_GET['error'];
         echo "<script>window.addEventListener('load', () => popUpErreur('$idProduit', $codeErreur));</script>";
     }
