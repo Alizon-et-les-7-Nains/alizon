@@ -1,8 +1,18 @@
-// Cleaned and bug-fixed version of compteVendeur.js
-
 let modeEdition = false;
 let modeModificationMdp = false;
 let anciennesValeurs = {};
+
+// Création de l'input pour la photo de profil (comme client)
+let ajoutPhoto = document.createElement("input");
+ajoutPhoto.type = "file";
+ajoutPhoto.id = "photoProfil";
+ajoutPhoto.name = "photoProfil";
+ajoutPhoto.accept = "image/*";
+ajoutPhoto.style.display = "none";
+ajoutPhoto.autocomplete = "off";
+
+let conteneur = document.querySelector(".header-compte");
+let imageProfile = document.getElementById("imageProfile");
 
 function afficherErreur(champId, afficher) {
   const champ = document.getElementById(champId);
@@ -170,10 +180,12 @@ function activerModeEdition() {
     });
   });
 
-  // Afficher le bouton pour changer la photo
-  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
-  if (boutonChangerPhoto) {
-    boutonChangerPhoto.style.display = "block";
+  // Activer la modification de la photo de profil (comme client)
+  conteneur.appendChild(ajoutPhoto);
+
+  if (imageProfile) {
+    imageProfile.style.cursor = "pointer";
+    imageProfile.onclick = () => ajoutPhoto.click();
   }
 
   // Masquer le bouton Modifier et afficher Annuler/Sauvegarder
@@ -222,10 +234,14 @@ function desactiverModeEdition() {
     input.parentNode.replaceChild(newInput, input);
   });
 
-  // Cacher le bouton pour changer la photo
-  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
-  if (boutonChangerPhoto) {
-    boutonChangerPhoto.style.display = "none";
+  // Désactiver la modification de la photo de profil (comme client)
+  if (document.getElementById("photoProfil")) {
+    document.getElementById("photoProfil").remove();
+  }
+
+  if (imageProfile) {
+    imageProfile.style.cursor = "default";
+    imageProfile.onclick = null;
   }
 
   // Réafficher les boutons
@@ -414,46 +430,6 @@ function afficherMessageCriteresMdp() {
   });
 }
 
-function initialiserUploadPhoto() {
-  const uploadInput = document.getElementById("uploadPhoto");
-  const boutonChangerPhoto = document.getElementById("boutonChangerPhoto");
-  const imageProfile = document.getElementById("imageProfile");
-
-  if (!uploadInput || !boutonChangerPhoto || !imageProfile) return;
-
-  // Clic sur le bouton déclenche l'input file
-  boutonChangerPhoto.addEventListener("click", function () {
-    uploadInput.click();
-  });
-
-  // Prévisualisation de l'image sélectionnée
-  uploadInput.addEventListener("change", function (e) {
-    const file = e.target.files[0];
-    if (file) {
-      // Vérifier le type de fichier
-      if (!file.type.match("image.*")) {
-        alert("Veuillez sélectionner une image valide (PNG, JPG, JPEG, WebP)");
-        uploadInput.value = "";
-        return;
-      }
-
-      // Vérifier la taille (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("L'image ne doit pas dépasser 5MB");
-        uploadInput.value = "";
-        return;
-      }
-
-      // Prévisualisation
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        imageProfile.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-}
-
 function boutonAnnuler() {
   restaurerAnciennesValeurs();
   desactiverModeEdition();
@@ -469,7 +445,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   desactiverModeEdition();
   afficherMessageCriteresMdp();
-  initialiserUploadPhoto();
 
   const btnModifier = document.querySelector(".boutonModifierProfil");
   const btnAnnuler = document.querySelector(".boutonAnnuler");
@@ -488,6 +463,9 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", function (e) {
       if (!validerFormulaire()) {
         e.preventDefault();
+        alert(
+          "Veuillez corriger les erreurs dans le formulaire avant de sauvegarder."
+        );
         return false;
       }
 
@@ -503,7 +481,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const inputsReadonly = document.querySelectorAll("input[readonly]");
       inputsReadonly.forEach((input) => input.removeAttribute("readonly"));
 
-      // Let the form submit normally (page reload)
+      // Le formulaire peut maintenant être soumis normalement
+      console.log("Formulaire validé, soumission en cours...");
     });
   }
 

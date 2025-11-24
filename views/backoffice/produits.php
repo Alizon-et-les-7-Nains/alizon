@@ -155,7 +155,6 @@
 
                         <div class="prixEtPrixAuKg">
                             <p class="prix"><?php echo htmlspecialchars($produitHorsVente[$i]['prix']); ?>€</p>
-                            <p class="prixAuKg">99.72€ / kg</p>
                         </div>
 
                         <div class="bouton">

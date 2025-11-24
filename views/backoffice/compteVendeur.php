@@ -31,29 +31,98 @@ $region        = $vendeur['region'] ?? '';
 $pays          = $vendeur['pays'] ?? '';
 $idAdresse     = $vendeur['idAdresse'] ?? '';
 
-// Gestion de la photo de profil
-//verification et upload de la nouvelle photo de profil
-    $photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil'.$code_vendeur;
+// Gestion de la photo de profil - version simplifiée comme client
+$photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil' . $code_vendeur;
+$extension = '';
 
-    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-    $extension = '';
+$extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+foreach ($extensionsPossibles as $ext) {
+    if (file_exists($photoPath . '.' . $ext)) {
+        $extension = '.' . $ext;
+        break;
+    }
+}
 
+// Traitement de l'upload de photo si formulaire soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+    // Supprimer l'ancienne photo
     foreach ($extensionsPossibles as $ext) {
-        if (file_exists($photoPath . '.' . $ext)) {
-            $extension = '.' . $ext;
-            break;
+        $oldFile = $photoPath . '.' . $ext;
+        if (file_exists($oldFile)) {
+            unlink($oldFile);
         }
     }
+    
+    // Uploader la nouvelle photo
+    $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+    move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
+}
 
-    if (file_exists($photoPath)) {
-        unlink($photoPath); // supprime l'ancien fichier
-    }
+// Traitement des autres données du formulaire
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Récupération des données du formulaire
+    $pseudo = $_POST['pseudo'] ?? '';
+    $nom = $_POST['nom'] ?? '';
+    $prenom = $_POST['prenom'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $dateNaissance = $_POST['dateNaissance'] ?? '';
+    $telephone = $_POST['telephone'] ?? '';
+    $codePostal = $_POST['codePostal'] ?? '';
+    $adresse = $_POST['adresse'] ?? '';
+    $pays = $_POST['pays'] ?? '';
+    $ville = $_POST['ville'] ?? '';
+    $region = $_POST['region'] ?? '';
+    $raisonSociale = $_POST['raisonSociale'] ?? '';
+    $noSiren = $_POST['noSiren'] ?? '';
 
-    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-        $extension = '.'.$extension;
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
+    // Mise à jour des informations du vendeur
+    $stmt = $pdo->prepare("
+        UPDATE saedb._vendeur 
+        SET pseudo = :pseudo, 
+            nom = :nom, 
+            prenom = :prenom, 
+            email = :email, 
+            dateNaissance = :dateNaissance,
+            noTelephone = :telephone,
+            raisonSocial = :raisonSociale,
+            noSiren = :noSiren
+        WHERE codeVendeur = :code_vendeur
+    ");
+
+    $stmt->execute([
+        ':pseudo' => $pseudo,
+        ':nom' => $nom,
+        ':prenom' => $prenom,
+        ':email' => $email,
+        ':dateNaissance' => $dateNaissance,
+        ':telephone' => $telephone,
+        ':raisonSociale' => $raisonSociale,
+        ':noSiren' => $noSiren,
+        ':code_vendeur' => $code_vendeur
+    ]);
+
+    // Mise à jour de l'adresse
+    if ($idAdresse) {
+        $stmt = $pdo->prepare("
+            UPDATE saedb._adresseVendeur 
+            SET adresse = :adresse,
+                pays = :pays,
+                ville = :ville, 
+                codePostal = :codePostal,
+                region = :region
+            WHERE idAdresse = :idAdresse
+        ");
+
+        $stmt->execute([
+            ':adresse' => $adresse,
+            ':pays' => $pays,
+            ':ville' => $ville,
+            ':codePostal' => $codePostal,
+            ':region' => $region,
+            ':idAdresse' => $idAdresse
+        ]);
     }
+}
 ?>
 
 <!DOCTYPE html>
@@ -73,23 +142,19 @@ $idAdresse     = $vendeur['idAdresse'] ?? '';
             <div class="photo-profil-container">
                 <div class="photo-profil">
                     <?php 
-                        if (file_exists($photoPath.$extension)) {
-                            echo '<img src="/images/photoProfilVendeur/photo_profil'.$code_vendeur.$extension.'" alt="photoProfil" id="imageProfile">';
-                        } else {
-                            echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
-                        }
+                    if (file_exists($photoPath . $extension)) {
+                        echo '<img src="/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension . '" alt="photoProfil" id="imageProfile">';
+                    } else {
+                        echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
+                    }
                     ?>
                 </div>
-                <button type="button" class="changer-photo" id="boutonChangerPhoto" style="display: none;">
-                    Changer la photo
-                </button>
             </div>
-            <input type="file" id="uploadPhoto" name="photoProfil" accept="image/png, image/jpg, image/jpeg, image/webp"
-                hidden>
+            <input type="file" id="photoProfil" name="photoProfil" accept="image/*" style="display: none;">
             <h1>Mon compte</h1>
         </div>
 
-        <form class="form-compte" method="POST" action="../../controllers/majVendeur.php" enctype="multipart/form-data">
+        <form class="form-compte" method="POST" action="" enctype="multipart/form-data">
             <input type="hidden" name="code_vendeur" value="<?= $code_vendeur ?>">
             <input type="hidden" name="id_adresse" value="<?= $idAdresse ?>">
 

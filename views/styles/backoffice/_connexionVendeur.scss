@@ -36,9 +36,11 @@
         text-align: center;
 
         h1 {
-            font-family: 'lora', serif; 
-            font-size: 1.8rem;
-            font-weight: bold;
+            font: {
+                family: 'lora', serif; 
+                size: 1.8rem;
+                weight: bold;
+            }
             color: $color-blue;
             margin-top: 10px;
         }
@@ -92,11 +94,12 @@
                 gap: 8px;
 
                 a {
-                    color: $color-blue;
-                    font-size: 0.9rem;
                     text-decoration: underline;
-                    font-family: 'lora', serif;
-                    font-weight: 600;
+                    font: {
+                        size: 0.9rem;
+                        weight: normal;
+                        style: normal;
+                    }    
                     cursor: pointer;
                 }
             }
