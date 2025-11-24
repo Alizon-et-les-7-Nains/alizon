@@ -173,7 +173,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                             <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
                         <p class="supprimer">supprimer ...</p>
-                        <p><strong>Format accepté </strong>: 21:4 (1440x275 pixels minimum)</p>
+                        <p><strong>Format accepté </strong>: 21:4 (1440x275 pixels minimum, .jpg, .jpeg, .png)</p>
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
