@@ -5657,6 +5657,9 @@ dialog.reassort form input {
     flex-direction: column;
     gap: 0.5em;
   }
+  .pageProduit .actionsProduit {
+    justify-content: flex-start;
+  }
   .pageProduit .actionsAvis {
     justify-content: flex-start;
   }
