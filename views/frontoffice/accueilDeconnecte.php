@@ -320,6 +320,29 @@ require_once "../../controllers/prix.php";
         </section>
     </main>
 
+    <section class="confirmationAjout">
+        <h4>Produit ajouté au panier !</h4>
+    </section>
+
+    <script>
+        const popupConfirmation = document.querySelector(".confirmationAjout");
+        const boutonsAjout = document.querySelectorAll(".plus");
+
+        boutonsAjout.forEach(btn => {
+            btn.addEventListener("click", function(e) {
+
+                // Afficher le popup
+                popupConfirmation.style.display = "block";
+                console.log("Clique bouton ajouter panier");
+
+                // Cacher après 1,5 secondes
+                setTimeout(() => {
+                    popupConfirmation.style.display = "none";
+                }, 5000);
+            });
+        });
+    </script>
+
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
