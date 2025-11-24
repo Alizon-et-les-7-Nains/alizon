@@ -3925,6 +3925,16 @@ button#haut.visible:hover {
   margin-bottom: 10px;
   margin-top: 10px;
 }
+.CreerCompteVendeur .container .form-vendeur .connexion_lien a {
+  color: #273469;
+  text-decoration: underline;
+}
+.CreerCompteVendeur .container .form-vendeur .connexion_lien a:visited {
+  color: #273469;
+}
+.CreerCompteVendeur .container .form-vendeur .connexion_lien a:hover {
+  color: rgb(25.1875, 33.5833333333, 67.8125);
+}
 .CreerCompteVendeur .container .form-vendeur .inscriptions_autres {
   text-align: center;
   color: #6e6e6e;
@@ -5856,6 +5866,12 @@ dialog.reassort form input {
   font-weight: normal;
   font-style: normal;
   cursor: pointer;
+}
+.connexionVendeur .information_connexion .form-vendeur .liens-utiles a:visited {
+  color: #273469;
+}
+.connexionVendeur .information_connexion .form-vendeur .liens-utiles a:hover {
+  color: rgb(25.1875, 33.5833333333, 67.8125);
 }
 .connexionVendeur .information_connexion .form-vendeur .actions {
   width: 100%;

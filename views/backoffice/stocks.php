@@ -39,7 +39,7 @@
         $commandes->execute(['idProduit' => $epuise['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
-                    <button class='settings'>
+                    <button class='settings' id='" . $epuise['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>
                         <div><div></div></div>
@@ -115,7 +115,7 @@
         $commandes->execute(['idProduit' => $faible['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
-                    <button class='settings'>
+                    <button class='settings' id='" . $faible['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>
                         <div><div></div></div>
@@ -191,7 +191,7 @@
         $commandes->execute(['idProduit' => $stock['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
-                    <button class='settings'>
+                    <button class='settings' id='" . $stock['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>
                         <div><div></div></div>
