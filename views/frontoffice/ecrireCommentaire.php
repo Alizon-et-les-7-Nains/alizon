@@ -5,7 +5,7 @@ require_once "../../controllers/pdo.php";
 // Insert review (only once!)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $productId = intval($_GET['id'] ?? 0);
+        $productId = intval($_GET['idProduit'] ?? 0);
         $clientId = intval($_SESSION['user_id'] ?? 0);
         $note = intval($_POST['note'] ?? 0);
         $sujet = trim($_POST['sujet'] ?? '');
