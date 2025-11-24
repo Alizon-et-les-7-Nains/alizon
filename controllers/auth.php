@@ -8,8 +8,8 @@ session_start();
 
 try {
     $pdo->beginTransaction();
-    $isValidSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/connexion.sql'));
-    $isValidSTMT->execute([':pseudo' => $_SESSION['pseudo'], ':mdp' => $_SESSION['mdp']]);
+    $isValidSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/auth.sql'));
+    $isValidSTMT->execute([':id' => $_SESSION['id'], ':pass' => $_SESSION['pass']]);
     $isValid = $isValidSTMT->fetchColumn();
 
     if (!$_SESSION['id_session'] || !$isValid) {
