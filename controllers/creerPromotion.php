@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $idProd = intval($_POST['id']); 
         $dateLimite = $_POST['date_limite'];
 
-        $photoPath = '/var/www/html/images/baniere/';
+        $photoPath = '/var/www/html/images/baniere/'.$idProd;
 
         $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
         $extension = '';
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_FILES['baniere']) && $_FILES['baniere']['tmp_name'] != '') {
             $extension = pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
             $extension = '.'.$extension;
-            move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$idProd.$extension);
+            move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension);
         }
 
         try {
