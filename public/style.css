@@ -5085,13 +5085,6 @@ dialog.reassort form input {
     min-width: 90px;
   }
 }
-.pageProduit body {
-  margin: 0;
-  padding: 0;
-  transition: all 0.3s ease;
-  font-family: "lora", serif;
-  width: 100%;
-}
 .pageProduit main {
   display: flex;
   flex-direction: column;

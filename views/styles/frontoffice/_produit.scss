@@ -2,14 +2,6 @@
 @use "../fonts" as *;
 
 .pageProduit{
-    body{
-        margin: 0;
-        padding: 0;
-        transition: all 0.3s ease;
-        font-family: $font-lora;
-        width: 100%;
-    }
-
     main{
         display: flex;
         flex-direction: column;
