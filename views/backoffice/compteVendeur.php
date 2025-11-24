@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../../controllers/pdo.php';
+require_once '../../controllers/auth.php';
 
 $code_vendeur = 2;
 

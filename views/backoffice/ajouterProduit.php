@@ -1,6 +1,7 @@
 <?php 
 session_start();
 require_once "../../controllers/pdo.php";
+require_once '../../controllers/auth.php';
 
     $nom = $_SESSION['form_data']['nom'] ?? '';
     $prenom = $_SESSION['form_data']['prenom'] ?? '';

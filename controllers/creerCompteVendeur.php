@@ -34,7 +34,7 @@
     }
 
     $id_session = session_id();
-    $_SESSION['id_session'] = $id_session;
+    $_SESSION['session_id'] = $id_session;
     header('Location: ../views/backoffice/accueil.php');
     exit();
 ?>

@@ -158,6 +158,53 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
 
 }
 
+function popUpErreur(id, code) {
+    console.log("Erreur ID produit:", id, "Code erreur:", code);
+
+    const messages = {
+        1: "Une erreur est survenue lors du traitement de la date. Respectez le format jj/mm/aaaa et réessayez.",
+        2: "Le format de l'image n'est pas valide. Revérifiez les critères et réessayez.",
+        3: "L'image est trop volumineuse.",
+        404: "Le produit demandé est introuvable.",
+        'default': "Une erreur inattendue s'est produite. Veuillez réessayer."
+    };
+
+    const messageErreur = messages[code] || messages['default'];
+
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpErreur";
+    
+    overlay.innerHTML = `
+        <main class="popUpErreur">
+            <div class="croixFermerLaPage">
+                <div></div>
+                <div></div>
+            </div>
+            <h1>Oups !</h1>
+            <p><strong>${messageErreur}</strong></p>
+            <button class="btnFermer">Compris</button>
+        </main>`;
+
+    document.body.appendChild(overlay);
+
+    const fermerPopUp = () => {
+        overlay.remove();
+        window.history.replaceState({}, document.title, window.location.pathname);
+    };
+
+    const croixFermer = overlay.querySelector(".croixFermerLaPage");
+    const btnFermer = overlay.querySelector(".btnFermer");
+
+    croixFermer.addEventListener("click", fermerPopUp);
+    btnFermer.addEventListener("click", fermerPopUp);
+    
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUp();
+        }
+    });
+}
+
 function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
 
     console.log("ID reçu :", id);
@@ -198,14 +245,14 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
                         <div>
-                            <input type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
+                            <input type="date" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
                         </div>
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">
                             <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
                         <p class="supprimer">supprimer ...</p>
-                        <p><strong>Format accepté </strong>: 21:4 (1440x275 pixels minimum, .jpg, .jpeg, .png)</p>
+                        <p><strong>Format accepté </strong>: 21:4 (1440x275px minimum, .jpg uniquement)</p>
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
@@ -287,7 +334,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
 
         const nbJours = Math.max(0, nbJourDiff);
         const coutParJour = prix * 0.1;
-        const totalPromo = (coutParJour * nbJours).toFixed(2);
+        let totalPromo = (coutParJour * nbJours).toFixed(2);
 
         if(totalPromo == NaN) {
             totalPromo = 0;

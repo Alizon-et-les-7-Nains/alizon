@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
             $extension = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
             $nouveauNomImage = 'produit_' . $idNewProduit . '_' . time() . '.' . $extension;
-            $dossierDestination = "../public/images/" . $nouveauNomImage;
+            $dossierDestination = "../images/" . $nouveauNomImage;
             // Déplacement du fichier
             error_log(print_r($_FILES['photo'], true));
             if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 ':idProduit' => $idNewProduit,
-                ':URL' => $nouveauNomImage
+                ':URL' => "/images/$nouveauNomImage"
             ]);
         }
 
