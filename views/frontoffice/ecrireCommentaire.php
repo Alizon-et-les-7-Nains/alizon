@@ -2,13 +2,13 @@
 session_start();
 require_once "../../controllers/pdo.php";
 
-$productId = intval($_POST['idProduit'] ?? 0);
+$productId = intval($_POST['id'] ?? 0);
 $errors = [];
 
 // CORRECTION : Traiter d'abord la soumission POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $productIdPost = intval($_POST['idProduit'] ?? 0);
+        $productIdPost = intval($_POST['id'] ?? 0);
         $clientId = intval($_SESSION['user_id'] ?? 0);
         $note = intval($_POST['note'] ?? 0);
         $sujet = trim($_POST['sujet'] ?? '');
