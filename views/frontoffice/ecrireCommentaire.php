@@ -2,13 +2,28 @@
 session_start();
 require_once "../../controllers/pdo.php";
 
-$productId = intval($_POST['id'] ?? 0);
+// CORRECTION : Récupérer l'ID depuis GET au lieu de POST
+$productId = intval($_GET['id'] ?? 0);
+
+if ($productId === 0) {
+    die("Produit non spécifié.");
+}
+
+// Récupérer les infos du produit pour l'affichage
+$sqlProduit = "SELECT p.nom AS nom_produit FROM _produit p WHERE p.idProduit = ?";
+$stmtProduit = $pdo->prepare($sqlProduit);
+$stmtProduit->execute([$productId]);
+$produit = $stmtProduit->fetch(PDO::FETCH_ASSOC);
+
+if (!$produit) {
+    die("Produit introuvable.");
+}
+
 $errors = [];
 
-// CORRECTION : Traiter d'abord la soumission POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $productIdPost = intval($_POST['id'] ?? 0);
+        // CORRECTION : Utiliser $productId qui vient de GET
         $clientId = intval($_SESSION['user_id'] ?? 0);
         $note = intval($_POST['note'] ?? 0);
         $sujet = trim($_POST['sujet'] ?? '');
@@ -18,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($clientId === 0) {
             $errors[] = "Vous devez être connecté pour laisser un avis.";
         }
-        if ($productIdPost === 0) {
+        if ($productId === 0) {
             $errors[] = "Produit invalide.";
         }
         if ($note === 0 || $note < 1 || $note > 5) {
@@ -39,14 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileName = null;
             
             // Gestion de l'upload d'image
-            if (!empty($_FILES['photo']['name']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            if (!empty($_FILES['photo']['name'])) {
                 $targetDir = "../../public/images/";
-                
-                // Vérifier si le dossier existe, sinon le créer
-                if (!is_dir($targetDir)) {
-                    mkdir($targetDir, 0755, true);
-                }
-                
                 $fileExtension = strtolower(pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION));
                 $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
                 
@@ -64,64 +73,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if (empty($errors)) {
-                // CORRECTION : Utiliser une transaction pour plus de sécurité
-                $pdo->beginTransaction();
-                
-                try {
-                    // Insertion de l'avis
-                    $sqlAvis = "INSERT INTO _avis (idProduit, idClient, titreAvis, contenuAvis, note, dateAvis) 
-                                VALUES (:idProduit, :idClient, :titre, :contenu, :note, CURDATE())";
-                    $stmt = $pdo->prepare($sqlAvis);
-                    $stmt->execute([
-                        ':idProduit' => $productIdPost,
+                // Insertion de l'avis
+                $sqlAvis = "INSERT INTO _avis (idProduit, idClient, titreAvis, contenuAvis, note, dateAvis) 
+                            VALUES (:idProduit, :idClient, :titre, :contenu, :note, CURDATE())";
+                $stmt = $pdo->prepare($sqlAvis);
+                $stmt->execute([
+                    ':idProduit' => $productId, // CORRECTION : utiliser $productId
+                    ':idClient' => $clientId,
+                    ':titre' => $sujet,
+                    ':contenu' => $message,
+                    ':note' => $note
+                ]);
+
+                // Insertion de l'image si présente
+                if ($fileName) {
+                    $sqlImageAvis = "INSERT INTO _imageAvis (idProduit, idClient, URL) 
+                                    VALUES (:idProduit, :idClient, :urlImage)";
+                    $stmtImageAvis = $pdo->prepare($sqlImageAvis);
+                    $stmtImageAvis->execute([
+                        ':idProduit' => $productId, // CORRECTION : utiliser $productId
                         ':idClient' => $clientId,
-                        ':titre' => $sujet,
-                        ':contenu' => $message,
-                        ':note' => $note
+                        ':urlImage' => $fileName 
                     ]);
-
-                    // Insertion de l'image si présente
-                    if ($fileName) {
-                        $sqlImageAvis = "INSERT INTO _imageAvis (idProduit, idClient, URL) 
-                                        VALUES (:idProduit, :idClient, :urlImage)";
-                        $stmtImageAvis = $pdo->prepare($sqlImageAvis);
-                        $stmtImageAvis->execute([
-                            ':idProduit' => $productIdPost,
-                            ':idClient' => $clientId,
-                            ':urlImage' => $fileName 
-                        ]);
-                    }
-                    
-                    $pdo->commit();
-
-                    // Redirection vers la page produit
-                    header("Location: product.php?id=" . $productIdPost);
-                    exit;
-                    
-                } catch (Exception $e) {
-                    $pdo->rollBack();
-                    throw $e;
                 }
+
+                // Redirection vers la page produit
+                header("Location: product.php?id=" . $productId);
+                exit;
             }
         }
     } catch(PDOException $e) {
         $errors[] = "Erreur lors de l'insertion de l'avis : " . $e->getMessage();
     }
-}
-
-// CORRECTION : Récupérer les infos du produit APRÈS le traitement POST
-if ($productId === 0) {
-    die("Produit non spécifié.");
-}
-
-// Récupérer les infos du produit pour l'affichage
-$sqlProduit = "SELECT p.nom AS nom_produit FROM _produit p WHERE p.idProduit = ?";
-$stmtProduit = $pdo->prepare($sqlProduit);
-$stmtProduit->execute([$productId]);
-$produit = $stmtProduit->fetch(PDO::FETCH_ASSOC);
-
-if (!$produit) {
-    die("Produit introuvable.");
 }
 ?>
 <!DOCTYPE html>
