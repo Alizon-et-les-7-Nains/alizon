@@ -95,17 +95,17 @@ btnSettings.forEach(btn => {
         modalReassort.showModal();
     });
 });
-// modalReassort?.addEventListener("click", (e) => {
-//     if (e.target === modalReassort) {
-//         modalReassort.close();
-//     }
-// });
-// document.querySelector('input#annuler')?.addEventListener('click', () => {
-//     modalReassort.close();
-// })
-// document.addEventListener('DOMContentLoaded', () => {
-//     modalReassort?.close();
-// });
+modalReassort?.addEventListener("click", (e) => {
+    if (e.target === modalReassort) {
+        modalReassort.close();
+    }
+});
+document.querySelector('input#annuler')?.addEventListener('click', () => {
+    modalReassort.close();
+});
+document.addEventListener('DOMContentLoaded', () => {
+    modalReassort?.close();
+});
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
