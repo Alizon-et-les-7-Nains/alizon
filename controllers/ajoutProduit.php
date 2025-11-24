@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':nom' => $nom,
-            ':prix' => $prix,
+            'prix' => $prix,
             ':poids' => $poids,
             ':description' => $description,
             ':mots_cles' => $mots_cles
