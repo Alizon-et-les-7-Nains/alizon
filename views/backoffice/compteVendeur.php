@@ -80,9 +80,6 @@ $idAdresse     = $vendeur['idAdresse'] ?? '';
                         }
                     ?>
                 </div>
-                <button type="button" class="changer-photo" id="boutonChangerPhoto" style="display: none;">
-                    Changer la photo
-                </button>
             </div>
             <input type="file" id="uploadPhoto" name="photoProfil" accept="image/png, image/jpg, image/jpeg, image/webp"
                 hidden>
