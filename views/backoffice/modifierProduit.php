@@ -1,10 +1,7 @@
 <?php
     require_once '../../controllers/pdo.php';
-
     require_once '../../controllers/prix.php';
     require_once '../../controllers/date.php';
-
-    require_once '../../controllers/auth.php';
 
 if (!isset($_GET['id'])) {
     die("Aucun produit sélectionné");
@@ -93,7 +90,6 @@ if (!$produit) {
                 </div>
 
             <div class="form-actions">
-                <button type="button" class="btn-previsualiser">Prévisualiser</button>
                 <button type="submit" class="btn-ajouter">Modifier le produit</button>
             </form>
                 <form class="supprimerProduit" id="monForm" action="../../controllers/deleteProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">            
@@ -112,8 +108,8 @@ if (!$produit) {
         
     </main>
 
-    <script src="/public/script.js">
-        
+    <script src="../../public/script.js"> </script>
+    <script>
     document.addEventListener('DOMContentLoaded', function() {
         const photoUploadInput = document.getElementById('photoUpload');
         const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
