@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $idProd = intval($_POST['id']); 
         $dateLimite = $_POST['date_limite'];
 
-        $photoPath = '/var/www/html/images/banieres/';
+        $photoPath = '/var/www/html/images/baniere/';
 
         $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
         $extension = '';
