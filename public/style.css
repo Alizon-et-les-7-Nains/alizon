@@ -3887,6 +3887,7 @@ button#haut.visible:hover {
 }
 .CreerCompteVendeur .container .form-vendeur input.form-control::placeholder {
   color: #6e6e6e;
+  font-family: "Lora", "Serif";
 }
 .CreerCompteVendeur .container .form-vendeur input.form-control.input-error {
   border-color: #f14e4e !important;
@@ -4558,7 +4559,7 @@ dialog.reassort {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%);
 }
 dialog.reassort::backdrop {
   background: rgba(0, 0, 0, 0.25);
@@ -5869,7 +5870,6 @@ dialog.reassort form input {
 .connexionVendeur .information_connexion .form-vendeur .liens-utiles a {
   text-decoration: underline;
   font-size: 0.9rem;
-  font-family: "lora", serif;
   font-weight: normal;
   font-style: normal;
   cursor: pointer;

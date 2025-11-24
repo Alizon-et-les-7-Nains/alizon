@@ -94,6 +94,9 @@
 
                 &::placeholder {
                     color: $color-dark-gray;
+                    font: {
+                        family: 'Lora','Serif';
+                    }
                 }
                 
                 &.input-error {
