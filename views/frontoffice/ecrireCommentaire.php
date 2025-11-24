@@ -2,16 +2,14 @@
 session_start();
 require_once "../../controllers/pdo.php";
 
-// Insert review (only once!)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $productId = intval($_GET['idProduit'] ?? 0);
+        $productId = intval($_POST['idProduit'] ?? 0);
         $clientId = intval($_SESSION['user_id'] ?? 0);
         $note = intval($_POST['note'] ?? 0);
         $sujet = trim($_POST['sujet'] ?? '');
         $message = trim($_POST['message'] ?? '');
 
-        // Validation
         if ($clientId === 0) {
             die("Vous devez être connecté pour laisser un avis.");
         }
@@ -21,8 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($sujet) || empty($message) || $note === 0) {
             die("Veuillez remplir tous les champs obligatoires.");
         }
-
-        // Handle file upload
         $fileName = null;
         if (!empty($_FILES['photo']['name'])) {
             $targetDir = "../../public/images/";
@@ -30,13 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $targetFile = $targetDir . $fileName;
 
             if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
-                // File uploaded successfully
             } else {
                 $fileName = null;
             }
         }
 
-        // Insert review
         $sqlAvis = "INSERT INTO saedb._avis (idProduit, idClient, titreAvis, contenuAvis, note, dateAvis) 
         VALUES (:idProduit, :idClient, :titre, :contenu, :note, CURDATE())";
         $stmt = $pdo->prepare($sqlAvis);
@@ -48,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':note' => $note
         ]);
 
-        // Only insert image if one was uploaded
         if ($fileName) {
             $sqlImageAvis = "INSERT INTO saedb._imageAvis (idProduit, idClient, URL) 
                             VALUES (:idProduit, :idClient, :urlImage)";
@@ -56,11 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtImageAvis->execute([
                 ':idProduit' => $productId,
                 ':idClient' => $clientId,
-                ':urlImage' => '/images/' . $fileName  // Added path prefix
+                ':urlImage' => '/images/' . $fileName 
             ]);
         }
 
-        // Redirect after successful submission
         header("Location: product.php?id=" . $productId);
 
     } catch(PDOException $e) {
