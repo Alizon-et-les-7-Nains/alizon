@@ -35,21 +35,17 @@ $page-padding-small: 20px;
   .form-compte {
     position: relative;
     z-index: 2;
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* deux colonnes égales pour les inputs */
-    grid-template-rows: auto 1fr; /* header en première ligne, colonnes en deuxième */
+    display: flex;
+    flex-direction: column;
     gap: 40px;
-    align-items: start;
     width: 100%;
     box-sizing: border-box;
 
     /* Header qui prend toute la largeur au-dessus des colonnes */
     .header-compte {
-      grid-column: 1 / -1; /* span across both columns */
       display: flex;
       align-items: center;
       gap: 28px;
-      margin-bottom: 0; /* géré par le grid gap */
       padding-bottom: 10px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
@@ -88,12 +84,21 @@ $page-padding-small: 20px;
       }
     }
 
+    /* CONTENEUR DES COLONNES */
+    .colonnes-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
     /* Colonnes pour les champs */
     .col {
       display: flex;
       flex-direction: column;
       gap: 20px;
-      /* chaque .col occupe une colonne du grid (auto par défaut) */
+      width: 100%;
+
       .champ {
         display: flex;
         flex-direction: column;
@@ -197,7 +202,6 @@ $page-padding-small: 20px;
 
     /* Actions sur la ligne du bas */
     .actions {
-      grid-column: 1 / -1; /* occupe toute la largeur */
       display: flex;
       gap: 16px;
       justify-content: flex-end;
@@ -275,6 +279,10 @@ $page-padding-small: 20px;
           font-size: clamp(20px, 3vw, 36px);
         }
       }
+
+      .colonnes-container {
+        gap: 28px;
+      }
     }
   }
 }
@@ -285,8 +293,6 @@ $page-padding-small: 20px;
     padding: clamp(16px, 4vw, 40px);
 
     .form-compte {
-      grid-template-columns: 1fr; /* une seule colonne */
-      grid-template-rows: auto;
       gap: 20px;
 
       .header-compte {
@@ -295,8 +301,9 @@ $page-padding-small: 20px;
         align-items: center;
       }
 
-      .col {
-        width: 100%;
+      .colonnes-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
       }
 
       .champ-double {
@@ -332,6 +339,10 @@ $page-padding-small: 20px;
         h1 {
           font-size: 20px;
         }
+      }
+
+      .colonnes-container {
+        gap: 16px;
       }
 
       .actions {
@@ -381,6 +392,10 @@ $page-padding-small: 20px;
         h1 {
           font-size: 18px;
         }
+      }
+
+      .colonnes-container {
+        gap: 12px;
       }
     }
   }
