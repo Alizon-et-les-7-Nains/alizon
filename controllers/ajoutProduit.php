@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 ':idProduit' => $idNewProduit,
-                ':URL' => $nouveauNomImage
+                ':URL' => "/images/$nouveauNomImage"
             ]);
         }
 
