@@ -43,7 +43,6 @@ foreach ($extensionsPossibles as $ext) {
     }
 }
 
-
 // Traitement de l'upload de photo si formulaire soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
     
@@ -58,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photoProfil']) && $_
     $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
     move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
 }
-
 
 // Traitement des autres données du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -145,12 +143,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="photo-profil-container">
                     <div class="photo-profil">
                         <?php 
-                    if (file_exists($photoPath . $extension)) {
-                        echo '<img src="/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension . '" alt="photoProfil" id="imageProfile">';
-                    } else {
-                        echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
-                    }
-                    ?>
+                        if (file_exists($photoPath . $extension)) {
+                            echo '<img src="/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension . '" alt="photoProfil" id="imageProfile">';
+                        } else {
+                            echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
+                        }
+                        ?>
                     </div>
                 </div>
                 <h1>Mon compte</h1>
@@ -159,138 +157,144 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="hidden" name="code_vendeur" value="<?= $code_vendeur ?>">
             <input type="hidden" name="id_adresse" value="<?= $idAdresse ?>">
 
-            <!-- Colonne gauche -->
-            <article class="col">
-                <div class="champ">
-                    <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($nom) ?>" readonly>
-                    <div class="field-error">
-                        <p>Le nom est obligatoire</p>
+            <!-- CONTENEUR DES COLONNES -->
+            <div class="colonnes-container">
+                <!-- Colonne gauche -->
+                <article class="col">
+                    <div class="champ">
+                        <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($nom) ?>" readonly>
+                        <div class="field-error">
+                            <p>Le nom est obligatoire</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="champ">
-                    <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars($prenom) ?>" readonly>
-                    <div class="field-error">
-                        <p>Le prénom est obligatoire</p>
+                    <div class="champ">
+                        <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars($prenom) ?>" readonly>
+                        <div class="field-error">
+                            <p>Le prénom est obligatoire</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="champ">
-                    <div class="champ-date">
-                        <input type="date" id="dateNaissance" name="dateNaissance" value="<?= $dateNaissance ?>"
+                    <div class="champ">
+                        <div class="champ-date">
+                            <input type="date" id="dateNaissance" name="dateNaissance" value="<?= $dateNaissance ?>"
+                                readonly>
+                        </div>
+                        <div class="field-error">
+                            <p>Vous devez avoir 18 ans</p>
+                        </div>
+                    </div>
+
+                    <div class="champ">
+                        <input type="text" id="adresse" name="adresse" value="<?= htmlspecialchars($adresse) ?>"
                             readonly>
-                    </div>
-                    <div class="field-error">
-                        <p>Vous devez avoir 18 ans</p>
-                    </div>
-                </div>
-
-                <div class="champ">
-                    <input type="text" id="adresse" name="adresse" value="<?= htmlspecialchars($adresse) ?>" readonly>
-                    <div class="field-error">
-                        <p>L'adresse est obligatoire</p>
-                    </div>
-                </div>
-
-                <div class="champ-double">
-                    <div class="champ">
-                        <input type="text" id="codePostal" name="codePostal"
-                            value="<?= htmlspecialchars($codePostal) ?>" readonly>
                         <div class="field-error">
-                            <p>Le code postal doit contenir 5 chiffres</p>
+                            <p>L'adresse est obligatoire</p>
                         </div>
                     </div>
-                    <div class="champ">
-                        <input type="text" id="ville" name="ville" value="<?= htmlspecialchars($ville) ?>" readonly>
-                        <div class="field-error">
-                            <p>La ville est obligatoire</p>
+
+                    <div class="champ-double">
+                        <div class="champ">
+                            <input type="text" id="codePostal" name="codePostal"
+                                value="<?= htmlspecialchars($codePostal) ?>" readonly>
+                            <div class="field-error">
+                                <p>Le code postal doit contenir 5 chiffres</p>
+                            </div>
+                        </div>
+                        <div class="champ">
+                            <input type="text" id="ville" name="ville" value="<?= htmlspecialchars($ville) ?>" readonly>
+                            <div class="field-error">
+                                <p>La ville est obligatoire</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="champ">
-                    <input type="text" id="region" name="region" value="<?= htmlspecialchars($region) ?>" readonly>
-                    <div class="field-error">
-                        <p>La région est obligatoire</p>
+                    <div class="champ">
+                        <input type="text" id="region" name="region" value="<?= htmlspecialchars($region) ?>" readonly>
+                        <div class="field-error">
+                            <p>La région est obligatoire</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="champ">
-                    <input type="tel" id="telephone" name="telephone" value="<?= htmlspecialchars($telephone) ?>"
-                        readonly>
-                    <div class="field-error">
-                        <p>Le téléphone doit contenir 10 chiffres</p>
+                    <div class="champ">
+                        <input type="tel" id="telephone" name="telephone" value="<?= htmlspecialchars($telephone) ?>"
+                            readonly>
+                        <div class="field-error">
+                            <p>Le téléphone doit contenir 10 chiffres</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="champ">
-                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" readonly>
-                    <div class="field-error">
-                        <p>L'email n'est pas valide</p>
+                    <div class="champ">
+                        <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" readonly>
+                        <div class="field-error">
+                            <p>L'email n'est pas valide</p>
+                        </div>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <!-- Colonne droite -->
-            <article class="col">
-                <div class="champ">
-                    <input type="text" id="raisonSociale" name="raisonSociale"
-                        value="<?= htmlspecialchars($raisonSociale) ?>" readonly>
-                    <div class="field-error">
-                        <p>La raison sociale est obligatoire</p>
+                <!-- Colonne droite -->
+                <article class="col">
+                    <div class="champ">
+                        <input type="text" id="raisonSociale" name="raisonSociale"
+                            value="<?= htmlspecialchars($raisonSociale) ?>" readonly>
+                        <div class="field-error">
+                            <p>La raison sociale est obligatoire</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="champ">
-                    <input type="text" id="noSiren" name="noSiren" value="<?= htmlspecialchars($noSiren) ?>" readonly>
-                    <div class="field-error">
-                        <p>Le SIREN doit contenir 9 chiffres</p>
+                    <div class="champ">
+                        <input type="text" id="noSiren" name="noSiren" value="<?= htmlspecialchars($noSiren) ?>"
+                            readonly>
+                        <div class="field-error">
+                            <p>Le SIREN doit contenir 9 chiffres</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="champ">
-                    <input type="text" id="pseudo" name="pseudo" value="<?= htmlspecialchars($pseudo) ?>" readonly>
-                    <div class="field-error">
-                        <p>Le pseudo est obligatoire</p>
+                    <div class="champ">
+                        <input type="text" id="pseudo" name="pseudo" value="<?= htmlspecialchars($pseudo) ?>" readonly>
+                        <div class="field-error">
+                            <p>Le pseudo est obligatoire</p>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Section modification mot de passe -->
-                <div class="champ">
-                    <input type="password" id="ancienMdp" name="ancienMdp" placeholder="Ancien mot de passe" readonly>
-                    <div class="field-error">
-                        <p>L'ancien mot de passe est obligatoire</p>
+                    <!-- Section modification mot de passe -->
+                    <div class="champ">
+                        <input type="password" id="ancienMdp" name="ancienMdp" placeholder="Ancien mot de passe"
+                            readonly>
+                        <div class="field-error">
+                            <p>L'ancien mot de passe est obligatoire</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="champ">
-                    <input type="password" id="nouveauMdp" name="nouveauMdp" placeholder="Nouveau mot de passe"
-                        readonly>
-                    <div class="field-error">
-                        <p>Le mot de passe ne respecte pas les critères</p>
+                    <div class="champ">
+                        <input type="password" id="nouveauMdp" name="nouveauMdp" placeholder="Nouveau mot de passe"
+                            readonly>
+                        <div class="field-error">
+                            <p>Le mot de passe ne respecte pas les critères</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="champ">
-                    <input type="password" id="confirmationMdp" name="confirmationMdp"
-                        placeholder="Confirmer le nouveau mot de passe" readonly>
-                    <div class="field-error">
-                        <p>La confirmation ne correspond pas</p>
+                    <div class="champ">
+                        <input type="password" id="confirmationMdp" name="confirmationMdp"
+                            placeholder="Confirmer le nouveau mot de passe" readonly>
+                        <div class="field-error">
+                            <p>La confirmation ne correspond pas</p>
+                        </div>
                     </div>
-                </div>
 
-                <ul class="mpd-rules">
-                    <li>Longueur minimale de 12 caractères</li>
-                    <li>Au moins une minuscule / majuscule</li>
-                    <li>Au moins un chiffre</li>
-                    <li>Au moins un caractère spécial</li>
-                </ul>
+                    <ul class="mpd-rules">
+                        <li>Longueur minimale de 12 caractères</li>
+                        <li>Au moins une minuscule / majuscule</li>
+                        <li>Au moins un chiffre</li>
+                        <li>Au moins un caractère spécial</li>
+                    </ul>
 
-                <div class="champ">
-                    <span class="field-label">Code vendeur :</span>
-                    <span class="code-vendeur">VD<?= str_pad($code_vendeur, 3, '0', STR_PAD_LEFT) ?></span>
-                </div>
-            </article>
+                    <div class="champ">
+                        <span class="field-label">Code vendeur :</span>
+                        <span class="code-vendeur">VD<?= str_pad($code_vendeur, 3, '0', STR_PAD_LEFT) ?></span>
+                    </div>
+                </article>
+            </div> <!-- Fin du conteneur des colonnes -->
 
             <div class="actions">
                 <button type="button" class="modifier boutonModifierProfil">Modifier</button>
