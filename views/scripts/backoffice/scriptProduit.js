@@ -104,7 +104,9 @@ function popUpRemise(){
                 </div>
                 <div class="ligne"></div>
                 <section class="section2">
-                    <input type="text" name="dateLimite" id="dateLimite" placeholder="Date limite">
+                    <div>
+                        <input type="text" name="dateLimite" id="dateLimite" placeholder="Date limite">
+                    </div>
                     <div>
                         <input type="text" name="nouveauPrix" id="nouveauPrix" placeholder="Nouveau prix">
                         <input type="reduction" name="" id="reduction" placeholder="Reduction(%)">
@@ -163,7 +165,9 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
             <div class="ligne"></div>
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
-                        <input type="text" id="dateLimite" name="date_limite" placeholder="Date limite : Jour/Mois/Année">
+                        <div>
+                            <input type="text" id="dateLimite" name="date_limite" placeholder="Date limite : Jour/Mois/Année">
+                        </div>
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">
                             <input type="file" id="baniere" name="baniere" accept="image/*">
