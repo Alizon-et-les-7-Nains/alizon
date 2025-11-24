@@ -329,23 +329,6 @@
         font-weight: 100;
     }
 
-    .sectionAvis a {
-        display: inline-block;
-        margin: 2em 0;
-        border: 2px solid $color-blue;
-        background-color: white;
-        border-radius: 32px;
-        padding: 0.5em 1em;
-        cursor: pointer;
-        margin: 1em 0;
-        font-size: 16px;
-        text-decoration: none;
-        color: $color-blue;
-        text-align: center;
-        transition: all 0.3s ease;
-    
-    }
-
     .sectionAvis button {
         margin: 2em 0;
         border: 2px solid $color-blue;
