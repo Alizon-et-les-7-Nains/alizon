@@ -228,13 +228,11 @@ function desactiverModeEdition() {
     if (input.type === "password") {
       input.value = "";
     }
-
-    // Retirer les écouteurs d'événements en remplaçant par clone
+    
     const newInput = input.cloneNode(true);
     input.parentNode.replaceChild(newInput, input);
   });
 
-  // Désactiver la modification de la photo de profil (comme client)
   if (document.getElementById("photoProfil")) {
     document.getElementById("photoProfil").remove();
   }

@@ -3569,18 +3569,11 @@ button#haut.visible:hover {
   border-radius: 32px;
   cursor: pointer;
 }
-.modifierProduit .form-actions .btn-previsualiser {
-  background-color: #e4d9ff;
-  color: #273469;
-  width: 200px;
-}
-.modifierProduit .form-actions .btn-previsualiser:hover {
-  background-color: rgb(209.8815789474, 191.5, 255);
-}
 .modifierProduit .form-actions .btn-supprimer {
   background-color: #f14e4e;
   color: #fffefa;
   width: 200px;
+  margin-top: 13px;
 }
 .modifierProduit .form-actions .btn-supprimer:hover {
   background-color: rgb(209.8815789474, 191.5, 255);
@@ -3931,6 +3924,16 @@ button#haut.visible:hover {
   text-align: center;
   margin-bottom: 10px;
   margin-top: 10px;
+}
+.CreerCompteVendeur .container .form-vendeur .connexion_lien a {
+  color: #273469;
+  text-decoration: underline;
+}
+.CreerCompteVendeur .container .form-vendeur .connexion_lien a:visited {
+  color: #273469;
+}
+.CreerCompteVendeur .container .form-vendeur .connexion_lien a:hover {
+  color: rgb(25.1875, 33.5833333333, 67.8125);
 }
 .CreerCompteVendeur .container .form-vendeur .inscriptions_autres {
   text-align: center;
@@ -4557,9 +4560,6 @@ dialog.reassort {
   align-items: center;
   gap: 1em;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 0);
 }
 dialog.reassort::backdrop {
   background: rgba(0, 0, 0, 0.25);
@@ -5866,6 +5866,12 @@ dialog.reassort form input {
   font-weight: normal;
   font-style: normal;
   cursor: pointer;
+}
+.connexionVendeur .information_connexion .form-vendeur .liens-utiles a:visited {
+  color: #273469;
+}
+.connexionVendeur .information_connexion .form-vendeur .liens-utiles a:hover {
+  color: rgb(25.1875, 33.5833333333, 67.8125);
 }
 .connexionVendeur .information_connexion .form-vendeur .actions {
   width: 100%;

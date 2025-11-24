@@ -43,9 +43,10 @@ foreach ($extensionsPossibles as $ext) {
     }
 }
 
+
 // Traitement de l'upload de photo si formulaire soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-    // Supprimer l'ancienne photo
+    
     foreach ($extensionsPossibles as $ext) {
         $oldFile = $photoPath . '.' . $ext;
         if (file_exists($oldFile)) {
@@ -57,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photoProfil']) && $_
     $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
     move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
 }
+
 
 // Traitement des autres données du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -138,23 +140,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'partials/header.php'; ?>
 
     <main class="page-compte">
-        <div class="header-compte">
-            <div class="photo-profil-container">
-                <div class="photo-profil">
-                    <?php 
+        <form class="form-compte" method="POST" action="" enctype="multipart/form-data">
+            <div class="header-compte">
+                <div class="photo-profil-container">
+                    <div class="photo-profil">
+                        <?php 
                     if (file_exists($photoPath . $extension)) {
                         echo '<img src="/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension . '" alt="photoProfil" id="imageProfile">';
                     } else {
                         echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                     }
                     ?>
+                    </div>
                 </div>
+                <h1>Mon compte</h1>
             </div>
-            <input type="file" id="photoProfil" name="photoProfil" accept="image/*" style="display: none;">
-            <h1>Mon compte</h1>
-        </div>
 
-        <form class="form-compte" method="POST" action="" enctype="multipart/form-data">
             <input type="hidden" name="code_vendeur" value="<?= $code_vendeur ?>">
             <input type="hidden" name="id_adresse" value="<?= $idAdresse ?>">
 

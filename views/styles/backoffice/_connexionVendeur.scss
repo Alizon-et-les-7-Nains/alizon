@@ -101,6 +101,14 @@
                         style: normal;
                     }    
                     cursor: pointer;
+                    
+                    :visited {
+                        color: $color-blue !important;
+                    }
+
+                    :hover {
+                        color: darken($color: $color-blue, $amount: 10%);
+                    }
                 }
             }
 

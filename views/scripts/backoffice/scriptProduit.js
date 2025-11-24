@@ -166,7 +166,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
                         <div>
-                            <input type="text" id="dateLimite" name="date_limite" placeholder="Date limite : Jour/Mois/Année">
+                            <input type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
                         </div>
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">
@@ -222,7 +222,12 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
     document.querySelector('.ajouterBaniere').addEventListener('click', cliqueBaniere);
 
     const dateLimite = overlay.querySelector("#dateLimite");
-    dateLimite.addEventListener("input", () => verifDate(dateLimite));
+    let dateLimiteVal = dateLimite.value;
+    dateLimite.addEventListener("change", () => { 
+        clearError(dateLimite); 
+        verifDate(dateLimite); 
+        console.log("Date limite :", dateLimiteVal); 
+    });
 
     const infoCalcBtn = overlay.querySelector('.infoCalcul');
     infoCalcBtn.addEventListener('click', popUpInfoCalcul);
@@ -252,6 +257,10 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
         const nbJours = Math.max(0, nbJourDiff);
         const coutParJour = prix * 0.1;
         const totalPromo = (coutParJour * nbJours).toFixed(2);
+
+        if(totalPromo == NaN) {
+            totalPromo = 0;
+        }
 
         txtPromo.textContent = totalPromo;
         txtDuree.textContent = nbJours;
