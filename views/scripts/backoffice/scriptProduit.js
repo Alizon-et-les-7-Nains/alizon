@@ -62,7 +62,7 @@ function popUpInfoCalcul() {
 }
 
 function verifDate(val){
-    let valeur = element.value.trim();
+    let valeur = val.value.trim();
     if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
         setError(val, "Format attendu : jj/mm/aaaa");
     } else {
@@ -170,8 +170,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                         </div>
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">
-                            <input type="file" id="baniere" name="baniere" accept="image/*">
-                            <img src="../../public/images/iconeAjouterBaniere.svg" alt="">
+                            <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
                         <p class="supprimer">supprimer ...</p>
                         <p><strong>Format accepté </strong>: 21:4 (1440x275 pixels minimum)</p>
