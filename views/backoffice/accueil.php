@@ -117,7 +117,7 @@
             <tr>
                 <th rowspan=2>
                     <figure>
-                        <img src='$imageClient'>
+                        <img src='$imageClient' onerror='this.style.display=\'none\''>
                         <figcaption>" . $avi['nomClient'] . "</figcaption>
                     </figure>
                     <figure>
