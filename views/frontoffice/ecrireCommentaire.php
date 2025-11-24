@@ -6,7 +6,7 @@ require_once "../../controllers/pdo.php";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $productId = intval($_GET['id'] ?? 0);
-        $clientId = intval($_SESSION['idClient'] ?? 0);
+        $clientId = intval($_SESSION['user_id'] ?? 0);
         $note = intval($_POST['note'] ?? 0);
         $sujet = trim($_POST['sujet'] ?? '');
         $message = trim($_POST['message'] ?? '');
@@ -62,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Redirect after successful submission
         header("Location: product.php?id=" . $productId);
-        exit;
 
     } catch(PDOException $e) {
         die("Erreur lors de l'insertion de l'avis : " . $e->getMessage());
