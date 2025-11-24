@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- CORRECTION 2 : Ajouter l'ID du produit en champ caché -->
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
             
-            <h1>Évaluer : <?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
+            <h1>Évaluer : <b><?php echo htmlspecialchars($produit['nom_produit']); ?></b></h1>
             
             <h2>Laisser une note <span style="color: red;">*</span> :</h2>
             <article class="etoiles">

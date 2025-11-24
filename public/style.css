@@ -5275,6 +5275,7 @@ dialog.reassort form input {
 }
 .pageProduit .sectionAvis article div {
   margin: 0 0;
+  width: 100%;
 }
 .pageProduit .sectionAvis article div h3 {
   padding-top: 0.2em;
@@ -5309,6 +5310,7 @@ dialog.reassort form input {
   flex-direction: column;
 }
 .pageProduit .baselineSpaceBetween {
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

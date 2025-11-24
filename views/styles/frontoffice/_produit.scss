@@ -357,6 +357,7 @@
 
     .sectionAvis article div{
         margin: 0 0;
+        width: 100%;
     }
 
     .sectionAvis article div h3{
@@ -398,6 +399,7 @@
     }
 
     .baselineSpaceBetween{
+        width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
