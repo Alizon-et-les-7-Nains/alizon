@@ -221,9 +221,13 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
 
     document.querySelector('.ajouterBaniere').addEventListener('click', cliqueBaniere);
 
-    const dateLimite = overlay.querySelector(".dateLimite");
+    const dateLimite = overlay.querySelector("#dateLimite");
     let dateLimiteVal = dateLimite.value;
-    dateLimite.addEventListener("change", () => { verifDate(dateLimiteVal); console.log("Date limite :", dateLimiteVal); });
+    dateLimite.addEventListener("change", () => { 
+        clearError(dateLimite); 
+        verifDate(dateLimite); 
+        console.log("Date limite :", dateLimiteVal); 
+    });
 
     const infoCalcBtn = overlay.querySelector('.infoCalcul');
     infoCalcBtn.addEventListener('click', popUpInfoCalcul);
