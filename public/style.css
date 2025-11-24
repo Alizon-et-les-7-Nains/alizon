@@ -4551,7 +4551,7 @@ dialog.reassort {
   padding-bottom: 1em;
   color: #273469;
   font-family: "open-sans";
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   gap: 1em;

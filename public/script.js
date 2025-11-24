@@ -93,6 +93,7 @@ btnSettings.forEach(btn => {
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
         modalReassort.showModal();
+        modalReassort.style.display = 'flex';
     });
 });
 modalReassort?.addEventListener("click", (e) => {
