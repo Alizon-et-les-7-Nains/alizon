@@ -341,7 +341,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
 
         const nbJours = Math.max(0, nbJourDiff);
         const coutParJour = prix * 0.1;
-        const totalPromo = (coutParJour * nbJours).toFixed(2);
+        let totalPromo = (coutParJour * nbJours).toFixed(2);
 
         if(totalPromo == NaN) {
             totalPromo = 0;
