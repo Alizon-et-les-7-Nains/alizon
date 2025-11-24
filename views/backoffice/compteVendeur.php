@@ -81,7 +81,7 @@ $idAdresse     = $vendeur['idAdresse'] ?? '';
                     ?>
                 </div>
             </div>
-            <input type="file" id="uploadPhoto" name="photoProfil" accept="image/png, image/jpg, image/jpeg, image/webp"
+            <input type="file" id="photoProfil" name="photoProfil" accept="image/png, image/jpg, image/jpeg, image/webp"
                 hidden>
             <h1>Mon compte</h1>
         </div>
