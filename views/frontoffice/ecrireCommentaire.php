@@ -3,7 +3,7 @@ session_start();
 require_once "../../controllers/pdo.php";
 
 // CORRECTION 1 : Récupérer l'ID du produit depuis l'URL
-$productId = intval($_GET['id'] ?? 0);
+$productId = intval($_POST['id'] ?? 0);
 
 if ($productId === 0) {
     die("Produit non spécifié.");
