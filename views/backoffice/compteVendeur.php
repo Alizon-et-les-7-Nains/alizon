@@ -140,22 +140,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'partials/header.php'; ?>
 
     <main class="page-compte">
-        <div class="header-compte">
-            <div class="photo-profil-container">
-                <div class="photo-profil">
-                    <?php 
+        <form class="form-compte" method="POST" action="" enctype="multipart/form-data">
+            <div class="header-compte">
+                <div class="photo-profil-container">
+                    <div class="photo-profil">
+                        <?php 
                     if (file_exists($photoPath . $extension)) {
                         echo '<img src="/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension . '" alt="photoProfil" id="imageProfile">';
                     } else {
                         echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                     }
                     ?>
+                    </div>
                 </div>
+                <h1>Mon compte</h1>
             </div>
-            <h1>Mon compte</h1>
-        </div>
 
-        <form class="form-compte" method="POST" action="" enctype="multipart/form-data">
             <input type="hidden" name="code_vendeur" value="<?= $code_vendeur ?>">
             <input type="hidden" name="id_adresse" value="<?= $idAdresse ?>">
 
