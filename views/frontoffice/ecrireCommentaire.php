@@ -197,21 +197,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             noteInput.value = rating;
         });
-
-        // Au survol
-        star.addEventListener('mouseenter', () => {
-            stars.forEach((s, i) => {
-                if (i > rating) {
-                    s.style.opacity = '0.7';
-                }
-            });
-        });
-
-        star.addEventListener('mouseleave', () => {
-            stars.forEach((s) => {
-                s.style.opacity = '1';
-            });
-        });
     });
 
     // Gestion de l'upload de photo
