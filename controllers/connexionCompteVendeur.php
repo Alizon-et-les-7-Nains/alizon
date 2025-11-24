@@ -16,11 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $vendeurSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/vendeur.sql'));
             $vendeurSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
             $vendeur = $vendeurSTMT->fetch(PDO::FETCH_ASSOC);
-
             $pdo->commit();
 
             session_start();
-            $_SESSION['id'] = $vendeur[0]['codeVendeur'];
+            $id_session = session_id();
+            $_SESSION['session_id'] = $id_session;
+            $_SESSION['id'] = $vendeur['codeVendeur'];
             $_SESSION['pass'] = $_POST['mdp'];
 
             header('Location: ../views/backoffice/accueil.php');
