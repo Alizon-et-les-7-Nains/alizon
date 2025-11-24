@@ -1,69 +1,103 @@
 @use "../colors" as *;
 @use "../fonts" as *;
 
+/* Variables utiles */
+$max-page-width: 100%;
+$page-padding-large: 60px;
+$page-padding-medium: 40px;
+$page-padding-small: 20px;
+
+/* Layout principal */
 .page-compte {
-  padding: 60px 80px;
+  padding: clamp(20px, 5vw, 60px);
+  max-width: $max-page-width;
+  margin: 0;
   position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+  overflow-x: hidden;
 
   &::before {
     content: "";
     position: absolute;
     right: 0;
-    top: -400px;
-    width: 1000px;
-    height: 1000px;
-    background: url("../../public/images/symboleRose.png") no-repeat center
-      center;
-    background-size: contain;
+    top: -20vw;
+    width: 60vw;
+    height: 60vw;
+    background: url("../../public/images/symboleRose.png") no-repeat;
     transform: rotate(-20deg);
     opacity: 0.42;
     pointer-events: none;
-    z-index: 0;
+    z-index: 999;
   }
 
-  .header-compte {
+  /* Le formulaire occupe l'espace au-dessus du background décoratif */
+  .form-compte {
+    position: relative;
+    z-index: 2;
     display: flex;
-    align-items: center;
-    gap: 35px;
-    margin-bottom: 40px;
+    flex-direction: column;
+    gap: 40px;
+    width: 60%;
+    box-sizing: border-box;
 
-    .photo-profil {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      overflow: hidden;
-      background: #e3e3e3;
+    /* Header qui prend toute la largeur au-dessus des colonnes */
+    .header-compte {
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.3s ease;
+      gap: 28px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+      .photo-profil {
+        width: clamp(70px, 12vw, 150px);
+        height: clamp(70px, 12vw, 150px);
+        border-radius: 50%;
+        overflow: hidden;
+        background: #e9e9ee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        flex-shrink: 0;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        &:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        }
+      }
+
+      h1 {
+        font-family: "Lora", serif;
+        font-size: clamp(22px, 3.5vw, 42px);
+        color: $color-blue;
+        font-weight: 600;
+        margin: 0;
       }
     }
 
-    h1 {
-      font-family: "Lora", serif;
-      font-size: 42px;
-      color: $color-blue;
-      font-weight: 600;
+    /* CONTENEUR DES COLONNES */
+    .colonnes-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
     }
-  }
 
-  .form-compte {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    width: 60%;
-
+    /* Colonnes pour les champs */
     .col {
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 20px;
+      width: 100%;
 
       .champ {
         display: flex;
@@ -71,50 +105,47 @@
         gap: 6px;
 
         label {
-          font-size: 16px;
+          font-size: 14px;
           color: #1b1b1b;
           font-weight: 600;
         }
 
-        input {
+        input,
+        textarea,
+        select {
           width: 100%;
-          padding: 12px 16px;
+          padding: 12px 14px;
           font-size: 15px;
           border: 2px solid $color-blue;
           border-radius: 12px;
-          background: white;
+          background: #fff;
           outline: none;
           box-sizing: border-box;
-          transition: all 0.3s ease;
+          transition: all 0.18s ease;
+        }
 
-          &[readonly] {
-            background-color: #f8f9fa !important;
-            color: #6c757d !important;
-            cursor: not-allowed;
-            border-color: #dee2e6;
-          }
+        input[readonly],
+        textarea[readonly],
+        select[disabled] {
+          background-color: #f8f9fa;
+          color: #6c757d;
+          cursor: not-allowed;
+          border-color: #dee2e6;
+        }
 
-          &:not([readonly]) {
-            background-color: white !important;
-            color: #212529 !important;
-            border-color: $color-blue;
-          }
+        input:not([readonly]):focus,
+        textarea:not([readonly]):focus,
+        select:focus {
+          border-color: darken($color-blue, 8%);
+          box-shadow: 0 0 0 4px rgba($color-blue, 0.08);
+        }
 
-          &:focus:not([readonly]) {
-            border-color: darken($color-blue, 10%);
-            box-shadow: 0 0 0 3px rgba($color-blue, 0.1);
-          }
-
-          // Style pour les champs en erreur
-          &.error {
-            border-color: #e4574d;
-            background-color: #fff5f5;
-
-            &:focus {
-              border-color: #e4574d;
-              box-shadow: 0 0 0 3px rgba(#e4574d, 0.1);
-            }
-          }
+        /* état d'erreur */
+        input.error,
+        textarea.error,
+        select.error {
+          border-color: #e4574d;
+          background-color: #fff5f5;
         }
 
         .field-error {
@@ -137,434 +168,236 @@
 
       .mpd-rules {
         margin-top: 4px;
-        padding-left: 22px;
+        padding-left: 18px;
         font-size: 14px;
 
         li {
           margin: 4px 0;
-          transition: color 0.3s ease;
+          transition: color 0.2s ease;
         }
       }
     }
 
-    .code-vendeur {
-      font-size: 18px;
-      font-weight: bold;
-      color: $color-blue;
-    }
-  }
-}
-
-.champ-double {
-  display: flex;
-  gap: 12px;
-
-  .champ {
-    flex: 1;
-
-    input {
-      width: 100%;
-      box-sizing: border-box;
-    }
-  }
-}
-
-.actions {
-  grid-column: 1 / -1;
-  display: flex;
-  gap: 18px;
-  justify-content: flex-end;
-  margin-top: 35px;
-  flex-wrap: wrap;
-
-  button {
-    padding: 14px 30px;
-    border-radius: 26px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    min-width: 120px;
-
-    &:active {
-      transform: translateY(0);
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-  }
-
-  .modifier {
-    background-color: #dcd8f9;
-    color: #3d2d86;
-  }
-
-  .sauvegarder {
-    background: #eceaff;
-    color: #3d2d86;
-  }
-
-  .annuler {
-    background: #eceaff;
-    color: #3d2d86;
-  }
-
-  .modifier-mdp {
-    background-color: #dcd8f9;
-    color: #3d2d86;
-
-    &.annuler-mdp {
-      background: #eceaff;
-      color: #3d2d86;
-    }
-  }
-
-  .supprimer {
-    background: #e4574d;
-    color: white;
-  }
-}
-
-/* ============================ */
-/* RESPONSIVE DESIGN */
-/* ============================ */
-
-/* Tablettes et petits écrans d'ordinateur */
-@media (max-width: 1200px) {
-  .page-compte {
-    padding: 50px 60px;
-
-    .form-compte {
-      width: 70%;
-    }
-  }
-}
-
-@media (max-width: 1024px) {
-  .page-compte {
-    padding: 40px 50px;
-
-    .header-compte {
-      gap: 30px;
-      margin-bottom: 35px;
-
-      .photo-profil {
-        width: 130px;
-        height: 130px;
-      }
-
-      h1 {
-        font-size: 36px;
-      }
-    }
-
-    .form-compte {
-      width: 80%;
-      gap: 40px;
-    }
-  }
-}
-
-/* Tablettes */
-@media (max-width: 900px) {
-  .page-compte {
-    padding: 35px 40px;
-
-    &::before {
-      top: -300px;
-      width: 800px;
-      height: 800px;
-      opacity: 0.3;
-    }
-
-    .header-compte {
-      flex-direction: column;
-      text-align: center;
-      gap: 25px;
-      margin-bottom: 30px;
-
-      .photo-profil {
-        width: 120px;
-        height: 120px;
-      }
-
-      h1 {
-        font-size: 32px;
-      }
-    }
-
-    .form-compte {
-      width: 90%;
-      grid-template-columns: 1fr;
-      gap: 30px;
-
-      .col {
-        gap: 18px;
-      }
-    }
-
+    /* petit composant pour deux champs côte à côte à l'intérieur d'une colonne */
     .champ-double {
-      flex-direction: column;
-      gap: 10px;
-
-      .champ {
-        width: 100%;
-      }
-    }
-
-    .actions {
-      justify-content: flex-end;
-
-      button {
-        padding: 12px 25px;
-        font-size: 14px;
-        min-width: 110px;
-      }
-    }
-  }
-}
-
-/* Mobiles */
-@media (max-width: 768px) {
-  .page-compte {
-    padding: 25px 30px;
-
-    &::before {
-      top: -200px;
-      width: 600px;
-      height: 600px;
-      opacity: 0.2;
-    }
-
-    .header-compte {
-      gap: 20px;
-      margin-bottom: 25px;
-
-      .photo-profil {
-        width: 100px;
-        height: 100px;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-    }
-
-    .form-compte {
-      width: 100%;
-      gap: 25px;
-
-      .col {
-        gap: 16px;
-
-        .champ {
-          gap: 5px;
-
-          label {
-            font-size: 15px;
-          }
-
-          input {
-            padding: 10px 14px;
-            font-size: 14px;
-          }
-
-          .field-error {
-            height: 18px;
-
-            p {
-              font-size: 12px;
-            }
-          }
-        }
-
-        .mpd-rules {
-          font-size: 13px;
-          padding-left: 18px;
-        }
-      }
-
-      .code-vendeur {
-        font-size: 16px;
-      }
-    }
-
-    .actions {
-      justify-content: flex-end;
-      margin-top: 25px;
+      display: flex;
       gap: 12px;
 
+      .champ {
+        flex: 1;
+
+        input {
+          width: 100%;
+          box-sizing: border-box;
+        }
+      }
+    }
+
+    /* Code vendeur (texte simple) */
+    .code-vendeur {
+      font-size: 18px;
+      font-weight: 700;
+      color: $color-blue;
+    }
+
+    /* Actions sur la ligne du bas */
+    .actions {
+      display: flex;
+      gap: 16px;
+      justify-content: flex-end;
+      margin-top: 6px;
+      flex-wrap: wrap;
+
       button {
-        padding: 10px 20px;
-        font-size: 13px;
-        min-width: 100px;
-        border-radius: 20px;
+        padding: 12px 26px;
+        border-radius: 26px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        font-size: 15px;
+        transition: all 0.18s ease;
+        min-width: 120px;
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          box-shadow: none;
+        }
+      }
+
+      .modifier {
+        background-color: #dcd8f9;
+        color: #3d2d86;
+      }
+
+      .sauvegarder,
+      .annuler {
+        background: #eceaff;
+        color: #3d2d86;
+      }
+
+      .modifier-mdp {
+        background-color: #dcd8f9;
+        color: #3d2d86;
+      }
+
+      .supprimer {
+        background: #e4574d;
+        color: #fff;
+      }
+    }
+  } /* fin .form-compte */
+} /* fin .page-compte */
+
+/* ============================ */
+/* RESPONSIVE */
+/* ============================ */
+
+/* Desktop large -> pas de changement (2 colonnes) */
+
+/* Tablette / petit écran : réduire gaps et garder 2 colonnes si possible */
+@media (max-width: 1024px) {
+  .page-compte {
+    padding: clamp(18px, 4vw, 50px);
+
+    .form-compte {
+      gap: 28px;
+
+      .header-compte {
+        gap: 20px;
+
+        .photo-profil {
+          width: clamp(80px, 10vw, 130px);
+          height: clamp(80px, 10vw, 130px);
+        }
+
+        h1 {
+          font-size: clamp(20px, 3vw, 36px);
+        }
+      }
+
+      .colonnes-container {
+        gap: 28px;
+      }
+    }
+  }
+}
+/* Tablette portrait / mobile large : basculer en une colonne */
+@media (max-width: 900px) {
+  .page-compte {
+    padding: clamp(16px, 4vw, 40px);
+    margin: 0 auto;
+    width: 100%;
+
+    .form-compte {
+      gap: 20px;
+      width: 100%;
+
+      .header-compte {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+
+      .colonnes-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .champ-double {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .actions {
+        justify-content: center;
       }
     }
   }
 }
 
-/* Petits mobiles */
+/* Mobiles étroits */
 @media (max-width: 480px) {
   .page-compte {
-    padding: 20px 15px;
+    padding: 14px;
 
     &::before {
       display: none;
     }
 
-    .header-compte {
-      gap: 15px;
-      margin-bottom: 20px;
-
-      .photo-profil {
-        width: 80px;
-        height: 80px;
-      }
-
-      h1 {
-        font-size: 24px;
-      }
-    }
-
     .form-compte {
-      gap: 20px;
+      gap: 16px;
+
+      .header-compte {
+        .photo-profil {
+          width: 70px;
+          height: 70px;
+        }
+
+        h1 {
+          font-size: 20px;
+        }
+      }
+
+      .colonnes-container {
+        gap: 16px;
+      }
+
+      .actions {
+        gap: 10px;
+
+        button {
+          padding: 10px 16px;
+          font-size: 13px;
+          min-width: auto;
+          border-radius: 20px;
+        }
+      }
 
       .col {
-        gap: 14px;
-
         .champ {
-          input {
-            padding: 8px 12px;
-            font-size: 13px;
+          input,
+          textarea,
+          select {
+            padding: 10px 12px;
+            font-size: 14px;
             border-radius: 10px;
           }
 
-          .field-error {
-            height: 16px;
-
-            p {
-              font-size: 11px;
-            }
-          }
-        }
-
-        .mpd-rules {
-          font-size: 12px;
-          padding-left: 15px;
-
-          li {
-            margin: 3px 0;
-          }
-        }
-      }
-
-      .code-vendeur {
-        font-size: 15px;
-      }
-    }
-
-    .actions {
-      justify-content: flex-end;
-      margin-top: 20px;
-      gap: 8px;
-
-      button {
-        padding: 10px 15px;
-        font-size: 12px;
-        min-width: auto;
-        border-radius: 20px;
-      }
-    }
-  }
-}
-
-/* Très petits mobiles */
-@media (max-width: 360px) {
-  .page-compte {
-    padding: 15px 10px;
-
-    .header-compte {
-      .photo-profil {
-        width: 70px;
-        height: 70px;
-      }
-
-      h1 {
-        font-size: 22px;
-      }
-    }
-
-    .form-compte {
-      .col {
-        .champ {
-          input {
-            padding: 7px 10px;
+          .field-error p {
             font-size: 12px;
           }
-
-          .field-error {
-            height: 15px;
-
-            p {
-              font-size: 10px;
-            }
-          }
         }
-      }
-    }
-
-    .actions {
-      button {
-        padding: 8px 12px;
-        font-size: 11px;
       }
     }
   }
 }
 
-/* Mode paysage sur mobile */
-@media (max-height: 500px) and (orientation: landscape) {
+/* Très petits écrans */
+@media (max-width: 360px) {
   .page-compte {
-    padding: 20px 30px;
-
-    .header-compte {
-      flex-direction: row;
-      text-align: left;
-      margin-bottom: 20px;
-
-      .photo-profil {
-        width: 60px;
-        height: 60px;
-      }
-
-      h1 {
-        font-size: 24px;
-      }
-    }
+    padding: 12px;
 
     .form-compte {
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 12px;
 
-      .col {
-        gap: 12px;
+      .header-compte {
+        .photo-profil {
+          width: 60px;
+          height: 60px;
+        }
+
+        h1 {
+          font-size: 18px;
+        }
       }
-    }
 
-    .actions {
-      justify-content: flex-end;
-      margin-top: 20px;
-
-      button {
-        padding: 8px 15px;
-        font-size: 12px;
-        min-width: 90px;
+      .colonnes-container {
+        gap: 12px;
       }
     }
   }

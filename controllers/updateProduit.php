@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Construit le chemin de la nouvelle image 
 if($_FILES['url']['name']){
     $fileName = $_FILES['url']['name'];
+    move_uploaded_file($_FILES['url']['name'], "/var/www/html/images/" . $_FILES['url']['name']);
+
 }
 else{
     $sqlUrl = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = :idProduit");

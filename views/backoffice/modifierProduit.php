@@ -17,7 +17,6 @@ $produit = $stmt->fetch(PDO::FETCH_ASSOC);
 $stmt2 = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = :id");
 $stmt2->execute(['id' => $productId]);
 $image = $stmt2->fetch(PDO::FETCH_ASSOC);
-
 $hasImage = ($image && !empty($image['URL']));
 $imageUrl = $hasImage 
     ? $image['URL'] 
