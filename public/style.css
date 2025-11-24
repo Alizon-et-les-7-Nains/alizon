@@ -1363,11 +1363,16 @@ main.acceuilBackoffice section.commandes article table img {
 main.acceuilBackoffice section.commandes article table th {
   font-size: 20px;
 }
+main.acceuilBackoffice section.commandes article table tr:first-child td {
+  width: 110px;
+}
 main.acceuilBackoffice section.commandes article table tr:first-child th {
   text-align: left;
   line-height: 0.5em;
 }
 main.acceuilBackoffice section.commandes article table tr:nth-child(2) td {
+  padding-top: 0.5em;
+  line-height: 25px;
   vertical-align: top;
 }
 main.acceuilBackoffice section.commandes article table tr:last-child th {
@@ -5312,7 +5317,7 @@ dialog.reassort form input {
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: baseline;
 }
 .pageProduit .actionsAvis {
