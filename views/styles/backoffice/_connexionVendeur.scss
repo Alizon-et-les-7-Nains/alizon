@@ -102,6 +102,14 @@
                     }    
                     cursor: pointer;
                 }
+
+                a:visited {
+                    color: $color-blue;
+                }
+
+                a:hover {
+                    color: darken($color: $color-blue, $amount: 10%);
+                }
             }
 
             .actions {

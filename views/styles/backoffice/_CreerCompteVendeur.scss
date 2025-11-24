@@ -160,6 +160,19 @@
                 }
             }
 
+            .connexion_lien a {
+                color: $color-blue;
+                text-decoration: underline;
+            }
+
+            .connexion_lien a:visited {
+                color: $color-blue;
+            }
+
+            .connexion_lien a:hover {
+                color: darken($color-blue, 10%);
+            }
+
             .inscriptions_autres{
                 text-align: center;
                 color: $color-dark-gray;
