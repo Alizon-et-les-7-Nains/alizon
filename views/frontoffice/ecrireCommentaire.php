@@ -149,9 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <img src="../../public/images/etoileVide.svg" data-index="5" class="star" alt="5 étoiles">
             </article>
             <!-- CORRECTION 3 : S'assurer que la note est bien envoyée -->
-            <input type="hidden" name="note" id="note" value="0">
-            <p id="note-display" style="color: #273469; margin-top: 10px;">Aucune note sélectionnée</p>
-            
+            <input type="hidden" name="note" id="note" value="0">            
             <h2>Ajouter une photo (optionnel) :</h2>
             <ul>
                 <img src="../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="ajouterPhoto" style="cursor: pointer; width: 80px; height: 80px;">
@@ -198,16 +196,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
             
             noteInput.value = rating;
-            noteDisplay.textContent = `Note : ${rating}/5`;
-            noteDisplay.style.color = '#273469';
-            noteDisplay.style.fontWeight = 'bold';
         });
 
         // Au survol
         star.addEventListener('mouseenter', () => {
-            const rating = index + 1;
             stars.forEach((s, i) => {
-                if (i < rating) {
+                if (i > rating) {
                     s.style.opacity = '0.7';
                 }
             });
