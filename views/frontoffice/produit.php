@@ -351,7 +351,7 @@ if (isset($_SESSION['message_panier'])) {
     ?>
     <?php if (isset($_SESSION['user_id'])) {
     echo 
-    '<a href="ecrireCommentaire.php?id=<?php echo $productId; ?>" class="boutonCommentaire">
+    '<a href="ecrireCommentaire.php?id=' . $productId . '" class="boutonCommentaire">
         Écrire un commentaire
     </a>';
     } else {
