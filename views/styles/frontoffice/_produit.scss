@@ -264,7 +264,7 @@
     }
 
     .boutonCommentaire {
-        display: inline-block; // ← Important pour les liens
+        display: inline-block;
         margin: 2em 0;
         border: 2px solid $color-blue;
         background-color: white;
@@ -272,9 +272,9 @@
         padding: 0.5em 1em;
         cursor: pointer;
         font-size: 16px;
-        text-decoration: none; // ← Enlever le soulignement du lien
-        color: $color-blue; // ← Couleur du texte
-        transition: all 0.3s ease; // ← Animation douce
+        text-decoration: none;
+        color: $color-blue;
+        transition: all 0.3s ease;
     }
     
     .conteneurTexte{
