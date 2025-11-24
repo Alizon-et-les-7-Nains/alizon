@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->commit();
 
             session_start();
-            $_SESSION['id'] = $vendeur[0]['codeVendeur'];
+            $_SESSION['id'] = $vendeur['codeVendeur'];
             $_SESSION['pass'] = $_POST['mdp'];
 
             header('Location: ../views/backoffice/accueil.php');
