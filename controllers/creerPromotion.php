@@ -8,14 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_POST['date_limite']) && isset($_POST['id'])) {
         $idProd = intval($_POST['id']); 
         $dateLimite = $_POST['date_limite'];
-        try {
-            $dateSql = DateTime::createFromFormat('d/m/Y', $dateLimite)->format('Y-m-d');
-        } catch (error) {
-            header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd.'.php');
-            exit;
-        }
 
-        $photoPath = '/docker/data/web/html/images/baniere/';
+        $photoPath = '/var/www/html/images/banieres/';
 
         $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
         $extension = '';
@@ -35,6 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $extension = pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
             $extension = '.'.$extension;
             move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$idProd.$extension);
+        }
+
+        try {
+            $dateSql = DateTime::createFromFormat('d/m/Y', $dateLimite)->format('Y-m-d');
+        } catch (error) {
+            header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd.'.php');
+            exit;
         }
             
     }
