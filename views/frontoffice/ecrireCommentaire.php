@@ -121,7 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 </header>
 <main>
-    <!-- Affichage des erreurs -->
     <?php if (!empty($errors)): ?>
         <div class="error-messages" style="background-color: #f8d7da; color: #721c24; padding: 15px; margin: 20px; border-radius: 5px; border: 1px solid #f5c6cb;">
             <h3>Erreurs :</h3>
@@ -135,7 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <section class="reviewArticle">
         <form action="" method="POST" enctype="multipart/form-data">
-            <!-- CORRECTION 2 : Ajouter l'ID du produit en champ caché -->
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
             
             <h1>Évaluer : <b><?php echo htmlspecialchars($produit['nom_produit']); ?></b></h1>
