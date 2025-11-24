@@ -5660,7 +5660,9 @@ dialog.reassort form input {
     gap: 0.5em;
   }
   .pageProduit .actionsProduit {
+    display: flex;
     justify-content: flex-start;
+    align-items: flex-start;
   }
   .pageProduit .actionsAvis {
     justify-content: flex-start;
