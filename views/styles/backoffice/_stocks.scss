@@ -258,79 +258,79 @@ dialog.reassort {
     left: 50%;
     transform: translate(-50%, -50%);
     
-//     &::backdrop {
-//         background: rgba(0, 0, 0, 0.25);
-//         backdrop-filter: blur(1px);
-//     }
+    &::backdrop {
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(1px);
+    }
     
-//     h1 {
-//         margin-bottom: 1em;
-//         text-align: center;
-//     }
+    h1 {
+        margin-bottom: 1em;
+        text-align: center;
+    }
     
-//     form {
-//         display: flex;
-//         flex-direction: column;
-//         align-items: center;
-//         gap: 2em;
-//         width: 100%;
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2em;
+        width: 100%;
         
-//         ul {
-//             display: flex;
-//             align-items: center;
-//             gap: 2em;
-//             list-style: none;
+        ul {
+            display: flex;
+            align-items: center;
+            gap: 2em;
+            list-style: none;
             
-//             li input {
-//                 transition: all 0.2s;
-//                 border-style: hidden;
-//                 font-weight: normal;
-//             }
-//             li:first-child input {
-//                 background-color: $color-pastel-purple;
-//                 color: $color-blue;
+            li input {
+                transition: all 0.2s;
+                border-style: hidden;
+                font-weight: normal;
+            }
+            li:first-child input {
+                background-color: $color-pastel-purple;
+                color: $color-blue;
                 
-//                 &:hover {
-//                     background-color: $color-pastel-blue;
-//                     color: $color-blue;
-//                     cursor: pointer;
-//                 }
-//             }
-//             li:last-child input {
-//                 background-color: $color-blue;
-//                 color: $color-white;
+                &:hover {
+                    background-color: $color-pastel-blue;
+                    color: $color-blue;
+                    cursor: pointer;
+                }
+            }
+            li:last-child input {
+                background-color: $color-blue;
+                color: $color-white;
                 
-//                 &:hover {
-//                     background-color: $color-pastel-blue;
-//                     color: $color-blue;
-//                     cursor: pointer;
-//                 }
-//             }
-//         }
-
-//         label {
-//             color: $color-red;
-//             margin-top: -1em;
-//         }
+                &:hover {
+                    background-color: $color-pastel-blue;
+                    color: $color-blue;
+                    cursor: pointer;
+                }
+            }
+        }
         
-//         input {
-//             &::placeholder {
-//                 font-weight: normal;
-//             }
-//             color: $color-blue;
-//             font-weight: bold;
-//             padding: {
-//                 left: 2em; right: 2em;
-//                 top: 1em; bottom: 1em;
-//             }
-//             width: 200px;
-//             font-size: 25px;
-//             border: {
-//                 style: solid;
-//                 width: 2px;
-//                 color: $color-blue;
-//                 radius: 24px;
-//             }
-//         }
-//     }
+        label {
+            color: $color-red;
+            margin-top: -1em;
+        }
+        
+        input {
+            &::placeholder {
+                font-weight: normal;
+            }
+            color: $color-blue;
+            font-weight: bold;
+            padding: {
+                left: 2em; right: 2em;
+                top: 1em; bottom: 1em;
+            }
+            width: 200px;
+            font-size: 25px;
+            border: {
+                style: solid;
+                width: 2px;
+                color: $color-blue;
+                radius: 24px;
+            }
+        }
+    }
 }

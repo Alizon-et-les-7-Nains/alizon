@@ -4560,6 +4560,71 @@ dialog.reassort {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+dialog.reassort::backdrop {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(1px);
+}
+dialog.reassort h1 {
+  margin-bottom: 1em;
+  text-align: center;
+}
+dialog.reassort form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+  width: 100%;
+}
+dialog.reassort form ul {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  list-style: none;
+}
+dialog.reassort form ul li input {
+  transition: all 0.2s;
+  border-style: hidden;
+  font-weight: normal;
+}
+dialog.reassort form ul li:first-child input {
+  background-color: #e4d9ff;
+  color: #273469;
+}
+dialog.reassort form ul li:first-child input:hover {
+  background-color: #e3f2fe;
+  color: #273469;
+  cursor: pointer;
+}
+dialog.reassort form ul li:last-child input {
+  background-color: #273469;
+  color: #fffefa;
+}
+dialog.reassort form ul li:last-child input:hover {
+  background-color: #e3f2fe;
+  color: #273469;
+  cursor: pointer;
+}
+dialog.reassort form label {
+  color: #f14e4e;
+  margin-top: -1em;
+}
+dialog.reassort form input::placeholder {
+  font-weight: normal;
+}
+dialog.reassort form input {
+  color: #273469;
+  font-weight: bold;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  width: 200px;
+  font-size: 25px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #273469;
+  border-radius: 24px;
+}
 
 .page-compte {
   padding: 60px 80px;
