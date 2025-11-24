@@ -1,5 +1,7 @@
 <?php
 
+ob_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once 'pdo.php';
 
@@ -13,14 +15,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($isValid) {
             $vendeurSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/vendeur.sql'));
             $vendeurSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
-            $vendeur = $vendeurSTMT->fetchAll(PDO::FETCH_ASSOC);
+            $vendeur = $vendeurSTMT->fetch(PDO::FETCH_ASSOC);
+
+            $pdo->commit();
 
             session_start();
             $_SESSION['id'] = $vendeur[0]['codeVendeur'];
             $_SESSION['pass'] = $_POST['mdp'];
+
+            header('Location: ../views/backoffice/accueil.php');
         } else {
             $pdo->rollback();
-            ob_start();
             header('Location: ../views/backoffice/connexion.php?error=1');
             die();
         }
