@@ -6038,8 +6038,10 @@ dialog.reassort form input {
   font-family: "lora";
 }
 .pagePrevi .lignePrevi {
-  margin-bottom: 30px;
   border-top: solid 4px #f14e4e;
+}
+.pagePrevi .actionsProduit {
+  margin-top: 30px;
 }
 
 /*# sourceMappingURL=style.css.map */
