@@ -1,10 +1,15 @@
 <?php
 require_once "pdo.php";
 session_start();
-var_dump($_POST);
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../frontoffice/connexionClient.php");
     exit();
+}
+
+$note = isset($_POST['note']) && $_POST['note'] !== "" ? floatval($_POST['note']) : null;
+
+if ($note === null) {
+    die("Veuillez sélectionner une note.");
 }
 
 $idClient = $_SESSION['user_id'];
