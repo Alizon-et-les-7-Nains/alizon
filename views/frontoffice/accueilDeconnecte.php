@@ -77,6 +77,20 @@ require_once "../../controllers/prix.php";
     $stmt->execute();
     $arrayProduit = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $stmtNoteProduit = $pdo->prepare(
+        "UPDATE _produit p
+        LEFT JOIN (
+            SELECT idProduit, AVG(note) AS avg_note
+            FROM _avis
+            GROUP BY idProduit
+        ) a ON p.idProduit = a.idProduit
+        SET p.note = COALESCE(a.avg_note, 0)
+        ");
+
+    $stmtNoteProduit->execute();
+    $noteProduit = $stmtNoteProduit->fetchAll(PDO::FETCH_ASSOC);
+
+
     if (count($arrayProduit) === 0) {
         $choixAleatoirePromo = "N/A";
     } else {
