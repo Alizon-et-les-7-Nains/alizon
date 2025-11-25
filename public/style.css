@@ -5064,6 +5064,7 @@ dialog.reassort form input {
 }
 .pageProduit {
   overflow-x: hidden;
+  width: 100%;
 }
 .pageProduit main {
   display: flex;
