@@ -230,12 +230,14 @@ if (isset($_SESSION['message_panier'])) {
 ?>
 <section class="infoHautProduit">
 <article class="rectangleProduit">
-    <div class="banniere">
-        <h1>-<?php echo htmlspecialchars($promotion['taux_remise']); ?>%</h1>
-        <img class="poly1" src="../../public/images/poly1.svg" alt="">
-        <img class="imgBanniere" src="../../public/images/laBanniere.png" alt="">
-        <img class="poly2" src="../../public/images/poly2.svg" alt="">
-    </div>
+    <?php if ($promotion['est_en_promotion'] && $promotion['est_en_remise']): ?>
+        <div class="banniere">
+            <h1>-<?php echo htmlspecialchars($promotion['taux_remise']); ?>%</h1>
+            <img class="poly1" src="../../public/images/poly1.svg" alt="">
+            <img class="imgBanniere" src="../../public/images/laBanniere.png" alt="">
+            <img class="poly2" src="../../public/images/poly2.svg" alt="">
+        </div>
+    <?php endif; ?>
     <img src="../../public/images/flecheGauche.svg" alt="Previous" class="carousel-arrow prev-arrow">
     <div class="carousel-container">
         <div class="carousel-slide">
