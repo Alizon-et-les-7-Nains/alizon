@@ -381,12 +381,15 @@ body {
   height: 100vh;
 }
 .page404 h1,
-.page404 h2,
+.page404 h2, .page404 h3,
 .page404 a {
   color: #273469;
   font-family: "berkshire", serif;
   font-style: normal;
   text-decoration: none;
+}
+.page404 h3 {
+  margin-bottom: 1em;
 }
 .page404 h1 {
   font-size: 120px;

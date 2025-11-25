@@ -13,12 +13,16 @@
   height: 100vh;
 
   h1,
-  h2,
+  h2, h3,
   a {
     color: $color-blue;
     font-family: $font-berkshire;
     font-style: normal;
     text-decoration: none;
+  }
+
+  h3 {
+    margin-bottom: 1em;
   }
 
   h1 {
