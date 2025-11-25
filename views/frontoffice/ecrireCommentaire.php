@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p style="color: #666; font-size: 14px; margin: 10px 0;">Les champs marqués d'un <span style="color: red;">*</span> sont obligatoires</p>
             
             <button type="submit" class="bouton boutonBleu">Publier mon avis</button>
-            <a href="product.php?id=<?php echo $productId; ?>" class="bouton boutonRose" style="display: inline-block; text-align: center; text-decoration: none; margin-left: 10px;">Annuler</a>
+            <a href="produit.php?id=<?php echo $productId; ?>" class="bouton boutonRose" style="display: inline-block; text-align: center; text-decoration: none; margin-left: 10px;">Annuler</a>
         </form>
     </section>
 </main>

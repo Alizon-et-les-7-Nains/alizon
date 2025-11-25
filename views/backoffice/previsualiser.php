@@ -207,13 +207,6 @@ $promotion = calculerPromotion($produit);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- sass --watch views/styles/main.scss:public/style.css -->
-    <!-- ssh sae@10.253.5.104
-    su -
-    grognasseEtCompagnie
-    cd /docker/data/web/html
-    git pull -->
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
@@ -235,8 +228,8 @@ $promotion = calculerPromotion($produit);
             </div>
             <a href="produits.php">
                 <div class="boutonRetour">
-                    <img src="" alt="">
                     <button>Retour</button>
+                    <img src="../../public/images/retourPrevi.svg" alt="">
                 </div>
             </a>
         </div>
