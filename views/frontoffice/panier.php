@@ -308,6 +308,19 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div>
                         <h2><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></h2>
                         <h4>En stock</h4>
+                    </div>
+                    <div class="quantiteProduit">
+                        <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
+                            <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
+                        </button>
+                        <p class="quantite"><?= htmlspecialchars($item['qty'] ?? 'N/A') ?></p>
+                        <button class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
+                            <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
+                        </button>
+                    </div>
+                </div>
+                <div class="prixOpt">
+                    <div>
                         <?php if ($estEnRemise): ?>
                             <p class="prix-remise">
                                 <span class="prix-original" style="text-decoration: line-through; color: #999;">
@@ -321,18 +334,6 @@ $cart = getCurrentCart($pdo, $idClient);
                             <p><?= formatPrice($item['prix']) ?></p>
                         <?php endif; ?>
                     </div>
-                    <div class="quantiteProduit">
-                        <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
-                            <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
-                        </button>
-                        <p class="quantite"><?= htmlspecialchars($item['qty'] ?? 'N/A') ?></p>
-                        <button class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
-                            <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
-                        </button>
-                    </div>
-                </div>
-                <div class="prixOpt">
-                    <p><?= formatPrice($prixAvecRemise * $item['qty']) ?></p>
                     <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
                     </button>

@@ -2989,6 +2989,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-wrap: nowrap;
   max-width: 800px;
   margin-bottom: 40px;
+  align-items: center;
 }
 .panier .quantiteProduit {
   display: flex;
@@ -5459,16 +5460,18 @@ dialog.reassort form input {
   margin: 0;
 }
 .pageProduit .stockDisponible {
-  font-size: 16px;
+  position: relative;
+  left: 2.5em;
+  font-size: 20px;
   color: green;
   font-weight: bold;
-  margin-top: 1em;
 }
 .pageProduit .stockIndisponible {
-  font-size: 16px;
+  position: relative;
+  left: 2.5em;
+  font-size: 20px;
   color: red;
   font-weight: bold;
-  margin-top: 1em;
 }
 .pageProduit .review-count {
   text-decoration: underline;
