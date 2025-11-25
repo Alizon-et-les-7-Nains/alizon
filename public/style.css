@@ -5075,6 +5075,7 @@ dialog.reassort form input {
   position: relative;
 }
 .pageProduit .banniere {
+  display: block;
   position: absolute;
   top: -8px;
   border-top-left-radius: 16px;
@@ -5690,6 +5691,9 @@ dialog.reassort form input {
   }
 }
 @media (max-width: 800px) {
+  .pageProduit .banniere {
+    display: none;
+  }
   .pageProduit .stickyTelephone {
     display: flex;
   }

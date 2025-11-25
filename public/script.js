@@ -98,7 +98,7 @@ btnSettings.forEach(btn => {
 });
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        const modal = btn.parentElement?.querySelector(`dialog#${btn.id}`);
+        const modal = document.querySelector(`main.backoffice-stocks dialog#${btn.id}`);
         if (!modal) {
             console.error('Dialog non trouvé');
             return;
