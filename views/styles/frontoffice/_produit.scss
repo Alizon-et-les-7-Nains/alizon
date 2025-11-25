@@ -54,8 +54,13 @@
         position: absolute;
         height: 140px;
         width: auto;
-        top: 30px;
-        left: 10px;
+    }
+
+    .banniere h2{
+        position: absolute;
+        top: 50px;
+        left: 170px;
+        color: $color-white;
     }
 
     #imageBouteille{
