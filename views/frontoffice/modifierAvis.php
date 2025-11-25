@@ -30,31 +30,28 @@ $mesAvis = $stmt->fetch(PDO::FETCH_ASSOC);
         <h1> Mes Commentaires</h1>
 
         <?php
-    $avisSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/derniersAvis.sql'));
-    $avisSTMT->execute([':idVendeur' => $_SESSION['id']]);
-    $avis = $avisSTMT->fetchAll(PDO::FETCH_ASSOC);
-    if (count($avis) == 0) echo "<h2>Aucun avis</h2>";
-    foreach ($avis as $avi) {
-        $imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
-        $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
+    if (count($mesAvis) == 0) echo "<h2>Aucun avis</h2>";
+    foreach ($mesAvis as $avis) {
+        $imagesAvis = ($pdo->query(str_replace('$idClient', $avis['idClient'], str_replace('$idProduit', $avis['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
+        $imageClient = "/images/photoProfilClient/photo_profil" . $avis['idClient'] . ".svg";
         $html = "
         <table>
             <tr>
                 <th rowspan=2>
                     <figure>
                         <img src='$imageClient' onerror=" . '"this.style.display=' . "'none'" . '"' . ">
-                        <figcaption>" . $avi['pseudo'] . "</figcaption>
+                        <figcaption>" . $avis['pseudo'] . "</figcaption>
                     </figure>
                     <figure>
-                        <figcaption>" . str_replace('.', ',', $avi['note']) . "</figcaption>
+                        <figcaption>" . str_replace('.', ',', $avis['note']) . "</figcaption>
                         <img src='/public/images/etoile.svg'>
                     </figure>
                 </th>
-                <th>" . $avi['nomProduit'] . " - " . $avi['titreAvis'] . "</th>
-                <td>Le" . formatDate($avi['dateAvis']) . "</td>
+                <th>" . $avis['nomProduit'] . " - " . $avis['titreAvis'] . "</th>
+                <td>Le" . formatDate($avis['dateAvis']) . "</td>
             </tr>
             <tr>
-                <td colspan='2'>" . $avi['contenuAvis'] . "</td>
+                <td colspan='2'>" . $avis['contenuAvis'] . "</td>
             </tr>
             <tr>
                 <td></td>
