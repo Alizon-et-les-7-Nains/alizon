@@ -11,17 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         
         // Appeler la fonction pour mettre à jour la quantité
         $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
-        
-        if ($success) {
-            $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
-        } else {
-            $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
-        }
+    }
+    if ($success) {
+        $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
     } else {
-        $_SESSION['message_panier'] = "Veuillez vous connecter pour ajouter des articles au panier.";
-        // Rediriger vers la page de connexion si nécessaire
-        // header('Location: connexion.php');
-        // exit;
+        $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
     }
 }
 
@@ -422,9 +416,9 @@ if (isset($_SESSION['message_panier'])) {
                             </div>
                             <h3><?php echo htmlspecialchars($avis['titreAvis']); ?></h3>
                         </div>
-                        <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?></h6>
+                        <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?> par <?php echo htmlspecialchars($avis['idClient']); ?></h6>
                     </div>
-                    <p><?php echo htmlspecialchars($avis['contenuAvis']); ?> par <?php echo htmlspecialchars($avis['idClient']); ?></p>
+                    <p><?php echo htmlspecialchars($avis['contenuAvis']); ?></p>
                     <div class="baselineSpaceBetween">
                         <div class="sectionImagesAvis">
                         </div>   
