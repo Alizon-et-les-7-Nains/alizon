@@ -17,7 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $quantite = intval($_POST['quantite']);
     
     $idClient = $_SESSION['user_id'];
-    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+    try{
+        $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+    }
+    catch{
+        $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
+    }
 
     if ($success) {
         $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
