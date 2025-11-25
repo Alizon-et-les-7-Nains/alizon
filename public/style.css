@@ -4377,6 +4377,7 @@ button#haut.visible:hover {
   justify-content: center;
   align-items: flex-start;
   width: 500px;
+  position: relative;
 }
 .popUpRemise .page form h2 {
   font-size: 24px;
