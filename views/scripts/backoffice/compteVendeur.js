@@ -2,7 +2,6 @@ let modeEdition = false;
 let modeModificationMdp = false;
 let anciennesValeurs = {};
 
-// Création de l'input pour la photo de profil (comme client)
 let ajoutPhoto = document.createElement("input");
 ajoutPhoto.type = "file";
 ajoutPhoto.id = "photoProfil";
@@ -145,6 +144,19 @@ function validerChamp(champId, valeur) {
   }
 }
 
+ajoutPhoto.addEventListener("change", function () {
+  const fichier = this.files[0];
+  if (fichier) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      if (imageProfile) {
+        imageProfile.src = e.target.result;
+      }
+    };
+    reader.readAsDataURL(fichier);
+  }
+});
+
 function activerModeEdition() {
   modeEdition = true;
 
@@ -228,7 +240,7 @@ function desactiverModeEdition() {
     if (input.type === "password") {
       input.value = "";
     }
-    
+
     const newInput = input.cloneNode(true);
     input.parentNode.replaceChild(newInput, input);
   });

@@ -122,16 +122,11 @@ function checkInt(value) {
     return !isNaN(intValue) && intValue >= 0;
 }
 function checkDate(date) {
-    let valid = true;
-    if (date != null) {
-        if (date.getTime() < Date.now()) {
-            valid = false;
-        }
-    }
-    else {
-        valid = true;
-    }
-    return valid;
+    if (!date)
+        return true;
+    let now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return now.getTime() < date.getTime();
 }
 function allValid() {
     return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);
