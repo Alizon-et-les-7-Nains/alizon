@@ -300,7 +300,13 @@ $promotion = calculerPromotion($produit);
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
-        <div class="previsualisation">
+<body class="pagePrevi">
+<?php if (isset($_SESSION['user_id'])) {
+    include '../../views/frontoffice/partials/headerConnecte.php';
+} else { 
+    include '../../views/frontoffice/partials/headerDeconnecte.php';
+} ?>
+<div class="previsualisation">
             <div class="textePrevi">
                 <h1>Ceci est une prévisualistaion de votre produit.</h1>
                 <h1>Pour quitter la prévisualistaion, cliquez sur retour</h1>
@@ -314,14 +320,7 @@ $promotion = calculerPromotion($produit);
         </div>
 
         <div class="lignePrevi" ></div>
-
-<body class="pageProduit">
-<?php if (isset($_SESSION['user_id'])) {
-    include '../../views/frontoffice/partials/headerConnecte.php';
-} else { 
-    include '../../views/frontoffice/partials/headerDeconnecte.php';
-} ?>
-<main>
+<main class="pageProduit">
 <?php
 if (isset($_SESSION['message_panier'])) {
     echo '<div class="message-panier" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">';
@@ -450,7 +449,7 @@ if (isset($_SESSION['message_panier'])) {
             </div>
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
             <input type="hidden" name="action" value="ajouter_panier">
-            <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
+            <button class="bouton boutonRose"  name="ajouter_panier">Ajouter au panier</button>
         </form>
         <?php if (isset($_SESSION['user_id'])) {
             echo '  <form action="pagePaiement.php" method="POST">
@@ -558,7 +557,7 @@ if ($produit['stock'] > 0) {
                                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                                 <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
                                 <input type="hidden" name="type" value="like">
-                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>">
+                                <button  class="btn-vote <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>">
                                     <img src="../../public/images/<?php echo ($voteUtilisateur === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png'; ?>" alt="Like">
                                     <span><?php echo intval($avis['positifs']); ?></span>
                                 </button>
@@ -569,7 +568,7 @@ if ($produit['stock'] > 0) {
                                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                                 <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
                                 <input type="hidden" name="type" value="dislike">
-                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>">
+                                <button  class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>">
                                     <img src="../../public/images/<?php echo ($voteUtilisateur === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png'; ?>" alt="Dislike">
                                     <span><?php echo intval($avis['negatifs']); ?></span>
                                 </button>
@@ -610,9 +609,8 @@ if ($produit['stock'] > 0) {
                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                 <input type="hidden" name="quantite" value="1">
                 <input type="hidden" name="action" value="ajouter_panier">
-                <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
+                <button class="bouton boutonRose"  name="ajouter_panier">Ajouter au panier</button>
             </form>
-            <form action="pagePaiement.php" method="POST">
                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                 <button class="bouton boutonBleu">Acheter maintenant</button>
             </form>
