@@ -105,7 +105,7 @@ function verifDate(input){
 }
 
 
-function popUpAnnulerPromotion(id, nom) {
+function popUpAnnulerRemise(id, nom) {
 
     const url = new URL(window.location);
     url.searchParams.set('annulationProduit', id);
