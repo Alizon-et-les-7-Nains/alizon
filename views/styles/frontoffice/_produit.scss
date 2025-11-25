@@ -119,6 +119,11 @@
         font-weight: 300;
     }
 
+    #prix h2{
+       color: $color-red; 
+       font-style: italic;
+    }
+
     #prix{
         gap: 0.5em;
     }
@@ -137,7 +142,7 @@
     }
 
     .resume{
-        max-height: 60px;
+        max-height: 55px;
         overflow: hidden;
     }
 

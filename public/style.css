@@ -5148,6 +5148,10 @@ dialog.reassort form input {
   margin: 0.2em 0;
   font-weight: 300;
 }
+.pageProduit #prix h2 {
+  color: #f14e4e;
+  font-style: italic;
+}
 .pageProduit #prix {
   gap: 0.5em;
 }
@@ -5163,7 +5167,7 @@ dialog.reassort form input {
   padding: 0.5em 1em;
 }
 .pageProduit .resume {
-  max-height: 60px;
+  max-height: 55px;
   overflow: hidden;
 }
 .pageProduit .version {
