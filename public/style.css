@@ -5865,10 +5865,21 @@ dialog.reassort form input {
   padding-top: 10px;
   text-align: center;
 }
+.avis-vendeur .avi .col-gauche .profil-client {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
 .avis-vendeur .avi .col-gauche .profil-client img {
   width: 70px;
   height: 70px;
   border-radius: 50%;
+  margin-bottom: 10px;
+}
+.avis-vendeur .avi .col-gauche .profil-client figcaption {
+  margin-top: 0;
 }
 .avis-vendeur .avi .etoiles {
   margin-top: 0;
