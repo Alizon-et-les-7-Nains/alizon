@@ -513,7 +513,7 @@ if ($produit['stock'] > 0) {
         $voteUtilisateur = getVoteUtilisateur($productId, $avis['idClient']);
         $isOwnReview = isset($_SESSION['user_id']) && $_SESSION['user_id'] == $avis['idClient'];
         ?>
-        <article class="avis-article">
+        <article>
             <img src="../../public/images/pp.png" id="pp">
             <div>
                 <div class="vertical">
@@ -552,11 +552,11 @@ if ($produit['stock'] > 0) {
                                 <span class="vote-count"><?php echo intval($avis['negatifs']); ?></span>
                             </button>
                         <?php else: ?>
-                            <button class="btn-vote" disabled>
+                            <button type="button" class="btn-vote" disabled>
                                 <img src="../../public/images/pouceHaut.png" alt="Like">
                                 <span><?php echo intval($avis['positifs']); ?></span>
                             </button>
-                            <button class="btn-vote" disabled>
+                            <button type="button" class="btn-vote" disabled>
                                 <img src="../../public/images/pouceBas.png" alt="Dislike">
                                 <span><?php echo intval($avis['negatifs']); ?></span>
                             </button>
@@ -573,6 +573,18 @@ if ($produit['stock'] > 0) {
 <?php else: ?>
     <p>Aucun avis pour ce produit.</p>
 <?php endif; ?>
+```
+
+**Les changements importants :**
+- ✅ Plus de `<form>` autour des boutons
+- ✅ `type="button"` sur tous les boutons (pas `type="submit"`)
+- ✅ Classes `btn-like` et `btn-dislike` ajoutées
+- ✅ Classe `vote-count` sur les `<span>` des compteurs
+- ✅ Attributs `data-produit`, `data-client`, `data-type` sur les boutons
+
+Rechargez la page et regardez la console. Maintenant vous devriez voir :
+```
+Boutons .btn-vote non désactivés: 2 (ou plus)
 
 </section>
 <section class="stickyTelephone">
