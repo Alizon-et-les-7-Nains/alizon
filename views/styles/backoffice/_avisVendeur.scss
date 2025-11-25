@@ -16,7 +16,7 @@
     background-color: $color-pastel-purple;
     border-radius: 20px;
     margin-bottom: 20px;
-    padding-top: 20px;
+    padding: 20px 0 25px 0;
 
     font: {
       size: 18px;
@@ -25,8 +25,7 @@
 
     .col-gauche {
       width: 150px;
-      height: 300px;
-      padding-top: 0px;
+      padding: 0px;
       text-align: center;
 
       .profil-client {
