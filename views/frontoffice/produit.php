@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     try{
         $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
     }
-    catch{
+    catch(Exception $e){
         $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
     }
 
