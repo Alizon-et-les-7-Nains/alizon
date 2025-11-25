@@ -5043,7 +5043,7 @@ dialog.reassort form input {
   width: auto;
   z-index: 1;
 }
-.pageProduit .banniere h2 {
+.pageProduit .banniere h1 {
   position: absolute;
   top: 50px;
   left: 40px;
@@ -5904,6 +5904,7 @@ dialog.reassort form input {
   margin-bottom: 0;
   margin-left: 0;
   margin-right: 20px;
+  color: #FFD000;
   gap: 5px;
   display: flex;
 }
