@@ -295,10 +295,6 @@ function activerModificationMdp() {
   if (btnModifier) btnModifier.style.display = "none";
   if (btnAnnuler) btnAnnuler.style.display = "block";
   if (btnSauvegarder) btnSauvegarder.style.display = "block";
-  if (btnModifierMdp) {
-    btnModifierMdp.textContent = "Annuler modification mot de passe";
-    btnModifierMdp.classList.add("annuler-mdp");
-  }
 }
 
 function desactiverModificationMdp() {
