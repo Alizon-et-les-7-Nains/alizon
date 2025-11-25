@@ -1,3 +1,8 @@
+<?php
+$fromBackoffice = strpos($_SERVER['REQUEST_URI'], '/backoffice/') !== false;
+$homeLink = $fromBackoffice ? '/views/backoffice/accueil.php' : '/views/frontoffice/accueilConnecte.php';
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -26,7 +31,7 @@
         </div>
 
         <div>
-            <a href="../../views/frontoffice/accueilDeconnecte.php">Retourner à bon port</a>
+            <a href="<?= $homeLink ?>">Retourner à bon port</a>
         </div> 
 
     </main>
