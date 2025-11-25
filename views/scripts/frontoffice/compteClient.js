@@ -184,7 +184,7 @@ function verifierChamp() {
     if (i === 6 && valeur !== "") {
       if (!/^[0-9]{5}$/.test(valeur)) {
           tousRemplis = false;
-          setError(champs[i], "Le code postal doit contenir 5 chiffres");
+          setError(champs[i], "5 chiffres requis");
       }
   }
   
