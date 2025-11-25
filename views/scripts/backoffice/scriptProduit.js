@@ -161,7 +161,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
 
     function updatePrixFromReduction(prix, nouveauPrixInput, reductionInput, recap) {
-        if (reductionInput.value !== "") {
+        if (reductionInput.value !== "" && reductionInput.value <= 100) {
             const nouveauPrix = (prix * (100 - reductionInput.value) / 100).toFixed(2);
             nouveauPrixInput.value = nouveauPrix;
             recap.textContent = "Abaissement de " + (prix - nouveauPrix).toFixed(2) + "€";
@@ -172,7 +172,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
     }
 
     function updateReductionFromPrix(prix, nouveauPrixInput, reductionInput, recap) {
-        if (nouveauPrixInput.value !== "") {
+        if (nouveauPrixInput.value !== "" && nouveauPrixInput.value < prix) {
             const reduction = (100 - (nouveauPrixInput.value) * 100 / prix).toFixed(2);
             reductionInput.value = reduction;
             recap.textContent = "Abaissement de " + (prix - nouveauPrixInput.value).toFixed(2) + "€";
@@ -192,7 +192,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
     function champsVide(){
         const bouton = overlay.querySelector("button");
 
-        if(dateLimite.value == "" || nouveauPrix.value == ""){
+        if(dateLimite.value == "" || nouveauPrix.value == "" || reduction.value == ""){
             bouton.disabled = true;
             bouton.style.cursor = "default";
         } else {
@@ -203,6 +203,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
 
     dateLimite.addEventListener("input", champsVide);
     nouveauPrix.addEventListener("input", champsVide);
+    reduction.addEventListener("input", champsVide);
 
 
 }
@@ -213,7 +214,7 @@ function popUpErreur(id, code) {
     const messages = {
         1: "Une erreur est survenue lors du traitement de la date. Respectez le format jj/mm/aaaa et réessayez.",
         2: "Le format de l'image n'est pas valide. Revérifiez les critères et réessayez.",
-        3: "L'image est trop volumineuse.",
+        3: "Erreur inattendue lors de l'annulation de la promotion. Veuillez réessayer.",
         404: "Le produit demandé est introuvable.",
         'default': "Une erreur inattendue s'est produite. Veuillez réessayer."
     };
@@ -246,6 +247,51 @@ function popUpErreur(id, code) {
 
     croixFermer.addEventListener("click", fermerPopUp);
     btnFermer.addEventListener("click", fermerPopUp);
+    
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUp();
+        }
+    });
+}
+
+function popUpAnnulerPromotion(id, nom) {
+
+    const url = new URL(window.location);
+    url.searchParams.set('annulationProduit', id);
+    window.history.pushState({}, '', url);
+
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpErreur";
+    
+    overlay.innerHTML = `
+        <main class="popUpErreur">
+            <form method="POST" action="../../controllers/annulerPromotion.php">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div>
+                <h1>Souhaitez-vous vraiment annuler la promotion pour ce produit ?</h1>
+                <p><strong>${nom}</strong></p>
+                <input type="hidden" name="id" value="${id}">
+                <button type="submit">Annuler la promotion</button>
+            </form>
+        </main>`;
+
+    document.body.appendChild(overlay);
+
+    const fermerPopUp = () => {
+        overlay.remove();
+        const url = new URL(window.location);
+        url.searchParams.delete('annulationProduit');
+        window.history.replaceState({}, '', url);
+    };
+
+    const croixFermer = overlay.querySelector(".croixFermerLaPage");
+    const btnFermer = overlay.querySelector(".btnFermer");
+
+    croixFermer.addEventListener("click", fermerPopUp);
+    if (btnFermer) btnFermer.addEventListener("click", fermerPopUp);
     
     overlay.addEventListener("click", (e) => {
         if (e.target === overlay) {
@@ -294,7 +340,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
                         <div>
-                            <input type="date" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
+                            <input type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
                         </div>
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">

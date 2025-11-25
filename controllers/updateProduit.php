@@ -19,31 +19,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':idProduit' => $idProd
     ]);
 
-// Construit le chemin de la nouvelle image 
-if($_FILES['url']['name']){
-    $fileName = $_FILES['url']['name'];
-    move_uploaded_file($_FILES['url']['name'], "/var/www/html/images/" . $_FILES['url']['name']);
 
+if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] != '') {
+    $photoPath = '/var/www/html/images/'.$_FILES['url']['name'];
+
+    $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
+    $extension = '.'.$extension;
+    move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
 }
 else{
-    $sqlUrl = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = :idProduit");
+    $sqlUrl = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = $idProd");
     $result =  $pdo->query($sqlUrl);
     $fileName = $result->fetch(PDO::FETCH_ASSOC);
+
+
+    $url = "/images/$fileName";
+
+    try{
+            $imgDeProd->execute([
+                ':url' => $url,
+                ':idProduit' => $idProd
+            ]);
+        }
+
+    catch(PDOException $e){
+        echo "Erreur SQL : " . $e->getMessage();
+        }
+}
 }
 
-$url = "/images/$fileName";
-
-try{
-        $imgDeProd->execute([
-            ':url' => $url,
-            ':idProduit' => $idProd
-        ]);
-    }
-
-catch(PDOException $e){
-    echo "Erreur SQL : " . $e->getMessage();
-}
-}
 
 
 header("Location: ../views/backoffice/accueil.php"); 
