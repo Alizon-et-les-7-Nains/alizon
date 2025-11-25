@@ -4630,13 +4630,13 @@ dialog.reassort form input::placeholder {
   font-weight: normal;
 }
 dialog.reassort form input:disabled {
-  background-color: #6e6e6e !important;
-  color: #273469 !important;
+  background-color: #bababa !important;
+  color: #fffefa !important;
   cursor: not-allowed !important;
 }
 dialog.reassort form input:disabled:hover {
-  background-color: #6e6e6e !important;
-  color: #273469 !important;
+  background-color: #bababa !important;
+  color: #fffefa !important;
   cursor: not-allowed !important;
 }
 dialog.reassort form input {
@@ -5049,8 +5049,8 @@ dialog.reassort form input {
 }
 .pageProduit .banniere h1 {
   position: absolute;
-  top: 13px;
-  left: 20px;
+  top: 25px;
+  left: 10px;
   color: #fffefa;
   z-index: 10000;
 }
