@@ -355,7 +355,7 @@ function popUpAnnulerPromotion(id, nom) {
 }
 
 function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo) {
-    
+
     const overlay = document.createElement("div");
     
     overlay.className = "overlaypopUpPromouvoir";
@@ -401,7 +401,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                             <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
                         <p class="supprimer">supprimer ...</p>
-                        <p><strong>Format accepté </strong>: 21:4 (1440x275px minimum, .jpg uniquement)</p>
+                        <p><strong>Format accepté </strong>: .jpg uniquement</p>
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
@@ -544,7 +544,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
                             <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
                         <p class="supprimer">supprimer ...</p>
-                        <p><strong>Format accepté </strong>: 21:4 (1440x275px minimum, .jpg uniquement)</p>
+                        <p><strong>Format accepté </strong>: .jpg uniquement</p>
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">

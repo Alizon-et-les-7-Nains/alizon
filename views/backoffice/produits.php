@@ -92,11 +92,9 @@
                                         <?php $nom = $produitEnVente[$i]['nom'] ?>
                                         <?php $nbEval = $evaluations[0]['evaluation'] ?>
                                         <?php if(count($promo) == 1) { 
-                                            // 1. On formate la date en PHP (format français d/m/Y)
                                             $dateRaw = new DateTime($promo[$i]['finPromotion']);
                                             $dateFinPromo = $dateRaw->format('d/m/Y'); 
                                         ?>
-                                            <!-- 2. On ajoute les guillemets simple ' ' autour de la variable PHP dans le onclick -->
                                             <button onclick="popUpModifierPromotion(
                                                 <?php echo $idProd; ?>, 
                                                 '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', 

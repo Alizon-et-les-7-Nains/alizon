@@ -4031,6 +4031,10 @@ button#haut.visible:hover {
   border-radius: 16px;
   position: relative;
 }
+.popUpPromouvoir form {
+  display: flex;
+  align-items: center;
+}
 .popUpPromouvoir .prixRes {
   display: flex;
 }

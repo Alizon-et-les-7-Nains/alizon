@@ -97,23 +97,23 @@
                     </ul>
                 </div>";
         echo $html;
-        echo "
-            <dialog class='reassort' id='d-" . $epuise['idProduit'] ."'>
-                <h1>Paramètres de réassort</h1>
-                <form action='../../controllers/reassort.php' method='post'>    
-                    <input type='number' placeholder='" . 'Seuil d\'alerte' . "value='" . $epuise['seuilAlerte'] . "' " . 'name="Seuil d\'alerte" id ="seuil">
-                    <label for="Seuil d\'alerte" id="errorFieldSeuil">Doit être un entier</label>
-                    <input type="date" placeholder="Date du réassort" value=' . "'" . $epuise['dateReassort'] . "' name='Date du réassort' id='dateReassort'>
-                    <label for='Date du réassort' id='errorFieldDate'>Ne doit pas être passée</label>
-                    <input type='number' placeholder='Réassortir' name='Reassortir' id='reassort'>
-                    <label for='Reassortir' id='errorFieldReassort'>Doit être un entier</label>
-                    <ul>
-                        <li><input type='button' value='Annuler' id='annuler'></li>
-                        <li><input type='submit' value='Valider' id='buttonConfirm'></li>
-                    </ul>
-                </form>
-            </dialog>
-        ";
+echo "
+    <dialog class='reassort' id='d-" . $epuise['idProduit'] ."'>
+        <h1>Paramètres de réassort</h1>
+        <form action='../../controllers/reassort.php' method='post'>    
+            <input type='number' placeholder='Seuil d&#39;alerte' value='" . $epuise['seuilAlerte'] . "' name='Seuil d&#39;alerte' id='seuil'>
+            <label for='seuil' id='errorFieldSeuil'>Doit être un entier</label>
+            <input type='date' placeholder='Date du réassort' value='" . $epuise['dateReassort'] . "' name='Date du réassort' id='dateReassort'>
+            <label for='dateReassort' id='errorFieldDate'>Ne doit pas être passée</label>
+            <input type='number' placeholder='Réassortir' name='Reassortir' id='reassort'>
+            <label for='reassort' id='errorFieldReassort'>Doit être un entier</label>
+            <ul>
+                <li><input type='button' value='Annuler' id='annuler'></li>
+                <li><input type='submit' value='Valider' id='buttonConfirm'></li>
+            </ul>
+        </form>
+    </dialog>
+";
     }
 ?>
             </article>
@@ -190,23 +190,23 @@
                     </ul>
                 </div>";
         echo $html;
-        echo "
-            <dialog class='reassort' id='d-" . $faible['idProduit'] ."'>
-                <h1>Paramètres de réassort</h1>
-                <form action='../../controllers/reassort.php' method='post'>    
-                    <input type='number' placeholder='" . 'Seuil d\'alerte' . "value='" . $faible['seuilAlerte'] . "' " . 'name="Seuil d\'alerte" id ="seuil">
-                    <label for="Seuil d\'alerte" id="errorFieldSeuil">Doit être un entier</label>
-                    <input type="date" placeholder="Date du réassort" value=' . "'" . $faible['dateReassort'] . "' name='Date du réassort' id='dateReassort'>
-                    <label for='Date du réassort' id='errorFieldDate'>Ne doit pas être passée</label>
-                    <input type='number' placeholder='Réassortir' name='Reassortir' id='reassort'>
-                    <label for='Reassortir' id='errorFieldReassort'>Doit être un entier</label>
-                    <ul>
-                        <li><input type='button' value='Annuler' id='annuler'></li>
-                        <li><input type='submit' value='Valider' id='buttonConfirm'></li>
-                    </ul>
-                </form>
-            </dialog>
-        ";
+echo "
+    <dialog class='reassort' id='d-" . $faible['idProduit'] ."'>
+        <h1>Paramètres de réassort</h1>
+        <form action='../../controllers/reassort.php' method='post'>    
+            <input type='number' placeholder='Seuil d&#39;alerte' value='" . $faible['seuilAlerte'] . "' name='Seuil d&#39;alerte' id='seuil'>
+            <label for='seuil' id='errorFieldSeuil'>Doit être un entier</label>
+            <input type='date' placeholder='Date du réassort' value='" . $faible['dateReassort'] . "' name='Date du réassort' id='dateReassort'>
+            <label for='dateReassort' id='errorFieldDate'>Ne doit pas être passée</label>
+            <input type='number' placeholder='Réassortir' name='Reassortir' id='reassort'>
+            <label for='reassort' id='errorFieldReassort'>Doit être un entier</label>
+            <ul>
+                <li><input type='button' value='Annuler' id='annuler'></li>
+                <li><input type='submit' value='Valider' id='buttonConfirm'></li>
+            </ul>
+        </form>
+    </dialog>
+";
     }
 ?>
             </article>
@@ -283,23 +283,23 @@
                     </ul>
                 </div>";
         echo $html;
-        echo "
-            <dialog class='reassort' id='d-" . $stock['idProduit'] ."'>
-                <h1>Paramètres de réassort</h1>
-                <form action='../../controllers/reassort.php' method='post'>    
-                    <input type='number' placeholder='" . 'Seuil d\'alerte' . "' value='" . $stock['seuilAlerte'] . "' " . 'name="Seuil d\'alerte" id ="seuil">
-                    <label for="Seuil d\'alerte" id="errorFieldSeuil">Doit être un entier</label>
-                    <input type="date" placeholder="Date du réassort" value=' . "'" . $stock['dateReassort'] . "' name='Date du réassort' id='dateReassort'>
-                    <label for='Date du réassort' id='errorFieldDate'>Ne doit pas être passée</label>
-                    <input type='number' placeholder='Réassortir' name='Reassortir' id='reassort'>
-                    <label for='Reassortir' id='errorFieldReassort'>Doit être un entier</label>
-                    <ul>
-                        <li><input type='button' value='Annuler' id='annuler'></li>
-                        <li><input type='submit' value='Valider' id='buttonConfirm'></li>
-                    </ul>
-                </form>
-            </dialog>
-        ";
+echo "
+    <dialog class='reassort' id='d-" . $stock['idProduit'] ."'>
+        <h1>Paramètres de réassort</h1>
+        <form action='../../controllers/reassort.php' method='post'>    
+            <input type='number' placeholder='Seuil d&#39;alerte' value='" . $stock['seuilAlerte'] . "' name='Seuil d&#39;alerte' id='seuil'>
+            <label for='seuil' id='errorFieldSeuil'>Doit être un entier</label>
+            <input type='date' placeholder='Date du réassort' value='" . $stock['dateReassort'] . "' name='Date du réassort' id='dateReassort'>
+            <label for='dateReassort' id='errorFieldDate'>Ne doit pas être passée</label>
+            <input type='number' placeholder='Réassortir' name='Reassortir' id='reassort'>
+            <label for='reassort' id='errorFieldReassort'>Doit être un entier</label>
+            <ul>
+                <li><input type='button' value='Annuler' id='annuler'></li>
+                <li><input type='submit' value='Valider' id='buttonConfirm'></li>
+            </ul>
+        </form>
+    </dialog>
+";
     }
 ?>
             </article>
