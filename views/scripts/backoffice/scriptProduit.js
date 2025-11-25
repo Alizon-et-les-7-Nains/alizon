@@ -104,6 +104,54 @@ function verifDate(input){
 
 }
 
+
+function popUpAnnulerPromotion(id, nom) {
+
+    const url = new URL(window.location);
+    url.searchParams.set('annulationProduit', id);
+    window.history.pushState({}, '', url);
+
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpErreur";
+    
+    overlay.innerHTML = `
+        <main class="popUpErreur" style="text-align : center;">
+            <form method="POST" action="../../controllers/annulerRemise.php">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div>
+                <h1>Souhaitez-vous vraiment annuler la remise pour ce produit ?</h1>
+                <p><strong>${nom}</strong></p>
+                <input type="hidden" name="annulationProduit" value="${id}">
+                <button type="submit" style="color: #ffffff; background-color: #f14e4e;">Annuler la promotion</button>
+            </form>
+        </main>`;
+
+    document.body.appendChild(overlay);
+
+    const fermerPopUp = () => {
+        overlay.remove();
+        const url = new URL(window.location);
+        url.searchParams.delete('annulationProduit');
+        window.history.replaceState({}, '', url);
+    };
+
+    const croixFermer = overlay.querySelector(".croixFermerLaPage");
+    const btnFermer = overlay.querySelector(".btnFermer");
+
+    croixFermer.addEventListener("click", fermerPopUp);
+    if (btnFermer) btnFermer.addEventListener("click", fermerPopUp);
+    
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUp();
+        }
+    });
+}
+
+
+
 function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg){
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
