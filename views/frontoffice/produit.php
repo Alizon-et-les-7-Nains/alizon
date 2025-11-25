@@ -543,8 +543,11 @@ if ($produit['stock'] > 0) {
                                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                                 <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
                                 <input type="hidden" name="type" value="like">
-                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>" 
-                                        onclick="changerPouce(this.querySelector('img'), 'haut')">
+                                <button class="btn-vote <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>" 
+                                        data-action="vote"
+                                        data-produit="<?php echo $productId; ?>"
+                                        data-client="<?php echo $avis['idClient']; ?>"
+                                        data-type="like">
                                     <img src="../../public/images/<?php echo ($voteUtilisateur === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png'; ?>" alt="Like">
                                     <span><?php echo intval($avis['positifs']); ?></span>
                                 </button>
@@ -555,7 +558,11 @@ if ($produit['stock'] > 0) {
                                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                                 <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
                                 <input type="hidden" name="type" value="dislike">
-                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>" onclick="changerPouce(this.querySelector('img'), 'bas')">
+                                <button class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>" 
+                                        data-action="vote"
+                                        data-produit="<?php echo $productId; ?>"
+                                        data-client="<?php echo $avis['idClient']; ?>"
+                                        data-type="dislike">
                                     <img src="../../public/images/<?php echo ($voteUtilisateur === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png'; ?>" alt="Dislike">
                                     <span><?php echo intval($avis['negatifs']); ?></span>
                                 </button>
@@ -734,33 +741,82 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function changerPouce(element, type) {
-    const article = element.closest('article');
-    const pouceHaut = article.querySelector('img[alt="Like"]');
-    const pouceBas = article.querySelector('img[alt="Dislike"]');
+document.addEventListener('DOMContentLoaded', function() {
+    // Votre code existant...
     
-    const pouceHautInactif = "../../public/images/pouceHaut.png";
-    const pouceHautActif = "../../public/images/pouceHautActive.png";
-    const pouceBasInactif = "../../public/images/pouceBas.png";
-    const pouceBasActif = "../../public/images/pouceBasActive.png";
-    
-    if (element.src.includes('Active')) {
-        if (type === 'haut') {
-            element.src = pouceHautInactif;
-        } else {
-            element.src = pouceBasInactif;
-        }
-    } else {
-        if (pouceHaut) pouceHaut.src = pouceHautInactif;
-        if (pouceBas) pouceBas.src = pouceBasInactif;
-        
-        if (type === 'haut') {
-            element.src = pouceHautActif;
-        } else {
-            element.src = pouceBasActif;
-        }
-    }
-}
+    // Gestion des votes
+    document.querySelectorAll('.btn-vote[data-action="vote"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const idProduit = this.dataset.produit;
+            const idClientAvis = this.dataset.client;
+            const type = this.dataset.type;
+            
+            // Envoyer la requête AJAX
+            const formData = new FormData();
+            formData.append('action', 'voter_avis');
+            formData.append('idProduit', idProduit);
+            formData.append('idClientAvis', idClientAvis);
+            formData.append('type', type);
+            
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Mettre à jour l'interface
+                    const article = this.closest('article');
+                    const allButtons = article.querySelectorAll('.btn-vote[data-action="vote"]');
+                    const likeButton = article.querySelector('.btn-vote[data-type="like"]');
+                    const dislikeButton = article.querySelector('.btn-vote[data-type="dislike"]');
+                    
+                    const likeImg = likeButton.querySelector('img');
+                    const dislikeImg = dislikeButton.querySelector('img');
+                    const likeCount = likeButton.querySelector('span');
+                    const dislikeCount = dislikeButton.querySelector('span');
+                    
+                    // Si on clique sur le bouton déjà actif, on retire le vote
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        if (type === 'like') {
+                            likeImg.src = '../../public/images/pouceHaut.png';
+                            likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                        } else {
+                            dislikeImg.src = '../../public/images/pouceBas.png';
+                            dislikeCount.textContent = parseInt(dislikeCount.textContent) - 1;
+                        }
+                    } else {
+                        // Retirer l'ancien vote s'il existe
+                        if (likeButton.classList.contains('active')) {
+                            likeButton.classList.remove('active');
+                            likeImg.src = '../../public/images/pouceHaut.png';
+                            likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                        }
+                        if (dislikeButton.classList.contains('active')) {
+                            dislikeButton.classList.remove('active');
+                            dislikeImg.src = '../../public/images/pouceBas.png';
+                            dislikeCount.textContent = parseInt(dislikeCount.textContent) - 1;
+                        }
+                        
+                        // Ajouter le nouveau vote
+                        this.classList.add('active');
+                        if (type === 'like') {
+                            likeImg.src = '../../public/images/pouceHautActive.png';
+                            likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                        } else {
+                            dislikeImg.src = '../../public/images/pouceBasActive.png';
+                            dislikeCount.textContent = parseInt(dislikeCount.textContent) + 1;
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur lors du vote');
+            });
+        });
+    });
+});
 
 
 
