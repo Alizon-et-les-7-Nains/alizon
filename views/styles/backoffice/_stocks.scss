@@ -316,13 +316,13 @@ dialog.reassort {
                 font-weight: normal;
             }
             &:disabled {
-                background-color: $color-dark-gray !important;
-                color: $color-blue !important;
+                background-color: $color-gray !important;
+                color: $color-white !important;
                 cursor: not-allowed !important;
 
                 &:hover {
-                    background-color: $color-dark-gray !important;
-                    color: $color-blue !important;
+                    background-color: $color-gray !important;
+                    color: $color-white !important;
                     cursor: not-allowed !important;
                 }
             }

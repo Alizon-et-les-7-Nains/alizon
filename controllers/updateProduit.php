@@ -39,9 +39,8 @@ if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
 
     $sqlUrl = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
     $sqlUrl->execute([':idProduit' => $idProd]);
-
     $row = $sqlUrl->fetch(PDO::FETCH_ASSOC);
-    $url = $row['URL']; // on garde l'ancien
+    $fileName = $row['URL']; 
 }
 
 
