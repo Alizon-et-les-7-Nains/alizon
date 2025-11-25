@@ -26,12 +26,12 @@ if ($isConnected){
   <header class="headerFront">
 
     <div class="headerMain">
+      <a href="../accueilDeonnecte.php">
       <div class="logoNom">
-
         <img src="../../../public/images/logoAlizonHeader.png" alt="Logo Alizon">
         <h1><a href="../public/acceuil.php"><b>Alizon</b></a></h1>
-
       </div>
+      <a href="../accueilConnecte.php">
       <div class="searchBar">
 
           <div class="searchBar">
