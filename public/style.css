@@ -6118,7 +6118,7 @@ dialog.reassort form input {
   flex-direction: column;
   position: relative;
   width: 100%;
-  margin: 15px;
+  margin: 30px;
   font-family: "Lora", serif;
   color: #273469;
 }
@@ -6223,6 +6223,61 @@ dialog.reassort form input {
 }
 .mesAvis .actions .supprimerAvis {
   color: #f14e4e !important;
+}
+
+.modifierAvis main {
+  margin-left: 10%;
+}
+.modifierAvis main h2 {
+  margin-top: 30px;
+  font-family: "lora";
+  color: #273469;
+  text-align: center;
+}
+.modifierAvis main p, .modifierAvis main label {
+  font-family: "lora";
+  font-size: 20px;
+  color: #273469;
+}
+.modifierAvis main form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  font-size: 16px;
+  font-weight: bold;
+}
+.modifierAvis main form input, .modifierAvis main form textarea {
+  width: 80%;
+  padding: 5px;
+  margin-right: 10%;
+  height: 50px;
+  margin-bottom: 30px;
+  color: #6e6e6e;
+  font-family: "lora";
+  font-size: 16px;
+  border: 2px solid #273469;
+  border-radius: 8px;
+}
+.modifierAvis main form textarea {
+  height: 300px;
+}
+.modifierAvis main form .star {
+  width: 65px;
+  height: 65px;
+  gap: 4px;
+}
+.modifierAvis #publishButton {
+  width: 80%;
+  padding: 5px;
+  margin-right: 10%;
+  height: 50px;
+  margin-bottom: 30px;
+  font-size: 16px;
+  background-color: #273469;
+  border-radius: 8px;
+  border: none;
+  color: #fffefa;
 }
 
 /*# sourceMappingURL=style.css.map */

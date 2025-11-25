@@ -36,7 +36,7 @@ function afficherEtoiles($note) {
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
-<body class="modifierAvis">
+<body>
     <header>
         <?php include './partials/headerConnecte.php'; ?>
     </header>
@@ -83,7 +83,8 @@ function afficherEtoiles($note) {
                         </div>
 
                         <div class="actions">
-                            <a href="../../controllers/modifierAvis.php<?php echo($p);?>">Modifier</a>
+                            <a href="../../controllers/modifierAvis.php?id=<?php echo $avis['idProduit']; ?>">Modifier</a>
+
                             <a href="../../controllers/supprimerAvis.php?id=<?php echo($p);?>" class="supprimerAvis">Supprimer</a>
                         </div>
 
