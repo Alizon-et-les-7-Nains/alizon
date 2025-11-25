@@ -14,13 +14,15 @@
     padding: 20px;
 
     #error {
+        text-align: center;
+        width: 75%;
         background-color: $color-pastel-red;
+        font-size: 15px;
         color: $color-red;
         font: {
             family: 'open-sans';
-            weight: bold;
         }
-        padding: 1em;
+        padding: 0.5em;
         border: {
             style: solid;
             width: 2px;
