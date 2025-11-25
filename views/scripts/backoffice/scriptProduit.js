@@ -356,6 +356,8 @@ function popUpAnnulerPromotion(id, nom) {
 
 function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo) {
 
+    console.log("imgURL reçu :", imgURL);
+
     const overlay = document.createElement("div");
     
     overlay.className = "overlaypopUpPromouvoir";
