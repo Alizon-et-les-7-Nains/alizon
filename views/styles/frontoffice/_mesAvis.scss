@@ -1,0 +1,133 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.mesAvis{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        width: 100%;
+        margin:15px;
+        font: {
+            family:"Lora", serif;
+        }
+        color: $color-blue;
+
+    h1,h2{
+        font-weight: bold;
+    }
+    h1{
+        font-size: 48;
+    }
+    h2{
+        font-size: 20;
+    }
+    section{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    article {
+        display: flex;
+        flex-direction: row;
+        border: 2px solid $color-blue;
+        border-radius: 20px;
+        margin: 2em 6em;
+        padding: 20px;
+        gap: 20px;
+    }
+    .produit {
+        display: flex;
+        flex-direction: row;       
+        align-items: center;       
+        gap: 15px;                 
+        color:$color-black;
+        width: auto;
+        padding: 10px;
+        border: 2px solid $color-blue;
+        border-radius: 20px;
+
+        img {
+            width: 120px;          
+            height: 120px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+    }
+
+    .infos-produit {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        h3 {
+            margin: 0;
+            font-size:14px;
+            font-weight: normal;
+
+        }
+        
+        p {
+            margin: 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: $color-black;
+        }
+    }
+
+    .contenu {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+        .note {
+        display: flex;
+        gap: 4px;
+        .etoile {
+            width: 20px;
+            height: 20px;
+        }
+        .vide {
+            opacity: 0.3; 
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+
+    .header-contenu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header-contenu h2 {
+        margin: 0;
+    }
+
+    .date {
+        font-size: 14px;
+        font-style: italic;
+    }
+
+    .texte p {
+        margin: 0;
+    }
+
+    .actions {
+        margin-top: auto;
+        display: flex;
+        justify-content: flex-end;
+        gap: 20px;
+
+        a {
+            text-decoration: none;
+            color: $color-blue;
+        }
+
+        .supprimerAvis {
+            color: $color-red !important;
+        }
+    }
+
+}
