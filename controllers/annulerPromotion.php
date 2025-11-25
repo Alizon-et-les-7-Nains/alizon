@@ -3,7 +3,7 @@
 require_once 'pdo.php';
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
+if ($_SERVER['REQUEST_METHOD'] === 'GET') { 
 
     if(isset($_GET['annulationProduit'])) {
         $idProd = intval($_GET['annulationProduit']); 
