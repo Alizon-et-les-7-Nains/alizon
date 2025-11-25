@@ -221,7 +221,7 @@ body {
   padding: 10px;
 }
 
-#triangle-codeHeader {
+#burgerIcon #triangle-codeHeader {
   display: inline-block;
   height: 0;
   width: 0;
