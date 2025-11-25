@@ -522,21 +522,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (form) {
     form.addEventListener("submit", function (e) {
-      // CORRECTION : Toujours permettre la soumission, même avec des erreurs
-      // La validation côté serveur fera le vrai travail
-      if (!validerFormulaire()) {
+      // CORRECTION CRITIQUE : S'assurer que les champs ne sont PAS en readonly lors de la soumission
+      const inputsReadonly = document.querySelectorAll("input[readonly]");
+      inputsReadonly.forEach((input) => {
+        input.removeAttribute("readonly");
+      });
+
+      // Valider le formulaire seulement si on est en mode édition
+      if ((modeEdition || modeModificationMdp) && !validerFormulaire()) {
         e.preventDefault();
         alert(
           "Veuillez corriger les erreurs dans le formulaire avant de sauvegarder."
         );
         return false;
       }
-
-      // CORRECTION : S'assurer que les champs ne sont PAS en readonly lors de la soumission
-      const inputsReadonly = document.querySelectorAll("input[readonly]");
-      inputsReadonly.forEach((input) => {
-        input.removeAttribute("readonly");
-      });
 
       // Afficher un indicateur de chargement
       const boutonSauvegarder = document.querySelector(".boutonSauvegarder");
