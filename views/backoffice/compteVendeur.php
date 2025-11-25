@@ -32,7 +32,6 @@ if (!$idAdresse) {
 
 // Traitement du formulaire
 
-
 // Gestion de la photo de profil
 $photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil' . $code_vendeur;
 $extension = '';
@@ -104,6 +103,15 @@ $pays          = $vendeur['pays'] ?? '';
     ?>
 
     <main class="page-compte">
+        <?php
+        if (isset($_GET['success']) && $_GET['success'] == 1) {
+            echo '<div class="alert alert-success" style="background: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border: 1px solid #c3e6cb; border-radius: 4px;">Modifications sauvegardées avec succès!</div>';
+        }
+        if (isset($_GET['error']) && $_GET['error'] == 1) {
+            echo '<div class="alert alert-error" style="background: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border: 1px solid #f5c6cb; border-radius: 4px;">Erreur lors de la sauvegarde. Veuillez réessayer.</div>';
+        }
+        ?>
+
         <form class="form-compte" method="POST" action="../../controllers/compteVendeur.php"
             enctype="multipart/form-data">
             <div class="header-compte">
