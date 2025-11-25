@@ -63,11 +63,45 @@ function popUpInfoCalcul() {
 
 function verifDate(input){
     let valeur = input.value.trim();
+    let dateDuJour = new Date();
+    dateDuJour = dateDuJour.toLocaleDateString();
+    let tabVal = valeur.split("/");
+    let tabDate = dateDuJour.split("/");
+
+    let jourVal = parseInt(tabVal[0]);
+    let moisVal = parseInt(tabVal[1]);
+    let anVal  = parseInt(tabVal[2]);
+
+    let jourAjd = parseInt(tabDate[0]);
+    let moisAjd = parseInt(tabDate[1]);
+    let anAjd   = parseInt(tabDate[2]);
+
     if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
         setError(input, "Format attendu : jj/mm/aaaa");
     } else {
         clearError(input);
     }
+
+    if(valeur.length == 10){
+        let erreur = false;
+            
+        if (anVal < anAjd){
+            erreur = true;
+        }
+        else if (anVal === anAjd && moisVal < moisAjd){
+            erreur = true;
+        }
+        else if (anVal === anAjd && moisVal === moisAjd && jourVal <= jourAjd){
+            erreur = true;
+        }
+
+        if (erreur) {
+            setError(input, "La date limite doit dépasser la date du jour");
+        } else {
+            clearError(input);
+        }
+    }
+
 }
 
 function popUpRemise(id, nom, imgURL, prix, nbEval, note){
@@ -154,6 +188,21 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
 
     nouveauPrix.addEventListener("input", () => updateReductionFromPrix(prix, nouveauPrix, reduction, recap));
     reduction.addEventListener("input", () => updatePrixFromReduction(prix, nouveauPrix, reduction, recap));
+
+    function champsVide(){
+        const bouton = overlay.querySelector("button");
+
+        if(dateLimite.value == "" || nouveauPrix.value == ""){
+            bouton.disabled = true;
+            bouton.style.cursor = "default";
+        } else {
+            bouton.disabled = false;
+            bouton.style.cursor = "pointer";
+        }
+    }
+
+    dateLimite.addEventListener("input", champsVide);
+    nouveauPrix.addEventListener("input", champsVide);
 
 
 }
