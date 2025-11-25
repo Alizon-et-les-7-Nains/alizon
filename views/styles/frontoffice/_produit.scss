@@ -2,6 +2,7 @@
 @use "../fonts" as *;
 
 .pageProduit{
+
     main{
         display: flex;
         flex-direction: column;
@@ -19,7 +20,6 @@
     .infoHautProduit{
         display: flex;
         flex-direction: row;
-        overflow-y: scroll;
         position: relative;
     }
 
@@ -49,6 +49,10 @@
         top: -8px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
+    }
+
+    .banniere h1{
+        font-size: 30px;
     }
 
     .imgBanniere{
@@ -134,7 +138,7 @@
         margin-top: 0.5em;
     }
 
-    .attributsproduit h3{
+    .attributsproduit h4{
         border-radius: 8px;
         background-color: $color-red;
         color: white;
@@ -169,10 +173,11 @@
     }
 
     .actionsProduit{
-        top: 15em;
+        top: 10em;
         right: 1em;
         position: fixed;
         width: 24%;
+        max-width: 300px;
         z-index: 10;
         height: fit-content;
         padding: 15px;
@@ -398,16 +403,6 @@
         font-weight: 100;
     }
 
-    .sectionAvis button {
-        margin: 2em 0;
-        border: 2px solid $color-blue;
-        background-color: white;
-        border-radius: 32px;
-        cursor: pointer;
-        font-size: 16px;
-        
-    }
-
     .sectionAvis article{
         display: flex;
         margin-bottom: 2em;
@@ -486,6 +481,14 @@
         background-color: $color-blue;
     }
 
+    .btn-vote{
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+    }
+
     .product-rating{
         display: flex;
         flex-direction: column;
@@ -504,6 +507,7 @@
         font-size: 20px;
         color: green;
         font-weight: bold;
+        width: 60%;
     }
 
     .stockIndisponible{
@@ -512,6 +516,7 @@
         font-size: 20px;
         color: red;
         font-weight: bold;
+        width: 60%;
     }
 
     .review-count{
@@ -833,6 +838,10 @@
             left: 20px;
         }
 
+        .infoPreviewProduit div{
+            justify-content: center;
+        }
+
         .nomProduit {
             position: absolute;
             display: flex;
@@ -900,6 +909,97 @@
         }
         p{
             font-size: 10px;
+        }
+    }
+    .modal-signalement {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid $color-blue;
+
+            h2 {
+                color: $color-blue;
+                margin-top: 0;
+                margin-bottom: 20px;
+                font-size: 24px;
+            }
+
+            .close-modal {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                font-size: 28px;
+                font-weight: bold;
+                color: #aaa;
+                cursor: pointer;
+                transition: color 0.3s;
+
+                &:hover {
+                    color: $color-blue;
+                }
+            }
+
+            .groupe-input {
+                margin-bottom: 15px;
+
+                label {
+                    display: block;
+                    margin-bottom: 5px;
+                    color: $color-blue;
+                    font-weight: 500;
+                }
+
+                input, textarea {
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    font-family: inherit;
+                    resize: vertical;
+
+                    &:focus {
+                        outline: 2px solid $color-blue;
+                        border-color: transparent;
+                    }
+                }
+            }
+
+            button[type="submit"] {
+                width: 100%;
+                margin-top: 10px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .btn-signaler {
+        background: none;
+        border: none;
+        color: #666;
+        text-decoration: underline;
+        cursor: pointer;
+        font-size: 0.9em;
+        padding: 0;
+        margin-left: 10px;
+
+        &:hover {
+            color: $color-red; 
         }
     }
 }

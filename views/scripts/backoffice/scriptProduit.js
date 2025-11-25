@@ -151,6 +151,141 @@ function popUpAnnulerRemise(id, nom) {
 }
 
 
+function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
+        const overlay = document.createElement("div");
+        overlay.className = "overlayPopUpRemise";
+        overlay.innerHTML = `
+        <main class="popUpRemise">
+            <div class="page">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="titreEtProduit">
+                    <h1> Ajouter une remise pour ce produit </h1>
+                    <section>
+                        <article>
+                            <img class="produit" src="${imgURL}" alt="">
+                            <div class="nomEtEvaluation">
+                                <p>${nom}</p>
+                                <div class="evaluation">
+                                    <div class="etoiles">
+                                        <img src="/public/images/etoile.svg" alt="">
+                                        <p>${note}</p>
+                                    </div>
+                                    <p>${nbEval} évaluation</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="prix"> ${prix} €</p>
+                                <p class="prixAuKg"> ${prixAuKg}€ / kg</p>
+                            </div>
+                        </article>
+                    </section>
+                </div>
+                <div class="ligne"></div>
+                <form method="POST" action="../../controllers/creerRemise.php">
+                    <div>
+                        <input type="text" name="dateLimite" id="dateLimite" placeholder="Date limite">
+                    </div>
+                    <div>
+                        <input type="float" name="nouveauPrix" id="nouveauPrix" placeholder="Nouveau prix">
+                        <input type="float" name="reduction" id="reduction" placeholder="Reduction(%)">
+                    </div>
+                    <h2>Récapitulatif :</h2>
+                    <p class = "recap"> </p>
+                    <input type="hidden" name="id" value="${id}">
+                    <input type="hidden" name="aUneRemise" value="${aUneRemise}">
+                    <div class="deuxBoutons">
+                        <button class="boutonSup" type="button" onclick="popUpAnnulerRemise(${id}, '${nom}')">Annuler la remise</button>
+                        <button class="bouton" type="submit">Appliquer la remise</button>
+                    </div>
+                    </form>
+            </div>
+        </main>`;
+    document.body.appendChild(overlay);
+
+    const bouton = overlay.querySelector(".bouton");
+    bouton.disabled = true;
+    bouton.style.cursor = "default";
+
+    const croixFermer = overlay.querySelector(".croixFermerLaPage");
+    croixFermer.addEventListener("click", fermerPopUpRemise);
+
+    const dateLimite = overlay.querySelector("#dateLimite");
+    dateLimite.addEventListener("input", () => verifDate(dateLimite));
+
+    function updatePrixFromReduction(prixOriginal, inputNouveauPrix, inputReduction, recap) {
+        const valeurReduction = parseFloat(inputReduction.value);
+
+        if (inputReduction.value === "" || valeurReduction <= 0 || valeurReduction > 100) {
+            setError(inputReduction, "Réduction entre 1% et 100%");
+            inputNouveauPrix.value = "";
+            recap.textContent = "Abaissement de 0€";
+            return;
+        } else {
+            clearError(inputReduction);
+        }
+
+        const calculNouveauPrix = (prixOriginal * (100 - valeurReduction) / 100).toFixed(2);
+        inputNouveauPrix.value = calculNouveauPrix;
+        recap.textContent = "Abaissement de " + (prixOriginal - calculNouveauPrix).toFixed(2) + "€";
+
+        const prixCalc = parseFloat(inputNouveauPrix.value);
+        if (prixCalc < 0 || prixCalc > prixOriginal) {
+            setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
+        } else {
+            clearError(inputNouveauPrix);
+        }
+    }
+
+    function updateReductionFromPrix(prixOriginal, inputNouveauPrix, inputReduction, recap) {
+        const valeurNouveauPrix = parseFloat(inputNouveauPrix.value);
+
+        if (inputNouveauPrix.value === "" || valeurNouveauPrix < 0 || valeurNouveauPrix > prixOriginal) {
+            setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
+            inputReduction.value = "";
+            recap.textContent = "Abaissement de 0€";
+            return;
+        } else {
+            clearError(inputNouveauPrix);
+        }
+
+        const calculReduction = (100 - (valeurNouveauPrix * 100 / prixOriginal)).toFixed(2);
+        inputReduction.value = calculReduction;
+        recap.textContent = "Abaissement de " + (prixOriginal - valeurNouveauPrix).toFixed(2) + "€";
+
+        if (calculReduction <= 0 || calculReduction > 100) {
+            setError(inputReduction, "Réduction entre 1% et 100%");
+        } else {
+            clearError(inputReduction);
+        }
+    }
+    
+    const nouveauPrix = overlay.querySelector("#nouveauPrix");
+    const reduction = overlay.querySelector("#reduction");
+    const recap = overlay.querySelector(".recap");
+
+    nouveauPrix.addEventListener("input", () => updateReductionFromPrix(prix, nouveauPrix, reduction, recap));
+    reduction.addEventListener("input", () => updatePrixFromReduction(prix, nouveauPrix, reduction, recap));
+
+    function champsVide(){
+        const bouton = overlay.querySelector(".bouton");
+
+        if(dateLimite.value == "" || nouveauPrix.value == "" || reduction.value == ""){
+            bouton.disabled = true;
+            bouton.style.cursor = "default";
+        } else {
+            bouton.disabled = false;
+            bouton.style.cursor = "pointer";
+        }
+    }
+
+    dateLimite.addEventListener("input", champsVide);
+    nouveauPrix.addEventListener("input", champsVide);
+    reduction.addEventListener("input", champsVide);
+}
+
 
 function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
         const overlay = document.createElement("div");
@@ -198,7 +333,6 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
                     <input type="hidden" name="id" value="${id}">
                     <input type="hidden" name="aUneRemise" value="${aUneRemise}">
                     <div class="deuxBoutons">
-                        <button type="button" onclick="popUpAnnulerRemise(${id}, '${nom}')">Annuler la remise</button>
                         <button class="bouton" type="submit">Appliquer la remise</button>
                     </div>
                     </form>
@@ -216,25 +350,50 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
     const dateLimite = overlay.querySelector("#dateLimite");
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
 
-    function updatePrixFromReduction(prix, nouveauPrixInput, reductionInput, recap) {
-        if (reductionInput.value !== "" && reductionInput.value <= 100) {
-            const nouveauPrix = (prix * (100 - reductionInput.value) / 100).toFixed(2);
-            nouveauPrixInput.value = nouveauPrix;
-            recap.textContent = "Abaissement de " + (prix - nouveauPrix).toFixed(2) + "€";
-        } else {
-            nouveauPrixInput.value = "";
+    function updatePrixFromReduction(prixOriginal, inputNouveauPrix, inputReduction, recap) {
+        const valeurReduction = parseFloat(inputReduction.value);
+
+        if (inputReduction.value === "" || valeurReduction <= 0 || valeurReduction > 100) {
+            setError(inputReduction, "Réduction entre 1% et 100%");
+            inputNouveauPrix.value = "";
             recap.textContent = "Abaissement de 0€";
+            return;
+        } else {
+            clearError(inputReduction);
+        }
+
+        const calculNouveauPrix = (prixOriginal * (100 - valeurReduction) / 100).toFixed(2);
+        inputNouveauPrix.value = calculNouveauPrix;
+        recap.textContent = "Abaissement de " + (prixOriginal - calculNouveauPrix).toFixed(2) + "€";
+
+        const prixCalc = parseFloat(inputNouveauPrix.value);
+        if (prixCalc < 0 || prixCalc > prixOriginal) {
+            setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
+        } else {
+            clearError(inputNouveauPrix);
         }
     }
 
-    function updateReductionFromPrix(prix, nouveauPrixInput, reductionInput, recap) {
-        if (nouveauPrixInput.value !== "" && nouveauPrixInput.value < prix) {
-            const reduction = (100 - (nouveauPrixInput.value) * 100 / prix).toFixed(2);
-            reductionInput.value = reduction;
-            recap.textContent = "Abaissement de " + (prix - nouveauPrixInput.value).toFixed(2) + "€";
-        } else {
-            reductionInput.value = "";
+    function updateReductionFromPrix(prixOriginal, inputNouveauPrix, inputReduction, recap) {
+        const valeurNouveauPrix = parseFloat(inputNouveauPrix.value);
+
+        if (inputNouveauPrix.value === "" || valeurNouveauPrix < 0 || valeurNouveauPrix > prixOriginal) {
+            setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
+            inputReduction.value = "";
             recap.textContent = "Abaissement de 0€";
+            return;
+        } else {
+            clearError(inputNouveauPrix);
+        }
+
+        const calculReduction = (100 - (valeurNouveauPrix * 100 / prixOriginal)).toFixed(2);
+        inputReduction.value = calculReduction;
+        recap.textContent = "Abaissement de " + (prixOriginal - valeurNouveauPrix).toFixed(2) + "€";
+
+        if (calculReduction <= 0 || calculReduction > 100) {
+            setError(inputReduction, "Réduction entre 1% et 100%");
+        } else {
+            clearError(inputReduction);
         }
     }
     

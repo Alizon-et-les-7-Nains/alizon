@@ -28,12 +28,5 @@
                 <figcaption>Avis</figcaption>
             </figure>
         </li>
-        <?php $class = $currentPage == 'commandes.php' ? 'here' : ''; ?>
-        <li class="aside-btn <?php echo $class; ?>">
-            <figure>
-                <img src="/public/images/cartCheckDark.svg">
-                <figcaption>Commandes</figcaption>
-            </figure>
-        </li>
     </ul>
 </aside>

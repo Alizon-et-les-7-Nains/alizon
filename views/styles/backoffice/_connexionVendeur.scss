@@ -5,13 +5,30 @@
     position: relative; 
     background-color: $color-white;
     color: $color-blue;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
     padding: 20px;
+
+    #error {
+        text-align: center;
+        width: 75%;
+        background-color: $color-pastel-red;
+        font-size: 15px;
+        color: $color-red;
+        font: {
+            family: 'open-sans';
+        }
+        padding: 0.5em;
+        border: {
+            style: solid;
+            width: 2px;
+            color: $color-red;
+            radius: 8px;
+        }
+    }
 
     .triskiel {
         position: absolute;

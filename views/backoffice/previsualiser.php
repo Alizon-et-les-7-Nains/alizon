@@ -2,26 +2,27 @@
 include '../../controllers/pdo.php';
 session_start();
 
+
+function getVoteUtilisateur($idProduit, $idClientAvis) {
+    if (!isset($_SESSION['user_id'])) {
+        return null;
+    }
+    
+    $keyVote = "vote_{$idProduit}_{$idClientAvis}";
+    return $_SESSION[$keyVote] ?? null;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
     
-    if (isset($_SESSION['user_id'])) {
-        $idClient = $_SESSION['user_id'];
-        
-        // Appeler la fonction pour mettre à jour la quantité
-        $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
-        
-        if ($success) {
-            $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
-        } else {
-            $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
-        }
+    $idClient = $_SESSION['user_id'];
+    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+
+    if ($success) {
+        $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
     } else {
-        $_SESSION['message_panier'] = "Veuillez vous connecter pour ajouter des articles au panier.";
-        // Rediriger vers la page de connexion si nécessaire
-        // header('Location: connexion.php');
-        // exit;
+        $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
     }
 }
 
@@ -31,6 +32,83 @@ if($productId == 0) {
     die("Produit non spécifié");
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
+    // Vérifier si l'utilisateur est connecté
+    if (!isset($_SESSION['user_id'])) {
+        $_SESSION['error_message'] = "Vous devez être connecté pour voter";
+        header("Location: ?id=" . $productId);
+        exit;
+    }
+    
+    $idClientVotant = $_SESSION['user_id'];
+    $idProduit = intval($_POST['idProduit']);
+    $idClientAvis = intval($_POST['idClientAvis']);
+    $typeVote = $_POST['type'];
+    
+    // Empêcher de voter sur son propre avis
+    if ($idClientVotant === $idClientAvis) {
+        $_SESSION['error_message'] = "Vous ne pouvez pas voter sur votre propre avis";
+        header("Location: ?id=" . $productId);
+        exit;
+    }
+    
+    try {
+        $pdo->beginTransaction();
+        
+        // Clé unique pour identifier le vote dans la session
+        $keyVote = "vote_{$idProduit}_{$idClientAvis}";
+        $votePrecedent = $_SESSION[$keyVote] ?? null;
+        
+        if ($votePrecedent === $typeVote) {
+            // Retirer le vote
+            if ($typeVote === 'like') {
+                $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
+            } else {
+                $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
+            }
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$idProduit, $idClientAvis]);
+            
+            unset($_SESSION[$keyVote]);
+            $_SESSION['success_message'] = "Vote retiré";
+            
+        } else {
+            if ($votePrecedent !== null) {
+                // Retirer l'ancien vote
+                if ($votePrecedent === 'like') {
+                    $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
+                } else {
+                    $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
+                }
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$idProduit, $idClientAvis]);
+            }
+            
+            // Ajouter le nouveau vote
+            if ($typeVote === 'like') {
+                $sql = "UPDATE _avis SET positifs = positifs + 1 WHERE idProduit = ? AND idClient = ?";
+            } else {
+                $sql = "UPDATE _avis SET negatifs = negatifs + 1 WHERE idProduit = ? AND idClient = ?";
+            }
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$idProduit, $idClientAvis]);
+            
+            $_SESSION[$keyVote] = $typeVote;
+            $_SESSION['success_message'] = "Vote enregistré";
+        }
+        
+        $pdo->commit();
+        
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        error_log("Erreur lors du vote: " . $e->getMessage());
+        $_SESSION['error_message'] = "Erreur lors de l'enregistrement du vote";
+    }
+    
+    header("Location: ?id=" . $productId);
+    exit;
+}
+
 $sqlProduit = "SELECT 
                 p.idProduit,
                 p.nom AS nom_produit,
@@ -38,6 +116,7 @@ $sqlProduit = "SELECT
                 p.prix,
                 p.note,
                 p.stock,
+                p.dateReassort,
                 v.prenom AS prenom_vendeur,
                 v.nom AS nom_vendeur,
                 v.raisonSocial,
@@ -59,18 +138,26 @@ $sqlProduit = "SELECT
 $result = $pdo->query($sqlProduit);
 $produit = $result->fetch(PDO::FETCH_ASSOC);
 
+$idClient = $_SESSION['user_id'] ?? 0;
+$sqlAdresse = "SELECT * 
+               FROM _adresseClient 
+               WHERE idAdresse = (SELECT idAdresse FROM _client WHERE idClient = ?)";
+$stmtAdresse = $pdo->prepare($sqlAdresse);
+$stmtAdresse->execute([$idClient]);
+$adresse = $stmtAdresse->fetch(PDO::FETCH_ASSOC);
+
 if (!$produit) {
     echo "<p>Produit introuvable.</p>";
     exit;
 }
-
-// Récupérer les images
 $sqlImages = "SELECT * 
               FROM _imageDeProduit 
               WHERE idProduit = $productId";
 
 $resultImages = $pdo->query($sqlImages);
 $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
+
+
 
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     $idProduit = intval($idProduit);
@@ -81,14 +168,12 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         return false;
     }
     
-    try {
-        // Récupérer le panier actuel
+    try {        
         $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
         $stmtPanier->execute([$idClient]);
         $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
         
-        if (!$panier) {
-            // Créer un nouveau panier si nécessaire
+        if (!$panier) {            
             $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
             $stmtCreate->execute([$idClient]);
             $idPanier = $pdo->lastInsertId();
@@ -96,7 +181,6 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
             $idPanier = $panier['idPanier'];
         }
         
-        // Vérifier si le produit existe déjà dans le panier
         $sql = "SELECT quantiteProduit FROM _produitAuPanier 
                 WHERE idProduit = ? AND idPanier = ?";
         $stmt = $pdo->prepare($sql);
@@ -104,7 +188,6 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         $current = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($current) {
-            // Produit existe : mettre à jour la quantité
             $newQty = intval($current['quantiteProduit']) + $delta;
             
             $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
@@ -112,7 +195,6 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
             $stmt = $pdo->prepare($sql);
             return $stmt->execute([$newQty, $idProduit, $idPanier]);
         } else {
-            // Produit n'existe pas : l'ajouter
             $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
             $stmt = $pdo->prepare($sql);
             return $stmt->execute([$idProduit, $idPanier, $delta]);
@@ -130,14 +212,12 @@ $sqlAvis = "SELECT a.*
 $resultAvis = $pdo->query($sqlAvis);
 $lesAvis = $resultAvis->fetchAll(PDO::FETCH_ASSOC);
 
-// Calcul de la note moyenne
 $sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlNoteMoyenne);
 $stmt->execute([$productId]);
 $resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
 $note = $resultNote['moyenne_note'] ?? 0;
 
-// Calcul du nombre d'avis
 $sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlNbAvis);
 $stmt->execute([$productId]);
@@ -191,7 +271,7 @@ function calculerPromotion($produit) {
         $promotion['date_fin_promotion'] = $produit['finRemise'];
     }
     
-    elseif (!empty($produit['idPromotion']) && 
+    if (!empty($produit['idPromotion']) && 
             $produit['debutPromotion'] <= date('Y-m-d') && 
             $produit['finPromotion'] >= date('Y-m-d')) {
         
@@ -207,6 +287,13 @@ $promotion = calculerPromotion($produit);
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- sass --watch views/styles/main.scss:public/style.css -->
+    <!-- ssh sae@10.253.5.104
+    su -
+    grognasseEtCompagnie
+    cd /docker/data/web/html
+    git pull -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
@@ -214,14 +301,12 @@ $promotion = calculerPromotion($produit);
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body class="pagePrevi">
-<header>
 <?php if (isset($_SESSION['user_id'])) {
     include '../../views/frontoffice/partials/headerConnecte.php';
 } else { 
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
-</header>
-        <div class="previsualisation">
+<div class="previsualisation">
             <div class="textePrevi">
                 <h1>Ceci est une prévisualistaion de votre produit.</h1>
                 <h1>Pour quitter la prévisualistaion, cliquez sur retour</h1>
@@ -237,20 +322,23 @@ $promotion = calculerPromotion($produit);
         <div class="lignePrevi" ></div>
 <main class="pageProduit">
 <?php
-// Afficher les messages de confirmation
 if (isset($_SESSION['message_panier'])) {
     echo '<div class="message-panier" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">';
     echo htmlspecialchars($_SESSION['message_panier']);
     echo '</div>';
-    unset($_SESSION['message_panier']); // Supprimer le message après affichage
+    unset($_SESSION['message_panier']);
 }
 ?>
 <section class="infoHautProduit">
 <article class="rectangleProduit">
-    <div class="banniere">
-        <h2><?php echo htmlspecialchars($promotion['taux_remise']); ?></h2>
-        <img src="../../public/images/laBanniere.png" alt="">
-    </div>
+    <?php if ($promotion['est_en_remise']): ?>
+        <div class="banniere">
+            <h1>-<?php echo number_format($promotion['taux_remise']); ?>%</h1>
+            <img class="poly1" src="../../public/images/poly1.svg" alt="">
+            <img class="imgBanniere" src="../../public/images/laBanniere.png" alt="">
+            <img class="poly2" src="../../public/images/poly2.svg" alt="">
+        </div>
+    <?php endif; ?>
     <img src="../../public/images/flecheGauche.svg" alt="Previous" class="carousel-arrow prev-arrow">
     <div class="carousel-container">
         <div class="carousel-slide">
@@ -278,8 +366,8 @@ if (isset($_SESSION['message_panier'])) {
     <article class="infoPreviewProduit">
         <div class="attributsproduit">
             <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
-            <?php if ($promotion['est_en_promotion']): ?>
-            <h3>Promotion</h3> 
+            <?php if ($promotion['est_en_remise']): ?>
+                <h3>Promotion</h3> 
             <?php endif; ?>
         </div>
         <div class="product-rating">
@@ -292,16 +380,18 @@ if (isset($_SESSION['message_panier'])) {
             <span class="review-count" id="reviewCountHautProduit"><?php echo $nombreAvis; ?> évaluations</span>
         </div>
         <div id="prix">
-            <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
             <?php if ($promotion['est_en_remise']): ?>
-            <h3><del><?php echo number_format($promotion['prix_promotion'], 2, ',', ' '); ?>€</del></h3> 
+            <h1><?php echo number_format($promotion['prix_promotion'], 2, ',', ' '); ?>€</h1>
+            <h3><del><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</del></h3> 
+            <?php if (!empty($promotion['date_fin_promotion'])): ?>
+            <h2>Cette offre tient jusqu'au <?php echo date('d/m/Y', strtotime($promotion['date_fin_promotion'])); ?></h2>
+            <?php endif; ?>
+            <?php else: ?>
+            <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
             <?php endif; ?>
         </div>
         <h2>Description de l'article :</h2>
-        <p></p>
-        <p id="descriptionCourte">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus enim iure ratione voluptates
-            eius doloremque obcaecati dignissimos ea porro exercitationem ex omnis reiciendis neque explicabo,
-            libero quidem placeat, accusantium sit.</p>
+        <p class="resume"><?php echo htmlspecialchars($produit['description']);?></p>
         <a href="#conteneurTexte">Voir plus sur le produit</a>
         <div class="version">
             <h3>Version :</h3>
@@ -328,7 +418,12 @@ if (isset($_SESSION['message_panier'])) {
         </div>
         <div class="ligneActions">
             <img src="../../public/images/emplacement.png" alt="">
-            <p>Livré a <a href=""><b>Clermont-ferrand 63000</b>, 10 place saint-michel</a></p>   
+            <p>Livré a <a href=""><b>
+                <?php if (!empty($adresse['ville'])){ echo htmlspecialchars($adresse['ville']); } ?>
+                <?php if (!empty($adresse['codePostal'])){ echo htmlspecialchars($adresse['codePostal']); }?></b>, 
+                <?php if (!empty($adresse['adresse'])){ echo htmlspecialchars($adresse['adresse']); } else{
+                    echo "Pas d'adresse définie";
+                } ?></a></p>   
         </div>
         <div class="ligneActions">
             <img src="../../public/images/tec.png" alt="">
@@ -354,7 +449,7 @@ if (isset($_SESSION['message_panier'])) {
             </div>
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
             <input type="hidden" name="action" value="ajouter_panier">
-            <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
+            <button class="bouton boutonRose"  name="ajouter_panier">Ajouter au panier</button>
         </form>
         <?php if (isset($_SESSION['user_id'])) {
             echo '  <form action="pagePaiement.php" method="POST">
@@ -370,6 +465,16 @@ if (isset($_SESSION['message_panier'])) {
     </div>
 </article>
 </section>
+<?php 
+if ($produit['stock'] > 0) {
+    echo '<p class="stockDisponible">En stock (' . htmlspecialchars($produit['stock']) . ' restants) </p>';
+} else {
+    if ($produit['dateReassort'] !== null) {
+        echo '<p class="stockIndisponible">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($produit['dateReassort']) . '</p>';
+    } else {
+        echo '<p class="stockIndisponible">Rupture de stock - Pas de réapprovisionnement prévu</p>';
+    }
+} ?>
 <hr>
 <section class="informations">
     <input type="checkbox" id="activeVoirPlus">
@@ -386,10 +491,6 @@ if (isset($_SESSION['message_panier'])) {
 <hr>
 <section class="sectionAvis">
     <h2>Ce qu'en disent nos clients</h2>
-    <?php
-    // $note = $produit['note']; // Exemple de note moyenne A CHANGER
-    // $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
-    ?>
     <div class="product-rating">
         <div class="horizontal">
             <div class="star-rating">
@@ -399,10 +500,6 @@ if (isset($_SESSION['message_panier'])) {
         </div>
         <span class="review-count"><?php echo $nombreAvis; ?> évaluations</span>
     </div>
-    <?php 
-    // $note = $produit['note'];
-    // echo htmlspecialchars($note);
-    ?>
     <?php if (isset($_SESSION['user_id'])) {
     echo 
     '<a href="ecrireCommentaire.php?id=' . $productId . '" class="boutonCommentaire">
@@ -416,37 +513,88 @@ if (isset($_SESSION['message_panier'])) {
     }
     ?>
 
-    <?php if (!empty($lesAvis)): ?>
-        <?php foreach ($lesAvis as $avis): ?>
-            <article>
-                <img src="../../public/images/pp.png" id="pp">
-                <div>
-                    <div class="vertical">
-                        <div class="horizontal">
-                            <div class="star-rating">
-                                <div class="stars" style="--rating: <?php echo htmlspecialchars($avis['note']); ?>"></div>
-                            </div>
-                            <h3><?php echo htmlspecialchars($avis['titreAvis']); ?></h3>
+<?php if (!empty($lesAvis)): ?>
+    <?php foreach ($lesAvis as $avis): ?>
+        <?php
+        $sqlImagesAvis = "SELECT * 
+        FROM _imageAvis 
+        WHERE idClient = ? AND idProduit = ?";
+        $stmtImagesAvis = $pdo->prepare($sqlImagesAvis);
+        $stmtImagesAvis->execute([intval($avis['idClient']), intval($productId)]);
+        $imagesAvis = $stmtImagesAvis->fetchAll(PDO::FETCH_ASSOC);
+
+        $sqlNomClient = "SELECT * FROM _client WHERE idClient = ?";
+        $stmtNomClient = $pdo->prepare($sqlNomClient);
+        $stmtNomClient->execute([intval($avis['idClient'])]);
+        $client = $stmtNomClient->fetch(PDO::FETCH_ASSOC);
+        
+        // Récupérer le vote de l'utilisateur actuel
+        $voteUtilisateur = getVoteUtilisateur($productId, $avis['idClient']);
+        ?>
+        <article>
+            <img src="../../public/images/pp.png" id="pp">
+            <div>
+                <div class="vertical">
+                    <div class="horizontal">
+                        <div class="star-rating">
+                            <div class="stars" style="--rating: <?php echo htmlspecialchars($avis['note']); ?>"></div>
                         </div>
-                        <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?></h6>
+                        <h3><?php echo htmlspecialchars($avis['titreAvis']); ?></h3>
                     </div>
-                    <p><?php echo htmlspecialchars($avis['contenuAvis']); ?> par <?php echo htmlspecialchars($avis['idClient']); ?></p>
-                    <div class="baselineSpaceBetween">
-                        <div class="sectionImagesAvis">
-                        </div>   
-                        <div class="actionsAvis">
-                            <img src="../../public/images/pouceHaut.png" alt="Like" onclick="changerPouce(this, 'haut')" class="pouce">
-                            <img src="../../public/images/pouceBas.png" alt="Dislike" onclick="changerPouce(this, 'bas')" class="pouce">
-                            <shape></shape>
-                            <a href="#">Signaler</a>
-                        </div>
+                    <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?> par <?php echo htmlspecialchars($client['pseudo']); ?></h6>
+                </div>
+                <p><?php echo htmlspecialchars($avis['contenuAvis']); ?></p>
+                <div class="baselineSpaceBetween">
+                    <div class="sectionImagesAvis">
+                        <?php foreach ($imagesAvis as $imageAvis): ?>
+                            <img src="../../public/images/<?php echo htmlspecialchars($imageAvis['URL'] ?? '');?>" alt="">
+                        <?php endforeach; ?>
+                    </div>   
+                    <div class="actionsAvis">
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="action" value="voter_avis">
+                                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                                <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
+                                <input type="hidden" name="type" value="like">
+                                <button  class="btn-vote <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>">
+                                    <img src="../../public/images/<?php echo ($voteUtilisateur === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png'; ?>" alt="Like">
+                                    <span><?php echo intval($avis['positifs']); ?></span>
+                                </button>
+                            </form>
+                            
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="action" value="voter_avis">
+                                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                                <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
+                                <input type="hidden" name="type" value="dislike">
+                                <button  class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>">
+                                    <img src="../../public/images/<?php echo ($voteUtilisateur === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png'; ?>" alt="Dislike">
+                                    <span><?php echo intval($avis['negatifs']); ?></span>
+                                </button>
+                            </form>
+                        <?php else: ?>
+                            <button class="btn-vote" disabled>
+                                <img src="../../public/images/pouceHaut.png" alt="Like">
+                                <span><?php echo intval($avis['positifs']); ?></span>
+                            </button>
+                            <button class="btn-vote" disabled>
+                                <img src="../../public/images/pouceBas.png" alt="Dislike">
+                                <span><?php echo intval($avis['negatifs']); ?></span>
+                            </button>
+                        <?php endif; ?>
+                        
+                        <shape></shape>
+                        <shape></shape>
+                        <a href="#">Signaler</a>
                     </div>
                 </div>
-            </article>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>Aucun avis pour ce produit.</p>
-    <?php endif; ?>
+            </div>
+        </article>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p>Aucun avis pour ce produit.</p>
+<?php endif; ?>
 
 </section>
 <section class="stickyTelephone">
@@ -461,9 +609,8 @@ if (isset($_SESSION['message_panier'])) {
                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                 <input type="hidden" name="quantite" value="1">
                 <input type="hidden" name="action" value="ajouter_panier">
-                <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
+                <button class="bouton boutonRose"  name="ajouter_panier">Ajouter au panier</button>
             </form>
-            <form action="pagePaiement.php" method="POST">
                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                 <button class="bouton boutonBleu">Acheter maintenant</button>
             </form>
@@ -479,5 +626,4 @@ if (isset($_SESSION['message_panier'])) {
 } ?>
 </footer> 
 </body>
-
 </html>

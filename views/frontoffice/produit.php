@@ -3,32 +3,12 @@ include '../../controllers/pdo.php';
 session_start();
 
 
-
-function compterVotesAvis($idProduit, $idClientAvis) {
-    $likes = 0;
-    $dislikes = 0;
-    
-    foreach ($_SESSION as $key => $value) {
-        if (strpos($key, "vote_{$idProduit}_{$idClientAvis}_") === 0) {
-            if ($value === 'like') {
-                $likes++;
-            } elseif ($value === 'dislike') {
-                $dislikes++;
-            }
-        }
-    }
-    
-    return ['likes' => $likes, 'dislikes' => $dislikes];
-}
-
 function getVoteUtilisateur($idProduit, $idClientAvis) {
     if (!isset($_SESSION['user_id'])) {
         return null;
     }
     
-    $idClient = $_SESSION['user_id'];
-    $keyVote = "vote_{$idProduit}_{$idClientAvis}_{$idClient}";
-    
+    $keyVote = "vote_{$idProduit}_{$idClientAvis}";
     return $_SESSION[$keyVote] ?? null;
 }
 
@@ -36,10 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
     
-    if (isset($_SESSION['user_id'])) {
-        $idClient = $_SESSION['user_id'];
-                $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+    $idClient = $_SESSION['user_id'];
+    try{
+        $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
     }
+    catch(Exception $e){
+        $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
+    }
+
     if ($success) {
         $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
     } else {
@@ -54,65 +38,76 @@ if($productId == 0) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
-    if (isset($_SESSION['user_id'])) {
-        $idClient = $_SESSION['user_id'];
-        $idProduit = intval($_POST['idProduit']);
-        $idClientAvis = intval($_POST['idClientAvis']);
-        $typeVote = $_POST['type'];
+    // Vérifier si l'utilisateur est connecté
+    if (!isset($_SESSION['user_id'])) {
+        http_response_code(401);
+        exit;
+    }
+    
+    $idClientVotant = $_SESSION['user_id'];
+    $idProduit = intval($_POST['idProduit']);
+    $idClientAvis = intval($_POST['idClientAvis']);
+    $typeVote = $_POST['type'];
+    
+    // Empêcher de voter sur son propre avis
+    if ($idClientVotant === $idClientAvis) {
+        http_response_code(403);
+        exit;
+    }
+    
+    try {
+        $pdo->beginTransaction();
         
         // Clé unique pour identifier le vote dans la session
-        $keyVote = "vote_{$idProduit}_{$idClientAvis}_{$idClient}";
+        $keyVote = "vote_{$idProduit}_{$idClientAvis}";
         $votePrecedent = $_SESSION[$keyVote] ?? null;
         
-        try {
-            // Commencer une transaction pour assurer la cohérence des données
-            $pdo->beginTransaction();
+        if ($votePrecedent === $typeVote) {
+            // Retirer le vote
+            if ($typeVote === 'like') {
+                $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
+            } else {
+                $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
+            }
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$idProduit, $idClientAvis]);
             
-            if ($votePrecedent === $typeVote) {
-                // Retirer le vote
-                if ($typeVote === 'like') {
+            unset($_SESSION[$keyVote]);
+            
+        } else {
+            if ($votePrecedent !== null) {
+                // Retirer l'ancien vote
+                if ($votePrecedent === 'like') {
                     $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
                 } else {
                     $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
                 }
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$idProduit, $idClientAvis]);
-                
-                unset($_SESSION[$keyVote]);
-            } else {
-                if ($votePrecedent !== null) {
-                    // Retirer l'ancien vote
-                    if ($votePrecedent === 'like') {
-                        $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
-                    } else {
-                        $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
-                    }
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute([$idProduit, $idClientAvis]);
-                }
-                
-                // Ajouter le nouveau vote
-                if ($typeVote === 'like') {
-                    $sql = "UPDATE _avis SET positifs = positifs + 1 WHERE idProduit = ? AND idClient = ?";
-                } else {
-                    $sql = "UPDATE _avis SET negatifs = negatifs + 1 WHERE idProduit = ? AND idClient = ?";
-                }
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([$idProduit, $idClientAvis]);
-                
-                $_SESSION[$keyVote] = $typeVote;
             }
             
-            $pdo->commit();
+            // Ajouter le nouveau vote
+            if ($typeVote === 'like') {
+                $sql = "UPDATE _avis SET positifs = positifs + 1 WHERE idProduit = ? AND idClient = ?";
+            } else {
+                $sql = "UPDATE _avis SET negatifs = negatifs + 1 WHERE idProduit = ? AND idClient = ?";
+            }
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$idProduit, $idClientAvis]);
             
-        } catch (Exception $e) {
-            $pdo->rollBack();
-            error_log("Erreur lors du vote: " . $e->getMessage());
+            $_SESSION[$keyVote] = $typeVote;
         }
         
-        header("Location: ?id=" . $productId);
-        exit;
+        $pdo->commit();
+        http_response_code(200);
+        
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        error_log("Erreur lors du vote: " . $e->getMessage());
+        http_response_code(500);
     }
+    
+    exit; // IMPORTANT : Ne pas rediriger, juste terminer
 }
 
 $sqlProduit = "SELECT 
@@ -223,6 +218,10 @@ $stmt = $pdo->prepare($sqlNoteMoyenne);
 $stmt->execute([$productId]);
 $resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
 $note = $resultNote['moyenne_note'] ?? 0;
+
+$sqlModifAvisProduit = "UPDATE _produit SET note = $note WHERE idProduit = ?";
+$stmt = $pdo->prepare($sqlModifAvisProduit);
+$stmt->execute([$productId]);
 
 $sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlNbAvis);
@@ -359,7 +358,7 @@ if (isset($_SESSION['message_panier'])) {
         <div class="attributsproduit">
             <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
             <?php if ($promotion['est_en_remise']): ?>
-                <h3>Promotion</h3> 
+                <h4>Promotion</h4> 
             <?php endif; ?>
         </div>
         <div class="product-rating">
@@ -520,8 +519,8 @@ if ($produit['stock'] > 0) {
         $stmtNomClient->execute([intval($avis['idClient'])]);
         $client = $stmtNomClient->fetch(PDO::FETCH_ASSOC);
         
-        // Récupérer le vote de l'utilisateur actuel
         $voteUtilisateur = getVoteUtilisateur($productId, $avis['idClient']);
+        $isOwnReview = isset($_SESSION['user_id']) && $_SESSION['user_id'] == $avis['idClient'];
         ?>
         <article>
             <img src="../../public/images/pp.png" id="pp">
@@ -543,42 +542,40 @@ if ($produit['stock'] > 0) {
                         <?php endforeach; ?>
                     </div>   
                     <div class="actionsAvis">
-                        <?php if (isset($_SESSION['user_id'])): ?>
-                            <form method="POST" style="display: inline;">
-                                <input type="hidden" name="action" value="voter_avis">
-                                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-                                <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
-                                <input type="hidden" name="type" value="like">
-                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>">
-                                    <img src="../../public/images/<?php echo ($voteUtilisateur === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png'; ?>" alt="Like">
-                                    <span><?php echo intval($avis['positifs']); ?></span>
-                                </button>
-                            </form>
+                        <?php if (isset($_SESSION['user_id']) && !$isOwnReview): ?>
+                            <button type="button" 
+                                    class="btn-vote btn-like <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>" 
+                                    data-produit="<?php echo $productId; ?>"
+                                    data-client="<?php echo $avis['idClient']; ?>"
+                                    data-type="like">
+                                <img src="../../public/images/<?php echo ($voteUtilisateur === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png'; ?>" alt="Like">
+                                <span class="vote-count"><?php echo intval($avis['positifs']); ?></span>
+                            </button>
                             
-                            <form method="POST" style="display: inline;">
-                                <input type="hidden" name="action" value="voter_avis">
-                                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-                                <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
-                                <input type="hidden" name="type" value="dislike">
-                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>">
-                                    <img src="../../public/images/<?php echo ($voteUtilisateur === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png'; ?>" alt="Dislike">
-                                    <span><?php echo intval($avis['negatifs']); ?></span>
-                                </button>
-                            </form>
+                            <button type="button" 
+                                    class="btn-vote btn-dislike <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>" 
+                                    data-produit="<?php echo $productId; ?>"
+                                    data-client="<?php echo $avis['idClient']; ?>"
+                                    data-type="dislike">
+                                <img src="../../public/images/<?php echo ($voteUtilisateur === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png'; ?>" alt="Dislike">
+                                <span class="vote-count"><?php echo intval($avis['negatifs']); ?></span>
+                            </button>
                         <?php else: ?>
-                            <button class="btn-vote" disabled>
+                            <button type="button" class="btn-vote" disabled>
                                 <img src="../../public/images/pouceHaut.png" alt="Like">
                                 <span><?php echo intval($avis['positifs']); ?></span>
                             </button>
-                            <button class="btn-vote" disabled>
+                            <button type="button" class="btn-vote" disabled>
                                 <img src="../../public/images/pouceBas.png" alt="Dislike">
                                 <span><?php echo intval($avis['negatifs']); ?></span>
                             </button>
                         <?php endif; ?>
-                        
                         <shape></shape>
-                        <shape></shape>
-                        <a href="#">Signaler</a>
+                        <button type="button" class="btn-signaler"
+                            data-id-produit="<?php echo $productId; ?>"
+                            data-id-client-avis="<?php echo $avis['idClient']; ?>">
+                            Signaler
+                        </button>
                     </div>
                 </div>
             </div>
@@ -610,6 +607,29 @@ if ($produit['stock'] > 0) {
         </aside>
     </article>
 </section>
+<div id="modalSignalement" class="modal-signalement" style="display: none;">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Signaler cet avis</h2>
+        <form id="formSignalement">
+            <input type="hidden" name="idProduit" id="signal_idProduit">
+            <input type="hidden" name="idClientAvis" id="signal_idClientAvis">
+            
+            <div class="groupe-input">
+                <label for="titre">Raison du signalement :</label>
+                <input type="text" name="titre" id="signal_titre" required placeholder="Ex: Contenu inapproprié">
+            </div>
+            
+            <div class="groupe-input">
+                <label for="message">Message :</label>
+                <textarea name="message" id="signal_message" rows="4" required placeholder="Expliquez le problème..."></textarea>
+            </div>
+            
+            <button type="submit" class="bouton boutonRose">Envoyer le signalement</button>
+        </form>
+        <div id="msgReponse" style="margin-top: 10px;"></div>
+    </div>
+</div>
 </main>
 <footer>
 <?php if (isset($_SESSION['user_id'])) {
@@ -620,6 +640,7 @@ if ($produit['stock'] > 0) {
 </footer> 
 </body>
 <script>
+// ==================== CAROUSEL ====================
 class ProductCarousel {
     constructor() {
         this.currentImageIndex = 0;
@@ -662,9 +683,7 @@ class ProductCarousel {
     }
     
     showImage(index) {
-        this.images.forEach(img => {
-            img.classList.remove('active');
-        });
+        this.images.forEach(img => img.classList.remove('active'));
         
         if (this.images[index]) {
             this.images[index].classList.add('active');
@@ -701,15 +720,15 @@ class ProductCarousel {
     }
 }
 
+// ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', function() {
     new ProductCarousel();
     
+    // ==================== QUANTITÉ ====================
     let quantite = 1;
     const quantiteInput = document.getElementById('quantiteInput');
-    
     const plusBtn = document.getElementById('plus');
     const moinsBtn = document.getElementById('moins');
-
     const stock = <?php echo $produit['stock']; ?>;
     
     if (plusBtn && quantiteInput) {
@@ -718,10 +737,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 quantite++;
                 quantiteInput.value = quantite;
                 quantiteInput.style.color = '#273469';
-            }
-            else {
+            } else {
                 quantiteInput.style.color = 'red';
-                
                 setTimeout(() => {
                     quantiteInput.style.color = '#273469';
                 }, 300);
@@ -737,39 +754,137 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-});
 
-function changerPouce(element, type) {
-    const article = element.closest('article');
-    const pouceHaut = article.querySelector('img[alt="Like"]');
-    const pouceBas = article.querySelector('img[alt="Dislike"]');
+    // ==================== VOTES ====================
+    const voteButtonsNotDisabled = document.querySelectorAll('.btn-vote:not([disabled])');
     
-    const pouceHautInactif = "../../public/images/pouceHaut.png";
-    const pouceHautActif = "../../public/images/pouceHautActive.png";
-    const pouceBasInactif = "../../public/images/pouceBas.png";
-    const pouceBasActif = "../../public/images/pouceBasActive.png";
-    
-    if (element.src.includes('Active')) {
-        if (type === 'haut') {
-            element.src = pouceHautInactif;
-        } else {
-            element.src = pouceBasInactif;
+    voteButtonsNotDisabled.forEach((button) => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const idProduit = this.dataset.produit;
+            const idClientAvis = this.dataset.client;
+            const type = this.dataset.type;
+            
+            const article = this.closest('article');
+            if (!article) return;
+            
+            const likeButton = article.querySelector('.btn-like');
+            const dislikeButton = article.querySelector('.btn-dislike');
+            if (!likeButton || !dislikeButton) return;
+            
+            const likeImg = likeButton.querySelector('img');
+            const dislikeImg = dislikeButton.querySelector('img');
+            const likeCount = likeButton.querySelector('.vote-count');
+            const dislikeCount = dislikeButton.querySelector('.vote-count');
+            
+            const wasActive = this.classList.contains('active');
+            const likeWasActive = likeButton.classList.contains('active');
+            const dislikeWasActive = dislikeButton.classList.contains('active');
+            
+            if (wasActive) {
+                this.classList.remove('active');
+                if (type === 'like') {
+                    likeImg.src = '../../public/images/pouceHaut.png';
+                    likeCount.textContent = Math.max(0, parseInt(likeCount.textContent) - 1);
+                } else {
+                    dislikeImg.src = '../../public/images/pouceBas.png';
+                    dislikeCount.textContent = Math.max(0, parseInt(dislikeCount.textContent) - 1);
+                }
+            } else {
+                if (likeWasActive) {
+                    likeButton.classList.remove('active');
+                    likeImg.src = '../../public/images/pouceHaut.png';
+                    likeCount.textContent = Math.max(0, parseInt(likeCount.textContent) - 1);
+                }
+                if (dislikeWasActive) {
+                    dislikeButton.classList.remove('active');
+                    dislikeImg.src = '../../public/images/pouceBas.png';
+                    dislikeCount.textContent = Math.max(0, parseInt(dislikeCount.textContent) - 1);
+                }
+                
+                this.classList.add('active');
+                if (type === 'like') {
+                    likeImg.src = '../../public/images/pouceHautActive.png';
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                } else {
+                    dislikeImg.src = '../../public/images/pouceBasActive.png';
+                    dislikeCount.textContent = parseInt(dislikeCount.textContent) + 1;
+                }
+            }
+            
+            const formData = new FormData();
+            formData.append('action', 'voter_avis');
+            formData.append('idProduit', idProduit);
+            formData.append('idClientAvis', idClientAvis);
+            formData.append('type', type);
+            
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData
+            }).catch(error => {
+                console.error('Erreur lors du vote:', error);
+            });
+        });
+    });
+    // ==================== SIGNALEMENT ====================
+    const modal = document.getElementById('modalSignalement');
+    const closeBtn = document.querySelector('.close-modal');
+    const formSignalement = document.getElementById('formSignalement');
+    const msgReponse = document.getElementById('msgReponse');
+
+    if (modal) {
+        document.querySelectorAll('.btn-signaler').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('signal_idProduit').value = this.dataset.idProduit;
+                document.getElementById('signal_idClientAvis').value = this.dataset.idClientAvis;
+                
+                if(formSignalement) formSignalement.reset();
+                if(msgReponse) msgReponse.innerHTML = '';
+                
+                modal.style.display = 'flex';
+            });
+        });
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
         }
-    } else {
-        if (pouceHaut) pouceHaut.src = pouceHautInactif;
-        if (pouceBas) pouceBas.src = pouceBasInactif;
         
-        if (type === 'haut') {
-            element.src = pouceHautActif;
-        } else {
-            element.src = pouceBasActif;
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        if (formSignalement) {
+            formSignalement.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                fetch('../../controllers/signalerAvis.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        msgReponse.innerHTML = `<p style="color: green; font-weight: bold; text-align: center;">${data.message}</p>`;
+                        setTimeout(() => { modal.style.display = 'none'; }, 2000);
+                    } else {
+                        msgReponse.innerHTML = `<p style="color: red; text-align: center;">${data.message}</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    msgReponse.innerHTML = `<p style="color: red; text-align: center;">Erreur de communication.</p>`;
+                });
+            });
         }
     }
-}
-
-
-
-</script>
-
+});
 </script>
 </html>

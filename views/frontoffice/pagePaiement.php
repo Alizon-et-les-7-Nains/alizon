@@ -112,7 +112,6 @@ function removeFromCartInDatabase($pdo, $idClient, $idProduit) {
 function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000', $idAdresseFacturation = null) {
     try {
         $pdo->beginTransaction();
-
         $idClient = intval($idClient);
 
         // Récupération du panier actuel
@@ -121,7 +120,6 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $panier = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if (!$panier) throw new Exception("Aucun panier trouvé pour ce client.");
-
         $idPanier = intval($panier['idPanier']);
 
         // Calcul total AVEC REMISES
@@ -135,6 +133,10 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $stmtItems->execute([$idPanier]);
         $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
         
+        if (empty($items)) {
+            throw new Exception("Le panier est vide.");
+        }
+        
         foreach ($items as $item) {
             $prixProduit = getPrixProduitAvecRemise($pdo, $item['idProduit']);
             $quantite = $item['quantiteProduit'];
@@ -142,49 +144,39 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             $nbArticles += $quantite;
         }
 
-        // Vérifier si le panier est vide
-        if ($nbArticles === 0) {
-            throw new Exception("Le panier est vide.");
-        }
-
-        // Verification existante carte (avec données chiffrées)
+        // Vérification carte bancaire
         $checkCarte = $pdo->prepare("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = ?");
         $checkCarte->execute([$numeroCarte]);
 
         if ($checkCarte->rowCount() === 0) {
-            $sqlInsertCarte = "
-                INSERT INTO _carteBancaire (numeroCarte, nom, dateExpiration, cvv)
-                VALUES (?, ?, ?, ?)
-            ";
+            $sqlInsertCarte = "INSERT INTO _carteBancaire (numeroCarte, nom, dateExpiration, cvv) VALUES (?, ?, ?, ?)";
             $stmtCarte = $pdo->prepare($sqlInsertCarte);
             if (!$stmtCarte->execute([$numeroCarte, $nomCarte, $dateExp, $cvv])) {
-                throw new Exception("Erreur lors de l'ajout de la carte bancaire : " . implode(', ', $stmtCarte->errorInfo()));
+                throw new Exception("Erreur lors de l'ajout de la carte bancaire");
             }
         }
 
-        // CORRECTION : CRÉATION DE L'ADRESSE DE LIVRAISON DANS _adresseLivraison
-        $sqlAdresseLivraison = "
-            INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
-            VALUES (?, ?, ?, ?)
-        ";
+        // CRÉATION ADRESSE LIVRAISON dans _adresseClient
+        $sqlAdresseLivraison = "INSERT INTO _adresseClient (adresse, codePostal, ville) VALUES (?, ?, ?)";
         $stmtAdresse = $pdo->prepare($sqlAdresseLivraison);
         
-        if (!$stmtAdresse->execute([$idClient, $adresseLivraison, $codePostal, $villeLivraison])) {
-            throw new Exception("Erreur lors de l'ajout de l'adresse de livraison: " . implode(', ', $stmtAdresse->errorInfo()));
+        if (!$stmtAdresse->execute([$adresseLivraison, $codePostal, $villeLivraison])) {
+            throw new Exception("Erreur lors de l'ajout de l'adresse de livraison");
         }
         $idAdresseLivraison = $pdo->lastInsertId();
 
-        // CORRECTION : GESTION ADRESSE FACTURATION
-        // Si une adresse de facturation différente est fournie
+        // GESTION ADRESSE FACTURATION
         if ($idAdresseFacturation) {
-            // Utiliser l'ID de l'adresse de facturation fourni (déjà dans _adresseLivraison)
-            $idAdresseFacturation = intval($idAdresseFacturation);
+            $checkFact = $pdo->prepare("SELECT idAdresse FROM _adresseClient WHERE idAdresse = ?");
+            $checkFact->execute([$idAdresseFacturation]);
+            if ($checkFact->rowCount() === 0) {
+                throw new Exception("Adresse de facturation introuvable");
+            }
         } else {
-            // Si pas d'adresse de facturation spécifique, utiliser la même que la livraison
             $idAdresseFacturation = $idAdresseLivraison;
         }
 
-        // Création de la commande avec les deux adresses
+        // Création de la commande
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
 
@@ -201,32 +193,39 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         ";
         $stmtCommande = $pdo->prepare($sqlCommande);
         if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarte, $idPanier])) {
-            throw new Exception("Erreur lors de la création de la commande : " . implode(', ', $stmtCommande->errorInfo()));
+            throw new Exception("Erreur lors de la création de la commande");
         }
 
         $idCommande = $pdo->lastInsertId();
 
-        // produits vers _contient AVEC PRIX REMISE
-        $sqlContient = "
-            INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
-            SELECT pap.idProduit, ?, 
-                   " . getPrixProduitAvecRemise($pdo, 'p.idProduit') . ", 
-                   COALESCE(t.pourcentageTva, 20.0), 
-                   pap.quantiteProduit
-            FROM _produitAuPanier pap
-            JOIN _produit p ON pap.idProduit = p.idProduit
-            LEFT JOIN _tva t ON p.typeTva = t.typeTva
-            WHERE pap.idPanier = ?
-        ";
-        $stmtContient = $pdo->prepare($sqlContient);
-        if (!$stmtContient->execute([$idCommande, $idPanier])) {
-            throw new Exception("Erreur lors de la copie des produits : " . implode(', ', $stmtContient->errorInfo()));
+        // CORRECTION: Copier les produits dans _contient avec le bon prix
+        foreach ($items as $item) {
+            $prixAvecRemise = getPrixProduitAvecRemise($pdo, $item['idProduit']);
+            
+            $sqlContient = "
+                INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
+                SELECT ?, ?, ?, COALESCE(t.pourcentageTva, 20.0), ?
+                FROM _produit p
+                LEFT JOIN _tva t ON p.typeTva = t.typeTva
+                WHERE p.idProduit = ?
+            ";
+            
+            $stmtContient = $pdo->prepare($sqlContient);
+            if (!$stmtContient->execute([
+                $item['idProduit'],
+                $idCommande,
+                $prixAvecRemise,
+                $item['quantiteProduit'],
+                $item['idProduit']
+            ])) {
+                throw new Exception("Erreur lors de la copie du produit " . $item['idProduit']);
+            }
         }
 
         // Vider le panier
         $stmtVider = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier = ?");
         if (!$stmtVider->execute([$idPanier])) {
-            throw new Exception("Erreur lors du vidage du panier : " . implode(', ', $stmtVider->errorInfo()));
+            throw new Exception("Erreur lors du vidage du panier");
         }
 
         $pdo->commit();
@@ -519,7 +518,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 <section class="conditions">
                     <h3>3 - Accepter les conditions générales et mentions légales</h3>
                     <label>
-                        <input type="checkbox">
+                        <input type="checkbox" aria-label="conditions générales">
                         J'ai lu et j'accepte les
                         <a href="#">Conditions Générales de Vente</a> et les
                         <a href="#">Mentions Légales</a> d'Alizon.
@@ -544,16 +543,16 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                     <div class="infos">
                         <p class="titre"><?= htmlspecialchars($nom) ?></p>
                         <?php if ($estEnRemise): ?>
-                            <p class="prix">
-                                <span style="text-decoration: line-through; color: #999; margin-right: 8px;">
-                                    <?= number_format($prix * $qty, 2, ',', '') ?>€
-                                </span>
-                                <span style="color: #ff4444; font-weight: bold;">
-                                    <?= number_format($prixAvecRemise * $qty, 2, ',', '') ?>€
-                                </span>
-                            </p>
+                        <p class="prix">
+                            <span style="text-decoration: line-through; color: #999; margin-right: 8px;">
+                                <?= number_format($prix * $qty, 2, ',', '') ?>€
+                            </span>
+                            <span style="color: #ff4444; font-weight: bold;">
+                                <?= number_format($prixAvecRemise * $qty, 2, ',', '') ?>€
+                            </span>
+                        </p>
                         <?php else: ?>
-                            <p class="prix"><?= number_format($prix * $qty, 2, ',', '') ?>€</p>
+                        <p class="prix"><?= number_format($prix * $qty, 2, ',', '') ?>€</p>
                         <?php endif; ?>
                         <div class="gestQte">
                             <div class="qte">

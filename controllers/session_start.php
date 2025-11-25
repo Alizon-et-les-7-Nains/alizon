@@ -30,8 +30,8 @@
 
 
     session_start();  
-    $id_session = session_id();
-    $_SESSION['user_id'] = $id_session;
+    $_SESSION['user_id'] = $user['idClient'];
+
     header('Location: ../views/frontoffice/accueilConnecte.php');
     exit();
 ?>

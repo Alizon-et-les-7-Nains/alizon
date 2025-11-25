@@ -24,7 +24,7 @@ require_once '../../controllers/auth.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Ajouter un produit au catalogue</title>
 </head>
-<body class="backoffice">
+<body class="backoffice nouveauProduit">
     <header>
         <?php require_once "./partials/header.php"?>
     </header>
@@ -76,7 +76,6 @@ require_once '../../controllers/auth.php';
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn-previsualiser">Prévisualiser</button>
                     <button type="button" class="btn-annuler" id="btnAnnuler">Annuler</button>
                     <button type="submit" class="btn-ajouter">Ajouter le produit</button>
                 </div>
