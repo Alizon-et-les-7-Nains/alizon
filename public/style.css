@@ -6204,11 +6204,9 @@ dialog.reassort form input {
   position: relative;
   background-color: #fffefa;
   color: #273469;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   overflow-x: hidden;
   padding: 20px;
 }
