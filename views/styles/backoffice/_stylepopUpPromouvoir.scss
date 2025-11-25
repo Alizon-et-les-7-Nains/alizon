@@ -5,6 +5,11 @@
     background-color: $color-white;
     border-radius:16px;
     position: relative;
+
+    form {
+        display: flex;
+        align-items: center;
+    }
     
     .prixRes {
         display: flex;

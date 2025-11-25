@@ -85,24 +85,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             WHERE idAdresse = :idAdresse
         ");
 
-        $stmt->execute([
-            ':adresse' => $adresse,
-            ':pays' => $pays,
-            ':ville' => $ville,
-            ':codePostal' => $codePostal,
-            ':region' => $region,
-            ':idAdresse' => $idAdresse
-        ]);
-
-        $pdo->commit();
-        
-        header("Location: ../backoffice/compteVendeur.php?success=1");
-        exit();
-
-    } catch (Exception $e) {
-        $pdo->rollBack();
-        header("Location: ../backoffice/compteVendeur.php?error=1");
-        exit();
-    }
+    $stmt->execute([
+        ':adresse' => $adresse,
+        ':pays' => $pays,
+        ':ville' => $ville,
+        ':codePostal' => $codePostal,
+        ':region' => $region,
+        ':idAdresse' => $idAdresse
+    ]);
 }
+
+    header('Location: ../backoffice/produits.php');
+    exit;
 ?>

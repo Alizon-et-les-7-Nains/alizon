@@ -4031,6 +4031,10 @@ button#haut.visible:hover {
   border-radius: 16px;
   position: relative;
 }
+.popUpPromouvoir form {
+  display: flex;
+  align-items: center;
+}
 .popUpPromouvoir .prixRes {
   display: flex;
 }
@@ -5371,7 +5375,6 @@ dialog.reassort form input {
   border: 2px solid #273469;
   background-color: white;
   border-radius: 32px;
-  padding: 0.5em 1em;
   cursor: pointer;
   font-size: 16px;
 }
