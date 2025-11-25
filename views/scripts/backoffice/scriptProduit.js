@@ -265,7 +265,7 @@ function popUpAnnulerPromotion(id, nom) {
     overlay.className = "overlayPopUpErreur";
     
     overlay.innerHTML = `
-        <main class="popUpErreur">
+        <main class="popUpErreur" style="text-align : center;">
             <form method="POST" action="../../controllers/annulerPromotion.php">
                 <div class="croixFermerLaPage">
                     <div></div>
@@ -274,7 +274,7 @@ function popUpAnnulerPromotion(id, nom) {
                 <h1>Souhaitez-vous vraiment annuler la promotion pour ce produit ?</h1>
                 <p><strong>${nom}</strong></p>
                 <input type="hidden" name="id" value="${id}">
-                <button type="submit">Annuler la promotion</button>
+                <button type="submit" style="color: #ffffff; background-color: #f14e4e;>Annuler la promotion</button>
             </form>
         </main>`;
 

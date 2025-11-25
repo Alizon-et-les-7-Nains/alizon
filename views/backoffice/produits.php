@@ -78,8 +78,8 @@
                                         <?php $nom = $produitEnVente[$i]['nom'] ?>
                                         <?php $nbEval = $evaluations[0]['evaluation'] ?>
                                         <?php if(count($promo) == 1) { ?>
-                                            <button onclick="popUpAnnulerPromotion(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>')">
-                                                Ne plus promouvoir
+                                            <button onclick="popUpAnnulerPromotion(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>')" style="color: #f14e4e;">
+                                                Annuler promotion
                                             </button>
                                         <?php } else { ?>
                                             <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>)">
@@ -109,7 +109,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <button>Prévisualiser</button>
+                                        <a href=<?php echo "previsualiser.php?". $idProduit?>><button>Prévisualiser</button></a> 
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -185,7 +185,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <button>Prévisualiser</button>
+                                        <a href="previsualiser.php"><button>Prévisualiser</button></a>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
