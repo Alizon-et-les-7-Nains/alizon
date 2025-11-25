@@ -131,7 +131,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg){
                             </div>
                             <div>
                                 <p class="prix"> ${prix} €</p>
-                                <p class="prixAuKg"> ${prixAuKg} / kg</p>
+                                <p class="prixAuKg"> ${prixAuKg}€ / kg</p>
                             </div>
                         </article>
                     </section>
@@ -331,7 +331,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
                             </div>
                             <div>
                                 <p class="prix"> ${prix} €</p>
-                                <p class="prixAuKg"> ${prixAuKg} / kg</p>
+                                <p class="prixAuKg"> ${prixAuKg}€ / kg</p>
                             </div>
                         </article>
                     </section>
