@@ -223,7 +223,6 @@ $sqlModifAvisProduit = "UPDATE _produit SET note = $note WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlModifAvisProduit);
 $stmt->execute([$productId]);
 
-
 $sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlNbAvis);
 $stmt->execute([$productId]);

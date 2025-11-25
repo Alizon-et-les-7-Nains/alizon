@@ -6686,8 +6686,8 @@ dialog.reassort form input {
     display: flex;
     flex-direction: row;
     gap: 15px;
-    color: #000000;
     width: auto;
+    color: #000000;
     padding: 10px;
     border: 2px solid #273469;
     border-radius: 20px;
@@ -6767,7 +6767,7 @@ dialog.reassort form input {
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 100%;
+    width: 440px;
     margin: 30px;
     font-family: "Lora", serif;
     color: #273469;
@@ -6790,7 +6790,7 @@ dialog.reassort form input {
     flex-direction: column;
     border: 2px solid #273469;
     border-radius: 20px;
-    margin: 2em 6em;
+    margin: 1em 4em;
     padding: 30px;
     gap: 20px;
   }
@@ -6799,7 +6799,8 @@ dialog.reassort form input {
     flex-direction: row;
     gap: 15px;
     color: #000000;
-    width: auto;
+    min-width: 220px;
+    font-size: 12px;
     padding: 10px;
     border: 2px solid #273469;
     border-radius: 20px;
