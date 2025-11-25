@@ -260,10 +260,17 @@ $cart = getCurrentCart($pdo, $idClient);
                 $stmt = $pdo->prepare("SELECT * FROM _produit ORDER BY idProduit DESC LIMIT 10;");
                 $stmt->execute();
                 $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
                 
                 if (count($produitNouveaute) > 0) {
                     foreach ($produitNouveaute as $value) {
                         $idProduit = $value['idProduit'];
+
+                        $sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
+                        $stmt = $pdo->prepare($sqlNoteMoyenne);
+                        $stmt->execute([$idProduit]); // ← CORRECTION : utiliser $idProduit
+                        $resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $note = $resultNote['moyenne_note'] ?? 0;
                         
                         $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                         $stmtImg->execute([':idProduit' => $idProduit]);
@@ -278,8 +285,8 @@ $cart = getCurrentCart($pdo, $idClient);
                         onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
                         <?php echo htmlspecialchars($value['nom']); ?></h2>
                     <div class="notation">
-                        <span><?php echo number_format($value['note'], 1); ?></span>
-                        <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                        <span><?php echo number_format($note, 1); ?></span>
+                        <?php for ($i=0; $i < number_format($note, 0); $i++) { ?>
                         <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
                         <?php } ?>
                     </div>
