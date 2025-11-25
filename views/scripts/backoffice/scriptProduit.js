@@ -273,7 +273,7 @@ function popUpAnnulerPromotion(id, nom) {
                 </div>
                 <h1>Souhaitez-vous vraiment annuler la promotion pour ce produit ?</h1>
                 <p><strong>${nom}</strong></p>
-                <input type="hidden" name="id" value="${id}">
+                <input type="hidden" name="annulationProduit" value="${id}">
                 <button type="submit" style="color: #ffffff; background-color: #f14e4e;">Annuler la promotion</button>
             </form>
         </main>`;
