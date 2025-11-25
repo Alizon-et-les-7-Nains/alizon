@@ -1,11 +1,10 @@
- <?php 
+<?php
 require_once 'auth.php';
 require_once 'pdo.php';
 
 $code_vendeur = $_SESSION['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     // Récupération des données du formulaire
     $pseudo        = $_POST['pseudo'] ?? '';
     $nom           = $_POST['nom'] ?? '';
@@ -29,20 +28,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dateNaissance = ($dateNaissance === '') ? null : $dateNaissance;
 
     try {
-        // Vérifier si une transaction est déjà active
         if (!$pdo->inTransaction()) {
             $pdo->beginTransaction();
         }
 
-        // VÉRIFICATION ET MISE À JOUR DU MOT DE PASSE
         $motDePasseModifie = false;
         if (!empty($ancienMdp) && !empty($nouveauMdp) && !empty($confirmationMdp)) {
-            // Vérifier que les nouveaux mots de passe correspondent
             if ($nouveauMdp !== $confirmationMdp) {
                 throw new Exception("La confirmation du mot de passe ne correspond pas.");
             }
             
-            // Vérifier l'ancien mot de passe
             $stmt = $pdo->prepare("SELECT mdp FROM _vendeur WHERE codeVendeur = :code_vendeur");
             $stmt->execute([':code_vendeur' => $code_vendeur]);
             $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -51,13 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception("Utilisateur non trouvé.");
             }
 
-            // Comparaison directe (si vous n'utilisez pas de hachage)
-            // NOTE: Il est fortement recommandé d'utiliser password_hash() et password_verify()
             if ($ancienMdp !== $vendeur['mdp']) {
                 throw new Exception("L'ancien mot de passe est incorrect.");
             }
 
-            // Validation des critères du nouveau mot de passe
             if (strlen($nouveauMdp) < 12) {
                 throw new Exception("Le mot de passe doit contenir au moins 12 caractères.");
             }
@@ -71,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception("Le mot de passe doit contenir au moins un caractère spécial.");
             }
 
-            // Mettre à jour le mot de passe
             $stmt = $pdo->prepare("UPDATE _vendeur SET mdp = :mdp WHERE codeVendeur = :code_vendeur");
             $stmt->execute([
                 ':mdp' => $nouveauMdp,
@@ -81,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $motDePasseModifie = true;
         }
 
-        // Mise à jour des informations du vendeur
         $stmt = $pdo->prepare("
             UPDATE _vendeur 
             SET pseudo = :pseudo, 
@@ -107,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':code_vendeur'  => $code_vendeur
         ]);
 
-        // Mise à jour de l'adresse
         $stmt = $pdo->prepare("
             UPDATE _adresseVendeur 
             SET adresse = :adresse,
@@ -127,29 +116,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':idAdresse'  => $idAdresse
         ]);
 
-        // Commit seulement si la transaction est active
         if ($pdo->inTransaction()) {
             $pdo->commit();
         }
 
-        // Message de succès
         $message = "Profil mis à jour avec succès";
         if ($motDePasseModifie) {
             $message .= " et mot de passe modifié";
         }
 
-        // Redirection pour éviter le rechargement du formulaire
         header("Location: ../views/backoffice/compteVendeur.php?success=1&message=" . urlencode($message));
         exit();
 
     } catch (Exception $e) {
-        // Rollback seulement si la transaction est active
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
         }
-        // Redirection avec message d'erreur
         header("Location: ../views/backoffice/compteVendeur.php?error=1&message=" . urlencode($e->getMessage()));
         exit();
     }
 }
- ?>
