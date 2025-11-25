@@ -137,6 +137,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="monCompte backoffice">
     <?php include 'partials/header.php'; ?>
 
+    <?php
+        $currentPage = basename(__FILE__);
+        require_once './partials/aside.php';
+    ?>
+
     <main class="page-compte">
         <form class="form-compte" method="POST" action="" enctype="multipart/form-data">
             <div class="header-compte">
