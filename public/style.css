@@ -5951,4 +5951,17 @@ dialog.reassort form input {
   opacity: 0.9;
 }
 
+.backoffice .previsualisation {
+  display: flex;
+}
+.backoffice .textePrevi {
+  display: flex;
+  flex-direction: column;
+}
+.backoffice .boutonRetour {
+  display: flex;
+  padding: 10px;
+  background-color: #273469;
+}
+
 /*# sourceMappingURL=style.css.map */
