@@ -3119,6 +3119,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .panier .infoProduit div h2 {
     font-size: 15px;
+    max-width: 170px;
   }
   .panier .quantiteProduit img {
     width: 9px !important;
@@ -3158,6 +3159,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier .infoProduit h2 {
   margin-top: 0;
+  max-width: 300px;
 }
 .panier button .delete {
   margin-bottom: 15px;
