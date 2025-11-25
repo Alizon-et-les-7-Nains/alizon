@@ -228,7 +228,20 @@ $promotion = calculerPromotion($produit);
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
 </header>
-<main>
+        <div class="previsualisation">
+            <div class="textePrevi">
+                <h1>Ceci est une prévisualistaion de votre produit.</h1>
+                <h1>Pour quitter la prévisualistaion, cliquez sur retour</h1>
+            </div>
+            <a href="produits.php">
+                <div class="boutonRetour">
+                    <img src="" alt="">
+                    <button>Retour</button>
+                </div>
+            </a>
+        </div>
+
+        <div class="lignePrevi" ></div>
 <main>
 <?php
 // Afficher les messages de confirmation
