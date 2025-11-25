@@ -2,6 +2,11 @@
 @use "../fonts";
 
 .avis-vendeur {
+  h1 {
+    font-size: 40px;
+    font-family: "Lora", serif;
+    font-weight: bold;
+  }
   .avi {
     border-collapse: separate;
     width: 100%;
@@ -14,15 +19,25 @@
     .col-gauche {
       width: 150px;
       height: 300px;
-      vertical-align: top;
-      padding-top: 10px;
+      padding-top: 0px;
       text-align: center;
 
       .profil-client {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100%;
+
         img {
           width: 70px;
           height: 70px;
           border-radius: 50%;
+          margin-bottom: 10px;
+        }
+
+        figcaption {
+          margin-top: 0;
         }
       }
     }

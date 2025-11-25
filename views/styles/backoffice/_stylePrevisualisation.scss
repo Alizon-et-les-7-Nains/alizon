@@ -1,20 +1,32 @@
 @use '../fonts';
 @use '../colors' as *;
 
-.backoffice{
+.pageProduit{
+
+
     .previsualisation{
         display: flex;
+        align-items: center;
     }
     .textePrevi{
         display: flex;
         flex-direction: column;
+        h1 {
+            color: red;
+        }
     }
     .boutonRetour{
         display: flex;
         padding: 10px;
         background-color: $color-blue;  
+        border-radius: 16px;
+        width: 200px;
+        button{
+            background-color: transparent;
+            text-decoration: none;
+        }
     }
-    .ligne{
-        border-top: solid 2px red ;
+    .lignePrevi{
+        border-top: solid 4px red ;
     }
 }
