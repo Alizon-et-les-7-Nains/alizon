@@ -287,7 +287,7 @@
             <dialog class='reassort' id='d-" . $stock['idProduit'] ."'>
                 <h1>Paramètres de réassort</h1>
                 <form action='../../controllers/reassort.php' method='post'>    
-                    <input type='number' placeholder='" . 'Seuil d\'alerte' . "value='" . $stock['seuilAlerte'] . "' " . 'name="Seuil d\'alerte" id ="seuil">
+                    <input type='number' placeholder='" . 'Seuil d\'alerte' . "' value='" . $stock['seuilAlerte'] . "' " . 'name="Seuil d\'alerte" id ="seuil">
                     <label for="Seuil d\'alerte" id="errorFieldSeuil">Doit être un entier</label>
                     <input type="date" placeholder="Date du réassort" value=' . "'" . $stock['dateReassort'] . "' name='Date du réassort' id='dateReassort'>
                     <label for='Date du réassort' id='errorFieldDate'>Ne doit pas être passée</label>
