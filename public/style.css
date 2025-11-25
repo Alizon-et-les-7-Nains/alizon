@@ -6207,6 +6207,7 @@ dialog.reassort form input {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   overflow-x: hidden;
   padding: 20px;
 }
