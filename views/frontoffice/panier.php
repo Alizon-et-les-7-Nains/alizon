@@ -17,6 +17,8 @@ $idClient = $_SESSION['user_id'];
 // ============================================================================
 // FONCTIONS DE GESTION DU PANIER
 // ============================================================================
+
+
 function getPrixProduitAvecRemise($pdo, $idProduit) {
     $sql = "SELECT 
             p.prix,
@@ -36,6 +38,7 @@ function getPrixProduitAvecRemise($pdo, $idProduit) {
     
     return $produit['prix'];
 }
+
 function getCurrentCart($pdo, $idClient) {
     $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
     $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
@@ -112,17 +115,22 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idPanier = intval($panier['idPanier']);
 
-        // Calcul total
-        $sqlTotals = "
-            SELECT SUM(p.prix * pap.quantiteProduit) AS sousTotal, SUM(pap.quantiteProduit) AS nbArticles
-            FROM _produitAuPanier pap
-            JOIN _produit p ON pap.idProduit = p.idProduit
-            WHERE pap.idPanier = $idPanier
-        ";
-        $stmtTotals = $pdo->query($sqlTotals);
-        $totals = $stmtTotals ? $stmtTotals->fetch(PDO::FETCH_ASSOC) : [];
-        $sousTotal = floatval($totals['sousTotal'] ?? 0);
-        $nbArticles = intval($totals['nbArticles'] ?? 0);
+        // Calcul total AVEC REMISES
+        $sousTotal = 0;
+        $nbArticles = 0;
+        
+        $sqlItems = "SELECT pap.idProduit, pap.quantiteProduit 
+                     FROM _produitAuPanier pap 
+                     WHERE pap.idPanier = $idPanier";
+        $stmtItems = $pdo->query($sqlItems);
+        $items = $stmtItems ? $stmtItems->fetchAll(PDO::FETCH_ASSOC) : [];
+        
+        foreach ($items as $item) {
+            $prixProduit = getPrixProduitAvecRemise($pdo, $item['idProduit']);
+            $quantite = $item['quantiteProduit'];
+            $sousTotal += $prixProduit * $quantite;
+            $nbArticles += $quantite;
+        }
 
         // LES DONNÉES SONT DÉJÀ CHIFFRÉES DEPUIS LE FRONT - on les stocke directement
         $carteQ = $pdo->quote($numeroCarte); // Déjà chiffré
@@ -179,10 +187,13 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idCommande = $pdo->lastInsertId();
 
-        // produits vers _contient
+        // produits vers _contient AVEC PRIX REMISE
         $sqlContient = "
             INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
-            SELECT pap.idProduit, $idCommande, p.prix, COALESCE(t.pourcentageTva, 20.0), pap.quantiteProduit
+            SELECT pap.idProduit, $idCommande, 
+                   " . getPrixProduitAvecRemise($pdo, 'p.idProduit') . ", 
+                   COALESCE(t.pourcentageTva, 20.0), 
+                   pap.quantiteProduit
             FROM _produitAuPanier pap
             JOIN _produit p ON pap.idProduit = p.idProduit
             LEFT JOIN _tva t ON p.typeTva = t.typeTva
@@ -278,7 +289,10 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <main>
         <section class="listeProduit">
-            <?php foreach ($cart as $item) { ?>
+            <?php foreach ($cart as $item) { 
+                $prixAvecRemise = getPrixProduitAvecRemise($pdo, $item['idProduit']);
+                $estEnRemise = $prixAvecRemise != $item['prix'];
+            ?>
             <article>
                 <div class="imgProduit">
                     <?php 
@@ -294,6 +308,18 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div>
                         <h2><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></h2>
                         <h4>En stock</h4>
+                        <?php if ($estEnRemise): ?>
+                            <p class="prix-remise">
+                                <span class="prix-original" style="text-decoration: line-through; color: #999;">
+                                    <?= formatPrice($item['prix']) ?>
+                                </span>
+                                <span class="prix-actuel" style="color: #ff4444; font-weight: bold;">
+                                    <?= formatPrice($prixAvecRemise) ?>
+                                </span>
+                            </p>
+                        <?php else: ?>
+                            <p><?= formatPrice($item['prix']) ?></p>
+                        <?php endif; ?>
                     </div>
                     <div class="quantiteProduit">
                         <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
@@ -306,7 +332,7 @@ $cart = getCurrentCart($pdo, $idClient);
                     </div>
                 </div>
                 <div class="prixOpt">
-                    <p><?= formatPrice($item['prix']) ?></p>
+                    <p><?= formatPrice($prixAvecRemise * $item['qty']) ?></p>
                     <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
                     </button>
@@ -327,21 +353,36 @@ $cart = getCurrentCart($pdo, $idClient);
                         if ($panier) {
                             $idPanier = intval($panier['idPanier']);
                             
-                            // Calcul en temps réel
-                            $sqlTotals = "
-                                SELECT 
-                                    SUM(pap.quantiteProduit) AS nbArticles,
-                                    SUM(p.prix * pap.quantiteProduit) AS prixHT,
-                                    SUM(p.prix * pap.quantiteProduit * COALESCE(t.pourcentageTva, 20.0) / 100) AS prixTotalTvaPanier,
-                                    SUM(p.prix * pap.quantiteProduit * (1 + COALESCE(t.pourcentageTva, 20.0) / 100)) AS sousTotal
-                                FROM _produitAuPanier pap
-                                JOIN _produit p ON pap.idProduit = p.idProduit
-                                LEFT JOIN _tva t ON p.typeTva = t.typeTva
-                                WHERE pap.idPanier = $idPanier
-                            ";
+                            // Calcul en temps réel AVEC REMISES
+                            $sqlItems = "SELECT pap.idProduit, pap.quantiteProduit as qty 
+                                         FROM _produitAuPanier pap 
+                                         WHERE pap.idPanier = $idPanier";
+                            $stmtItems = $pdo->query($sqlItems);
+                            $items = $stmtItems ? $stmtItems->fetchAll(PDO::FETCH_ASSOC) : [];
                             
-                            $stmt = $pdo->query($sqlTotals);
-                            $totals = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : [];
+                            $nbArticles = 0;
+                            $prixHT = 0;
+                            $prixTotalTvaPanier = 0;
+                            $sousTotal = 0;
+                            
+                            foreach ($items as $item) {
+                                $prixProduit = getPrixProduitAvecRemise($pdo, $item['idProduit']);
+                                $quantite = $item['qty'];
+                                
+                                // Récupérer le taux de TVA
+                                $sqlTva = "SELECT COALESCE(t.pourcentageTva, 20.0) as tva 
+                                           FROM _produit p 
+                                           LEFT JOIN _tva t ON p.typeTva = t.typeTva 
+                                           WHERE p.idProduit = " . intval($item['idProduit']);
+                                $stmtTva = $pdo->query($sqlTva);
+                                $tvaResult = $stmtTva ? $stmtTva->fetch(PDO::FETCH_ASSOC) : [];
+                                $tauxTva = $tvaResult['tva'] ?? 20.0;
+                                
+                                $nbArticles += $quantite;
+                                $prixHT += $prixProduit * $quantite;
+                                $prixTotalTvaPanier += ($prixProduit * $quantite * $tauxTva / 100);
+                                $sousTotal += ($prixProduit * $quantite * (1 + $tauxTva / 100));
+                            }
                         }
                     ?>
 
@@ -349,19 +390,19 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div class="infoCommande">
                         <section>
                             <h2>Nombres d'articles</h2>
-                            <h2 class="val"><?= $totals['nbArticles'] ?? 0 ?></h2>
+                            <h2 class="val"><?= $nbArticles ?? 0 ?></h2>
                         </section>
                         <section>
                             <h2>Prix HT</h2>
-                            <h2 class="val"><?= number_format($totals['prixHT'] ?? 0, 2) ?>€</h2>
+                            <h2 class="val"><?= number_format($prixHT ?? 0, 2) ?>€</h2>
                         </section>
                         <section>
                             <h2>TVA</h2>
-                            <h2 class="val"><?= number_format($totals['prixTotalTvaPanier'] ?? 0, 2) ?>€</h2>
+                            <h2 class="val"><?= number_format($prixTotalTvaPanier ?? 0, 2) ?>€</h2>
                         </section>
                         <section>
                             <h2>Total</h2>
-                            <h2 class="val"><?= number_format($totals['sousTotal'] ?? 0, 2) ?>€</h2>
+                            <h2 class="val"><?= number_format($sousTotal ?? 0, 2) ?>€</h2>
                         </section>
                     </div>
                 </article>
