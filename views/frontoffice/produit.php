@@ -3,32 +3,12 @@ include '../../controllers/pdo.php';
 session_start();
 
 
-
-function compterVotesAvis($idProduit, $idClientAvis) {
-    $likes = 0;
-    $dislikes = 0;
-    
-    foreach ($_SESSION as $key => $value) {
-        if (strpos($key, "vote_{$idProduit}_{$idClientAvis}_") === 0) {
-            if ($value === 'like') {
-                $likes++;
-            } elseif ($value === 'dislike') {
-                $dislikes++;
-            }
-        }
-    }
-    
-    return ['likes' => $likes, 'dislikes' => $dislikes];
-}
-
 function getVoteUtilisateur($idProduit, $idClientAvis) {
     if (!isset($_SESSION['user_id'])) {
         return null;
     }
     
-    $idClient = $_SESSION['user_id'];
-    $keyVote = "vote_{$idProduit}_{$idClientAvis}_{$idClient}";
-    
+    $keyVote = "vote_{$idProduit}_{$idClientAvis}";
     return $_SESSION[$keyVote] ?? null;
 }
 
@@ -36,10 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
     
-    if (isset($_SESSION['user_id'])) {
-        $idClient = $_SESSION['user_id'];
-                $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
-    }
+    $idClient = $_SESSION['user_id'];
+    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+
     if ($success) {
         $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
     } else {
@@ -54,65 +33,80 @@ if($productId == 0) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
-    if (isset($_SESSION['user_id'])) {
-        $idClient = $_SESSION['user_id'];
-        $idProduit = intval($_POST['idProduit']);
-        $idClientAvis = intval($_POST['idClientAvis']);
-        $typeVote = $_POST['type'];
+    // Vérifier si l'utilisateur est connecté
+    if (!isset($_SESSION['user_id'])) {
+        $_SESSION['error_message'] = "Vous devez être connecté pour voter";
+        header("Location: ?id=" . $productId);
+        exit;
+    }
+    
+    $idClientVotant = $_SESSION['user_id'];
+    $idProduit = intval($_POST['idProduit']);
+    $idClientAvis = intval($_POST['idClientAvis']);
+    $typeVote = $_POST['type'];
+    
+    // Empêcher de voter sur son propre avis
+    if ($idClientVotant === $idClientAvis) {
+        $_SESSION['error_message'] = "Vous ne pouvez pas voter sur votre propre avis";
+        header("Location: ?id=" . $productId);
+        exit;
+    }
+    
+    try {
+        $pdo->beginTransaction();
         
         // Clé unique pour identifier le vote dans la session
-        $keyVote = "vote_{$idProduit}_{$idClientAvis}_{$idClient}";
+        $keyVote = "vote_{$idProduit}_{$idClientAvis}";
         $votePrecedent = $_SESSION[$keyVote] ?? null;
         
-        try {
-            // Commencer une transaction pour assurer la cohérence des données
-            $pdo->beginTransaction();
+        if ($votePrecedent === $typeVote) {
+            // Retirer le vote
+            if ($typeVote === 'like') {
+                $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
+            } else {
+                $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
+            }
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$idProduit, $idClientAvis]);
             
-            if ($votePrecedent === $typeVote) {
-                // Retirer le vote
-                if ($typeVote === 'like') {
+            unset($_SESSION[$keyVote]);
+            $_SESSION['success_message'] = "Vote retiré";
+            
+        } else {
+            if ($votePrecedent !== null) {
+                // Retirer l'ancien vote
+                if ($votePrecedent === 'like') {
                     $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
                 } else {
                     $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
                 }
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$idProduit, $idClientAvis]);
-                
-                unset($_SESSION[$keyVote]);
-            } else {
-                if ($votePrecedent !== null) {
-                    // Retirer l'ancien vote
-                    if ($votePrecedent === 'like') {
-                        $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
-                    } else {
-                        $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
-                    }
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute([$idProduit, $idClientAvis]);
-                }
-                
-                // Ajouter le nouveau vote
-                if ($typeVote === 'like') {
-                    $sql = "UPDATE _avis SET positifs = positifs + 1 WHERE idProduit = ? AND idClient = ?";
-                } else {
-                    $sql = "UPDATE _avis SET negatifs = negatifs + 1 WHERE idProduit = ? AND idClient = ?";
-                }
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([$idProduit, $idClientAvis]);
-                
-                $_SESSION[$keyVote] = $typeVote;
             }
             
-            $pdo->commit();
+            // Ajouter le nouveau vote
+            if ($typeVote === 'like') {
+                $sql = "UPDATE _avis SET positifs = positifs + 1 WHERE idProduit = ? AND idClient = ?";
+            } else {
+                $sql = "UPDATE _avis SET negatifs = negatifs + 1 WHERE idProduit = ? AND idClient = ?";
+            }
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$idProduit, $idClientAvis]);
             
-        } catch (Exception $e) {
-            $pdo->rollBack();
-            error_log("Erreur lors du vote: " . $e->getMessage());
+            $_SESSION[$keyVote] = $typeVote;
+            $_SESSION['success_message'] = "Vote enregistré";
         }
         
-        header("Location: ?id=" . $productId);
-        exit;
+        $pdo->commit();
+        
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        error_log("Erreur lors du vote: " . $e->getMessage());
+        $_SESSION['error_message'] = "Erreur lors de l'enregistrement du vote";
     }
+    
+    header("Location: ?id=" . $productId);
+    exit;
 }
 
 $sqlProduit = "SELECT 
