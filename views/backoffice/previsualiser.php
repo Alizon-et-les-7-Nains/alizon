@@ -605,16 +605,12 @@ if ($produit['stock'] > 0) {
             <h2 id="prixTelephone"><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h2>
         </aside>
         <aside>
-            <form action="" method="POST">
                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                 <input type="hidden" name="quantite" value="1">
                 <input type="hidden" name="action" value="ajouter_panier">
                 <button class="bouton boutonRose"  name="ajouter_panier">Ajouter au panier</button>
-            </form>
-            <form action="pagePaiement.php" method="POST">
                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                 <button class="bouton boutonBleu">Acheter maintenant</button>
-            </form>
         </aside>
     </article>
 </section>
