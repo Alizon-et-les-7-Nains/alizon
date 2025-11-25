@@ -29,6 +29,7 @@
         cursor: pointer;
         a{
             text-decoration: none;
+            cursor: pointer;
         }
         button{
             background-color: transparent;
@@ -38,6 +39,7 @@
             color: $color-pastel-blue;
             font-family: 'lora';
             border-right: 10px ;
+            cursor: pointer;
         }
     }
     .lignePrevi{
