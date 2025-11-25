@@ -1,5 +1,5 @@
 <header class="backoffice">
-    <a href="../backoffice/accueil.php">
+    <a href="/public/views/backoffice/acceuil.php">
     <div>
         <img src="/public/images/logoBackoffice.svg">
         <h1>Alizon</h1>
