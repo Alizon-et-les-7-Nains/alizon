@@ -29,7 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
 
     $photoPath = '/var/www/html/images/' . $_FILES['url']['name'];
-
+    if (file_exists($photoPath)) { 
+        unlink($photoPath); // supprime l'ancien fichier 
+    }
     move_uploaded_file($_FILES['url']['tmp_name'], $photoPath);
 
     $fileName = $_FILES['url']['name'];
