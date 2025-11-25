@@ -5043,9 +5043,9 @@ dialog.reassort form input {
   width: auto;
   z-index: 1;
 }
-.pageProduit .banniere h2 {
+.pageProduit .banniere h1 {
   position: absolute;
-  top: 50px;
+  top: 0px;
   left: 40px;
   color: #fffefa;
   z-index: 10000;
@@ -5861,63 +5861,6 @@ dialog.reassort form input {
   line-height: 1.4;
 }
 
-.avis-vendeur h1 {
-  font-size: 40px;
-  font-family: "Lora", serif;
-  font-weight: bold;
-  color: #273469;
-}
-.avis-vendeur .avi {
-  border-collapse: separate;
-  width: 100%;
-  color: #273469;
-  background-color: #e4d9ff;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  padding: 20px 0 25px 0;
-  font-size: 18px;
-  font-family: "Lora", serif;
-}
-.avis-vendeur .avi .col-gauche {
-  width: 150px;
-  padding: 0px;
-  text-align: center;
-}
-.avis-vendeur .avi .col-gauche .profil-client {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-}
-.avis-vendeur .avi .col-gauche .profil-client img {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-.avis-vendeur .avi .col-gauche .profil-client figcaption {
-  margin-top: 0;
-}
-.avis-vendeur .avi .etoiles {
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 0;
-  margin-right: 20px;
-  gap: 5px;
-  display: flex;
-}
-.avis-vendeur .avi .ligne {
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  padding: 0;
-}
-.avis-vendeur .avi .date-avis {
-  font-size: 12px;
-  font-family: "Lora", sans-serif;
-}
-
 .overlayPopUpErreur {
   position: fixed;
   top: 0;
@@ -6051,6 +5994,64 @@ dialog.reassort form input {
   z-index: 10;
   height: fit-content;
   padding: 15px;
+}
+
+.avis-vendeur h1 {
+  font-size: 40px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+  color: #273469;
+}
+.avis-vendeur .avi {
+  border-collapse: separate;
+  width: 100%;
+  color: #273469;
+  background-color: #e4d9ff;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  padding: 20px 0 25px 0;
+  font-size: 18px;
+  font-family: "Lora", serif;
+}
+.avis-vendeur .avi .col-gauche {
+  width: 150px;
+  padding: 0px;
+  text-align: center;
+}
+.avis-vendeur .avi .col-gauche .profil-client {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+.avis-vendeur .avi .col-gauche .profil-client img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+.avis-vendeur .avi .col-gauche .profil-client figcaption {
+  margin-top: 0;
+}
+.avis-vendeur .avi .etoiles {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 20px;
+  color: #FFD000;
+  gap: 5px;
+  display: flex;
+}
+.avis-vendeur .avi .ligne {
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+.avis-vendeur .avi .date-avis {
+  font-size: 12px;
+  font-family: "Lora", sans-serif;
 }
 
 /*# sourceMappingURL=style.css.map */
