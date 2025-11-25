@@ -1,8 +1,8 @@
 <?php
-require_once "pdo.php";
+require_once "../../controllers/pdo.php";
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../frontoffice/connexionClient.php");
+    header("Location: connexionClient.php");
     exit();
 }
 
@@ -27,8 +27,8 @@ if (!$avis) {
 function afficherEtoiles($note) {
     $html = "";
     for ($i = 1; $i <= 5; $i++) {
-        if ($i <= $note) $html .= "<img class='star' src='/public/images/etoile.svg'>";
-        else $html .= "<img class='star' src='/public/images/etoileVide.svg'>";
+        if ($i <= $note) $html .= "<img class='star' src='../../public/images/etoile.svg'>";
+        else $html .= "<img class='star' src='../../public/images/etoileVide.svg'>";
     }
     return $html;
 
@@ -39,17 +39,17 @@ function afficherEtoiles($note) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/public/images/logoBackoffice.svg">
+    <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
         <title>Modifier un avis</title>
     </head>
     <body class="modifierAvis">
-        <?php include '../views/frontoffice/partials/headerConnecte.php'; ?>
+        <?php include './partials/headerConnecte.php'; ?>
         <main>
 
     <h2>Modifier mon avis</h2>
 
-    <form action="modifierAvis_action.php" method="POST">
+    <form action="../../controllers/modifierAvis_action.php" method="POST">
         
         <input type="hidden" name="idProduit" value="<?php echo $idProduit; ?>">
 
@@ -57,9 +57,9 @@ function afficherEtoiles($note) {
         <input type="text" name="titreAvis" value="<?php echo htmlspecialchars($avis['titreAvis']); ?>"><br><br>
 
         <article class="etoiles">
-                <?= afficherEtoiles(round($avis['note'])); ?>
+            <?= afficherEtoiles(round($avis['note'])); ?>
         </article>
-        <input type="hidden" name="note" id="note" value="">
+        <input type="hidden" name="note" id="note" value="<?= htmlspecialchars($avis['note'] ?? '') ?>">
 
         <label>Contenu :</label><br>
         <textarea name="contenuAvis" required><?php echo htmlspecialchars($avis['contenuAvis']); ?></textarea><br><br>
@@ -67,26 +67,25 @@ function afficherEtoiles($note) {
         <button type="submit" id=publishButton>Modifier</button>
     </form>
 </main>
-<?php include '../views/frontoffice/partials/footerDeconnecte.php'; ?>
+<?php include './partials/footerDeconnecte.php'; ?>
 </body>
 </html>
 
 <script>
-const noteInput = document.getElementById('note');
-const stars = document.querySelectorAll('.etoiles .star'); 
+document.addEventListener('DOMContentLoaded', () => {
+    const noteInput = document.getElementById('note');
+    const stars = document.querySelectorAll('.etoiles .star');
+    const emptyStar = "/public/images/etoileVide.svg";
+    const fullStar = "/public/images/etoile.svg";
 
-const emptyStar = "/public/images/etoileVide.svg";
-const fullStar = "/public/images/etoile.svg";
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            const rating = index + 1;
 
-stars.forEach((star, index) => {
-    star.addEventListener('click', () => {
-        const rating = index + 1;
+            stars.forEach((s, i) => s.src = i < rating ? fullStar : emptyStar);
 
-        stars.forEach((s, i) => {
-            s.src = i < rating ? fullStar : emptyStar;
+            noteInput.value = rating;
         });
-
-        noteInput.value = rating;
     });
 });
 </script>

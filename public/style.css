@@ -4422,6 +4422,7 @@ button#haut.visible:hover {
 }
 .popUpRemise .page form .boutonSup {
   background-color: #f14e4e;
+  border: 0;
 }
 .popUpRemise .page form .error-message {
   color: red;
