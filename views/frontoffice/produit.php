@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $idClient = $_SESSION['user_id'];
         $idProduit = intval($_POST['idProduit']);
         $idClientAvis = intval($_POST['idClientAvis']);
-        $typeVote = $_POST['type']; // 'like' ou 'dislike'
+        $typeVote = $_POST['type'];
         
         $keyVote = "vote_{$idProduit}_{$idClientAvis}_{$idClient}";
         
@@ -283,7 +283,7 @@ if (isset($_SESSION['message_panier'])) {
 ?>
 <section class="infoHautProduit">
 <article class="rectangleProduit">
-    <?php if ($promotion['est_en_promotion'] && $promotion['est_en_remise']): ?>
+    <?php if ($promotion['est_en_remise']): ?>
         <div class="banniere">
             <h1>-<?php echo number_format($promotion['taux_remise']); ?>%</h1>
             <img class="poly1" src="../../public/images/poly1.svg" alt="">
@@ -318,7 +318,7 @@ if (isset($_SESSION['message_panier'])) {
     <article class="infoPreviewProduit">
         <div class="attributsproduit">
             <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
-            <?php if ($promotion['est_en_promotion']): ?>
+            <?php if ($promotion['est_en_remise']): ?>
                 <h3>Promotion</h3> 
             <?php endif; ?>
         </div>
@@ -335,6 +335,9 @@ if (isset($_SESSION['message_panier'])) {
             <?php if ($promotion['est_en_remise']): ?>
             <h1><?php echo number_format($promotion['prix_promotion'], 2, ',', ' '); ?>€</h1>
             <h3><del><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</del></h3> 
+            <?php if (!empty($promotion['date_fin_promotion'])): ?>
+            <h2>Cette offre tient jusqu'au <?php echo date('d/m/Y', strtotime($promotion['date_fin_promotion'])); ?></h2>
+            <?php endif; ?>
             <?php else: ?>
             <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
             <?php endif; ?>
@@ -416,7 +419,7 @@ if (isset($_SESSION['message_panier'])) {
 </section>
 <?php 
 if ($produit['stock'] > 0) {
-    echo '<p class="stockDisponible">En stock (' . htmlspecialchars($produit['stock']) . 'restants) </p>';
+    echo '<p class="stockDisponible">En stock (' . htmlspecialchars($produit['stock']) . ' restants) </p>';
 } else {
     if ($produit['dateReassort'] !== null) {
         echo '<p class="stockIndisponible">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($produit['dateReassort']) . '</p>';

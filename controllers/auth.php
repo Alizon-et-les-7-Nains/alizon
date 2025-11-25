@@ -1,10 +1,10 @@
 <?php
-
+session_start();
 ob_start();
 
 require_once 'pdo.php';
 
-session_start();
+
 
 try {
     $pdo->beginTransaction();

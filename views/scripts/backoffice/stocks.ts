@@ -9,6 +9,8 @@ const errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') 
 const errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
 const errorFieldDate: HTMLElement = document.getElementById('errorFieldDate') as HTMLElement;
 
+const buttonCancel: HTMLElement[] = Array.from(document.querySelectorAll('main.backoffice-stocks .annuler'));
+
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs: Element[] = Array.from(btn.children);
@@ -29,6 +31,15 @@ btnSettings.forEach(btn => {
                 const innerDiv = div.firstElementChild;
                 innerDiv.style.left = innerDiv.classList.contains('right') ? '14px' : '4px';
             }
+        })
+    })
+})
+
+buttonCancel.forEach((btnCancel: HTMLElement) => {
+    btnCancel.addEventListener('click', () => {
+        Array.from(document.getElementsByTagName('dialog')).forEach(dia => {
+            dia.close();
+            dia.style.display = 'none';
         })
     })
 })
