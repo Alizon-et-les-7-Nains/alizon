@@ -1,5 +1,10 @@
 <?php 
 require_once 'pdo.php';
+require_once 'auth.php';
+
+$code_vendeur = $_SESSION['id'];
+$idAdresse = 1;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Récupération des données du formulaire
