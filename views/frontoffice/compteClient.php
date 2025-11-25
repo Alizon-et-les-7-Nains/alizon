@@ -4,7 +4,7 @@ require_once '../../controllers/pdo.php' ;
     
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../views/frontoffice/connexionClient.php");
+    header("Location: ../frontoffice/connexionClient.php");
     exit();
 }
 
