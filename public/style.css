@@ -5851,6 +5851,11 @@ dialog.reassort form input {
   padding-top: 10px;
   text-align: center;
 }
+.avis-vendeur .avi .col-gauche .profil-client img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
 .avis-vendeur .avi .etoiles {
   margin-top: 0;
   margin-bottom: 0;
