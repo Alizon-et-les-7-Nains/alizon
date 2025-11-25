@@ -262,6 +262,10 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $stmtItems->execute([$idPanier]);
         $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
         
+        if (empty($items)) {
+            throw new Exception("Le panier est vide.");
+        }
+        
         foreach ($items as $item) {
             $prixProduit = getPrixProduitAvecRemise($pdo, $item['idProduit']);
             $quantite = $item['quantiteProduit'];
@@ -269,19 +273,12 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             $nbArticles += $quantite;
         }
 
-        if ($nbArticles === 0) {
-            throw new Exception("Le panier est vide.");
-        }
-
         // Vérification carte bancaire
         $checkCarte = $pdo->prepare("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = ?");
         $checkCarte->execute([$numeroCarte]);
 
         if ($checkCarte->rowCount() === 0) {
-            $sqlInsertCarte = "
-                INSERT INTO _carteBancaire (numeroCarte, nom, dateExpiration, cvv)
-                VALUES (?, ?, ?, ?)
-            ";
+            $sqlInsertCarte = "INSERT INTO _carteBancaire (numeroCarte, nom, dateExpiration, cvv) VALUES (?, ?, ?, ?)";
             $stmtCarte = $pdo->prepare($sqlInsertCarte);
             if (!$stmtCarte->execute([$numeroCarte, $nomCarte, $dateExp, $cvv])) {
                 throw new Exception("Erreur lors de l'ajout de la carte bancaire");
@@ -289,10 +286,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
 
         // CRÉATION ADRESSE LIVRAISON dans _adresseClient
-        $sqlAdresseLivraison = "
-            INSERT INTO _adresseClient (adresse, codePostal, ville)
-            VALUES (?, ?, ?)
-        ";
+        $sqlAdresseLivraison = "INSERT INTO _adresseClient (adresse, codePostal, ville) VALUES (?, ?, ?)";
         $stmtAdresse = $pdo->prepare($sqlAdresseLivraison);
         
         if (!$stmtAdresse->execute([$adresseLivraison, $codePostal, $villeLivraison])) {
@@ -302,14 +296,12 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         // GESTION ADRESSE FACTURATION
         if ($idAdresseFacturation) {
-            // Vérifier que l'adresse de facturation existe dans _adresseClient
             $checkFact = $pdo->prepare("SELECT idAdresse FROM _adresseClient WHERE idAdresse = ?");
             $checkFact->execute([$idAdresseFacturation]);
             if ($checkFact->rowCount() === 0) {
                 throw new Exception("Adresse de facturation introuvable");
             }
         } else {
-            // Utiliser la même adresse que la livraison
             $idAdresseFacturation = $idAdresseLivraison;
         }
 
@@ -335,21 +327,28 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idCommande = $pdo->lastInsertId();
 
-        // Copier les produits dans _contient
-        $sqlContient = "
-            INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
-            SELECT pap.idProduit, ?, 
-                   " . getPrixProduitAvecRemise($pdo, 'p.idProduit') . ", 
-                   COALESCE(t.pourcentageTva, 20.0), 
-                   pap.quantiteProduit
-            FROM _produitAuPanier pap
-            JOIN _produit p ON pap.idProduit = p.idProduit
-            LEFT JOIN _tva t ON p.typeTva = t.typeTva
-            WHERE pap.idPanier = ?
-        ";
-        $stmtContient = $pdo->prepare($sqlContient);
-        if (!$stmtContient->execute([$idCommande, $idPanier])) {
-            throw new Exception("Erreur lors de la copie des produits");
+        // CORRECTION: Copier les produits dans _contient avec le bon prix
+        foreach ($items as $item) {
+            $prixAvecRemise = getPrixProduitAvecRemise($pdo, $item['idProduit']);
+            
+            $sqlContient = "
+                INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
+                SELECT ?, ?, ?, COALESCE(t.pourcentageTva, 20.0), ?
+                FROM _produit p
+                LEFT JOIN _tva t ON p.typeTva = t.typeTva
+                WHERE p.idProduit = ?
+            ";
+            
+            $stmtContient = $pdo->prepare($sqlContient);
+            if (!$stmtContient->execute([
+                $item['idProduit'],
+                $idCommande,
+                $prixAvecRemise,
+                $item['quantiteProduit'],
+                $item['idProduit']
+            ])) {
+                throw new Exception("Erreur lors de la copie du produit " . $item['idProduit']);
+            }
         }
 
         // Vider le panier
