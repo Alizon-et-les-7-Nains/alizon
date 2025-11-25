@@ -57,9 +57,9 @@ function afficherEtoiles($note) {
         <input type="text" name="titreAvis" value="<?php echo htmlspecialchars($avis['titreAvis']); ?>"><br><br>
 
         <article class="etoiles">
-                <?= afficherEtoiles(round($avis['note'])); ?>
+            <?= afficherEtoiles(round($avis['note'])); ?>
         </article>
-        <input type="hidden" name="note" id="note" value="">
+        <input type="hidden" name="note" id="note" value="<?= htmlspecialchars($avis['note'] ?? '') ?>">
 
         <label>Contenu :</label><br>
         <textarea name="contenuAvis" required><?php echo htmlspecialchars($avis['contenuAvis']); ?></textarea><br><br>
@@ -72,21 +72,20 @@ function afficherEtoiles($note) {
 </html>
 
 <script>
-const noteInput = document.getElementById('note');
-const stars = document.querySelectorAll('.etoiles .star'); 
+document.addEventListener('DOMContentLoaded', () => {
+    const noteInput = document.getElementById('note');
+    const stars = document.querySelectorAll('.etoiles .star');
+    const emptyStar = "/public/images/etoileVide.svg";
+    const fullStar = "/public/images/etoile.svg";
 
-const emptyStar = "../../public/images/etoileVide.svg";
-const fullStar = "../../public/images/etoile.svg";
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            const rating = index + 1;
 
-stars.forEach((star, index) => {
-    star.addEventListener('click', () => {
-        const rating = index + 1;
+            stars.forEach((s, i) => s.src = i < rating ? fullStar : emptyStar);
 
-        stars.forEach((s, i) => {
-            s.src = i < rating ? fullStar : emptyStar;
+            noteInput.value = rating;
         });
-
-        noteInput.value = rating;
     });
 });
 </script>
