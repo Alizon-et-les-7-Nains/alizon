@@ -11,6 +11,9 @@ $id_client = $_SESSION['user_id'];
 
 $stmt = $pdo->query("SELECT * FROM _avis WHERE idClient = $id_client");
 $mesAvis = $stmt->fetchAll(PDO::FETCH_ASSOC);
+var_dump($mesAvis);
+exit;
+
 ?>
 
 
