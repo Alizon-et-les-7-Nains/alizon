@@ -152,12 +152,8 @@ inputSeuil.addEventListener('input', () => {
         inputSeuil.style.cssText = 'border-color: #273469 !important';
         errorFieldSeuil.style.display = 'none';
     }
-    if (allValid()) {
-        buttonConfirm.disabled = true;
-    }
-    else {
-        buttonConfirm.disabled = false;
-    }
+    buttonConfirm.
+    ;
 });
 inputDate.addEventListener('input', () => {
     if (!checkDate(inputDate.valueAsDate)) {
