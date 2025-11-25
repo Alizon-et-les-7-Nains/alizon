@@ -1,5 +1,7 @@
 <?php
+    echo '<pre style="background:white;color:black;padding:20px;z-index:9999;position:relative;">';
     print_r($_SERVER['REQUEST_URI']);
+    echo '</pre>';
     $requestUri = $_SERVER['REQUEST_URI'] ?? '';
     $fromBackoffice = strpos($requestUri, '/backoffice/') !== false;
     $fromFrontoffice = strpos($requestUri, '/frontoffice/') !== false;
