@@ -5850,9 +5850,11 @@ dialog.reassort form input {
   padding: 20px;
 }
 .connexionVendeur #error {
-  width: 100%;
+  text-align: center;
+  width: 75%;
   margin-top: -1em;
   background-color: #f7afaf;
+  font-size: 15px;
   color: #f14e4e;
   font-family: "open-sans";
   padding: 0.5em;
