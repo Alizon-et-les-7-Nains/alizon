@@ -555,7 +555,7 @@ if ($produit['stock'] > 0) {
                                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                                 <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
                                 <input type="hidden" name="type" value="dislike">
-                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>" onlick="changerPouce(this.querySelector('img'), 'bas')">
+                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>" onclick="changerPouce(this.querySelector('img'), 'bas')">
                                     <img src="../../public/images/<?php echo ($voteUtilisateur === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png'; ?>" alt="Dislike">
                                     <span><?php echo intval($avis['negatifs']); ?></span>
                                 </button>
