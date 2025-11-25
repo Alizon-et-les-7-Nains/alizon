@@ -1,4 +1,4 @@
-    <header class="headerFront">
+<header class="headerFront">
 
         <div class="headerMain">
             <div class="logoNom">
