@@ -152,7 +152,7 @@ body {
     flex: 0 0 auto;
   }
 
-   @media (max-width: 1300px) {
+   @media (min-width: 1300px) {
     #burgerIconTel {
       display: none;
       visibility: hidden;
