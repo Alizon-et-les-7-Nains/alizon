@@ -67,7 +67,6 @@ document.querySelector('header.backoffice figure:nth-child(3)')?.addEventListene
     window.location.href = 'compteVendeur.php';
 });
 const btnSettings = Array.from(document.getElementsByClassName('settings'));
-const modalReassort = document.querySelector("dialog.reassort");
 const inputSeuil = document.getElementById('seuil');
 const inputDate = document.getElementById('dateReassort');
 const inputReassort = document.getElementById('reassort');
@@ -99,19 +98,16 @@ btnSettings.forEach(btn => {
 });
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        modalReassort.showModal();
-        modalReassort.style.display = 'flex';
+        const modal = document.querySelector(`main.backoffice-stocks dialog#${btn.id}`);
+        modal.showModal();
+        modal.style.display = 'flex';
+        modal?.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.close();
+                modal.style.display = 'none';
+            }
+        });
     });
-});
-modalReassort?.addEventListener("click", (e) => {
-    if (e.target === modalReassort) {
-        modalReassort.close();
-        modalReassort.style.display = 'none';
-    }
-});
-document.querySelector('modal.reassort input#annuler')?.addEventListener('click', () => {
-    modalReassort.close();
-    modalReassort.style.display = 'none';
 });
 function checkInt(value) {
     if (!value)

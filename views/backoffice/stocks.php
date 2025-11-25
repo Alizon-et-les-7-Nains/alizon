@@ -98,7 +98,7 @@
                 </div>";
         echo $html;
         echo "
-            <dialog class='reassort'>
+            <dialog class='reassort' id='" . $epuise['idProduit'] ."'>
                 <h1>Paramètres de réassort</h1>
                 <form action='../../controllers/reassort.php' method='post'>    
                     <input type='number' placeholder='Seuil d\'alerte' value='" . $epuise['seuilAlerte'] . "' name='Seuil d\'alerte' id ='seuil'>
@@ -191,7 +191,7 @@
                 </div>";
         echo $html;
         echo "
-            <dialog class='reassort'>
+            <dialog class='reassort' id='" . $faible['idProduit'] ."'>
                 <h1>Paramètres de réassort</h1>
                 <form action='../../controllers/reassort.php' method='post'>    
                     <input type='number' placeholder='Seuil d\'alerte' value='" . $faible['seuilAlerte'] . "' name='Seuil d\'alerte' id ='seuil'>
@@ -284,7 +284,7 @@
                 </div>";
         echo $html;
         echo "
-            <dialog class='reassort'>
+            <dialog class='reassort' id='" . $stock['idProduit'] ."'>
                 <h1>Paramètres de réassort</h1>
                 <form action='../../controllers/reassort.php' method='post'>    
                     <input type='number' placeholder='Seuil d\'alerte' value='" . $stock['seuilAlerte'] . "' name='Seuil d\'alerte' id ='seuil'>
