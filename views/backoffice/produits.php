@@ -42,6 +42,9 @@
 
             $stmt = $pdo->query("SELECT * FROM saedb._promotion WHERE idproduit = '$idProduit';");
             $promo = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+            $stmt = $pdo->query("SELECT * FROM saedb._remise WHERE idproduit = '$idProduit';");
+            $remise = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             ?>
                 
             <section>
@@ -101,7 +104,15 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconeRemise.svg" alt="">
-                                        <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>)">Remise</button>
+                                        <?php if(count($remise) == 1) { ?>
+                                            <button onclick="popUpAnnulerRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>')">
+                                                Retirer remise
+                                            </button>
+                                        <?php } else { ?>
+                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>)">
+                                                Remise
+                                            </button>
+                                        <?php } ?>                                    
                                     </div>
                                     <div class="ligne"></div>
                                 </div>

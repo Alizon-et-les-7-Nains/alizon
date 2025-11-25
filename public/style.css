@@ -221,7 +221,7 @@ body {
   padding: 10px;
 }
 
-#triangle-codeHeader {
+#burgerIcon #triangle-codeHeader {
   display: inline-block;
   height: 0;
   width: 0;
@@ -321,7 +321,7 @@ body {
   z-index: 999;
 }
 
-#burgerIcon a {
+#burgerIconTel a {
   text-decoration: none;
   color: #273469;
   padding: 8px 0;
@@ -332,7 +332,7 @@ body {
   padding: 10px;
 }
 
-#triangle-codeHeader {
+#burgerIconTel #triangle-codeHeader {
   display: inline-block;
   height: 0;
   width: 0;
@@ -5130,7 +5130,7 @@ dialog.reassort form input {
   gap: 1em;
 }
 .pageProduit .infoPreviewProduit div h1, .pageProduit .infoPreviewProduit div h2, .pageProduit .infoPreviewProduit div h4 {
-  margin: 1em 0;
+  margin: 0.5em 0;
 }
 .pageProduit .infoPreviewProduit h1, .pageProduit .infoPreviewProduit h2, .pageProduit .infoPreviewProduit h3, .pageProduit .infoPreviewProduit h4, .pageProduit .infoPreviewProduit p {
   margin: 0 0;
@@ -5153,7 +5153,8 @@ dialog.reassort form input {
   margin-top: 0.5em;
 }
 .pageProduit .resume {
-  max-height: 50px;
+  max-height: 60px;
+  overflow: hidden;
 }
 .pageProduit .version {
   margin-top: 1.6em;
