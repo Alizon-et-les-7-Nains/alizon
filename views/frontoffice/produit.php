@@ -425,7 +425,7 @@ if (isset($_SESSION['message_panier'])) {
                                 $resultImagesAvis = $pdo->query($sqlImagesAvis);
                                 $imagesAvis = $resultImagesAvis->fetchAll(PDO::FETCH_ASSOC);?>
                             <?php foreach ($imagesAvis as $imageAvis): ?>
-                                    <img src="<?php echo htmlspecialchars($imageAvis['URL'] ?? ''); ?>" alt="">
+                                <img src="../../public/images/<?php echo htmlspecialchars($imageAvis['URL'] ?? '');?>" alt="">
                              <?php endforeach; ?>
                         </div>   
                         <div class="actionsAvis">
