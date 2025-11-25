@@ -100,7 +100,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <button>Prévisualiser</button>
+                                        <a href="previsualiser.php"><button>Prévisualiser</button></a>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -176,7 +176,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <button>Prévisualiser</button>
+                                        <a href="previsualiser.php"><button>Prévisualiser</button></a>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
