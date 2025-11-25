@@ -92,8 +92,11 @@
                                         <?php $nom = $produitEnVente[$i]['nom'] ?>
                                         <?php $nbEval = $evaluations[0]['evaluation'] ?>
                                         <?php if(count($promo) == 1) { 
-                                            $dateRaw = new DateTime($promo[$i]['finPromotion']);
-                                            $dateFinPromo = $dateRaw->format('d/m/Y'); 
+
+                                                
+
+                                                $dateRaw = new DateTime($promo[$i]['finPromotion']);
+                                                $dateFinPromo = $dateRaw->format('d/m/Y'); 
                                         ?>
                                             <button onclick="popUpModifierPromotion(
                                                 <?php echo $idProd; ?>, 

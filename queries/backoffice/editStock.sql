@@ -1,3 +1,3 @@
-update _produit
-set stock = :stock
-where idProduit = :idProduit
+UPDATE _produit
+SET stock = stock + :stock
+WHERE idProduit = :idProduit
