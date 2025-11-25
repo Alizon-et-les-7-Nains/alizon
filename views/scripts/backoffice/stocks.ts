@@ -95,7 +95,7 @@ inputSeuil.addEventListener('input', () => {
         errorFieldSeuil.style.display = 'none';
     }
 
-    buttonConfirm.disabled = allValid() ? true : false;
+    buttonConfirm.disabled = !allValid();
 })
 inputDate.addEventListener('input', () => {
     if (!checkDate(inputDate.valueAsDate)) {
@@ -107,7 +107,7 @@ inputDate.addEventListener('input', () => {
         errorFieldDate.style.display = 'none';
     }
 
-    buttonConfirm.disabled = allValid() ? true : false;
+    buttonConfirm.disabled = !allValid();
 })
 inputReassort.addEventListener('input', () => {
     if (!checkInt(inputReassort.value)) {
@@ -118,5 +118,5 @@ inputReassort.addEventListener('input', () => {
         errorFieldReassort.style.display = 'none';
     }
 
-    buttonConfirm.disabled = allValid() ? true : false;
+    buttonConfirm.disabled = !allValid();
 })

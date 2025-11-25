@@ -152,7 +152,7 @@ inputSeuil.addEventListener('input', () => {
         inputSeuil.style.cssText = 'border-color: #273469 !important';
         errorFieldSeuil.style.display = 'none';
     }
-    buttonConfirm.disabled = allValid() ? true : false;
+    buttonConfirm.disabled = !allValid();
 });
 inputDate.addEventListener('input', () => {
     if (!checkDate(inputDate.valueAsDate)) {
@@ -163,7 +163,7 @@ inputDate.addEventListener('input', () => {
         inputDate.style.cssText = 'border-color: #273469 !important';
         errorFieldDate.style.display = 'none';
     }
-    buttonConfirm.disabled = allValid() ? true : false;
+    buttonConfirm.disabled = !allValid();
 });
 inputReassort.addEventListener('input', () => {
     if (!checkInt(inputReassort.value)) {
@@ -174,7 +174,7 @@ inputReassort.addEventListener('input', () => {
         inputReassort.style.cssText = 'border-color: #273469 !important';
         errorFieldReassort.style.display = 'none';
     }
-    buttonConfirm.disabled = allValid() ? true : false;
+    buttonConfirm.disabled = !allValid();
 });
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";
