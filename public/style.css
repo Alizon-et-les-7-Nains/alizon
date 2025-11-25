@@ -5272,7 +5272,7 @@ dialog.reassort form input {
   transition: all 0.3s ease;
 }
 .pageProduit .conteneurTexte {
-  width: 100%;
+  width: 68%;
   max-height: 600px;
   margin-left: 2.5em;
   color: #273469;
