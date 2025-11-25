@@ -52,7 +52,7 @@
                 
             <section>
                 <article>
-                    <img class="produit" src="/public/<?php echo $produitEnVente[$i]['url'];?>" alt="">
+                    <img class="produit" src="/var/www/html<?php echo $produitEnVente[$i]['url'];?>" alt="">
 
                     <div class="nomEtEvaluation">
                         <p><?php echo htmlspecialchars($produitEnVente[$i]['nom']); ?></p>
@@ -170,7 +170,7 @@
                 
             <section>
                 <article>
-                    <img class="produit" src="/public/<?php echo $produitHorsVente[$i]['url'];?>" alt="">
+                    <img class="produit" src="/var/www/html<?php echo $produitHorsVente[$i]['url'];?>" alt="">
 
                     <div class="nomEtEvaluation">
                         <p><?php echo htmlspecialchars($produitHorsVente[$i]['nom']); ?></p>
