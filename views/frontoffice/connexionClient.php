@@ -76,8 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body class="pageConnexionCLient">
-    <?php include '../../views/frontoffice/partials/headerDeconnecte.php'; ?>
-
     <main>
         <div class="profile">
             <img src="../../public/images/utilLightBlue.svg" alt="">
@@ -106,8 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </main>
-
-    <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 
     <script src="../../controllers/Chiffrement.js"></script>
     <script>
