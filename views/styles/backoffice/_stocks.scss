@@ -315,6 +315,17 @@ dialog.reassort {
             &::placeholder {
                 font-weight: normal;
             }
+            &:disabled {
+                background-color: $color-dark-gray;
+                color: $color-blue;
+                cursor: not-allowed;
+
+                &:hover {
+                    background-color: $color-dark-gray;
+                    color: $color-blue;
+                    cursor: not-allowed;
+                }
+            }
             color: $color-blue;
             font-weight: bold;
             padding: {
