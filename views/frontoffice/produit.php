@@ -606,6 +606,8 @@ if ($produit['stock'] > 0) {
 </footer> 
 </body>
 <script>
+console.log('=== SCRIPT CHARGÉ ===');
+
 // ==================== CAROUSEL ====================
 class ProductCarousel {
     constructor() {
@@ -690,6 +692,8 @@ class ProductCarousel {
 
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== DOM READY ===');
+    
     // Init carousel
     new ProductCarousel();
     
@@ -725,10 +729,40 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ==================== VOTES ====================
-    const voteButtons = document.querySelectorAll('.btn-vote:not([disabled])');
+    console.log('=== RECHERCHE DES BOUTONS DE VOTE ===');
     
-    voteButtons.forEach(button => {
+    // Chercher tous les boutons possibles
+    const allButtons = document.querySelectorAll('button');
+    console.log('Tous les boutons sur la page:', allButtons.length);
+    
+    const voteButtons = document.querySelectorAll('.btn-vote');
+    console.log('Boutons avec classe .btn-vote:', voteButtons.length);
+    
+    const voteButtonsNotDisabled = document.querySelectorAll('.btn-vote:not([disabled])');
+    console.log('Boutons .btn-vote non désactivés:', voteButtonsNotDisabled.length);
+    
+    // Afficher les détails de chaque bouton
+    voteButtonsNotDisabled.forEach((btn, index) => {
+        console.log(`Bouton ${index}:`, {
+            classes: btn.className,
+            disabled: btn.disabled,
+            produit: btn.dataset.produit,
+            client: btn.dataset.client,
+            type: btn.dataset.type
+        });
+    });
+    
+    if (voteButtonsNotDisabled.length === 0) {
+        console.error('❌ AUCUN BOUTON DE VOTE TROUVÉ !');
+        console.log('Vérifiez que vous êtes connecté et que les boutons ont bien les attributs data-*');
+        return;
+    }
+    
+    voteButtonsNotDisabled.forEach((button, index) => {
+        console.log(`Ajout du listener sur le bouton ${index}`);
+        
         button.addEventListener('click', function(e) {
+            console.log('🔥 CLICK DÉTECTÉ sur bouton', index);
             e.preventDefault();
             e.stopPropagation();
             
@@ -736,18 +770,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const idClientAvis = this.dataset.client;
             const type = this.dataset.type;
             
+            console.log('Données du vote:', {idProduit, idClientAvis, type});
+            
             // Trouver l'article parent
-            const article = this.closest('.avis-article');
+            const article = this.closest('article');
+            console.log('Article trouvé:', article);
+            
             if (!article) {
-                console.error('Article parent non trouvé');
+                console.error('❌ Article parent non trouvé');
                 return;
             }
             
             const likeButton = article.querySelector('.btn-like');
             const dislikeButton = article.querySelector('.btn-dislike');
             
+            console.log('Boutons like/dislike:', {likeButton, dislikeButton});
+            
             if (!likeButton || !dislikeButton) {
-                console.error('Boutons non trouvés');
+                console.error('❌ Boutons like/dislike non trouvés');
                 return;
             }
             
@@ -756,13 +796,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const likeCount = likeButton.querySelector('.vote-count');
             const dislikeCount = dislikeButton.querySelector('.vote-count');
             
+            console.log('Images et compteurs:', {likeImg, dislikeImg, likeCount, dislikeCount});
+            
             const wasActive = this.classList.contains('active');
             const likeWasActive = likeButton.classList.contains('active');
             const dislikeWasActive = dislikeButton.classList.contains('active');
             
+            console.log('États avant:', {wasActive, likeWasActive, dislikeWasActive});
+            
             // Mise à jour optimiste de l'interface
             if (wasActive) {
-                // Retirer le vote
+                console.log('→ Retrait du vote');
                 this.classList.remove('active');
                 if (type === 'like') {
                     likeImg.src = '../../public/images/pouceHaut.png';
@@ -772,13 +816,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     dislikeCount.textContent = Math.max(0, parseInt(dislikeCount.textContent) - 1);
                 }
             } else {
+                console.log('→ Ajout du vote');
                 // Retirer l'ancien vote s'il existe
                 if (likeWasActive) {
+                    console.log('  - Retrait du like précédent');
                     likeButton.classList.remove('active');
                     likeImg.src = '../../public/images/pouceHaut.png';
                     likeCount.textContent = Math.max(0, parseInt(likeCount.textContent) - 1);
                 }
                 if (dislikeWasActive) {
+                    console.log('  - Retrait du dislike précédent');
                     dislikeButton.classList.remove('active');
                     dislikeImg.src = '../../public/images/pouceBas.png';
                     dislikeCount.textContent = Math.max(0, parseInt(dislikeCount.textContent) - 1);
@@ -795,6 +842,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
+            console.log('✅ Interface mise à jour, envoi au serveur...');
+            
             // Envoyer au serveur
             const formData = new FormData();
             formData.append('action', 'voter_avis');
@@ -807,49 +856,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: formData
             })
             .then(response => {
+                console.log('Réponse serveur:', response.status);
                 if (!response.ok) {
-                    throw new Error('Erreur serveur');
+                    throw new Error('Erreur serveur: ' + response.status);
                 }
+                console.log('✅ Vote enregistré sur le serveur');
             })
             .catch(error => {
-                console.error('Erreur:', error);
-                // En cas d'erreur, on annule les changements visuels
-                if (wasActive) {
-                    this.classList.add('active');
-                    if (type === 'like') {
-                        likeImg.src = '../../public/images/pouceHautActive.png';
-                        likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                    } else {
-                        dislikeImg.src = '../../public/images/pouceBasActive.png';
-                        dislikeCount.textContent = parseInt(dislikeCount.textContent) + 1;
-                    }
-                } else {
-                    this.classList.remove('active');
-                    if (type === 'like') {
-                        likeImg.src = '../../public/images/pouceHaut.png';
-                        likeCount.textContent = Math.max(0, parseInt(likeCount.textContent) - 1);
-                    } else {
-                        dislikeImg.src = '../../public/images/pouceBas.png';
-                        dislikeCount.textContent = Math.max(0, parseInt(dislikeCount.textContent) - 1);
-                    }
-                    
-                    // Restaurer l'ancien vote si nécessaire
-                    if (likeWasActive) {
-                        likeButton.classList.add('active');
-                        likeImg.src = '../../public/images/pouceHautActive.png';
-                        likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                    }
-                    if (dislikeWasActive) {
-                        dislikeButton.classList.add('active');
-                        dislikeImg.src = '../../public/images/pouceBasActive.png';
-                        dislikeCount.textContent = parseInt(dislikeCount.textContent) + 1;
-                    }
-                }
-                alert('Erreur lors du vote. Veuillez réessayer.');
+                console.error('❌ Erreur lors du vote:', error);
+                alert('Erreur lors du vote: ' + error.message);
             });
         });
     });
+    
+    console.log('=== INIT TERMINÉ ===');
 });
+</script>
 </script>
 </script>
 </html>
