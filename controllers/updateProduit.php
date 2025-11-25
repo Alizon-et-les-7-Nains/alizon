@@ -19,9 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':idProduit' => $idProd
     ]);
 
-$photoPath = '/var/www/html/images/'.$idProd;
 
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] != '') {
+    $photoPath = '/var/www/html/images/'.$_FILES['url']['name'];
+
     $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
     $extension = '.'.$extension;
     move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
