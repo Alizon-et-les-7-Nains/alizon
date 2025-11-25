@@ -3,6 +3,11 @@ session_start();
 require_once '../../controllers/pdo.php' ;
     
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../frontoffice/connexionClient.php");
+    exit();
+}
+
 $id_client = $_SESSION['user_id'];
 
 $stmt = $pdo->query("SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client'");

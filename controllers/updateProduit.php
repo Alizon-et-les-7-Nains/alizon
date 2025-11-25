@@ -3,7 +3,6 @@ require_once 'pdo.php';
 session_start();
 
 $idProd = $_GET['id']; 
-var_dump($_FILES);
 
 // Si il y a eu un formulare de remplie, on fait 2 requêtes 
 // La première requête permet de mettre à jour les informations du produit sur lequel le formulaire à été rempli
@@ -22,14 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':idProduit' => $idProd
     ]);
 
-
-    $photoPath = '/var/www/html/images/'.$_FILES['url']['name'];
-
-
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
 
     $photoPath = '/var/www/html/images/' . $_FILES['url']['name'];
-
+    if (file_exists($photoPath)) { 
+        unlink($photoPath); // supprime l'ancien fichier 
+    }
     move_uploaded_file($_FILES['url']['tmp_name'], $photoPath);
 
     $fileName = $_FILES['url']['name'];

@@ -3090,7 +3090,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .panier article h2 b {
   color: black;
 }
-@media (max-width: 1248px) {
+@media (max-width: 1290px) {
   .panier main {
     flex-direction: column;
     justify-content: center;
@@ -3119,6 +3119,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .panier .infoProduit div h2 {
     font-size: 15px;
+    max-width: 170px;
   }
   .panier .quantiteProduit img {
     width: 9px !important;
@@ -3158,6 +3159,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier .infoProduit h2 {
   margin-top: 0;
+  max-width: 300px;
 }
 .panier button .delete {
   margin-bottom: 15px;
@@ -4392,6 +4394,8 @@ main.backoffice-stocks section article {
 }
 main.backoffice-stocks section img:not(figure img) {
   height: 200px;
+  max-width: 400px;
+  object-fit: contain;
   margin-top: 0.5em;
   margin-left: 0.5em;
   margin-right: 0.5em;
@@ -4630,13 +4634,13 @@ dialog.reassort form input::placeholder {
   font-weight: normal;
 }
 dialog.reassort form input:disabled {
-  background-color: #6e6e6e !important;
-  color: #273469 !important;
+  background-color: #bababa !important;
+  color: #fffefa !important;
   cursor: not-allowed !important;
 }
 dialog.reassort form input:disabled:hover {
-  background-color: #6e6e6e !important;
-  color: #273469 !important;
+  background-color: #bababa !important;
+  color: #fffefa !important;
   cursor: not-allowed !important;
 }
 dialog.reassort form input {
