@@ -6,7 +6,7 @@ if (isset($_POST['idProduit'])) {
     $pdo->beginTransaction();
     $prodSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/produit.sql'));
     $prodSTMT->execute([':idProduit' => $_POST['idProduit']]);
-    $prod = $prodSTMT->fetchColumn();
+    $prod = $prodSTMT->fetch(PDO::FETCH_ASSOC);
 
     if (isset($_POST['seuil']) && $_POST['seuil'] != $prod['seuilAlerte']) {
         $editSuilSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/editSeuil.sql'));

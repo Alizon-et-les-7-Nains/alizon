@@ -493,6 +493,18 @@
         margin: 0;
     }
 
+    .stockDisponible{
+        color: green;
+        font-weight: bold;
+        margin-top: 1em;
+    }
+
+    .stockIndisponible{
+        color: red;
+        font-weight: bold;
+        margin-top: 1em;
+    }
+
     .review-count{
         text-decoration: underline;
         color: $color-dark-gray;
