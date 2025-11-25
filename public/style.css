@@ -311,7 +311,7 @@ body {
   display: none;
   flex-direction: column;
   position: absolute;
-  bottom: 100px;
+  bottom: 110px;
   right: 30px;
   background-color: #E3F2FE;
   border: 3px solid #273469;
@@ -342,6 +342,19 @@ body {
   border-left: 17px solid transparent;
   border-right: 17px solid transparent;
   border-top: 24px solid #273469;
+  border-bottom: none;
+}
+
+#burgerIconTel #triangle-codeHeader::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -14px;
+  top: -27px;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 20px solid #E3F2FE;
   border-bottom: none;
 }
 
