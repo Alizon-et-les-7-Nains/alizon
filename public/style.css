@@ -6223,6 +6223,7 @@ dialog.reassort form input {
     border-radius: 15px;
   }
   .mesAvis .infos-produit {
+    width: 300px;
     display: flex;
     flex-direction: column;
     gap: 5px;
