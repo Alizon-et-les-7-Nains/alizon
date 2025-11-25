@@ -87,7 +87,6 @@ $produit = [
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<<<<<<< HEAD
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -96,12 +95,7 @@ $produit = [
   <link rel="stylesheet" href="../../public/style.css">
   
   <title>Alizon - Ecrire un avis</title>
-=======
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../../public/style.css">
->>>>>>> 3ffb8ab57721450f7ad17fd68785016c2419dabb
+
 </head>
 <?php // include "../../views/frontoffice/partials/headerConnecte.php" ?>
 <body class="pageEcrireCommentaire">

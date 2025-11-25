@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':nom' => $_POST['nom'],
         ':description' => $_POST['description'],
         ':prix' => $_POST['prix'],
-        ':poids' => $_POST['poids'],
+        ':poids' => $_POST['poids'], 
         ':mot_cles' => $_POST['mots_cles'],
         ':idProduit' => $idProd
     ]);
