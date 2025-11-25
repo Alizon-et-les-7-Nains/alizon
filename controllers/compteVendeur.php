@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Mise à jour du mot de passe si fourni
         if (!empty($nouveauMdp) && !empty($ancienMdp)) {
+            // Vérifier l'ancien mot de passe (sans hachage)
             $stmt = $pdo->prepare("SELECT mdp FROM _vendeur WHERE codeVendeur = :code_vendeur");
             $stmt->execute([':code_vendeur' => $code_vendeur]);
             $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -85,16 +86,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             WHERE idAdresse = :idAdresse
         ");
 
-    $stmt->execute([
-        ':adresse' => $adresse,
-        ':pays' => $pays,
-        ':ville' => $ville,
-        ':codePostal' => $codePostal,
-        ':region' => $region,
-        ':idAdresse' => $idAdresse
-    ]);
-}
+        $stmt->execute([
+            ':adresse' => $adresse,
+            ':pays' => $pays,
+            ':ville' => $ville,
+            ':codePostal' => $codePostal,
+            ':region' => $region,
+            ':idAdresse' => $idAdresse
+        ]);
 
-    header('Location: ../backoffice/produits.php');
-    exit;
+        $pdo->commit();
+        
+        // Redirection pour éviter le rechargement du formulaire
+        header("Location: ../backoffice/compteVendeur.php?success=1");
+        exit();
+
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        header("Location: ../backoffice/compteVendeur.php?error=1");
+        exit();
+    }
+}
 ?>
