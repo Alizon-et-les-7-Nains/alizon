@@ -1,10 +1,12 @@
 <header class="headerFront">
 
     <div class="headerMain">
-        <div class="logoNom">
-            <img src="../../../public/images/logoAlizonHeader.png" alt="Logo Alizon">
-            <h1><a href="../frontoffice/accueilConnecte.php"><b>Alizon</b></a></h1>
-        </div>
+        <a href="../accueilConnecte.php">
+            <div class="logoNom">
+                <img src="../../../public/images/logoAlizonHeader.png" alt="Logo Alizon">
+                <h1><a href="../frontoffice/accueilConnecte.php"><b>Alizon</b></a></h1>
+            </div>
+        </a>
 
         <div class="searchBar">
             <div class="search-wrapper">

@@ -113,8 +113,8 @@
 //     }
 // }
 
-require_once 'pdo.php';
 require_once 'auth.php';
+require_once 'pdo.php';
 
 $code_vendeur = $_SESSION['id'];
 
