@@ -40,6 +40,17 @@ $stock = $stockSTMT->fetchAll(PDO::FETCH_ASSOC);
         $idProduit = $atr['idProduit'];
         $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        
+        // Récupérer les remises
+        $remiseSTMT = $pdo->prepare("SELECT tauxRemise FROM _remise WHERE idProduit = ? AND CURDATE() BETWEEN debutRemise AND finRemise");
+        $remiseSTMT->execute([$idProduit]);
+        $remise = $remiseSTMT->fetch(PDO::FETCH_ASSOC);
+        
+        $prixOriginal = $atr['prix'];
+        $tauxRemise = $remise['tauxRemise'] ?? 0;
+        $enRemise = !empty($remise) && $tauxRemise > 0;
+        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
+        
         $html = "
         <table>
             <tr>
@@ -49,8 +60,14 @@ $stock = $stockSTMT->fetchAll(PDO::FETCH_ASSOC);
                 <td>" . $atr['nom'] . "</td>
             </tr>
             <tr>";
-                $prix = formatPrice($atr['prix']);
-                $html .= "<td>" . $prix . "</td>";
+                if ($enRemise) {
+                    $html .= "<td><div style='display: flex; align-items: center; gap: 8px;'>
+                        <span>" . formatPrice($prixRemise) . "</span>
+                        <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
+                    </div></td>";
+                } else {
+                    $html .= "<td>" . formatPrice($prixOriginal) . "</td>";
+                }
                 $stock = $atr['stock'];
                 $seuil = "";
                 if ($stock == 0) {
@@ -81,6 +98,18 @@ $commandes = $commandesSTMT->fetchAll(PDO::FETCH_ASSOC);
         $idProduit = $commande['idProduit'];
         $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        
+        // Récupérer les remises
+        $remiseSTMT = $pdo->prepare("SELECT tauxRemise FROM _remise WHERE idProduit = ? AND CURDATE() BETWEEN debutRemise AND finRemise");
+        $remiseSTMT->execute([$idProduit]);
+        $remise = $remiseSTMT->fetch(PDO::FETCH_ASSOC);
+        
+        $prixOriginal = $commande['prix'];
+        $tauxRemise = $remise['tauxRemise'] ?? 0;
+        $enRemise = !empty($remise) && $tauxRemise > 0;
+        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
+        $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
+        
         $html = "
         <table>
             <tr>
@@ -89,8 +118,13 @@ $commandes = $commandesSTMT->fetchAll(PDO::FETCH_ASSOC);
             </tr>
             <tr>
                 <td>
-                    Prix Unitaire : <strong>" . formatPrice($commande['prix']) . "</strong><br>
-                    Prix Total : <strong>" . formatPrice($commande['prix'] * $commande['quantiteProduit']) . "</strong><br>
+                    Prix Unitaire : <strong>" . ($enRemise ? 
+                        "<div style='display: flex; align-items: center; gap: 4px;'>
+                            <span>" . formatPrice($prixRemise) . "</span>
+                            <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
+                        </div>" 
+                        : formatPrice($prixOriginal)) . "</strong><br>
+                    Prix Total : <strong>" . formatPrice($prixAffichage * $commande['quantiteProduit']) . "</strong><br>
                     Statut : <strong>" . $commande['etatLivraison'] . "</strong>
                 </td>
             </tr>
@@ -166,16 +200,33 @@ if (count($produits) == 0) echo "<h2>Aucun produit en vente</h2>";
         $idProduit = $atr['idProduit'];
         $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
+        
+        // Récupérer les remises
+        $remiseSTMT = $pdo->prepare("SELECT tauxRemise FROM _remise WHERE idProduit = ? AND CURDATE() BETWEEN debutRemise AND finRemise");
+        $remiseSTMT->execute([$idProduit]);
+        $remise = $remiseSTMT->fetch(PDO::FETCH_ASSOC);
+        
+        $prixOriginal = $atr['prix'];
+        $tauxRemise = $remise['tauxRemise'] ?? 0;
+        $enRemise = !empty($remise) && $tauxRemise > 0;
+        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
+        
         $html = "
         <table>
             <tr>
                 <td><img src='$image'></td>
             </tr>
             <tr>";
-                $prix = formatPrice($atr['prix']);
-                $html .= "<td>" . $atr['nom'] . "</td>
-                <td>" . $prix . "</td>
-            </tr>
+                $html .= "<td>" . $atr['nom'] . "</td>";
+                if ($enRemise) {
+                    $html .= "<td><div style='display: flex; align-items: center; gap: 8px;'>
+                        <span>" . formatPrice($prixRemise) . "</span>
+                        <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
+                    </div></td>";
+                } else {
+                    $html .= "<td>" . formatPrice($prixOriginal) . "</td>";
+                }
+            $html .= "</tr>
         </table>
         ";
         echo $html;
