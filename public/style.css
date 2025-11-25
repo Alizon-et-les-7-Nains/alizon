@@ -2629,6 +2629,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 45px;
   font-weight: bold;
   font-style: italic;
+  max-width: 550px;
 }
 .acceuil .banniere img {
   max-width: 400px;
