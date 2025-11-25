@@ -45,7 +45,7 @@
 
     .banniere{
         position: absolute;
-        top: -0px;
+        top: -30px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
     }
@@ -60,12 +60,12 @@
     .banniere h2{
         position: absolute;
         top: 50px;
-        left: 45px;
+        left: 40px;
         color: $color-white;
         z-index: 10000;
     }
 
-    .poly:nth-child(1){
+    .poly1{
         position: absolute;
         top: 35px;
         left: 10px;
@@ -73,7 +73,7 @@
         z-index: 100;
     }
 
-    .poly:nth-child(2){
+    .poly2{
         position: absolute;
         top: 65px;
         left: 10px;

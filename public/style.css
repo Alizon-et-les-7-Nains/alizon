@@ -5033,7 +5033,7 @@ dialog.reassort form input {
 }
 .pageProduit .banniere {
   position: absolute;
-  top: 0px;
+  top: -30px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
@@ -5046,18 +5046,18 @@ dialog.reassort form input {
 .pageProduit .banniere h2 {
   position: absolute;
   top: 50px;
-  left: 45px;
+  left: 40px;
   color: #fffefa;
   z-index: 10000;
 }
-.pageProduit .poly:nth-child(1) {
+.pageProduit .poly1 {
   position: absolute;
   top: 35px;
   left: 10px;
   width: auto;
   z-index: 100;
 }
-.pageProduit .poly:nth-child(2) {
+.pageProduit .poly2 {
   position: absolute;
   top: 65px;
   left: 10px;
