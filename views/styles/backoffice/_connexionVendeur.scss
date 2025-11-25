@@ -14,11 +14,12 @@
     padding: 20px;
 
     #error {
+        width: 100%;
+        margin-top: -1em;
         background-color: $color-pastel-red;
         color: $color-red;
         font: {
             family: 'open-sans';
-            weight: bold;
         }
         padding: 0.5em;
         border: {
