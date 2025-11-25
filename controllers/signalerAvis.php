@@ -1,51 +1,51 @@
 <?php
-session_start();
-include '../../controllers/pdo.php';
+ini_set('display_errors', 0);
+error_reporting(0);
 
 header('Content-Type: application/json');
 
-function sendJson($success, $message) {
-    echo json_encode(['success' => $success, 'message' => $message]);
+include '../../controllers/pdo.php';
+session_start();
+
+// On vérif la connexion
+if (!isset($_SESSION['user_id']) && !isset($_SESSION['id'])) {
+    echo json_encode(['success' => false, 'message' => 'Vous devez être connecté pour signaler un avis.']);
     exit;
 }
 
-// On vérifie la connexion
-if (!isset($_SESSION['user_id']) && !isset($_SESSION['id'])) {
-    sendJson(false, 'Vous devez être connecté pour signaler un avis.');
-}
-
 // On identifie le signaleur
-$idSignaleur = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : $_SESSION['id'];
+$idSignaleur = $_SESSION['user_id'] ?? $_SESSION['id'];
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    sendJson(false, 'Méthode non autorisée.');
+    echo json_encode(['success' => false, 'message' => 'Méthode non autorisée.']);
+    exit;
 }
 
 // On récupère les données
-$idProduit = filter_input(INPUT_POST, 'idProduit', FILTER_VALIDATE_INT);
-$idClientAvis = filter_input(INPUT_POST, 'idClientAvis', FILTER_VALIDATE_INT);
-$titre = htmlspecialchars(trim(filter_input(INPUT_POST, 'titre', FILTER_SANITIZE_STRING)));
-$message = htmlspecialchars(trim(filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING)));
+$idProduit = intval($_POST['idProduit'] ?? 0);
+$idClientAvis = intval($_POST['idClientAvis'] ?? 0);
+$titre = htmlspecialchars(trim($_POST['titre'] ?? ''));
+$message = htmlspecialchars(trim($_POST['message'] ?? ''));
 
-// Vérif des champs *
-if (!$idProduit || !$idClientAvis || empty($titre) || empty($message)) {
-    sendJson(false, 'Veuillez remplir tous les champs correctement.');
+if (empty($titre) || empty($message)) {
+    echo json_encode(['success' => false, 'message' => 'Veuillez remplir le titre et le message.']);
+    exit;
 }
 
-// Insertion dans la table _signalement
 try {
-    $sql = "INSERT INTO _signalement (idProduitSignale, idClientSignale, idClientSignaleur, titre, message, dateSignalement)
-            VALUES (?, ?, ?, ?, ?, NOW())";
+    $sql = "INSERT INTO _signalement 
+        (idProduitSignale, idClientSignale, idClientSignaleur, titre, message, dateSignalement) 
+        VALUES (?, ?, ?, ?, ?, NOW())";
+
     $stmt = $pdo->prepare($sql);
     $result = $stmt->execute([$idProduit, $idClientAvis, $idSignaleur, $titre, $message]);
 
     if ($result) {
-        sendJson(true, 'Signalement envoyé avec succès.');
+        echo json_encode(['success' => true, 'message' => 'Signalement envoyé avec succès.']);
     } else {
-        sendJson(false, 'Erreur lors de l\'enregistrement.');
+        echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'enregistrement.']);
     }
 } catch (PDOException $e) {
     error_log($e->getMessage());
-    sendJson(false, 'Une erreur technique est survenue.');
+    echo json_encode(['success' => false, 'message' => 'Une erreur technique est survenue.']);
 }
-?>
