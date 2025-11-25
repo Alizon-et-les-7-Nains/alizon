@@ -3119,6 +3119,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .panier .infoProduit div h2 {
     font-size: 15px;
+    max-width: 170px;
   }
   .panier .quantiteProduit img {
     width: 9px !important;
@@ -3158,6 +3159,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier .infoProduit h2 {
   margin-top: 0;
+  max-width: 300px;
 }
 .panier button .delete {
   margin-bottom: 15px;
@@ -4392,6 +4394,9 @@ main.backoffice-stocks section article {
 }
 main.backoffice-stocks section img:not(figure img) {
   height: 200px;
+  min-width: 150px;
+  max-width: 250px;
+  object-fit: contain;
   margin-top: 0.5em;
   margin-left: 0.5em;
   margin-right: 0.5em;
@@ -5050,7 +5055,7 @@ dialog.reassort form input {
 .pageProduit .banniere h1 {
   position: absolute;
   top: 25px;
-  left: 10px;
+  left: 13px;
   color: #fffefa;
   z-index: 10000;
 }
