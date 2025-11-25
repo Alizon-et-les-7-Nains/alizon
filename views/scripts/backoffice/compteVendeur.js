@@ -328,10 +328,9 @@ function desactiverModificationMdp() {
     if (btnSauvegarder) btnSauvegarder.style.display = "none";
   }
 
-  // if (btnModifierMdp) {
-  //   btnModifierMdp.textContent = "Modifier le mot de passe";
-  //   btnModifierMdp.classList.remove("annuler-mdp");
-  // }
+  if (btnModifierMdp) {
+    btnModifierMdp.style.display = "inline-block";
+  }
 }
 
 function toggleModificationMdp() {
