@@ -6686,9 +6686,8 @@ dialog.reassort form input {
     display: flex;
     flex-direction: row;
     gap: 15px;
+    width: auto;
     color: #000000;
-    min-width: 220px;
-    font-size: 12px;
     padding: 10px;
     border: 2px solid #273469;
     border-radius: 20px;
@@ -6800,7 +6799,8 @@ dialog.reassort form input {
     flex-direction: row;
     gap: 15px;
     color: #000000;
-    width: auto;
+    min-width: 220px;
+    font-size: 12px;
     padding: 10px;
     border: 2px solid #273469;
     border-radius: 20px;
