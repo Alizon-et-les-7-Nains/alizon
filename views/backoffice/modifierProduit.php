@@ -22,17 +22,6 @@ $hasImage = ($image && !empty($image['URL']));
 $imageUrl = $hasImage 
     ? $image['URL'] 
     : '../../public/images/ajouterPhoto.svg';
-
-// Récupérer les remises actives
-$remiseActiveSTMT = $pdo->prepare("SELECT tauxRemise FROM _remise WHERE idProduit = ? AND CURDATE() BETWEEN debutRemise AND finRemise");
-$remiseActiveSTMT->execute([$productId]);
-$remiseActive = $remiseActiveSTMT->fetch(PDO::FETCH_ASSOC);
-
-$prixOriginal = $produit['prix'];
-$tauxRemise = $remiseActive['tauxRemise'] ?? 0;
-$enRemise = !empty($remiseActive) && $tauxRemise > 0;
-$prixRemise = $enRemise ? round($prixOriginal * (1 - $tauxRemise/100), 2) : $prixOriginal;
-
 if (!$produit) {
     die("Produit introuvable.");
 }
@@ -78,18 +67,8 @@ if (!$produit) {
                     value="<?= htmlspecialchars($produit['nom'] ?? '') ?>">
 
                     <div class="price-weight-kg">
-                        <?php if ($enRemise): ?>
-                            <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
-                                <input type="text" placeholder="Prix remisé" name="prix" required
-                                value="<?= htmlspecialchars($prixRemise ?? '') ?>" style="flex: 1;">
-                                <span style="text-decoration: line-through; color: #999; font-size: 0.9em; min-width: 60px;">
-                                    <?= htmlspecialchars($prixOriginal ?? '') ?>
-                                </span>
-                            </div>
-                        <?php else: ?>
-                            <input type="text" placeholder="Prix" name="prix" required
-                            value="<?= htmlspecialchars($produit['prix'] ?? '') ?>">
-                        <?php endif; ?>
+                        <input type="text" placeholder="Prix" name="prix" required
+                        value="<?= htmlspecialchars($produit['prix'] ?? '') ?>">
                         
                         <input type="text" placeholder="Poids" name="poids" required 
                         value="<?= htmlspecialchars($produit['poids'] ?? '') ?>">
