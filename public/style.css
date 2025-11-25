@@ -4608,11 +4608,11 @@ dialog.reassort form ul li:first-child input:hover {
   color: #273469;
   cursor: pointer;
 }
-dialog.reassort form ul li:last-child input {
+dialog.reassort form ul li:last-child input:not(:disabled) {
   background-color: #273469;
   color: #fffefa;
 }
-dialog.reassort form ul li:last-child input:hover {
+dialog.reassort form ul li:last-child input:not(:disabled):hover:not(:disabled) {
   background-color: #e3f2fe;
   color: #273469;
   cursor: pointer;
@@ -4626,14 +4626,14 @@ dialog.reassort form input::placeholder {
   font-weight: normal;
 }
 dialog.reassort form input:disabled {
-  background-color: #6e6e6e;
-  color: #273469;
-  cursor: not-allowed;
+  background-color: #6e6e6e !important;
+  color: #273469 !important;
+  cursor: not-allowed !important;
 }
 dialog.reassort form input:disabled:hover {
-  background-color: #6e6e6e;
-  color: #273469;
-  cursor: not-allowed;
+  background-color: #6e6e6e !important;
+  color: #273469 !important;
+  cursor: not-allowed !important;
 }
 dialog.reassort form input {
   color: #273469;
@@ -5871,7 +5871,7 @@ dialog.reassort form input {
 .avis-vendeur .avi .col-gauche {
   width: 150px;
   height: 300px;
-  padding-top: 10px;
+  padding-top: 0px;
   text-align: center;
 }
 .avis-vendeur .avi .col-gauche .profil-client {
@@ -5992,18 +5992,28 @@ dialog.reassort form input {
 
 .pageProduit .previsualisation {
   display: flex;
+  align-items: center;
 }
 .pageProduit .textePrevi {
   display: flex;
   flex-direction: column;
 }
+.pageProduit .textePrevi h1 {
+  color: red;
+}
 .pageProduit .boutonRetour {
   display: flex;
   padding: 10px;
   background-color: #273469;
+  border-radius: 16px;
+  width: 200px;
+}
+.pageProduit .boutonRetour button {
+  background-color: transparent;
+  text-decoration: none;
 }
 .pageProduit .lignePrevi {
-  border-top: solid 2px red;
+  border-top: solid 4px red;
 }
 
 /*# sourceMappingURL=style.css.map */
