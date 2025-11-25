@@ -43,7 +43,7 @@
                 <a href="<?= $homeLink ?>">Retourner à bon port</a>
             <?php else: ?>
                 <h2>Retourner à bon port</h2>
-                <a href="/views/frontoffice/accueilConnecte.php">Frontoffice</a>
+                <a href="/views/frontoffice/accueilDeconnecte.php">Frontoffice</a>
                 <span style="margin: 0 15px;"></span>
                 <a href="/views/backoffice/accueil.php">Backoffice</a>
             <?php endif; ?>
