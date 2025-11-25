@@ -3,10 +3,10 @@
 require_once 'pdo.php';
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') { 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
 
-    if(isset($_GET['annulationProduit'])) {
-        $idProd = intval($_GET['annulationProduit']); 
+    if(isset($_POST['annulationProduit'])) {
+        $idProd = intval($_POST['annulationProduit']); 
 
         try {
             $stmt = $pdo->prepare("DELETE FROM _promotion WHERE idProduit =:idProd");
