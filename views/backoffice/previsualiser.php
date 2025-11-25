@@ -449,7 +449,7 @@ if (isset($_SESSION['message_panier'])) {
             </div>
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
             <input type="hidden" name="action" value="ajouter_panier">
-            <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
+            <button class="bouton boutonRose"  name="ajouter_panier">Ajouter au panier</button>
         </form>
         <?php if (isset($_SESSION['user_id'])) {
             echo '  <form action="pagePaiement.php" method="POST">
@@ -557,7 +557,7 @@ if ($produit['stock'] > 0) {
                                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                                 <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
                                 <input type="hidden" name="type" value="like">
-                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>">
+                                <button  class="btn-vote <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>">
                                     <img src="../../public/images/<?php echo ($voteUtilisateur === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png'; ?>" alt="Like">
                                     <span><?php echo intval($avis['positifs']); ?></span>
                                 </button>
@@ -568,7 +568,7 @@ if ($produit['stock'] > 0) {
                                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                                 <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
                                 <input type="hidden" name="type" value="dislike">
-                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>">
+                                <button  class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>">
                                     <img src="../../public/images/<?php echo ($voteUtilisateur === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png'; ?>" alt="Dislike">
                                     <span><?php echo intval($avis['negatifs']); ?></span>
                                 </button>
@@ -609,7 +609,7 @@ if ($produit['stock'] > 0) {
                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
                 <input type="hidden" name="quantite" value="1">
                 <input type="hidden" name="action" value="ajouter_panier">
-                <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
+                <button class="bouton boutonRose"  name="ajouter_panier">Ajouter au panier</button>
             </form>
             <form action="pagePaiement.php" method="POST">
                 <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
