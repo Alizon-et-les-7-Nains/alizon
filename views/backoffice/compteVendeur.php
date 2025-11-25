@@ -1,4 +1,8 @@
 <?php
+// Activer l'affichage des erreurs
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once '../../controllers/pdo.php';
 require_once '../../controllers/auth.php';
 
@@ -8,6 +12,20 @@ if (!isset($_SESSION['id'])) {
 }
 
 $code_vendeur = $_SESSION['id'];
+
+// DÉBOGAGE : Vérifier si le POST arrive
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo "<pre style='background: yellow; padding: 20px; border: 2px solid red;'>";
+    echo "=== POST REÇU ===\n";
+    echo "Données POST:\n";
+    print_r($_POST);
+    echo "\nDonnées FILES:\n";
+    print_r($_FILES);
+    echo "</pre>";
+    
+    // Ne pas continuer pour l'instant
+    // exit(); // Décommentez ceci pour arrêter l'exécution et voir les données
+}
 
 // Récupération des informations du vendeur avec jointure sur l'adresse
 $stmt = $pdo->prepare("
