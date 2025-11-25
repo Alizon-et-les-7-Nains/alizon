@@ -2190,6 +2190,25 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   vertical-align: middle;
 }
 .pagePaiement {
+  /* Style pour la section conditions avec erreur */
+}
+.pagePaiement section.conditions .error-message-cgv {
+  color: #f14e4e;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  display: block;
+}
+.pagePaiement {
+  /* Animation pour attirer l'attention sur la checkbox non cochée */
+}
+.pagePaiement section.conditions label {
+  transition: all 0.3s ease;
+}
+.pagePaiement section.conditions input[type=checkbox]:invalid {
+  outline: 2px solid #f14e4e;
+  outline-offset: 2px;
+}
+.pagePaiement {
   /* Logos des moyens de paiement */
 }
 .pagePaiement .logos {

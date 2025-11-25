@@ -371,6 +371,24 @@ $page-padding: 32px 16px;
     }
   }
 
+  /* Style pour la section conditions avec erreur */
+  section.conditions .error-message-cgv {
+    color: #f14e4e;
+    font-size: 0.9rem;
+    margin-top: 8px;
+    display: block;
+  }
+
+  /* Animation pour attirer l'attention sur la checkbox non cochée */
+  section.conditions label {
+    transition: all 0.3s ease;
+  }
+
+  section.conditions input[type="checkbox"]:invalid {
+    outline: 2px solid #f14e4e;
+    outline-offset: 2px;
+  }
+
   /* Logos des moyens de paiement */
   .logos {
     display: flex;
