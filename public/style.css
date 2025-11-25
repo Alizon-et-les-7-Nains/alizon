@@ -5449,6 +5449,12 @@ dialog.reassort form input {
   height: 40px;
   background-color: #273469;
 }
+.pageProduit .btn-vote {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
 .pageProduit .product-rating {
   display: flex;
   flex-direction: column;
