@@ -2989,6 +2989,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-wrap: nowrap;
   max-width: 800px;
   margin-bottom: 40px;
+  align-items: center;
 }
 .panier .quantiteProduit {
   display: flex;

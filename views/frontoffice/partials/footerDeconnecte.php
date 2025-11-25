@@ -6,10 +6,6 @@
             <a href="../frontoffice/legalesNonConnecte.php">Mentions légales</a>
             <p>© 2025 Alizon Tous droits réservés.</p>
         </div>
-
-        <div>
-            <img src="../../../public/images/whiteLetter.svg" alt="Bouton contact">
-        </div>
     </div>
 
     <div class="footerTel">
