@@ -84,9 +84,9 @@ require_once "../../controllers/prix.php";
             FROM _avis
             GROUP BY idProduit
         ) a ON p.idProduit = a.idProduit
-        SET p.note = COALESCE(a.avg_note, 0);
+        SET p.note = COALESCE(a.avg_note, 0)
         ");
-        
+
     $stmtNoteProduit->execute();
     $noteProduit = $stmtNoteProduit->fetchAll(PDO::FETCH_ASSOC);
 
