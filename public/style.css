@@ -6004,10 +6004,9 @@ dialog.reassort form input {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 .pagePrevi .textePrevi {
-  margin-top: 10px;
   margin-left: 10px;
   display: flex;
   flex-direction: column;
