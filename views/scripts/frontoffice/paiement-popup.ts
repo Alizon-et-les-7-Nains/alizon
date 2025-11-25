@@ -19,7 +19,6 @@ declare global {
 
 // Fonction helper pour le chiffrement avec vérification renforcée
 const chiffrerAvecVignere = (texte: string, sens: number): string => {
-  // Utiliser la clé depuis window ou une valeur par défaut
   const cle = window.CLE_CHIFFREMENT || "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
 
   if (typeof window.vignere === "function" && cle && cle.length > 0) {
@@ -30,6 +29,22 @@ const chiffrerAvecVignere = (texte: string, sens: number): string => {
     "Fonction vignere non disponible ou clé invalide, retour du texte en clair"
   );
   return texte;
+};
+
+// Fonction pour encoder les données de manière sécurisée
+const encodeFormData = (data: any): string => {
+  const formData = new URLSearchParams();
+  formData.append("action", "createOrder");
+
+  Object.keys(data).forEach((key) => {
+    if (key !== "action") {
+      // Encoder chaque valeur
+      const value = String(data[key]);
+      formData.append(key, value);
+    }
+  });
+
+  return formData.toString();
 };
 
 export function showPopup(
@@ -70,7 +85,21 @@ export function showPopup(
   const dateCarte = carteDateInput?.value.trim() || "";
   const rawCVV = cvvInput?.value.trim() || "";
 
-  // CHIFFREMENT DES DONNÉES SENSIBLES - version sécurisée
+  // Vérifier que tous les champs requis sont remplis
+  if (
+    !adresse ||
+    !codePostal ||
+    !ville ||
+    !rawNumCarte ||
+    !nomCarte ||
+    !dateCarte ||
+    !rawCVV
+  ) {
+    alert("Veuillez remplir tous les champs obligatoires");
+    return;
+  }
+
+  // CHIFFREMENT DES DONNÉES SENSIBLES
   const numeroCarteChiffre = chiffrerAvecVignere(rawNumCarte, 1);
   const cvvChiffre = chiffrerAvecVignere(rawCVV, 1);
 
@@ -165,10 +194,23 @@ export function showPopup(
         throw new Error("Système de sécurité non disponible");
       }
 
+      // Vérifier que tous les champs requis sont remplis
+      if (
+        !adresse ||
+        !codePostal ||
+        !ville ||
+        !rawNumCarte ||
+        !nomCarte ||
+        !dateCarte ||
+        !rawCVV
+      ) {
+        throw new Error("Tous les champs sont obligatoires");
+      }
+
       // Récupérer l'ID de l'adresse de facturation depuis window
       const idAdresseFact = window.idAdresseFacturation || null;
 
-      // Appeler l'API pour créer la commande
+      // Préparer les données pour l'API
       const orderData: any = {
         adresseLivraison: adresse,
         villeLivraison: ville,
@@ -180,54 +222,67 @@ export function showPopup(
         codePostal: codePostal,
       };
 
-      // AJOUT: Inclure l'ID de l'adresse de facturation si disponible
+      // Inclure l'ID de l'adresse de facturation si disponible
       if (idAdresseFact) {
         orderData.idAdresseFacturation = idAdresseFact;
         console.log(
           "Utilisation de l'adresse de facturation ID:",
           idAdresseFact
         );
-      } else {
-        console.log(
-          "Aucune adresse de facturation spécifique, utilisation de l'adresse de livraison"
-        );
       }
 
-      // Utiliser PaymentAPI s'il existe, sinon faire un fetch direct
+      // CORRECTION: Utiliser une approche différente pour éviter les problèmes d'encodage
       let result;
+
+      // Essayer d'abord avec PaymentAPI
       if (
         window.PaymentAPI &&
         typeof window.PaymentAPI.createOrder === "function"
       ) {
+        console.log("Utilisation de PaymentAPI");
         result = await window.PaymentAPI.createOrder(orderData);
       } else {
-        // Fallback: appel direct
+        // Fallback: appel fetch direct avec FormData
+        console.log("Utilisation de fetch direct");
+
+        // Utiliser FormData qui gère mieux l'encodage
+        const formData = new FormData();
+        formData.append("action", "createOrder");
+
+        // Ajouter chaque champ
+        Object.keys(orderData).forEach((key) => {
+          formData.append(key, orderData[key]);
+        });
+
         const response = await fetch("", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: new URLSearchParams(orderData).toString(),
+          body: formData, // FormData gère automatiquement l'encodage
         });
+
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
         result = await response.json();
       }
 
       if (result.success) {
         // Afficher le message de succès
         popup.innerHTML = `
-          <div class="thank-you">
-            <h2>Merci de votre commande !</h2>
-            <p>Votre commande a bien été enregistrée.</p>
-            <p><strong>Numéro de commande :</strong> ${result.idCommande}</p>
-            <button class="close-popup">Fermer</button>
-          </div>
-        `;
+        <div class="thank-you">
+          <h2>Merci de votre commande !</h2>
+          <p>Votre commande a bien été enregistrée.</p>
+          <p><strong>Numéro de commande :</strong> ${result.idCommande}</p>
+          <button class="close-popup">Retour à l'accueil</button>
+        </div>
+      `;
 
         const innerClose = popup.querySelector(
           ".close-popup"
         ) as HTMLButtonElement | null;
         innerClose?.addEventListener("click", () => {
-          window.location.reload();
+          // Rediriger vers la page d'accueil au lieu de recharger
+          window.location.href = "../../views/frontoffice/accueilConnecte.php";
         });
       } else {
         throw new Error(
@@ -235,11 +290,21 @@ export function showPopup(
         );
       }
     } catch (error) {
-      console.error("Erreur:", error);
-      alert(
-        "Erreur lors de la création de la commande: " +
-          (error instanceof Error ? error.message : String(error))
-      );
+      console.error("Erreur complète:", error);
+
+      // Message d'erreur plus précis
+      let errorMessage = "Erreur lors de la création de la commande";
+      if (error instanceof Error) {
+        if (error.message.includes("SyntaxError")) {
+          errorMessage = "Erreur de format des données. Veuillez réessayer.";
+        } else if (error.message.includes("HTTP")) {
+          errorMessage = "Erreur de communication avec le serveur.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
+      alert(errorMessage);
 
       // Réactiver le bouton
       confirmBtn.textContent = originalText;

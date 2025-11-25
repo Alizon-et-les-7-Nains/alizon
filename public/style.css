@@ -710,6 +710,9 @@ header.backoffice {
   align-items: center;
   justify-content: space-between;
 }
+header.backoffice a {
+  text-decoration: none;
+}
 header.backoffice * {
   margin: 0;
 }
@@ -2182,6 +2185,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   gap: 0;
   line-height: 1.5;
 }
+.pagePaiement .conditions .error-message-cgv {
+  color: #f14e4e;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  display: block;
+}
 .pagePaiement .conditions input[type=checkbox] {
   margin-right: 8px;
   vertical-align: middle;
@@ -2629,6 +2638,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 45px;
   font-weight: bold;
   font-style: italic;
+  max-width: 550px;
 }
 .acceuil .banniere img {
   max-width: 400px;
@@ -4416,6 +4426,10 @@ button#haut.visible:hover {
   padding: 10px;
   border-radius: 16px;
 }
+.popUpRemise .page form .boutonSup {
+  background-color: #f14e4e;
+  border: 0;
+}
 .popUpRemise .page form .error-message {
   color: red;
 }
@@ -5048,6 +5062,9 @@ dialog.reassort form input {
     gap: 12px;
   }
 }
+.pageProduit {
+  overflow-x: hidden;
+}
 .pageProduit main {
   display: flex;
   flex-direction: column;
@@ -5063,7 +5080,6 @@ dialog.reassort form input {
 .pageProduit .infoHautProduit {
   display: flex;
   flex-direction: row;
-  overflow-y: scroll;
   position: relative;
 }
 .pageProduit .rect {
@@ -5090,6 +5106,9 @@ dialog.reassort form input {
   top: -8px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+}
+.pageProduit .banniere h1 {
+  font-size: 30px;
 }
 .pageProduit .imgBanniere {
   position: absolute;
@@ -5148,6 +5167,10 @@ dialog.reassort form input {
   margin: 0.2em 0;
   font-weight: 300;
 }
+.pageProduit #prix h2 {
+  color: #f14e4e;
+  font-style: italic;
+}
 .pageProduit #prix {
   gap: 0.5em;
 }
@@ -5163,7 +5186,7 @@ dialog.reassort form input {
   padding: 0.5em 1em;
 }
 .pageProduit .resume {
-  max-height: 60px;
+  max-height: 55px;
   overflow: hidden;
 }
 .pageProduit .version {
@@ -5186,9 +5209,10 @@ dialog.reassort form input {
 }
 .pageProduit .actionsProduit {
   top: 15em;
-  right: 1em;
+  right: 3em;
   position: fixed;
   width: 24%;
+  max-width: 300px;
   z-index: 10;
   height: fit-content;
   padding: 15px;
@@ -5376,14 +5400,6 @@ dialog.reassort form input {
   color: #273469;
   font-weight: 100;
 }
-.pageProduit .sectionAvis button {
-  margin: 2em 0;
-  border: 2px solid #273469;
-  background-color: white;
-  border-radius: 32px;
-  cursor: pointer;
-  font-size: 16px;
-}
 .pageProduit .sectionAvis article {
   display: flex;
   margin-bottom: 2em;
@@ -5448,6 +5464,13 @@ dialog.reassort form input {
   width: 2px;
   height: 40px;
   background-color: #273469;
+}
+.pageProduit .btn-vote {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
 }
 .pageProduit .product-rating {
   display: flex;
@@ -6134,6 +6157,173 @@ dialog.reassort form input {
 .avis-vendeur .avi .date-avis {
   font-size: 12px;
   font-family: "Lora", sans-serif;
+}
+
+.mesAvis {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  margin: 30px;
+  font-family: "Lora", serif;
+  color: #273469;
+}
+.mesAvis h1, .mesAvis h2 {
+  font-weight: bold;
+}
+.mesAvis h1 {
+  font-size: 48;
+}
+.mesAvis h2 {
+  font-size: 20;
+}
+.mesAvis section {
+  display: flex;
+  flex-direction: column;
+}
+.mesAvis article {
+  display: flex;
+  flex-direction: row;
+  border: 2px solid #273469;
+  border-radius: 20px;
+  margin: 2em 6em;
+  padding: 20px;
+  gap: 20px;
+}
+.mesAvis .produit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  color: #000000;
+  width: auto;
+  padding: 10px;
+  border: 2px solid #273469;
+  border-radius: 20px;
+}
+.mesAvis .produit img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+.mesAvis .infos-produit {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.mesAvis .infos-produit h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+}
+.mesAvis .infos-produit p {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000000;
+}
+.mesAvis .contenu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mesAvis .note {
+  display: flex;
+  gap: 4px;
+}
+.mesAvis .note .etoile {
+  width: 20px;
+  height: 20px;
+}
+.mesAvis .note .vide {
+  opacity: 0.3;
+  width: 20px;
+  height: 20px;
+}
+.mesAvis .header-contenu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.mesAvis .header-contenu h2 {
+  margin: 0;
+}
+.mesAvis .date {
+  font-size: 14px;
+  font-style: italic;
+}
+.mesAvis .texte p {
+  margin: 0;
+}
+.mesAvis .actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+.mesAvis .actions a {
+  text-decoration: none;
+  color: #273469;
+}
+.mesAvis .actions .supprimerAvis {
+  color: #f14e4e !important;
+}
+
+.modifierAvis main {
+  margin-left: 10%;
+}
+.modifierAvis main h2 {
+  margin-top: 30px;
+  font-family: "lora";
+  color: #273469;
+  text-align: center;
+}
+.modifierAvis main p, .modifierAvis main label {
+  font-family: "lora";
+  font-size: 20px;
+  color: #273469;
+}
+.modifierAvis main form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  font-size: 16px;
+  font-weight: bold;
+}
+.modifierAvis main form input, .modifierAvis main form textarea {
+  width: 80%;
+  padding: 5px;
+  margin-right: 10%;
+  height: 50px;
+  margin-bottom: 30px;
+  color: #6e6e6e;
+  font-family: "lora";
+  font-size: 16px;
+  border: 2px solid #273469;
+  border-radius: 8px;
+}
+.modifierAvis main form textarea {
+  height: 300px;
+}
+.modifierAvis main form .star {
+  width: 65px;
+  height: 65px;
+  gap: 4px;
+}
+.modifierAvis #publishButton {
+  width: 80%;
+  padding: 5px;
+  margin-right: 10%;
+  height: 50px;
+  margin-bottom: 30px;
+  font-size: 16px;
+  background-color: #273469;
+  border-radius: 8px;
+  border: none;
+  color: #fffefa;
 }
 
 /*# sourceMappingURL=style.css.map */

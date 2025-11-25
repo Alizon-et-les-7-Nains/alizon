@@ -66,23 +66,45 @@ class PaymentAPI {
 
   static async createOrder(orderData) {
     try {
+      console.log("Données de commande:", orderData);
+
+      const formData = new FormData();
+      formData.append("action", "createOrder");
+
+      Object.keys(orderData).forEach((key) => {
+        if (key !== "action") {
+          formData.append(key, orderData[key]);
+        }
+      });
+
       const response = await fetch("", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `action=createOrder&${new URLSearchParams(orderData).toString()}`,
+        body: formData,
       });
 
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
 
-      const result = await response.json();
+      // AJOUT: Récupérer la réponse en texte d'abord pour voir ce qui est renvoyé
+      const responseText = await response.text();
+      console.log("Réponse brute du serveur:", responseText);
+
+      // Essayer de parser en JSON
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("Erreur de parsing JSON:", parseError);
+        console.error("Contenu reçu:", responseText.substring(0, 500)); // Premiers 500 caractères
+        throw new Error("Le serveur n'a pas renvoyé du JSON valide");
+      }
+
+      console.log("Résultat de la commande:", result);
       return result;
     } catch (error) {
       console.error("Erreur lors de la création de commande:", error);
-      return { success: false, error: "Erreur réseau" };
+      return { success: false, error: error.message };
     }
   }
 }

@@ -74,6 +74,7 @@ const buttonConfirm = document.getElementById('buttonConfirm');
 const errorFieldSeuil = document.getElementById('errorFieldSeuil');
 const errorFieldReassort = document.getElementById('errorFieldReassort');
 const errorFieldDate = document.getElementById('errorFieldDate');
+const buttonCancel = Array.from(document.querySelectorAll('main.backoffice-stocks .annuler'));
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);
@@ -93,6 +94,14 @@ btnSettings.forEach(btn => {
                 const innerDiv = div.firstElementChild;
                 innerDiv.style.left = innerDiv.classList.contains('right') ? '14px' : '4px';
             }
+        });
+    });
+});
+buttonCancel.forEach((btnCancel) => {
+    btnCancel.addEventListener('click', () => {
+        Array.from(document.getElementsByTagName('dialog')).forEach(dia => {
+            dia.close();
+            dia.style.display = 'none';
         });
     });
 });
@@ -362,6 +371,44 @@ define("frontoffice/paiement-validation", ["require", "exports"], function (requ
         }
         else
             clearError(cvvInput);
+        // Validation des conditions générales
+        const cgvCheckbox = document.querySelector('input[type="checkbox"][aria-label="conditions générales"]');
+        if (!cgvCheckbox || !cgvCheckbox.checked) {
+            // Trouver le conteneur de la checkbox pour afficher l'erreur
+            const conditionsSection = document.querySelector("section.conditions");
+            if (conditionsSection) {
+                // Supprimer l'ancien message d'erreur s'il existe
+                const oldError = conditionsSection.querySelector(".error-message-cgv");
+                if (oldError)
+                    oldError.remove();
+                // Créer le message d'erreur
+                const errorMsg = document.createElement("small");
+                errorMsg.className = "error-message error-message-cgv";
+                errorMsg.style.color = "#f14e4e";
+                errorMsg.style.display = "block";
+                errorMsg.style.marginTop = "8px";
+                errorMsg.textContent =
+                    "Vous devez accepter les conditions générales pour continuer.";
+                conditionsSection.appendChild(errorMsg);
+                // Ajouter une classe pour mettre en évidence
+                if (cgvCheckbox) {
+                    cgvCheckbox.style.outline = "2px solid #f14e4e";
+                }
+            }
+            ok = false;
+        }
+        else {
+            // Effacer l'erreur si les conditions sont acceptées
+            const conditionsSection = document.querySelector("section.conditions");
+            if (conditionsSection) {
+                const errorMsg = conditionsSection.querySelector(".error-message-cgv");
+                if (errorMsg)
+                    errorMsg.remove();
+            }
+            if (cgvCheckbox) {
+                cgvCheckbox.style.outline = "";
+            }
+        }
         // panier
         if (cart.length === 0) {
             if (recapEl) {
@@ -605,13 +652,25 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
     exports.showPopup = showPopup;
     // Fonction helper pour le chiffrement avec vérification renforcée
     const chiffrerAvecVignere = (texte, sens) => {
-        // Utiliser la clé depuis window ou une valeur par défaut
         const cle = window.CLE_CHIFFREMENT || "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
         if (typeof window.vignere === "function" && cle && cle.length > 0) {
             return window.vignere(texte, cle, sens);
         }
         console.warn("Fonction vignere non disponible ou clé invalide, retour du texte en clair");
         return texte;
+    };
+    // Fonction pour encoder les données de manière sécurisée
+    const encodeFormData = (data) => {
+        const formData = new URLSearchParams();
+        formData.append("action", "createOrder");
+        Object.keys(data).forEach((key) => {
+            if (key !== "action") {
+                // Encoder chaque valeur
+                const value = String(data[key]);
+                formData.append(key, value);
+            }
+        });
+        return formData.toString();
     };
     function showPopup(message, type = "info") {
         const overlay = document.createElement("div");
@@ -631,7 +690,18 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
         const nomCarte = nomCarteInput?.value.trim() || "";
         const dateCarte = carteDateInput?.value.trim() || "";
         const rawCVV = cvvInput?.value.trim() || "";
-        // CHIFFREMENT DES DONNÉES SENSIBLES - version sécurisée
+        // Vérifier que tous les champs requis sont remplis
+        if (!adresse ||
+            !codePostal ||
+            !ville ||
+            !rawNumCarte ||
+            !nomCarte ||
+            !dateCarte ||
+            !rawCVV) {
+            alert("Veuillez remplir tous les champs obligatoires");
+            return;
+        }
+        // CHIFFREMENT DES DONNÉES SENSIBLES
         const numeroCarteChiffre = chiffrerAvecVignere(rawNumCarte, 1);
         const cvvChiffre = chiffrerAvecVignere(rawCVV, 1);
         const last4 = rawNumCarte.length >= 4 ? rawNumCarte.slice(-4) : rawNumCarte;
@@ -706,9 +776,19 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                 if (!window.vignere) {
                     throw new Error("Système de sécurité non disponible");
                 }
+                // Vérifier que tous les champs requis sont remplis
+                if (!adresse ||
+                    !codePostal ||
+                    !ville ||
+                    !rawNumCarte ||
+                    !nomCarte ||
+                    !dateCarte ||
+                    !rawCVV) {
+                    throw new Error("Tous les champs sont obligatoires");
+                }
                 // Récupérer l'ID de l'adresse de facturation depuis window
                 const idAdresseFact = window.idAdresseFacturation || null;
-                // Appeler l'API pour créer la commande
+                // Préparer les données pour l'API
                 const orderData = {
                     adresseLivraison: adresse,
                     villeLivraison: ville,
@@ -719,44 +799,52 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                     dateExpiration: dateCarte,
                     codePostal: codePostal,
                 };
-                // AJOUT: Inclure l'ID de l'adresse de facturation si disponible
+                // Inclure l'ID de l'adresse de facturation si disponible
                 if (idAdresseFact) {
                     orderData.idAdresseFacturation = idAdresseFact;
                     console.log("Utilisation de l'adresse de facturation ID:", idAdresseFact);
                 }
-                else {
-                    console.log("Aucune adresse de facturation spécifique, utilisation de l'adresse de livraison");
-                }
-                // Utiliser PaymentAPI s'il existe, sinon faire un fetch direct
+                // CORRECTION: Utiliser une approche différente pour éviter les problèmes d'encodage
                 let result;
+                // Essayer d'abord avec PaymentAPI
                 if (window.PaymentAPI &&
                     typeof window.PaymentAPI.createOrder === "function") {
+                    console.log("Utilisation de PaymentAPI");
                     result = await window.PaymentAPI.createOrder(orderData);
                 }
                 else {
-                    // Fallback: appel direct
+                    // Fallback: appel fetch direct avec FormData
+                    console.log("Utilisation de fetch direct");
+                    // Utiliser FormData qui gère mieux l'encodage
+                    const formData = new FormData();
+                    formData.append("action", "createOrder");
+                    // Ajouter chaque champ
+                    Object.keys(orderData).forEach((key) => {
+                        formData.append(key, orderData[key]);
+                    });
                     const response = await fetch("", {
                         method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded",
-                        },
-                        body: new URLSearchParams(orderData).toString(),
+                        body: formData, // FormData gère automatiquement l'encodage
                     });
+                    if (!response.ok) {
+                        throw new Error(`Erreur HTTP: ${response.status}`);
+                    }
                     result = await response.json();
                 }
                 if (result.success) {
                     // Afficher le message de succès
                     popup.innerHTML = `
-          <div class="thank-you">
-            <h2>Merci de votre commande !</h2>
-            <p>Votre commande a bien été enregistrée.</p>
-            <p><strong>Numéro de commande :</strong> ${result.idCommande}</p>
-            <button class="close-popup">Fermer</button>
-          </div>
-        `;
+        <div class="thank-you">
+          <h2>Merci de votre commande !</h2>
+          <p>Votre commande a bien été enregistrée.</p>
+          <p><strong>Numéro de commande :</strong> ${result.idCommande}</p>
+          <button class="close-popup">Retour à l'accueil</button>
+        </div>
+      `;
                     const innerClose = popup.querySelector(".close-popup");
                     innerClose?.addEventListener("click", () => {
-                        window.location.reload();
+                        // Rediriger vers la page d'accueil au lieu de recharger
+                        window.location.href = "../../views/frontoffice/accueilConnecte.php";
                     });
                 }
                 else {
@@ -764,9 +852,21 @@ define("frontoffice/paiement-popup", ["require", "exports"], function (require, 
                 }
             }
             catch (error) {
-                console.error("Erreur:", error);
-                alert("Erreur lors de la création de la commande: " +
-                    (error instanceof Error ? error.message : String(error)));
+                console.error("Erreur complète:", error);
+                // Message d'erreur plus précis
+                let errorMessage = "Erreur lors de la création de la commande";
+                if (error instanceof Error) {
+                    if (error.message.includes("SyntaxError")) {
+                        errorMessage = "Erreur de format des données. Veuillez réessayer.";
+                    }
+                    else if (error.message.includes("HTTP")) {
+                        errorMessage = "Erreur de communication avec le serveur.";
+                    }
+                    else {
+                        errorMessage = error.message;
+                    }
+                }
+                alert(errorMessage);
                 // Réactiver le bouton
                 confirmBtn.textContent = originalText;
                 confirmBtn.disabled = false;
@@ -973,6 +1073,20 @@ define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement
             }
             else {
                 addrFactOverlay.style.display = "none";
+            }
+        });
+        // Gestion de la checkbox des conditions générales
+        const cgvCheckbox = document.querySelector('input[type="checkbox"][aria-label="conditions générales"]');
+        cgvCheckbox?.addEventListener("change", () => {
+            if (cgvCheckbox.checked) {
+                // Effacer le message d'erreur
+                const conditionsSection = document.querySelector("section.conditions");
+                if (conditionsSection) {
+                    const errorMsg = conditionsSection.querySelector(".error-message-cgv");
+                    if (errorMsg)
+                        errorMsg.remove();
+                }
+                cgvCheckbox.style.outline = "";
             }
         });
         // Gestion des boutons payer

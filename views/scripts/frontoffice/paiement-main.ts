@@ -260,6 +260,23 @@ if (document.body.classList.contains("pagePaiement")) {
     }
   });
 
+  // Gestion de la checkbox des conditions générales
+  const cgvCheckbox = document.querySelector(
+    'input[type="checkbox"][aria-label="conditions générales"]'
+  ) as HTMLInputElement | null;
+
+  cgvCheckbox?.addEventListener("change", () => {
+    if (cgvCheckbox.checked) {
+      // Effacer le message d'erreur
+      const conditionsSection = document.querySelector("section.conditions");
+      if (conditionsSection) {
+        const errorMsg = conditionsSection.querySelector(".error-message-cgv");
+        if (errorMsg) errorMsg.remove();
+      }
+      cgvCheckbox.style.outline = "";
+    }
+  });
+
   // Gestion des boutons payer
   payerButtons.forEach((btn) => {
     btn.addEventListener("click", (e) => {

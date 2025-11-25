@@ -2,6 +2,7 @@
 @use "../fonts" as *;
 
 .pageProduit{
+    overflow-x: hidden;
     main{
         display: flex;
         flex-direction: column;
@@ -19,7 +20,6 @@
     .infoHautProduit{
         display: flex;
         flex-direction: row;
-        overflow-y: scroll;
         position: relative;
     }
 
@@ -49,6 +49,10 @@
         top: -8px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
+    }
+
+    .banniere h1{
+        font-size: 30px;
     }
 
     .imgBanniere{
@@ -119,6 +123,11 @@
         font-weight: 300;
     }
 
+    #prix h2{
+       color: $color-red; 
+       font-style: italic;
+    }
+
     #prix{
         gap: 0.5em;
     }
@@ -137,7 +146,7 @@
     }
 
     .resume{
-        max-height: 60px;
+        max-height: 55px;
         overflow: hidden;
     }
 
@@ -165,9 +174,10 @@
 
     .actionsProduit{
         top: 15em;
-        right: 1em;
+        right: 3em;
         position: fixed;
         width: 24%;
+        max-width: 300px;
         z-index: 10;
         height: fit-content;
         padding: 15px;
@@ -393,16 +403,6 @@
         font-weight: 100;
     }
 
-    .sectionAvis button {
-        margin: 2em 0;
-        border: 2px solid $color-blue;
-        background-color: white;
-        border-radius: 32px;
-        cursor: pointer;
-        font-size: 16px;
-        
-    }
-
     .sectionAvis article{
         display: flex;
         margin-bottom: 2em;
@@ -479,6 +479,14 @@
         width: 2px;
         height: 40px;
         background-color: $color-blue;
+    }
+
+    .btn-vote{
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
     }
 
     .product-rating{
