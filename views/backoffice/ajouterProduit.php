@@ -85,6 +85,8 @@ require_once '../../controllers/auth.php';
         </form>
     </main>
 
+    <script src="../../public/script.js"> </script>
+
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const zoneUpload = document.getElementById('zoneUpload');
