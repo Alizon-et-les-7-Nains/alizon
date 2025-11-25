@@ -122,10 +122,10 @@ require_once "../../controllers/prix.php";
             $produitEnPromo = $stmt->fetch(PDO::FETCH_ASSOC);
             ?>
             
-            <h1><?php echo htmlspecialchars($produitEnPromo['nom']); ?></h1>
-            <img src="<?php echo htmlspecialchars($image); ?>" alt="Image du produit">
-
+            <h1 onclick="window.location.href='?addRecent=<?php echo $choixAleatoirePromo; ?>&id=<?php echo $choixAleatoirePromo; ?>'"><?php echo htmlspecialchars($produitEnPromo['nom']); ?></h1>
+            <img onclick="window.location.href='?addRecent=<?php echo $choixAleatoirePromo; ?>&id=<?php echo $choixAleatoirePromo; ?>'" src="<?php echo htmlspecialchars($image); ?>" alt="Image du produit">
         <?php } ?>
+
     </section>
 
     <main>
