@@ -21,16 +21,16 @@ function clearError(element) {
   if (err) err.textContent = "";
 }
 
-// ajoutPhoto.addEventListener("change", function () {
-//   const file = this.files[0];
-//   if (file) {
-//     const reader = new FileReader();
-//     reader.onload = function (e) {
-//       imageProfile.src = e.target.result;
-//     };
-//     reader.readAsDataURL(file);
-//   }
-// });
+ajoutPhoto.addEventListener("change", function () {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      imageProfile.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
 
 function validerMdp(mdp) {
   if (mdp.length < 12) {
