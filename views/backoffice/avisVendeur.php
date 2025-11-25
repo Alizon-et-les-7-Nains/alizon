@@ -8,7 +8,7 @@ $sql = file_get_contents('../../queries/backoffice/derniersAvis.sql');
 $stmt = $pdo->prepare($sql);
 
 $stmt->execute([
-    ':idVendeur' => $_SESSION['idVendeur']
+    ':idVendeur' => $_SESSION['id']
 ]);
 
 $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
