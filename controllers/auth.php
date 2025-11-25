@@ -2,8 +2,8 @@
 session_start();
 ob_start();
 
-require_once 'pdo.php';
 
+require_once 'pdo.php';
 
 
 try {
