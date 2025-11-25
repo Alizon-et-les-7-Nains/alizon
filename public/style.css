@@ -6036,12 +6036,21 @@ dialog.reassort form input {
   font-size: 24px;
   color: #e3f2fe;
   font-family: "lora";
+  border-right: 10px;
 }
 .pagePrevi .lignePrevi {
   border-top: solid 4px #f14e4e;
 }
 .pagePrevi .actionsProduit {
   margin-top: 40px;
+  margin-left: auto;
+  position: sticky;
+  top: 2em;
+  right: 1em;
+  width: 24%;
+  z-index: 10;
+  height: fit-content;
+  padding: 15px;
 }
 
 /*# sourceMappingURL=style.css.map */

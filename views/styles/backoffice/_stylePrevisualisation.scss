@@ -37,13 +37,22 @@
             font-size: 24px;
             color: $color-pastel-blue;
             font-family: 'lora';
+            border-right: 10px ;
         }
     }
     .lignePrevi{
         border-top: solid 4px $color-red ;
     }
-
+    
     .actionsProduit{
         margin-top: 40px;
+        margin-left: auto;
+        position: sticky;
+        top: 2em;
+        right: 1em;
+        width: 24%;
+        z-index: 10;
+        height: fit-content;
+        padding: 15px;
     }
 }   
