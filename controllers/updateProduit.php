@@ -29,7 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
-        move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
+        move_uploaded_file($_FILES['url']['tmp_name'], $photoPath);
+        $fileName = $_FILES['url']['name'];
 }
 else{
     $sqlUrl = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = $idProd");
