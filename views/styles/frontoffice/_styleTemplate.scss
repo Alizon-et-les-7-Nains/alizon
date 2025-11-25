@@ -152,6 +152,13 @@ body {
     flex: 0 0 auto;
   }
 
+   @media (min-width: 1300px) {
+    #burgerIconTel {
+      display: none;
+      visibility: hidden;
+    }
+   }
+
   @media (max-width: 1300px) {
     .search-wrapper input[type="search"] {
       padding: 10px 0px 10px 10px;
@@ -290,7 +297,6 @@ body {
   .footerFront .footerTel {
     display: contents;
     visibility: visible;
-    /* structure mobile */
     display: flex;
     justify-content: space-between;
   }
@@ -311,7 +317,7 @@ body {
   display: none;
   flex-direction: column;
   position: absolute;
-  bottom: 100px;
+  bottom: 110px;
   right: 30px;
   background-color: #E3F2FE;
   border: 3px solid #273469;
@@ -331,15 +337,8 @@ body {
   margin-top: 5px;
   padding: 10px;
 }
-#burgerIconTel #triangle-codeHeader {
-  display : inline-block;
-  height : 0;
-  width : 0;
-  border-right : 16px solid transparent;
-  border-bottom : 30px solid #E3F2FE;
-  border-left : 14px solid transparent;
-  position : absolute;
-  top : -22px; 
-  right: 17px; 
+
+.separation {
+  border-top: 1px solid #273469;
 }
 /* -------------------------------------------- FIN FOOTER -------------------------------------------- */

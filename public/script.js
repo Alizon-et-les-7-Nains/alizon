@@ -66,15 +66,15 @@ modalDeconnexion?.addEventListener("click", (e) => {
 document.querySelector('header.backoffice figure:nth-child(3)')?.addEventListener('click', () => {
     window.location.href = 'compteVendeur.php';
 });
-const btnSettings = Array.from(document.getElementsByClassName('settings'));
-const modalReassort = document.querySelector("dialog.reassort");
-const inputSeuil = document.getElementById('seuil');
-const inputDate = document.getElementById('dateReassort');
-const inputReassort = document.getElementById('reassort');
-const buttonConfirm = document.getElementById('buttonConfirm');
-const errorFieldSeuil = document.getElementById('errorFieldSeuil');
-const errorFieldReassort = document.getElementById('errorFieldReassort');
-const errorFieldDate = document.getElementById('errorFieldDate');
+let btnSettings = Array.from(document.getElementsByClassName('settings'));
+let modalReassort = document.querySelector("dialog.reassort");
+let inputSeuil = document.getElementById('seuil');
+let inputDate = document.getElementById('dateReassort');
+let inputReassort = document.getElementById('reassort');
+let buttonConfirm = document.getElementById('buttonConfirm');
+let errorFieldSeuil = document.getElementById('errorFieldSeuil');
+let errorFieldReassort = document.getElementById('errorFieldReassort');
+let errorFieldDate = document.getElementById('errorFieldDate');
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);
@@ -97,23 +97,57 @@ btnSettings.forEach(btn => {
         });
     });
 });
-let idProduit;
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        sessionStorage.setItem('idProduitSelec', btn.id);
-        modalReassort.showModal();
-        modalReassort.style.display = 'flex';
+        fetch('getProduct.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idProduit: btn.id })
+        })
+            .then(r => r.json())
+            .then(data => {
+            const dialog = document.createElement('dialog');
+            dialog.className = 'reassort';
+            dialog.innerHTML = `
+                <h1>Paramètres de réassort</h1>
+                <form action="" method="post">
+                    <input type="number" value="${data.seuilAlerte || ''}" name="seuil" id="seuil">
+                    <span id="errorFieldSeuil" style="display:none;">Valeur invalide</span>
+                    <input type="date" value="${data.dateReassort || ''}" name="dateReassort" id="dateReassort">
+                    <span id="errorFieldDate" style="display:none;">Date invalide</span>
+                    <input type="number" name="reassort" id="reassort">
+                    <span id="errorFieldReassort" style="display:none;">Valeur invalide</span>
+                    <ul>
+                        <li><input type="button" value="Annuler" id="annuler"></li>
+                        <li><input type="submit" value="Valider" id="buttonConfirm"></li>
+                    </ul>
+                </form>
+            `;
+            document.body.appendChild(dialog);
+            inputSeuil = dialog.querySelector('#seuil');
+            inputDate = dialog.querySelector('#dateReassort');
+            inputReassort = dialog.querySelector('#reassort');
+            buttonConfirm = dialog.querySelector('#buttonConfirm');
+            const annuler = dialog.querySelector('#annuler');
+            dialog.addEventListener("click", (e) => {
+                if (e.target === modalReassort) {
+                    dialog.close();
+                    dialog.style.display = 'none';
+                }
+            });
+            annuler.addEventListener('click', () => {
+                dialog.close();
+                dialog.remove();
+            });
+            dialog.addEventListener('click', (e) => {
+                if (e.target === dialog) {
+                    dialog.close();
+                    dialog.remove();
+                }
+            });
+            dialog.showModal();
+        });
     });
-});
-modalReassort?.addEventListener("click", (e) => {
-    if (e.target === modalReassort) {
-        modalReassort.close();
-        modalReassort.style.display = 'none';
-    }
-});
-document.querySelector('modal.reassort input#annuler')?.addEventListener('click', () => {
-    modalReassort.close();
-    modalReassort.style.display = 'none';
 });
 function checkInt(value) {
     if (!value)
