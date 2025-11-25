@@ -69,10 +69,12 @@ document.querySelector('header.backoffice figure:nth-child(3)')?.addEventListene
 const btnSettings = Array.from(document.getElementsByClassName('settings'));
 const modalReassort = document.querySelector("dialog.reassort");
 const inputSeuil = document.getElementById('seuil');
+const inputDate = document.getElementById('dateReassort');
 const inputReassort = document.getElementById('reassort');
 const buttonConfirm = document.getElementById('buttonConfirm');
 const errorFieldSeuil = document.getElementById('errorFieldSeuil');
 const errorFieldReassort = document.getElementById('errorFieldReassort');
+const errorFieldDate = document.getElementById('errorFieldDate');
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);
@@ -121,23 +123,52 @@ function checkInt(value) {
     }
     return valid;
 }
-inputSeuil.addEventListener('input', () => {
-    if (!checkInt(inputSeuil.value)) {
-        inputSeuil.style.borderColor = '#f14e4e';
-        errorFieldSeuil.style.display = 'block';
+function checkDate(date) {
+    let valid = true;
+    if (date != null) {
+        if (date.getTime() < Date.now()) {
+            valid = false;
+        }
     }
     else {
-        inputSeuil.style.borderColor = '#273469';
+        valid = false;
+    }
+    return valid;
+}
+inputSeuil.addEventListener('input', () => {
+    if (!checkInt(inputSeuil.value)) {
+        inputSeuil.style.cssText = 'border-color: #f14e4e !important';
+        errorFieldSeuil.style.display = 'block';
+        buttonConfirm.disabled = true;
+    }
+    else {
+        inputSeuil.style.cssText = 'border-color: #273469 !important';
         errorFieldSeuil.style.display = 'none';
+        buttonConfirm.disabled = false;
+    }
+});
+inputDate.addEventListener('input', () => {
+    if (!checkDate(inputDate.valueAsDate)) {
+        inputDate.style.cssText = 'border-color: #273469 !important';
+        errorFieldDate.style.display = 'block';
+        buttonConfirm.disabled = true;
+    }
+    else {
+        inputDate.style.cssText = 'border-color: #f14e4e !important';
+        errorFieldDate.style.display = 'none';
+        buttonConfirm.disabled = false;
     }
 });
 inputReassort.addEventListener('input', () => {
     if (!checkInt(inputReassort.value)) {
-        inputReassort.style.borderColor = '#f14e4e';
+        inputReassort.style.cssText = 'border-color: #f14e4e !important';
+        errorFieldReassort.style.display = 'block';
+        buttonConfirm.disabled = true;
     }
     else {
-        inputReassort.style.borderColor = '#273469';
+        inputReassort.style.cssText = 'border-color: #273469 !important';
         errorFieldReassort.style.display = 'none';
+        buttonConfirm.disabled = false;
     }
 });
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {

@@ -265,6 +265,7 @@
             <input type="number" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
             <label for="Seuil d'alerte" id="errorFieldSeuil">Doit être un entier</label>
             <input type="date" placeholder="Date du réassort" value="2025-11-05" name="Date du réassort" id="dateReassort">
+            <label for="Date du réassort" id="errorFieldDate">Ne doit pas être passée</label>
             <input type="number" placeholder="Réassortir" name="Reassortir" id="reassort">
             <label for="Reassortir" id="errorFieldReassort">Doit être un entier</label>
             <ul>
