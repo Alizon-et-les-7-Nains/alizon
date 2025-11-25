@@ -4398,6 +4398,9 @@ main.backoffice-stocks section article {
 }
 main.backoffice-stocks section img:not(figure img) {
   height: 200px;
+  min-width: 150px;
+  max-width: 250px;
+  object-fit: contain;
   margin-top: 0.5em;
   margin-left: 0.5em;
   margin-right: 0.5em;
@@ -5056,7 +5059,7 @@ dialog.reassort form input {
 .pageProduit .banniere h1 {
   position: absolute;
   top: 25px;
-  left: 10px;
+  left: 13px;
   color: #fffefa;
   z-index: 10000;
 }

@@ -21,17 +21,6 @@ function clearError(element) {
   if (err) err.textContent = "";
 }
 
-ajoutPhoto.addEventListener("change", function () {
-  const file = this.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      imageProfile.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
 function validerMdp(mdp) {
   if (mdp.length < 12) {
     return false;
@@ -343,6 +332,18 @@ function modifierProfil(event) {
 bnModifier[0].addEventListener("click", modifierProfil);
 
 const valeursInitiales = Array.from(document.querySelectorAll("section p"));
+let imageProfileOriginalSrc = imageProfile ? imageProfile.src : "";
+
+ajoutPhoto.addEventListener("change", function () {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      imageProfile.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
 
 function boutonAnnuler() {
   const champs = document.querySelectorAll("section input");
@@ -360,8 +361,20 @@ function boutonAnnuler() {
     currentParent.replaceChild(p, inputs[i]);
   }
 
-  if (document.getElementById("photoProfil")) {
-    document.getElementById("photoProfil").remove();
+  // Restaurer la preview de l'image à l'original
+  if (imageProfile && typeof imageProfileOriginalSrc !== "undefined") {
+    imageProfile.src = imageProfileOriginalSrc;
+  }
+
+  // Si l'input file existe, réinitialiser sa valeur puis le supprimer
+  const photoInput = document.getElementById("photoProfil");
+  if (photoInput) {
+    try {
+      photoInput.value = "";
+    } catch (e) {
+      // certains navigateurs bloquent l'affectation de value pour security, on ignore
+    }
+    photoInput.remove();
   }
 
   enModif = false;
