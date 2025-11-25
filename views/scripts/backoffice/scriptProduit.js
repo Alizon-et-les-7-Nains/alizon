@@ -154,6 +154,10 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg){
         </main>`;
     document.body.appendChild(overlay);
 
+    const bouton = overlay.querySelector("button");
+    bouton.disabled = true;
+    bouton.style.cursor = "default";
+
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     croixFermer.addEventListener("click", fermerPopUpRemise);
 
