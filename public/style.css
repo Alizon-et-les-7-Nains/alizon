@@ -1461,6 +1461,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: bold;
 }
 
+.produitBackOffice a {
+  text-decoration: none;
+  color: #fffefa;
+}
 .produitBackOffice p {
   margin: 0;
   font-size: 12px;
@@ -5045,8 +5049,8 @@ dialog.reassort form input {
 }
 .pageProduit .banniere h1 {
   position: absolute;
-  top: 28px;
-  left: 25px;
+  top: 25px;
+  left: 10px;
   color: #fffefa;
   z-index: 10000;
 }
