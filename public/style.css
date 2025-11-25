@@ -5871,13 +5871,16 @@ dialog.reassort form input {
   border-collapse: separate;
   width: 100%;
   color: #273469;
+  background-color: #e4d9ff;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  padding: 20px 0 25px 0;
   font-size: 18px;
   font-family: "Lora", serif;
 }
 .avis-vendeur .avi .col-gauche {
   width: 150px;
-  height: 300px;
-  padding-top: 0px;
+  padding: 0px;
   text-align: center;
 }
 .avis-vendeur .avi .col-gauche .profil-client {
@@ -5996,36 +5999,48 @@ dialog.reassort form input {
   opacity: 0.9;
 }
 
-.pageProduit .previsualisation {
+.pagePrevi .previsualisation {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 10px 0;
 }
-.pageProduit .textePrevi {
+.pagePrevi .textePrevi {
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
 }
-.pageProduit .textePrevi h1 {
-  color: red;
+.pagePrevi .textePrevi h1 {
+  color: #f14e4e;
   font-size: 24px;
+  margin: 0;
 }
-.pageProduit .boutonRetour {
+.pagePrevi .boutonRetour {
   display: flex;
+  margin-right: 10px;
   justify-content: center;
   padding: 10px;
   background-color: #273469;
   border-radius: 16px;
   width: 200px;
+  cursor: pointer;
 }
-.pageProduit .boutonRetour button {
+.pagePrevi .boutonRetour a {
+  text-decoration: none;
+}
+.pagePrevi .boutonRetour button {
   background-color: transparent;
   text-decoration: none;
   border: 0;
   font-size: 24px;
-  color: #fffefa;
+  color: #e3f2fe;
+  font-family: "lora";
 }
-.pageProduit .lignePrevi {
-  border-top: solid 4px red;
+.pagePrevi .lignePrevi {
+  border-top: solid 4px #f14e4e;
+}
+.pagePrevi .actionsProduit {
+  margin-top: 40px;
 }
 
 /*# sourceMappingURL=style.css.map */

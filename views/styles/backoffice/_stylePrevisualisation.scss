@@ -1,38 +1,49 @@
 @use '../fonts';
 @use '../colors' as *;
 
-.pageProduit{
-
-
+.pagePrevi{
     .previsualisation{
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin: 10px 0;
     }
     .textePrevi{
+        margin-left: 10px;
         display: flex;
         flex-direction: column;
         h1 {
-            color: red;
+            color: $color-red;
             font-size: 24px;
+            margin: 0;
         }
     }
     .boutonRetour{
         display: flex;
+        margin-right: 10px;
         justify-content: center;
         padding: 10px;
         background-color: $color-blue;  
         border-radius: 16px;
         width: 200px;
+        cursor: pointer;
+        a{
+            text-decoration: none;
+        }
         button{
             background-color: transparent;
             text-decoration: none;
             border:0;
             font-size: 24px;
-            color: $color-white;
+            color: $color-pastel-blue;
+            font-family: 'lora';
         }
     }
     .lignePrevi{
-        border-top: solid 4px red ;
+        border-top: solid 4px $color-red ;
     }
-}
+
+    .actionsProduit{
+        margin-top: 40px;
+    }
+}   
