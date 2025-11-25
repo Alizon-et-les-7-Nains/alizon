@@ -6790,7 +6790,7 @@ dialog.reassort form input {
     flex-direction: column;
     border: 2px solid #273469;
     border-radius: 20px;
-    margin: 2em 6em;
+    margin: 1em 4em;
     padding: 30px;
     gap: 20px;
   }

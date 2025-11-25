@@ -265,7 +265,7 @@
 }
 }
 
-@media(max-width:600px){
+@media( max-width:600px){
 .mesAvis{
         display: flex;
         flex-direction: column;
@@ -296,7 +296,7 @@
         flex-direction: column;
         border: 2px solid $color-blue;
         border-radius: 20px;
-        margin: 2em 6em;
+        margin: 1em 4em;
         padding: 30px;
         gap: 20px;
     }
