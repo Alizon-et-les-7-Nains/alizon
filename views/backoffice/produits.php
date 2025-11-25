@@ -175,6 +175,12 @@
 
                         <div class="prixEtPrixAuKg">
                             <p class="prix"><?php echo htmlspecialchars($produitHorsVente[$i]['prix']); ?>€</p>
+                            <?php 
+                                $prix = $produitHorsVente[$i]['prix'];
+                                $poids = $produitHorsVente[$i]['poids'];
+                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = round($prixAuKg,2) ?>
+                            <p class = "prixAuKg"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</p>
                         </div>
 
                         <div class="bouton">
