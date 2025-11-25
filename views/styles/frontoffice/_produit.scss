@@ -2,15 +2,7 @@
 @use "../fonts" as *;
 
 .pageProduit{
-    overflow-x: hidden;
-    width: 100%;
-    box-sizing: border-box;
 
-    *, *::before, *::after {
-        box-sizing: border-box; // AJOUTEZ CECI
-    }
-
-    
     main{
         display: flex;
         flex-direction: column;
@@ -515,6 +507,7 @@
         font-size: 20px;
         color: green;
         font-weight: bold;
+        width: 60%;
     }
 
     .stockIndisponible{
@@ -523,6 +516,7 @@
         font-size: 20px;
         color: red;
         font-weight: bold;
+        width: 60%;
     }
 
     .review-count{

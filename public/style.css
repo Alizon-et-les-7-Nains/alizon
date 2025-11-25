@@ -5062,14 +5062,6 @@ dialog.reassort form input {
     gap: 12px;
   }
 }
-.pageProduit {
-  overflow-x: hidden;
-  width: 100%;
-  box-sizing: border-box;
-}
-.pageProduit *, .pageProduit *::before, .pageProduit *::after {
-  box-sizing: border-box;
-}
 .pageProduit main {
   display: flex;
   flex-direction: column;
@@ -5493,6 +5485,7 @@ dialog.reassort form input {
   font-size: 20px;
   color: green;
   font-weight: bold;
+  width: 60%;
 }
 .pageProduit .stockIndisponible {
   position: relative;
@@ -5500,6 +5493,7 @@ dialog.reassort form input {
   font-size: 20px;
   color: red;
   font-weight: bold;
+  width: 60%;
 }
 .pageProduit .review-count {
   text-decoration: underline;
