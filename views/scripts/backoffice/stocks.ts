@@ -58,12 +58,10 @@ document.querySelector('modal.reassort input#annuler')?.addEventListener('click'
 
 
 function checkInt(value: string): boolean {
-    let valid: boolean = true;
+    if (!value) return true;
+
     let intValue = parseInt(value);
-    if (!intValue || intValue < 0) {
-        valid = false;
-    }
-    return valid;
+    return !isNaN(intValue) && intValue >= 0;
 }
 
 function checkDate(date: Date | null): boolean {
@@ -73,41 +71,46 @@ function checkDate(date: Date | null): boolean {
             valid = false;
         }
     } else {
-        valid = false;
+        valid = true;
     }
     return valid;
+}
+
+function allValid(): boolean {
+    return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);
 }
 
 inputSeuil.addEventListener('input', () => {
     if (!checkInt(inputSeuil.value)) {
         inputSeuil.style.cssText = 'border-color: #f14e4e !important';
         errorFieldSeuil.style.display = 'block';
-        buttonConfirm.disabled = true;
     } else {
         inputSeuil.style.cssText = 'border-color: #273469 !important';
         errorFieldSeuil.style.display = 'none';
-        buttonConfirm.disabled = false;
     }
+
+    buttonConfirm.disabled = !allValid();
 })
 inputDate.addEventListener('input', () => {
     if (!checkDate(inputDate.valueAsDate)) {
         inputDate.style.cssText = 'border-color: #f14e4e !important';
         errorFieldDate.style.display = 'block';
-        buttonConfirm.disabled = true;
+        
     } else {
         inputDate.style.cssText = 'border-color: #273469 !important';
         errorFieldDate.style.display = 'none';
-        buttonConfirm.disabled = false;
     }
+
+    buttonConfirm.disabled = !allValid();
 })
 inputReassort.addEventListener('input', () => {
     if (!checkInt(inputReassort.value)) {
         inputReassort.style.cssText = 'border-color: #f14e4e !important';
         errorFieldReassort.style.display = 'block';
-        buttonConfirm.disabled = true;
     } else {
         inputReassort.style.cssText = 'border-color: #273469 !important';
         errorFieldReassort.style.display = 'none';
-        buttonConfirm.disabled = false;
     }
+
+    buttonConfirm.disabled = !allValid();
 })

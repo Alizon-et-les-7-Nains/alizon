@@ -207,20 +207,13 @@ $promotion = calculerPromotion($produit);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- sass --watch views/styles/main.scss:public/style.css -->
-    <!-- ssh sae@10.253.5.104
-    su -
-    grognasseEtCompagnie
-    cd /docker/data/web/html
-    git pull -->
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
-<body class="pageProduit">
+<body class="pagePrevi">
 <header>
 <?php if (isset($_SESSION['user_id'])) {
     include '../../views/frontoffice/partials/headerConnecte.php';
@@ -228,8 +221,21 @@ $promotion = calculerPromotion($produit);
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
 </header>
-<main>
-<main>
+        <div class="previsualisation">
+            <div class="textePrevi">
+                <h1>Ceci est une prévisualistaion de votre produit.</h1>
+                <h1>Pour quitter la prévisualistaion, cliquez sur retour</h1>
+            </div>
+            <a href="produits.php">
+                <div class="boutonRetour">
+                    <button>Retour</button>
+                    <img src="../../public/images/retourPrevi.svg" alt="">
+                </div>
+            </a>
+        </div>
+
+        <div class="lignePrevi" ></div>
+<main class="pageProduit">
 <?php
 // Afficher les messages de confirmation
 if (isset($_SESSION['message_panier'])) {

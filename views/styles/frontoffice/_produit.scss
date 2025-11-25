@@ -45,24 +45,40 @@
 
     .banniere{
         position: absolute;
-        top: -0px;
+        top: -8px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
     }
 
-    .banniere img{
+    .imgBanniere{
         position: absolute;
         height: 140px;
         width: auto;
-        z-index: 2;
+        z-index: 1;
     }
 
-    .banniere h2{
+    .banniere h1{
         position: absolute;
-        top: 50px;
+        top: 28px;
         left: 25px;
         color: $color-white;
         z-index: 10000;
+    }
+
+    .poly1{
+        position: absolute;
+        top: 35px;
+        left: 10px;
+        width: auto;
+        z-index: 100;
+    }
+
+    .poly2{
+        position: absolute;
+        top: 90px;
+        left: 10px;
+        width: auto;
+        z-index: 1000000;
     }
 
     #imageBouteille{

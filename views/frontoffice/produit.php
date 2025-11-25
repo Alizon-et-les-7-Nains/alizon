@@ -8,9 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     
     if (isset($_SESSION['user_id'])) {
         $idClient = $_SESSION['user_id'];
-        
-        // Appeler la fonction pour mettre à jour la quantité
-        $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+                $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
     }
     if ($success) {
         $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
@@ -57,8 +55,6 @@ if (!$produit) {
     echo "<p>Produit introuvable.</p>";
     exit;
 }
-
-// Récupérer les images
 $sqlImages = "SELECT * 
               FROM _imageDeProduit 
               WHERE idProduit = $productId";
@@ -75,22 +71,17 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         return false;
     }
     
-    try {
-        // Récupérer le panier actuel
-        $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    try {        $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
         $stmtPanier->execute([$idClient]);
         $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
         
-        if (!$panier) {
-            // Créer un nouveau panier si nécessaire
-            $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+        if (!$panier) {            $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
             $stmtCreate->execute([$idClient]);
             $idPanier = $pdo->lastInsertId();
         } else {
             $idPanier = $panier['idPanier'];
         }
         
-        // Vérifier si le produit existe déjà dans le panier
         $sql = "SELECT quantiteProduit FROM _produitAuPanier 
                 WHERE idProduit = ? AND idPanier = ?";
         $stmt = $pdo->prepare($sql);
@@ -98,7 +89,6 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         $current = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($current) {
-            // Produit existe : mettre à jour la quantité
             $newQty = intval($current['quantiteProduit']) + $delta;
             
             $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
@@ -106,7 +96,6 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
             $stmt = $pdo->prepare($sql);
             return $stmt->execute([$newQty, $idProduit, $idPanier]);
         } else {
-            // Produit n'existe pas : l'ajouter
             $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
             $stmt = $pdo->prepare($sql);
             return $stmt->execute([$idProduit, $idPanier, $delta]);
@@ -124,14 +113,12 @@ $sqlAvis = "SELECT a.*
 $resultAvis = $pdo->query($sqlAvis);
 $lesAvis = $resultAvis->fetchAll(PDO::FETCH_ASSOC);
 
-// Calcul de la note moyenne
 $sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlNoteMoyenne);
 $stmt->execute([$productId]);
 $resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
 $note = $resultNote['moyenne_note'] ?? 0;
 
-// Calcul du nombre d'avis
 $sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlNbAvis);
 $stmt->execute([$productId]);
@@ -223,21 +210,21 @@ $promotion = calculerPromotion($produit);
 } ?>
 </header>
 <main>
-<main>
 <?php
-// Afficher les messages de confirmation
 if (isset($_SESSION['message_panier'])) {
     echo '<div class="message-panier" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">';
     echo htmlspecialchars($_SESSION['message_panier']);
     echo '</div>';
-    unset($_SESSION['message_panier']); // Supprimer le message après affichage
+    unset($_SESSION['message_panier']);
 }
 ?>
 <section class="infoHautProduit">
 <article class="rectangleProduit">
     <div class="banniere">
-        <h2><?php echo htmlspecialchars($promotion['taux_remise']); ?></h2>
-        <img src="../../public/images/laBanniere.png" alt="">
+        <h1><?php echo htmlspecialchars($promotion['taux_remise']); ?>%</h1>
+        <img class="poly1" src="../../public/images/poly1.svg" alt="">
+        <img class="imgBanniere" src="../../public/images/laBanniere.png" alt="">
+        <img class="poly2" src="../../public/images/poly2.svg" alt="">
     </div>
     <img src="../../public/images/flecheGauche.svg" alt="Previous" class="carousel-arrow prev-arrow">
     <div class="carousel-container">
@@ -374,10 +361,6 @@ if (isset($_SESSION['message_panier'])) {
 <hr>
 <section class="sectionAvis">
     <h2>Ce qu'en disent nos clients</h2>
-    <?php
-    // $note = $produit['note']; // Exemple de note moyenne A CHANGER
-    // $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
-    ?>
     <div class="product-rating">
         <div class="horizontal">
             <div class="star-rating">
@@ -387,10 +370,6 @@ if (isset($_SESSION['message_panier'])) {
         </div>
         <span class="review-count"><?php echo $nombreAvis; ?> évaluations</span>
     </div>
-    <?php 
-    // $note = $produit['note'];
-    // echo htmlspecialchars($note);
-    ?>
     <?php if (isset($_SESSION['user_id'])) {
     echo 
     '<a href="ecrireCommentaire.php?id=' . $productId . '" class="boutonCommentaire">

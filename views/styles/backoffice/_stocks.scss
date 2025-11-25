@@ -293,11 +293,11 @@ dialog.reassort {
                     cursor: pointer;
                 }
             }
-            li:last-child input {
+            li:last-child input:not(:disabled) {
                 background-color: $color-blue;
                 color: $color-white;
                 
-                &:hover {
+                &:hover:not(:disabled) {
                     background-color: $color-pastel-blue;
                     color: $color-blue;
                     cursor: pointer;
@@ -314,6 +314,17 @@ dialog.reassort {
         input {
             &::placeholder {
                 font-weight: normal;
+            }
+            &:disabled {
+                background-color: $color-dark-gray !important;
+                color: $color-blue !important;
+                cursor: not-allowed !important;
+
+                &:hover {
+                    background-color: $color-dark-gray !important;
+                    color: $color-blue !important;
+                    cursor: not-allowed !important;
+                }
             }
             color: $color-blue;
             font-weight: bold;

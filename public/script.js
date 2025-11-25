@@ -116,12 +116,10 @@ document.querySelector('modal.reassort input#annuler')?.addEventListener('click'
     modalReassort.style.display = 'none';
 });
 function checkInt(value) {
-    let valid = true;
+    if (!value)
+        return true;
     let intValue = parseInt(value);
-    if (!intValue || intValue < 0) {
-        valid = false;
-    }
-    return valid;
+    return !isNaN(intValue) && intValue >= 0;
 }
 function checkDate(date) {
     let valid = true;
@@ -131,45 +129,45 @@ function checkDate(date) {
         }
     }
     else {
-        valid = false;
+        valid = true;
     }
     return valid;
+}
+function allValid() {
+    return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);
 }
 inputSeuil.addEventListener('input', () => {
     if (!checkInt(inputSeuil.value)) {
         inputSeuil.style.cssText = 'border-color: #f14e4e !important';
         errorFieldSeuil.style.display = 'block';
-        buttonConfirm.disabled = true;
     }
     else {
         inputSeuil.style.cssText = 'border-color: #273469 !important';
         errorFieldSeuil.style.display = 'none';
-        buttonConfirm.disabled = false;
     }
+    buttonConfirm.disabled = !allValid();
 });
 inputDate.addEventListener('input', () => {
     if (!checkDate(inputDate.valueAsDate)) {
         inputDate.style.cssText = 'border-color: #f14e4e !important';
         errorFieldDate.style.display = 'block';
-        buttonConfirm.disabled = true;
     }
     else {
         inputDate.style.cssText = 'border-color: #273469 !important';
         errorFieldDate.style.display = 'none';
-        buttonConfirm.disabled = false;
     }
+    buttonConfirm.disabled = !allValid();
 });
 inputReassort.addEventListener('input', () => {
     if (!checkInt(inputReassort.value)) {
         inputReassort.style.cssText = 'border-color: #f14e4e !important';
         errorFieldReassort.style.display = 'block';
-        buttonConfirm.disabled = true;
     }
     else {
         inputReassort.style.cssText = 'border-color: #273469 !important';
         errorFieldReassort.style.display = 'none';
-        buttonConfirm.disabled = false;
     }
+    buttonConfirm.disabled = !allValid();
 });
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";

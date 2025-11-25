@@ -4608,11 +4608,11 @@ dialog.reassort form ul li:first-child input:hover {
   color: #273469;
   cursor: pointer;
 }
-dialog.reassort form ul li:last-child input {
+dialog.reassort form ul li:last-child input:not(:disabled) {
   background-color: #273469;
   color: #fffefa;
 }
-dialog.reassort form ul li:last-child input:hover {
+dialog.reassort form ul li:last-child input:not(:disabled):hover:not(:disabled) {
   background-color: #e3f2fe;
   color: #273469;
   cursor: pointer;
@@ -4624,6 +4624,16 @@ dialog.reassort form label {
 }
 dialog.reassort form input::placeholder {
   font-weight: normal;
+}
+dialog.reassort form input:disabled {
+  background-color: #6e6e6e !important;
+  color: #273469 !important;
+  cursor: not-allowed !important;
+}
+dialog.reassort form input:disabled:hover {
+  background-color: #6e6e6e !important;
+  color: #273469 !important;
+  cursor: not-allowed !important;
 }
 dialog.reassort form input {
   color: #273469;
@@ -5023,22 +5033,36 @@ dialog.reassort form input {
 }
 .pageProduit .banniere {
   position: absolute;
-  top: 0px;
+  top: -8px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
-.pageProduit .banniere img {
+.pageProduit .imgBanniere {
   position: absolute;
   height: 140px;
   width: auto;
-  z-index: 2;
+  z-index: 1;
 }
-.pageProduit .banniere h2 {
+.pageProduit .banniere h1 {
   position: absolute;
-  top: 50px;
+  top: 28px;
   left: 25px;
   color: #fffefa;
   z-index: 10000;
+}
+.pageProduit .poly1 {
+  position: absolute;
+  top: 35px;
+  left: 10px;
+  width: auto;
+  z-index: 100;
+}
+.pageProduit .poly2 {
+  position: absolute;
+  top: 90px;
+  left: 10px;
+  width: auto;
+  z-index: 1000000;
 }
 .pageProduit #imageBouteille {
   width: 220px;
@@ -5837,38 +5861,6 @@ dialog.reassort form input {
   line-height: 1.4;
 }
 
-.avis-vendeur .avi {
-  border-collapse: separate;
-  width: 100%;
-  color: #273469;
-  font-size: 18px;
-  font-family: "Lora", serif;
-}
-.avis-vendeur .avi .col-gauche {
-  width: 150px;
-  height: 300px;
-  vertical-align: top;
-  padding-top: 10px;
-  text-align: center;
-}
-.avis-vendeur .avi .etoiles {
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 0;
-  margin-right: 20px;
-  display: flex;
-}
-.avis-vendeur .avi .ligne {
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  padding: 0;
-}
-.avis-vendeur .avi .date-avis {
-  font-size: 12px;
-  font-family: "Lora", sans-serif;
-}
-
 .overlayPopUpErreur {
   position: fixed;
   top: 0;
@@ -5951,17 +5943,117 @@ dialog.reassort form input {
   opacity: 0.9;
 }
 
-.backoffice .previsualisation {
+.pagePrevi .previsualisation {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
 }
-.backoffice .textePrevi {
+.pagePrevi .textePrevi {
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
 }
-.backoffice .boutonRetour {
+.pagePrevi .textePrevi h1 {
+  color: #f14e4e;
+  font-size: 24px;
+  margin: 0;
+}
+.pagePrevi .boutonRetour {
   display: flex;
+  margin-right: 10px;
+  justify-content: center;
   padding: 10px;
   background-color: #273469;
+  border-radius: 24px;
+  width: 200px;
+  cursor: pointer;
+}
+.pagePrevi .boutonRetour a {
+  text-decoration: none;
+  cursor: pointer;
+}
+.pagePrevi .boutonRetour button {
+  background-color: transparent;
+  text-decoration: none;
+  border: 0;
+  font-size: 24px;
+  color: #e3f2fe;
+  font-family: "lora";
+  border-right: 10px;
+  cursor: pointer;
+}
+.pagePrevi .lignePrevi {
+  border-top: solid 4px #f14e4e;
+}
+.pagePrevi .actionsProduit {
+  margin-top: 40px;
+  margin-left: auto;
+  position: sticky;
+  top: 2em;
+  right: 1em;
+  width: 24%;
+  z-index: 10;
+  height: fit-content;
+  padding: 15px;
+}
+
+.avis-vendeur h1 {
+  font-size: 40px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+  color: #273469;
+}
+.avis-vendeur .avi {
+  border-collapse: separate;
+  width: 100%;
+  color: #273469;
+  background-color: #e4d9ff;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  padding: 20px 0 25px 0;
+  font-size: 18px;
+  font-family: "Lora", serif;
+}
+.avis-vendeur .avi .col-gauche {
+  width: 150px;
+  padding: 0px;
+  text-align: center;
+}
+.avis-vendeur .avi .col-gauche .profil-client {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+.avis-vendeur .avi .col-gauche .profil-client img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+.avis-vendeur .avi .col-gauche .profil-client figcaption {
+  margin-top: 0;
+}
+.avis-vendeur .avi .etoiles {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 20px;
+  color: #FFD000;
+  gap: 5px;
+  display: flex;
+}
+.avis-vendeur .avi .ligne {
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+.avis-vendeur .avi .date-avis {
+  font-size: 12px;
+  font-family: "Lora", sans-serif;
 }
 
 /*# sourceMappingURL=style.css.map */
