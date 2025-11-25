@@ -109,7 +109,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <a href="previsualiser.php"><button>Prévisualiser</button></a>
+                                        <a href=<?php echo "previsualiser.php?". $idProduit?>><button>Prévisualiser</button></a> 
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
