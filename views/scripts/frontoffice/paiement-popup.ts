@@ -194,6 +194,19 @@ export function showPopup(
         throw new Error("Système de sécurité non disponible");
       }
 
+      // Vérifier que tous les champs requis sont remplis
+      if (
+        !adresse ||
+        !codePostal ||
+        !ville ||
+        !rawNumCarte ||
+        !nomCarte ||
+        !dateCarte ||
+        !rawCVV
+      ) {
+        throw new Error("Tous les champs sont obligatoires");
+      }
+
       // Récupérer l'ID de l'adresse de facturation depuis window
       const idAdresseFact = window.idAdresseFacturation || null;
 
@@ -256,13 +269,13 @@ export function showPopup(
       if (result.success) {
         // Afficher le message de succès
         popup.innerHTML = `
-          <div class="thank-you">
-            <h2>Merci de votre commande !</h2>
-            <p>Votre commande a bien été enregistrée.</p>
-            <p><strong>Numéro de commande :</strong> ${result.idCommande}</p>
-            <button class="close-popup">Retour à l'accueil</button>
-          </div>
-        `;
+        <div class="thank-you">
+          <h2>Merci de votre commande !</h2>
+          <p>Votre commande a bien été enregistrée.</p>
+          <p><strong>Numéro de commande :</strong> ${result.idCommande}</p>
+          <button class="close-popup">Retour à l'accueil</button>
+        </div>
+      `;
 
         const innerClose = popup.querySelector(
           ".close-popup"
