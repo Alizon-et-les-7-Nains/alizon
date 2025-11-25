@@ -5,8 +5,8 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
 
-    if(isset($_POST['id']) && isset($_POST['annulationProduit'])) {
-        $idProd = intval($_POST['id']); 
+    if(isset($_GET['annulationProduit'])) {
+        $idProd = intval($_GET['annulationProduit']); 
 
         try {
             $stmt = $pdo->prepare("DELETE FROM _promotion WHERE idProduit =:idProd");
