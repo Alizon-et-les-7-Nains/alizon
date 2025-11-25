@@ -182,7 +182,7 @@ function calculerPromotion($produit) {
         $promotion['date_fin_promotion'] = $produit['finRemise'];
     }
     
-    elseif (!empty($produit['idPromotion']) && 
+    if (!empty($produit['idPromotion']) && 
             $produit['debutPromotion'] <= date('Y-m-d') && 
             $produit['finPromotion'] >= date('Y-m-d')) {
         
