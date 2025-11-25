@@ -43,6 +43,13 @@
         position: relative;
     }
 
+    .banniere{
+        position: absolute;
+        top: -40px;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+    }
+
     #imageBouteille{
         width: 220px;
         height: 330px;
@@ -125,6 +132,13 @@
     .actionsProduit h2{
         margin: 0 0;
         padding: 0 0;
+    }
+
+    .actionsProduit .ligneActions{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
     }
 
     .underline{

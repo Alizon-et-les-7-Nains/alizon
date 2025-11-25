@@ -1,7 +1,10 @@
 const btnSettings: Element[] = Array.from(document.getElementsByClassName('settings'));
 const modalReassort: HTMLDialogElement | null = document.querySelector("dialog.reassort") as HTMLDialogElement;
-let inputSeuil: HTMLInputElement = document.getElementById('seuil') as HTMLInputElement;
-let inputReassort: HTMLInputElement = document.getElementById('reassort') as HTMLInputElement;
+const inputSeuil: HTMLInputElement = document.getElementById('seuil') as HTMLInputElement;
+const inputReassort: HTMLInputElement = document.getElementById('reassort') as HTMLInputElement;
+const buttonConfirm: HTMLInputElement = document.getElementById('buttonConfirm') as HTMLInputElement;
+const errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') as HTMLElement;
+const errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
 
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
@@ -59,13 +62,20 @@ function checkInt(value: string): boolean {
     return valid;
 }
 
-inputSeuil.addEventListener('change', () => {
+inputSeuil.addEventListener('input', () => {
     if (!checkInt(inputSeuil.value)) {
         inputSeuil.style.borderColor = '#f14e4e';
+        errorFieldSeuil.style.display = 'block';
+    } else {
+        inputSeuil.style.borderColor = '#273469';
+        errorFieldSeuil.style.display = 'none';
     }
 })
-inputReassort.addEventListener('change', () => {
+inputReassort.addEventListener('input', () => {
     if (!checkInt(inputReassort.value)) {
         inputReassort.style.borderColor = '#f14e4e';
+    } else {
+        inputReassort.style.borderColor = '#273469';
+        errorFieldReassort.style.display = 'none';
     }
 })

@@ -2,14 +2,12 @@
 session_start();
 require_once "../../controllers/pdo.php";
 
-// CORRECTION : Récupérer l'ID depuis GET au lieu de POST
 $productId = intval($_GET['id'] ?? 0);
 
 if ($productId === 0) {
     die("Produit non spécifié.");
 }
 
-// Récupérer les infos du produit pour l'affichage
 $sqlProduit = "SELECT p.nom AS nom_produit FROM _produit p WHERE p.idProduit = ?";
 $stmtProduit = $pdo->prepare($sqlProduit);
 $stmtProduit->execute([$productId]);
@@ -23,13 +21,11 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // CORRECTION : Utiliser $productId qui vient de GET
         $clientId = intval($_SESSION['user_id'] ?? 0);
         $note = intval($_POST['note'] ?? 0);
         $sujet = trim($_POST['sujet'] ?? '');
         $message = trim($_POST['message'] ?? '');
 
-        // Validation
         if ($clientId === 0) {
             $errors[] = "Vous devez être connecté pour laisser un avis.";
         }
@@ -49,11 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = "Le message doit contenir au moins 10 caractères.";
         }
 
-        // Si pas d'erreurs, on insère
         if (empty($errors)) {
             $fileName = null;
             
-            // Gestion de l'upload d'image
             if (!empty($_FILES['photo']['name'])) {
                 $targetDir = "../../public/images/";
                 $fileExtension = strtolower(pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION));
@@ -73,31 +67,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if (empty($errors)) {
-                // Insertion de l'avis
                 $sqlAvis = "INSERT INTO _avis (idProduit, idClient, titreAvis, contenuAvis, note, dateAvis) 
                             VALUES (:idProduit, :idClient, :titre, :contenu, :note, CURDATE())";
                 $stmt = $pdo->prepare($sqlAvis);
                 $stmt->execute([
-                    ':idProduit' => $productId, // CORRECTION : utiliser $productId
+                    ':idProduit' => $productId,
                     ':idClient' => $clientId,
                     ':titre' => $sujet,
                     ':contenu' => $message,
                     ':note' => $note
                 ]);
 
-                // Insertion de l'image si présente
                 if ($fileName) {
                     $sqlImageAvis = "INSERT INTO _imageAvis (idProduit, idClient, URL) 
                                     VALUES (:idProduit, :idClient, :urlImage)";
                     $stmtImageAvis = $pdo->prepare($sqlImageAvis);
                     $stmtImageAvis->execute([
-                        ':idProduit' => $productId, // CORRECTION : utiliser $productId
+                        ':idProduit' => $productId,
                         ':idClient' => $clientId,
                         ':urlImage' => $fileName 
                     ]);
                 }
 
-                // Redirection vers la page produit
                 header("Location: product.php?id=" . $productId);
                 exit;
             }
@@ -146,7 +137,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <img src="../../public/images/etoileVide.svg" data-index="4" class="star" alt="4 étoiles">
                 <img src="../../public/images/etoileVide.svg" data-index="5" class="star" alt="5 étoiles">
             </article>
-            <!-- CORRECTION 3 : S'assurer que la note est bien envoyée -->
             <input type="hidden" name="note" id="note" value="0">            
             <h2>Ajouter une photo (optionnel) :</h2>
             <ul>
@@ -179,9 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     const emptyStar = "../../public/images/etoileVide.svg";
     const fullStar = "../../public/images/etoile.svg";
 
-    // Gestion des étoiles
     stars.forEach((star, index) => {
-        // Au clic
         star.addEventListener('click', () => {
             const rating = index + 1;
 
@@ -197,7 +185,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
     });
 
-    // Gestion de l'upload de photo
     const ajouterPhoto = document.getElementById('ajouterPhoto');
     const inputPhoto = document.getElementById('inputPhoto');
     
@@ -209,7 +196,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const file = this.files[0];
         if (!file) return;
 
-        // Vérifier la taille du fichier (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
             alert('La photo ne doit pas dépasser 5 MB');
             this.value = '';
@@ -229,13 +215,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         reader.readAsDataURL(file);
     });
 
-    // Fonction pour supprimer la photo
     function removePhoto() {
         document.getElementById('preview').innerHTML = '';
         document.getElementById('inputPhoto').value = '';
     }
 
-    // Validation avant soumission
     document.querySelector('form').addEventListener('submit', function(e) {
         const note = parseInt(noteInput.value);
         const sujet = document.getElementById('sujet').value.trim();

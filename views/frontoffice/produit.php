@@ -40,9 +40,20 @@ $sqlProduit = "SELECT
                 p.stock,
                 v.prenom AS prenom_vendeur,
                 v.nom AS nom_vendeur,
-                v.raisonSocial
+                v.raisonSocial,
+                promo.idPromotion,
+                promo.debutPromotion,
+                promo.finPromotion,
+                remise.idRemise,
+                remise.tauxRemise,
+                remise.debutRemise,
+                remise.finRemise
                FROM _produit p 
-               JOIN _vendeur v ON p.idVendeur = v.codeVendeur 
+               JOIN _vendeur v ON p.idVendeur = v.codeVendeur
+               LEFT JOIN _promotion promo ON p.idProduit = promo.idProduit 
+                    AND CURDATE() BETWEEN promo.debutPromotion AND promo.finPromotion
+               LEFT JOIN _remise remise ON p.idProduit = remise.idProduit 
+                    AND CURDATE() BETWEEN remise.debutRemise AND remise.finRemise
                WHERE p.idProduit = $productId";
 
 $result = $pdo->query($sqlProduit);
@@ -158,7 +169,40 @@ $nombreAvis = $resultNbAvis['nb_avis'] ?? 0;
 //     'prenom_vendeur' => 'Jean',
 //     'nom_vendeur' => 'Dupont',
 //     'stock' => 20 ];
-// ?>
+// 
+function calculerPromotion($produit) {
+    $promotion = [
+        'est_en_promotion' => false,
+        'est_en_remise' => false,
+        'prix_original' => $produit['prix'],
+        'prix_promotion' => $produit['prix'],
+        'taux_remise' => 0,
+        'economie' => 0,
+        'date_fin_promotion' => null
+    ];
+    if (!empty($produit['idRemise']) && 
+        $produit['debutRemise'] <= date('Y-m-d') && 
+        $produit['finRemise'] >= date('Y-m-d')) {
+        
+        $promotion['est_en_remise'] = true;
+        $promotion['taux_remise'] = $produit['tauxRemise'];
+        $promotion['prix_promotion'] = round($produit['prix'] * (1 - $produit['tauxRemise']/100), 2);
+        $promotion['economie'] = $produit['prix'] - $promotion['prix_promotion'];
+        $promotion['date_fin_promotion'] = $produit['finRemise'];
+    }
+    
+    elseif (!empty($produit['idPromotion']) && 
+            $produit['debutPromotion'] <= date('Y-m-d') && 
+            $produit['finPromotion'] >= date('Y-m-d')) {
+        
+        $promotion['est_en_promotion'] = true;
+        $promotion['date_fin_promotion'] = $produit['finPromotion'];
+    }
+    return $promotion;
+}
+
+$promotion = calculerPromotion($produit);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -197,6 +241,10 @@ if (isset($_SESSION['message_panier'])) {
 ?>
 <section class="infoHautProduit">
 <article class="rectangleProduit">
+    <div class="banniere">
+        <h2><?php echo htmlspecialchars($promotion['taux_remise']); ?></h2>
+        <img src="../../public/images/laBanniere.png" alt="">
+    </div>
     <img src="../../public/images/flecheGauche.svg" alt="Previous" class="carousel-arrow prev-arrow">
     <div class="carousel-container">
         <div class="carousel-slide">
@@ -222,19 +270,26 @@ if (isset($_SESSION['message_panier'])) {
     <img src="../../public/images/flecheDroite.svg" alt="Next" class="carousel-arrow next-arrow">
     </article>
     <article class="infoPreviewProduit">
-        <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
-            <div class="product-rating">
-                <div>
-                    <div class="star-rating">
-                        <div class="stars" style="--rating: <?php echo $note; ?>"></div>
-                    </div>
-                    <span class="rating-number"><?php echo number_format($note, 1); ?>/5</span>
+        <div class="attributsproduit">
+            <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
+            <?php if ($promotion['est_en_promotion']): ?>
+            <h3>Promotion</h3> 
+            <?php endif; ?>
+        </div>
+        <div class="product-rating">
+            <div>
+                <div class="star-rating">
+                    <div class="stars" style="--rating: <?php echo $note; ?>"></div>
                 </div>
-                <span class="review-count" id="reviewCountHautProduit"><?php echo $nombreAvis; ?> évaluations</span>
+                <span class="rating-number"><?php echo number_format($note, 1); ?>/5</span>
             </div>
+            <span class="review-count" id="reviewCountHautProduit"><?php echo $nombreAvis; ?> évaluations</span>
+        </div>
         <div id="prix">
             <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
-            <h3>40.99€</h3>
+            <?php if ($promotion['est_en_remise']): ?>
+            <h3><del><?php echo number_format($promotion['prix_promotion'], 2, ',', ' '); ?>€</del></h3> 
+            <?php endif; ?>
         </div>
         <h2>Description de l'article :</h2>
         <p></p>
