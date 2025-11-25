@@ -24,6 +24,9 @@ if (isset($_POST['idProduit'])) {
     }
 
     $pdo->commit();
+
+    header('Location: ../backoffice/stocks.php');
+    die();
 }
 
 ?>
