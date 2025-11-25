@@ -82,11 +82,11 @@
                         <div class="prixEtPrixAuKg">
                             <?php if ($enRemise): ?>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <p class="prix"><?php echo htmlspecialchars($prixRemise); ?>€</p>
-                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                    <p class="prix"><?php echo number_format($prixRemise,2,','); ?>€</p>
+                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                                 </div>
                             <?php else: ?>
-                                <p class="prix"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                <p class="prix"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                             <?php endif; ?>
                             <?php 
                                 $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
@@ -233,10 +233,10 @@
                             <?php if ($enRemise): ?>
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <p class="prix"><?php echo htmlspecialchars($prixRemise); ?>€</p>
-                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                                 </div>
                             <?php else: ?>
-                                <p class="prix"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                <p class="prix"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                             <?php endif; ?>
                             <?php 
                                 $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
