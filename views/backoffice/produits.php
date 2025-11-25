@@ -8,7 +8,7 @@
         echo "<script>window.addEventListener('load', () => popUpErreur('$idProduit', $codeErreur));</script>";
     }
 
-    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true;");
+    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true;");
     $produitEnVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 ?>
 
@@ -65,6 +65,12 @@
 
                         <div class="prixEtPrixAuKg">
                             <p class="prix"><?php echo htmlspecialchars($produitEnVente[$i]['prix']); ?>€</p>
+                            <?php 
+                                $prix = $produitEnVente[$i]['prix'];
+                                $poids = $produitEnVente[$i]['poids'];
+                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = round($prixAuKg,2) ?>
+                            <p class = "prixAuKg"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</p>
                         </div>
 
                         <div class="bouton">
@@ -84,7 +90,7 @@
                                                 Retirer promo
                                             </button>
                                         <?php } else { ?>
-                                            <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>)">
+                                            <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>)">
                                                 Promouvoir
                                             </button>
                                         <?php } ?>
@@ -95,7 +101,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconeRemise.svg" alt="">
-                                        <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>)">Remise</button>
+                                        <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>)">Remise</button>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -134,7 +140,7 @@
             </div>
             <?php 
                 require_once '../../controllers/pdo.php';
-                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = false;");
+                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = false;");
                 $produitHorsVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             ?>
 
@@ -169,6 +175,12 @@
 
                         <div class="prixEtPrixAuKg">
                             <p class="prix"><?php echo htmlspecialchars($produitHorsVente[$i]['prix']); ?>€</p>
+                            <?php 
+                                $prix = $produitHorsVente[$i]['prix'];
+                                $poids = $produitHorsVente[$i]['poids'];
+                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = round($prixAuKg,2) ?>
+                            <p class = "prixAuKg"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</p>
                         </div>
 
                         <div class="bouton">

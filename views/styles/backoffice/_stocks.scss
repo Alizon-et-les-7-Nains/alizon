@@ -18,7 +18,7 @@ main.backoffice-stocks {
         
         article {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(855px, 1fr));
             gap: 1em;
             font-family: 'open-sans';
         }
@@ -39,7 +39,7 @@ main.backoffice-stocks {
             *:not(img) {
                 user-select: text;
             }
-            max-width: max-content;
+            width: 855px;
             padding: 1em;
             padding-bottom: 0;
             background-color: $color-pastel-purple;

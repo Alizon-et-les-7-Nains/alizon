@@ -51,12 +51,13 @@ $sqlProduit = "SELECT
 $result = $pdo->query($sqlProduit);
 $produit = $result->fetch(PDO::FETCH_ASSOC);
 
+$idClient = $_SESSION['user_id'] ?? 0;
 $sqlAdresse = "SELECT * 
                FROM _adresseClient 
-               WHERE idAdresse = " . intval($produit['user_id'] ?? "*************");
-
-$resultAdresse = $pdo->query($sqlAdresse);
-$adresse = $resultAdresse->fetch(PDO::FETCH_ASSOC);
+               WHERE idAdresse = (SELECT idAdresse FROM _client WHERE idClient = ?)";
+$stmtAdresse = $pdo->prepare($sqlAdresse);
+$stmtAdresse->execute([$idClient]);
+$adresse = $stmtAdresse->fetch(PDO::FETCH_ASSOC);
 
 if (!$produit) {
     echo "<p>Produit introuvable.</p>";
@@ -83,7 +84,8 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         $stmtPanier->execute([$idClient]);
         $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
         
-        if (!$panier) {            $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+        if (!$panier) {            
+            $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
             $stmtCreate->execute([$idClient]);
             $idPanier = $pdo->lastInsertId();
         } else {
@@ -276,14 +278,14 @@ if (isset($_SESSION['message_panier'])) {
         </div>
         <div id="prix">
             <?php if ($promotion['est_en_remise']): ?>
-            <h1><?php echo number_format($produit['prix_promotion'], 2, ',', ' '); ?>€</h1>
-            <h3><del><?php echo number_format($promotion['prix'], 2, ',', ' '); ?>€</del></h3> 
+            <h1><?php echo number_format($promotion['prix_promotion'], 2, ',', ' '); ?>€</h1>
+            <h3><del><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</del></h3> 
             <?php else: ?>
             <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
             <?php endif; ?>
         </div>
         <h2>Description de l'article :</h2>
-        <p><?php echo htmlspecialchars($produit['description']);?></p>
+        <p class="resume"><?php echo htmlspecialchars($produit['description']);?></p>
         <a href="#conteneurTexte">Voir plus sur le produit</a>
         <div class="version">
             <h3>Version :</h3>
@@ -311,9 +313,11 @@ if (isset($_SESSION['message_panier'])) {
         <div class="ligneActions">
             <img src="../../public/images/emplacement.png" alt="">
             <p>Livré a <a href=""><b>
-                <?php echo htmlspecialchars($adresse['ville']); ?>
-                <?php echo htmlspecialchars($adresse['codePostal']);?></b>, 
-                <?php echo htmlspecialchars($adresse['adresse']); ?></a></p>   
+                <?php if (!empty($adresse['ville'])){ echo htmlspecialchars($adresse['ville']); } ?>
+                <?php if (!empty($adresse['codePostal'])){ echo htmlspecialchars($adresse['codePostal']); }?></b>, 
+                <?php if (!empty($adresse['adresse'])){ echo htmlspecialchars($adresse['adresse']); } else{
+                    echo "Pas d'adresse définie";
+                } ?></a></p>   
         </div>
         <div class="ligneActions">
             <img src="../../public/images/tec.png" alt="">
