@@ -9,14 +9,15 @@
     color: $color-blue;
   }
 
-  article {
-    background-color: red;
-    border-radius: 20px;
-  }
   .avi {
     border-collapse: separate;
     width: 100%;
     color: $color-blue;
+    background-color: $color-pastel-purple;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    padding-top: 20;
+
     font: {
       size: 18px;
       family: "Lora", serif;
