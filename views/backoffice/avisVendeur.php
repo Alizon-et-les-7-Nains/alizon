@@ -4,8 +4,14 @@ require_once '../../controllers/prix.php';
 require_once '../../controllers/date.php';
 require_once '../../controllers/auth.php';
 
-$avis = ($pdo->query(file_get_contents('../../queries/backoffice/derniersAvis.sql')))
-        ->fetchAll(PDO::FETCH_ASSOC);
+$sql = file_get_contents('../../queries/backoffice/derniersAvis.sql');
+$stmt = $pdo->prepare($sql);
+
+$stmt->execute([
+    ':idVendeur' => $_SESSION['idVendeur']
+]);
+
+$avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
