@@ -119,7 +119,7 @@
                                                 <?php echo $idProd; ?>, 
                                                 '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', 
                                                 '<?php echo $produitEnVente[$i]['url']; ?>', 
-                                                <?php echo htmlspecialchars(addslashes(number_format($prixRemise,2,',')), ENT_QUOTES); ?>, 
+                                                <?php echo htmlspecialchars(addslashes(number_format($prixRemise,2,)), ENT_QUOTES); ?>, 
                                                 <?php echo htmlspecialchars($nbEval) ?>, 
                                                 <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, 
                                                 <?php echo $prixAuKg?>, 
@@ -140,11 +140,11 @@
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconeRemise.svg" alt="">
                                         <?php if(count($remise) == 1) { ?>
-                                            <button onclick="popUpModifierRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes(number_format($prixRemise,2,',')), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, true)">
+                                            <button onclick="popUpModifierRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($prixRemise), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, true)">
                                                 Modifier remise
                                             </button>
                                         <?php } else { ?>
-                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes(number_format($prixOriginal,2,',')), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, false)">
+                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($prixOriginal), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, false)">
                                                 Remise
                                             </button>
                                         <?php } ?>                                    
