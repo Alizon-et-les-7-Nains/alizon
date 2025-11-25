@@ -5149,6 +5149,11 @@ dialog.reassort form input {
   height: 75px;
   margin-top: 0.5em;
 }
+.pageProduit .attributsproduit h3 {
+  border-radius: 8px;
+  background-color: red;
+  color: white;
+}
 .pageProduit .resume {
   max-height: 60px;
   overflow: hidden;
