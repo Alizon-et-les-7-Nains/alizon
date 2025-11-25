@@ -26,7 +26,6 @@
             <a href="../frontoffice/legalesConnecte.php" class="separation">Mentions légales</a>
             <a href="../frontoffice/support.php">Support</a>
             <a href="../frontoffice/connexionClient.php">Déconnexion</a>
-            <div id="triangle-codeHeader"></div>
         </section>
 
 </footer>
