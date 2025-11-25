@@ -1313,6 +1313,7 @@ main.acceuilBackoffice section.stock article {
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   width: 100%;
   gap: 2em;
+  font-family: "open-sans";
 }
 main.acceuilBackoffice section.stock article table {
   padding: 1em;
@@ -1346,7 +1347,6 @@ main.acceuilBackoffice section.commandes article {
   width: 100%;
   gap: 2em;
   font-family: "open-sans";
-  font-size: 20px;
 }
 main.acceuilBackoffice section.commandes article table {
   padding: 1em;
@@ -1437,7 +1437,6 @@ main.acceuilBackoffice section.produits article {
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   max-width: 100%;
   gap: 2em;
-  font-size: 20px;
 }
 main.acceuilBackoffice section.produits article table {
   padding: 1em;
@@ -5658,6 +5657,12 @@ dialog.reassort form input {
   .pageProduit .baselineSpaceBetween {
     flex-direction: column;
     gap: 0.5em;
+  }
+  .pageProduit .actionsProduit {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
   .pageProduit .actionsAvis {
     justify-content: flex-start;

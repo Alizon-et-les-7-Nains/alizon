@@ -32,7 +32,9 @@
             <h1>Stocks Faibles</h1>
             <article>
                 <?php
-    $stock = ($pdo->query(file_get_contents('../../queries/backoffice/stockFaible.sql')))->fetchAll(PDO::FETCH_ASSOC);
+$stockSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/stockFaible.sql'));
+$stockSTMT->execute([':idVendeur' => $_SESSION['id']]);
+$stock = $stockSTMT->fetchAll(PDO::FETCH_ASSOC);
     if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
     foreach ($stock as $produit => $atr) {
         $idProduit = $atr['idProduit'];
@@ -71,7 +73,9 @@
             <h1>Dernières Commandes</h1>
             <article>
                 <?php
-    $commandes = ($pdo->query(file_get_contents('../../queries/backoffice/dernieresCommandes.sql')))->fetchAll(PDO::FETCH_ASSOC);
+$commandesSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandes.sql'));
+$commandesSTMT->execute([':idVendeur' => $_SESSION['id']]);
+$commandes = $commandesSTMT->fetchAll(PDO::FETCH_ASSOC);
     if (count($commandes) == 0) echo "<h2>Aucune commande</h2>";
     foreach ($commandes as $commande) {
         $idProduit = $commande['idProduit'];
@@ -107,8 +111,10 @@
             <h1>Derniers Avis</h1>
             <article>
                 <?php
-    $avis = ($pdo->query(file_get_contents('../../queries/backoffice/derniersAvis.sql')))->fetchAll(PDO::FETCH_ASSOC);
-    if (count($avis) == 0) echo "<h2>Aucun avis</h>";
+$avisSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/derniersAvis.sql'));
+$avisSTMT->execute([':idVendeur' => $_SESSION['id']]);
+$avis = $avisSTMT->fetchAll(PDO::FETCH_ASSOC);
+    if (count($avis) == 0) echo "<h2>Aucun avis</h2>";
     foreach ($avis as $avi) {
         $imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
         $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
@@ -152,7 +158,10 @@
             <h1>Produits en Vente</h1>
             <article>
                 <?php
-    $produits = ($pdo->query(file_get_contents('../../queries/backoffice/produitsVente.sql')))->fetchAll(PDO::FETCH_ASSOC);
+$produitsSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/produitsVente.sql'));
+$produitsSTMT->execute([':idVendeur' => $_SESSION['id']]);
+$produits = $produitsSTMT->fetchAll(PDO::FETCH_ASSOC);
+if (count($produits) == 0) echo "<h2>Aucun produit en vente</h2>";
     foreach ($produits as $produit => $atr) {
         $idProduit = $atr['idProduit'];
         $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
