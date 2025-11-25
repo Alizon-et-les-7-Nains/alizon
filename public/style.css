@@ -5033,7 +5033,7 @@ dialog.reassort form input {
 }
 .pageProduit .banniere {
   position: absolute;
-  top: -30px;
+  top: -8px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
