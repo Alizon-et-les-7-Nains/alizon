@@ -241,7 +241,7 @@ $promotion = calculerPromotion($produit);
             </a>
         </div>
 
-        <div class="ligne" ></div>
+        <div class="lignePrevi" ></div>
 <main>
 <?php
 // Afficher les messages de confirmation
