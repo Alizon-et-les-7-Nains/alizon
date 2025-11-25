@@ -3,12 +3,15 @@ require_once 'pdo.php';
 session_start();
 
 $idProd = $_GET['id']; 
+
+$today = getdate();
+$date=$today['year'].'-'.$today['mon'].'-'.$today['wday'];
 // Si il y a eu un formulare de remplie, on fait 2 requêtes 
 // La première requête permet de mettre à jour les informations du produit sur lequel le formulaire à été rempli
 // La deuxième permet de mettre à jour l'image d'un produit
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $pdo->prepare("UPDATE _produit SET nom = :nom, description = :description, prix = :prix, poids = :poids, mots_cles = :mot_cles WHERE idProduit = :idProduit");
+    $stmt = $pdo->prepare("UPDATE _produit SET nom = :nom, description = :description, prix = :prix, poids = :poids, mots_cles = :mot_cles dateDerniereModif = :dateModif WHERE idProduit = :idProduit");
     $imgDeProd = $pdo->prepare("UPDATE _imageDeProduit SET URL = :url WHERE idProduit = :idProduit");
     $stmt->execute([
         ':nom' => $_POST['nom'],
@@ -16,37 +19,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':prix' => $_POST['prix'],
         ':poids' => $_POST['poids'],
         ':mot_cles' => $_POST['mots_cles'],
+        ':dateModif' => $date,
         ':idProduit' => $idProd
     ]);
 
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $extension = '';
+
+    foreach ($extensionsPossibles as $ext) {
+        if (file_exists($photoPath . '.' . $ext)) {
+            $extension = '.' . $ext;
+            break;
+        }
+    }
 
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] != '') {
     $photoPath = '/var/www/html/images/'.$_FILES['url']['name'];
-
-    $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
-    $extension = '.'.$extension;
+    if (file_exists($photoPath)) {
+        unlink($photoPath); // supprime l'ancien fichier
+    }
     move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
+    $fileName = $_FILES['url']['name'];
 }
 else{
     $sqlUrl = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = $idProd");
     $result =  $pdo->query($sqlUrl);
     $fileName = $result->fetch(PDO::FETCH_ASSOC);
-
-
-    $url = "/images/$fileName";
-
-    try{
-            $imgDeProd->execute([
-                ':url' => $url,
-                ':idProduit' => $idProd
-            ]);
-        }
-
-    catch(PDOException $e){
-        echo "Erreur SQL : " . $e->getMessage();
-        }
 }
+
+$url = "/images/$fileName.$extension";
+
+try{
+    $imgDeProd->execute([
+        ':url' => $url,
+        ':idProduit' => $idProd
+    ]);
 }
+catch(PDOException $e){
+    echo "Erreur SQL : " . $e->getMessage();
+    }
+}
+
 
 
 
