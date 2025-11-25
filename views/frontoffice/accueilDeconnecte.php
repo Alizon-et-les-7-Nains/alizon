@@ -151,13 +151,21 @@ require_once "../../controllers/prix.php";
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("SELECT * FROM _produit ORDER BY idProduit DESC LIMIT 10 ;");
+                $stmt = $pdo->prepare("SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
+                                      FROM _produit p 
+                                      LEFT JOIN _remise r ON p.idProduit = r.idProduit 
+                                        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+                                      ORDER BY p.idProduit DESC LIMIT 10 ;");
                 $stmt->execute();
                 $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 if (count($produitNouveaute) > 0) {
                     foreach ($produitNouveaute as $value) {
                         $idProduit = $value['idProduit'];
+                        $prixOriginal = $value['prix'];
+                        $tauxRemise = $value['tauxRemise'] ?? 0;
+                        $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
+                        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
                         
                         $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                         $stmtImg->execute([':idProduit' => $idProduit]);
@@ -175,11 +183,20 @@ require_once "../../controllers/prix.php";
                             </div>
                             <div class="infoProd">
                                 <div class="prix">
-                                    <h2><?php echo formatPrice($value['prix']); ?></h2>
+                                    <?php if ($enRemise): ?>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                            <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                                <?php echo formatPrice($prixOriginal); ?>
+                                            </h3>
+                                        </div>
+                                    <?php else: ?>
+                                        <h2><?php echo formatPrice($prixOriginal); ?></h2>
+                                    <?php endif; ?>
                                     <?php 
-                                        $prix = $value['prix'];
+                                        $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                                         $poids = $value['poids'];
-                                        $prixAuKg = $prix/$poids;
+                                        $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
                                         $prixAuKg = round($prixAuKg,2) ?>
                                     <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                 </div>
@@ -205,13 +222,21 @@ require_once "../../controllers/prix.php";
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE typeProd = :typeProd");
+                $stmt = $pdo->prepare("SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
+                                      FROM _produit p 
+                                      LEFT JOIN _remise r ON p.idProduit = r.idProduit 
+                                        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+                                      WHERE p.typeProd = :typeProd");
                 $stmt->execute([':typeProd' => 'charcuterie']);
                 $produitCharcuterie = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 if (count($produitCharcuterie) > 0) {
                     foreach ($produitCharcuterie as $value) {
                         $idProduit = $value['idProduit'];
+                        $prixOriginal = $value['prix'];
+                        $tauxRemise = $value['tauxRemise'] ?? 0;
+                        $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
+                        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
                         
                         $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                         $stmtImg->execute([':idProduit' => $idProduit]);
@@ -229,11 +254,20 @@ require_once "../../controllers/prix.php";
                             </div>
                             <div class="infoProd">
                                 <div class="prix">
-                                    <h2><?php echo formatPrice($value['prix']); ?></h2>
+                                    <?php if ($enRemise): ?>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                            <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                                <?php echo formatPrice($prixOriginal); ?>
+                                            </h3>
+                                        </div>
+                                    <?php else: ?>
+                                        <h2><?php echo formatPrice($prixOriginal); ?></h2>
+                                    <?php endif; ?>
                                     <?php 
-                                        $prix = $value['prix'];
+                                        $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                                         $poids = $value['poids'];
-                                        $prixAuKg = $prix/$poids;
+                                        $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
                                         $prixAuKg = round($prixAuKg,2) ?>
                                     <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                 </div>
@@ -259,13 +293,21 @@ require_once "../../controllers/prix.php";
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE typeProd = :typeProd");
+                $stmt = $pdo->prepare("SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
+                                      FROM _produit p 
+                                      LEFT JOIN _remise r ON p.idProduit = r.idProduit 
+                                        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+                                      WHERE p.typeProd = :typeProd");
                 $stmt->execute([':typeProd' => 'alcools']);
                 $produitAlcool = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
                 if (count($produitAlcool) > 0) {
                     foreach ($produitAlcool as $value) {
                         $idProduit = $value['idProduit'];
+                        $prixOriginal = $value['prix'];
+                        $tauxRemise = $value['tauxRemise'] ?? 0;
+                        $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
+                        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
                         
                         $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                         $stmtImg->execute([':idProduit' => $idProduit]);
@@ -283,11 +325,20 @@ require_once "../../controllers/prix.php";
                             </div>
                             <div class="infoProd">
                                 <div class="prix">
-                                    <h2><?php echo formatPrice($value['prix']); ?></h2>
+                                    <?php if ($enRemise): ?>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                            <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                                <?php echo formatPrice($prixOriginal); ?>
+                                            </h3>
+                                        </div>
+                                    <?php else: ?>
+                                        <h2><?php echo formatPrice($prixOriginal); ?></h2>
+                                    <?php endif; ?>
                                     <?php 
-                                        $prix = $value['prix'];
+                                        $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                                         $poids = $value['poids'];
-                                        $prixAuKg = $prix/$poids;
+                                        $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
                                         $prixAuKg = round($prixAuKg,2) ?>
                                     <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                 </div>
@@ -317,12 +368,20 @@ require_once "../../controllers/prix.php";
                     $produitsRecents = array_reverse($tabIDProduitConsulte);
                     
                     foreach ($produitsRecents as $idProduitRecent) {
-                        $stmtRecent = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :idProduit");
+                        $stmtRecent = $pdo->prepare("SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
+                                                   FROM _produit p 
+                                                   LEFT JOIN _remise r ON p.idProduit = r.idProduit 
+                                                     AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+                                                   WHERE p.idProduit = :idProduit");
                         $stmtRecent->execute([':idProduit' => $idProduitRecent]);
                         $produitRecent = $stmtRecent->fetch(PDO::FETCH_ASSOC);
                         
                         if ($produitRecent) {
                             $idProduit = $produitRecent['idProduit'];
+                            $prixOriginal = $produitRecent['prix'];
+                            $tauxRemise = $produitRecent['tauxRemise'] ?? 0;
+                            $enRemise = !empty($produitRecent['tauxRemise']) && $produitRecent['tauxRemise'] > 0;
+                            $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
                             
                             $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                             $stmtImg->execute([':idProduit' => $idProduit]);
@@ -340,18 +399,27 @@ require_once "../../controllers/prix.php";
                                 </div>
                                 <div class="infoProd">
                                     <div class="prix">
-                                        <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
+                                        <?php if ($enRemise): ?>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                                <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                                    <?php echo formatPrice($prixOriginal); ?>
+                                                </h3>
+                                            </div>
+                                        <?php else: ?>
+                                            <h2><?php echo formatPrice($prixOriginal); ?></h2>
+                                        <?php endif; ?>
                                         <?php 
-                                            $prix = $produitRecent['prix'];
+                                            $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                                             $poids = $produitRecent['poids'];
-                                            $prixAuKg = $prix/$poids;
+                                            $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
                                             $prixAuKg = round($prixAuKg,2) ?>
-                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
+                                        <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                     </div>
                                     <div>
                                         <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
                                             <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                                    </button>
+                                        </button>
                                     </div>
                                 </div>
                             </article>
