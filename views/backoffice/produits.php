@@ -1,10 +1,13 @@
 <?php 
+    require_once '../../controllers/pdo.php';
+    require_once '../../controllers/auth.php';
 
-    if (isset($_GET['error']) && $_GET['error'] = 1) {
-        echo "<script>console.log('Erreur lors de l ajout de la promotion dans la BDD');</script>";
+    if(isset($_GET['error']) && isset($_GET['idProduit'])) {
+        $idProduit = $_GET['idProduit'];
+        $codeErreur = $_GET['error'];
+        echo "<script>window.addEventListener('load', () => popUpErreur('$idProduit', $codeErreur));</script>";
     }
 
-    require_once '../../controllers/pdo.php';
     $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true;");
     $produitEnVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 ?>
@@ -199,5 +202,6 @@
         <?php require_once './partials/footer.php' ?>
 
         <script src="../scripts/backoffice/scriptProduit.js"></script>
+        <script src="/public/script.js"></script>
     </body>
 </html>

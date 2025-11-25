@@ -398,9 +398,10 @@
     }
 
     .baselineSpaceBetween{
+        width: 100%;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: baseline;
     }
 
@@ -793,6 +794,13 @@
         .baselineSpaceBetween{
             flex-direction: column;
             gap: 0.5em;
+        }
+
+        .actionsProduit {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
         }
 
         .actionsAvis{

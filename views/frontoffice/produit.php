@@ -220,12 +220,8 @@ if (isset($_SESSION['message_panier'])) {
         </div>
     </div>
     <img src="../../public/images/flecheDroite.svg" alt="Next" class="carousel-arrow next-arrow">
-</article>
+    </article>
     <article class="infoPreviewProduit">
-            <?php
-                // $note = 4.2; // Exemple de note moyenne A CHANGER
-                // $nombreAvis = 128; // Exemple de nombre d'avis A CHANGER
-            ?>
         <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
             <div class="product-rating">
                 <div>
@@ -236,9 +232,6 @@ if (isset($_SESSION['message_panier'])) {
                 </div>
                 <span class="review-count" id="reviewCountHautProduit"><?php echo $nombreAvis; ?> évaluations</span>
             </div>
-            <?php 
-            $note = $produit['note'];
-            ?>
         <div id="prix">
             <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
             <h3>40.99€</h3>
@@ -264,20 +257,20 @@ if (isset($_SESSION['message_panier'])) {
         </div> -->
     </article>
     <article class="actionsProduit">
-    <h2>Vendu par <?php echo htmlspecialchars($produit['prenom_vendeur'] . ' ' . $produit['nom_vendeur']); ?></h2>
-    <p class="underline" id="plusDarticles"><a href="">Plus d'article de ce vendeur</a></p>
-    <br>
-    <hr>
-    <div class="ligneActions">
-        <img src="../../public/images/camion.png" alt="">
-        <p>Livraison <b>GRATUITE</b> - Expédié par <b>mondial relais</b>. Arrivée entre le <b>mar. 21 septembre - ven. 24 septembre</b></p>
-    </div>
-    <div class="ligneActions">
-        <img src="../../public/images/emplacement.png" alt="">
-        <p>Livré a <a href=""><b>Clermont-ferrand 63000</b>, 10 place saint-michel</a></p>   
-    </div>
-    <div class="ligneActions">
-        <img src="../../public/images/tec.png" alt="">
+        <h2>Vendu par <?php echo htmlspecialchars($produit['prenom_vendeur'] . ' ' . $produit['nom_vendeur']); ?></h2>
+        <p class="underline" id="plusDarticles"><a href="">Plus d'article de ce vendeur</a></p>
+        <br>
+        <hr>
+        <div class="ligneActions">
+            <img src="../../public/images/camion.png" alt="">
+            <p>Livraison <b>GRATUITE</b> - Expédié par <b>mondial relais</b>. Arrivée entre le <b>mar. 21 septembre - ven. 24 septembre</b></p>
+        </div>
+        <div class="ligneActions">
+            <img src="../../public/images/emplacement.png" alt="">
+            <p>Livré a <a href=""><b>Clermont-ferrand 63000</b>, 10 place saint-michel</a></p>   
+        </div>
+        <div class="ligneActions">
+            <img src="../../public/images/tec.png" alt="">
         <p>
             Consulter les <b><?php if (isset($_SESSION['user_id'])) {
             echo '<a href="legalesConnecte.php">conditions générales de vente</a>';
@@ -351,7 +344,7 @@ if (isset($_SESSION['message_panier'])) {
     ?>
     <?php if (isset($_SESSION['user_id'])) {
     echo 
-    '<a href="ecrireCommentaire.php?id=<?php echo $productId; ?>" class="boutonCommentaire">
+    '<a href="ecrireCommentaire.php?id=' . $productId . '" class="boutonCommentaire">
         Écrire un commentaire
     </a>';
     } else {
@@ -376,7 +369,7 @@ if (isset($_SESSION['message_panier'])) {
                         </div>
                         <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?></h6>
                     </div>
-                    <p><?php echo htmlspecialchars($avis['contenuAvis']); ?></p>
+                    <p><?php echo htmlspecialchars($avis['contenuAvis']); ?> par <?php echo htmlspecialchars($avis['idClient']); ?></p>
                     <div class="baselineSpaceBetween">
                         <div class="sectionImagesAvis">
                         </div>   

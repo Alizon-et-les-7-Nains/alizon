@@ -186,6 +186,18 @@ $cart = getCurrentCart($pdo, $idClient);
         $choixAleatoirePromo = $arrayProduit[array_rand($arrayProduit)]['idProduit'];
     }
 
+    // Récupérer les promotions
+
+    $stmt = $pdo->prepare("SELECT * FROM _promotion");
+    $stmt->execute();
+    $arrayProduit = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (count($arrayProduit) === 0) {
+        $choixAleatoirePromo = "N/A";
+    } else {
+        $choixAleatoirePromo = $arrayProduit[array_rand($arrayProduit)]['idProduit'];
+    }
+
 // ============================================================================
 // AFFICHAGE DE LA PAGE
 // ============================================================================
@@ -214,10 +226,16 @@ $cart = getCurrentCart($pdo, $idClient);
             <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
         <?php } else { 
                      
-            $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
-            $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
-            $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
-            $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+            $cheminSysteme = "/var/www/html/images/baniere/" . $choixAleatoirePromo . ".jpg";
+
+            if (file_exists($cheminSysteme)) {
+                $image = "/images/baniere/" . $choixAleatoirePromo . ".jpg";
+            } else {
+                $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+                $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
+                $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+                $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+            }
 
             $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :idProduit");
             $stmt->execute([':idProduit' => $choixAleatoirePromo]);

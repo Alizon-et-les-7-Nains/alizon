@@ -2,14 +2,14 @@
 session_start();
 require_once "../../controllers/pdo.php";
 
-// CORRECTION 1 : Récupérer l'ID du produit depuis l'URL
-$productId = intval($_POST['id'] ?? 0);
+// CORRECTION : Récupérer l'ID depuis GET au lieu de POST
+$productId = intval($_GET['id'] ?? 0);
 
 if ($productId === 0) {
     die("Produit non spécifié.");
 }
 
-// Récupérer les infos du produit pour l'affichage (optionnel)
+// Récupérer les infos du produit pour l'affichage
 $sqlProduit = "SELECT p.nom AS nom_produit FROM _produit p WHERE p.idProduit = ?";
 $stmtProduit = $pdo->prepare($sqlProduit);
 $stmtProduit->execute([$productId]);
@@ -23,7 +23,7 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $productIdPost = intval($_POST['idProduit'] ?? 0);
+        // CORRECTION : Utiliser $productId qui vient de GET
         $clientId = intval($_SESSION['user_id'] ?? 0);
         $note = intval($_POST['note'] ?? 0);
         $sujet = trim($_POST['sujet'] ?? '');
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($clientId === 0) {
             $errors[] = "Vous devez être connecté pour laisser un avis.";
         }
-        if ($productIdPost === 0) {
+        if ($productId === 0) {
             $errors[] = "Produit invalide.";
         }
         if ($note === 0 || $note < 1 || $note > 5) {
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             VALUES (:idProduit, :idClient, :titre, :contenu, :note, CURDATE())";
                 $stmt = $pdo->prepare($sqlAvis);
                 $stmt->execute([
-                    ':idProduit' => $productIdPost,
+                    ':idProduit' => $productId, // CORRECTION : utiliser $productId
                     ':idClient' => $clientId,
                     ':titre' => $sujet,
                     ':contenu' => $message,
@@ -91,14 +91,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     VALUES (:idProduit, :idClient, :urlImage)";
                     $stmtImageAvis = $pdo->prepare($sqlImageAvis);
                     $stmtImageAvis->execute([
-                        ':idProduit' => $productIdPost,
+                        ':idProduit' => $productId, // CORRECTION : utiliser $productId
                         ':idClient' => $clientId,
                         ':urlImage' => $fileName 
                     ]);
                 }
 
                 // Redirection vers la page produit
-                header("Location: product.php?id=" . $productIdPost);
+                header("Location: product.php?id=" . $productId);
                 exit;
             }
         }
@@ -121,7 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 </header>
 <main>
-    <!-- Affichage des erreurs -->
     <?php if (!empty($errors)): ?>
         <div class="error-messages" style="background-color: #f8d7da; color: #721c24; padding: 15px; margin: 20px; border-radius: 5px; border: 1px solid #f5c6cb;">
             <h3>Erreurs :</h3>
@@ -135,10 +134,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <section class="reviewArticle">
         <form action="" method="POST" enctype="multipart/form-data">
-            <!-- CORRECTION 2 : Ajouter l'ID du produit en champ caché -->
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
             
-            <h1>Évaluer : <?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
+            <h1>Évaluer : <b><?php echo htmlspecialchars($produit['nom_produit']); ?></b></h1>
             
             <h2>Laisser une note <span style="color: red;">*</span> :</h2>
             <article class="etoiles">
@@ -149,9 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <img src="../../public/images/etoileVide.svg" data-index="5" class="star" alt="5 étoiles">
             </article>
             <!-- CORRECTION 3 : S'assurer que la note est bien envoyée -->
-            <input type="hidden" name="note" id="note" value="0">
-            <p id="note-display" style="color: #273469; margin-top: 10px;">Aucune note sélectionnée</p>
-            
+            <input type="hidden" name="note" id="note" value="0">            
             <h2>Ajouter une photo (optionnel) :</h2>
             <ul>
                 <img src="../../public/images/ajouterPhoto.svg" alt="Ajouter une photo" id="ajouterPhoto" style="cursor: pointer; width: 80px; height: 80px;">
@@ -198,25 +194,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
             
             noteInput.value = rating;
-            noteDisplay.textContent = `Note : ${rating}/5`;
-            noteDisplay.style.color = '#273469';
-            noteDisplay.style.fontWeight = 'bold';
-        });
-
-        // Au survol
-        star.addEventListener('mouseenter', () => {
-            const rating = index + 1;
-            stars.forEach((s, i) => {
-                if (i < rating) {
-                    s.style.opacity = '0.7';
-                }
-            });
-        });
-
-        star.addEventListener('mouseleave', () => {
-            stars.forEach((s) => {
-                s.style.opacity = '1';
-            });
         });
     });
 
