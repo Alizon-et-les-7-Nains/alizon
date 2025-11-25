@@ -5871,8 +5871,9 @@ dialog.reassort form input {
   border-collapse: separate;
   width: 100%;
   color: #273469;
-  background-color: red;
+  background-color: #e4d9ff;
   border-radius: 20px;
+  margin-bottom: 20px;
   font-size: 18px;
   font-family: "Lora", serif;
 }
