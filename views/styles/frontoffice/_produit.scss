@@ -43,6 +43,13 @@
         position: relative;
     }
 
+    .banniere{
+        position: absolute;
+        top: -40px;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+    }
+
     #imageBouteille{
         width: 220px;
         height: 330px;
