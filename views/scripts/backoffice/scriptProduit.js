@@ -307,48 +307,143 @@ function popUpErreur(id, code) {
     });
 }
 
-function popUpAnnulerPromotion(id, nom) {
-
-    const url = new URL(window.location);
-    url.searchParams.set('annulationProduit', id);
-    window.history.pushState({}, '', url);
+function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo) {
 
     const overlay = document.createElement("div");
-    overlay.className = "overlayPopUpErreur";
-    
+    overlay.className = "overlaypopUpPromouvoir";
     overlay.innerHTML = `
-        <main class="popUpErreur" style="text-align : center;">
-            <form method="POST" action="../../controllers/annulerPromotion.php">
+        <main class="popUpPromouvoir">
+            <div class="page">
                 <div class="croixFermerLaPage">
                     <div></div>
                     <div></div>
                 </div>
-                <h1>Souhaitez-vous vraiment annuler la promotion pour ce produit ?</h1>
-                <p><strong>${nom}</strong></p>
-                <input type="hidden" name="annulationProduit" value="${id}">
-                <button type="submit" style="color: #ffffff; background-color: #f14e4e;">Annuler la promotion</button>
-            </form>
+                <div class="titreEtProduit">
+                    <h1> Ajouter une promotion pour ce produit </h1>
+                    <section>
+                        <article style="padding-right: 20px; padding-top: 20px; padding-left: 20px; padding-bottom: 20px;">
+                            <img class="produit" src="${imgURL}" alt="Image du produit">
+                            <div class="nomEtEvaluation">
+                                <p>${nom}</p>
+                                <div class="evaluation">
+                                    <div class="etoiles">
+                                        <img src="/public/images/etoile.svg" alt="Image notation étoile">
+                                        <p>${note}</p>
+                                    </div>
+                                    <p>${nbEval} évaluation</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="prix"> ${prix} €</p>
+                                <p class="prixAuKg"> ${prixAuKg}€ / kg</p>
+                            </div>
+                        </article>
+                    </section>
+                </div>
+                
+            <div class="ligne"></div>
+                <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
+                    <section class="section2">
+                        <div>
+                            <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
+                        </div>
+                        <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
+                        <div class="ajouterBaniere">
+                            <input type="file" id="baniere" name="baniere" accept="image/*">  
+                        </div>
+                        <p class="supprimer">supprimer ...</p>
+                        <p><strong>Format accepté </strong>: 21:4 (1440x275px minimum, .jpg uniquement)</p>
+                        <h2><strong>Sous total : </strong></h2>
+                        <div class="sousTotal">
+                            <div class="prixRes">
+                                <p>Promotion : </p>
+                                <p><strong class="dataPromo">0</strong></p>
+                                <p><strong>€</strong></p>
+                            </div>
+                            <div class="prixRes">
+                                <p>Baniere : </p>
+                                <p><strong class="dataBaniere">0</strong></p>
+                                <p><strong>€</strong></p>
+                            </div>
+                            <div class="prixRes">
+                                <p>Durée : </p>
+                                <p><strong class="dataDuree">0</strong></p>
+                                <p><strong>&nbsp jours</strong></p>
+                            </div>
+                            <div class="prixRes">
+                                <p>Total : </p>
+                                <p><strong class="dataTotal">0</strong></p>
+                                <p><strong>€</strong></p>
+                            </div>
+                        </div>
+                        <div class="infoCalcul">
+                            <img src="../../public/images/iconeInfo.svg" alt="">
+                            <p class="supprimer"> Comment sont calculés les prix ? </p>
+                        </div>
+                        <div class="deuxBoutons">
+                            <input type="hidden" name="id" value="${id}">
+                            <button  type="submit" style="color: white; background-color: #F14E4E;">Retirer la promotion</button>
+                            <button type="submit">Promouvoir</button>
+                        </div>
+                    </section>
+                </form>
+            </div>
         </main>`;
-
     document.body.appendChild(overlay);
 
-    const fermerPopUp = () => {
-        overlay.remove();
-        const url = new URL(window.location);
-        url.searchParams.delete('annulationProduit');
-        window.history.replaceState({}, '', url);
-    };
-
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
-    const btnFermer = overlay.querySelector(".btnFermer");
+    croixFermer.addEventListener("click", fermerPopUpPromouvoir);
 
-    croixFermer.addEventListener("click", fermerPopUp);
-    if (btnFermer) btnFermer.addEventListener("click", fermerPopUp);
-    
-    overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-            fermerPopUp();
+    function cliqueBaniere(){
+        document.getElementById('baniere').click();
+    }
+
+    document.querySelector('.ajouterBaniere').addEventListener('click', cliqueBaniere);
+
+    const dateLimite = overlay.querySelector("#dateLimite");
+    let dateLimiteVal = dateLimite.value;
+    dateLimite.addEventListener("change", () => { 
+        clearError(dateLimite); 
+        verifDate(dateLimite); 
+        console.log("Date limite :", dateLimiteVal); 
+    });
+
+    const infoCalcBtn = overlay.querySelector('.infoCalcul');
+    infoCalcBtn.addEventListener('click', popUpInfoCalcul);
+
+    // Section calcul de prix 
+    const txtPromo = document.querySelector('.dataPromo');
+    const txtBaniere = document.querySelector('.dataBaniere');
+    const txtDuree = document.querySelector('.dataDuree');
+    const txtTotal = document.querySelector('.dataTotal');
+
+    function parseFrDate(date) {
+        const [d, m, y] = date.split("/").map(Number);
+        return new Date(y, m - 1, d);
+    }
+
+    function diffDays(d1, d2) {
+        return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+    }
+
+    dateLimite.addEventListener('change', () => {
+        const dateLimiteValue = dateLimite.value;
+        const currentDate = new Date();
+
+        const d2 = parseFrDate(dateLimiteValue);
+        const nbJourDiff = diffDays(currentDate, d2);
+
+        const nbJours = Math.max(0, nbJourDiff);
+        const coutParJour = prix * 0.1;
+        let totalPromo = (coutParJour * nbJours).toFixed(2);
+
+        if(totalPromo == NaN) {
+            totalPromo = 0;
         }
+
+        txtPromo.textContent = totalPromo;
+        txtDuree.textContent = nbJours;
+        txtTotal.textContent = totalPromo; // Ajouter plus tard prix de la bannière
     });
 }
 

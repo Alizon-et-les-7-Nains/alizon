@@ -307,10 +307,6 @@ body {
   .footerFront .footerTel a {
     padding: 20px;
   }
-  .footerFront .footerTel a:focus {
-    transition: 0.2s;
-    background-color: #e3f2fe;
-  }
 }
 #burgerIconTel {
   display: none;
