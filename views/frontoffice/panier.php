@@ -17,7 +17,25 @@ $idClient = $_SESSION['user_id'];
 // ============================================================================
 // FONCTIONS DE GESTION DU PANIER
 // ============================================================================
-
+function getPrixProduitAvecRemise($pdo, $idProduit) {
+    $sql = "SELECT 
+            p.prix,
+            remise.tauxRemise
+           FROM _produit p 
+           LEFT JOIN _remise remise ON p.idProduit = remise.idProduit 
+                AND CURDATE() BETWEEN remise.debutRemise AND remise.finRemise
+           WHERE p.idProduit = ?";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idProduit]);
+    $produit = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($produit && !empty($produit['tauxRemise'])) {
+        return $produit['prix'] * (1 - $produit['tauxRemise']/100);
+    }
+    
+    return $produit['prix'];
+}
 function getCurrentCart($pdo, $idClient) {
     $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
     $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;

@@ -522,20 +522,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (form) {
     form.addEventListener("submit", function (e) {
-      // CORRECTION CRITIQUE : S'assurer que les champs ne sont PAS en readonly lors de la soumission
+      e.preventDefault(); // Empêcher la soumission immédiate
+
+      console.log("=== DÉBUT SOUMISSION ===");
+      console.log("Mode édition:", modeEdition);
+      console.log("Mode modification mdp:", modeModificationMdp);
+
+      // RETIRER readonly AVANT toute validation
       const inputsReadonly = document.querySelectorAll("input[readonly]");
+      console.log("Nombre d'inputs readonly trouvés:", inputsReadonly.length);
+
       inputsReadonly.forEach((input) => {
+        console.log(`Retrait readonly de: ${input.name} = ${input.value}`);
         input.removeAttribute("readonly");
       });
 
+      // Vérifier tous les champs du formulaire
+      const formData = new FormData(form);
+      console.log("=== DONNÉES DU FORMULAIRE ===");
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
       // Valider le formulaire seulement si on est en mode édition
       if ((modeEdition || modeModificationMdp) && !validerFormulaire()) {
-        e.preventDefault();
+        console.log("❌ Validation échouée");
         alert(
           "Veuillez corriger les erreurs dans le formulaire avant de sauvegarder."
         );
         return false;
       }
+
+      console.log("✅ Validation réussie");
 
       // Afficher un indicateur de chargement
       const boutonSauvegarder = document.querySelector(".boutonSauvegarder");
@@ -545,7 +563,10 @@ document.addEventListener("DOMContentLoaded", function () {
         boutonSauvegarder.disabled = true;
       }
 
-      console.log("Formulaire validé, soumission en cours...");
+      console.log("📤 Soumission du formulaire...");
+
+      // Soumettre manuellement le formulaire
+      form.submit();
     });
   }
 

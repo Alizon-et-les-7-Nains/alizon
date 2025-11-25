@@ -152,7 +152,7 @@ function popUpAnnulerRemise(id, nom) {
 
 
 
-function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg){
+function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
         overlay.innerHTML = `
@@ -196,13 +196,15 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg){
                     <h2>Récapitulatif :</h2>
                     <p class = "recap"> </p>
                     <input type="hidden" name="id" value="${id}">
-                    <button type="submit">Appliquer la remise </button>
+                    <input type="hidden" name="aUneRemise" value="${aUneRemise}">
+                    <button class="bouton" type="submit">Appliquer la remise </button>
+                    <button onclick="popUpAnnulerRemise(${id},${nom})>Supprimer la remise </button>
                 </form>
             </div>
         </main>`;
     document.body.appendChild(overlay);
 
-    const bouton = overlay.querySelector("button");
+    const bouton = overlay.querySelector(".bouton");
     bouton.disabled = true;
     bouton.style.cursor = "default";
 
