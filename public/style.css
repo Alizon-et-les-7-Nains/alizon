@@ -5046,21 +5046,21 @@ dialog.reassort form input {
 .pageProduit .banniere h2 {
   position: absolute;
   top: 50px;
-  left: 50px;
+  left: 45px;
   color: #fffefa;
   z-index: 10000;
 }
 .pageProduit .poly:nth-child(1) {
   position: absolute;
   top: 35px;
-  left: 15px;
+  left: 10px;
   width: auto;
   z-index: 100;
 }
 .pageProduit .poly:nth-child(2) {
   position: absolute;
   top: 65px;
-  left: 15px;
+  left: 10px;
   width: auto;
   z-index: 100;
 }
@@ -5875,10 +5875,21 @@ dialog.reassort form input {
   padding-top: 10px;
   text-align: center;
 }
+.avis-vendeur .avi .col-gauche .profil-client {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
 .avis-vendeur .avi .col-gauche .profil-client img {
   width: 70px;
   height: 70px;
   border-radius: 50%;
+  margin-bottom: 10px;
+}
+.avis-vendeur .avi .col-gauche .profil-client figcaption {
+  margin-top: 0;
 }
 .avis-vendeur .avi .etoiles {
   margin-top: 0;
