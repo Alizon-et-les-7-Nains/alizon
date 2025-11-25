@@ -2,13 +2,20 @@
 require_once '../../controllers/pdo.php';
 require_once '../../controllers/auth.php';
 
-$code_vendeur = 2;
+
+
+if (!isset($_SESSION['id'])) {
+    header("Location: ../backoffice/connexion.php");
+    exit();
+}
+
+$code_vendeur = $_SESSION['id'];
 
 // Récupération des informations du vendeur avec jointure sur l'adresse
 $stmt = $pdo->prepare("
     SELECT v.*, a.codePostal, a.ville, a.region, a.pays, a.adresse as adresse_complete
     FROM _vendeur v 
-    LEFT JOIN _adresseVendeur a ON v.idAdresse = a.idAdresse 
+    LEFT JOIN _adresseVendeur a ON v.idAdresse = a.idAdresse  -- 'V' majuscule
     WHERE v.codeVendeur = :id
 ");
 
@@ -76,18 +83,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $noSiren = $_POST['noSiren'] ?? '';
 
     // Mise à jour des informations du vendeur
-    $stmt = $pdo->prepare("
-        UPDATE saedb._vendeur 
-        SET pseudo = :pseudo, 
-            nom = :nom, 
-            prenom = :prenom, 
-            email = :email, 
-            dateNaissance = :dateNaissance,
-            noTelephone = :telephone,
-            raisonSocial = :raisonSociale,
-            noSiren = :noSiren
-        WHERE codeVendeur = :code_vendeur
-    ");
+$stmt = $pdo->prepare("
+    UPDATE saedb._vendeur 
+    SET pseudo = :pseudo, 
+        nom = :nom, 
+        prenom = :prenom, 
+        email = :email, 
+        dateNaissance = :dateNaissance,
+        noTelephone = :telephone,
+        raisonSocial = :raisonSociale,    -- Correction du nom de colonne
+        noSiren = :noSiren
+    WHERE codeVendeur = :code_vendeur
+");
 
     $stmt->execute([
         ':pseudo' => $pseudo,
@@ -103,15 +110,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Mise à jour de l'adresse
     if ($idAdresse) {
-        $stmt = $pdo->prepare("
-            UPDATE saedb._adresseVendeur 
-            SET adresse = :adresse,
-                pays = :pays,
-                ville = :ville, 
-                codePostal = :codePostal,
-                region = :region
-            WHERE idAdresse = :idAdresse
-        ");
+$stmt = $pdo->prepare("
+    UPDATE saedb._adresseVendeur 
+    SET adresse = :adresse,
+        pays = :pays,
+        ville = :ville, 
+        codePostal = :codePostal,
+        region = :region
+    WHERE idAdresse = :idAdresse
+");
 
         $stmt->execute([
             ':adresse' => $adresse,
