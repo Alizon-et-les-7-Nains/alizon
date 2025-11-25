@@ -66,7 +66,7 @@ $stock = $stockSTMT->fetchAll(PDO::FETCH_ASSOC);
     }
 ?>
             </article>
-            <a href="./stock.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
+            <a href="./stocks.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
         </section>
 
         <section class="commandes">
@@ -132,7 +132,7 @@ $avis = $avisSTMT->fetchAll(PDO::FETCH_ASSOC);
                     </figure>
                 </th>
                 <th>" . $avi['nomProduit'] . " - " . $avi['titreAvis'] . "</th>
-                <td>Le" . formatDate($avi['dateAvis']) . "</td>
+                <td>Le " . formatDate($avi['dateAvis']) . "</td>
             </tr>
             <tr>
                 <td colspan='2'>" . $avi['contenuAvis'] . "</td>
