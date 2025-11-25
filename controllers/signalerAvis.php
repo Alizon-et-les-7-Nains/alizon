@@ -1,5 +1,5 @@
 <?php
-include 'pdo.php'; 
+include '../../controllers/pdo.php';
 session_start();
 
 header('Content-Type: application/json');
