@@ -25,8 +25,9 @@ main.backoffice-stocks {
         
         img:not(figure img) {
             height: 200px;
-            max-width: 400px;
-            object-fit: contain;
+            min-width: 150px;
+            max-width: 250px;
+            object-fit: cover;
             margin: {
                 top: 0.5em;
                 left: 0.5em;
@@ -38,7 +39,7 @@ main.backoffice-stocks {
             *:not(img) {
                 user-select: text;
             }
-            max-width: max-content;
+            width: 855px;
             padding: 1em;
             padding-bottom: 0;
             background-color: $color-pastel-purple;
