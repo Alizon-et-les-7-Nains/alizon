@@ -92,8 +92,21 @@
                                         <?php $nom = $produitEnVente[$i]['nom'] ?>
                                         <?php $nbEval = $evaluations[0]['evaluation'] ?>
                                         <?php if(count($promo) == 1) { 
-                                            $dateFinPromo = $promo[$i]['finPromotion']; ?>
-                                            <button onclick="popUpModifierPromotion(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, <?php echo $dateFinPromo?>)">
+                                            // 1. On formate la date en PHP (format français d/m/Y)
+                                            $dateRaw = new DateTime($promo[$i]['finPromotion']);
+                                            $dateFinPromo = $dateRaw->format('d/m/Y'); 
+                                        ?>
+                                            <!-- 2. On ajoute les guillemets simple ' ' autour de la variable PHP dans le onclick -->
+                                            <button onclick="popUpModifierPromotion(
+                                                <?php echo $idProd; ?>, 
+                                                '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', 
+                                                '<?php echo $produitEnVente[$i]['url']; ?>', 
+                                                <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, 
+                                                <?php echo htmlspecialchars($nbEval) ?>, 
+                                                <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, 
+                                                <?php echo $prixAuKg?>, 
+                                                '<?php echo $dateFinPromo?>' 
+                                            )">
                                                 Modifier
                                             </button>
                                         <?php } else { ?>
