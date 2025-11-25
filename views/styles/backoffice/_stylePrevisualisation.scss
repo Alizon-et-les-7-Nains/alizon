@@ -1,0 +1,60 @@
+@use '../fonts';
+@use '../colors' as *;
+
+.pagePrevi{
+    .previsualisation{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0;
+    }
+    .textePrevi{
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        h1 {
+            color: $color-red;
+            font-size: 24px;
+            margin: 0;
+        }
+    }
+    .boutonRetour{
+        display: flex;
+        margin-right: 10px;
+        justify-content: center;
+        padding: 10px;
+        background-color: $color-blue;  
+        border-radius: 24px;
+        width: 200px;
+        cursor: pointer;
+        a{
+            text-decoration: none;
+            cursor: pointer;
+        }
+        button{
+            background-color: transparent;
+            text-decoration: none;
+            border:0;
+            font-size: 24px;
+            color: $color-pastel-blue;
+            font-family: 'lora';
+            border-right: 10px ;
+            cursor: pointer;
+        }
+    }
+    .lignePrevi{
+        border-top: solid 4px $color-red ;
+    }
+    
+    .actionsProduit{
+        margin-top: 40px;
+        margin-left: auto;
+        position: sticky;
+        top: 2em;
+        right: 1em;
+        width: 24%;
+        z-index: 10;
+        height: fit-content;
+        padding: 15px;
+    }
+}   

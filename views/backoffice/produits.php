@@ -1,6 +1,17 @@
 <?php 
+
     require_once '../../controllers/pdo.php';
-    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true;");
+    require_once '../../controllers/auth.php';
+
+    if(isset($_GET['error']) && isset($_GET['idProduit'])) {
+        $idProduit = $_GET['idProduit'];
+        $codeErreur = $_GET['error'];
+        echo "<script>window.addEventListener('load', () => popUpErreur('$idProduit', $codeErreur));</script>";
+    }
+
+    $idVendeur = $_SESSION['id'];
+
+    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true AND idVendeur = '$idVendeur';");
     $produitEnVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 ?>
 
@@ -16,11 +27,13 @@
     </head>
 
     <body class="backoffice">
+        
         <?php require_once './partials/header.php' ?>
 
         <?php $currentPage = basename(__FILE__); require_once './partials/aside.php' ?>
 
         <main class="produitBackOffice">
+
             <h1>Produits en Vente</h1>
             <div class = "ligneProduit">
 
@@ -29,11 +42,17 @@
             
             $stmt = $pdo->query("SELECT count(prod.idproduit) as evaluation FROM saedb._produit as prod join saedb._avis on prod.idproduit = _avis.idproduit WHERE prod.idproduit = '$idProduit' and envente = true;");
             $evaluations = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+            $stmt = $pdo->query("SELECT * FROM saedb._promotion WHERE idproduit = '$idProduit';");
+            $promo = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+            $stmt = $pdo->query("SELECT * FROM saedb._remise WHERE idproduit = '$idProduit';");
+            $remise = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             ?>
                 
             <section>
                 <article>
-                    <img class="produit" src="/public/<?php echo $produitEnVente[$i]['url'];?>" alt="">
+                    <img class="produit" src="<?php echo $produitEnVente[$i]['url'];?>" alt="">
 
                     <div class="nomEtEvaluation">
                         <p><?php echo htmlspecialchars($produitEnVente[$i]['nom']); ?></p>
@@ -45,16 +64,19 @@
                             </div>
 
                             <p><?php 
-                                if($evaluations[0]['evaluation'] !== 0){
-                                    echo htmlspecialchars($evaluations[0]['evaluation']) . " évaluations";
-                                } 
+                                echo htmlspecialchars($evaluations[0]['evaluation']) . " évaluations";
                             ?></p>                                
                             </div>
                         </div>
 
                         <div class="prixEtPrixAuKg">
                             <p class="prix"><?php echo htmlspecialchars($produitEnVente[$i]['prix']); ?>€</p>
-                            <p class="prixAuKg">99.72€ / kg</p>
+                            <?php 
+                                $prix = $produitEnVente[$i]['prix'];
+                                $poids = $produitEnVente[$i]['poids'];
+                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = round($prixAuKg,2) ?>
+                            <p class = "prixAuKg"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</p>
                         </div>
 
                         <div class="bouton">
@@ -69,9 +91,30 @@
                                         <?php $idProd = $produitEnVente[$i]['idproduit'] ?>
                                         <?php $nom = $produitEnVente[$i]['nom'] ?>
                                         <?php $nbEval = $evaluations[0]['evaluation'] ?>
-                                        <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>)">
-                                            Promouvoir
-                                        </button>
+                                        <?php if(count($promo) == 1) { 
+
+                                                
+
+                                                $dateRaw = new DateTime($promo[$i]['finPromotion']);
+                                                $dateFinPromo = $dateRaw->format('d/m/Y'); 
+                                        ?>
+                                            <button onclick="popUpModifierPromotion(
+                                                <?php echo $idProd; ?>, 
+                                                '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', 
+                                                '<?php echo $produitEnVente[$i]['url']; ?>', 
+                                                <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, 
+                                                <?php echo htmlspecialchars($nbEval) ?>, 
+                                                <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, 
+                                                <?php echo $prixAuKg?>, 
+                                                '<?php echo $dateFinPromo?>' 
+                                            )">
+                                                Modifier
+                                            </button>
+                                        <?php } else { ?>
+                                            <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>)">
+                                                Promouvoir
+                                            </button>
+                                        <?php } ?>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -79,7 +122,15 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconeRemise.svg" alt="">
-                                        <button onclick="popUpRemise()">Remise</button>
+                                        <?php if(count($remise) == 1) { ?>
+                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, true)">
+                                                Modifier remise
+                                            </button>
+                                        <?php } else { ?>
+                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, false)">
+                                                Remise
+                                            </button>
+                                        <?php } ?>                                    
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -87,7 +138,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconeModifier.svg" alt="">
-                                        <button>Modifier</button>
+                                        <a href= <?php echo "modifierProduit.php?id=".$idProd?>><button>Modifier</button></a>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -95,7 +146,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <button>Prévisualiser</button>
+                                        <a href=<?php echo "previsualiser.php?id=". $idProduit?>><button>Prévisualiser</button></a> 
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -118,7 +169,7 @@
             </div>
             <?php 
                 require_once '../../controllers/pdo.php';
-                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = false;");
+                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = false AND idVendeur =  '$idVendeur';");
                 $produitHorsVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             ?>
 
@@ -134,7 +185,7 @@
                 
             <section>
                 <article>
-                    <img class="produit" src="/public/<?php echo $produitHorsVente[$i]['url'];?>" alt="">
+                    <img class="produit" src="<?php echo $produitHorsVente[$i]['url'];?>" alt="">
 
                     <div class="nomEtEvaluation">
                         <p><?php echo htmlspecialchars($produitHorsVente[$i]['nom']); ?></p>
@@ -146,15 +197,19 @@
                             </div>
 
                             <p><?php 
-                                if($evaluations[0]['evaluation'] !== 0){
                                     echo htmlspecialchars($evaluations[0]['evaluation']) . " évaluations";
-                                } 
                             ?></p>
                             </div>
                         </div>
 
                         <div class="prixEtPrixAuKg">
                             <p class="prix"><?php echo htmlspecialchars($produitHorsVente[$i]['prix']); ?>€</p>
+                            <?php 
+                                $prix = $produitHorsVente[$i]['prix'];
+                                $poids = $produitHorsVente[$i]['poids'];
+                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = round($prixAuKg,2) ?>
+                            <p class = "prixAuKg"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</p>
                         </div>
 
                         <div class="bouton">
@@ -165,7 +220,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconeModifier.svg" alt="">
-                                        <button>Modifier</button>
+                                        <a href= <?php echo "modifierProduit.php?id=".$idProduit?>><button>Modifier</button></a>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -173,7 +228,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <button>Prévisualiser</button>
+                                        <a href=<?php echo "previsualiser.php?id=". $idProduit?>><button>Prévisualiser</button></a> 
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -199,5 +254,6 @@
         <?php require_once './partials/footer.php' ?>
 
         <script src="../scripts/backoffice/scriptProduit.js"></script>
+        <script src="/public/script.js"></script>
     </body>
 </html>

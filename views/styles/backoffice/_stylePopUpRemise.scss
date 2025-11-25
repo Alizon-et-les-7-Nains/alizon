@@ -124,6 +124,7 @@
                 color: $color-blue;
                 margin: 0;
                 font-weight: bold;
+                margin-left: 10px;
             }
 
             .prixAuKg {
@@ -138,13 +139,14 @@
             margin: 30px;
         }
         
-        .section2 {
+        form {
             border: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
             width: 500px;
+            position: relative;
 
             h2{
                 font-size: 24px;
@@ -166,6 +168,13 @@
                 }
             }
 
+            .deuxBoutons {
+                display: flex;
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+            }
+
             button{
                 background-color: $color-blue;
                 padding: 15px;
@@ -173,15 +182,18 @@
                 font-family: 'lora';
                 width: 200px;
                 color: $color-white;
-                position: absolute;
-                right: 30px;
-                bottom: 30px;
+                cursor: pointer;
+                margin-left:20px ;
             }
 
             p{
                 background-color: $color-pastel-purple;
                 padding: 10px;
                 border-radius: 16px;
+            }
+
+            .error-message{
+                color: red;
             }
         }
     }

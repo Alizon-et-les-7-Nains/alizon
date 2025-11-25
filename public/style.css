@@ -153,6 +153,12 @@ body {
   white-space: nowrap;
   flex: 0 0 auto;
 }
+@media (min-width: 1300px) {
+  .headerFront #burgerIconTel {
+    display: none;
+    visibility: hidden;
+  }
+}
 @media (max-width: 1300px) {
   .headerFront .search-wrapper input[type=search] {
     padding: 10px 0px 10px 10px;
@@ -221,7 +227,7 @@ body {
   padding: 10px;
 }
 
-#triangle-codeHeader {
+#burgerIcon #triangle-codeHeader {
   display: inline-block;
   height: 0;
   width: 0;
@@ -291,7 +297,6 @@ body {
   .footerFront .footerTel {
     display: contents;
     visibility: visible;
-    /* structure mobile */
     display: flex;
     justify-content: space-between;
   }
@@ -302,11 +307,36 @@ body {
   .footerFront .footerTel a {
     padding: 20px;
   }
-  .footerFront .footerTel a:focus {
-    transition: 0.2s;
-    background-color: #e3f2fe;
-  }
 }
+#burgerIconTel {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  bottom: 110px;
+  right: 30px;
+  background-color: #E3F2FE;
+  border: 3px solid #273469;
+  border-radius: 20px;
+  font-size: 24px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+#burgerIconTel a {
+  text-decoration: none;
+  color: #273469;
+  padding: 8px 0;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding: 10px;
+}
+
+.separation {
+  border-top: 1px solid #273469;
+}
+
 /* -------------------------------------------- FIN FOOTER -------------------------------------------- */
 .cgucgv main h1 {
   color: #273469;
@@ -1313,6 +1343,7 @@ main.acceuilBackoffice section.stock article {
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   width: 100%;
   gap: 2em;
+  font-family: "open-sans";
 }
 main.acceuilBackoffice section.stock article table {
   padding: 1em;
@@ -1346,7 +1377,6 @@ main.acceuilBackoffice section.commandes article {
   width: 100%;
   gap: 2em;
   font-family: "open-sans";
-  font-size: 20px;
 }
 main.acceuilBackoffice section.commandes article table {
   padding: 1em;
@@ -1363,11 +1393,16 @@ main.acceuilBackoffice section.commandes article table img {
 main.acceuilBackoffice section.commandes article table th {
   font-size: 20px;
 }
+main.acceuilBackoffice section.commandes article table tr:first-child td {
+  width: 110px;
+}
 main.acceuilBackoffice section.commandes article table tr:first-child th {
   text-align: left;
   line-height: 0.5em;
 }
 main.acceuilBackoffice section.commandes article table tr:nth-child(2) td {
+  padding-top: 0.5em;
+  line-height: 25px;
   vertical-align: top;
 }
 main.acceuilBackoffice section.commandes article table tr:last-child th {
@@ -1432,7 +1467,6 @@ main.acceuilBackoffice section.produits article {
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   max-width: 100%;
   gap: 2em;
-  font-size: 20px;
 }
 main.acceuilBackoffice section.produits article table {
   padding: 1em;
@@ -1457,6 +1491,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: bold;
 }
 
+.produitBackOffice a {
+  text-decoration: none;
+  color: #fffefa;
+}
 .produitBackOffice p {
   margin: 0;
   font-size: 12px;
@@ -1532,6 +1570,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   object-fit: contain;
   margin-top: 10px;
   border-radius: 8px;
+  max-width: 290px;
+  object-fit: inherit;
 }
 .produitBackOffice .bouton {
   background-color: #273469;
@@ -1574,6 +1614,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .produitBackOffice .prixAuKg {
   font-size: 16px;
   font-weight: normal;
+  margin-bottom: 10px;
 }
 .produitBackOffice .hoverBouton {
   display: none;
@@ -2576,6 +2617,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .acceuil .banniere {
   text-align: center;
   justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .acceuil .banniere * {
   margin: 0px 30px;
@@ -2588,7 +2631,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-style: italic;
 }
 .acceuil .banniere img {
-  max-width: 340px;
+  max-width: 400px;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 10px;
 }
 @media (max-width: 965px) {
   .acceuil .banniere div * {
@@ -2615,6 +2661,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     font-size: 32px;
     background-color: #E3F2FE;
     padding: 10px;
+    margin-bottom: 10px;
   }
   .acceuil .banniere div {
     background-color: #E4D9FF;
@@ -2942,6 +2989,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-wrap: nowrap;
   max-width: 800px;
   margin-bottom: 40px;
+  align-items: center;
 }
 .panier .quantiteProduit {
   display: flex;
@@ -3078,7 +3126,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .panier article h2 b {
   color: black;
 }
-@media (max-width: 1248px) {
+@media (max-width: 1290px) {
   .panier main {
     flex-direction: column;
     justify-content: center;
@@ -3107,6 +3155,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .panier .infoProduit div h2 {
     font-size: 15px;
+    max-width: 170px;
   }
   .panier .quantiteProduit img {
     width: 9px !important;
@@ -3146,6 +3195,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier .infoProduit h2 {
   margin-top: 0;
+  max-width: 300px;
 }
 .panier button .delete {
   margin-bottom: 15px;
@@ -3473,7 +3523,6 @@ button#haut.visible:hover {
   border: 2px solid #273469;
   border-radius: 8px;
   font-size: 1rem;
-  box-sizing: border-box;
 }
 .modifierProduit input::placeholder {
   color: #6e6e6e;
@@ -3573,7 +3622,6 @@ button#haut.visible:hover {
   background-color: #f14e4e;
   color: #fffefa;
   width: 200px;
-  margin-top: 13px;
 }
 .modifierProduit .form-actions .btn-supprimer:hover {
   background-color: rgb(209.8815789474, 191.5, 255);
@@ -3929,10 +3977,10 @@ button#haut.visible:hover {
   color: #273469;
   text-decoration: underline;
 }
-.CreerCompteVendeur .container .form-vendeur .connexion_lien a:visited {
-  color: #273469;
+.CreerCompteVendeur .container .form-vendeur .connexion_lien a :visited {
+  color: #273469 !important;
 }
-.CreerCompteVendeur .container .form-vendeur .connexion_lien a:hover {
+.CreerCompteVendeur .container .form-vendeur .connexion_lien a :hover {
   color: rgb(25.1875, 33.5833333333, 67.8125);
 }
 .CreerCompteVendeur .container .form-vendeur .inscriptions_autres {
@@ -3983,6 +4031,10 @@ button#haut.visible:hover {
   background-color: #fffefa;
   border-radius: 16px;
   position: relative;
+}
+.popUpPromouvoir form {
+  display: flex;
+  align-items: center;
 }
 .popUpPromouvoir .prixRes {
   display: flex;
@@ -4308,6 +4360,7 @@ button#haut.visible:hover {
   color: #273469;
   margin: 0;
   font-weight: bold;
+  margin-left: 10px;
 }
 .popUpRemise .page section .prixAuKg {
   font-size: 16px;
@@ -4318,19 +4371,20 @@ button#haut.visible:hover {
   border-left: #273469 solid 2px;
   margin: 30px;
 }
-.popUpRemise .page .section2 {
+.popUpRemise .page form {
   border: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   width: 500px;
+  position: relative;
 }
-.popUpRemise .page .section2 h2 {
+.popUpRemise .page form h2 {
   font-size: 24px;
   color: #273469;
 }
-.popUpRemise .page .section2 input {
+.popUpRemise .page form input {
   padding: 10px;
   width: 200px;
   border: 2px solid #273469;
@@ -4338,24 +4392,32 @@ button#haut.visible:hover {
   font-family: "lora";
   margin: 10px;
 }
-.popUpRemise .page .section2 div input {
+.popUpRemise .page form div input {
   width: 110px;
 }
-.popUpRemise .page .section2 button {
+.popUpRemise .page form .deuxBoutons {
+  display: flex;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+.popUpRemise .page form button {
   background-color: #273469;
   padding: 15px;
   border-radius: 32px;
   font-family: "lora";
   width: 200px;
   color: #fffefa;
-  position: absolute;
-  right: 30px;
-  bottom: 30px;
+  cursor: pointer;
+  margin-left: 20px;
 }
-.popUpRemise .page .section2 p {
+.popUpRemise .page form p {
   background-color: #e4d9ff;
   padding: 10px;
   border-radius: 16px;
+}
+.popUpRemise .page form .error-message {
+  color: red;
 }
 
 main.backoffice-stocks h1, main.backoffice-stocks button, main.backoffice-stocks div {
@@ -4370,12 +4432,15 @@ main.backoffice-stocks section h1 {
 }
 main.backoffice-stocks section article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(855px, 1fr));
   gap: 1em;
   font-family: "open-sans";
 }
 main.backoffice-stocks section img:not(figure img) {
   height: 200px;
+  min-width: 150px;
+  max-width: 250px;
+  object-fit: cover;
   margin-top: 0.5em;
   margin-left: 0.5em;
   margin-right: 0.5em;
@@ -4384,7 +4449,7 @@ main.backoffice-stocks section div:not(button.settings div) *:not(img) {
   user-select: text;
 }
 main.backoffice-stocks section div:not(button.settings div) {
-  max-width: max-content;
+  width: 855px;
   padding: 1em;
   padding-bottom: 0;
   background-color: #e4d9ff;
@@ -4596,21 +4661,32 @@ dialog.reassort form ul li:first-child input:hover {
   color: #273469;
   cursor: pointer;
 }
-dialog.reassort form ul li:last-child input {
+dialog.reassort form ul li:last-child input:not(:disabled) {
   background-color: #273469;
   color: #fffefa;
 }
-dialog.reassort form ul li:last-child input:hover {
+dialog.reassort form ul li:last-child input:not(:disabled):hover:not(:disabled) {
   background-color: #e3f2fe;
   color: #273469;
   cursor: pointer;
 }
 dialog.reassort form label {
+  display: none;
   color: #f14e4e;
   margin-top: -1em;
 }
 dialog.reassort form input::placeholder {
   font-weight: normal;
+}
+dialog.reassort form input:disabled {
+  background-color: #bababa !important;
+  color: #fffefa !important;
+  cursor: not-allowed !important;
+}
+dialog.reassort form input:disabled:hover {
+  background-color: #bababa !important;
+  color: #fffefa !important;
+  cursor: not-allowed !important;
 }
 dialog.reassort form input {
   color: #273469;
@@ -4627,63 +4703,97 @@ dialog.reassort form input {
   border-radius: 24px;
 }
 
+/* Variables utiles */
+/* Layout principal */
 .page-compte {
-  padding: 60px 80px;
+  padding: clamp(20px, 5vw, 60px);
+  max-width: 100%;
+  margin: 0;
   position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+  overflow-x: hidden;
 }
 .page-compte::before {
   content: "";
   position: absolute;
   right: 0;
-  top: -400px;
-  width: 1000px;
-  height: 1000px;
-  background: url("../../public/images/symboleRose.png") no-repeat center center;
-  background-size: contain;
+  top: -20vw;
+  width: 60vw;
+  height: 60vw;
+  background: url("../../public/images/symboleRose.png") no-repeat;
   transform: rotate(-20deg);
   opacity: 0.42;
   pointer-events: none;
-  z-index: 0;
+  z-index: 999;
 }
-.page-compte .header-compte {
+.page-compte {
+  /* Le formulaire occupe l'espace au-dessus du background décoratif */
+}
+.page-compte .form-compte {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 60%;
+  box-sizing: border-box;
+  /* Header qui prend toute la largeur au-dessus des colonnes */
+}
+.page-compte .form-compte .header-compte {
   display: flex;
   align-items: center;
-  gap: 35px;
-  margin-bottom: 40px;
+  gap: 28px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
-.page-compte .header-compte .photo-profil {
-  width: 150px;
-  height: 150px;
+.page-compte .form-compte .header-compte .photo-profil {
+  width: clamp(70px, 12vw, 150px);
+  height: clamp(70px, 12vw, 150px);
   border-radius: 50%;
   overflow: hidden;
-  background: #e3e3e3;
+  background: #e9e9ee;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
 }
-.page-compte .header-compte .photo-profil img {
+.page-compte .form-compte .header-compte .photo-profil img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
-.page-compte .header-compte h1 {
+.page-compte .form-compte .header-compte .photo-profil:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+.page-compte .form-compte .header-compte h1 {
   font-family: "Lora", serif;
-  font-size: 42px;
+  font-size: clamp(22px, 3.5vw, 42px);
   color: #273469;
   font-weight: 600;
+  margin: 0;
 }
 .page-compte .form-compte {
+  /* CONTENEUR DES COLONNES */
+}
+.page-compte .form-compte .colonnes-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 50px;
-  width: 60%;
+  gap: 40px;
+  align-items: start;
+}
+.page-compte .form-compte {
+  /* Colonnes pour les champs */
 }
 .page-compte .form-compte .col {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
+  width: 100%;
 }
 .page-compte .form-compte .col .champ {
   display: flex;
@@ -4691,43 +4801,45 @@ dialog.reassort form input {
   gap: 6px;
 }
 .page-compte .form-compte .col .champ label {
-  font-size: 16px;
+  font-size: 14px;
   color: #1b1b1b;
   font-weight: 600;
 }
-.page-compte .form-compte .col .champ input {
+.page-compte .form-compte .col .champ input,
+.page-compte .form-compte .col .champ textarea,
+.page-compte .form-compte .col .champ select {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 14px;
   font-size: 15px;
   border: 2px solid #273469;
   border-radius: 12px;
-  background: white;
+  background: #fff;
   outline: none;
   box-sizing: border-box;
-  transition: all 0.3s ease;
+  transition: all 0.18s ease;
 }
-.page-compte .form-compte .col .champ input[readonly] {
-  background-color: #f8f9fa !important;
-  color: #6c757d !important;
+.page-compte .form-compte .col .champ input[readonly],
+.page-compte .form-compte .col .champ textarea[readonly],
+.page-compte .form-compte .col .champ select[disabled] {
+  background-color: #f8f9fa;
+  color: #6c757d;
   cursor: not-allowed;
   border-color: #dee2e6;
 }
-.page-compte .form-compte .col .champ input:not([readonly]) {
-  background-color: white !important;
-  color: #212529 !important;
-  border-color: #273469;
+.page-compte .form-compte .col .champ input:not([readonly]):focus,
+.page-compte .form-compte .col .champ textarea:not([readonly]):focus,
+.page-compte .form-compte .col .champ select:focus {
+  border-color: rgb(27.95, 37.2666666667, 75.25);
+  box-shadow: 0 0 0 4px rgba(39, 52, 105, 0.08);
 }
-.page-compte .form-compte .col .champ input:focus:not([readonly]) {
-  border-color: rgb(25.1875, 33.5833333333, 67.8125);
-  box-shadow: 0 0 0 3px rgba(39, 52, 105, 0.1);
+.page-compte .form-compte .col .champ {
+  /* état d'erreur */
 }
-.page-compte .form-compte .col .champ input.error {
+.page-compte .form-compte .col .champ input.error,
+.page-compte .form-compte .col .champ textarea.error,
+.page-compte .form-compte .col .champ select.error {
   border-color: #e4574d;
   background-color: #fff5f5;
-}
-.page-compte .form-compte .col .champ input.error:focus {
-  border-color: #e4574d;
-  box-shadow: 0 0 0 3px rgba(228, 87, 77, 0.1);
 }
 .page-compte .form-compte .col .champ .field-error {
   height: 20px;
@@ -4745,344 +4857,195 @@ dialog.reassort form input {
 }
 .page-compte .form-compte .col .mpd-rules {
   margin-top: 4px;
-  padding-left: 22px;
+  padding-left: 18px;
   font-size: 14px;
 }
 .page-compte .form-compte .col .mpd-rules li {
   margin: 4px 0;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
-.page-compte .form-compte .code-vendeur {
-  font-size: 18px;
-  font-weight: bold;
-  color: #273469;
+.page-compte .form-compte {
+  /* petit composant pour deux champs côte à côte à l'intérieur d'une colonne */
 }
-
-.champ-double {
+.page-compte .form-compte .champ-double {
   display: flex;
   gap: 12px;
 }
-.champ-double .champ {
+.page-compte .form-compte .champ-double .champ {
   flex: 1;
 }
-.champ-double .champ input {
+.page-compte .form-compte .champ-double .champ input {
   width: 100%;
   box-sizing: border-box;
 }
-
-.actions {
-  grid-column: 1/-1;
+.page-compte .form-compte {
+  /* Code vendeur (texte simple) */
+}
+.page-compte .form-compte .code-vendeur {
+  font-size: 18px;
+  font-weight: 700;
+  color: #273469;
+}
+.page-compte .form-compte {
+  /* Actions sur la ligne du bas */
+}
+.page-compte .form-compte .actions {
   display: flex;
-  gap: 18px;
+  gap: 16px;
   justify-content: flex-end;
-  margin-top: 35px;
+  margin-top: 6px;
   flex-wrap: wrap;
 }
-.actions button {
-  padding: 14px 30px;
+.page-compte .form-compte .actions button {
+  padding: 12px 26px;
   border-radius: 26px;
   font-weight: 600;
   cursor: pointer;
   border: none;
   font-size: 15px;
-  transition: all 0.3s ease;
+  transition: all 0.18s ease;
   min-width: 120px;
 }
-.actions button:active {
+.page-compte .form-compte .actions button:active {
   transform: translateY(0);
 }
-.actions button:disabled {
+.page-compte .form-compte .actions button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
   box-shadow: none;
 }
-.actions .modifier {
+.page-compte .form-compte .actions .modifier {
   background-color: #dcd8f9;
   color: #3d2d86;
 }
-.actions .sauvegarder {
+.page-compte .form-compte .actions .sauvegarder,
+.page-compte .form-compte .actions .annuler {
   background: #eceaff;
   color: #3d2d86;
 }
-.actions .annuler {
-  background: #eceaff;
-  color: #3d2d86;
-}
-.actions .modifier-mdp {
+.page-compte .form-compte .actions .modifier-mdp {
   background-color: #dcd8f9;
   color: #3d2d86;
 }
-.actions .modifier-mdp.annuler-mdp {
-  background: #eceaff;
-  color: #3d2d86;
-}
-.actions .supprimer {
+.page-compte .form-compte .actions .supprimer {
   background: #e4574d;
-  color: white;
+  color: #fff;
 }
-
+.page-compte {
+  /* fin .form-compte */
+} /* fin .page-compte */
 /* ============================ */
-/* RESPONSIVE DESIGN */
+/* RESPONSIVE */
 /* ============================ */
-/* Tablettes et petits écrans d'ordinateur */
-@media (max-width: 1200px) {
-  .page-compte {
-    padding: 50px 60px;
-  }
-  .page-compte .form-compte {
-    width: 70%;
-  }
-}
+/* Desktop large -> pas de changement (2 colonnes) */
+/* Tablette / petit écran : réduire gaps et garder 2 colonnes si possible */
 @media (max-width: 1024px) {
   .page-compte {
-    padding: 40px 50px;
-  }
-  .page-compte .header-compte {
-    gap: 30px;
-    margin-bottom: 35px;
-  }
-  .page-compte .header-compte .photo-profil {
-    width: 130px;
-    height: 130px;
-  }
-  .page-compte .header-compte h1 {
-    font-size: 36px;
+    padding: clamp(18px, 4vw, 50px);
   }
   .page-compte .form-compte {
-    width: 80%;
-    gap: 40px;
+    gap: 28px;
+  }
+  .page-compte .form-compte .header-compte {
+    gap: 20px;
+  }
+  .page-compte .form-compte .header-compte .photo-profil {
+    width: clamp(80px, 10vw, 130px);
+    height: clamp(80px, 10vw, 130px);
+  }
+  .page-compte .form-compte .header-compte h1 {
+    font-size: clamp(20px, 3vw, 36px);
+  }
+  .page-compte .form-compte .colonnes-container {
+    gap: 28px;
   }
 }
-/* Tablettes */
+/* Tablette portrait / mobile large : basculer en une colonne */
 @media (max-width: 900px) {
   .page-compte {
-    padding: 35px 40px;
-  }
-  .page-compte::before {
-    top: -300px;
-    width: 800px;
-    height: 800px;
-    opacity: 0.3;
-  }
-  .page-compte .header-compte {
-    flex-direction: column;
-    text-align: center;
-    gap: 25px;
-    margin-bottom: 30px;
-  }
-  .page-compte .header-compte .photo-profil {
-    width: 120px;
-    height: 120px;
-  }
-  .page-compte .header-compte h1 {
-    font-size: 32px;
+    padding: clamp(16px, 4vw, 40px);
+    margin: 0 auto;
+    width: 100%;
   }
   .page-compte .form-compte {
-    width: 90%;
+    gap: 20px;
+    width: 100%;
+  }
+  .page-compte .form-compte .header-compte {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+  .page-compte .form-compte .colonnes-container {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 20px;
   }
-  .page-compte .form-compte .col {
-    gap: 18px;
-  }
-  .page-compte .champ-double {
+  .page-compte .form-compte .champ-double {
     flex-direction: column;
     gap: 10px;
   }
-  .page-compte .champ-double .champ {
-    width: 100%;
-  }
-  .page-compte .actions {
-    justify-content: flex-end;
-  }
-  .page-compte .actions button {
-    padding: 12px 25px;
-    font-size: 14px;
-    min-width: 110px;
+  .page-compte .form-compte .actions {
+    justify-content: center;
   }
 }
-/* Mobiles */
-@media (max-width: 768px) {
-  .page-compte {
-    padding: 25px 30px;
-  }
-  .page-compte::before {
-    top: -200px;
-    width: 600px;
-    height: 600px;
-    opacity: 0.2;
-  }
-  .page-compte .header-compte {
-    gap: 20px;
-    margin-bottom: 25px;
-  }
-  .page-compte .header-compte .photo-profil {
-    width: 100px;
-    height: 100px;
-  }
-  .page-compte .header-compte h1 {
-    font-size: 28px;
-  }
-  .page-compte .form-compte {
-    width: 100%;
-    gap: 25px;
-  }
-  .page-compte .form-compte .col {
-    gap: 16px;
-  }
-  .page-compte .form-compte .col .champ {
-    gap: 5px;
-  }
-  .page-compte .form-compte .col .champ label {
-    font-size: 15px;
-  }
-  .page-compte .form-compte .col .champ input {
-    padding: 10px 14px;
-    font-size: 14px;
-  }
-  .page-compte .form-compte .col .champ .field-error {
-    height: 18px;
-  }
-  .page-compte .form-compte .col .champ .field-error p {
-    font-size: 12px;
-  }
-  .page-compte .form-compte .col .mpd-rules {
-    font-size: 13px;
-    padding-left: 18px;
-  }
-  .page-compte .form-compte .code-vendeur {
-    font-size: 16px;
-  }
-  .page-compte .actions {
-    justify-content: flex-end;
-    margin-top: 25px;
-    gap: 12px;
-  }
-  .page-compte .actions button {
-    padding: 10px 20px;
-    font-size: 13px;
-    min-width: 100px;
-    border-radius: 20px;
-  }
-}
-/* Petits mobiles */
+/* Mobiles étroits */
 @media (max-width: 480px) {
   .page-compte {
-    padding: 20px 15px;
+    padding: 14px;
   }
   .page-compte::before {
     display: none;
   }
-  .page-compte .header-compte {
-    gap: 15px;
-    margin-bottom: 20px;
-  }
-  .page-compte .header-compte .photo-profil {
-    width: 80px;
-    height: 80px;
-  }
-  .page-compte .header-compte h1 {
-    font-size: 24px;
-  }
   .page-compte .form-compte {
-    gap: 20px;
+    gap: 16px;
   }
-  .page-compte .form-compte .col {
-    gap: 14px;
-  }
-  .page-compte .form-compte .col .champ input {
-    padding: 8px 12px;
-    font-size: 13px;
-    border-radius: 10px;
-  }
-  .page-compte .form-compte .col .champ .field-error {
-    height: 16px;
-  }
-  .page-compte .form-compte .col .champ .field-error p {
-    font-size: 11px;
-  }
-  .page-compte .form-compte .col .mpd-rules {
-    font-size: 12px;
-    padding-left: 15px;
-  }
-  .page-compte .form-compte .col .mpd-rules li {
-    margin: 3px 0;
-  }
-  .page-compte .form-compte .code-vendeur {
-    font-size: 15px;
-  }
-  .page-compte .actions {
-    justify-content: flex-end;
-    margin-top: 20px;
-    gap: 8px;
-  }
-  .page-compte .actions button {
-    padding: 10px 15px;
-    font-size: 12px;
-    min-width: auto;
-    border-radius: 20px;
-  }
-}
-/* Très petits mobiles */
-@media (max-width: 360px) {
-  .page-compte {
-    padding: 15px 10px;
-  }
-  .page-compte .header-compte .photo-profil {
+  .page-compte .form-compte .header-compte .photo-profil {
     width: 70px;
     height: 70px;
   }
-  .page-compte .header-compte h1 {
-    font-size: 22px;
+  .page-compte .form-compte .header-compte h1 {
+    font-size: 20px;
   }
-  .page-compte .form-compte .col .champ input {
-    padding: 7px 10px;
-    font-size: 12px;
+  .page-compte .form-compte .colonnes-container {
+    gap: 16px;
   }
-  .page-compte .form-compte .col .champ .field-error {
-    height: 15px;
+  .page-compte .form-compte .actions {
+    gap: 10px;
+  }
+  .page-compte .form-compte .actions button {
+    padding: 10px 16px;
+    font-size: 13px;
+    min-width: auto;
+    border-radius: 20px;
+  }
+  .page-compte .form-compte .col .champ input,
+  .page-compte .form-compte .col .champ textarea,
+  .page-compte .form-compte .col .champ select {
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 10px;
   }
   .page-compte .form-compte .col .champ .field-error p {
-    font-size: 10px;
-  }
-  .page-compte .actions button {
-    padding: 8px 12px;
-    font-size: 11px;
+    font-size: 12px;
   }
 }
-/* Mode paysage sur mobile */
-@media (max-height: 500px) and (orientation: landscape) {
+/* Très petits écrans */
+@media (max-width: 360px) {
   .page-compte {
-    padding: 20px 30px;
+    padding: 12px;
   }
-  .page-compte .header-compte {
-    flex-direction: row;
-    text-align: left;
-    margin-bottom: 20px;
+  .page-compte .form-compte {
+    gap: 12px;
   }
-  .page-compte .header-compte .photo-profil {
+  .page-compte .form-compte .header-compte .photo-profil {
     width: 60px;
     height: 60px;
   }
-  .page-compte .header-compte h1 {
-    font-size: 24px;
+  .page-compte .form-compte .header-compte h1 {
+    font-size: 18px;
   }
-  .page-compte .form-compte {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .page-compte .form-compte .col {
+  .page-compte .form-compte .colonnes-container {
     gap: 12px;
-  }
-  .page-compte .actions {
-    justify-content: flex-end;
-    margin-top: 20px;
-  }
-  .page-compte .actions button {
-    padding: 8px 15px;
-    font-size: 12px;
-    min-width: 90px;
   }
 }
 .pageProduit main {
@@ -5121,6 +5084,40 @@ dialog.reassort form input {
   border-radius: 16px;
   position: relative;
 }
+.pageProduit .banniere {
+  display: block;
+  position: absolute;
+  top: -8px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+.pageProduit .imgBanniere {
+  position: absolute;
+  height: 140px;
+  width: auto;
+  z-index: 1;
+}
+.pageProduit .banniere h1 {
+  position: absolute;
+  top: 25px;
+  left: 13px;
+  color: #fffefa;
+  z-index: 10000;
+}
+.pageProduit .poly1 {
+  position: absolute;
+  top: 35px;
+  left: 10px;
+  width: auto;
+  z-index: 100;
+}
+.pageProduit .poly2 {
+  position: absolute;
+  top: 90px;
+  left: 10px;
+  width: auto;
+  z-index: 1000000;
+}
 .pageProduit #imageBouteille {
   width: 220px;
   height: 330px;
@@ -5137,7 +5134,7 @@ dialog.reassort form input {
   gap: 1em;
 }
 .pageProduit .infoPreviewProduit div h1, .pageProduit .infoPreviewProduit div h2, .pageProduit .infoPreviewProduit div h4 {
-  margin: 1em 0;
+  margin: 0.5em 0;
 }
 .pageProduit .infoPreviewProduit h1, .pageProduit .infoPreviewProduit h2, .pageProduit .infoPreviewProduit h3, .pageProduit .infoPreviewProduit h4, .pageProduit .infoPreviewProduit p {
   margin: 0 0;
@@ -5158,6 +5155,16 @@ dialog.reassort form input {
   width: 50px;
   height: 75px;
   margin-top: 0.5em;
+}
+.pageProduit .attributsproduit h3 {
+  border-radius: 8px;
+  background-color: #f14e4e;
+  color: white;
+  padding: 0.5em 1em;
+}
+.pageProduit .resume {
+  max-height: 60px;
+  overflow: hidden;
 }
 .pageProduit .version {
   margin-top: 1.6em;
@@ -5189,6 +5196,12 @@ dialog.reassort form input {
 .pageProduit .actionsProduit h2 {
   margin: 0 0;
   padding: 0 0;
+}
+.pageProduit .actionsProduit .ligneActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .pageProduit .underline {
   text-decoration: underline;
@@ -5311,7 +5324,7 @@ dialog.reassort form input {
   transition: all 0.3s ease;
 }
 .pageProduit .conteneurTexte {
-  width: 100%;
+  width: 68%;
   max-height: 600px;
   margin-left: 2.5em;
   color: #273469;
@@ -5368,7 +5381,6 @@ dialog.reassort form input {
   border: 2px solid #273469;
   background-color: white;
   border-radius: 32px;
-  padding: 0.5em 1em;
   cursor: pointer;
   font-size: 16px;
 }
@@ -5415,9 +5427,10 @@ dialog.reassort form input {
   flex-direction: column;
 }
 .pageProduit .baselineSpaceBetween {
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: baseline;
 }
 .pageProduit .actionsAvis {
@@ -5445,6 +5458,20 @@ dialog.reassort form input {
   font-weight: bold;
   color: #273469;
   margin: 0;
+}
+.pageProduit .stockDisponible {
+  position: relative;
+  left: 2.5em;
+  font-size: 20px;
+  color: green;
+  font-weight: bold;
+}
+.pageProduit .stockIndisponible {
+  position: relative;
+  left: 2.5em;
+  font-size: 20px;
+  color: red;
+  font-weight: bold;
 }
 .pageProduit .review-count {
   text-decoration: underline;
@@ -5687,6 +5714,9 @@ dialog.reassort form input {
   }
 }
 @media (max-width: 800px) {
+  .pageProduit .banniere {
+    display: none;
+  }
   .pageProduit .stickyTelephone {
     display: flex;
   }
@@ -5756,6 +5786,12 @@ dialog.reassort form input {
   .pageProduit .baselineSpaceBetween {
     flex-direction: column;
     gap: 0.5em;
+  }
+  .pageProduit .actionsProduit {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
   .pageProduit .actionsAvis {
     justify-content: flex-start;
@@ -5867,10 +5903,10 @@ dialog.reassort form input {
   font-style: normal;
   cursor: pointer;
 }
-.connexionVendeur .information_connexion .form-vendeur .liens-utiles a:visited {
-  color: #273469;
+.connexionVendeur .information_connexion .form-vendeur .liens-utiles a :visited {
+  color: #273469 !important;
 }
-.connexionVendeur .information_connexion .form-vendeur .liens-utiles a:hover {
+.connexionVendeur .information_connexion .form-vendeur .liens-utiles a :hover {
   color: rgb(25.1875, 33.5833333333, 67.8125);
 }
 .connexionVendeur .information_connexion .form-vendeur .actions {
@@ -5903,6 +5939,201 @@ dialog.reassort form input {
   margin-top: 50px;
   padding: 0 20px;
   line-height: 1.4;
+}
+
+.overlayPopUpErreur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popUpErreur {
+  background-color: #fffefa;
+  border-radius: 16px;
+  position: relative;
+  width: 400px;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.popUpErreur .croixFermerLaPage {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+.popUpErreur .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.popUpErreur .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.popUpErreur .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.popUpErreur h1 {
+  color: #273469;
+  font-family: "lora", serif;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+.popUpErreur .icon-warning {
+  font-size: 40px;
+  color: #273469;
+  margin-bottom: 15px;
+}
+.popUpErreur p {
+  font-family: "lora", sans-serif;
+  color: #6e6e6e;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+.popUpErreur button {
+  border: 0;
+  background-color: #273469;
+  padding: 12px 40px;
+  color: white;
+  border-radius: 32px;
+  font-family: "lora", serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.popUpErreur button:hover {
+  opacity: 0.9;
+}
+
+.pagePrevi .previsualisation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.pagePrevi .textePrevi {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.pagePrevi .textePrevi h1 {
+  color: #f14e4e;
+  font-size: 24px;
+  margin: 0;
+}
+.pagePrevi .boutonRetour {
+  display: flex;
+  margin-right: 10px;
+  justify-content: center;
+  padding: 10px;
+  background-color: #273469;
+  border-radius: 24px;
+  width: 200px;
+  cursor: pointer;
+}
+.pagePrevi .boutonRetour a {
+  text-decoration: none;
+  cursor: pointer;
+}
+.pagePrevi .boutonRetour button {
+  background-color: transparent;
+  text-decoration: none;
+  border: 0;
+  font-size: 24px;
+  color: #e3f2fe;
+  font-family: "lora";
+  border-right: 10px;
+  cursor: pointer;
+}
+.pagePrevi .lignePrevi {
+  border-top: solid 4px #f14e4e;
+}
+.pagePrevi .actionsProduit {
+  margin-top: 40px;
+  margin-left: auto;
+  position: sticky;
+  top: 2em;
+  right: 1em;
+  width: 24%;
+  z-index: 10;
+  height: fit-content;
+  padding: 15px;
+}
+
+.avis-vendeur h1 {
+  font-size: 40px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+  color: #273469;
+}
+.avis-vendeur .avi {
+  border-collapse: separate;
+  width: 100%;
+  color: #273469;
+  background-color: #e4d9ff;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  padding: 20px 0 25px 0;
+  font-size: 18px;
+  font-family: "Lora", serif;
+}
+.avis-vendeur .avi .col-gauche {
+  width: 150px;
+  padding: 0px;
+  text-align: center;
+}
+.avis-vendeur .avi .col-gauche .profil-client {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+.avis-vendeur .avi .col-gauche .profil-client img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+.avis-vendeur .avi .col-gauche .profil-client figcaption {
+  margin-top: 0;
+}
+.avis-vendeur .avi .etoiles {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 20px;
+  color: #FFD000;
+  gap: 5px;
+  display: flex;
+}
+.avis-vendeur .avi .ligne {
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+.avis-vendeur .avi .date-avis {
+  font-size: 12px;
+  font-family: "Lora", sans-serif;
 }
 
 /*# sourceMappingURL=style.css.map */

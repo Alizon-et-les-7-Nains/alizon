@@ -11,6 +11,7 @@
     flex-wrap: nowrap;
     max-width: 800px;
     margin-bottom: 40px;
+    align-items: center;
   }
   .quantiteProduit {
     display: flex;
@@ -149,7 +150,7 @@
   article h2 b {
     color: black;
   }
-  @media (max-width: 1248px) {
+  @media (max-width: 1290px) {
       main {
         flex-direction: column;
         justify-content: center;
@@ -178,6 +179,7 @@
     }
     .infoProduit div h2 {
       font-size: 15px;
+      max-width: 170px;
     }
     .quantiteProduit img {
       width: 9px !important;
@@ -205,6 +207,9 @@
     button .delete {
       margin-top: 20px;
     }
+    .prixOpt p {
+
+    }
   }
   button {
     background: none;
@@ -217,6 +222,7 @@
   }
   .infoProduit h2 {
     margin-top: 0;
+    max-width: 300px;
   }
   button .delete {
     margin-bottom: 15px;

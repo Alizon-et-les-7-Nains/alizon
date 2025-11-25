@@ -67,7 +67,13 @@ document.querySelector('header.backoffice figure:nth-child(3)')?.addEventListene
     window.location.href = 'compteVendeur.php';
 });
 const btnSettings = Array.from(document.getElementsByClassName('settings'));
-const modalReassort = document.querySelector("dialog.reassort");
+const inputSeuil = document.getElementById('seuil');
+const inputDate = document.getElementById('dateReassort');
+const inputReassort = document.getElementById('reassort');
+const buttonConfirm = document.getElementById('buttonConfirm');
+const errorFieldSeuil = document.getElementById('errorFieldSeuil');
+const errorFieldReassort = document.getElementById('errorFieldReassort');
+const errorFieldDate = document.getElementById('errorFieldDate');
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);
@@ -92,19 +98,69 @@ btnSettings.forEach(btn => {
 });
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        modalReassort.showModal();
-        modalReassort.style.display = 'flex';
+        const modal = document.querySelector(`main.backoffice-stocks dialog#d-${btn.id}`);
+        if (!modal) {
+            console.error('Dialog non trouvé');
+            return;
+        }
+        modal.showModal();
+        modal.style.display = 'flex';
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.close();
+                modal.style.display = 'none';
+            }
+        });
     });
 });
-modalReassort?.addEventListener("click", (e) => {
-    if (e.target === modalReassort) {
-        modalReassort.close();
-        modalReassort.style.display = 'none';
+function checkInt(value) {
+    if (!value)
+        return true;
+    let intValue = parseInt(value);
+    return !isNaN(intValue) && intValue >= 0;
+}
+function checkDate(date) {
+    if (!date)
+        return true;
+    let now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return now.getTime() < date.getTime();
+}
+function allValid() {
+    return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);
+}
+inputSeuil?.addEventListener('input', () => {
+    if (!checkInt(inputSeuil.value)) {
+        inputSeuil.style.cssText = 'border-color: #f14e4e !important';
+        errorFieldSeuil.style.display = 'block';
     }
+    else {
+        inputSeuil.style.cssText = 'border-color: #273469 !important';
+        errorFieldSeuil.style.display = 'none';
+    }
+    buttonConfirm.disabled = !allValid();
 });
-document.querySelector('input#annuler')?.addEventListener('click', () => {
-    modalReassort.close();
-    modalReassort.style.display = 'none';
+inputDate?.addEventListener('input', () => {
+    if (!checkDate(inputDate.valueAsDate)) {
+        inputDate.style.cssText = 'border-color: #f14e4e !important';
+        errorFieldDate.style.display = 'block';
+    }
+    else {
+        inputDate.style.cssText = 'border-color: #273469 !important';
+        errorFieldDate.style.display = 'none';
+    }
+    buttonConfirm.disabled = !allValid();
+});
+inputReassort?.addEventListener('input', () => {
+    if (!checkInt(inputReassort.value)) {
+        inputReassort.style.cssText = 'border-color: #f14e4e !important';
+        errorFieldReassort.style.display = 'block';
+    }
+    else {
+        inputReassort.style.cssText = 'border-color: #273469 !important';
+        errorFieldReassort.style.display = 'none';
+    }
+    buttonConfirm.disabled = !allValid();
 });
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";

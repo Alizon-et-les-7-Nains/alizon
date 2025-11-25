@@ -163,27 +163,37 @@ function verifierChamp() {
   }
 
   for (let i = 0; i < champs.length; i++) {
-      clearError(champs[i]);
+    clearError(champs[i]);
   }
 
   for (let i = 0; i < champs.length; i++) {
     let valeur = champs[i].value.trim();
-    
-    if (( i === 0 || i === 1 || i === 2 || i === 3 ||i === 9 ||i === 10) && valeur === "") {
+
+    if (
+      (i === 0 || i === 1 || i === 2 || i === 3 || i === 9 || i === 10) &&
+      valeur === ""
+    ) {
       tousRemplis = false;
       setError(champs[i], "Ce champ est obligatoire");
       continue;
-    } 
+    }
 
     if (i === 3 && valeur !== "") {
-      if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
+      if (
+        !/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(
+          valeur
+        )
+      ) {
         tousRemplis = false;
         setError(champs[i], "Format attendu : jj/mm/aaaa");
       }
     }
 
     if (i === 9 && valeur !== "") {
-      if (!/^0[0-9](\s[0-9]{2}){4}$/.test(valeur) && !/^0[0-9]([0-9]{2}){4}$/.test(valeur)) {
+      if (
+        !/^0[0-9](\s[0-9]{2}){4}$/.test(valeur) &&
+        !/^0[0-9]([0-9]{2}){4}$/.test(valeur)
+      ) {
         tousRemplis = false;
         setError(champs[i], "Format attendu : 06 01 02 03 04 ou 0601020304");
       }
@@ -238,7 +248,7 @@ function modifierProfil(event) {
       "telephone",
       "email",
     ];
-    
+
     for (let i = 0; i < elems.length; i++) {
       let texteActuel = elems[i].innerText;
       let input = document.createElement("input");
@@ -309,26 +319,36 @@ function modifierProfil(event) {
     const inputs = document.querySelectorAll("section input");
 
     for (let i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener("input", verifierChamp);
+      inputs[i].addEventListener("input", verifierChamp);
     }
 
     verifierChamp();
-    
-
   } else {
-      let form = document.querySelector("form");
-      form.submit();
+    let form = document.querySelector("form");
+    form.submit();
   }
 }
 
 bnModifier[0].addEventListener("click", modifierProfil);
 
 const valeursInitiales = Array.from(document.querySelectorAll("section p"));
+let imageProfileOriginalSrc = imageProfile ? imageProfile.src : "";
+
+ajoutPhoto.addEventListener("change", function () {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      imageProfile.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});
 
 function boutonAnnuler() {
   const champs = document.querySelectorAll("section input");
   for (let i = 0; i < champs.length; i++) {
-      clearError(champs[i]);
+    clearError(champs[i]);
   }
 
   let inputs = document.querySelectorAll("section input");
@@ -341,8 +361,20 @@ function boutonAnnuler() {
     currentParent.replaceChild(p, inputs[i]);
   }
 
-  if (document.getElementById("photoProfil")) {
-    document.getElementById("photoProfil").remove();
+  // Restaurer la preview de l'image à l'original
+  if (imageProfile && typeof imageProfileOriginalSrc !== "undefined") {
+    imageProfile.src = imageProfileOriginalSrc;
+  }
+
+  // Si l'input file existe, réinitialiser sa valeur puis le supprimer
+  const photoInput = document.getElementById("photoProfil");
+  if (photoInput) {
+    try {
+      photoInput.value = "";
+    } catch (e) {
+      // certains navigateurs bloquent l'affectation de value pour security, on ignore
+    }
+    photoInput.remove();
   }
 
   enModif = false;

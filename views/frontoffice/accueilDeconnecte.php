@@ -106,20 +106,26 @@ require_once "../../controllers/prix.php";
             <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
         <?php } else { 
                      
-            $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
-            $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
-            $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
-            $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+            $cheminSysteme = "/var/www/html/images/baniere/" . $choixAleatoirePromo . ".jpg";
+
+            if (file_exists($cheminSysteme)) {
+                $image = "/images/baniere/" . $choixAleatoirePromo . ".jpg";
+            } else {
+                $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+                $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
+                $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+                $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+            }
 
             $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :idProduit");
             $stmt->execute([':idProduit' => $choixAleatoirePromo]);
             $produitEnPromo = $stmt->fetch(PDO::FETCH_ASSOC);
             ?>
             
-            <h1><?php echo htmlspecialchars($produitEnPromo['nom']); ?></h1>
-            <img src="<?php echo htmlspecialchars($image); ?>" alt="Image du produit">
-
+            <h1 onclick="window.location.href='?addRecent=<?php echo $choixAleatoirePromo; ?>&id=<?php echo $choixAleatoirePromo; ?>'"><?php echo htmlspecialchars($produitEnPromo['nom']); ?></h1>
+            <img onclick="window.location.href='?addRecent=<?php echo $choixAleatoirePromo; ?>&id=<?php echo $choixAleatoirePromo; ?>'" src="<?php echo htmlspecialchars($image); ?>" alt="Image du produit">
         <?php } ?>
+
     </section>
 
     <main>
@@ -131,7 +137,7 @@ require_once "../../controllers/prix.php";
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE dateAjout >= DATE_SUB(NOW(), INTERVAL 2 WEEK)");
+                $stmt = $pdo->prepare("SELECT * FROM _produit ORDER BY idProduit DESC LIMIT 10 ;");
                 $stmt->execute();
                 $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
@@ -156,6 +162,12 @@ require_once "../../controllers/prix.php";
                             <div class="infoProd">
                                 <div class="prix">
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
+                                    <?php 
+                                        $prix = $value['prix'];
+                                        $poids = $value['poids'];
+                                        $prixAuKg = $prix/$poids;
+                                        $prixAuKg = round($prixAuKg,2) ?>
+                                    <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                 </div>
                                 <div>
                                     <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
@@ -204,6 +216,12 @@ require_once "../../controllers/prix.php";
                             <div class="infoProd">
                                 <div class="prix">
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
+                                    <?php 
+                                        $prix = $value['prix'];
+                                        $poids = $value['poids'];
+                                        $prixAuKg = $prix/$poids;
+                                        $prixAuKg = round($prixAuKg,2) ?>
+                                    <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                 </div>
                                 <div>
                                     <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
@@ -252,6 +270,12 @@ require_once "../../controllers/prix.php";
                             <div class="infoProd">
                                 <div class="prix">
                                     <h2><?php echo formatPrice($value['prix']); ?></h2>
+                                    <?php 
+                                        $prix = $value['prix'];
+                                        $poids = $value['poids'];
+                                        $prixAuKg = $prix/$poids;
+                                        $prixAuKg = round($prixAuKg,2) ?>
+                                    <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                 </div>
                                 <div>
                                     <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
@@ -303,6 +327,12 @@ require_once "../../controllers/prix.php";
                                 <div class="infoProd">
                                     <div class="prix">
                                         <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
+                                        <?php 
+                                            $prix = $produitRecent['prix'];
+                                            $poids = $produitRecent['poids'];
+                                            $prixAuKg = $prix/$poids;
+                                            $prixAuKg = round($prixAuKg,2) ?>
+                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                     </div>
                                     <div>
                                         <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">

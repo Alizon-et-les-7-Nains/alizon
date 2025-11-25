@@ -33,6 +33,8 @@
     .banniere {
         text-align: center;
         justify-content: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
 
     .banniere * {
@@ -48,7 +50,10 @@
     }
 
     .banniere img {
-        max-width: 340px;
+        max-width: 400px;
+        max-height: 400px;
+        object-fit: contain;
+        border-radius: 10px;
     }
 
     @media (max-width: 965px) {
@@ -76,6 +81,7 @@
             font-size: 32px;
             background-color: #E3F2FE;
             padding: 10px;
+            margin-bottom: 10px;
         }
         .banniere div {
             background-color: #E4D9FF;

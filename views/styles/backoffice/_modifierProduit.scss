@@ -112,7 +112,6 @@
         border: 2px solid $color-blue;
         border-radius: 8px;
         font-size: 1rem;
-        box-sizing: border-box;
         
         &::placeholder {
             color: $color-dark-gray;
@@ -234,7 +233,6 @@
             background-color: $color-red;
             color: $color-white;
             width: 200px;
-            margin-top: 13px;
 
             &:hover {
                 background-color: darken($color-pastel-purple, 5%);

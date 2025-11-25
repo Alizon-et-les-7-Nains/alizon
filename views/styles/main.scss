@@ -30,3 +30,6 @@
 @use "./backoffice/compteVendeur";
 @use "./frontoffice/produit";
 @use "./backoffice/connexionVendeur";
+@use "./backoffice/_stylepopUpErreur";
+@use "./backoffice/stylePrevisualisation";
+@use "./backoffice/avisVendeur";

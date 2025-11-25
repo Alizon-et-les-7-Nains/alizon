@@ -1,6 +1,7 @@
 <?php 
 session_start();
 require_once "../../controllers/pdo.php";
+require_once '../../controllers/auth.php';
 
     $nom = $_SESSION['form_data']['nom'] ?? '';
     $prenom = $_SESSION['form_data']['prenom'] ?? '';
@@ -83,6 +84,8 @@ require_once "../../controllers/pdo.php";
             </div>
         </form>
     </main>
+
+    <script src="../../public/script.js"> </script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {

@@ -8,11 +8,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_POST['date_limite']) && isset($_POST['id'])) {
         $idProd = intval($_POST['id']); 
         $dateLimite = $_POST['date_limite'];
-        $dateSql = DateTime::createFromFormat('d/m/Y', $dateLimite)->format('Y-m-d');
 
-        $stmt = $pdo->prepare("INSERT INTO _promotion(idProduit, debutPromotion, finPromotion) VALUES (:idProd, CURDATE(), :dateLimite)");
+        $photoPath = '/var/www/html/images/baniere/'.$idProd;
 
-        $stmt->execute([':idProd' => $idProd,':dateLimite' => $dateSql]);
+        $extensionsPossibles = ['jpg'];
+        $extension = '';
+
+        $d = DateTime::createFromFormat('d/m/Y', $dateLimite);
+
+        if (!$d) {
+            $d = DateTime::createFromFormat('Y-m-d', $dateLimite);
+        }
+
+        if (!$d) {
+             header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd);
+             exit;
+        }
+
+        $stmt = $pdo->prepare("SELECT * FROM _promotion WHERE idProduit = :idProd");
+        $stmt->execute([':idProd' => $idProd]);
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        $dateSql = $d->format('Y-m-d');
+
+        if(count($res) >= 1) {
+            $stmt = $pdo->prepare("UPDATE _promotion SET finPromotion = :finPromotion WHERE idProduit = :idProd");
+            $stmt->execute([':finPromotion' => $dateSql,':idProd' => $idProd]);
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO _promotion(idProduit, debutPromotion, finPromotion) VALUES (:idProd, CURDATE(), :dateLimite)");
+            $stmt->execute([':idProd' => $idProd,':dateLimite' => $dateSql]);
+        }
+
+        foreach ($extensionsPossibles as $ext) {
+            if (file_exists($photoPath . '.' . $ext)) {
+                $extension = '.' . $ext;
+                break;
+            }
+        }
+
+        if ($extension !== '') {
+            $oldFile = $photoPath . $extension;
+            if (file_exists($oldFile)) {
+                unlink($oldFile);
+            }
+        }
+
+        if (isset($_FILES['baniere']) && $_FILES['baniere']['tmp_name'] != '') {
+            $extension = pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
+            $extension = '.'.$extension;
+            move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension);
+        }
+
     }
 
     header('Location: ../views/backoffice/produits.php');

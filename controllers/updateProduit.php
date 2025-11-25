@@ -3,9 +3,11 @@ require_once 'pdo.php';
 session_start();
 
 $idProd = $_GET['id']; 
+
 // Si il y a eu un formulare de remplie, on fait 2 requêtes 
 // La première requête permet de mettre à jour les informations du produit sur lequel le formulaire à été rempli
-// La deuxième permet de mettre à jour l'image d'un produit
+// Ensuite l'image est envoyée sur le serveur puis
+// La deuxième requête permet de mettre à jour l'image d'un produit
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("UPDATE _produit SET nom = :nom, description = :description, prix = :prix, poids = :poids, mots_cles = :mot_cles WHERE idProduit = :idProduit");
@@ -19,23 +21,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':idProduit' => $idProd
     ]);
 
-// On construit le chemin de la nouvelle image 
-$fileName = $_FILES['url']['name'];
-$tmpPath = $_FILES['url']['tmp_name'];
+if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
 
-move_uploaded_file($tmpPath, "../public/images/$fileName");
-$url = "/images/$fileName";
-try{
-        $imgDeProd->execute([
-            ':url' => $url,
-            ':idProduit' => $idProd
-        ]);
+    $photoPath = '/var/www/html/images/produit' . $idProd;
+
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $extension = '';
+
+    foreach ($extensionsPossibles as $ext) {
+        if (file_exists($photoPath . '.' . $ext)) {
+            $extension = '.' . $ext;
+            break;
+        }
     }
+    
+    if (file_exists($photoPath)) { 
+        unlink($photoPath); // supprime l'ancien fichier 
+    }
+    move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
+
+    $fileName = $_FILES['url']['name'];
+    $url = "/images/" . $fileName;
+
+} else {
+
+    $sqlUrl = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+    $sqlUrl->execute([':idProduit' => $idProd]);
+    $row = $sqlUrl->fetch(PDO::FETCH_ASSOC);
+    $fileName = $row['URL']; 
+}
+
+
+$url = "/images/produit" . $idProd.$extension;
+
+try{
+    $imgDeProd->execute([
+        ':url' => $url,
+        ':idProduit' => $idProd
+    ]);
+}
 catch(PDOException $e){
     echo "Erreur SQL : " . $e->getMessage();
+    }
 }
-}
-    
+
+
+
 
 header("Location: ../views/backoffice/accueil.php"); 
 exit();

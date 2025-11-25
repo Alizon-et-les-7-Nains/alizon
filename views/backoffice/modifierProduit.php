@@ -2,6 +2,7 @@
     require_once '../../controllers/pdo.php';
     require_once '../../controllers/prix.php';
     require_once '../../controllers/date.php';
+    require_once '../../controllers/auth.php';
 
 if (!isset($_GET['id'])) {
     die("Aucun produit sélectionné");
@@ -17,14 +18,10 @@ $produit = $stmt->fetch(PDO::FETCH_ASSOC);
 $stmt2 = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = :id");
 $stmt2->execute(['id' => $productId]);
 $image = $stmt2->fetch(PDO::FETCH_ASSOC);
-
-
-
 $hasImage = ($image && !empty($image['URL']));
 $imageUrl = $hasImage 
-    ? '../../public' . $image['URL'] 
+    ? $image['URL'] 
     : '../../public/images/ajouterPhoto.svg';
-
 if (!$produit) {
     die("Produit introuvable.");
 }
@@ -37,7 +34,6 @@ if (!$produit) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Modifer un produit du catalogue</title>
 </head>
 <body class="backoffice">

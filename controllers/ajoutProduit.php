@@ -1,6 +1,6 @@
 <?php
-session_start();
 require_once 'pdo.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Insertion dans _produit
         $sql = "INSERT INTO _produit 
-            (nom, prix, poids, description, mots_cles) 
-            VALUES (:nom, :prix, :poids, :description, :mots_cles)";
+            (nom, prix, poids, description, mots_cles, idVendeur, stock, versionProd, note) 
+            VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur, :stock, :versionProd, :note)";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -25,7 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':prix' => $prix,
             ':poids' => $poids,
             ':description' => $description,
-            ':mots_cles' => $mots_cles
+            ':mots_cles' => $mots_cles,
+            ':idVendeur' => $_SESSION['id'],
+            ':stock' => 1,
+            ':versionProd' => 1.0,
+            ':note' => 0.0
         ]);
 
         // On récupère l'ID généré
@@ -35,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
             $extension = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
             $nouveauNomImage = 'produit_' . $idNewProduit . '_' . time() . '.' . $extension;
-            $dossierDestination = "../public/images/" . $nouveauNomImage;
+            $dossierDestination = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $nouveauNomImage;
             // Déplacement du fichier
             error_log(print_r($_FILES['photo'], true));
             if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
@@ -47,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 ':idProduit' => $idNewProduit,
-                ':URL' => $nouveauNomImage
+                ':URL' => "/images/$nouveauNomImage"
             ]);
         }
 
