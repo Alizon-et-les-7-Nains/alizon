@@ -116,17 +116,10 @@ document.querySelector('modal.reassort input#annuler')?.addEventListener('click'
     modalReassort.style.display = 'none';
 });
 function checkInt(value) {
-    let valid = true;
+    if (!value)
+        return true;
     let intValue = parseInt(value);
-    if (value) {
-        if (!intValue || intValue < 0) {
-            valid = false;
-        }
-    }
-    else {
-        valid = true;
-    }
-    return valid;
+    return !isNaN(intValue) && intValue >= 0;
 }
 function checkDate(date) {
     let valid = true;
