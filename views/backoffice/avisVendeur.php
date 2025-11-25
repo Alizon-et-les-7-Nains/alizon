@@ -14,7 +14,8 @@ $query = "
         a.dateAvis,
         p.nom as nomProduit,
         c.prenom,
-        c.nom as nomClient
+        c.nom as nomClient,
+        c.pseudo
     FROM saedb._avis a
     JOIN saedb._produit p ON a.idProduit = p.idProduit
     JOIN saedb._client c ON a.idClient = c.idClient
@@ -72,22 +73,22 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             )
                         )->fetchAll(PDO::FETCH_ASSOC);
 
-                        $imageClient = "/images/photoProfilClient/photo_profil]";
+                        $imageClient = "/public/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
                     ?>
 
                 <table class="avi">
                     <tr>
                         <th rowspan="3" class="col-gauche">
                             <figure class="profil-client">
-                                <img src=" <?= $imageClient ?>">
-                                <figcaption><?= $avi['nomClient'] ?></figcaption>
+                                <img src="<?= $imageClient ?>" onerror="this.style.display='none'">
+                                <figcaption><?= $avi['pseudo'] ?></figcaption>
                             </figure>
                         </th>
 
                         <td class="ligne">
                             <figure class="etoiles">
                                 <figcaption><?= str_replace('.', ',', $avi['note']) ?></figcaption>
-                                <img src=" /public/images/etoile.svg">
+                                <img src="/public/images/etoile.svg">
                             </figure>
                             <?= $avi['titreAvis'] ?> - <?= $avi['nomProduit'] ?>
                         </td>

@@ -78,8 +78,8 @@
                                         <?php $nom = $produitEnVente[$i]['nom'] ?>
                                         <?php $nbEval = $evaluations[0]['evaluation'] ?>
                                         <?php if(count($promo) == 1) { ?>
-                                            <button onclick="popUpAnnulerPromotion(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>')">
-                                                Ne plus promouvoir
+                                            <button onclick="popUpAnnulerPromotion(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>')" style="color: #f14e4e;">
+                                                Annuler promotion
                                             </button>
                                         <?php } else { ?>
                                             <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>)">
