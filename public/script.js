@@ -66,15 +66,15 @@ modalDeconnexion?.addEventListener("click", (e) => {
 document.querySelector('header.backoffice figure:nth-child(3)')?.addEventListener('click', () => {
     window.location.href = 'compteVendeur.php';
 });
-let btnSettings = Array.from(document.getElementsByClassName('settings'));
-let modalReassort = document.querySelector("dialog.reassort");
-let inputSeuil = document.getElementById('seuil');
-let inputDate = document.getElementById('dateReassort');
-let inputReassort = document.getElementById('reassort');
-let buttonConfirm = document.getElementById('buttonConfirm');
-let errorFieldSeuil = document.getElementById('errorFieldSeuil');
-let errorFieldReassort = document.getElementById('errorFieldReassort');
-let errorFieldDate = document.getElementById('errorFieldDate');
+const btnSettings = Array.from(document.getElementsByClassName('settings'));
+const modalReassort = document.querySelector("dialog.reassort");
+const inputSeuil = document.getElementById('seuil');
+const inputDate = document.getElementById('dateReassort');
+const inputReassort = document.getElementById('reassort');
+const buttonConfirm = document.getElementById('buttonConfirm');
+const errorFieldSeuil = document.getElementById('errorFieldSeuil');
+const errorFieldReassort = document.getElementById('errorFieldReassort');
+const errorFieldDate = document.getElementById('errorFieldDate');
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);
@@ -99,27 +99,19 @@ btnSettings.forEach(btn => {
 });
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        console.log('Calling fetch with idProduit:', btn.id);
-        fetch('getProduct.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ idProduit: btn.id })
-        })
-            .then(r => {
-            console.log('Response status:', r.status);
-            console.log('Response headers:', r.headers);
-            return r.text(); // Changez temporairement en .text() au lieu de .json()
-        })
-            .then(text => {
-            console.log('Raw response:', text);
-            const data = JSON.parse(text); // Parsez manuellement pour voir l'erreur
-            console.log('Parsed data:', data);
-            // ... reste du code
-        })
-            .catch(error => {
-            console.error('Fetch error:', error);
-        });
+        modalReassort.showModal();
+        modalReassort.style.display = 'flex';
     });
+});
+modalReassort?.addEventListener("click", (e) => {
+    if (e.target === modalReassort) {
+        modalReassort.close();
+        modalReassort.style.display = 'none';
+    }
+});
+document.querySelector('modal.reassort input#annuler')?.addEventListener('click', () => {
+    modalReassort.close();
+    modalReassort.style.display = 'none';
 });
 function checkInt(value) {
     if (!value)
