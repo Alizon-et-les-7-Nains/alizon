@@ -5031,11 +5031,12 @@ dialog.reassort form input {
   position: absolute;
   height: 140px;
   width: auto;
+  z-index: 2;
 }
 .pageProduit .banniere h2 {
   position: absolute;
   top: 50px;
-  left: 170px;
+  left: 25px;
   color: #fffefa;
   z-index: 10000;
 }
