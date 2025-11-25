@@ -68,11 +68,9 @@ class PaymentAPI {
     try {
       console.log("Données de commande:", orderData);
 
-      // CORRECTION: Utiliser FormData au lieu de URLSearchParams
       const formData = new FormData();
       formData.append("action", "createOrder");
 
-      // Ajouter chaque champ individuellement
       Object.keys(orderData).forEach((key) => {
         if (key !== "action") {
           formData.append(key, orderData[key]);
@@ -81,19 +79,32 @@ class PaymentAPI {
 
       const response = await fetch("", {
         method: "POST",
-        body: formData, // Pas de header Content-Type avec FormData
+        body: formData,
       });
 
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
 
-      const result = await response.json();
+      // AJOUT: Récupérer la réponse en texte d'abord pour voir ce qui est renvoyé
+      const responseText = await response.text();
+      console.log("Réponse brute du serveur:", responseText);
+
+      // Essayer de parser en JSON
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("Erreur de parsing JSON:", parseError);
+        console.error("Contenu reçu:", responseText.substring(0, 500)); // Premiers 500 caractères
+        throw new Error("Le serveur n'a pas renvoyé du JSON valide");
+      }
+
       console.log("Résultat de la commande:", result);
       return result;
     } catch (error) {
       console.error("Erreur lors de la création de commande:", error);
-      return { success: false, error: "Erreur réseau: " + error.message };
+      return { success: false, error: error.message };
     }
   }
 }
