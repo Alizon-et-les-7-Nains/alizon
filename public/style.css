@@ -5062,6 +5062,9 @@ dialog.reassort form input {
     gap: 12px;
   }
 }
+.pageProduit {
+  overflow-x: hidden;
+}
 .pageProduit main {
   display: flex;
   flex-direction: column;
