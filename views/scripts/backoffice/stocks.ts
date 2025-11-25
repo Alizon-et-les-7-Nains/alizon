@@ -1,14 +1,14 @@
-let btnSettings: Element[] = Array.from(document.getElementsByClassName('settings'));
-let modalReassort: HTMLDialogElement | null = document.querySelector("dialog.reassort") as HTMLDialogElement;
+const btnSettings: Element[] = Array.from(document.getElementsByClassName('settings'));
+const modalReassort: HTMLDialogElement | null = document.querySelector("dialog.reassort") as HTMLDialogElement;
 
-let inputSeuil: HTMLInputElement = document.getElementById('seuil') as HTMLInputElement;
-let inputDate: HTMLInputElement = document.getElementById('dateReassort') as HTMLInputElement;
-let inputReassort: HTMLInputElement = document.getElementById('reassort') as HTMLInputElement;
-let buttonConfirm: HTMLInputElement = document.getElementById('buttonConfirm') as HTMLInputElement;
+const inputSeuil: HTMLInputElement = document.getElementById('seuil') as HTMLInputElement;
+const inputDate: HTMLInputElement = document.getElementById('dateReassort') as HTMLInputElement;
+const inputReassort: HTMLInputElement = document.getElementById('reassort') as HTMLInputElement;
+const buttonConfirm: HTMLInputElement = document.getElementById('buttonConfirm') as HTMLInputElement;
 
-let errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') as HTMLElement;
-let errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
-let errorFieldDate: HTMLElement = document.getElementById('errorFieldDate') as HTMLElement;
+const errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') as HTMLElement;
+const errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
+const errorFieldDate: HTMLElement = document.getElementById('errorFieldDate') as HTMLElement;
 
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
@@ -36,28 +36,21 @@ btnSettings.forEach(btn => {
 
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        console.log('Calling fetch with idProduit:', btn.id);
-        
-        fetch('getProduct.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({idProduit: btn.id})
-        })
-        .then(r => {
-            console.log('Response status:', r.status);
-            console.log('Response headers:', r.headers);
-            return r.text(); // Changez temporairement en .text() au lieu de .json()
-        })
-        .then(text => {
-            console.log('Raw response:', text);
-            const data = JSON.parse(text); // Parsez manuellement pour voir l'erreur
-            console.log('Parsed data:', data);
-            // ... reste du code
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-        });
+        modalReassort.showModal();
+        modalReassort.style.display = 'flex';
     })
+})
+
+modalReassort?.addEventListener("click", (e) => {
+    if (e.target === modalReassort) {
+        modalReassort.close();
+        modalReassort.style.display = 'none';
+    }
+});
+
+document.querySelector('modal.reassort input#annuler')?.addEventListener('click', () => {
+    modalReassort.close();
+    modalReassort.style.display = 'none';
 })
 
 
