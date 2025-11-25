@@ -35,7 +35,8 @@ if($productId == 0) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
     // Vérifier si l'utilisateur est connecté
     if (!isset($_SESSION['user_id'])) {
-        http_response_code(401);
+        $_SESSION['error_message'] = "Vous devez être connecté pour voter";
+        header("Location: ?id=" . $productId);
         exit;
     }
     
@@ -46,7 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     
     // Empêcher de voter sur son propre avis
     if ($idClientVotant === $idClientAvis) {
-        http_response_code(403);
+        $_SESSION['error_message'] = "Vous ne pouvez pas voter sur votre propre avis";
+        header("Location: ?id=" . $productId);
         exit;
     }
     
@@ -68,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             $stmt->execute([$idProduit, $idClientAvis]);
             
             unset($_SESSION[$keyVote]);
+            $_SESSION['success_message'] = "Vote retiré";
             
         } else {
             if ($votePrecedent !== null) {
@@ -91,18 +94,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             $stmt->execute([$idProduit, $idClientAvis]);
             
             $_SESSION[$keyVote] = $typeVote;
+            $_SESSION['success_message'] = "Vote enregistré";
         }
         
         $pdo->commit();
-        http_response_code(200);
         
     } catch (Exception $e) {
         $pdo->rollBack();
         error_log("Erreur lors du vote: " . $e->getMessage());
-        http_response_code(500);
+        $_SESSION['error_message'] = "Erreur lors de l'enregistrement du vote";
     }
     
-    exit; // IMPORTANT : Ne pas rediriger, juste terminer
+    header("Location: ?id=" . $productId);
+    exit;
 }
 
 $sqlProduit = "SELECT 
@@ -510,8 +514,8 @@ if ($produit['stock'] > 0) {
         $stmtNomClient->execute([intval($avis['idClient'])]);
         $client = $stmtNomClient->fetch(PDO::FETCH_ASSOC);
         
+        // Récupérer le vote de l'utilisateur actuel
         $voteUtilisateur = getVoteUtilisateur($productId, $avis['idClient']);
-        $isOwnReview = isset($_SESSION['user_id']) && $_SESSION['user_id'] == $avis['idClient'];
         ?>
         <article>
             <img src="../../public/images/pp.png" id="pp">
@@ -533,30 +537,34 @@ if ($produit['stock'] > 0) {
                         <?php endforeach; ?>
                     </div>   
                     <div class="actionsAvis">
-                        <?php if (isset($_SESSION['user_id']) && !$isOwnReview): ?>
-                            <button type="button" 
-                                    class="btn-vote btn-like <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>" 
-                                    data-produit="<?php echo $productId; ?>"
-                                    data-client="<?php echo $avis['idClient']; ?>"
-                                    data-type="like">
-                                <img src="../../public/images/<?php echo ($voteUtilisateur === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png'; ?>" alt="Like">
-                                <span class="vote-count"><?php echo intval($avis['positifs']); ?></span>
-                            </button>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="action" value="voter_avis">
+                                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                                <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
+                                <input type="hidden" name="type" value="like">
+                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'like') ? 'active' : ''; ?>">
+                                    <img src="../../public/images/<?php echo ($voteUtilisateur === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png'; ?>" alt="Like">
+                                    <span><?php echo intval($avis['positifs']); ?></span>
+                                </button>
+                            </form>
                             
-                            <button type="button" 
-                                    class="btn-vote btn-dislike <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>" 
-                                    data-produit="<?php echo $productId; ?>"
-                                    data-client="<?php echo $avis['idClient']; ?>"
-                                    data-type="dislike">
-                                <img src="../../public/images/<?php echo ($voteUtilisateur === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png'; ?>" alt="Dislike">
-                                <span class="vote-count"><?php echo intval($avis['negatifs']); ?></span>
-                            </button>
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="action" value="voter_avis">
+                                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                                <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
+                                <input type="hidden" name="type" value="dislike">
+                                <button type="submit" class="btn-vote <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>">
+                                    <img src="../../public/images/<?php echo ($voteUtilisateur === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png'; ?>" alt="Dislike">
+                                    <span><?php echo intval($avis['negatifs']); ?></span>
+                                </button>
+                            </form>
                         <?php else: ?>
-                            <button type="button" class="btn-vote" disabled>
+                            <button class="btn-vote" disabled>
                                 <img src="../../public/images/pouceHaut.png" alt="Like">
                                 <span><?php echo intval($avis['positifs']); ?></span>
                             </button>
-                            <button type="button" class="btn-vote" disabled>
+                            <button class="btn-vote" disabled>
                                 <img src="../../public/images/pouceBas.png" alt="Dislike">
                                 <span><?php echo intval($avis['negatifs']); ?></span>
                             </button>
@@ -573,18 +581,6 @@ if ($produit['stock'] > 0) {
 <?php else: ?>
     <p>Aucun avis pour ce produit.</p>
 <?php endif; ?>
-```
-
-**Les changements importants :**
-- ✅ Plus de `<form>` autour des boutons
-- ✅ `type="button"` sur tous les boutons (pas `type="submit"`)
-- ✅ Classes `btn-like` et `btn-dislike` ajoutées
-- ✅ Classe `vote-count` sur les `<span>` des compteurs
-- ✅ Attributs `data-produit`, `data-client`, `data-type` sur les boutons
-
-Rechargez la page et regardez la console. Maintenant vous devriez voir :
-```
-Boutons .btn-vote non désactivés: 2 (ou plus)
 
 </section>
 <section class="stickyTelephone">
@@ -618,9 +614,6 @@ Boutons .btn-vote non désactivés: 2 (ou plus)
 </footer> 
 </body>
 <script>
-console.log('=== SCRIPT CHARGÉ ===');
-
-// ==================== CAROUSEL ====================
 class ProductCarousel {
     constructor() {
         this.currentImageIndex = 0;
@@ -702,18 +695,15 @@ class ProductCarousel {
     }
 }
 
-// ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('=== DOM READY ===');
-    
-    // Init carousel
     new ProductCarousel();
     
-    // ==================== QUANTITÉ ====================
     let quantite = 1;
     const quantiteInput = document.getElementById('quantiteInput');
+    
     const plusBtn = document.getElementById('plus');
     const moinsBtn = document.getElementById('moins');
+
     const stock = <?php echo $produit['stock']; ?>;
     
     if (plusBtn && quantiteInput) {
@@ -722,8 +712,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 quantite++;
                 quantiteInput.value = quantite;
                 quantiteInput.style.color = '#273469';
-            } else {
+            }
+            else {
                 quantiteInput.style.color = 'red';
+                
                 setTimeout(() => {
                     quantiteInput.style.color = '#273469';
                 }, 300);
@@ -739,151 +731,35 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // ==================== VOTES ====================
-    console.log('=== RECHERCHE DES BOUTONS DE VOTE ===');
-    
-    // Chercher tous les boutons possibles
-    const allButtons = document.querySelectorAll('button');
-    console.log('Tous les boutons sur la page:', allButtons.length);
-    
-    const voteButtons = document.querySelectorAll('.btn-vote');
-    console.log('Boutons avec classe .btn-vote:', voteButtons.length);
-    
-    const voteButtonsNotDisabled = document.querySelectorAll('.btn-vote:not([disabled])');
-    console.log('Boutons .btn-vote non désactivés:', voteButtonsNotDisabled.length);
-    
-    // Afficher les détails de chaque bouton
-    voteButtonsNotDisabled.forEach((btn, index) => {
-        console.log(`Bouton ${index}:`, {
-            classes: btn.className,
-            disabled: btn.disabled,
-            produit: btn.dataset.produit,
-            client: btn.dataset.client,
-            type: btn.dataset.type
-        });
-    });
-    
-    if (voteButtonsNotDisabled.length === 0) {
-        console.error('❌ AUCUN BOUTON DE VOTE TROUVÉ !');
-        console.log('Vérifiez que vous êtes connecté et que les boutons ont bien les attributs data-*');
-        return;
-    }
-    
-    voteButtonsNotDisabled.forEach((button, index) => {
-        console.log(`Ajout du listener sur le bouton ${index}`);
-        
-        button.addEventListener('click', function(e) {
-            console.log('🔥 CLICK DÉTECTÉ sur bouton', index);
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const idProduit = this.dataset.produit;
-            const idClientAvis = this.dataset.client;
-            const type = this.dataset.type;
-            
-            console.log('Données du vote:', {idProduit, idClientAvis, type});
-            
-            // Trouver l'article parent
-            const article = this.closest('article');
-            console.log('Article trouvé:', article);
-            
-            if (!article) {
-                console.error('❌ Article parent non trouvé');
-                return;
-            }
-            
-            const likeButton = article.querySelector('.btn-like');
-            const dislikeButton = article.querySelector('.btn-dislike');
-            
-            console.log('Boutons like/dislike:', {likeButton, dislikeButton});
-            
-            if (!likeButton || !dislikeButton) {
-                console.error('❌ Boutons like/dislike non trouvés');
-                return;
-            }
-            
-            const likeImg = likeButton.querySelector('img');
-            const dislikeImg = dislikeButton.querySelector('img');
-            const likeCount = likeButton.querySelector('.vote-count');
-            const dislikeCount = dislikeButton.querySelector('.vote-count');
-            
-            console.log('Images et compteurs:', {likeImg, dislikeImg, likeCount, dislikeCount});
-            
-            const wasActive = this.classList.contains('active');
-            const likeWasActive = likeButton.classList.contains('active');
-            const dislikeWasActive = dislikeButton.classList.contains('active');
-            
-            console.log('États avant:', {wasActive, likeWasActive, dislikeWasActive});
-            
-            // Mise à jour optimiste de l'interface
-            if (wasActive) {
-                console.log('→ Retrait du vote');
-                this.classList.remove('active');
-                if (type === 'like') {
-                    likeImg.src = '../../public/images/pouceHaut.png';
-                    likeCount.textContent = Math.max(0, parseInt(likeCount.textContent) - 1);
-                } else {
-                    dislikeImg.src = '../../public/images/pouceBas.png';
-                    dislikeCount.textContent = Math.max(0, parseInt(dislikeCount.textContent) - 1);
-                }
-            } else {
-                console.log('→ Ajout du vote');
-                // Retirer l'ancien vote s'il existe
-                if (likeWasActive) {
-                    console.log('  - Retrait du like précédent');
-                    likeButton.classList.remove('active');
-                    likeImg.src = '../../public/images/pouceHaut.png';
-                    likeCount.textContent = Math.max(0, parseInt(likeCount.textContent) - 1);
-                }
-                if (dislikeWasActive) {
-                    console.log('  - Retrait du dislike précédent');
-                    dislikeButton.classList.remove('active');
-                    dislikeImg.src = '../../public/images/pouceBas.png';
-                    dislikeCount.textContent = Math.max(0, parseInt(dislikeCount.textContent) - 1);
-                }
-                
-                // Ajouter le nouveau vote
-                this.classList.add('active');
-                if (type === 'like') {
-                    likeImg.src = '../../public/images/pouceHautActive.png';
-                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
-                } else {
-                    dislikeImg.src = '../../public/images/pouceBasActive.png';
-                    dislikeCount.textContent = parseInt(dislikeCount.textContent) + 1;
-                }
-            }
-            
-            console.log('✅ Interface mise à jour, envoi au serveur...');
-            
-            // Envoyer au serveur
-            const formData = new FormData();
-            formData.append('action', 'voter_avis');
-            formData.append('idProduit', idProduit);
-            formData.append('idClientAvis', idClientAvis);
-            formData.append('type', type);
-            
-            fetch(window.location.href, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                console.log('Réponse serveur:', response.status);
-                if (!response.ok) {
-                    throw new Error('Erreur serveur: ' + response.status);
-                }
-                console.log('✅ Vote enregistré sur le serveur');
-            })
-            .catch(error => {
-                console.error('❌ Erreur lors du vote:', error);
-                alert('Erreur lors du vote: ' + error.message);
-            });
-        });
-    });
-    
-    console.log('=== INIT TERMINÉ ===');
 });
-</script>
-</script>
+
+function changerPouce(element, type) {
+    const article = element.closest('article');
+    const pouceHaut = article.querySelector('img[alt="Like"]');
+    const pouceBas = article.querySelector('img[alt="Dislike"]');
+    
+    const pouceHautInactif = "../../public/images/pouceHaut.png";
+    const pouceHautActif = "../../public/images/pouceHautActive.png";
+    const pouceBasInactif = "../../public/images/pouceBas.png";
+    const pouceBasActif = "../../public/images/pouceBasActive.png";
+    
+    if (element.src.includes('Active')) {
+        if (type === 'haut') {
+            element.src = pouceHautInactif;
+        } else {
+            element.src = pouceBasInactif;
+        }
+    } else {
+        if (pouceHaut) pouceHaut.src = pouceHautInactif;
+        if (pouceBas) pouceBas.src = pouceBasInactif;
+        
+        if (type === 'haut') {
+            element.src = pouceHautActif;
+        } else {
+            element.src = pouceBasActif;
+        }
+    }
+}
+
 </script>
 </html>
