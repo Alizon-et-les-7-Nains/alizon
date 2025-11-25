@@ -308,10 +308,12 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div class="infoProd">
                         <div class="prix">
                             <?php if ($enRemise): ?>
-                                <h2 style="color: #e74c3c;"><?php echo formatPrice($prixRemise); ?></h2>
-                                <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
-                                    <?php echo formatPrice($prixOriginal); ?>
-                                </h3>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                    <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                        <?php echo formatPrice($prixOriginal); ?>
+                                    </h3>
+                                </div>
                             <?php else: ?>
                                 <h2><?php echo formatPrice($prixOriginal); ?></h2>
                             <?php endif; ?>
@@ -381,10 +383,12 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div class="infoProd">
                         <div class="prix">
                             <?php if ($enRemise): ?>
-                                <h2 style="color: #e74c3c;"><?php echo formatPrice($prixRemise); ?></h2>
-                                <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
-                                    <?php echo formatPrice($prixOriginal); ?>
-                                </h3>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                    <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                        <?php echo formatPrice($prixOriginal); ?>
+                                    </h3>
+                                </div>
                             <?php else: ?>
                                 <h2><?php echo formatPrice($prixOriginal); ?></h2>
                             <?php endif; ?>
@@ -454,10 +458,12 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div class="infoProd">
                         <div class="prix">
                             <?php if ($enRemise): ?>
-                                <h2 style="color: #e74c3c;"><?php echo formatPrice($prixRemise); ?></h2>
-                                <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
-                                    <?php echo formatPrice($prixOriginal); ?>
-                                </h3>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                    <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                        <?php echo formatPrice($prixOriginal); ?>
+                                    </h3>
+                                </div>
                             <?php else: ?>
                                 <h2><?php echo formatPrice($prixOriginal); ?></h2>
                             <?php endif; ?>
@@ -530,10 +536,12 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div class="infoProd">
                         <div class="prix">
                             <?php if ($enRemise): ?>
-                                <h2 style="color: #e74c3c;"><?php echo formatPrice($prixRemise); ?></h2>
-                                <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
-                                    <?php echo formatPrice($prixOriginal); ?>
-                                </h3>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                    <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                        <?php echo formatPrice($prixOriginal); ?>
+                                    </h3>
+                                </div>
                             <?php else: ?>
                                 <h2><?php echo formatPrice($prixOriginal); ?></h2>
                             <?php endif; ?>
