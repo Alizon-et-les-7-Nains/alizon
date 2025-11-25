@@ -65,15 +65,12 @@ function checkInt(value: string): boolean {
 }
 
 function checkDate(date: Date | null): boolean {
-    let valid: boolean = true;
-    if (date != null) {
-        if (date.getTime() < Date.now()) {
-            valid = false;
-        }
-    } else {
-        valid = true;
-    }
-    return valid;
+    if (!date) return true;
+
+    let now: Date = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    return now.getTime() < Date.now();
 }
 
 function allValid(): boolean {
