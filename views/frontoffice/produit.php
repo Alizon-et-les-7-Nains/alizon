@@ -235,7 +235,7 @@ if (isset($_SESSION['message_panier'])) {
 <section class="infoHautProduit">
 <article class="rectangleProduit">
     <div class="banniere">
-        <h2><?php echo htmlspecialchars($promotion['taux_remise']); ?></h2>
+        <h1><?php echo htmlspecialchars($promotion['taux_remise']); ?>%</h1>
         <img class="poly1" src="../../public/images/poly1.svg" alt="">
         <img class="imgBanniere" src="../../public/images/laBanniere.png" alt="">
         <img class="poly2" src="../../public/images/poly2.svg" alt="">
