@@ -33,7 +33,7 @@
     <section id="burgerIcon">
         <div id="triangle-codeHeader"></div>
         <a href="../frontoffice/compteClient.php">Mon compte</a>
-        <a href="../frontoffice/commentaires.php">Mes commentaires</a>
+        <a href="../frontoffice/mesAvis.php">Mes commentaires</a>
         <a href="../frontoffice/listeDeSouhait.php">Liste de souhait</a>
         <a href="../frontoffice/commandes.php">Mes commandes</a>
         <a href="../frontoffice/panier.php">Mon panier</a>
