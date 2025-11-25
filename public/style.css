@@ -710,6 +710,9 @@ header.backoffice {
   align-items: center;
   justify-content: space-between;
 }
+header.backoffice a {
+  text-decoration: none;
+}
 header.backoffice * {
   margin: 0;
 }
