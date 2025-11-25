@@ -36,7 +36,7 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
 
     <main>
-        <section class="avis-Vendeur">
+        <section class="avis-vendeur">
             <h1>Avis Populaires</h1>
 
             <article>
