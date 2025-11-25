@@ -6004,20 +6004,25 @@ dialog.reassort form input {
   justify-content: space-between;
 }
 .pageProduit .textePrevi {
+  margin-top: 10px;
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
 }
 .pageProduit .textePrevi h1 {
-  color: red;
+  color: #f14e4e;
   font-size: 24px;
+  margin: 0;
 }
 .pageProduit .boutonRetour {
   display: flex;
+  margin-right: 10px;
   justify-content: center;
   padding: 10px;
   background-color: #273469;
   border-radius: 16px;
   width: 200px;
+  cursor: pointer;
 }
 .pageProduit .boutonRetour button {
   background-color: transparent;
@@ -6025,9 +6030,10 @@ dialog.reassort form input {
   border: 0;
   font-size: 24px;
   color: #fffefa;
+  font-family: "lora";
 }
 .pageProduit .lignePrevi {
-  border-top: solid 4px red;
+  border-top: solid 4px #f14e4e;
 }
 
 /*# sourceMappingURL=style.css.map */
