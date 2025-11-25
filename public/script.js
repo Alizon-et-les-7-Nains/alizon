@@ -126,7 +126,7 @@ function checkDate(date) {
         return true;
     let now = new Date();
     now.setHours(0, 0, 0, 0);
-    return now.getTime() < Date.now();
+    return now.getTime() < date.getTime();
 }
 function allValid() {
     return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);

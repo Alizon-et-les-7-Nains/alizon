@@ -70,7 +70,7 @@ function checkDate(date: Date | null): boolean {
     let now: Date = new Date();
     now.setHours(0, 0, 0, 0);
 
-    return now.getTime() < Date.now();
+    return now.getTime() < date.getTime();
 }
 
 function allValid(): boolean {
