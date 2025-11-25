@@ -55,23 +55,16 @@
                     </div>
                 </div>
 
-                <p id="error">
-                    <?php
-                        if (isset($_GET['error'])) {
-                            switch ($_GET['error']) {
-                                case "1":
-                                    echo "Identifiants invalides";
-                                    break;
-                                case "3":
-                                    echo "Session expirée";
-                                    break;
-                                default:
-                                    echo "Erreur innatendue";
-                                    break;
-                            }
-                        }
-                    ?>
-                </p>
+                <?php
+                    if (isset($_GET['error'])) {
+                        $message = match ($_GET['error']) {
+                            "1" => "Identifiants invalides",
+                            "3" => "Session expirée",
+                            default => "Erreur inattendue"
+                        };
+                        echo "<p id='error'>$message</p>";
+                    }
+                ?>
 
                 <div class="liens-utiles">
                     <a href="CreerCompteVendeur.php">Pas encore vendeur ? Inscrivez vous ici</a>
