@@ -34,13 +34,16 @@ btnSettings.forEach(btn => {
     })
 })
 
-let idProduit: number;
-
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        sessionStorage.setItem('idProduitSelec', btn.id);
-        modalReassort.showModal();
-        modalReassort.style.display = 'flex';
+        fetch('update_session.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({idProduitSelec: btn.id})
+        }).then(() => {
+            modalReassort.showModal();
+            modalReassort.style.display = 'flex';
+        })
     })
 })
 

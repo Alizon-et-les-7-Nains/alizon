@@ -257,13 +257,11 @@
         <?php require_once './partials/retourEnHaut.php' ?>
     </main>
 
-    <?php require_once './partials/footer.php' ?>
-
     <dialog class="reassort">
         <?php
             $reassortSTMT = $pdo->prepare('select * from _produit where idProduit = :idProduit');
             $reassortSTMT->execute(['idProduit' => $_SESSION['idProduitSelec']]);
-            $reassort = $commandes->fetchColumn();
+            $reassort = $reassortSTMT->fetchColumn();
         ?>
         <h1>Paramètres de réassort</h1>
         <form action="" method="post">
@@ -279,6 +277,8 @@
             </ul>
         </form>
     </dialog>
+
+    <?php require_once './partials/footer.php' ?>
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
