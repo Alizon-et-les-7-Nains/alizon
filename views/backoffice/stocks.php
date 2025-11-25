@@ -73,7 +73,7 @@ if (count($epuises) == 0) echo "<h2>Aucun produit épuisé</h2>";
                                         if ($enRemise) {
                                             $html .= "<th><div style='display: flex; align-items: center; gap: 8px;'>
                                                 <span>" . formatPrice($prixRemise) . "</span>
-                                                <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal)) . "</span>
+                                                <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
                                             </div></th>";
                                         } else {
                                             $html .= "<th>" . formatPrice($prixOriginal) . "</th>";
