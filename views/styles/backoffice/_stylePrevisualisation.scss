@@ -10,29 +10,35 @@
         justify-content: space-between;
     }
     .textePrevi{
+        margin-top: 10px;
+        margin-left: 10px;
         display: flex;
         flex-direction: column;
         h1 {
-            color: red;
+            color: $color-red;
             font-size: 24px;
+            margin: 0;
         }
     }
     .boutonRetour{
         display: flex;
+        margin-right: 10px;
         justify-content: center;
         padding: 10px;
         background-color: $color-blue;  
         border-radius: 16px;
         width: 200px;
+        cursor: pointer;
         button{
             background-color: transparent;
             text-decoration: none;
             border:0;
             font-size: 24px;
             color: $color-white;
+            font-family: 'lora';
         }
     }
     .lignePrevi{
-        border-top: solid 4px red ;
+        border-top: solid 4px $color-red ;
     }
 }
