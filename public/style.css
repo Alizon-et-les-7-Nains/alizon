@@ -3090,7 +3090,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .panier article h2 b {
   color: black;
 }
-@media (max-width: 1248px) {
+@media (max-width: 1290px) {
   .panier main {
     flex-direction: column;
     justify-content: center;
