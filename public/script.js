@@ -99,53 +99,25 @@ btnSettings.forEach(btn => {
 });
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        fetch('../../controllers/getProduct.php', {
+        console.log('Calling fetch with idProduit:', btn.id);
+        fetch('getProduct.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idProduit: btn.id })
         })
-            .then(r => r.json())
-            .then(data => {
-            const dialog = document.createElement('dialog');
-            dialog.className = 'reassort';
-            dialog.innerHTML = `
-                <h1>Paramètres de réassort</h1>
-                <form action="" method="post">
-                    <input type="number" value="${data.seuilAlerte || ''}" name="seuil" id="seuil">
-                    <span id="errorFieldSeuil" style="display:none;">Valeur invalide</span>
-                    <input type="date" value="${data.dateReassort || ''}" name="dateReassort" id="dateReassort">
-                    <span id="errorFieldDate" style="display:none;">Date invalide</span>
-                    <input type="number" name="reassort" id="reassort">
-                    <span id="errorFieldReassort" style="display:none;">Valeur invalide</span>
-                    <ul>
-                        <li><input type="button" value="Annuler" id="annuler"></li>
-                        <li><input type="submit" value="Valider" id="buttonConfirm"></li>
-                    </ul>
-                </form>
-            `;
-            document.body.appendChild(dialog);
-            inputSeuil = dialog.querySelector('#seuil');
-            inputDate = dialog.querySelector('#dateReassort');
-            inputReassort = dialog.querySelector('#reassort');
-            buttonConfirm = dialog.querySelector('#buttonConfirm');
-            const annuler = dialog.querySelector('#annuler');
-            dialog.addEventListener("click", (e) => {
-                if (e.target === modalReassort) {
-                    dialog.close();
-                    dialog.style.display = 'none';
-                }
-            });
-            annuler.addEventListener('click', () => {
-                dialog.close();
-                dialog.remove();
-            });
-            dialog.addEventListener('click', (e) => {
-                if (e.target === dialog) {
-                    dialog.close();
-                    dialog.remove();
-                }
-            });
-            dialog.showModal();
+            .then(r => {
+            console.log('Response status:', r.status);
+            console.log('Response headers:', r.headers);
+            return r.text(); // Changez temporairement en .text() au lieu de .json()
+        })
+            .then(text => {
+            console.log('Raw response:', text);
+            const data = JSON.parse(text); // Parsez manuellement pour voir l'erreur
+            console.log('Parsed data:', data);
+            // ... reste du code
+        })
+            .catch(error => {
+            console.error('Fetch error:', error);
         });
     });
 });
