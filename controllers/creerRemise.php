@@ -12,8 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tauxRemise = $_POST['reduction'];
         $dateSql = DateTime::createFromFormat('d/m/Y', $dateLimite)->format('Y-m-d');
 
-        if(!$aUneRemise){
-            
+        if($aUneRemise == true){    
             $stmt = $pdo->prepare("INSERT INTO _remise(idProduit, tauxRemise, debutRemise, finRemise) VALUES (:idProd, :tauxRemise, CURDATE(), :dateLimite)");
             $stmt->execute([':idProd' => $idProd, ':tauxRemise'=>$tauxRemise,':dateLimite' => $dateSql]);
         } else {

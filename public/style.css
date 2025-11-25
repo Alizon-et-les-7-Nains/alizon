@@ -4377,6 +4377,7 @@ button#haut.visible:hover {
   justify-content: center;
   align-items: flex-start;
   width: 500px;
+  position: relative;
 }
 .popUpRemise .page form h2 {
   font-size: 24px;
@@ -4393,6 +4394,12 @@ button#haut.visible:hover {
 .popUpRemise .page form div input {
   width: 110px;
 }
+.popUpRemise .page form .deuxBoutons {
+  display: flex;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
 .popUpRemise .page form button {
   background-color: #273469;
   padding: 15px;
@@ -4400,10 +4407,8 @@ button#haut.visible:hover {
   font-family: "lora";
   width: 200px;
   color: #fffefa;
-  position: absolute;
-  right: 30px;
-  bottom: 30px;
   cursor: pointer;
+  margin-left: 20px;
 }
 .popUpRemise .page form p {
   background-color: #e4d9ff;
@@ -5452,6 +5457,20 @@ dialog.reassort form input {
   font-weight: bold;
   color: #273469;
   margin: 0;
+}
+.pageProduit .stockDisponible {
+  position: relative;
+  left: 2.5em;
+  font-size: 20px;
+  color: green;
+  font-weight: bold;
+}
+.pageProduit .stockIndisponible {
+  position: relative;
+  left: 2.5em;
+  font-size: 20px;
+  color: red;
+  font-weight: bold;
 }
 .pageProduit .review-count {
   text-decoration: underline;

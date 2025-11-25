@@ -197,9 +197,11 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
                     <p class = "recap"> </p>
                     <input type="hidden" name="id" value="${id}">
                     <input type="hidden" name="aUneRemise" value="${aUneRemise}">
-                    <button class="bouton" type="submit">Appliquer la remise </button>
-                    <button onclick="popUpAnnulerRemise(${id}, '${nom}')">Supprimer la remise</button>
-                </form>
+                    <div class="deuxBoutons">
+                        <button type="button" onclick="popUpAnnulerRemise(${id}, '${nom}')">Annuler la remise</button>
+                        <button class="bouton" type="submit">Appliquer la remise</button>
+                    </div>
+                    </form>
             </div>
         </main>`;
     document.body.appendChild(overlay);
@@ -244,7 +246,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
     reduction.addEventListener("input", () => updatePrixFromReduction(prix, nouveauPrix, reduction, recap));
 
     function champsVide(){
-        const bouton = overlay.querySelector("button");
+        const bouton = overlay.querySelector(".bouton");
 
         if(dateLimite.value == "" || nouveauPrix.value == "" || reduction.value == ""){
             bouton.disabled = true;
