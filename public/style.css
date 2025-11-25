@@ -5062,7 +5062,7 @@ dialog.reassort form input {
   top: 65px;
   left: 10px;
   width: auto;
-  z-index: 100;
+  z-index: 1000000;
 }
 .pageProduit #imageBouteille {
   width: 220px;
@@ -5997,18 +5997,28 @@ dialog.reassort form input {
 
 .pageProduit .previsualisation {
   display: flex;
+  align-items: center;
 }
 .pageProduit .textePrevi {
   display: flex;
   flex-direction: column;
 }
+.pageProduit .textePrevi h1 {
+  color: red;
+}
 .pageProduit .boutonRetour {
   display: flex;
   padding: 10px;
   background-color: #273469;
+  border-radius: 16px;
+  width: 200px;
+}
+.pageProduit .boutonRetour button {
+  background-color: transparent;
+  text-decoration: none;
 }
 .pageProduit .lignePrevi {
-  border-top: solid 2px red;
+  border-top: solid 4px red;
 }
 
 /*# sourceMappingURL=style.css.map */
