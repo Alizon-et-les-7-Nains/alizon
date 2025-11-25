@@ -327,6 +327,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     const mdpCrypte = <?php echo json_encode($mdp); ?>;
     </script>
     <script src="../scripts/backoffice/compteVendeur.js"></script>
+    <script src="../../public/amd-shim.js"></script>
+    <script src="../../public/script.js"></script>
 </body>
 
 </html>
