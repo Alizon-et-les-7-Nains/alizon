@@ -6,6 +6,26 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+function updateNoteProduit(PDO $pdo, int $idProduit) {
+    $stmt = $pdo->prepare("
+        SELECT AVG(note) AS moyenne
+        FROM _avis
+        WHERE idProduit = ?
+    ");
+    $stmt->execute([$idProduit]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $moyenne = $result['moyenne'] !== null ? $result['moyenne'] : 0;
+
+    $stmt2 = $pdo->prepare("
+        UPDATE _produit
+        SET note = ?
+        WHERE idProduit = ?
+    ");
+    $stmt2->execute([$moyenne, $idProduit]);
+}
+
+
 $note = isset($_POST['note']) && $_POST['note'] !== "" ? floatval($_POST['note']) : null;
 
 if ($note === null) {
@@ -30,6 +50,9 @@ $stmt = $pdo->prepare("
 ");
 
 $ok = $stmt->execute([$titre, $note, $contenu, $idProduit, $idClient]);
+
+
+updateNoteProduit($pdo, $idProduit);
 
 if ($ok) {
     header("Location: ../views/frontoffice/mesAvis.php");
