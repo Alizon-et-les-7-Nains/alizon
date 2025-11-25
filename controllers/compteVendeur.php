@@ -2,8 +2,6 @@
 require_once 'pdo.php';
 require_once 'auth.php';
 
-session_start();
-
 $code_vendeur = $_SESSION['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
