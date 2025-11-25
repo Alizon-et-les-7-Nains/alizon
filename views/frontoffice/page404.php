@@ -1,4 +1,5 @@
 <?php
+    print_r($_SERVER['REQUEST_URI']);
     $requestUri = $_SERVER['REQUEST_URI'] ?? '';
     $fromBackoffice = strpos($requestUri, '/backoffice/') !== false;
     $fromFrontoffice = strpos($requestUri, '/frontoffice/') !== false;
