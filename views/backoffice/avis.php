@@ -115,10 +115,6 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <?php endforeach; ?>
             </article>
-
-            <a href="./avis.php" title="Voir plus">
-                <img src="/public/images/infoDark.svg">
-            </a>
         </section>
 
         <?php require_once './partials/retourEnHaut.php'; ?>

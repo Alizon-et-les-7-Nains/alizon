@@ -8,10 +8,16 @@
     font-weight: bold;
     color: $color-blue;
   }
+
   .avi {
     border-collapse: separate;
     width: 100%;
     color: $color-blue;
+    background-color: $color-pastel-purple;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    padding: 20px 0 25px 0;
+
     font: {
       size: 18px;
       family: "Lora", serif;
@@ -19,8 +25,7 @@
 
     .col-gauche {
       width: 150px;
-      height: 300px;
-      padding-top: 0px;
+      padding: 0px;
       text-align: center;
 
       .profil-client {
@@ -50,6 +55,8 @@
         left: 0;
         right: 20px;
       }
+      color: $color-yellow;
+      gap: 5px;
       display: flex;
     }
 
