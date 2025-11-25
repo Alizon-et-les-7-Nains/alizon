@@ -5023,13 +5023,15 @@ dialog.reassort form input {
 }
 .pageProduit .banniere {
   position: absolute;
-  top: -40px;
+  top: -35px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
 .pageProduit .banniere img {
-  height: 120px;
+  height: 140px;
   width: auto;
+  top: 30px;
+  left: 10px;
 }
 .pageProduit #imageBouteille {
   width: 220px;
