@@ -6199,6 +6199,86 @@ dialog.reassort form input {
     font-size: 10px;
   }
 }
+.pageProduit .modal-signalement {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+.pageProduit .modal-signalement .modal-content {
+  background-color: white;
+  padding: 25px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 2px solid #273469;
+}
+.pageProduit .modal-signalement .modal-content h2 {
+  color: #273469;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+.pageProduit .modal-signalement .modal-content .close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.pageProduit .modal-signalement .modal-content .close-modal:hover {
+  color: #273469;
+}
+.pageProduit .modal-signalement .modal-content .groupe-input {
+  margin-bottom: 15px;
+}
+.pageProduit .modal-signalement .modal-content .groupe-input label {
+  display: block;
+  margin-bottom: 5px;
+  color: #273469;
+  font-weight: 500;
+}
+.pageProduit .modal-signalement .modal-content .groupe-input input, .pageProduit .modal-signalement .modal-content .groupe-input textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+}
+.pageProduit .modal-signalement .modal-content .groupe-input input:focus, .pageProduit .modal-signalement .modal-content .groupe-input textarea:focus {
+  outline: 2px solid #273469;
+  border-color: transparent;
+}
+.pageProduit .modal-signalement .modal-content button[type=submit] {
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.pageProduit .btn-signaler {
+  background: none;
+  border: none;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9em;
+  padding: 0;
+  margin-left: 10px;
+}
+.pageProduit .btn-signaler:hover {
+  color: #f14e4e;
+}
 
 .connexionVendeur {
   position: relative;

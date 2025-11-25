@@ -571,7 +571,11 @@ if ($produit['stock'] > 0) {
                             </button>
                         <?php endif; ?>
                         <shape></shape>
-                        <a href="#">Signaler</a>
+                        <button type="button" class="btn-signaler"
+                            data-id-produit="<?php echo $productId; ?>"
+                            data-id-client-avis="<?php echo $avis['idClient']; ?>">
+                            Signaler
+                        </button>
                     </div>
                 </div>
             </div>
@@ -603,6 +607,29 @@ if ($produit['stock'] > 0) {
         </aside>
     </article>
 </section>
+<div id="modalSignalement" class="modal-signalement" style="display: none;">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Signaler cet avis</h2>
+        <form id="formSignalement">
+            <input type="hidden" name="idProduit" id="signal_idProduit">
+            <input type="hidden" name="idClientAvis" id="signal_idClientAvis">
+            
+            <div class="groupe-input">
+                <label for="titre">Raison du signalement :</label>
+                <input type="text" name="titre" id="signal_titre" required placeholder="Ex: Contenu inapproprié">
+            </div>
+            
+            <div class="groupe-input">
+                <label for="message">Message :</label>
+                <textarea name="message" id="signal_message" rows="4" required placeholder="Expliquez le problème..."></textarea>
+            </div>
+            
+            <button type="submit" class="bouton boutonRose">Envoyer le signalement</button>
+        </form>
+        <div id="msgReponse" style="margin-top: 10px;"></div>
+    </div>
+</div>
 </main>
 <footer>
 <?php if (isset($_SESSION['user_id'])) {
@@ -801,6 +828,63 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+    // ==================== SIGNALEMENT ====================
+    const modal = document.getElementById('modalSignalement');
+    const closeBtn = document.querySelector('.close-modal');
+    const formSignalement = document.getElementById('formSignalement');
+    const msgReponse = document.getElementById('msgReponse');
+
+    if (modal) {
+        document.querySelectorAll('.btn-signaler').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('signal_idProduit').value = this.dataset.idProduit;
+                document.getElementById('signal_idClientAvis').value = this.dataset.idClientAvis;
+                
+                if(formSignalement) formSignalement.reset();
+                if(msgReponse) msgReponse.innerHTML = '';
+                
+                modal.style.display = 'flex';
+            });
+        });
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+        }
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        if (formSignalement) {
+            formSignalement.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                fetch('../../controllers/signalerAvis.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        msgReponse.innerHTML = `<p style="color: green; font-weight: bold; text-align: center;">${data.message}</p>`;
+                        setTimeout(() => { modal.style.display = 'none'; }, 2000);
+                    } else {
+                        msgReponse.innerHTML = `<p style="color: red; text-align: center;">${data.message}</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    msgReponse.innerHTML = `<p style="color: red; text-align: center;">Erreur de communication.</p>`;
+                });
+            });
+        }
+    }
 });
 </script>
 </html>
