@@ -74,6 +74,7 @@ const buttonConfirm = document.getElementById('buttonConfirm');
 const errorFieldSeuil = document.getElementById('errorFieldSeuil');
 const errorFieldReassort = document.getElementById('errorFieldReassort');
 const errorFieldDate = document.getElementById('errorFieldDate');
+const buttonCancel = Array.from(document.querySelectorAll('main.backoffice-stocks .annuler'));
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);
@@ -93,6 +94,14 @@ btnSettings.forEach(btn => {
                 const innerDiv = div.firstElementChild;
                 innerDiv.style.left = innerDiv.classList.contains('right') ? '14px' : '4px';
             }
+        });
+    });
+});
+buttonCancel.forEach((btnCancel) => {
+    btnCancel.addEventListener('click', () => {
+        Array.from(document.getElementsByTagName('dialog')).forEach(dia => {
+            dia.close();
+            dia.style.display = 'none';
         });
     });
 });
