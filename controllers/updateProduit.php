@@ -28,17 +28,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
 
-        if (file_exists($photoPath)) {
-            unlink($photoPath); // supprime l'ancien fichier
-        }   
-        move_uploaded_file($_FILES['url']['tmp_name'], $photoPath);
-        $fileName = $_FILES['url']['name'];
+    $photoPath = '/var/www/html/images/' . $_FILES['url']['name'];
+
+    move_uploaded_file($_FILES['url']['tmp_name'], $photoPath);
+
+    $fileName = $_FILES['url']['name'];
+    $url = "/images/" . $fileName;
+
+} else {
+
+    $sqlUrl = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+    $sqlUrl->execute([':idProduit' => $idProd]);
+
+    $row = $sqlUrl->fetch(PDO::FETCH_ASSOC);
+    $url = $row['URL']; // on garde l'ancien
 }
-else{
-    $sqlUrl = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = $idProd");
-    $result =  $pdo->query($sqlUrl);
-    $fileName = $result->fetch(PDO::FETCH_ASSOC);
-}
+
 
 $url = "/images/$fileName";
 
