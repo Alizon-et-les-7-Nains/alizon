@@ -45,7 +45,7 @@
 
     .banniere{
         position: absolute;
-        top: -36px;
+        top: -0px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
     }
@@ -61,6 +61,7 @@
         top: 50px;
         left: 170px;
         color: $color-white;
+        z-index: 10000;
     }
 
     #imageBouteille{
