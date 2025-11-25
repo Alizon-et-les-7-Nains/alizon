@@ -210,6 +210,48 @@ export function validateAll({
     ok = false;
   } else clearError(cvvInput);
 
+  // Validation des conditions générales
+  const cgvCheckbox = document.querySelector(
+    'input[type="checkbox"][aria-label="conditions générales"]'
+  ) as HTMLInputElement | null;
+
+  if (!cgvCheckbox || !cgvCheckbox.checked) {
+    // Trouver le conteneur de la checkbox pour afficher l'erreur
+    const conditionsSection = document.querySelector("section.conditions");
+    if (conditionsSection) {
+      // Supprimer l'ancien message d'erreur s'il existe
+      const oldError = conditionsSection.querySelector(".error-message-cgv");
+      if (oldError) oldError.remove();
+
+      // Créer le message d'erreur
+      const errorMsg = document.createElement("small");
+      errorMsg.className = "error-message error-message-cgv";
+      errorMsg.style.color = "#f14e4e";
+      errorMsg.style.display = "block";
+      errorMsg.style.marginTop = "8px";
+      errorMsg.textContent =
+        "Vous devez accepter les conditions générales pour continuer.";
+
+      conditionsSection.appendChild(errorMsg);
+
+      // Ajouter une classe pour mettre en évidence
+      if (cgvCheckbox) {
+        cgvCheckbox.style.outline = "2px solid #f14e4e";
+      }
+    }
+    ok = false;
+  } else {
+    // Effacer l'erreur si les conditions sont acceptées
+    const conditionsSection = document.querySelector("section.conditions");
+    if (conditionsSection) {
+      const errorMsg = conditionsSection.querySelector(".error-message-cgv");
+      if (errorMsg) errorMsg.remove();
+    }
+    if (cgvCheckbox) {
+      cgvCheckbox.style.outline = "";
+    }
+  }
+
   // panier
   if (cart.length === 0) {
     if (recapEl) {

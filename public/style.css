@@ -2185,6 +2185,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   gap: 0;
   line-height: 1.5;
 }
+.pagePaiement .conditions .error-message-cgv {
+  color: #f14e4e;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  display: block;
+}
 .pagePaiement .conditions input[type=checkbox] {
   margin-right: 8px;
   vertical-align: middle;

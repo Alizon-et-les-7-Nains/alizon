@@ -513,7 +513,7 @@ if ($produit['stock'] > 0) {
         $voteUtilisateur = getVoteUtilisateur($productId, $avis['idClient']);
         $isOwnReview = isset($_SESSION['user_id']) && $_SESSION['user_id'] == $avis['idClient'];
         ?>
-        <article class="avis-article">
+        <article>
             <img src="../../public/images/pp.png" id="pp">
             <div>
                 <div class="vertical">
@@ -552,11 +552,11 @@ if ($produit['stock'] > 0) {
                                 <span class="vote-count"><?php echo intval($avis['negatifs']); ?></span>
                             </button>
                         <?php else: ?>
-                            <button class="btn-vote" disabled>
+                            <button type="button" class="btn-vote" disabled>
                                 <img src="../../public/images/pouceHaut.png" alt="Like">
                                 <span><?php echo intval($avis['positifs']); ?></span>
                             </button>
-                            <button class="btn-vote" disabled>
+                            <button type="button" class="btn-vote" disabled>
                                 <img src="../../public/images/pouceBas.png" alt="Dislike">
                                 <span><?php echo intval($avis['negatifs']); ?></span>
                             </button>
@@ -606,8 +606,6 @@ if ($produit['stock'] > 0) {
 </footer> 
 </body>
 <script>
-console.log('=== SCRIPT CHARGÉ ===');
-
 // ==================== CAROUSEL ====================
 class ProductCarousel {
     constructor() {
@@ -651,9 +649,7 @@ class ProductCarousel {
     }
     
     showImage(index) {
-        this.images.forEach(img => {
-            img.classList.remove('active');
-        });
+        this.images.forEach(img => img.classList.remove('active'));
         
         if (this.images[index]) {
             this.images[index].classList.add('active');
@@ -692,9 +688,6 @@ class ProductCarousel {
 
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('=== DOM READY ===');
-    
-    // Init carousel
     new ProductCarousel();
     
     // ==================== QUANTITÉ ====================
@@ -729,40 +722,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ==================== VOTES ====================
-    console.log('=== RECHERCHE DES BOUTONS DE VOTE ===');
-    
-    // Chercher tous les boutons possibles
-    const allButtons = document.querySelectorAll('button');
-    console.log('Tous les boutons sur la page:', allButtons.length);
-    
-    const voteButtons = document.querySelectorAll('.btn-vote');
-    console.log('Boutons avec classe .btn-vote:', voteButtons.length);
-    
     const voteButtonsNotDisabled = document.querySelectorAll('.btn-vote:not([disabled])');
-    console.log('Boutons .btn-vote non désactivés:', voteButtonsNotDisabled.length);
     
-    // Afficher les détails de chaque bouton
-    voteButtonsNotDisabled.forEach((btn, index) => {
-        console.log(`Bouton ${index}:`, {
-            classes: btn.className,
-            disabled: btn.disabled,
-            produit: btn.dataset.produit,
-            client: btn.dataset.client,
-            type: btn.dataset.type
-        });
-    });
-    
-    if (voteButtonsNotDisabled.length === 0) {
-        console.error('❌ AUCUN BOUTON DE VOTE TROUVÉ !');
-        console.log('Vérifiez que vous êtes connecté et que les boutons ont bien les attributs data-*');
-        return;
-    }
-    
-    voteButtonsNotDisabled.forEach((button, index) => {
-        console.log(`Ajout du listener sur le bouton ${index}`);
-        
+    voteButtonsNotDisabled.forEach((button) => {
         button.addEventListener('click', function(e) {
-            console.log('🔥 CLICK DÉTECTÉ sur bouton', index);
             e.preventDefault();
             e.stopPropagation();
             
@@ -770,43 +733,23 @@ document.addEventListener('DOMContentLoaded', function() {
             const idClientAvis = this.dataset.client;
             const type = this.dataset.type;
             
-            console.log('Données du vote:', {idProduit, idClientAvis, type});
-            
-            // Trouver l'article parent
             const article = this.closest('article');
-            console.log('Article trouvé:', article);
-            
-            if (!article) {
-                console.error('❌ Article parent non trouvé');
-                return;
-            }
+            if (!article) return;
             
             const likeButton = article.querySelector('.btn-like');
             const dislikeButton = article.querySelector('.btn-dislike');
-            
-            console.log('Boutons like/dislike:', {likeButton, dislikeButton});
-            
-            if (!likeButton || !dislikeButton) {
-                console.error('❌ Boutons like/dislike non trouvés');
-                return;
-            }
+            if (!likeButton || !dislikeButton) return;
             
             const likeImg = likeButton.querySelector('img');
             const dislikeImg = dislikeButton.querySelector('img');
             const likeCount = likeButton.querySelector('.vote-count');
             const dislikeCount = dislikeButton.querySelector('.vote-count');
             
-            console.log('Images et compteurs:', {likeImg, dislikeImg, likeCount, dislikeCount});
-            
             const wasActive = this.classList.contains('active');
             const likeWasActive = likeButton.classList.contains('active');
             const dislikeWasActive = dislikeButton.classList.contains('active');
             
-            console.log('États avant:', {wasActive, likeWasActive, dislikeWasActive});
-            
-            // Mise à jour optimiste de l'interface
             if (wasActive) {
-                console.log('→ Retrait du vote');
                 this.classList.remove('active');
                 if (type === 'like') {
                     likeImg.src = '../../public/images/pouceHaut.png';
@@ -816,22 +759,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     dislikeCount.textContent = Math.max(0, parseInt(dislikeCount.textContent) - 1);
                 }
             } else {
-                console.log('→ Ajout du vote');
-                // Retirer l'ancien vote s'il existe
                 if (likeWasActive) {
-                    console.log('  - Retrait du like précédent');
                     likeButton.classList.remove('active');
                     likeImg.src = '../../public/images/pouceHaut.png';
                     likeCount.textContent = Math.max(0, parseInt(likeCount.textContent) - 1);
                 }
                 if (dislikeWasActive) {
-                    console.log('  - Retrait du dislike précédent');
                     dislikeButton.classList.remove('active');
                     dislikeImg.src = '../../public/images/pouceBas.png';
                     dislikeCount.textContent = Math.max(0, parseInt(dislikeCount.textContent) - 1);
                 }
                 
-                // Ajouter le nouveau vote
                 this.classList.add('active');
                 if (type === 'like') {
                     likeImg.src = '../../public/images/pouceHautActive.png';
@@ -842,9 +780,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            console.log('✅ Interface mise à jour, envoi au serveur...');
-            
-            // Envoyer au serveur
             const formData = new FormData();
             formData.append('action', 'voter_avis');
             formData.append('idProduit', idProduit);
@@ -854,24 +789,11 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch(window.location.href, {
                 method: 'POST',
                 body: formData
-            })
-            .then(response => {
-                console.log('Réponse serveur:', response.status);
-                if (!response.ok) {
-                    throw new Error('Erreur serveur: ' + response.status);
-                }
-                console.log('✅ Vote enregistré sur le serveur');
-            })
-            .catch(error => {
-                console.error('❌ Erreur lors du vote:', error);
-                alert('Erreur lors du vote: ' + error.message);
+            }).catch(error => {
+                console.error('Erreur lors du vote:', error);
             });
         });
     });
-    
-    console.log('=== INIT TERMINÉ ===');
 });
-</script>
-</script>
 </script>
 </html>
