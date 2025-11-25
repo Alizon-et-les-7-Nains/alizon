@@ -5205,8 +5205,8 @@ dialog.reassort form input {
   float: right;
 }
 .pageProduit .actionsProduit {
-  top: 15em;
-  right: 3em;
+  top: 10em;
+  right: 1em;
   position: fixed;
   width: 24%;
   max-width: 300px;
@@ -5773,6 +5773,9 @@ dialog.reassort form input {
     flex-direction: row;
     top: 5em;
     left: 20px;
+  }
+  .pageProduit .infoPreviewProduit div {
+    justify-content: center;
   }
   .pageProduit .nomProduit {
     position: absolute;
