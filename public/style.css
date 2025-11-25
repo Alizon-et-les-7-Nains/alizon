@@ -3581,7 +3581,6 @@ button#haut.visible:hover {
   background-color: #f14e4e;
   color: #fffefa;
   width: 200px;
-  margin-top: 13px;
 }
 .modifierProduit .form-actions .btn-supprimer:hover {
   background-color: rgb(209.8815789474, 191.5, 255);
