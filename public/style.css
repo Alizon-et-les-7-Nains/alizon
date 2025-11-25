@@ -4408,6 +4408,7 @@ button#haut.visible:hover {
   width: 200px;
   color: #fffefa;
   cursor: pointer;
+  margin-left: 20px;
 }
 .popUpRemise .page form p {
   background-color: #e4d9ff;
