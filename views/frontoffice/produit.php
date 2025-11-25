@@ -573,18 +573,6 @@ if ($produit['stock'] > 0) {
 <?php else: ?>
     <p>Aucun avis pour ce produit.</p>
 <?php endif; ?>
-```
-
-**Les changements importants :**
-- ✅ Plus de `<form>` autour des boutons
-- ✅ `type="button"` sur tous les boutons (pas `type="submit"`)
-- ✅ Classes `btn-like` et `btn-dislike` ajoutées
-- ✅ Classe `vote-count` sur les `<span>` des compteurs
-- ✅ Attributs `data-produit`, `data-client`, `data-type` sur les boutons
-
-Rechargez la page et regardez la console. Maintenant vous devriez voir :
-```
-Boutons .btn-vote non désactivés: 2 (ou plus)
 
 </section>
 <section class="stickyTelephone">
