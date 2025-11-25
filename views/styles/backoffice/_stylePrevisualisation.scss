@@ -1,0 +1,17 @@
+@use '../fonts';
+@use '../colors' as *;
+
+.backoffice{
+    .previsualisation{
+        display: flex;
+    }
+    .textePrevi{
+        display: flex;
+        flex-direction: column;
+    }
+    .boutonRetour{
+        display: flex;
+        padding: 10px;
+        background-color: $color-blue;  
+    }
+}

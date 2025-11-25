@@ -5037,18 +5037,32 @@ dialog.reassort form input {
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
-.pageProduit .banniere img {
+.pageProduit .imgBanniere {
   position: absolute;
   height: 140px;
   width: auto;
-  z-index: 2;
+  z-index: 1;
 }
 .pageProduit .banniere h2 {
   position: absolute;
   top: 50px;
-  left: 25px;
+  left: 33px;
   color: #fffefa;
   z-index: 10000;
+}
+.pageProduit .poly:nth-child(1) {
+  position: absolute;
+  top: 35px;
+  left: 33px;
+  width: auto;
+  z-index: 100;
+}
+.pageProduit .poly:nth-child(2) {
+  position: absolute;
+  top: 35px;
+  left: 33px;
+  width: auto;
+  z-index: 100;
 }
 .pageProduit #imageBouteille {
   width: 220px;
@@ -5861,6 +5875,11 @@ dialog.reassort form input {
   padding-top: 10px;
   text-align: center;
 }
+.avis-vendeur .avi .col-gauche .profil-client img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
 .avis-vendeur .avi .etoiles {
   margin-top: 0;
   margin-bottom: 0;
@@ -5959,6 +5978,19 @@ dialog.reassort form input {
 }
 .popUpErreur button:hover {
   opacity: 0.9;
+}
+
+.backoffice .previsualisation {
+  display: flex;
+}
+.backoffice .textePrevi {
+  display: flex;
+  flex-direction: column;
+}
+.backoffice .boutonRetour {
+  display: flex;
+  padding: 10px;
+  background-color: #273469;
 }
 
 /*# sourceMappingURL=style.css.map */
