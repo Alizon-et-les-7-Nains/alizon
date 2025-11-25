@@ -72,13 +72,15 @@ $breakpoint-small-mobile: 480px;
     justify-content: center;
     padding: $page-padding;
     box-sizing: border-box;
-    min-height: 100vh;
+    min-height: 76vh;
 
     // Responsive pour le conteneur principal
     @media (max-width: $breakpoint-mobile) {
-      padding: 24px 12px;
-      justify-content: flex-start;
-      padding-top: 60px;
+        padding: 24px 12px;
+        justify-content: space-evenly;
+        padding-top: 60px;
+        display: flex;
+        min-height: 72vh;
     }
 
     @media (max-width: $breakpoint-small-mobile) {
