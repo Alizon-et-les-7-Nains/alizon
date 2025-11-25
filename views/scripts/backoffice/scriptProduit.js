@@ -198,7 +198,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
                     <input type="hidden" name="id" value="${id}">
                     <input type="hidden" name="aUneRemise" value="${aUneRemise}">
                     <button class="bouton" type="submit">Appliquer la remise </button>
-                    <button onclick="popUpAnnulerRemise(${id},${nom})>Supprimer la remise </button>
+                    <button onclick="popUpAnnulerRemise(${id}, '${nom}')">Supprimer la remise</button>
                 </form>
             </div>
         </main>`;
