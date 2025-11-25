@@ -5,9 +5,6 @@
                 <a href="../frontoffice/legalesConnecte.php">Mentions légales</a>
                 <p>© 2025 Alizon Tous droits réservés.</p>
             </div>
-            <div>
-                <img src="../../../public/images/whiteLetter.svg" alt="Bouton contact">
-            </div>
         </div>
 
         <div class="footerTel">
@@ -20,11 +17,7 @@
         <section id="burgerIconTel">
             <a href="../frontoffice/compteClient.php">Mon compte</a>
             <a href="../frontoffice/commentaires.php">Mes commentaires</a>
-            <a href="../frontoffice/listeDeSouhait.php">Ma liste</a>
-            <a href="../frontoffice/commandes.php">Mes commandes</a>
-            <a href="../frontoffice/notifications.php">Mes notifications</a>
             <a href="../frontoffice/legalesConnecte.php" class="separation">Mentions légales</a>
-            <a href="../frontoffice/support.php">Support</a>
             <a href="../frontoffice/connexionClient.php">Déconnexion</a>
         </section>
 
