@@ -341,7 +341,6 @@ $pays          = $vendeur['pays'] ?? '';
             </div>
         </form>
     </main>
-
     <?php include 'partials/footer.php'; ?>
 
     <?php 
