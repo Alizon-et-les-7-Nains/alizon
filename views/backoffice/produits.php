@@ -103,7 +103,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconeModifier.svg" alt="">
-                                        <button>Modifier</button>
+                                        <a href= <?php echo "modifierProduit.php?id=".$idProd?>><button>Modifier</button></a>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
