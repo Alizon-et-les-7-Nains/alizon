@@ -1,4 +1,8 @@
 <?php
+// Activer l'affichage des erreurs
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once '../../controllers/pdo.php';
 require_once '../../controllers/auth.php';
 
@@ -8,6 +12,20 @@ if (!isset($_SESSION['id'])) {
 }
 
 $code_vendeur = $_SESSION['id'];
+
+// DÉBOGAGE : Vérifier si le POST arrive
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo "<pre style='background: yellow; padding: 20px; border: 2px solid red;'>";
+    echo "=== POST REÇU ===\n";
+    echo "Données POST:\n";
+    print_r($_POST);
+    echo "\nDonnées FILES:\n";
+    print_r($_FILES);
+    echo "</pre>";
+    
+    // Ne pas continuer pour l'instant
+    // exit(); // Décommentez ceci pour arrêter l'exécution et voir les données
+}
 
 // Récupération des informations du vendeur avec jointure sur l'adresse
 $stmt = $pdo->prepare("
@@ -20,7 +38,7 @@ $stmt = $pdo->prepare("
 $stmt->execute([':id' => $code_vendeur]);
 $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Extraction des données une seule fois
+// Extraction des données
 $raisonSociale = $vendeur['raisonSocial'] ?? '';
 $noSiren       = $vendeur['noSiren'] ?? '';
 $prenom        = $vendeur['prenom'] ?? '';
@@ -48,23 +66,9 @@ foreach ($extensionsPossibles as $ext) {
     }
 }
 
-// Traitement de l'upload de photo si formulaire soumis
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+// Traitement du formulaire - MÊME STRUCTURE QUE COMPTE CLIENT
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    foreach ($extensionsPossibles as $ext) {
-        $oldFile = $photoPath . '.' . $ext;
-        if (file_exists($oldFile)) {
-            unlink($oldFile);
-        }
-    }
-    
-    // Uploader la nouvelle photo
-    $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-    move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
-}
-
-// Traitement des autres données du formulaire
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pseudo'])) {
     // Récupération des données du formulaire
     $pseudo = $_POST['pseudo'] ?? '';
     $nom = $_POST['nom'] ?? '';
@@ -83,33 +87,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pseudo'])) {
     // Gestion des valeurs NULL pour dateNaissance
     $dateNaissance = ($dateNaissance === '') ? null : $dateNaissance;
 
-    // Mise à jour des informations du vendeur - CORRIGÉ
+    // Mise à jour du vendeur - REQUÊTES SIMPLIFIÉES COMME CLIENT
     $stmt = $pdo->prepare("
-        UPDATE _vendeur 
-        SET pseudo = :pseudo, 
-            nom = :nom, 
-            prenom = :prenom, 
-            email = :email, 
-            dateNaissance = :dateNaissance,
-            noTelephone = :telephone,
-            raisonSocial = :raisonSociale,
-            noSiren = :noSiren
-        WHERE codeVendeur = :code_vendeur;
-    ");
+    UPDATE _vendeur 
+    SET pseudo = :pseudo, 
+        nom = :nom, 
+        prenom = :prenom, 
+        email = :email, 
+        dateNaissance = :dateNaissance,
+        noTelephone = :telephone,
+        raisonSocial = :raisonSocial,
+        noSiren = :noSiren
+    WHERE codeVendeur = :code_vendeur;
+");
 
-    $stmt->execute([
-        ':pseudo' => $pseudo,
-        ':nom' => $nom,
-        ':prenom' => $prenom,
-        ':email' => $email,
-        ':dateNaissance' => $dateNaissance,
-        ':telephone' => $telephone,
-        ':raisonSociale' => $raisonSociale,
-        ':noSiren' => $noSiren,
-        ':code_vendeur' => $code_vendeur
-    ]);
+$stmt->execute([
+    ':pseudo' => $pseudo,
+    ':nom' => $nom,
+    ':prenom' => $prenom,
+    ':email' => $email,
+    ':dateNaissance' => $dateNaissance,
+    ':telephone' => $telephone,
+    ':raisonSocial' => $raisonSociale,
+    ':noSiren' => $noSiren,
+    ':code_vendeur' => $code_vendeur
+]);
 
-    // Mise à jour de l'adresse
+    // Mise à jour de l'adresse - REQUÊTES SIMPLIFIÉES
     if ($idAdresse) {
         $stmt = $pdo->prepare("
             UPDATE _adresseVendeur 
@@ -131,6 +135,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pseudo'])) {
         ]);
     }
 
+    // Traitement de l'upload de photo APRÈS la mise à jour des données
+    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+        
+        // Supprimer les anciennes photos
+        foreach ($extensionsPossibles as $ext) {
+            $oldFile = $photoPath . '.' . $ext;
+            if (file_exists($oldFile)) {
+                unlink($oldFile);
+            }
+        }
+        
+        // Uploader la nouvelle photo
+        $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
+    }
+
     // Recharger les données après mise à jour
     $stmt = $pdo->prepare("
         SELECT v.*, a.codePostal, a.ville, a.region, a.pays, a.adresse as adresse_complete
@@ -141,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pseudo'])) {
     $stmt->execute([':id' => $code_vendeur]);
     $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Mettre à jour les variables après la modification
+    // Mettre à jour les variables
     $raisonSociale = $vendeur['raisonSocial'] ?? '';
     $noSiren       = $vendeur['noSiren'] ?? '';
     $prenom        = $vendeur['prenom'] ?? '';
