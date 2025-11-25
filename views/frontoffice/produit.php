@@ -312,9 +312,9 @@ if (isset($_SESSION['message_panier'])) {
         <div class="ligneActions">
             <img src="../../public/images/emplacement.png" alt="">
             <p>Livré a <a href=""><b>
-                <?php echo htmlspecialchars($adresse['ville']); ?>
-                <?php echo htmlspecialchars($adresse['codePostal']);?></b>, 
-                <?php echo htmlspecialchars($adresse['adresse']); ?></a></p>   
+                <?php echo htmlspecialchars($adresse['ville']) ?? ""; ?>
+                <?php echo htmlspecialchars($adresse['codePostal']) ?? "";?></b>, 
+                <?php echo htmlspecialchars($adresse['adresse']) ?? ""; ?></a></p>   
         </div>
         <div class="ligneActions">
             <img src="../../public/images/tec.png" alt="">
