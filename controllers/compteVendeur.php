@@ -72,6 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 }
 
-    header('Location: ../views/backoffice/compteVendeur.php');
+    header('Location: ../backoffice/compteVendeur.php');
     exit;
 ?>
