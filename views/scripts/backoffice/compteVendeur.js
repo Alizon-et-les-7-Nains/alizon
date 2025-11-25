@@ -255,11 +255,16 @@ function desactiverModeEdition() {
   const btnModifier = document.querySelector(".boutonModifierProfil");
   const btnAnnuler = document.querySelector(".boutonAnnuler");
   const btnSauvegarder = document.querySelector(".boutonSauvegarder");
+  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
 
   if (btnModifier) btnModifier.style.display = "block";
   if (btnAnnuler) btnAnnuler.style.display = "none";
   if (btnSauvegarder) btnSauvegarder.style.display = "none";
-
+  if (btnModifierMdp) {
+    btnModifierMdp.style.display = "none";
+    btnModifierMdp.textContent = "Modifier le mot de passe";
+    btnModifierMdp.classList.remove("annuler-mdp");
+  }
 }
 
 function activerModificationMdp() {

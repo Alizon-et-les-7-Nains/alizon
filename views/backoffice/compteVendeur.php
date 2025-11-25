@@ -305,6 +305,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" class="modifier boutonModifierProfil">Modifier</button>
                 <button type="button" class="annuler boutonAnnuler" style="display: none;">Annuler</button>
                 <button type="submit" class="sauvegarder boutonSauvegarder" style="display: none;">Sauvegarder</button>
+                <button type="button" class="modifier-mdp boutonModifierMdp">Modifier le mot de passe</button>
             </div>
         </form>
     </main>
