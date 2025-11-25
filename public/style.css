@@ -6039,5 +6039,8 @@ dialog.reassort form input {
 .pagePrevi .lignePrevi {
   border-top: solid 4px #f14e4e;
 }
+.pagePrevi .actionsProduit {
+  margin-top: 40px;
+}
 
 /*# sourceMappingURL=style.css.map */
