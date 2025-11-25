@@ -2600,7 +2600,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-style: italic;
 }
 .acceuil .banniere img {
-  max-width: 340px;
+  max-width: 400px;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 10px;
 }
 @media (max-width: 965px) {
   .acceuil .banniere div * {
@@ -2627,6 +2630,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     font-size: 32px;
     background-color: #E3F2FE;
     padding: 10px;
+    margin-bottom: 10px;
   }
   .acceuil .banniere div {
     background-color: #E4D9FF;
@@ -3487,7 +3491,6 @@ button#haut.visible:hover {
   border: 2px solid #273469;
   border-radius: 8px;
   font-size: 1rem;
-  box-sizing: border-box;
 }
 .modifierProduit input::placeholder {
   color: #6e6e6e;
@@ -4388,12 +4391,15 @@ main.backoffice-stocks section h1 {
 }
 main.backoffice-stocks section article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(855px, 1fr));
   gap: 1em;
   font-family: "open-sans";
 }
 main.backoffice-stocks section img:not(figure img) {
   height: 200px;
+  min-width: 150px;
+  max-width: 250px;
+  object-fit: cover;
   margin-top: 0.5em;
   margin-left: 0.5em;
   margin-right: 0.5em;
@@ -4402,7 +4408,7 @@ main.backoffice-stocks section div:not(button.settings div) *:not(img) {
   user-select: text;
 }
 main.backoffice-stocks section div:not(button.settings div) {
-  max-width: max-content;
+  width: 855px;
   padding: 1em;
   padding-bottom: 0;
   background-color: #e4d9ff;
@@ -5052,7 +5058,7 @@ dialog.reassort form input {
 .pageProduit .banniere h1 {
   position: absolute;
   top: 25px;
-  left: 10px;
+  left: 13px;
   color: #fffefa;
   z-index: 10000;
 }

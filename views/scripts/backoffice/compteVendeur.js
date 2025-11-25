@@ -1,6 +1,7 @@
 let modeEdition = false;
 let modeModificationMdp = false;
 let anciennesValeurs = {};
+let ancienneImageSrc = null;
 
 let ajoutPhoto = document.createElement("input");
 ajoutPhoto.type = "file";
@@ -144,19 +145,6 @@ function validerChamp(champId, valeur) {
   }
 }
 
-ajoutPhoto.addEventListener("change", function () {
-  const fichier = this.files[0];
-  if (fichier) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      if (imageProfile) {
-        imageProfile.src = e.target.result;
-      }
-    };
-    reader.readAsDataURL(fichier);
-  }
-});
-
 function activerModeEdition() {
   modeEdition = true;
 
@@ -193,6 +181,15 @@ function activerModeEdition() {
   });
 
   // Activer la modification de la photo de profil (comme client)
+  // Sauvegarder la source actuelle de l'image pour restauration si annulation
+  if (imageProfile && imageProfile.src) {
+    ancienneImageSrc = imageProfile.src;
+  } else {
+    ancienneImageSrc = null;
+  }
+
+  // Réinitialiser l'input fichier et l'ajouter
+  ajoutPhoto.value = "";
   conteneur.appendChild(ajoutPhoto);
 
   if (imageProfile) {
@@ -289,11 +286,15 @@ function activerModificationMdp() {
     });
   });
 
+  // Afficher/masquer les boutons pour indiquer qu'une édition est en cours
+  const btnModifier = document.querySelector(".boutonModifierProfil");
+  const btnAnnuler = document.querySelector(".boutonAnnuler");
+  const btnSauvegarder = document.querySelector(".boutonSauvegarder");
   const btnModifierMdp = document.querySelector(".boutonModifierMdp");
-  if (btnModifierMdp) {
-    btnModifierMdp.textContent = "Annuler modification mot de passe";
-    btnModifierMdp.classList.add("annuler-mdp");
-  }
+
+  if (btnModifier) btnModifier.style.display = "none";
+  if (btnAnnuler) btnAnnuler.style.display = "block";
+  if (btnSauvegarder) btnSauvegarder.style.display = "block";
 }
 
 function desactiverModificationMdp() {
@@ -314,7 +315,19 @@ function desactiverModificationMdp() {
     input.parentNode.replaceChild(newInput, input);
   });
 
+  // Restaurer l'état des boutons : si on n'est pas en mode édition complet,
+  // masquer Sauvegarder/Annuler et afficher le bouton Modifier principal.
+  const btnModifier = document.querySelector(".boutonModifierProfil");
+  const btnAnnuler = document.querySelector(".boutonAnnuler");
+  const btnSauvegarder = document.querySelector(".boutonSauvegarder");
   const btnModifierMdp = document.querySelector(".boutonModifierMdp");
+
+  if (!modeEdition) {
+    if (btnModifier) btnModifier.style.display = "block";
+    if (btnAnnuler) btnAnnuler.style.display = "none";
+    if (btnSauvegarder) btnSauvegarder.style.display = "none";
+  }
+
   if (btnModifierMdp) {
     btnModifierMdp.textContent = "Modifier le mot de passe";
     btnModifierMdp.classList.remove("annuler-mdp");
@@ -325,9 +338,7 @@ function toggleModificationMdp() {
   if (modeModificationMdp) {
     desactiverModificationMdp();
   } else {
-    if (!modeEdition) {
-      activerModeEdition();
-    }
+    // Activer seulement les champs mot de passe sans activer le mode édition complet
     activerModificationMdp();
   }
 }
@@ -342,6 +353,28 @@ function restaurerAnciennesValeurs() {
       validerChamp(input.id, input.value);
     }
   });
+
+  // Restaurer l'image de profil si elle a été sauvegardée
+  if (
+    imageProfile &&
+    typeof ancienneImageSrc !== "undefined" &&
+    ancienneImageSrc !== null
+  ) {
+    imageProfile.src = ancienneImageSrc;
+  }
+
+  // Réinitialiser l'input fichier si présent
+  const photoInput = document.getElementById("photoProfil");
+  if (photoInput) {
+    try {
+      photoInput.value = "";
+    } catch (e) {
+      // certains navigateurs n'autorisent pas la réinitialisation programmatique
+    }
+  }
+
+  // On remet à null la valeur sauvegardée (restauration effectuée)
+  ancienneImageSrc = null;
 }
 
 function validerFormulaire() {
@@ -439,6 +472,19 @@ function afficherMessageCriteresMdp() {
     }
   });
 }
+
+ajoutPhoto.addEventListener("change", function () {
+  const fichier = this.files[0];
+  if (fichier) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      if (imageProfile) {
+        imageProfile.src = e.target.result;
+      }
+    };
+    reader.readAsDataURL(fichier);
+  }
+});
 
 function boutonAnnuler() {
   restaurerAnciennesValeurs();

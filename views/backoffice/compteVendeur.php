@@ -137,6 +137,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="monCompte backoffice">
     <?php include 'partials/header.php'; ?>
 
+    <?php
+        $currentPage = basename(__FILE__);
+        require_once './partials/aside.php';
+    ?>
+
     <main class="page-compte">
         <form class="form-compte" method="POST" action="" enctype="multipart/form-data">
             <div class="header-compte">
@@ -322,6 +327,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     const mdpCrypte = <?php echo json_encode($mdp); ?>;
     </script>
     <script src="../scripts/backoffice/compteVendeur.js"></script>
+    <script src="../../public/amd-shim.js"></script>
+    <script src="../../public/script.js"></script>
 </body>
 
 </html>

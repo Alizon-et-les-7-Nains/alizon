@@ -23,11 +23,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
 
-    $photoPath = '/var/www/html/images/' . $_FILES['url']['name'];
+    $photoPath = '/var/www/html/images/produit' . $idProd;
+
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $extension = '';
+
+    foreach ($extensionsPossibles as $ext) {
+        if (file_exists($photoPath . '.' . $ext)) {
+            $extension = '.' . $ext;
+            break;
+        }
+    }
+    
     if (file_exists($photoPath)) { 
         unlink($photoPath); // supprime l'ancien fichier 
     }
-    move_uploaded_file($_FILES['url']['tmp_name'], $photoPath);
+    move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
 
     $fileName = $_FILES['url']['name'];
     $url = "/images/" . $fileName;
@@ -41,7 +52,7 @@ if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
 }
 
 
-$url = "/images/$fileName";
+$url = "/images/produit" . $idProd.$extension;
 
 try{
     $imgDeProd->execute([

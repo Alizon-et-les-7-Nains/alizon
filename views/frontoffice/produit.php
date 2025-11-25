@@ -51,6 +51,14 @@ $sqlProduit = "SELECT
 $result = $pdo->query($sqlProduit);
 $produit = $result->fetch(PDO::FETCH_ASSOC);
 
+$idClient = $_SESSION['user_id'] ?? 0;
+$sqlAdresse = "SELECT * 
+               FROM _adresseClient 
+               WHERE idAdresse = (SELECT idAdresse FROM _client WHERE idClient = ?)";
+$stmtAdresse = $pdo->prepare($sqlAdresse);
+$stmtAdresse->execute([$idClient]);
+$adresse = $stmtAdresse->fetch(PDO::FETCH_ASSOC);
+
 if (!$produit) {
     echo "<p>Produit introuvable.</p>";
     exit;
@@ -71,7 +79,8 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         return false;
     }
     
-    try {        $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    try {        
+        $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
         $stmtPanier->execute([$idClient]);
         $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
         
@@ -267,16 +276,15 @@ if (isset($_SESSION['message_panier'])) {
             <span class="review-count" id="reviewCountHautProduit"><?php echo $nombreAvis; ?> évaluations</span>
         </div>
         <div id="prix">
-            <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
             <?php if ($promotion['est_en_remise']): ?>
-            <h3><del><?php echo number_format($promotion['prix_promotion'], 2, ',', ' '); ?>€</del></h3> 
+            <h1><?php echo number_format($promotion['prix_promotion'], 2, ',', ' '); ?>€</h1>
+            <h3><del><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</del></h3> 
+            <?php else: ?>
+            <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
             <?php endif; ?>
         </div>
         <h2>Description de l'article :</h2>
-        <p></p>
-        <p id="descriptionCourte">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus enim iure ratione voluptates
-            eius doloremque obcaecati dignissimos ea porro exercitationem ex omnis reiciendis neque explicabo,
-            libero quidem placeat, accusantium sit.</p>
+        <p><?php echo htmlspecialchars($produit['description']);?></p>
         <a href="#conteneurTexte">Voir plus sur le produit</a>
         <div class="version">
             <h3>Version :</h3>
@@ -303,7 +311,10 @@ if (isset($_SESSION['message_panier'])) {
         </div>
         <div class="ligneActions">
             <img src="../../public/images/emplacement.png" alt="">
-            <p>Livré a <a href=""><b>Clermont-ferrand 63000</b>, 10 place saint-michel</a></p>   
+            <p>Livré a <a href=""><b>
+                <?php echo htmlspecialchars($adresse['ville']); ?>
+                <?php echo htmlspecialchars($adresse['codePostal']);?></b>, 
+                <?php echo htmlspecialchars($adresse['adresse']); ?></a></p>   
         </div>
         <div class="ligneActions">
             <img src="../../public/images/tec.png" alt="">
