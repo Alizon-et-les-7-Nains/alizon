@@ -4410,7 +4410,6 @@ main.backoffice-stocks section div:not(button.settings div) *:not(img) {
 }
 main.backoffice-stocks section div:not(button.settings div) {
   width: 855px;
-  max-width: max-content;
   padding: 1em;
   padding-bottom: 0;
   background-color: #e4d9ff;
