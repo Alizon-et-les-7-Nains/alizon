@@ -85,6 +85,20 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     }
     
     return $success;
+
+    $stmtNoteProduit = $pdo->prepare(
+        "UPDATE _produit p
+        LEFT JOIN (
+            SELECT idProduit, AVG(note) AS avg_note
+            FROM _avis
+            GROUP BY idProduit
+        ) a ON p.idProduit = a.idProduit
+        SET p.note = COALESCE(a.avg_note, 0);
+        ");
+        
+    $stmtNoteProduit->execute();
+    $noteProduit = $stmtNoteProduit->fetchAll(PDO::FETCH_ASSOC);
+
 }
 
 // ============================================================================
