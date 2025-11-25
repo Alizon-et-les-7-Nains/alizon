@@ -77,7 +77,7 @@ function allValid(): boolean {
     return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);
 }
 
-inputSeuil.addEventListener('input', () => {
+inputSeuil?.addEventListener('input', () => {
     if (!checkInt(inputSeuil.value)) {
         inputSeuil.style.cssText = 'border-color: #f14e4e !important';
         errorFieldSeuil.style.display = 'block';
@@ -88,7 +88,7 @@ inputSeuil.addEventListener('input', () => {
 
     buttonConfirm.disabled = !allValid();
 })
-inputDate.addEventListener('input', () => {
+inputDate?.addEventListener('input', () => {
     if (!checkDate(inputDate.valueAsDate)) {
         inputDate.style.cssText = 'border-color: #f14e4e !important';
         errorFieldDate.style.display = 'block';
@@ -100,7 +100,7 @@ inputDate.addEventListener('input', () => {
 
     buttonConfirm.disabled = !allValid();
 })
-inputReassort.addEventListener('input', () => {
+inputReassort?.addEventListener('input', () => {
     if (!checkInt(inputReassort.value)) {
         inputReassort.style.cssText = 'border-color: #f14e4e !important';
         errorFieldReassort.style.display = 'block';

@@ -2,6 +2,12 @@
 @use '../colors' as *;
 
 .produitBackOffice{
+
+    a{
+        text-decoration: none;
+        color: $color-white;
+    }
+
     p{
         margin: 0;
         font-size:12px ;

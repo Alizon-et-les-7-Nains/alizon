@@ -1461,6 +1461,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: bold;
 }
 
+.produitBackOffice a {
+  text-decoration: none;
+  color: #fffefa;
+}
 .produitBackOffice p {
   margin: 0;
   font-size: 12px;
@@ -3086,7 +3090,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .panier article h2 b {
   color: black;
 }
-@media (max-width: 1248px) {
+@media (max-width: 1290px) {
   .panier main {
     flex-direction: column;
     justify-content: center;
@@ -3115,6 +3119,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .panier .infoProduit div h2 {
     font-size: 15px;
+    max-width: 170px;
   }
   .panier .quantiteProduit img {
     width: 9px !important;
@@ -3154,6 +3159,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier .infoProduit h2 {
   margin-top: 0;
+  max-width: 300px;
 }
 .panier button .delete {
   margin-bottom: 15px;
@@ -4626,13 +4632,13 @@ dialog.reassort form input::placeholder {
   font-weight: normal;
 }
 dialog.reassort form input:disabled {
-  background-color: #6e6e6e !important;
-  color: #273469 !important;
+  background-color: #bababa !important;
+  color: #fffefa !important;
   cursor: not-allowed !important;
 }
 dialog.reassort form input:disabled:hover {
-  background-color: #6e6e6e !important;
-  color: #273469 !important;
+  background-color: #bababa !important;
+  color: #fffefa !important;
   cursor: not-allowed !important;
 }
 dialog.reassort form input {
@@ -5045,8 +5051,8 @@ dialog.reassort form input {
 }
 .pageProduit .banniere h1 {
   position: absolute;
-  top: 28px;
-  left: 25px;
+  top: 25px;
+  left: 10px;
   color: #fffefa;
   z-index: 10000;
 }
