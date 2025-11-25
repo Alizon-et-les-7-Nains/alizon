@@ -135,7 +135,7 @@ if (count($faibles) == 0) echo "<h2>Aucun produit en alerte</h2>";
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $faible['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
-        $commandes->execute(['idProduit' => $epuise['idProduit'], 'idVendeur' => $_SESSION['id']]);
+        $commandes->execute(['idProduit' => $faible['idProduit'], 'idVendeur' => $_SESSION['id']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
                     <button class='settings' id='" . $faible['idProduit'] . "'>
@@ -231,7 +231,7 @@ $stocks = $stocksSTMT->fetchAll(PDO::FETCH_ASSOC);
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $stock['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
-        $commandes->execute(['idProduit' => $epuise['idProduit'], 'idVendeur' => $_SESSION['id']]);
+        $commandes->execute(['idProduit' => $stock['idProduit'], 'idVendeur' => $_SESSION['id']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
                     <button class='settings' id='" . $stock['idProduit'] . "'>
