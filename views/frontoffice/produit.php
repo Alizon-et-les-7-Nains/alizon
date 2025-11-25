@@ -51,12 +51,13 @@ $sqlProduit = "SELECT
 $result = $pdo->query($sqlProduit);
 $produit = $result->fetch(PDO::FETCH_ASSOC);
 
+$idClient = $_SESSION['user_id'] ?? 0;
 $sqlAdresse = "SELECT * 
                FROM _adresseClient 
-               WHERE idAdresse = " . intval($produit['user_id'] ?? "*************");
-
-$resultAdresse = $pdo->query($sqlAdresse);
-$adresse = $resultAdresse->fetch(PDO::FETCH_ASSOC);
+               WHERE idAdresse = (SELECT idAdresse FROM _client WHERE idClient = ?)";
+$stmtAdresse = $pdo->prepare($sqlAdresse);
+$stmtAdresse->execute([$idClient]);
+$adresse = $stmtAdresse->fetch(PDO::FETCH_ASSOC);
 
 if (!$produit) {
     echo "<p>Produit introuvable.</p>";
@@ -276,8 +277,8 @@ if (isset($_SESSION['message_panier'])) {
         </div>
         <div id="prix">
             <?php if ($promotion['est_en_remise']): ?>
-            <h1><?php echo number_format($produit['prix_promotion'], 2, ',', ' '); ?>€</h1>
-            <h3><del><?php echo number_format($promotion['prix'], 2, ',', ' '); ?>€</del></h3> 
+            <h1><?php echo number_format($promotion['prix_promotion'], 2, ',', ' '); ?>€</h1>
+            <h3><del><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</del></h3> 
             <?php else: ?>
             <h1><?php echo number_format($produit['prix'], 2, ',', ' '); ?>€</h1>
             <?php endif; ?>
