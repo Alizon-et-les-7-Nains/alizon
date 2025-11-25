@@ -34,43 +34,7 @@ exit;
     <main>
         <h1> Mes Commentaires</h1>
 
-        <?php
-            if (count($mesAvis) == 0) echo "<h2>Aucun avis</h2>";
-            foreach ($mesAvis as $avis) {
-                $imagesAvis = ($pdo->query(str_replace('$idClient', $avis['idClient'], str_replace('$idProduit', $avis['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
-                $imageClient = "/images/photoProfilClient/photo_profil" . $avis['idClient'] . ".svg";
-                $html = "
-                <table>
-                    <tr>
-                        <th rowspan=2>
-                            <figure>
-                                <img src='$imageClient' onerror=" . '"this.style.display=' . "'none'" . '"' . ">
-                                <figcaption>" . $avis['pseudo'] . "</figcaption>
-                            </figure>
-                            <figure>
-                                <figcaption>" . str_replace('.', ',', $avis['note']) . "</figcaption>
-                                <img src='/public/images/etoile.svg'>
-                            </figure>
-                        </th>
-                        <th>" . $avis['nomProduit'] . " - " . $avis['titreAvis'] . "</th>
-                        <td>Le" . formatDate($avis['dateAvis']) . "</td>
-                    </tr>
-                    <tr>
-                        <td colspan='2'>" . $avis['contenuAvis'] . "</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td colspan='2'>";   
-                            foreach ($imagesAvis as $imageAvi) {
-                                $html .= "<img src='" . $imageAvi['URL'] . "' class='imageAvis'>";
-                            }
-                        $html .= "</td>
-                    </tr>
-                </table>
-                ";
-                echo $html;
-            }
-?>
+        
     </main>
 
 </body>
