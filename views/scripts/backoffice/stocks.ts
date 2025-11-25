@@ -60,8 +60,12 @@ document.querySelector('modal.reassort input#annuler')?.addEventListener('click'
 function checkInt(value: string): boolean {
     let valid: boolean = true;
     let intValue = parseInt(value);
-    if (!intValue || intValue < 0) {
-        valid = false;
+    if (value != null) {
+        if (!intValue || intValue < 0) {
+            valid = false;
+        }
+    } else {
+        valid = true;
     }
     return valid;
 }
@@ -73,7 +77,7 @@ function checkDate(date: Date | null): boolean {
             valid = false;
         }
     } else {
-        valid = false;
+        valid = true;
     }
     return valid;
 }
