@@ -1,17 +1,3 @@
-<?php
-$requestUri = $_SERVER['REQUEST_URI'] ?? '';
-$fromBackoffice = strpos($requestUri, '/backoffice/') !== false;
-$fromFrontoffice = strpos($requestUri, '/frontoffice/') !== false;
-
-if ($fromBackoffice) {
-    $homeLink = '/views/backoffice/accueil.php';
-} elseif ($fromFrontoffice) {
-    $homeLink = '/views/frontoffice/accueilConnecte.php';
-} else {
-    $homeLink = null; // Affiche les deux choix
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -24,7 +10,6 @@ if ($fromBackoffice) {
 </head>
 
 <body class="page404">
-
     <img class="bgImgs bleu" src="/public/images/symboleBleu.png" alt="symboleBleu">
     <img class="bgImgs rose" src="/public/images/symboleRose.png" alt="symboleRose">
 
@@ -40,12 +25,10 @@ if ($fromBackoffice) {
         </div>
 
         <div>
-            <?php if ($homeLink): ?>
-                <a href="<?= $homeLink ?>">Retourner à bon port</a>
-            <?php else: ?>
-                <a href="/views/frontoffice/accueilConnecte.php">Frontoffice</a>
-                <a href="/views/backoffice/accueil.php">Backoffice</a>
-            <?php endif; ?>
+            <p>Retourner à bon port</p>
+            <a href="/views/frontoffice/accueilConnecte.php">Frontoffice</a>
+            <span style="margin: 0 15px;"></span>
+            <a href="/views/backoffice/accueil.php">Backoffice</a>
         </div>
 
     </main>
