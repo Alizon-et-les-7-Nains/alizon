@@ -51,6 +51,6 @@ catch(PDOException $e){
 
     
 
-//header("Location: ../views/backoffice/accueil.php"); 
+header("Location: ../views/backoffice/accueil.php"); 
 exit();
 ?>

@@ -24,7 +24,7 @@ $query = "
 ";
 
 $stmt = $pdo->prepare($query);
-$stmt->bindValue(':idVendeur', $_SESSION['id'], PDO::PARAM_INT); 
+$stmt->bindValue(':idVendeur', $_SESSION['id'], PDO::PARAM_INT);
 $stmt->execute();
 $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -63,52 +63,55 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php foreach ($avis as $avi): ?>
 
                 <?php
-                        $imagesAvis = (
-                            $pdo->query(
-                                str_replace(
-                                    '$idClient',
-                                    $avi['idClient'],
-                                    str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql'))
-                                )
-                            )
-                        )->fetchAll(PDO::FETCH_ASSOC);
+                    // Utilise la même méthode que dans accueil.php pour les images d'avis
+                    $imagesAvis = $pdo->query(
+                        str_replace(
+                            '$idClient',
+                            $avi['idClient'],
+                            str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql'))
+                        )
+                    )->fetchAll(PDO::FETCH_ASSOC);
 
-                        $imageClient = "/public/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
-                    ?>
+                    // Chemin de la photo de profil comme dans accueil.php
+                    $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
+                ?>
 
                 <table class="avi">
                     <tr>
                         <th rowspan="3" class="col-gauche">
                             <figure class="profil-client">
                                 <img src="<?= $imageClient ?>" onerror="this.style.display='none'">
-                                <figcaption><?= $avi['pseudo'] ?></figcaption>
+                                <figcaption><?= $avi['pseudo'] ?? $avi['prenom'] . ' ' . $avi['nomClient'] ?>
+                                </figcaption>
+                            </figure>
+                            <figure class="etoiles">
+                                <figcaption><?= str_replace('.', ',', $avi['note']) ?>/5</figcaption>
+                                <img src="/public/images/etoile.svg" alt="étoile">
                             </figure>
                         </th>
 
                         <td class="ligne">
-                            <figure class="etoiles">
-                                <figcaption><?= str_replace('.', ',', $avi['note']) ?></figcaption>
-                                <img src="/public/images/etoile.svg">
-                            </figure>
-                            <?= $avi['titreAvis'] ?> - <?= $avi['nomProduit'] ?>
+                            <strong><?= $avi['titreAvis'] ?></strong> - <?= $avi['nomProduit'] ?>
                         </td>
                         <td class="ligne">
-                            <p class=" date-avis">Avis déposé le <?= formatDate($avi['dateAvis']) ?></p>
+                            <p class="date-avis">Avis déposé le <?= formatDate($avi['dateAvis']) ?></p>
                         </td>
-
                     </tr>
 
                     <tr>
-                        <td class=" ligne text" colspan="2">
+                        <td class="ligne text" colspan="2">
                             <?= $avi['contenuAvis'] ?>
                         </td>
                     </tr>
 
                     <tr>
                         <td class="ligne" colspan="2">
+                            <?php if (!empty($imagesAvis)): ?>
                             <?php foreach ($imagesAvis as $imageAvi): ?>
-                            <img src="<?= $imageAvi['URL'] ?>" class="imageAvis">
+                            <img src="<?= $imageAvi['URL'] ?>" class="imageAvis" style="max-width: 100px; margin: 5px;"
+                                onerror="this.style.display='none'">
                             <?php endforeach; ?>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 </table>
@@ -117,7 +120,7 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </article>
 
             <a href="./avis.php" title="Voir plus">
-                <img src="/public/images/infoDark.svg">
+                <img src="/public/images/infoDark.svg" alt="info">
             </a>
         </section>
 

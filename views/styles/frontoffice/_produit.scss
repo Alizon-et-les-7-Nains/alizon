@@ -45,9 +45,24 @@
 
     .banniere{
         position: absolute;
-        top: -40px;
+        top: -0px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
+    }
+
+    .banniere img{
+        position: absolute;
+        height: 140px;
+        width: auto;
+        z-index: 2;
+    }
+
+    .banniere h2{
+        position: absolute;
+        top: 50px;
+        left: 25px;
+        color: $color-white;
+        z-index: 10000;
     }
 
     #imageBouteille{
