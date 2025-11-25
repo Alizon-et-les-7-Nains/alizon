@@ -132,7 +132,7 @@ $avis = $avisSTMT->fetchAll(PDO::FETCH_ASSOC);
                     </figure>
                 </th>
                 <th>" . $avi['nomProduit'] . " - " . $avi['titreAvis'] . "</th>
-                <td>Le" . formatDate($avi['dateAvis']) . "</td>
+                <td>Le " . formatDate($avi['dateAvis']) . "</td>
             </tr>
             <tr>
                 <td colspan='2'>" . $avi['contenuAvis'] . "</td>
