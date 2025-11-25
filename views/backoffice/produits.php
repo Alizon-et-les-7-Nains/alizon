@@ -11,7 +11,7 @@
 
     $idVendeur = $_SESSION['id'];
 
-    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true AND idVendeur =  '$idVendeur';");
+    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true AND idVendeur = '$idVendeur';");
     $produitEnVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 ?>
 
@@ -154,7 +154,7 @@
             </div>
             <?php 
                 require_once '../../controllers/pdo.php';
-                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true AND idVendeur =  '$idVendeur';");
+                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = false AND idVendeur =  '$idVendeur';");
                 $produitHorsVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             ?>
 
