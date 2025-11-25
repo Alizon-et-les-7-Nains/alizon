@@ -6767,7 +6767,7 @@ dialog.reassort form input {
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 100%;
+    width: 440px;
     margin: 30px;
     font-family: "Lora", serif;
     color: #273469;
