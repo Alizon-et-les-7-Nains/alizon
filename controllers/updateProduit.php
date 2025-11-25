@@ -4,14 +4,13 @@ session_start();
 
 $idProd = $_GET['id']; 
 
-$today = getdate();
-$date=$today['year'].'-'.$today['mon'].'-'.$today['wday'];
+
 // Si il y a eu un formulare de remplie, on fait 2 requêtes 
 // La première requête permet de mettre à jour les informations du produit sur lequel le formulaire à été rempli
 // La deuxième permet de mettre à jour l'image d'un produit
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $pdo->prepare("UPDATE _produit SET nom = :nom, description = :description, prix = :prix, poids = :poids, mots_cles = :mot_cles dateDerniereModif = :dateModif WHERE idProduit = :idProduit");
+    $stmt = $pdo->prepare("UPDATE _produit SET nom = :nom, description = :description, prix = :prix, poids = :poids, mots_cles = :mot_cles WHERE idProduit = :idProduit");
     $imgDeProd = $pdo->prepare("UPDATE _imageDeProduit SET URL = :url WHERE idProduit = :idProduit");
     $stmt->execute([
         ':nom' => $_POST['nom'],
@@ -19,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':prix' => $_POST['prix'],
         ':poids' => $_POST['poids'],
         ':mot_cles' => $_POST['mots_cles'],
-        ':dateModif' => $date,
         ':idProduit' => $idProd
     ]);
 
