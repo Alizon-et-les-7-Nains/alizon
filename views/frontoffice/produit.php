@@ -70,6 +70,8 @@ $sqlImages = "SELECT *
 $resultImages = $pdo->query($sqlImages);
 $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 
+
+
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
@@ -266,7 +268,7 @@ if (isset($_SESSION['message_panier'])) {
         <div class="attributsproduit">
             <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
             <?php if ($promotion['est_en_promotion']): ?>
-            <h3>Promotion</h3> 
+                <h3>Promotion</h3> 
             <?php endif; ?>
         </div>
         <div class="product-rating">
@@ -416,6 +418,15 @@ if (isset($_SESSION['message_panier'])) {
                     <p><?php echo htmlspecialchars($avis['contenuAvis']); ?></p>
                     <div class="baselineSpaceBetween">
                         <div class="sectionImagesAvis">
+                           <?php $sqlImagesAvis = "SELECT * 
+                                FROM _imageAvis 
+                                WHERE idClient = " . intval($avis['idClient']) . " AND idProduit = " . intval($productId);
+
+                                $resultImagesAvis = $pdo->query($sqlImagesAvis);
+                                $imagesAvis = $resultImagesAvis->fetchAll(PDO::FETCH_ASSOC);?>
+                            <?php foreach ($imagesAvis as $imageAvis): ?>
+                                <img src="../../public/images/<?php echo htmlspecialchars($imageAvis['URL'] ?? '');?>" alt="">
+                             <?php endforeach; ?>
                         </div>   
                         <div class="actionsAvis">
                             <img src="../../public/images/pouceHaut.png" alt="Like" onclick="changerPouce(this, 'haut')" class="pouce">
