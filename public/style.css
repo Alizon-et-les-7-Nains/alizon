@@ -5963,5 +5963,8 @@ dialog.reassort form input {
   padding: 10px;
   background-color: #273469;
 }
+.backoffice .ligne {
+  border-top: solid 2px red;
+}
 
 /*# sourceMappingURL=style.css.map */
