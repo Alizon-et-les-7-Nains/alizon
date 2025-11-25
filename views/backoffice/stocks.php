@@ -93,7 +93,7 @@
                                 <figcaption>" . $reassort . "</figcaption>
                             </figure>
                         </li>
-                        <li>Épuisé le " . formatDate($epuise['dateStockEpuise']) . "</li>
+                        <li><h2>Épuisé le " . formatDate($epuise['dateStockEpuise']) . "</h2></li>
                     </ul>
                 </div>";
         echo $html;
@@ -169,7 +169,7 @@
                                 <figcaption>" . $reassort . "</figcaption>
                             </figure>
                         </li>
-                        <li>" . $faible['stock'] . " restants</li>
+                        <li><h2>" . $faible['stock'] . " restants</h2></li>
                     </ul>
                 </div>";
         echo $html;
@@ -245,7 +245,7 @@
                                 <figcaption>" . $reassort . "</figcaption>
                             </figure>
                         </li>
-                        <li>" . $stock['stock'] . " restants</li>
+                        <li><h2>" . $stock['stock'] . " restants</h2></li>
                     </ul>
                 </div>";
         echo $html;

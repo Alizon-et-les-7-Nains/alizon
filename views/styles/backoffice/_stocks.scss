@@ -25,6 +25,8 @@ main.backoffice-stocks {
         
         img:not(figure img) {
             height: 200px;
+            max-width: 400px;
+            object-fit: contain;
             margin: {
                 top: 0.5em;
                 left: 0.5em;
