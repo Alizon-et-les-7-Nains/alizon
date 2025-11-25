@@ -60,7 +60,7 @@
     .banniere h2{
         position: absolute;
         top: 50px;
-        left: 33px;
+        left: 50px;
         color: $color-white;
         z-index: 10000;
     }
@@ -68,15 +68,15 @@
     .poly:nth-child(1){
         position: absolute;
         top: 35px;
-        left: 33px;
+        left: 15px;
         width: auto;
         z-index: 100;
     }
 
     .poly:nth-child(2){
         position: absolute;
-        top: 35px;
-        left: 33px;
+        top: 65px;
+        left: 15px;
         width: auto;
         z-index: 100;
     }
