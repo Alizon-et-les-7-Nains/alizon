@@ -261,7 +261,7 @@ function desactiverModeEdition() {
   if (btnAnnuler) btnAnnuler.style.display = "none";
   if (btnSauvegarder) btnSauvegarder.style.display = "none";
   if (btnModifierMdp) {
-    btnModifierMdp.style.display = "block";
+    btnModifierMdp.style.display = "none";
     btnModifierMdp.textContent = "Modifier le mot de passe";
     btnModifierMdp.classList.remove("annuler-mdp");
   }
