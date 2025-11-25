@@ -5865,6 +5865,11 @@ dialog.reassort form input {
   font-size: 40px;
   font-family: "Lora", serif;
   font-weight: bold;
+  color: #273469;
+}
+.avis-vendeur article {
+  background-color: red;
+  border-radius: 20px;
 }
 .avis-vendeur .avi {
   border-collapse: separate;

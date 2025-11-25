@@ -140,27 +140,34 @@ function checkDate(date) {
     }
     return valid;
 }
+function allValid() {
+    return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);
+}
 inputSeuil.addEventListener('input', () => {
     if (!checkInt(inputSeuil.value)) {
         inputSeuil.style.cssText = 'border-color: #f14e4e !important';
         errorFieldSeuil.style.display = 'block';
-        buttonConfirm.disabled = true;
     }
     else {
         inputSeuil.style.cssText = 'border-color: #273469 !important';
         errorFieldSeuil.style.display = 'none';
-        buttonConfirm.disabled = false;
     }
+    buttonConfirm.
+    ;
 });
 inputDate.addEventListener('input', () => {
     if (!checkDate(inputDate.valueAsDate)) {
         inputDate.style.cssText = 'border-color: #f14e4e !important';
         errorFieldDate.style.display = 'block';
-        buttonConfirm.disabled = true;
     }
     else {
         inputDate.style.cssText = 'border-color: #273469 !important';
         errorFieldDate.style.display = 'none';
+    }
+    if (allValid()) {
+        buttonConfirm.disabled = true;
+    }
+    else {
         buttonConfirm.disabled = false;
     }
 });
@@ -168,11 +175,15 @@ inputReassort.addEventListener('input', () => {
     if (!checkInt(inputReassort.value)) {
         inputReassort.style.cssText = 'border-color: #f14e4e !important';
         errorFieldReassort.style.display = 'block';
-        buttonConfirm.disabled = true;
     }
     else {
         inputReassort.style.cssText = 'border-color: #273469 !important';
         errorFieldReassort.style.display = 'none';
+    }
+    if (allValid()) {
+        buttonConfirm.disabled = true;
+    }
+    else {
         buttonConfirm.disabled = false;
     }
 });
