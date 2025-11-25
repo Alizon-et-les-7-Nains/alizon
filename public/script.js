@@ -99,7 +99,7 @@ btnSettings.forEach(btn => {
 });
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        fetch('../../controller/getProduct.php', {
+        fetch('../../controllers/getProduct.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idProduit: btn.id })
