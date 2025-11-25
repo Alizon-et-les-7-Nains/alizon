@@ -22,34 +22,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
 
-    $photoPath = '/var/www/html/images/'.$idProd;
-
-    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-    $extension = '';
-
-    foreach ($extensionsPossibles as $ext) {
-        if (file_exists($photoPath . '.' . $ext)) {
-            $extension = '.' . $ext;
-            break;
-        }
-    }
+    $photoPath = '/var/www/html/images/'.$_FILES['url']['name'];
 
     if (file_exists($photoPath)) {
         unlink($photoPath); // supprime l'ancien fichier
     }
 
-    if (isset($_FILES['url']) && $_FILES['phurlotoProfil']['tmp_name'] != '') {
-        $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
-        $extension = '.'.$extension;
+if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
         move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
-    }
+}
 else{
     $sqlUrl = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = $idProd");
     $result =  $pdo->query($sqlUrl);
     $fileName = $result->fetch(PDO::FETCH_ASSOC);
 }
 
-$url = "/images/$fileName.$extension";
+$url = "/images/$fileName";
 
 try{
     $imgDeProd->execute([
