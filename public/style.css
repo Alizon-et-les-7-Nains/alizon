@@ -4608,11 +4608,11 @@ dialog.reassort form ul li:first-child input:hover {
   color: #273469;
   cursor: pointer;
 }
-dialog.reassort form ul li:last-child input {
+dialog.reassort form ul li:last-child input:not(:disabled) {
   background-color: #273469;
   color: #fffefa;
 }
-dialog.reassort form ul li:last-child input:hover {
+dialog.reassort form ul li:last-child input:not(:disabled):hover:not(:disabled) {
   background-color: #e3f2fe;
   color: #273469;
   cursor: pointer;
@@ -4626,14 +4626,14 @@ dialog.reassort form input::placeholder {
   font-weight: normal;
 }
 dialog.reassort form input:disabled {
-  background-color: #6e6e6e;
-  color: #273469;
-  cursor: not-allowed;
+  background-color: #6e6e6e !important;
+  color: #273469 !important;
+  cursor: not-allowed !important;
 }
 dialog.reassort form input:disabled:hover {
-  background-color: #6e6e6e;
-  color: #273469;
-  cursor: not-allowed;
+  background-color: #6e6e6e !important;
+  color: #273469 !important;
+  cursor: not-allowed !important;
 }
 dialog.reassort form input {
   color: #273469;
@@ -5033,7 +5033,7 @@ dialog.reassort form input {
 }
 .pageProduit .banniere {
   position: absolute;
-  top: 0px;
+  top: -8px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
@@ -5046,18 +5046,18 @@ dialog.reassort form input {
 .pageProduit .banniere h2 {
   position: absolute;
   top: 50px;
-  left: 45px;
+  left: 40px;
   color: #fffefa;
   z-index: 10000;
 }
-.pageProduit .poly:nth-child(1) {
+.pageProduit .poly1 {
   position: absolute;
   top: 35px;
   left: 10px;
   width: auto;
   z-index: 100;
 }
-.pageProduit .poly:nth-child(2) {
+.pageProduit .poly2 {
   position: absolute;
   top: 65px;
   left: 10px;
@@ -5871,8 +5871,7 @@ dialog.reassort form input {
 .avis-vendeur .avi .col-gauche {
   width: 150px;
   height: 300px;
-  vertical-align: top;
-  padding-top: 10px;
+  padding-top: 0px;
   text-align: center;
 }
 .avis-vendeur .avi .col-gauche .profil-client {
