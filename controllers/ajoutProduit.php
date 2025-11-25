@@ -1,6 +1,6 @@
 <?php
-session_start();
 require_once 'pdo.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
