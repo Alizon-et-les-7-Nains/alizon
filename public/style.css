@@ -5990,19 +5990,19 @@ dialog.reassort form input {
   opacity: 0.9;
 }
 
-.backoffice .previsualisation {
+.pageProduit .previsualisation {
   display: flex;
 }
-.backoffice .textePrevi {
+.pageProduit .textePrevi {
   display: flex;
   flex-direction: column;
 }
-.backoffice .boutonRetour {
+.pageProduit .boutonRetour {
   display: flex;
   padding: 10px;
   background-color: #273469;
 }
-.backoffice .lignePrevi {
+.pageProduit .lignePrevi {
   border-top: solid 2px red;
 }
 
