@@ -1,4 +1,3 @@
-
     <header class="headerFront">
 
         <div class="headerMain">
@@ -22,16 +21,6 @@
                     <a href="../frontoffice/connexionClient.php"><img src="../../../public/images/utilLightBlue.svg" alt=""></a>
                     <p>Se connecter</p>
                 </div>
-            </div>
-        </div>
-
-        <div class="carousel">
-            <div class="group">
-                <?php 
-                    $categorie = ($pdo->query("SELECT * FROM _categorie"))->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($categorie as $value) { ?>
-                        <a class="categorie"><?php echo $value['nomCategorie']; ?></a>
-                <?php } ?>
             </div>
         </div>
 
