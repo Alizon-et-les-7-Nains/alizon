@@ -66,7 +66,7 @@ $stock = $stockSTMT->fetchAll(PDO::FETCH_ASSOC);
     }
 ?>
             </article>
-            <a href="./stock.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
+            <a href="./stocks.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
         </section>
 
         <section class="commandes">
