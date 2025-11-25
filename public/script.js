@@ -99,13 +99,29 @@ btnSettings.forEach(btn => {
 });
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        fetch('update_session.php', {
+        fetch('getProduct.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ idProduitSelec: btn.id })
-        }).then(() => {
-            modalReassort.showModal();
-            modalReassort.style.display = 'flex';
+            body: JSON.stringify({ idProduit: btn.id })
+        })
+            .then(r => r.json())
+            .then(data => {
+            const dialog = document.createElement('dialog');
+            dialog.className = 'reassort';
+            dialog.innerHTML = `
+                <h1>Paramètres de réassort</h1>
+                <form action="" method="post">
+                    <input type="number" value="${data.seuilAlerte || ''}" name="seuil" id="seuil">
+                    <input type="date" value="${data.dateReassort || ''}" name="dateReassort" id="dateReassort">
+                    <input type="number" name="reassort" id="reassort">
+                    <ul>
+                        <li><input type="button" value="Annuler" id="annuler"></li>
+                        <li><input type="submit" value="Valider" id="buttonConfirm"></li>
+                    </ul>
+                </form>
+            `;
+            document.body.appendChild(dialog);
+            dialog.showModal();
         });
     });
 });
