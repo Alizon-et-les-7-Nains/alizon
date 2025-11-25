@@ -5115,6 +5115,9 @@ dialog.reassort form input {
   height: 75px;
   margin-top: 0.5em;
 }
+.pageProduit .resume {
+  max-height: 50px;
+}
 .pageProduit .version {
   margin-top: 1.6em;
   padding: 0 0;
