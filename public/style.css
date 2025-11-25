@@ -5384,14 +5384,6 @@ dialog.reassort form input {
   color: #273469;
   font-weight: 100;
 }
-.pageProduit .sectionAvis button {
-  margin: 2em 0;
-  border: 2px solid #273469;
-  background-color: white;
-  border-radius: 32px;
-  cursor: pointer;
-  font-size: 16px;
-}
 .pageProduit .sectionAvis article {
   display: flex;
   margin-bottom: 2em;

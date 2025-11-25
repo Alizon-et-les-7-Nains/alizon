@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../controllers/pdo.php' ;
+require_once '/controllers/pdo.php' ;
     
 
 if (!isset($_SESSION['user_id'])) {
