@@ -35,7 +35,7 @@ btnSettings.forEach(btn => {
 
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        const modal = document.querySelector(`main.backoffice-stocks dialog#${btn.id}`) as HTMLDialogElement;
+        const modal = document.querySelector(`main.backoffice-stocks dialog#d-${btn.id}`) as HTMLDialogElement;
         
         if (!modal) {
             console.error('Dialog non trouvé');
