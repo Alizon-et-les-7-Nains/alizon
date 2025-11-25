@@ -4618,6 +4618,7 @@ dialog.reassort form ul li:last-child input:hover {
   cursor: pointer;
 }
 dialog.reassort form label {
+  display: none;
   color: #f14e4e;
   margin-top: -1em;
 }
