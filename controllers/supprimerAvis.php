@@ -33,7 +33,7 @@ try{
 catch(PDOException $e){
     echo "Erreur SQL : " . $e->getMessage();
 }
-updateNoteProduit($pdo, $idProduit);
+updateNoteProduit($pdo, $idProd);
 
 header("Location: ../views/frontoffice/mesAvis.php"); 
 exit();
