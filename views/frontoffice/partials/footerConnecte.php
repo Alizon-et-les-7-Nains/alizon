@@ -9,10 +9,32 @@
                 <img src="../../../public/images/whiteLetter.svg" alt="Bouton contact">
             </div>
         </div>
+
         <div class="footerTel">
             <a href="../frontoffice/accueilConnecte.php"><img src="../../../public/images/homeLightBlue.svg" alt="" class="homeLightBlue"></a>
             <a href=""><img src="../../../public/images/searchLightBlue.svg" alt="" class="searchLightBlue"></a>
             <a href="../frontoffice/panier.php"><img src="../../../public/images/cartLightBlue.svg" alt="" class="cartLightBlue"></a>
-            <a href="" style="margin-right: 0px;"><img src="../../../public/images/burgerLightBlue.svg" alt=""class="burgerLightBlue"></a>
-        </div>
+            <a href="javascript:void(0);" onclick="menuBurger();" style="margin-right: 0px;"><img src="../../../public/images/burgerLightBlue.svg" alt=""class="burgerLightBlue"></a>
+        </div> 
+
+        <section id="burgerIconTel">
+            <a href="../frontoffice/compteClient.php">Mon compte</a>
+            <a href="../frontoffice/commentaires.php">Mes commentaires</a>
+            <a href="../frontoffice/listeDeSouhait.php">Ma liste</a>
+            <a href="../frontoffice/commandes.php">Mes commandes</a>
+            <a href="../frontoffice/notifications.php">Mes notifications</a>
+            <hr>
+            <a href="../frontoffice/legalesConnecte.php">Mentions légales</a>
+            <a href="../frontoffice/support.php">Support</a>
+            <a href="../frontoffice/connexionClient.php">Déconnexion</a>
+            <div id="triangle-codeHeader"></div>
+        </section>
+
 </footer>
+
+<script>
+function menuBurger() {
+    var burgerIcon = document.getElementById("burgerIconTel");
+    burgerIcon.style.display = (burgerIcon.style.display === "flex") ? "none" : "flex";
+}
+</script>
