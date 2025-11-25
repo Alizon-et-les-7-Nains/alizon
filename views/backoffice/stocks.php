@@ -135,7 +135,7 @@ if (count($faibles) == 0) echo "<h2>Aucun produit en alerte</h2>";
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $faible['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
-        $commandes->execute(['idProduit' => $faible['idProduit']]);
+        $commandes->execute(['idProduit' => $epuise['idProduit'], 'idVendeur' => $_SESSION['id']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
                     <button class='settings' id='" . $faible['idProduit'] . "'>
@@ -225,13 +225,13 @@ echo "
 $stocksSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/produitsStock.sql'));
 $stocksSTMT->execute([':idVendeur' => $_SESSION['id']]);
 $stocks = $stocksSTMT->fetchAll(PDO::FETCH_ASSOC);
-if (count($stocks) == 0) echo "<h3>Aucun produit en stock</h3>";
+    if (count($stocks) == 0) echo "<h3>Aucun produit en stock</h3>";
     foreach ($stocks as $stock) {
         $reassort = $stock['dateReassort'] != NULL ? "Réassort prévu le " . formatDate($stock['dateReassort']) : 'Aucun réassort prévu';
         $image = ($pdo->query('select * from _imageDeProduit where idProduit = ' . $stock['idProduit']))->fetchAll(PDO::FETCH_ASSOC);
         $image = $image = !empty($image) ? $image[0]['URL'] : '';
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
-        $commandes->execute(['idProduit' => $stock['idProduit']]);
+        $commandes->execute(['idProduit' => $epuise['idProduit'], 'idVendeur' => $_SESSION['id']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
                     <button class='settings' id='" . $stock['idProduit'] . "'>
