@@ -104,7 +104,7 @@ function verifDate(input){
 
 }
 
-function popUpRemise(id, nom, imgURL, prix, nbEval, note){
+function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg){
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
         overlay.innerHTML = `
@@ -131,7 +131,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
                             </div>
                             <div>
                                 <p class="prix"> ${prix} €</p>
-                                <p class="prixAuKg"> 99.72€ / kg</p>
+                                <p class="prixAuKg"> ${prixAuKg} / kg</p>
                             </div>
                         </article>
                     </section>
@@ -300,7 +300,7 @@ function popUpAnnulerPromotion(id, nom) {
     });
 }
 
-function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
+function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
 
     console.log("ID reçu :", id);
     console.log("Nom reçu :", nom);
@@ -331,6 +331,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                             </div>
                             <div>
                                 <p class="prix"> ${prix} €</p>
+                                <p class="prixAuKg"> ${prixAuKg} / kg</p>
                             </div>
                         </article>
                     </section>
