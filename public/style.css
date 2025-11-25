@@ -5062,7 +5062,7 @@ dialog.reassort form input {
   top: 65px;
   left: 10px;
   width: auto;
-  z-index: 100;
+  z-index: 1000000;
 }
 .pageProduit #imageBouteille {
   width: 220px;
