@@ -16,7 +16,7 @@
 
         <section id="burgerIconTel">
             <a href="../frontoffice/compteClient.php">Mon compte</a>
-            <a href="../frontoffice/commentaires.php">Mes commentaires</a>
+            <a href="../frontoffice/mesAvis.php">Mes commentaires</a>
             <a href="../frontoffice/legalesConnecte.php" class="separation">Mentions légales</a>
             <a href="../frontoffice/connexionClient.php">Déconnexion</a>
         </section>
