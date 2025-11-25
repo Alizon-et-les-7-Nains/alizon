@@ -83,7 +83,7 @@ function afficherEtoiles($note) {
                         </div>
 
                         <div class="actions">
-                            <a href="../../controllers/modifierAvis.php?id=<?php echo $avis['idProduit']; ?>">Modifier</a>
+                            <a href="./modifierAvis.php?id=<?php echo $avis['idProduit']; ?>">Modifier</a>
 
                             <a href="../../controllers/supprimerAvis.php?id=<?php echo($p);?>" class="supprimerAvis">Supprimer</a>
                         </div>
