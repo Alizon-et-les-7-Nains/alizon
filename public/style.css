@@ -221,7 +221,7 @@ body {
   padding: 10px;
 }
 
-#triangle-codeHeader {
+#burgerIcon #triangle-codeHeader {
   display: inline-block;
   height: 0;
   width: 0;
@@ -5130,7 +5130,7 @@ dialog.reassort form input {
   gap: 1em;
 }
 .pageProduit .infoPreviewProduit div h1, .pageProduit .infoPreviewProduit div h2, .pageProduit .infoPreviewProduit div h4 {
-  margin: 1em 0;
+  margin: 0.5em 0;
 }
 .pageProduit .infoPreviewProduit h1, .pageProduit .infoPreviewProduit h2, .pageProduit .infoPreviewProduit h3, .pageProduit .infoPreviewProduit h4, .pageProduit .infoPreviewProduit p {
   margin: 0 0;
