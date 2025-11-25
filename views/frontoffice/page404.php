@@ -1,20 +1,3 @@
-<?php
-    echo '<pre style="background:white;color:black;padding:20px;z-index:9999;position:relative;">';
-    print_r($_SERVER['REQUEST_URI']);
-    echo '</pre>';
-    $requestUri = $_SERVER['REQUEST_URI'] ?? '';
-    $fromBackoffice = strpos($requestUri, '/backoffice/') !== false;
-    $fromFrontoffice = strpos($requestUri, '/frontoffice/') !== false;
-
-    if ($fromBackoffice) {
-        $homeLink = '/views/backoffice/accueil.php';
-    } elseif ($fromFrontoffice) {
-        $homeLink = '/views/frontoffice/accueilConnecte.php';
-    } else {
-        $homeLink = null;
-    }
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -42,16 +25,10 @@
         </div>
 
         <div>
-            <?php if ($homeLink): ?>
-                <a href="<?= $homeLink ?>">Retourner à bon port</a>
-            <?php else: ?>
-                <a href="/views/frontoffice/accueilConnecte.php">Frontoffice</a>
-                <a href="/views/backoffice/accueil.php">Backoffice</a>
-            <?php endif; ?>
+            <a href="/views/frontoffice/accueilConnecte.php">Frontoffice</a>
+            <a href="/views/backoffice/accueil.php">Backoffice</a>
         </div>
-
     </main>
-
 </body>
 
 </html>
