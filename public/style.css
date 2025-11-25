@@ -5998,6 +5998,7 @@ dialog.reassort form input {
 .pageProduit .previsualisation {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .pageProduit .textePrevi {
   display: flex;
@@ -6005,9 +6006,11 @@ dialog.reassort form input {
 }
 .pageProduit .textePrevi h1 {
   color: red;
+  font-size: 24px;
 }
 .pageProduit .boutonRetour {
   display: flex;
+  justify-content: center;
   padding: 10px;
   background-color: #273469;
   border-radius: 16px;
@@ -6016,6 +6019,9 @@ dialog.reassort form input {
 .pageProduit .boutonRetour button {
   background-color: transparent;
   text-decoration: none;
+  border: 0;
+  font-size: 24px;
+  color: #fffefa;
 }
 .pageProduit .lignePrevi {
   border-top: solid 4px red;
