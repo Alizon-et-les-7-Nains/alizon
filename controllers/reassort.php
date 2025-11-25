@@ -8,17 +8,17 @@ if (isset($_POST['idProduit'])) {
     $prodSTMT->execute([':idProduit' => $_POST['idProduit']]);
     $prod = $prodSTMT->fetch(PDO::FETCH_ASSOC);
 
-    if (isset($_POST['seuil']) && $_POST['seuil'] != $prod['seuilAlerte']) {
+    if (isset($_POST['seuil']) && $_POST['seuil'] !== '' && $_POST['seuil'] != $prod['seuilAlerte']) {
         $editSuilSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/editSeuil.sql'));
         $editSuilSTMT->execute(['idProduit' => $_POST['idProduit'], 'seuil' => $_POST['seuil']]);
     }
 
-    if (isset($_POST['date']) && !empty($_POST['date']) && $_POST['date'] != $prod['dateReassort']) {
+    if (isset($_POST['date']) && $_POST['date'] !== '' && $_POST['date'] != $prod['dateReassort']) {
         $editSuilSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/editDate.sql'));
         $editSuilSTMT->execute(['idProduit' => $_POST['idProduit'], 'date' => $_POST['date']]);
     }
 
-    if (isset($_POST['reassort']) && $_POST['reassort'] != $prod['stock']) {
+    if (isset($_POST['reassort']) && $_POST['reassort'] !== '' && $_POST['reassort'] != $prod['stock']) {
         $editSuilSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/editStock.sql'));
         $editSuilSTMT->execute(['idProduit' => $_POST['idProduit'], 'stock' => $_POST['reassort']]);
     }
