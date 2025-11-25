@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("INSERT INTO _remise(idProduit, tauxRemise, debutRemise, finRemise) VALUES (:idProd, :tauxRemise, CURDATE(), :dateLimite)");
             $stmt->execute([':idProd' => $idProd, ':tauxRemise'=>$tauxRemise,':dateLimite' => $dateSql]);
         } else {
-            $stmt = $pdo->prepare("UPDATE _remise SET tauxRemise = :tauxRemise, finRemise = :dateLimite");
-            $stmt->execute([':tauxRemise'=>$tauxRemise,':dateLimite' => $dateSql]);
+            $stmt = $pdo->prepare("UPDATE _remise SET tauxRemise = :tauxRemise, finRemise = :dateLimite WHERE idProduit = :idProd");
+            $stmt->execute([':idProd' => $idProd, ':tauxRemise'=>$tauxRemise,':dateLimite' => $dateSql]);
         }
     }
 
