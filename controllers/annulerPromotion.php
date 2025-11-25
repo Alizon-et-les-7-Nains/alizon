@@ -5,7 +5,7 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
 
-    if(isset($_POST['id']) && isset($_POST['nom']) && isset($_POST['annulationProduit'])) {
+    if(isset($_POST['id']) && isset($_POST['annulationProduit'])) {
         $idProd = intval($_POST['id']); 
 
         try {
