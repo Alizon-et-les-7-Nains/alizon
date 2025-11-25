@@ -1,4 +1,5 @@
 <?php 
+
     require_once '../../controllers/pdo.php';
     require_once '../../controllers/auth.php';
 
@@ -8,7 +9,9 @@
         echo "<script>window.addEventListener('load', () => popUpErreur('$idProduit', $codeErreur));</script>";
     }
 
-    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true;");
+    $idVendeur = $_SESSION['id'];
+
+    $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true AND idVendeur =  '$idVendeur';");
     $produitEnVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 ?>
 
@@ -105,11 +108,11 @@
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconeRemise.svg" alt="">
                                         <?php if(count($remise) == 1) { ?>
-                                            <button onclick="popUpAnnulerRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>')">
-                                                Retirer remise
+                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, true))">
+                                                Modifier remise
                                             </button>
                                         <?php } else { ?>
-                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>)">
+                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, false)">
                                                 Remise
                                             </button>
                                         <?php } ?>                                    
@@ -151,7 +154,7 @@
             </div>
             <?php 
                 require_once '../../controllers/pdo.php';
-                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = false;");
+                $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true AND idVendeur =  '$idVendeur';");
                 $produitHorsVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             ?>
 
