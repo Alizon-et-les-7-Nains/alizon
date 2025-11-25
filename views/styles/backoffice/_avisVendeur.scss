@@ -17,6 +17,14 @@
       vertical-align: top;
       padding-top: 10px;
       text-align: center;
+
+      .profil-client {
+        img {
+          width: 70px;
+          height: 70px;
+          border-radius: 50%;
+        }
+      }
     }
 
     .etoiles {
