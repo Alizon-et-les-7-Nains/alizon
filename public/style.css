@@ -1897,7 +1897,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   position: relative;
   overflow-x: hidden;
   min-height: 100vh;
-  /* Décor en arrière-plan (image stylisée) */
+  /* arrière-plan */
 }
 .pagePaiement::before {
   content: "";
@@ -2609,9 +2609,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   /* Responsive spécifique pour mobile */
 }
 @media (max-width: 720px) {
-  .pagePaiement {
-    /* hide original button inside .payment (kept for desktop) */
-  }
   .pagePaiement .payment .payer {
     display: none !important;
   }
@@ -2812,11 +2809,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   background: rgb(234.1839622642, 12.8160377358, 12.8160377358);
 }
 
-/* Améliorations supplémentaires pour l'accessibilité mobile */
 @media (max-width: 720px) {
-  .pagePaiement {
-    /* Augmente la taille des zones cliquables pour mobile */
-  }
   .pagePaiement button,
   .pagePaiement input[type=checkbox],
   .pagePaiement label {
@@ -2824,9 +2817,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .pagePaiement input[type=text] {
     min-height: 44px;
-  }
-  .pagePaiement {
-    /* Améliore l'espacement pour le tactile */
   }
   .pagePaiement .gestQte button {
     min-width: 44px;
