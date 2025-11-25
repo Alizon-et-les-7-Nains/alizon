@@ -2,6 +2,11 @@
     $currentPage = basename(__FILE__);
     require_once "../../controllers/pdo.php"; 
 
+    // Gestion de la session
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
     $message = $_SESSION['message'] ?? ''; 
     unset($_SESSION['message']);
 ?>
@@ -32,8 +37,8 @@
             <form method="post" class="form-vendeur" id="monForm" action="../../controllers/connexionCompteVendeur.php">
                 
                 <?php if (!empty($message)) : ?>
-                    <div class="alert alert-danger text-center w-100 mb-3" role="alert">
-                        <?= $message ?>
+                    <div class="alert alert-danger text-center w-100 mb-3" role="alert" style="color: red; text-align: center;">
+                        <?= htmlspecialchars($message) ?>
                     </div>
                 <?php endif; ?>
 
@@ -43,7 +48,9 @@
                     </div>
 
                     <div class="mb-2">
-                        <input type="password" id="mdp" name="mdp" placeholder="Mot de passe" required class="form-control custom-input">
+                        <input type="password" id="mdp" placeholder="Mot de passe" required class="form-control custom-input">
+                        
+                        <input type="hidden" name="password_chiffre" id="password_chiffre">
                     </div>
                 </div>
 
@@ -67,26 +74,59 @@
     
     <?php require_once "./partials/footer.php"; ?>
 
+    <script src="../../controllers/Chiffrement.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // éléments
+            // Éléments
+            const form = document.getElementById('monForm');
             const pseudoInput = document.getElementById('pseudo');
             const mdpInput = document.getElementById('mdp');
+            const hiddenMdpInput = document.getElementById('password_chiffre');
             const btnConnexion = document.getElementById('btnConnexion');
 
-            // vérification
+            // Active ou désactive le btn se connnecter
             function verifierChamps() {
                 // Si pseudo et mdp sont remplis
                 if (pseudoInput.value.trim() !== "" && mdpInput.value.trim() !== "") {
                     btnConnexion.disabled = false; // On active le bouton
+                    btnConnexion.style.cursor = "pointer"; 
                 } else {
                     btnConnexion.disabled = true;  // On désactive le bouton
+                    btnConnexion.style.cursor = "not-allowed";
                 }
             }
 
-            // tapage utilisateur
+            // Vérification
             pseudoInput.addEventListener('input', verifierChamps);
             mdpInput.addEventListener('input', verifierChamps);
+
+
+            // Chiffrement du formulaire envoyé
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // On bloque l'envoi immédiat
+
+                const passwordClair = mdpInput.value;
+
+                // On vérifie si la fonction de chiffrement est bien chargée
+                if (typeof vignere !== 'undefined') {
+
+                    try {
+                        const passwordChiffre = vignere(passwordClair, cle, 1);
+                        hiddenMdpInput.value = passwordChiffre; // On met le code chiffré dans l'input caché
+                        
+                        console.log("Mot de passe chiffré prêt à l'envoi");
+                        
+                        // On envoie le formulaire
+                        this.submit();
+                    } catch (error) {
+                        console.error("Erreur de chiffrement : ", error);
+                        alert("Erreur technique lors du chiffrement.");
+                    }
+                } else {
+                    alert("Erreur : Le script de sécurité n'est pas chargé.");
+                }
+            });
         });
     </script>
 </body>
