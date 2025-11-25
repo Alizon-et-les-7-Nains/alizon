@@ -4625,6 +4625,16 @@ dialog.reassort form label {
 dialog.reassort form input::placeholder {
   font-weight: normal;
 }
+dialog.reassort form input:disabled {
+  background-color: #6e6e6e;
+  color: #273469;
+  cursor: not-allowed;
+}
+dialog.reassort form input:disabled:hover {
+  background-color: #6e6e6e;
+  color: #273469;
+  cursor: not-allowed;
+}
 dialog.reassort form input {
   color: #273469;
   font-weight: bold;
