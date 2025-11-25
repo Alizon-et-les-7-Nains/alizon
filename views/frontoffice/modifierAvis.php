@@ -1,5 +1,5 @@
 <?php
-require_once "pdo.php";
+require_once "../../controllers/pdo.php";
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: connexionClient.php");
@@ -40,7 +40,7 @@ function afficherEtoiles($note) {
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="../../public/images/logoBackoffice.svg">
-    <link rel="stylesheet" href="../public/style.css">
+    <link rel="stylesheet" href="../../public/style.css">
         <title>Modifier un avis</title>
     </head>
     <body class="modifierAvis">
