@@ -1,6 +1,7 @@
 let modeEdition = false;
 let modeModificationMdp = false;
 let anciennesValeurs = {};
+let ancienneImageSrc = null;
 
 let ajoutPhoto = document.createElement("input");
 ajoutPhoto.type = "file";
@@ -144,19 +145,6 @@ function validerChamp(champId, valeur) {
   }
 }
 
-ajoutPhoto.addEventListener("change", function () {
-  const fichier = this.files[0];
-  if (fichier) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      if (imageProfile) {
-        imageProfile.src = e.target.result;
-      }
-    };
-    reader.readAsDataURL(fichier);
-  }
-});
-
 function activerModeEdition() {
   modeEdition = true;
 
@@ -193,6 +181,15 @@ function activerModeEdition() {
   });
 
   // Activer la modification de la photo de profil (comme client)
+  // Sauvegarder la source actuelle de l'image pour restauration si annulation
+  if (imageProfile && imageProfile.src) {
+    ancienneImageSrc = imageProfile.src;
+  } else {
+    ancienneImageSrc = null;
+  }
+
+  // Réinitialiser l'input fichier et l'ajouter
+  ajoutPhoto.value = "";
   conteneur.appendChild(ajoutPhoto);
 
   if (imageProfile) {
@@ -342,6 +339,28 @@ function restaurerAnciennesValeurs() {
       validerChamp(input.id, input.value);
     }
   });
+
+  // Restaurer l'image de profil si elle a été sauvegardée
+  if (
+    imageProfile &&
+    typeof ancienneImageSrc !== "undefined" &&
+    ancienneImageSrc !== null
+  ) {
+    imageProfile.src = ancienneImageSrc;
+  }
+
+  // Réinitialiser l'input fichier si présent
+  const photoInput = document.getElementById("photoProfil");
+  if (photoInput) {
+    try {
+      photoInput.value = "";
+    } catch (e) {
+      // certains navigateurs n'autorisent pas la réinitialisation programmatique
+    }
+  }
+
+  // On remet à null la valeur sauvegardée (restauration effectuée)
+  ancienneImageSrc = null;
 }
 
 function validerFormulaire() {
@@ -439,6 +458,19 @@ function afficherMessageCriteresMdp() {
     }
   });
 }
+
+ajoutPhoto.addEventListener("change", function () {
+  const fichier = this.files[0];
+  if (fichier) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      if (imageProfile) {
+        imageProfile.src = e.target.result;
+      }
+    };
+    reader.readAsDataURL(fichier);
+  }
+});
 
 function boutonAnnuler() {
   restaurerAnciennesValeurs();
