@@ -134,6 +134,13 @@
         padding: 0 0;
     }
 
+    .actionsProduit .ligneActions{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
     .underline{
         text-decoration: underline;
     }

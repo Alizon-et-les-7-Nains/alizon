@@ -124,7 +124,7 @@ $avis = $avisSTMT->fetchAll(PDO::FETCH_ASSOC);
                 <th rowspan=2>
                     <figure>
                         <img src='$imageClient' onerror=" . '"this.style.display=' . "'none'" . '"' . ">
-                        <figcaption>" . $avi['nomClient'] . "</figcaption>
+                        <figcaption>" . $avi['pseudo'] . "</figcaption>
                     </figure>
                     <figure>
                         <figcaption>" . str_replace('.', ',', $avi['note']) . "</figcaption>

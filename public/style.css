@@ -4618,6 +4618,7 @@ dialog.reassort form ul li:last-child input:hover {
   cursor: pointer;
 }
 dialog.reassort form label {
+  display: none;
   color: #f14e4e;
   margin-top: -1em;
 }
@@ -5094,6 +5095,12 @@ dialog.reassort form input {
 .pageProduit .actionsProduit h2 {
   margin: 0 0;
   padding: 0 0;
+}
+.pageProduit .actionsProduit .ligneActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .pageProduit .underline {
   text-decoration: underline;

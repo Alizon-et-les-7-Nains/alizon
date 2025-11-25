@@ -37,6 +37,9 @@
             
             $stmt = $pdo->query("SELECT count(prod.idproduit) as evaluation FROM saedb._produit as prod join saedb._avis on prod.idproduit = _avis.idproduit WHERE prod.idproduit = '$idProduit' and envente = true;");
             $evaluations = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+            $stmt = $pdo->query("SELECT * FROM saedb._promotion WHERE idproduit = '$idProduit';");
+            $promo = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             ?>
                 
             <section>
@@ -74,9 +77,15 @@
                                         <?php $idProd = $produitEnVente[$i]['idproduit'] ?>
                                         <?php $nom = $produitEnVente[$i]['nom'] ?>
                                         <?php $nbEval = $evaluations[0]['evaluation'] ?>
-                                        <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>)">
-                                            Promouvoir
-                                        </button>
+                                        <?php if(count($promo) == 1) { ?>
+                                            <button onclick="popUpAnnulerPromotion(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>')" style="color: #f14e4e;">
+                                                Annuler promotion
+                                            </button>
+                                        <?php } else { ?>
+                                            <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '/public/<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>)">
+                                                Promouvoir
+                                            </button>
+                                        <?php } ?>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -100,7 +109,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <button>Prévisualiser</button>
+                                        <a href=<?php echo "previsualiser.php?id=". $idProduit?>><button>Prévisualiser</button></a> 
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
@@ -176,7 +185,7 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconePrevisualiser.svg" alt="">
-                                        <button>Prévisualiser</button>
+                                        <a href="previsualiser.php"><button>Prévisualiser</button></a>
                                     </div>
                                     <div class="ligne"></div>
                                 </div>
