@@ -2,6 +2,12 @@
 include '../../controllers/pdo.php';
 session_start();
 
+$productId = intval($_GET['id']) ?? 0;
+
+if($productId == 0) {
+    die("Produit non spécifié");
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
     if (isset($_SESSION['user_id'])) {
         $idClient = $_SESSION['user_id'];
@@ -65,12 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     } else {
         $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
     }
-}
-
-$productId = intval($_GET['id']) ?? 0;
-
-if($productId == 0) {
-    die("Produit non spécifié");
 }
 
 $sqlProduit = "SELECT 
