@@ -2,7 +2,7 @@
 require_once "pdo.php";
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../frontoffice/connexionClient.php");
+    header("Location: connexionClient.php");
     exit();
 }
 
@@ -27,8 +27,8 @@ if (!$avis) {
 function afficherEtoiles($note) {
     $html = "";
     for ($i = 1; $i <= 5; $i++) {
-        if ($i <= $note) $html .= "<img class='star' src='/public/images/etoile.svg'>";
-        else $html .= "<img class='star' src='/public/images/etoileVide.svg'>";
+        if ($i <= $note) $html .= "<img class='star' src='../../public/images/etoile.svg'>";
+        else $html .= "<img class='star' src='../../public/images/etoileVide.svg'>";
     }
     return $html;
 
@@ -39,17 +39,17 @@ function afficherEtoiles($note) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/public/images/logoBackoffice.svg">
-    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="icon" href="../../public/images/logoBackoffice.svg">
+    <link rel="stylesheet" href="../public/style.css">
         <title>Modifier un avis</title>
     </head>
     <body class="modifierAvis">
-        <?php include '../views/frontoffice/partials/headerConnecte.php'; ?>
+        <?php include './partials/headerConnecte.php'; ?>
         <main>
 
     <h2>Modifier mon avis</h2>
 
-    <form action="modifierAvis_action.php" method="POST">
+    <form action="../../controllers/modifierAvis_action.php" method="POST">
         
         <input type="hidden" name="idProduit" value="<?php echo $idProduit; ?>">
 
@@ -67,7 +67,7 @@ function afficherEtoiles($note) {
         <button type="submit" id=publishButton>Modifier</button>
     </form>
 </main>
-<?php include '../views/frontoffice/partials/footerDeconnecte.php'; ?>
+<?php include './partials/footerDeconnecte.php'; ?>
 </body>
 </html>
 
@@ -75,8 +75,8 @@ function afficherEtoiles($note) {
 const noteInput = document.getElementById('note');
 const stars = document.querySelectorAll('.etoiles .star'); 
 
-const emptyStar = "/public/images/etoileVide.svg";
-const fullStar = "/public/images/etoile.svg";
+const emptyStar = "../../public/images/etoileVide.svg";
+const fullStar = "../../public/images/etoile.svg";
 
 stars.forEach((star, index) => {
     star.addEventListener('click', () => {
