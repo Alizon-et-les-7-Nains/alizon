@@ -5045,7 +5045,7 @@ dialog.reassort form input {
 }
 .pageProduit .banniere h1 {
   position: absolute;
-  top: 0px;
+  top: 20px;
   left: 40px;
   color: #fffefa;
   z-index: 10000;
