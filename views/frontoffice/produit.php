@@ -561,8 +561,6 @@ if ($produit['stock'] > 0) {
                                 <span><?php echo intval($avis['negatifs']); ?></span>
                             </button>
                         <?php endif; ?>
-                        
-                        <shape></shape>
                         <shape></shape>
                         <a href="#">Signaler</a>
                     </div>
