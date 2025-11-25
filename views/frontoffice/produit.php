@@ -880,7 +880,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 const formData = new FormData(this);
 
-                fetch('../controllers/signalerAvis.php', {
+                fetch('../../controllers/signalerAvis.php', {
                     method: 'POST',
                     body: formData
                 })

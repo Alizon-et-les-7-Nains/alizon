@@ -4,7 +4,7 @@ error_reporting(0);
 
 header('Content-Type: application/json');
 
-include '../../controllers/pdo.php';
+require_once 'pdo.php';
 session_start();
 
 // On vérif la connexion
