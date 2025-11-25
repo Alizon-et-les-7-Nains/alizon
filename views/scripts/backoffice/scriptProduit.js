@@ -355,9 +355,7 @@ function popUpAnnulerPromotion(id, nom) {
 }
 
 function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo) {
-
-    console.log("imgURL reçu :", imgURL);
-
+    
     const overlay = document.createElement("div");
     
     overlay.className = "overlaypopUpPromouvoir";
@@ -433,7 +431,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                         </div>
                         <div class="deuxBoutons">
                             <input type="hidden" name="id" value="${id}">
-                            <button onclick="popUpAnnulerPromotion(${id}, '${nom}')" style="color: white; background-color: #F14E4E;">Retirer la promotion</button>
+                            <button type="button" onclick="popUpAnnulerPromotion(${id}, '${nom}')" style="color: white; background-color: #F14E4E;">Retirer la promotion</button>
                             <button type="submit">Promouvoir</button>
                         </div>
                     </section>
