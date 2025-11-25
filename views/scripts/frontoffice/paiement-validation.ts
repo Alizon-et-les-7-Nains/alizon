@@ -1,10 +1,12 @@
-// ============================================================================
-// VALIDATION FUNCTIONS
-// ============================================================================
+
 
 import { CartItem, Inputs, ValidateAllParams } from "./paiement-types";
 
 export function setError(el: Element | null, message: string) {
+  // Affiche un message d'erreur associé à un élément (input).
+  // - Ajoute la classe `invalid` à l'élément pour le style visuel.
+  // - Cherche (ou crée) un élément <small> avec la classe `error-message`
+  //   pour y placer le texte d'erreur.
   if (!el) return;
   el.classList.add("invalid");
   const container = el.parentElement;
@@ -19,6 +21,8 @@ export function setError(el: Element | null, message: string) {
 }
 
 export function clearError(el: Element | null) {
+  // Efface l'erreur visuelle et le texte associé à un élément.
+  // - Retire la classe `invalid` et vide le contenu du message d'erreur.
   if (!el) return;
   el.classList.remove("invalid");
   const container = el.parentElement;
@@ -28,6 +32,10 @@ export function clearError(el: Element | null) {
 }
 
 export function cardVerification(cardNumber: string): boolean {
+  // Vérification Luhn du numéro de carte.
+  // - Supprime les espaces et s'assure que la chaîne n'est composée que de
+  //   chiffres.
+  // - Applique l'algorithme de Luhn pour valider la somme de contrôle.
   const cleaned = cardNumber.replace(/\s+/g, "");
   if (cleaned.length === 0 || !/^\d+$/.test(cleaned)) return false;
   const digits = cleaned
@@ -44,6 +52,8 @@ export function cardVerification(cardNumber: string): boolean {
 }
 
 export function isVisa(cardNumber: string) {
+  // Détecte si le numéro appartient à Visa (commence par 4) et valide via
+  // Luhn.
   const clean = cardNumber.replace(/\s+/g, "");
   return /^4\d{12}(?:\d{3})?$/.test(clean) && cardVerification(clean);
 }
@@ -68,12 +78,17 @@ export function validateAll({
   } = inputs;
 
   // adresse
+  // Validation de l'adresse: présence et longueur minimale raisonnable.
   if (!adresseInput || adresseInput.value.trim().length < 5) {
     setError(adresseInput, "Veuillez renseigner une adresse complète.");
     ok = false;
   } else clearError(adresseInput);
 
-  // code postal / département
+  // Validation du code postal ou du numéro de département.
+  // - Accepte soit 2 chiffres (département) soit 5 chiffres (code postal).
+  // - Si c'est un code postal (5 chiffres) on vérifie si la commune
+  //   correspond via `postals`; sinon on essaie d'extraire le département
+  //   et de vérifier sa présence dans `departments`.
   if (!codePostalInput || codePostalInput.value.trim().length === 0) {
     setError(
       codePostalInput,
@@ -122,10 +137,12 @@ export function validateAll({
     }
   }
 
-  // ville: just clear previous errors
+  // Pour la ville on se contente d'effacer d'éventuelles erreurs précédentes.
   if (villeInput) clearError(villeInput);
 
   // numéro de carte - messages plus détaillés
+  // Validation du numéro de carte: présence, format numérique, longueur,
+  // préfixe Visa (commence par 4) et contrôle Luhn via `cardVerification`.
   if (!numCarteInput || numCarteInput.value.trim().length === 0) {
     setError(numCarteInput, "Veuillez saisir le numéro de carte.");
     ok = false;
@@ -160,7 +177,7 @@ export function validateAll({
     }
   }
 
-  // nom
+  // Validation du nom sur la carte: au moins 2 caractères et sans chiffres.
   if (!nomCarteInput || nomCarteInput.value.trim().length < 2) {
     setError(
       nomCarteInput,
@@ -172,7 +189,9 @@ export function validateAll({
     ok = false;
   } else clearError(nomCarteInput);
 
-  // date MM/AA ou MM/AAAA
+  // Date d'expiration: accepte MM/AA ou MM/AAAA.
+  // - Vérifie la présence, le format, la validité du mois puis compare la
+  //   date d'expiration à la date actuelle.
   if (!carteDateInput || carteDateInput.value.trim().length === 0) {
     setError(carteDateInput, "Veuillez renseigner la date d'expiration.");
     ok = false;
@@ -204,13 +223,55 @@ export function validateAll({
     }
   }
 
-  // cvv
+  // CVV: doit être exactement 3 chiffres.
   if (!cvvInput || !/^\d{3}$/.test(cvvInput.value.trim())) {
     setError(cvvInput, "CVV invalide (3 chiffres). ");
     ok = false;
   } else clearError(cvvInput);
 
-  // panier
+  // Validation des conditions générales
+  const cgvCheckbox = document.querySelector(
+    'input[type="checkbox"][aria-label="conditions générales"]'
+  ) as HTMLInputElement | null;
+
+  if (!cgvCheckbox || !cgvCheckbox.checked) {
+    // Trouver le conteneur de la checkbox pour afficher l'erreur
+    const conditionsSection = document.querySelector("section.conditions");
+    if (conditionsSection) {
+      // Supprimer l'ancien message d'erreur s'il existe
+      const oldError = conditionsSection.querySelector(".error-message-cgv");
+      if (oldError) oldError.remove();
+
+      // Créer le message d'erreur
+      const errorMsg = document.createElement("small");
+      errorMsg.className = "error-message error-message-cgv";
+      errorMsg.style.color = "#f14e4e";
+      errorMsg.style.display = "block";
+      errorMsg.style.marginTop = "8px";
+      errorMsg.textContent =
+        "Vous devez accepter les conditions générales pour continuer.";
+
+      conditionsSection.appendChild(errorMsg);
+
+      // Ajouter une classe pour mettre en évidence
+      if (cgvCheckbox) {
+        cgvCheckbox.style.outline = "2px solid #f14e4e";
+      }
+    }
+    ok = false;
+  } else {
+    // Effacer l'erreur si les conditions sont acceptées
+    const conditionsSection = document.querySelector("section.conditions");
+    if (conditionsSection) {
+      const errorMsg = conditionsSection.querySelector(".error-message-cgv");
+      if (errorMsg) errorMsg.remove();
+    }
+    if (cgvCheckbox) {
+      cgvCheckbox.style.outline = "";
+    }
+  }
+
+  // Vérifie que le panier contient au moins un élément.
   if (cart.length === 0) {
     if (recapEl) {
       const p = document.createElement("small");

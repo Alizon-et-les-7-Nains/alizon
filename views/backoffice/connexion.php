@@ -57,7 +57,6 @@
 
                 <div class="liens-utiles">
                     <a href="CreerCompteVendeur.php">Pas encore vendeur ? Inscrivez vous ici</a>
-                    <a href="#">Mot de passe oublié ? Cliquez ici</a>
                 </div>
 
                 <div class="actions">

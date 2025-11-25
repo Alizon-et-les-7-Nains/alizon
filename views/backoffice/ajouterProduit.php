@@ -1,5 +1,4 @@
 <?php 
-session_start();
 require_once "../../controllers/pdo.php";
 require_once '../../controllers/auth.php';
 
@@ -77,7 +76,6 @@ require_once '../../controllers/auth.php';
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn-previsualiser">Prévisualiser</button>
                     <button type="button" class="btn-annuler" id="btnAnnuler">Annuler</button>
                     <button type="submit" class="btn-ajouter">Ajouter le produit</button>
                 </div>

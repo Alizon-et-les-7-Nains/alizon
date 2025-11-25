@@ -2,6 +2,7 @@
 @use "../fonts" as *;
 
 .pageProduit{
+
     main{
         display: flex;
         flex-direction: column;
@@ -19,7 +20,6 @@
     .infoHautProduit{
         display: flex;
         flex-direction: row;
-        overflow-y: scroll;
         position: relative;
     }
 
@@ -49,6 +49,10 @@
         top: -8px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
+    }
+
+    .banniere h1{
+        font-size: 30px;
     }
 
     .imgBanniere{
@@ -169,10 +173,11 @@
     }
 
     .actionsProduit{
-        top: 15em;
+        top: 10em;
         right: 1em;
         position: fixed;
         width: 24%;
+        max-width: 300px;
         z-index: 10;
         height: fit-content;
         padding: 15px;
@@ -398,16 +403,6 @@
         font-weight: 100;
     }
 
-    .sectionAvis button {
-        margin: 2em 0;
-        border: 2px solid $color-blue;
-        background-color: white;
-        border-radius: 32px;
-        cursor: pointer;
-        font-size: 16px;
-        
-    }
-
     .sectionAvis article{
         display: flex;
         margin-bottom: 2em;
@@ -486,6 +481,14 @@
         background-color: $color-blue;
     }
 
+    .btn-vote{
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+    }
+
     .product-rating{
         display: flex;
         flex-direction: column;
@@ -504,6 +507,7 @@
         font-size: 20px;
         color: green;
         font-weight: bold;
+        width: 60%;
     }
 
     .stockIndisponible{
@@ -512,6 +516,7 @@
         font-size: 20px;
         color: red;
         font-weight: bold;
+        width: 60%;
     }
 
     .review-count{
@@ -831,6 +836,10 @@
             flex-direction: row;
             top: 5em;
             left: 20px;
+        }
+
+        .infoPreviewProduit div{
+            justify-content: center;
         }
 
         .nomProduit {

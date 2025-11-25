@@ -151,6 +151,82 @@ function popUpAnnulerRemise(id, nom) {
 }
 
 
+function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
+        const overlay = document.createElement("div");
+        overlay.className = "overlayPopUpRemise";
+        overlay.innerHTML = `
+        <main class="popUpRemise">
+            <div class="page">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="titreEtProduit">
+                    <h1> Ajouter une remise pour ce produit </h1>
+                    <section>
+                        <article>
+                            <img class="produit" src="${imgURL}" alt="">
+                            <div class="nomEtEvaluation">
+                                <p>${nom}</p>
+                                <div class="evaluation">
+                                    <div class="etoiles">
+                                        <img src="/public/images/etoile.svg" alt="">
+                                        <p>${note}</p>
+                                    </div>
+                                    <p>${nbEval} évaluation</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="prix"> ${prix} €</p>
+                                <p class="prixAuKg"> ${prixAuKg}€ / kg</p>
+                            </div>
+                        </article>
+                    </section>
+                </div>
+                <div class="ligne"></div>
+                <form method="POST" action="../../controllers/creerRemise.php">
+                    <div>
+                        <input type="text" name="dateLimite" id="dateLimite" placeholder="Date limite">
+                    </div>
+                    <div>
+                        <input type="float" name="nouveauPrix" id="nouveauPrix" placeholder="Nouveau prix">
+                        <input type="float" name="reduction" id="reduction" placeholder="Reduction(%)">
+                    </div>
+                    <h2>Récapitulatif :</h2>
+                    <p class = "recap"> </p>
+                    <input type="hidden" name="id" value="${id}">
+                    <input type="hidden" name="aUneRemise" value="${aUneRemise}">
+                    <div class="deuxBoutons">
+                        <button class="boutonSup" type="button" onclick="popUpAnnulerRemise(${id}, '${nom}')">Annuler la remise</button>
+                        <button class="bouton" type="submit">Appliquer la remise</button>
+                    </div>
+                    </form>
+            </div>
+        </main>`;
+    document.body.appendChild(overlay);
+
+    const bouton = overlay.querySelector(".bouton");
+    bouton.disabled = true;
+    bouton.style.cursor = "default";
+
+    const croixFermer = overlay.querySelector(".croixFermerLaPage");
+    croixFermer.addEventListener("click", fermerPopUpRemise);
+
+    const dateLimite = overlay.querySelector("#dateLimite");
+    dateLimite.addEventListener("input", () => verifDate(dateLimite));
+
+    function updatePrixFromReduction(prix, nouveauPrixInput, reductionInput, recap) {
+        if (reductionInput.value !== "" && reductionInput.value <= 100) {
+            const nouveauPrix = (prix * (100 - reductionInput.value) / 100).toFixed(2);
+            nouveauPrixInput.value = nouveauPrix;
+            recap.textContent = "Abaissement de " + (prix - nouveauPrix).toFixed(2) + "€";
+        } else {
+            nouveauPrixInput.value = "";
+            recap.textContent = "Abaissement de 0€";
+        }
+    }
+}
+
 
 function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
         const overlay = document.createElement("div");
@@ -198,7 +274,6 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
                     <input type="hidden" name="id" value="${id}">
                     <input type="hidden" name="aUneRemise" value="${aUneRemise}">
                     <div class="deuxBoutons">
-                        <button type="button" onclick="popUpAnnulerRemise(${id}, '${nom}')">Annuler la remise</button>
                         <button class="bouton" type="submit">Appliquer la remise</button>
                     </div>
                     </form>

@@ -1,14 +1,16 @@
-// ============================================================================
-// MAIN PAIEMENT LOGIC
-// ============================================================================
+// Fichier principal gérant la logique du paiement (autocomplétion, validation,
+// enregistrement d'adresse de facturation, gestion des boutons "payer", etc.)
 
 import { CartItem, Inputs, Maps } from "./paiement-types";
 import { validateAll } from "./paiement-validation";
 import { setupAutocomplete } from "./paiement-autocomplete";
 import { showPopup } from "./paiement-popup";
 
+// Ne rien faire si on n'est pas sur la page de paiement
 if (document.body.classList.contains("pagePaiement")) {
-  // Éléments
+  // ========================================================================
+  // Sélection des éléments du DOM
+  // ========================================================================
   const adresseInput = document.querySelector(
     "body.pagePaiement .adresse-input"
   ) as HTMLInputElement | null;
@@ -32,18 +34,24 @@ if (document.body.classList.contains("pagePaiement")) {
     "body.pagePaiement .cvv-input"
   ) as HTMLInputElement | null;
 
+  // Tous les boutons "payer" présents sur la page
   const payerButtons = Array.from(
     document.querySelectorAll("body.pagePaiement .payer")
   ) as HTMLButtonElement[];
 
+  // Elément récapitulatif (souvent utilisé pour afficher le résumé de commande)
   const recapEl = document.getElementById("recap");
 
+  // ========================================================================
+  // Structures de données pour l'autocomplétion des villes / codes postaux
+  // ========================================================================
   const departments = new Map<string, string>();
   const citiesByCode = new Map<string, Set<string>>();
   const allCities = new Set<string>();
   const postals = new Map<string, Set<string>>();
   const selectedDepartment = { value: null as string | null };
 
+  // Données préchargées (injectées côté serveur dans window.__PAYMENT_DATA__)
   const preloaded = (window as any).__PAYMENT_DATA__ || {};
   if (preloaded.departments) {
     Object.keys(preloaded.departments).forEach((code) => {
@@ -65,6 +73,9 @@ if (document.body.classList.contains("pagePaiement")) {
     });
   }
 
+  // ========================================================================
+  // Chargement du panier depuis les données préchargées
+  // ========================================================================
   let cart: CartItem[] = [];
   if (preloaded.cart && Array.isArray(preloaded.cart)) {
     cart = preloaded.cart.map((it: any) => ({
@@ -76,7 +87,9 @@ if (document.body.classList.contains("pagePaiement")) {
     }));
   }
 
-  // Setup autocomplete handlers
+  // ========================================================================
+  // Initialisation de l'autocomplétion (module séparé)
+  // ========================================================================
   setupAutocomplete({
     codePostalInput,
     villeInput,
@@ -84,10 +97,13 @@ if (document.body.classList.contains("pagePaiement")) {
     selectedDepartment,
   });
 
-  // Variable pour stocker l'ID de l'adresse de facturation
+  // ========================================================================
+  // Overlay pour saisir / enregistrer une adresse de facturation
+  // ========================================================================
+  // Variable pour stocker l'ID renvoyé par le serveur une fois l'adresse enregistrée
   let idAdresseFacturation: number | null = null;
 
-  // Création de l'overlay pour l'adresse de facturation
+  // Création dynamique de l'overlay pour l'adresse de facturation
   const addrFactOverlay = document.createElement("div");
   addrFactOverlay.className = "addr-fact-overlay";
   addrFactOverlay.innerHTML = `
@@ -109,9 +125,11 @@ if (document.body.classList.contains("pagePaiement")) {
     </div>
   `;
 
+  // Ajout au DOM et masquage initial
   document.body.appendChild(addrFactOverlay);
-
   addrFactOverlay.style.display = "none";
+
+  // S'assurer que la checkbox associée est décochée au chargement
   const factAdresseCheckbox = document.querySelector(
     "#checkboxFactAddr"
   ) as HTMLInputElement;
@@ -119,11 +137,14 @@ if (document.body.classList.contains("pagePaiement")) {
     factAdresseCheckbox.checked = false;
   }
 
-  // Gestion des événements de l'overlay
+  // ========================================================================
+  // Gestion des actions dans l'overlay (validation / enregistrement)
+  // ========================================================================
   const validerAddrFactBtn = addrFactOverlay.querySelector(
     "#validerAddrFact"
   ) as HTMLButtonElement | null;
 
+  // Clic sur "Valider" -> validation client, envoi au serveur, stockage de l'ID
   validerAddrFactBtn?.addEventListener("click", async () => {
     const adresseFactInput = addrFactOverlay.querySelector(
       ".adresse-fact-input"
@@ -135,7 +156,7 @@ if (document.body.classList.contains("pagePaiement")) {
       ".ville-fact-input"
     ) as HTMLInputElement;
 
-    // Validation basique
+    // Validation basique des champs (non vides)
     if (
       !adresseFactInput.value.trim() ||
       !codePostalFactInput.value.trim() ||
@@ -148,7 +169,7 @@ if (document.body.classList.contains("pagePaiement")) {
       return;
     }
 
-    // Validation du code postal
+    // Validation simple du format du code postal (5 chiffres)
     const codePostal = codePostalFactInput.value.trim();
     if (!/^\d{5}$/.test(codePostal)) {
       showPopup("Le code postal doit contenir 5 chiffres", "error");
@@ -156,13 +177,14 @@ if (document.body.classList.contains("pagePaiement")) {
     }
 
     try {
-      // Enregistrer l'adresse de facturation dans la base de données
+      // Préparer les données pour l'envoi au serveur
       const formData = new URLSearchParams();
       formData.append("action", "saveBillingAddress");
       formData.append("adresse", adresseFactInput.value.trim());
       formData.append("codePostal", codePostal);
       formData.append("ville", villeFactInput.value.trim());
 
+      // Logs pour aider au debug réseau côté client
       console.log("Envoi de la requête saveBillingAddress...");
 
       const response = await fetch("", {
@@ -179,13 +201,14 @@ if (document.body.classList.contains("pagePaiement")) {
       console.log("Résultat JSON:", result);
 
       if (result.success) {
-        // STOCKER L'ID DE L'ADRESSE DE FACTURATION
+        // Stocker l'ID renvoyé par le serveur pour usage ultérieur (ex: paiement)
         idAdresseFacturation = result.idAdresseFacturation;
 
         showPopup(
           result.message || "Adresse de facturation enregistrée avec succès",
           "success"
         );
+        // Fermer l'overlay
         addrFactOverlay.style.display = "none";
 
         console.log(
@@ -193,7 +216,7 @@ if (document.body.classList.contains("pagePaiement")) {
           idAdresseFacturation
         );
 
-        // Décocher la checkbox après validation
+        // Décocher la checkbox associée après enregistrement
         const factAdresseCheckbox = document.querySelector(
           "#checkboxFactAddr"
         ) as HTMLInputElement;
@@ -201,21 +224,23 @@ if (document.body.classList.contains("pagePaiement")) {
           factAdresseCheckbox.checked = false;
         }
       } else {
+        // Afficher une erreur renvoyée par le serveur
         showPopup("Erreur lors de l'enregistrement: " + result.error, "error");
       }
     } catch (error) {
+      // Gestion d'erreur réseau / JSON
       console.error("Erreur complète:", error);
       showPopup("Erreur réseau lors de l'enregistrement", "error");
     }
   });
 
+  // Bouton "Annuler" -> fermer l'overlay et décocher la checkbox
   const closeAddrFactBtn = addrFactOverlay.querySelector(
     "#closeAddrFact"
   ) as HTMLButtonElement | null;
 
   closeAddrFactBtn?.addEventListener("click", () => {
     addrFactOverlay.style.display = "none";
-    // Décocher la checkbox
     const factAdresseCheckbox = document.querySelector(
       "#checkboxFactAddr"
     ) as HTMLInputElement;
@@ -224,7 +249,7 @@ if (document.body.classList.contains("pagePaiement")) {
     }
   });
 
-  // Fermer en cliquant en dehors du contenu
+  // Cliquer hors du contenu de l'overlay ferme l'overlay
   addrFactOverlay.addEventListener("click", (e) => {
     if (e.target === addrFactOverlay) {
       addrFactOverlay.style.display = "none";
@@ -237,7 +262,9 @@ if (document.body.classList.contains("pagePaiement")) {
     }
   });
 
-  // Gestion de la checkbox
+  // ========================================================================
+  // Gestion de la checkbox qui affiche l'overlay d'adresse de facturation
+  // ========================================================================
   const factAdresseInput = document.querySelector(
     "#checkboxFactAddr"
   ) as HTMLInputElement;
@@ -246,9 +273,9 @@ if (document.body.classList.contains("pagePaiement")) {
     const isChecked = (e.target as HTMLInputElement).checked;
 
     if (isChecked) {
+      // Afficher l'overlay et focus sur le premier champ pour une saisie rapide
       addrFactOverlay.style.display = "flex";
 
-      // Focus sur le premier champ
       const firstInput = addrFactOverlay.querySelector(
         "input"
       ) as HTMLInputElement;
@@ -256,18 +283,41 @@ if (document.body.classList.contains("pagePaiement")) {
         firstInput.focus();
       }
     } else {
+      // Masquer si décoché
       addrFactOverlay.style.display = "none";
     }
   });
 
-  // Gestion des boutons payer
+  // ========================================================================
+  // Gestion de la checkbox des conditions générales (CGV)
+  // ========================================================================
+  const cgvCheckbox = document.querySelector(
+    'input[type="checkbox"][aria-label="conditions générales"]'
+  ) as HTMLInputElement | null;
+
+  cgvCheckbox?.addEventListener("change", () => {
+    if (cgvCheckbox.checked) {
+      // Supprimer un éventuel message d'erreur lié aux CGV et réinitialiser le style
+      const conditionsSection = document.querySelector("section.conditions");
+      if (conditionsSection) {
+        const errorMsg = conditionsSection.querySelector(".error-message-cgv");
+        if (errorMsg) errorMsg.remove();
+      }
+      cgvCheckbox.style.outline = "";
+    }
+  });
+
+  // ========================================================================
+  // Gestion des boutons "Payer" : validation complète puis affichage popup
+  // ========================================================================
   payerButtons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
 
-      // Stocker l'ID de facturation dans window pour qu'il soit accessible par showPopup
+      // Rendre l'ID de l'adresse de facturation accessible globalement si besoin
       (window as any).idAdresseFacturation = idAdresseFacturation;
 
+      // Appel à la validation globale (module séparé)
       const ok = validateAll({
         inputs: {
           adresseInput,
@@ -286,8 +336,10 @@ if (document.body.classList.contains("pagePaiement")) {
       });
 
       if (ok) {
+        // Informations valides -> afficher un message d'état
         showPopup("Validation des informations", "info");
       } else {
+        // En cas d'erreur, scroller vers le premier champ invalide
         const first = document.querySelector(".invalid");
         if (first)
           (first as HTMLElement).scrollIntoView({
@@ -298,7 +350,9 @@ if (document.body.classList.contains("pagePaiement")) {
     });
   });
 
-  // Masquer les suggestions si on clique en dehors
+  // ========================================================================
+  // Masquage des listes de suggestions si on clique en dehors
+  // ========================================================================
   document.addEventListener("click", (ev) => {
     const target = ev.target as HTMLElement | null;
     document.querySelectorAll(".suggestions").forEach((s) => {
@@ -306,8 +360,9 @@ if (document.body.classList.contains("pagePaiement")) {
       const parent = (s.parentElement as HTMLElement) || null;
       if (!parent) return;
       if (target === parent || parent.contains(target)) {
-        // click à l'intérieur -> rien
+        // clic à l'intérieur de la zone -> ne pas masquer
       } else {
+        // clic à l'extérieur -> masquer la liste de suggestions
         (s as HTMLElement).style.display = "none";
       }
     });
