@@ -321,7 +321,7 @@ body {
   z-index: 999;
 }
 
-#burgerIcon a {
+#burgerIconTel a {
   text-decoration: none;
   color: #273469;
   padding: 8px 0;
@@ -332,7 +332,7 @@ body {
   padding: 10px;
 }
 
-#triangle-codeHeader {
+#burgerIconTel #triangle-codeHeader {
   display: inline-block;
   height: 0;
   width: 0;
