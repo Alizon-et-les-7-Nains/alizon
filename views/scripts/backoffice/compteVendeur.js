@@ -522,38 +522,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (form) {
     form.addEventListener("submit", function (e) {
-      e.preventDefault(); // Empêcher la soumission immédiate
-
       console.log("=== DÉBUT SOUMISSION ===");
       console.log("Mode édition:", modeEdition);
       console.log("Mode modification mdp:", modeModificationMdp);
 
-      // RETIRER readonly AVANT toute validation
-      const inputsReadonly = document.querySelectorAll("input[readonly]");
-      console.log("Nombre d'inputs readonly trouvés:", inputsReadonly.length);
-
-      inputsReadonly.forEach((input) => {
-        console.log(`Retrait readonly de: ${input.name} = ${input.value}`);
-        input.removeAttribute("readonly");
-      });
-
-      // Vérifier tous les champs du formulaire
-      const formData = new FormData(form);
-      console.log("=== DONNÉES DU FORMULAIRE ===");
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
+      // Si on n'est ni en mode édition, ni en mode mdp, on bloque.
+      if (!modeEdition && !modeModificationMdp) {
+        e.preventDefault(); // Bloquer la soumission (ne devrait pas arriver)
+        return;
       }
 
-      // Valider le formulaire seulement si on est en mode édition
-      if ((modeEdition || modeModificationMdp) && !validerFormulaire()) {
+      // Valider le formulaire
+      if (!validerFormulaire()) {
         console.log("❌ Validation échouée");
+        // Empêcher la soumission UNIQUEMENT si la validation échoue
+        e.preventDefault();
         alert(
           "Veuillez corriger les erreurs dans le formulaire avant de sauvegarder."
         );
-        return false;
+        return; // Arrêter l'exécution
       }
 
+      // Si on arrive ici, la validation est RÉUSSIE.
       console.log("✅ Validation réussie");
+
+      // Retirer les attributs 'readonly' des champs mot de passe s'ils existent
+      // pour s'assurer qu'ils sont envoyés (bien que 'readonly' soit envoyé d'habitude)
+      // Note : Cette partie est peut-être superflue si activerModificationMdp() le fait déjà.
+      const champsMdp = document.querySelectorAll('input[type="password"]');
+      champsMdp.forEach((input) => input.removeAttribute("readonly"));
 
       // Afficher un indicateur de chargement
       const boutonSauvegarder = document.querySelector(".boutonSauvegarder");
@@ -564,9 +561,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       console.log("📤 Soumission du formulaire...");
-
-      // Soumettre manuellement le formulaire
-      form.submit();
+      // NE RIEN FAIRE D'AUTRE.
+      // En n'appelant pas e.preventDefault(), le formulaire va
+      // maintenant se soumettre normalement au serveur.
+      // NE PAS appeler form.submit() ici.
     });
   }
 
