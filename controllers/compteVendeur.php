@@ -5,40 +5,41 @@ require_once 'auth.php';
 $code_vendeur = $_SESSION['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
+
     // Récupération des données du formulaire
-    $pseudo = $_POST['pseudo'] ?? '';
-    $nom = $_POST['nom'] ?? '';
-    $prenom = $_POST['prenom'] ?? '';
-    $email = $_POST['email'] ?? '';
+    $pseudo        = $_POST['pseudo'] ?? '';
+    $nom           = $_POST['nom'] ?? '';
+    $prenom        = $_POST['prenom'] ?? '';
+    $email         = $_POST['email'] ?? '';
     $dateNaissance = $_POST['dateNaissance'] ?? '';
-    $telephone = $_POST['telephone'] ?? '';
-    $codePostal = $_POST['codePostal'] ?? '';
-    $adresse = $_POST['adresse'] ?? '';
-    $pays = $_POST['pays'] ?? '';
-    $ville = $_POST['ville'] ?? '';
-    $region = $_POST['region'] ?? '';
+    $telephone     = $_POST['telephone'] ?? '';
+    $codePostal    = $_POST['codePostal'] ?? '';
+    $adresse       = $_POST['adresse'] ?? '';
+    $pays          = $_POST['pays'] ?? '';
+    $ville         = $_POST['ville'] ?? '';
+    $region        = $_POST['region'] ?? '';
     $raisonSociale = $_POST['raisonSociale'] ?? '';
-    $noSiren = $_POST['noSiren'] ?? '';
-    $idAdresse = $_POST['id_adresse'] ?? '';
-    $ancienMdp = $_POST['ancienMdp'] ?? '';
-    $nouveauMdp = $_POST['nouveauMdp'] ?? '';
+    $noSiren       = $_POST['noSiren'] ?? '';
+    $idAdresse     = $_POST['id_adresse'] ?? '';
+    $ancienMdp     = $_POST['ancienMdp'] ?? '';
+    $nouveauMdp    = $_POST['nouveauMdp'] ?? '';
 
     // Gestion des valeurs NULL pour dateNaissance
     $dateNaissance = ($dateNaissance === '') ? null : $dateNaissance;
 
     try {
-        $pdo->beginTransaction();
+        // Vérifier si une transaction est déjà active
+        if (!$pdo->inTransaction()) {
+            $pdo->beginTransaction();
+        }
 
         // Mise à jour du mot de passe si fourni
         if (!empty($nouveauMdp) && !empty($ancienMdp)) {
-            // Vérifier l'ancien mot de passe (sans hachage)
             $stmt = $pdo->prepare("SELECT mdp FROM _vendeur WHERE codeVendeur = :code_vendeur");
             $stmt->execute([':code_vendeur' => $code_vendeur]);
             $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
-            
+
             if ($vendeur && $ancienMdp === $vendeur['mdp']) {
-                // Mettre à jour le mot de passe
                 $stmt = $pdo->prepare("UPDATE _vendeur SET mdp = :mdp WHERE codeVendeur = :code_vendeur");
                 $stmt->execute([
                     ':mdp' => $nouveauMdp,
@@ -47,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Mise à jour du vendeur
+        // Mise à jour des informations du vendeur
         $stmt = $pdo->prepare("
             UPDATE _vendeur 
             SET pseudo = :pseudo, 
@@ -62,15 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ");
 
         $stmt->execute([
-            ':pseudo' => $pseudo,
-            ':nom' => $nom,
-            ':prenom' => $prenom,
-            ':email' => $email,
+            ':pseudo'        => $pseudo,
+            ':nom'           => $nom,
+            ':prenom'        => $prenom,
+            ':email'         => $email,
             ':dateNaissance' => $dateNaissance,
-            ':telephone' => $telephone,
-            ':raisonSocial' => $raisonSociale,
-            ':noSiren' => $noSiren,
-            ':code_vendeur' => $code_vendeur
+            ':telephone'     => $telephone,
+            ':raisonSocial'  => $raisonSociale,
+            ':noSiren'       => $noSiren,
+            ':code_vendeur'  => $code_vendeur
         ]);
 
         // Mise à jour de l'adresse
@@ -85,23 +86,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ");
 
         $stmt->execute([
-            ':adresse' => $adresse,
-            ':pays' => $pays,
-            ':ville' => $ville,
+            ':adresse'    => $adresse,
+            ':pays'       => $pays,
+            ':ville'      => $ville,
             ':codePostal' => $codePostal,
-            ':region' => $region,
-            ':idAdresse' => $idAdresse
+            ':region'     => $region,
+            ':idAdresse'  => $idAdresse
         ]);
 
-        $pdo->commit();
-        
+        // Commit seulement si la transaction est active
+        if ($pdo->inTransaction()) {
+            $pdo->commit();
+        }
+
         // Redirection pour éviter le rechargement du formulaire
-        header("Location: ../backoffice/compteVendeur.php?success=1");
+        header("Location: ../views/backoffice/compteVendeur.php?success=1");
         exit();
 
     } catch (Exception $e) {
-        $pdo->rollBack();
-        header("Location: ../backoffice/compteVendeur.php?error=1");
+        // Rollback seulement si la transaction est active
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        echo "Erreur SQL : " . $e->getMessage();
         exit();
     }
 }
