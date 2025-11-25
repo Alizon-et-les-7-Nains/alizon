@@ -5871,14 +5871,24 @@ dialog.reassort form input {
 .avis-vendeur .avi .col-gauche {
   width: 150px;
   height: 300px;
-  vertical-align: top;
   padding-top: 10px;
   text-align: center;
+}
+.avis-vendeur .avi .col-gauche .profil-client {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
 }
 .avis-vendeur .avi .col-gauche .profil-client img {
   width: 70px;
   height: 70px;
   border-radius: 50%;
+  margin-bottom: 10px;
+}
+.avis-vendeur .avi .col-gauche .profil-client figcaption {
+  margin-top: 0;
 }
 .avis-vendeur .avi .etoiles {
   margin-top: 0;
@@ -5980,19 +5990,19 @@ dialog.reassort form input {
   opacity: 0.9;
 }
 
-.backoffice .previsualisation {
+.pageProduit .previsualisation {
   display: flex;
 }
-.backoffice .textePrevi {
+.pageProduit .textePrevi {
   display: flex;
   flex-direction: column;
 }
-.backoffice .boutonRetour {
+.pageProduit .boutonRetour {
   display: flex;
   padding: 10px;
   background-color: #273469;
 }
-.backoffice .lignePrevi {
+.pageProduit .lignePrevi {
   border-top: solid 2px red;
 }
 
