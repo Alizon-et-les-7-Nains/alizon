@@ -334,14 +334,15 @@ body {
 
 #burgerIconTel #triangle-codeHeader {
   display: inline-block;
-  height: 0;
   width: 0;
-  border-right: 16px solid transparent;
-  border-bottom: 30px solid #E3F2FE;
-  border-left: 14px solid transparent;
+  height: 0;
   position: absolute;
-  top: -22px;
-  right: 17px;
+  bottom: -24px;
+  right: 22px;
+  border-left: 17px solid transparent;
+  border-right: 17px solid transparent;
+  border-top: 24px solid #273469;
+  border-bottom: none;
 }
 
 /* -------------------------------------------- FIN FOOTER -------------------------------------------- */
