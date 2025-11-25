@@ -71,29 +71,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Mise à jour du vendeur - REQUÊTES SIMPLIFIÉES COMME CLIENT
     $stmt = $pdo->prepare("
-        UPDATE _vendeur 
-        SET pseudo = :pseudo, 
-            nom = :nom, 
-            prenom = :prenom, 
-            email = :email, 
-            dateNaissance = :dateNaissance,
-            noTelephone = :telephone,
-            raisonSocial = :raisonSociale,
-            noSiren = :noSiren
-        WHERE codeVendeur = :code_vendeur;
-    ");
+    UPDATE _vendeur 
+    SET pseudo = :pseudo, 
+        nom = :nom, 
+        prenom = :prenom, 
+        email = :email, 
+        dateNaissance = :dateNaissance,
+        noTelephone = :telephone,
+        raisonSocial = :raisonSocial,
+        noSiren = :noSiren
+    WHERE codeVendeur = :code_vendeur;
+");
 
-    $stmt->execute([
-        ':pseudo' => $pseudo,
-        ':nom' => $nom,
-        ':prenom' => $prenom,
-        ':email' => $email,
-        ':dateNaissance' => $dateNaissance,
-        ':telephone' => $telephone,
-        ':raisonSociale' => $raisonSociale,
-        ':noSiren' => $noSiren,
-        ':code_vendeur' => $code_vendeur
-    ]);
+$stmt->execute([
+    ':pseudo' => $pseudo,
+    ':nom' => $nom,
+    ':prenom' => $prenom,
+    ':email' => $email,
+    ':dateNaissance' => $dateNaissance,
+    ':telephone' => $telephone,
+    ':raisonSocial' => $raisonSociale,
+    ':noSiren' => $noSiren,
+    ':code_vendeur' => $code_vendeur
+]);
 
     // Mise à jour de l'adresse - REQUÊTES SIMPLIFIÉES
     if ($idAdresse) {

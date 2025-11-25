@@ -522,7 +522,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (form) {
     form.addEventListener("submit", function (e) {
-      // CORRECTION CRITIQUE : S'assurer que les champs ne sont PAS en readonly lors de la soumission
+      e.preventDefault(); // ⚠️ IMPORTANT : Empêcher la soumission immédiate
+
+      // RETIRER readonly AVANT toute validation
       const inputsReadonly = document.querySelectorAll("input[readonly]");
       inputsReadonly.forEach((input) => {
         input.removeAttribute("readonly");
@@ -530,7 +532,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Valider le formulaire seulement si on est en mode édition
       if ((modeEdition || modeModificationMdp) && !validerFormulaire()) {
-        e.preventDefault();
         alert(
           "Veuillez corriger les erreurs dans le formulaire avant de sauvegarder."
         );
@@ -546,6 +547,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       console.log("Formulaire validé, soumission en cours...");
+
+      form.submit();
     });
   }
 
