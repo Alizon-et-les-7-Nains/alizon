@@ -1,9 +1,10 @@
 <header class="backoffice">
+    <a href="/views/backoffice/accueil.php">
     <div>
         <img src="/public/images/logoBackoffice.svg">
         <h1>Alizon</h1>
     </div>
-
+    </a>
     <nav>
         <figure>
             <figcaption>Nouveau Produit</figcaption>

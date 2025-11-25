@@ -18,6 +18,26 @@ $idClient = $_SESSION['user_id'];
 // FONCTIONS DE GESTION DU PANIER
 // ============================================================================
 
+function getPrixProduitAvecRemise($pdo, $idProduit) {
+    $sql = "SELECT 
+            p.prix,
+            remise.tauxRemise
+           FROM _produit p 
+           LEFT JOIN _remise remise ON p.idProduit = remise.idProduit 
+                AND CURDATE() BETWEEN remise.debutRemise AND remise.finRemise
+           WHERE p.idProduit = ?";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idProduit]);
+    $produit = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($produit && !empty($produit['tauxRemise'])) {
+        return $produit['prix'] * (1 - $produit['tauxRemise']/100);
+    }
+    
+    return $produit['prix'];
+}
+
 function getCurrentCart($pdo, $idClient) {
     // Vérifier d'abord si un panier existe
     $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
@@ -104,18 +124,23 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idPanier = intval($panier['idPanier']);
 
-        // Calcul total
-        $sqlTotals = "
-            SELECT SUM(p.prix * pap.quantiteProduit) AS sousTotal, SUM(pap.quantiteProduit) AS nbArticles
-            FROM _produitAuPanier pap
-            JOIN _produit p ON pap.idProduit = p.idProduit
-            WHERE pap.idPanier = ?
-        ";
-        $stmtTotals = $pdo->prepare($sqlTotals);
-        $stmtTotals->execute([$idPanier]);
-        $totals = $stmtTotals->fetch(PDO::FETCH_ASSOC);
-        $sousTotal = floatval($totals['sousTotal'] ?? 0);
-        $nbArticles = intval($totals['nbArticles'] ?? 0);
+        // Calcul total AVEC REMISES
+        $sousTotal = 0;
+        $nbArticles = 0;
+        
+        $sqlItems = "SELECT pap.idProduit, pap.quantiteProduit 
+                     FROM _produitAuPanier pap 
+                     WHERE pap.idPanier = ?";
+        $stmtItems = $pdo->prepare($sqlItems);
+        $stmtItems->execute([$idPanier]);
+        $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+        
+        foreach ($items as $item) {
+            $prixProduit = getPrixProduitAvecRemise($pdo, $item['idProduit']);
+            $quantite = $item['quantiteProduit'];
+            $sousTotal += $prixProduit * $quantite;
+            $nbArticles += $quantite;
+        }
 
         // Vérifier si le panier est vide
         if ($nbArticles === 0) {
@@ -181,10 +206,13 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idCommande = $pdo->lastInsertId();
 
-        // produits vers _contient
+        // produits vers _contient AVEC PRIX REMISE
         $sqlContient = "
             INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
-            SELECT pap.idProduit, ?, p.prix, COALESCE(t.pourcentageTva, 20.0), pap.quantiteProduit
+            SELECT pap.idProduit, ?, 
+                   " . getPrixProduitAvecRemise($pdo, 'p.idProduit') . ", 
+                   COALESCE(t.pourcentageTva, 20.0), 
+                   pap.quantiteProduit
             FROM _produitAuPanier pap
             JOIN _produit p ON pap.idProduit = p.idProduit
             LEFT JOIN _tva t ON p.typeTva = t.typeTva
@@ -419,10 +447,12 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
         cart: <?php 
             $formattedCart = [];
             foreach ($cart as $item) {
+                $prixAvecRemise = getPrixProduitAvecRemise($pdo, $item['idProduit']);
                 $formattedCart[] = [
                     'id' => strval($item['idProduit']),
                     'nom' => $item['nom'],
                     'prix' => floatval($item['prix']),
+                    'prix_remise' => floatval($prixAvecRemise),
                     'qty' => intval($item['qty']),
                     'img' => $item['img'] ?? '../../public/images/default.png'
                 ];
@@ -505,13 +535,26 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                     $nom = $item['nom'] ?? '';
                     $imgProd = $item['img'] ?? '../../public/images/default.png';
                     $prix = $item['prix'] ?? 0;
+                    $prixAvecRemise = getPrixProduitAvecRemise($pdo, $item['idProduit']);
                     $qty = $item['qty'] ?? 0;
+                    $estEnRemise = $prixAvecRemise != $prix;
                 ?>
                 <div class="produit" data-id="<?= htmlspecialchars($item['idProduit']) ?>">
                     <img src="<?= htmlspecialchars($imgProd) ?>" alt="<?= htmlspecialchars($nom) ?>">
                     <div class="infos">
                         <p class="titre"><?= htmlspecialchars($nom) ?></p>
-                        <p class="prix"><?= number_format($prix * $qty, 2, ',', '') ?>€</p>
+                        <?php if ($estEnRemise): ?>
+                            <p class="prix">
+                                <span style="text-decoration: line-through; color: #999; margin-right: 8px;">
+                                    <?= number_format($prix * $qty, 2, ',', '') ?>€
+                                </span>
+                                <span style="color: #ff4444; font-weight: bold;">
+                                    <?= number_format($prixAvecRemise * $qty, 2, ',', '') ?>€
+                                </span>
+                            </p>
+                        <?php else: ?>
+                            <p class="prix"><?= number_format($prix * $qty, 2, ',', '') ?>€</p>
+                        <?php endif; ?>
                         <div class="gestQte">
                             <div class="qte">
                                 <button class="minus" data-id="<?= htmlspecialchars($item['idProduit']) ?>">-</button>

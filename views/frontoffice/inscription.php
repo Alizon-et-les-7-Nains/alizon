@@ -20,7 +20,16 @@
 </head>
 <body class="inscription">
 
-  <?php include './partials/headerDeconnecte.php'; ?>
+  <header class="headerFront">
+
+        <div class="headerMain">
+            <div class="logoNom">
+                <img src="../../../public/images/logoAlizonHeader.png" alt="Logo Alizon">
+                <h1><a href="../frontoffice/accueilDeconnecte.php"><b>Alizon</b></a></h1>
+            </div>
+        <div class="searchBar">
+
+    </header>
 
     <h2>Inscription</h2>
       <main>

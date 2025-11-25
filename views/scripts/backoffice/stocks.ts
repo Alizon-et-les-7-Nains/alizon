@@ -9,6 +9,8 @@ const errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') 
 const errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
 const errorFieldDate: HTMLElement = document.getElementById('errorFieldDate') as HTMLElement;
 
+const buttonCancel: HTMLElement[] = Array.from(document.querySelectorAll('main.backoffice-stocks .annuler'));
+
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs: Element[] = Array.from(btn.children);
@@ -33,13 +35,28 @@ btnSettings.forEach(btn => {
     })
 })
 
+buttonCancel.forEach((btnCancel: HTMLElement) => {
+    btnCancel.addEventListener('click', () => {
+        Array.from(document.getElementsByTagName('dialog')).forEach(dia => {
+            dia.close();
+            dia.style.display = 'none';
+        })
+    })
+})
+
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        const modal: HTMLDialogElement = document.querySelector(`main.backoffice-stocks dialog#${btn.id}`) as HTMLDialogElement;
+        const modal = document.querySelector(`main.backoffice-stocks dialog#d-${btn.id}`) as HTMLDialogElement;
+        
+        if (!modal) {
+            console.error('Dialog non trouvé');
+            return;
+        }
+        
         modal.showModal();
         modal.style.display = 'flex';
 
-        modal?.addEventListener("click", (e) => {
+        modal.addEventListener("click", (e) => {
             if (e.target === modal) {
                 modal.close();
                 modal.style.display = 'none';

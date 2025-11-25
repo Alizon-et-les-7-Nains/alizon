@@ -74,6 +74,7 @@ const buttonConfirm = document.getElementById('buttonConfirm');
 const errorFieldSeuil = document.getElementById('errorFieldSeuil');
 const errorFieldReassort = document.getElementById('errorFieldReassort');
 const errorFieldDate = document.getElementById('errorFieldDate');
+const buttonCancel = Array.from(document.querySelectorAll('main.backoffice-stocks .annuler'));
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);
@@ -96,12 +97,24 @@ btnSettings.forEach(btn => {
         });
     });
 });
+buttonCancel.forEach((btnCancel) => {
+    btnCancel.addEventListener('click', () => {
+        Array.from(document.getElementsByTagName('dialog')).forEach(dia => {
+            dia.close();
+            dia.style.display = 'none';
+        });
+    });
+});
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        const modal = document.querySelector(`main.backoffice-stocks dialog#${btn.id}`);
+        const modal = document.querySelector(`main.backoffice-stocks dialog#d-${btn.id}`);
+        if (!modal) {
+            console.error('Dialog non trouvé');
+            return;
+        }
         modal.showModal();
         modal.style.display = 'flex';
-        modal?.addEventListener("click", (e) => {
+        modal.addEventListener("click", (e) => {
             if (e.target === modal) {
                 modal.close();
                 modal.style.display = 'none';
