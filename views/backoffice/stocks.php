@@ -116,7 +116,7 @@
         $commandes->execute(['idProduit' => $faible['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
-                    <button class='settings' id='" . $faible['idProduit'] . "data-id-produit='<?php echo \$idProduitSelec = " . $faible['idProduit'] . "' ?>
+                    <button class='settings' id='" . $faible['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>
                         <div><div></div></div>
@@ -262,7 +262,7 @@
     <dialog class="reassort">
         <?php
             $reassortSTMT = $pdo->prepare('select * from _produit where idProduit = :idProduit');
-            $reassortSTMT->execute(['idProduit' => $idProduitSelec]);
+            $reassortSTMT->execute(['idProduit' => $_SESSION['idProduitSelec']]);
             $reassort = $commandes->fetchColumn();
         ?>
         <h1>Paramètres de réassort</h1>
