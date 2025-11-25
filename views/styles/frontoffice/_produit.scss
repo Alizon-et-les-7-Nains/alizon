@@ -494,17 +494,19 @@
     }
 
     .stockDisponible{
-        font-size: 16px;
+        position: relative;
+        left: 2.5em;
+        font-size: 20px;
         color: green;
         font-weight: bold;
-        margin-top: 1em;
     }
 
     .stockIndisponible{
-        font-size: 16px;
+        position: relative;
+        left: 2.5em;
+        font-size: 20px;
         color: red;
         font-weight: bold;
-        margin-top: 1em;
     }
 
     .review-count{
