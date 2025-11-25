@@ -2,6 +2,11 @@
 @use "../fonts";
 
 .avis-vendeur {
+  h1 {
+    font-size: 40px;
+    font-family: "Lora", serif;
+    font-weight: bold;
+  }
   .avi {
     border-collapse: separate;
     width: 100%;

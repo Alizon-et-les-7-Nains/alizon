@@ -5861,6 +5861,11 @@ dialog.reassort form input {
   line-height: 1.4;
 }
 
+.avis-vendeur h1 {
+  font-size: 40px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+}
 .avis-vendeur .avi {
   border-collapse: separate;
   width: 100%;
