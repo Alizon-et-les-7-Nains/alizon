@@ -116,7 +116,7 @@
         $commandes->execute(['idProduit' => $faible['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
         $html = "<div>
-                    <button class='settings' id='" . $faible['idProduit'] . "?>
+                    <button class='settings' id='" . $faible['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>
                         <div><div></div></div>
