@@ -81,7 +81,7 @@ class PaymentAPI {
 
       const response = await fetch("", {
         method: "POST",
-        body: formData, 
+        body: formData, // Pas de header Content-Type avec FormData
       });
 
       if (!response.ok) {
