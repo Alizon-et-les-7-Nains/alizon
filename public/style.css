@@ -4819,7 +4819,7 @@ main.backoffice-stocks section h1 {
 }
 main.backoffice-stocks section article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(855px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(875px, 1fr));
   gap: 1em;
   font-family: "open-sans";
 }
@@ -5549,7 +5549,7 @@ dialog.reassort form input {
   height: 75px;
   margin-top: 0.5em;
 }
-.pageProduit .attributsproduit h3 {
+.pageProduit .attributsproduit h4 {
   border-radius: 8px;
   background-color: #f14e4e;
   color: white;
@@ -6222,6 +6222,19 @@ dialog.reassort form input {
   overflow-x: hidden;
   padding: 20px;
 }
+.connexionVendeur #error {
+  text-align: center;
+  width: 75%;
+  background-color: #f7afaf;
+  font-size: 15px;
+  color: #f14e4e;
+  font-family: "open-sans";
+  padding: 0.5em;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #f14e4e;
+  border-radius: 8px;
+}
 .connexionVendeur .triskiel {
   position: absolute;
   top: 0;
@@ -6584,6 +6597,7 @@ dialog.reassort form input {
     border-radius: 15px;
   }
   .mesAvis .infos-produit {
+    width: 300px;
     display: flex;
     flex-direction: column;
     gap: 5px;
