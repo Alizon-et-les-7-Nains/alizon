@@ -48,6 +48,16 @@
 
             $stmt = $pdo->query("SELECT * FROM saedb._remise WHERE idproduit = '$idProduit';");
             $remise = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+            
+            // Récupérer les remises actives
+            $remiseActiveSTMT = $pdo->prepare("SELECT tauxRemise FROM _remise WHERE idProduit = ? AND CURDATE() BETWEEN debutRemise AND finRemise");
+            $remiseActiveSTMT->execute([$idProduit]);
+            $remiseActive = $remiseActiveSTMT->fetch(PDO::FETCH_ASSOC);
+            
+            $prixOriginal = $produitEnVente[$i]['prix'];
+            $tauxRemise = $remiseActive['tauxRemise'] ?? 0;
+            $enRemise = !empty($remiseActive) && $tauxRemise > 0;
+            $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
             ?>
                 
             <section>
@@ -70,11 +80,18 @@
                         </div>
 
                         <div class="prixEtPrixAuKg">
-                            <p class="prix"><?php echo htmlspecialchars($produitEnVente[$i]['prix']); ?>€</p>
+                            <?php if ($enRemise): ?>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <p class="prix"><?php echo htmlspecialchars($prixRemise); ?>€</p>
+                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                </div>
+                            <?php else: ?>
+                                <p class="prix"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                            <?php endif; ?>
                             <?php 
-                                $prix = $produitEnVente[$i]['prix'];
+                                $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                                 $poids = $produitEnVente[$i]['poids'];
-                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
                                 $prixAuKg = round($prixAuKg,2) ?>
                             <p class = "prixAuKg"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</p>
                         </div>
@@ -181,6 +198,16 @@
                 
                 $stmt = $pdo->query("SELECT count(prod.idproduit) as evaluation FROM saedb._produit as prod join saedb._avis on prod.idproduit = _avis.idproduit WHERE prod.idproduit = '$idProduit' and envente = false;");
                 $evaluations = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+                
+                // Récupérer les remises actives pour les produits hors vente aussi
+                $remiseActiveSTMT = $pdo->prepare("SELECT tauxRemise FROM _remise WHERE idProduit = ? AND CURDATE() BETWEEN debutRemise AND finRemise");
+                $remiseActiveSTMT->execute([$idProduit]);
+                $remiseActive = $remiseActiveSTMT->fetch(PDO::FETCH_ASSOC);
+                
+                $prixOriginal = $produitHorsVente[$i]['prix'];
+                $tauxRemise = $remiseActive['tauxRemise'] ?? 0;
+                $enRemise = !empty($remiseActive) && $tauxRemise > 0;
+                $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
             ?>
                 
             <section>
@@ -203,11 +230,18 @@
                         </div>
 
                         <div class="prixEtPrixAuKg">
-                            <p class="prix"><?php echo htmlspecialchars($produitHorsVente[$i]['prix']); ?>€</p>
+                            <?php if ($enRemise): ?>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <p class="prix"><?php echo htmlspecialchars($prixRemise); ?>€</p>
+                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                </div>
+                            <?php else: ?>
+                                <p class="prix"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                            <?php endif; ?>
                             <?php 
-                                $prix = $produitHorsVente[$i]['prix'];
+                                $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                                 $poids = $produitHorsVente[$i]['poids'];
-                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
                                 $prixAuKg = round($prixAuKg,2) ?>
                             <p class = "prixAuKg"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</p>
                         </div>

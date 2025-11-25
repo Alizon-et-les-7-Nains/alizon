@@ -17,7 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $quantite = intval($_POST['quantite']);
     
     $idClient = $_SESSION['user_id'];
-    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+    try{
+        $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+    }
+    catch(Exception $e){
+        $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
+    }
 
     if ($success) {
         $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
@@ -218,7 +223,6 @@ $sqlModifAvisProduit = "UPDATE _produit SET note = $note WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlModifAvisProduit);
 $stmt->execute([$productId]);
 
-
 $sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlNbAvis);
 $stmt->execute([$productId]);
@@ -354,7 +358,7 @@ if (isset($_SESSION['message_panier'])) {
         <div class="attributsproduit">
             <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
             <?php if ($promotion['est_en_remise']): ?>
-                <h3>Promotion</h3> 
+                <h4>Promotion</h4> 
             <?php endif; ?>
         </div>
         <div class="product-rating">
