@@ -4377,6 +4377,7 @@ button#haut.visible:hover {
   justify-content: center;
   align-items: flex-start;
   width: 500px;
+  position: relative;
 }
 .popUpRemise .page form h2 {
   font-size: 24px;
@@ -4395,8 +4396,9 @@ button#haut.visible:hover {
 }
 .popUpRemise .page form .deuxBoutons {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 }
 .popUpRemise .page form button {
   background-color: #273469;
