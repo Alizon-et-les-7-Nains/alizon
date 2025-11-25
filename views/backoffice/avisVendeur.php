@@ -27,10 +27,6 @@ $stmt = $pdo->prepare($query);
 $stmt->bindValue(':idVendeur', $_SESSION['id'], PDO::PARAM_INT);
 $stmt->execute();
 $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Prépare la requête des images (on évite str_replace et on utilise des paramètres nommés)
-$imagesQuery = "SELECT URL FROM saedb._images WHERE idProduit = :idProduit AND idClient = :idClient";
-$imagesStmt = $pdo->prepare($imagesQuery);
 ?>
 
 <!DOCTYPE html>
@@ -67,36 +63,35 @@ $imagesStmt = $pdo->prepare($imagesQuery);
                 <?php foreach ($avis as $avi): ?>
 
                 <?php
-                    // Récupère les images pour cet avis
-                    $imagesStmt->execute([
-                        ':idProduit' => $avi['idProduit'],
-                        ':idClient'  => $avi['idClient']
-                    ]);
-                    $imagesAvis = $imagesStmt->fetchAll(PDO::FETCH_ASSOC);
+                    // Utilise la même méthode que dans accueil.php pour les images d'avis
+                    $imagesAvis = $pdo->query(
+                        str_replace(
+                            '$idClient',
+                            $avi['idClient'],
+                            str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql'))
+                        )
+                    )->fetchAll(PDO::FETCH_ASSOC);
 
-                    // Construis le chemin de la photo profil client (affiche none via onerror si absent)
+                    // Chemin de la photo de profil comme dans accueil.php
                     $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
-                    ?>
+                ?>
 
                 <table class="avi">
                     <tr>
                         <th rowspan="3" class="col-gauche">
                             <figure class="profil-client">
-                                <img src="<?php echo htmlspecialchars($imageClient, ENT_QUOTES); ?>"
-                                    onerror="this.style.display='none'">
-                                <figcaption><?= htmlspecialchars($avi['pseudo'] ?? $avi['nomClient'], ENT_QUOTES) ?>
+                                <img src="<?= $imageClient ?>" onerror="this.style.display='none'">
+                                <figcaption><?= $avi['pseudo'] ?? $avi['prenom'] . ' ' . $avi['nomClient'] ?>
                                 </figcaption>
+                            </figure>
+                            <figure class="etoiles">
+                                <figcaption><?= str_replace('.', ',', $avi['note']) ?>/5</figcaption>
+                                <img src="/public/images/etoile.svg" alt="étoile">
                             </figure>
                         </th>
 
                         <td class="ligne">
-                            <figure class="etoiles">
-                                <figcaption><?= str_replace('.', ',', htmlspecialchars($avi['note'], ENT_QUOTES)) ?>
-                                </figcaption>
-                                <img src="/public/images/etoile.svg" alt="étoile">
-                            </figure>
-                            <?= htmlspecialchars($avi['titreAvis'], ENT_QUOTES) ?> -
-                            <?= htmlspecialchars($avi['nomProduit'], ENT_QUOTES) ?>
+                            <strong><?= $avi['titreAvis'] ?></strong> - <?= $avi['nomProduit'] ?>
                         </td>
                         <td class="ligne">
                             <p class="date-avis">Avis déposé le <?= formatDate($avi['dateAvis']) ?></p>
@@ -105,7 +100,7 @@ $imagesStmt = $pdo->prepare($imagesQuery);
 
                     <tr>
                         <td class="ligne text" colspan="2">
-                            <?= nl2br(htmlspecialchars($avi['contenuAvis'], ENT_QUOTES)) ?>
+                            <?= $avi['contenuAvis'] ?>
                         </td>
                     </tr>
 
@@ -113,7 +108,7 @@ $imagesStmt = $pdo->prepare($imagesQuery);
                         <td class="ligne" colspan="2">
                             <?php if (!empty($imagesAvis)): ?>
                             <?php foreach ($imagesAvis as $imageAvi): ?>
-                            <img src="<?= htmlspecialchars($imageAvi['URL'], ENT_QUOTES) ?>" class="imageAvis"
+                            <img src="<?= $imageAvi['URL'] ?>" class="imageAvis" style="max-width: 100px; margin: 5px;"
                                 onerror="this.style.display='none'">
                             <?php endforeach; ?>
                             <?php endif; ?>
