@@ -26,20 +26,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // try {
-            $stmt = $pdo->prepare("SELECT * _promotion idProduit = :idProd");
+            $stmt = $pdo->prepare("SELECT * FROM _promotion WHERE idProduit = :idProd");
             $stmt->execute([':idProd' => $idProd]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 
             $dateSql = $d->format('Y-m-d');
 
             if(count($res) >= 1) {
-                $stmt = $pdo->prepare("UPDATE _promotion SET finPromotion = :finPromotion");
-                $stmt->execute([':finPromotion' => $dateLimite]);
+                $stmt = $pdo->prepare("UPDATE _promotion SET finPromotion = :finPromotion WHERE idProduit = :idProd");
+                $stmt->execute([
+                    ':finPromotion' => $dateSql,
+                    ':idProd' => $idProd        
+                ]);
             } else {
                 $stmt = $pdo->prepare("INSERT INTO _promotion(idProduit, debutPromotion, finPromotion) VALUES (:idProd, CURDATE(), :dateLimite)");
-                $stmt->execute([':idProd' => $idProd,':dateLimite' => $dateSql]);
+                $stmt->execute([
+                    ':idProd' => $idProd,
+                    ':dateLimite' => $dateSql
+                ]);
             }
-
         // } 
         // catch (Exception $e) {
         //     header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd);
