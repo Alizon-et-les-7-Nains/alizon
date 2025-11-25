@@ -1,7 +1,6 @@
 <?php
 require_once '../../controllers/pdo.php';
 require_once '../../controllers/auth.php';
-require_once '../../controllers/compteVendeur.php';
 
 if (!isset($_SESSION['id'])) {
     header("Location: ../backoffice/connexion.php");
