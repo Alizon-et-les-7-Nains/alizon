@@ -5036,21 +5036,21 @@ dialog.reassort form input {
 .pageProduit .banniere h2 {
   position: absolute;
   top: 50px;
-  left: 33px;
+  left: 50px;
   color: #fffefa;
   z-index: 10000;
 }
 .pageProduit .poly:nth-child(1) {
   position: absolute;
   top: 35px;
-  left: 33px;
+  left: 15px;
   width: auto;
   z-index: 100;
 }
 .pageProduit .poly:nth-child(2) {
   position: absolute;
-  top: 35px;
-  left: 33px;
+  top: 65px;
+  left: 15px;
   width: auto;
   z-index: 100;
 }
