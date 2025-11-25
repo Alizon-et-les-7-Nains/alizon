@@ -96,12 +96,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->commit();
         
         // Redirection pour éviter le rechargement du formulaire
-        header("Location: ../backoffice/compteVendeur.php?success=1");
+        header("Location: ../views/backoffice/compteVendeur.php?success=1");
         exit();
 
     } catch (Exception $e) {
         $pdo->rollBack();
-        header("Location: ../backoffice/compteVendeur.php?error=1");
+        header("Location: ../views/backoffice/compteVendeur.php?error=1");
         exit();
     }
 }
