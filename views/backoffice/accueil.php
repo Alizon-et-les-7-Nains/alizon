@@ -32,7 +32,7 @@
             <h1>Stocks Faibles</h1>
             <article>
                 <?php
-$stockSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/stockFaible.sql'));
+$stockSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/stockFaibleAccueil.sql'));
 $stockSTMT->execute([':idVendeur' => $_SESSION['id']]);
 $stock = $stockSTMT->fetchAll(PDO::FETCH_ASSOC);
     if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
