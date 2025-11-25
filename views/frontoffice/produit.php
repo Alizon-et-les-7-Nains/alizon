@@ -2,6 +2,62 @@
 include '../../controllers/pdo.php';
 session_start();
 
+$productId = intval($_GET['id']) ?? 0;
+
+if($productId == 0) {
+    die("Produit non spécifié");
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
+    if (isset($_SESSION['user_id'])) {
+        $idClient = $_SESSION['user_id'];
+        $idProduit = intval($_POST['idProduit']);
+        $idClientAvis = intval($_POST['idClientAvis']);
+        $typeVote = $_POST['type']; // 'like' ou 'dislike'
+        
+        $keyVote = "vote_{$idProduit}_{$idClientAvis}_{$idClient}";
+        
+        $votePrecedent = $_SESSION[$keyVote] ?? null;
+        
+        if ($votePrecedent === $typeVote) {
+            unset($_SESSION[$keyVote]);
+        } else {
+            $_SESSION[$keyVote] = $typeVote;
+        }
+        
+        header("Location: ?id=" . $productId);
+        exit;
+    }
+}
+
+function compterVotesAvis($idProduit, $idClientAvis) {
+    $likes = 0;
+    $dislikes = 0;
+    
+    foreach ($_SESSION as $key => $value) {
+        if (strpos($key, "vote_{$idProduit}_{$idClientAvis}_") === 0) {
+            if ($value === 'like') {
+                $likes++;
+            } elseif ($value === 'dislike') {
+                $dislikes++;
+            }
+        }
+    }
+    
+    return ['likes' => $likes, 'dislikes' => $dislikes];
+}
+
+function getVoteUtilisateur($idProduit, $idClientAvis) {
+    if (!isset($_SESSION['user_id'])) {
+        return null;
+    }
+    
+    $idClient = $_SESSION['user_id'];
+    $keyVote = "vote_{$idProduit}_{$idClientAvis}_{$idClient}";
+    
+    return $_SESSION[$keyVote] ?? null;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
@@ -15,12 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     } else {
         $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
     }
-}
-
-$productId = intval($_GET['id']) ?? 0;
-
-if($productId == 0) {
-    die("Produit non spécifié");
 }
 
 $sqlProduit = "SELECT 
@@ -403,6 +453,20 @@ if (isset($_SESSION['message_panier'])) {
 
     <?php if (!empty($lesAvis)): ?>
         <?php foreach ($lesAvis as $avis): ?>
+            <?php
+            $sqlImagesAvis = "SELECT * 
+            FROM _imageAvis 
+            WHERE idClient = " . intval($avis['idClient']) . " AND idProduit = " . intval($productId);
+
+            $resultImagesAvis = $pdo->query($sqlImagesAvis);
+            $imagesAvis = $resultImagesAvis->fetchAll(PDO::FETCH_ASSOC);
+
+            $sqlNomClient = "SELECT *
+                             FROM _client 
+                             WHERE idClient = " . intval($avis['idClient']);
+            $resultNomClient = $pdo->query($sqlNomClient);
+            $client = $resultNomClient->fetch(PDO::FETCH_ASSOC);
+            ?>
             <article>
                 <img src="../../public/images/pp.png" id="pp">
                 <div>
@@ -413,24 +477,47 @@ if (isset($_SESSION['message_panier'])) {
                             </div>
                             <h3><?php echo htmlspecialchars($avis['titreAvis']); ?></h3>
                         </div>
-                        <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?> par <?php echo htmlspecialchars($avis['idClient']); ?></h6>
+                        <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?> par <?php echo htmlspecialchars($client['pseudo']); ?></h6>
                     </div>
                     <p><?php echo htmlspecialchars($avis['contenuAvis']); ?></p>
                     <div class="baselineSpaceBetween">
                         <div class="sectionImagesAvis">
-                           <?php $sqlImagesAvis = "SELECT * 
-                                FROM _imageAvis 
-                                WHERE idClient = " . intval($avis['idClient']) . " AND idProduit = " . intval($productId);
-
-                                $resultImagesAvis = $pdo->query($sqlImagesAvis);
-                                $imagesAvis = $resultImagesAvis->fetchAll(PDO::FETCH_ASSOC);?>
                             <?php foreach ($imagesAvis as $imageAvis): ?>
                                 <img src="../../public/images/<?php echo htmlspecialchars($imageAvis['URL'] ?? '');?>" alt="">
                              <?php endforeach; ?>
                         </div>   
                         <div class="actionsAvis">
-                            <img src="../../public/images/pouceHaut.png" alt="Like" onclick="changerPouce(this, 'haut')" class="pouce">
-                            <img src="../../public/images/pouceBas.png" alt="Dislike" onclick="changerPouce(this, 'bas')" class="pouce">
+                            <div class="actionsAvis">
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="action" value="voter_avis">
+                                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                                <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
+                                <input type="hidden" name="type" value="like">
+                                
+                                <?php
+                                $votesAvis = compterVotesAvis($productId, $avis['idClient']);
+                                $voteUtilisateur = getVoteUtilisateur($productId, $avis['idClient']);
+                                $likeActive = ($voteUtilisateur === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png';
+                                $dislikeActive = ($voteUtilisateur === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png';
+                                ?>
+                                
+                                <button type="submit" class="btn-vote" style="background: none; border: none; cursor: pointer;">
+                                    <img src="../../public/images/<?php echo $likeActive; ?>" alt="Like" class="pouce">
+                                    <span class="count-likes"><?php echo $votesAvis['likes']; ?></span>
+                                </button>
+                            </form>
+                            
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="action" value="voter_avis">
+                                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                                <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
+                                <input type="hidden" name="type" value="dislike">
+                                
+                                <button type="submit" class="btn-vote" style="background: none; border: none; cursor: pointer;">
+                                    <img src="../../public/images/<?php echo $dislikeActive; ?>" alt="Dislike" class="pouce">
+                                    <span class="count-dislikes"><?php echo $votesAvis['dislikes']; ?></span>
+                                </button>
+                            </form>
                             <shape></shape>
                             <a href="#">Signaler</a>
                         </div>
