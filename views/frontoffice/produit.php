@@ -403,6 +403,20 @@ if (isset($_SESSION['message_panier'])) {
 
     <?php if (!empty($lesAvis)): ?>
         <?php foreach ($lesAvis as $avis): ?>
+            <?php
+            $sqlImagesAvis = "SELECT * 
+            FROM _imageAvis 
+            WHERE idClient = " . intval($avis['idClient']) . " AND idProduit = " . intval($productId);
+
+            $resultImagesAvis = $pdo->query($sqlImagesAvis);
+            $imagesAvis = $resultImagesAvis->fetchAll(PDO::FETCH_ASSOC);
+
+            $sqlNomClient = "SELECT *
+                             FROM _client 
+                             WHERE idClient = " . intval($avis['idClient']);
+            $resultNomClient = $pdo->query($sqlNomClient);
+            $client = $resultNomClient->fetch(PDO::FETCH_ASSOC);
+            ?>
             <article>
                 <img src="../../public/images/pp.png" id="pp">
                 <div>
@@ -413,17 +427,11 @@ if (isset($_SESSION['message_panier'])) {
                             </div>
                             <h3><?php echo htmlspecialchars($avis['titreAvis']); ?></h3>
                         </div>
-                        <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?> par <?php echo htmlspecialchars($avis['idClient']); ?></h6>
+                        <h6>Avis déposé le <?php echo htmlspecialchars($avis['dateAvis']); ?> par <?php echo htmlspecialchars($client['pseudo']); ?></h6>
                     </div>
                     <p><?php echo htmlspecialchars($avis['contenuAvis']); ?></p>
                     <div class="baselineSpaceBetween">
                         <div class="sectionImagesAvis">
-                           <?php $sqlImagesAvis = "SELECT * 
-                                FROM _imageAvis 
-                                WHERE idClient = " . intval($avis['idClient']) . " AND idProduit = " . intval($productId);
-
-                                $resultImagesAvis = $pdo->query($sqlImagesAvis);
-                                $imagesAvis = $resultImagesAvis->fetchAll(PDO::FETCH_ASSOC);?>
                             <?php foreach ($imagesAvis as $imageAvis): ?>
                                 <img src="../../public/images/<?php echo htmlspecialchars($imageAvis['URL'] ?? '');?>" alt="">
                              <?php endforeach; ?>
