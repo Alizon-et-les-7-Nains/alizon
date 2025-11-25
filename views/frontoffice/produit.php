@@ -354,7 +354,7 @@ if (isset($_SESSION['message_panier'])) {
         <div class="attributsproduit">
             <h1 class="nomProduit"><?php echo htmlspecialchars($produit['nom_produit']); ?></h1>
             <?php if ($promotion['est_en_remise']): ?>
-                <h3>Promotion</h3> 
+                <h4>Promotion</h4> 
             <?php endif; ?>
         </div>
         <div class="product-rating">
