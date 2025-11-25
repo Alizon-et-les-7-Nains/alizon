@@ -286,6 +286,12 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div class="infoProd">
                         <div class="prix">
                             <h2><?php echo formatPrice($value['prix']); ?></h2>
+                            <?php 
+                                $prix = $value['prix'];
+                                $poids = $value['poids'];
+                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = round($prixAuKg,2) ?>
+                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
                         <div>
                             <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
@@ -338,6 +344,12 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div class="infoProd">
                         <div class="prix">
                             <h2><?php echo formatPrice($value['prix']); ?></h2>
+                            <?php 
+                                $prix = $value['prix'];
+                                $poids = $value['poids'];
+                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = round($prixAuKg,2) ?>
+                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
                         <div>
                             <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
@@ -390,6 +402,12 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div class="infoProd">
                         <div class="prix">
                             <h2><?php echo formatPrice($value['prix']); ?></h2>
+                            <?php 
+                                $prix = $value['prix'];
+                                $poids = $value['poids'];
+                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = round($prixAuKg,2) ?>
+                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
                         <div>
                             <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
@@ -445,6 +463,12 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div class="infoProd">
                         <div class="prix">
                             <h2><?php echo formatPrice($produitRecent['prix']); ?></h2>
+                            <?php 
+                                $prix = $produitRecent['prix'];
+                                $poids = $produitRecent['poids'];
+                                $prixAuKg = $prix/$poids;
+                                $prixAuKg = round($prixAuKg,2) ?>
+                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
                         <div>
                             <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">

@@ -1,14 +1,14 @@
-let btnSettings: Element[] = Array.from(document.getElementsByClassName('settings'));
-let modalReassort: HTMLDialogElement | null = document.querySelector("dialog.reassort") as HTMLDialogElement;
+const btnSettings: Element[] = Array.from(document.getElementsByClassName('settings'));
+const modalReassort: HTMLDialogElement | null = document.querySelector("dialog.reassort") as HTMLDialogElement;
 
-let inputSeuil: HTMLInputElement = document.getElementById('seuil') as HTMLInputElement;
-let inputDate: HTMLInputElement = document.getElementById('dateReassort') as HTMLInputElement;
-let inputReassort: HTMLInputElement = document.getElementById('reassort') as HTMLInputElement;
-let buttonConfirm: HTMLInputElement = document.getElementById('buttonConfirm') as HTMLInputElement;
+const inputSeuil: HTMLInputElement = document.getElementById('seuil') as HTMLInputElement;
+const inputDate: HTMLInputElement = document.getElementById('dateReassort') as HTMLInputElement;
+const inputReassort: HTMLInputElement = document.getElementById('reassort') as HTMLInputElement;
+const buttonConfirm: HTMLInputElement = document.getElementById('buttonConfirm') as HTMLInputElement;
 
-let errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') as HTMLElement;
-let errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
-let errorFieldDate: HTMLElement = document.getElementById('errorFieldDate') as HTMLElement;
+const errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') as HTMLElement;
+const errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
+const errorFieldDate: HTMLElement = document.getElementById('errorFieldDate') as HTMLElement;
 
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
@@ -36,60 +36,21 @@ btnSettings.forEach(btn => {
 
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        fetch('../../controllers/getProduct.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({idProduit: btn.id})
-        })
-        .then(r => r.json())
-        .then(data => {
-            const dialog = document.createElement('dialog');
-            dialog.className = 'reassort';
-            dialog.innerHTML = `
-                <h1>Paramètres de réassort</h1>
-                <form action="" method="post">
-                    <input type="number" value="${data.seuilAlerte || ''}" name="seuil" id="seuil">
-                    <span id="errorFieldSeuil" style="display:none;">Valeur invalide</span>
-                    <input type="date" value="${data.dateReassort || ''}" name="dateReassort" id="dateReassort">
-                    <span id="errorFieldDate" style="display:none;">Date invalide</span>
-                    <input type="number" name="reassort" id="reassort">
-                    <span id="errorFieldReassort" style="display:none;">Valeur invalide</span>
-                    <ul>
-                        <li><input type="button" value="Annuler" id="annuler"></li>
-                        <li><input type="submit" value="Valider" id="buttonConfirm"></li>
-                    </ul>
-                </form>
-            `;
-            document.body.appendChild(dialog);
-            
-            inputSeuil = dialog.querySelector('#seuil') as HTMLInputElement;
-            inputDate = dialog.querySelector('#dateReassort') as HTMLInputElement;
-            inputReassort = dialog.querySelector('#reassort') as HTMLInputElement;
-            buttonConfirm = dialog.querySelector('#buttonConfirm') as HTMLInputElement;
-            const annuler = dialog.querySelector('#annuler') as HTMLButtonElement;
-
-            dialog.addEventListener("click", (e) => {
-                if (e.target === modalReassort) {
-                    dialog.close();
-                    dialog.style.display = 'none';
-                }
-            });
-            
-            annuler.addEventListener('click', () => {
-                dialog.close();
-                dialog.remove();
-            });
-            
-            dialog.addEventListener('click', (e) => {
-                if (e.target === dialog) {
-                    dialog.close();
-                    dialog.remove();
-                }
-            });
-            
-            dialog.showModal();
-        });
+        modalReassort.showModal();
+        modalReassort.style.display = 'flex';
     })
+})
+
+modalReassort?.addEventListener("click", (e) => {
+    if (e.target === modalReassort) {
+        modalReassort.close();
+        modalReassort.style.display = 'none';
+    }
+});
+
+document.querySelector('modal.reassort input#annuler')?.addEventListener('click', () => {
+    modalReassort.close();
+    modalReassort.style.display = 'none';
 })
 
 
