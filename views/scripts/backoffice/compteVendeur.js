@@ -261,7 +261,7 @@ function desactiverModeEdition() {
   if (btnAnnuler) btnAnnuler.style.display = "none";
   if (btnSauvegarder) btnSauvegarder.style.display = "none";
   if (btnModifierMdp) {
-    btnModifierMdp.style.display = "none";
+    btnModifierMdp.style.display = "block";
     btnModifierMdp.textContent = "Modifier le mot de passe";
     btnModifierMdp.classList.remove("annuler-mdp");
   }
@@ -286,13 +286,19 @@ function activerModificationMdp() {
     });
   });
 
-  // Afficher/masquer les boutons pour indiquer qu'une édition est en cours
-  const btnModifier = document.querySelector(".boutonModifierProfil");
+  // Mettre à jour le texte du bouton "Modifier le mot de passe" mais le laisser visible
+  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
+  if (btnModifierMdp) {
+    btnModifierMdp.textContent = "Annuler modification mot de passe";
+    btnModifierMdp.classList.add("annuler-mdp");
+    // S'assurer qu'il reste visible
+    btnModifierMdp.style.display = "inline-block";
+  }
+
+  // Afficher les boutons Annuler/Sauvegarder principaux
   const btnAnnuler = document.querySelector(".boutonAnnuler");
   const btnSauvegarder = document.querySelector(".boutonSauvegarder");
-  const btnModifierMdp = document.querySelector(".boutonModifierMdp");
 
-  if (btnModifier) btnModifier.style.display = "none";
   if (btnAnnuler) btnAnnuler.style.display = "block";
   if (btnSauvegarder) btnSauvegarder.style.display = "block";
 }
@@ -315,21 +321,24 @@ function desactiverModificationMdp() {
     input.parentNode.replaceChild(newInput, input);
   });
 
-  // Restaurer l'état des boutons : si on n'est pas en mode édition complet,
-  // masquer Sauvegarder/Annuler et afficher le bouton Modifier principal.
-  const btnModifier = document.querySelector(".boutonModifierProfil");
-  const btnAnnuler = document.querySelector(".boutonAnnuler");
-  const btnSauvegarder = document.querySelector(".boutonSauvegarder");
+  // Restaurer le bouton "Modifier le mot de passe" à son état initial
   const btnModifierMdp = document.querySelector(".boutonModifierMdp");
+  if (btnModifierMdp) {
+    btnModifierMdp.textContent = "Modifier le mot de passe";
+    btnModifierMdp.classList.remove("annuler-mdp");
+    // S'assurer qu'il reste visible
+    btnModifierMdp.style.display = "inline-block";
+  }
 
+  // Restaurer l'état des boutons principaux seulement si on n'est pas en mode édition complet
   if (!modeEdition) {
+    const btnModifier = document.querySelector(".boutonModifierProfil");
+    const btnAnnuler = document.querySelector(".boutonAnnuler");
+    const btnSauvegarder = document.querySelector(".boutonSauvegarder");
+
     if (btnModifier) btnModifier.style.display = "block";
     if (btnAnnuler) btnAnnuler.style.display = "none";
     if (btnSauvegarder) btnSauvegarder.style.display = "none";
-  }
-
-  if (btnModifierMdp) {
-    btnModifierMdp.style.display = "inline-block";
   }
 }
 
@@ -339,6 +348,14 @@ function toggleModificationMdp() {
   } else {
     // Activer seulement les champs mot de passe sans activer le mode édition complet
     activerModificationMdp();
+
+    // NE PAS cacher le bouton "Modifier le mot de passe" ici
+    const btnModifierMdp = document.querySelector(".boutonModifierMdp");
+    if (btnModifierMdp) {
+      btnModifierMdp.textContent = "Annuler modification mot de passe";
+      btnModifierMdp.classList.add("annuler-mdp");
+      // Ne pas changer le display ici - le bouton reste visible
+    }
   }
 }
 
