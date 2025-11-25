@@ -3581,7 +3581,6 @@ button#haut.visible:hover {
   background-color: #f14e4e;
   color: #fffefa;
   width: 200px;
-  margin-top: 13px;
 }
 .modifierProduit .form-actions .btn-supprimer:hover {
   background-color: rgb(209.8815789474, 191.5, 255);
@@ -5021,6 +5020,12 @@ dialog.reassort form input {
   border-radius: 16px;
   position: relative;
 }
+.pageProduit .banniere {
+  position: absolute;
+  top: -40px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
 .pageProduit #imageBouteille {
   width: 220px;
   height: 330px;
@@ -5810,6 +5815,38 @@ dialog.reassort form input {
   margin-top: 50px;
   padding: 0 20px;
   line-height: 1.4;
+}
+
+.avis-vendeur .avi {
+  border-collapse: separate;
+  width: 100%;
+  color: #273469;
+  font-size: 18px;
+  font-family: "Lora", serif;
+}
+.avis-vendeur .avi .col-gauche {
+  width: 150px;
+  height: 300px;
+  vertical-align: top;
+  padding-top: 10px;
+  text-align: center;
+}
+.avis-vendeur .avi .etoiles {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 20px;
+  display: flex;
+}
+.avis-vendeur .avi .ligne {
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+.avis-vendeur .avi .date-avis {
+  font-size: 12px;
+  font-family: "Lora", sans-serif;
 }
 
 .overlayPopUpErreur {
