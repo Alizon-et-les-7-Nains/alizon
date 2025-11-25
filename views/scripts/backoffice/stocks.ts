@@ -39,7 +39,7 @@ btnSettings.forEach(btn => {
         fetch('update_session.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({productId: btn.id})
+            body: JSON.stringify({idProduitSelec: btn.id})
         }).then(() => {
             modalReassort.showModal();
             modalReassort.style.display = 'flex';
