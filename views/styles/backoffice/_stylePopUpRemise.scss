@@ -146,6 +146,7 @@
             justify-content: center;
             align-items: flex-start;
             width: 500px;
+            position: relative;
 
             h2{
                 font-size: 24px;
@@ -167,11 +168,11 @@
                 }
             }
 
-            .deuxBoutons{
+            .deuxBoutons {
                 display: flex;
                 position: absolute;
-                right: 30px;
-                bottom: 30px;
+                right: 10px;
+                bottom: 10px;
             }
 
             button{
@@ -182,6 +183,7 @@
                 width: 200px;
                 color: $color-white;
                 cursor: pointer;
+                margin-left:20px ;
             }
 
             p{
