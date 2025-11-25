@@ -1,5 +1,7 @@
 const btnSettings: Element[] = Array.from(document.getElementsByClassName('settings'));
 const modalReassort: HTMLDialogElement | null = document.querySelector("dialog.reassort") as HTMLDialogElement;
+let inputSeuil: HTMLInputElement = document.getElementById('seuil') as HTMLInputElement;
+let inputReassort: HTMLInputElement = document.getElementById('reassort') as HTMLInputElement;
 
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
@@ -25,8 +27,11 @@ btnSettings.forEach(btn => {
     })
 })
 
+let idProduit: number;
+
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
+        idProduit = parseInt(btn.id);
         modalReassort.showModal();
         modalReassort.style.display = 'flex';
     })
@@ -39,7 +44,28 @@ modalReassort?.addEventListener("click", (e) => {
     }
 });
 
-document.querySelector('input#annuler')?.addEventListener('click', () => {
+document.querySelector('modal.reassort input#annuler')?.addEventListener('click', () => {
     modalReassort.close();
     modalReassort.style.display = 'none';
+})
+
+
+function checkInt(value: string): boolean {
+    let valid: boolean = true;
+    let intValue = parseInt(value);
+    if (!intValue || intValue < 0) {
+        valid = false;
+    }
+    return valid;
+}
+
+inputSeuil.addEventListener('change', () => {
+    if (!checkInt(inputSeuil.value)) {
+        inputSeuil.style.borderColor = '#f14e4e';
+    }
+})
+inputReassort.addEventListener('change', () => {
+    if (!checkInt(inputReassort.value)) {
+        inputReassort.style.borderColor = '#f14e4e';
+    }
 })

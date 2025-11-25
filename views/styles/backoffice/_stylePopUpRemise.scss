@@ -124,6 +124,7 @@
                 color: $color-blue;
                 margin: 0;
                 font-weight: bold;
+                margin-left: 10px;
             }
 
             .prixAuKg {
@@ -138,7 +139,7 @@
             margin: 30px;
         }
         
-        .section2 {
+        form {
             border: 0;
             display: flex;
             flex-direction: column;
@@ -176,12 +177,17 @@
                 position: absolute;
                 right: 30px;
                 bottom: 30px;
+                cursor: pointer;
             }
 
             p{
                 background-color: $color-pastel-purple;
                 padding: 10px;
                 border-radius: 16px;
+            }
+
+            .error-message{
+                color: red;
             }
         }
     }

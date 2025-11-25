@@ -1313,6 +1313,7 @@ main.acceuilBackoffice section.stock article {
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   width: 100%;
   gap: 2em;
+  font-family: "open-sans";
 }
 main.acceuilBackoffice section.stock article table {
   padding: 1em;
@@ -1346,7 +1347,6 @@ main.acceuilBackoffice section.commandes article {
   width: 100%;
   gap: 2em;
   font-family: "open-sans";
-  font-size: 20px;
 }
 main.acceuilBackoffice section.commandes article table {
   padding: 1em;
@@ -1363,11 +1363,16 @@ main.acceuilBackoffice section.commandes article table img {
 main.acceuilBackoffice section.commandes article table th {
   font-size: 20px;
 }
+main.acceuilBackoffice section.commandes article table tr:first-child td {
+  width: 110px;
+}
 main.acceuilBackoffice section.commandes article table tr:first-child th {
   text-align: left;
   line-height: 0.5em;
 }
 main.acceuilBackoffice section.commandes article table tr:nth-child(2) td {
+  padding-top: 0.5em;
+  line-height: 25px;
   vertical-align: top;
 }
 main.acceuilBackoffice section.commandes article table tr:last-child th {
@@ -1432,7 +1437,6 @@ main.acceuilBackoffice section.produits article {
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   max-width: 100%;
   gap: 2em;
-  font-size: 20px;
 }
 main.acceuilBackoffice section.produits article table {
   padding: 1em;
@@ -1532,6 +1536,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   object-fit: contain;
   margin-top: 10px;
   border-radius: 8px;
+  max-width: 290px;
+  object-fit: inherit;
 }
 .produitBackOffice .bouton {
   background-color: #273469;
@@ -2576,6 +2582,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .acceuil .banniere {
   text-align: center;
   justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .acceuil .banniere * {
   margin: 0px 30px;
@@ -4308,6 +4316,7 @@ button#haut.visible:hover {
   color: #273469;
   margin: 0;
   font-weight: bold;
+  margin-left: 10px;
 }
 .popUpRemise .page section .prixAuKg {
   font-size: 16px;
@@ -4318,7 +4327,7 @@ button#haut.visible:hover {
   border-left: #273469 solid 2px;
   margin: 30px;
 }
-.popUpRemise .page .section2 {
+.popUpRemise .page form {
   border: 0;
   display: flex;
   flex-direction: column;
@@ -4326,11 +4335,11 @@ button#haut.visible:hover {
   align-items: flex-start;
   width: 500px;
 }
-.popUpRemise .page .section2 h2 {
+.popUpRemise .page form h2 {
   font-size: 24px;
   color: #273469;
 }
-.popUpRemise .page .section2 input {
+.popUpRemise .page form input {
   padding: 10px;
   width: 200px;
   border: 2px solid #273469;
@@ -4338,10 +4347,10 @@ button#haut.visible:hover {
   font-family: "lora";
   margin: 10px;
 }
-.popUpRemise .page .section2 div input {
+.popUpRemise .page form div input {
   width: 110px;
 }
-.popUpRemise .page .section2 button {
+.popUpRemise .page form button {
   background-color: #273469;
   padding: 15px;
   border-radius: 32px;
@@ -4351,11 +4360,15 @@ button#haut.visible:hover {
   position: absolute;
   right: 30px;
   bottom: 30px;
+  cursor: pointer;
 }
-.popUpRemise .page .section2 p {
+.popUpRemise .page form p {
   background-color: #e4d9ff;
   padding: 10px;
   border-radius: 16px;
+}
+.popUpRemise .page form .error-message {
+  color: red;
 }
 
 main.backoffice-stocks h1, main.backoffice-stocks button, main.backoffice-stocks div {
@@ -4631,11 +4644,12 @@ dialog.reassort form input {
 /* Layout principal */
 .page-compte {
   padding: clamp(20px, 5vw, 60px);
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   position: relative;
   box-sizing: border-box;
   z-index: 1;
+  overflow-x: hidden;
 }
 .page-compte::before {
   content: "";
@@ -4644,11 +4658,11 @@ dialog.reassort form input {
   top: -20vw;
   width: 60vw;
   height: 60vw;
-  background: url("../../public/images/symboleRose.png") no-repeat center/contain;
+  background: url("../../public/images/symboleRose.png") no-repeat;
   transform: rotate(-20deg);
   opacity: 0.42;
   pointer-events: none;
-  z-index: 0;
+  z-index: 999;
 }
 .page-compte {
   /* Le formulaire occupe l'espace au-dessus du background décoratif */
@@ -4656,21 +4670,17 @@ dialog.reassort form input {
 .page-compte .form-compte {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* deux colonnes égales pour les inputs */
-  grid-template-rows: auto 1fr; /* header en première ligne, colonnes en deuxième */
+  display: flex;
+  flex-direction: column;
   gap: 40px;
-  align-items: start;
-  width: 100%;
+  width: 60%;
   box-sizing: border-box;
   /* Header qui prend toute la largeur au-dessus des colonnes */
 }
 .page-compte .form-compte .header-compte {
-  grid-column: 1/-1; /* span across both columns */
   display: flex;
   align-items: center;
   gap: 28px;
-  margin-bottom: 0; /* géré par le grid gap */
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -4705,13 +4715,22 @@ dialog.reassort form input {
   margin: 0;
 }
 .page-compte .form-compte {
+  /* CONTENEUR DES COLONNES */
+}
+.page-compte .form-compte .colonnes-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.page-compte .form-compte {
   /* Colonnes pour les champs */
 }
 .page-compte .form-compte .col {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  /* chaque .col occupe une colonne du grid (auto par défaut) */
+  width: 100%;
 }
 .page-compte .form-compte .col .champ {
   display: flex;
@@ -4808,7 +4827,6 @@ dialog.reassort form input {
   /* Actions sur la ligne du bas */
 }
 .page-compte .form-compte .actions {
-  grid-column: 1/-1; /* occupe toute la largeur */
   display: flex;
   gap: 16px;
   justify-content: flex-end;
@@ -4875,24 +4893,29 @@ dialog.reassort form input {
   .page-compte .form-compte .header-compte h1 {
     font-size: clamp(20px, 3vw, 36px);
   }
+  .page-compte .form-compte .colonnes-container {
+    gap: 28px;
+  }
 }
 /* Tablette portrait / mobile large : basculer en une colonne */
 @media (max-width: 900px) {
   .page-compte {
     padding: clamp(16px, 4vw, 40px);
+    margin: 0 auto;
+    width: 100%;
   }
   .page-compte .form-compte {
-    grid-template-columns: 1fr; /* une seule colonne */
-    grid-template-rows: auto;
     gap: 20px;
+    width: 100%;
   }
   .page-compte .form-compte .header-compte {
     flex-direction: column;
     text-align: center;
     align-items: center;
   }
-  .page-compte .form-compte .col {
-    width: 100%;
+  .page-compte .form-compte .colonnes-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
   .page-compte .form-compte .champ-double {
     flex-direction: column;
@@ -4919,6 +4942,9 @@ dialog.reassort form input {
   }
   .page-compte .form-compte .header-compte h1 {
     font-size: 20px;
+  }
+  .page-compte .form-compte .colonnes-container {
+    gap: 16px;
   }
   .page-compte .form-compte .actions {
     gap: 10px;
@@ -4954,6 +4980,9 @@ dialog.reassort form input {
   }
   .page-compte .form-compte .header-compte h1 {
     font-size: 18px;
+  }
+  .page-compte .form-compte .colonnes-container {
+    gap: 12px;
   }
 }
 .pageProduit main {
@@ -5286,9 +5315,10 @@ dialog.reassort form input {
   flex-direction: column;
 }
 .pageProduit .baselineSpaceBetween {
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: baseline;
 }
 .pageProduit .actionsAvis {
@@ -5628,6 +5658,12 @@ dialog.reassort form input {
     flex-direction: column;
     gap: 0.5em;
   }
+  .pageProduit .actionsProduit {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
   .pageProduit .actionsAvis {
     justify-content: flex-start;
   }
@@ -5774,6 +5810,120 @@ dialog.reassort form input {
   margin-top: 50px;
   padding: 0 20px;
   line-height: 1.4;
+}
+
+.avis-vendeur .avi {
+  border-collapse: separate;
+  width: 100%;
+  color: #273469;
+  font-size: 18px;
+  font-family: "Lora", serif;
+}
+.avis-vendeur .avi .col-gauche {
+  width: 150px;
+  height: 300px;
+  vertical-align: top;
+  padding-top: 10px;
+  text-align: center;
+}
+.avis-vendeur .avi .etoiles {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 20px;
+  display: flex;
+}
+.avis-vendeur .avi .ligne {
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+.avis-vendeur .avi .date-avis {
+  font-size: 12px;
+  font-family: "Lora", sans-serif;
+}
+
+.overlayPopUpErreur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popUpErreur {
+  background-color: #fffefa;
+  border-radius: 16px;
+  position: relative;
+  width: 400px;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.popUpErreur .croixFermerLaPage {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+.popUpErreur .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.popUpErreur .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.popUpErreur .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.popUpErreur h1 {
+  color: #273469;
+  font-family: "lora", serif;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+.popUpErreur .icon-warning {
+  font-size: 40px;
+  color: #273469;
+  margin-bottom: 15px;
+}
+.popUpErreur p {
+  font-family: "lora", sans-serif;
+  color: #6e6e6e;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+.popUpErreur button {
+  border: 0;
+  background-color: #273469;
+  padding: 12px 40px;
+  color: white;
+  border-radius: 32px;
+  font-family: "lora", serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.popUpErreur button:hover {
+  opacity: 0.9;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -21,7 +21,7 @@
                 <figcaption>Stocks</figcaption>
             </figure>
         </li>
-        <?php $class = $currentPage == 'avis.php' ? 'here' : ''; ?>
+        <?php $class = $currentPage == 'avisVendeur.php' ? 'here' : ''; ?>
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
                 <img src="/public/images/chatDark.svg">

@@ -61,16 +61,50 @@ function popUpInfoCalcul() {
     croixFermer.addEventListener("click", fermerPopUpInfoCalcul);
 }
 
-function verifDate(val){
-    let valeur = val.value.trim();
+function verifDate(input){
+    let valeur = input.value.trim();
+    let dateDuJour = new Date();
+    dateDuJour = dateDuJour.toLocaleDateString();
+    let tabVal = valeur.split("/");
+    let tabDate = dateDuJour.split("/");
+
+    let jourVal = parseInt(tabVal[0]);
+    let moisVal = parseInt(tabVal[1]);
+    let anVal  = parseInt(tabVal[2]);
+
+    let jourAjd = parseInt(tabDate[0]);
+    let moisAjd = parseInt(tabDate[1]);
+    let anAjd   = parseInt(tabDate[2]);
+
     if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
-        setError(val, "Format attendu : jj/mm/aaaa");
+        setError(input, "Format attendu : jj/mm/aaaa");
     } else {
-        clearError(val);
+        clearError(input);
     }
+
+    if(valeur.length == 10){
+        let erreur = false;
+            
+        if (anVal < anAjd){
+            erreur = true;
+        }
+        else if (anVal === anAjd && moisVal < moisAjd){
+            erreur = true;
+        }
+        else if (anVal === anAjd && moisVal === moisAjd && jourVal <= jourAjd){
+            erreur = true;
+        }
+
+        if (erreur) {
+            setError(input, "La date limite doit dépasser la date du jour");
+        } else {
+            clearError(input);
+        }
+    }
+
 }
 
-function popUpRemise(){
+function popUpRemise(id, nom, imgURL, prix, nbEval, note){
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
         overlay.innerHTML = `
@@ -84,37 +118,38 @@ function popUpRemise(){
                     <h1> Ajouter une remise pour ce produit </h1>
                     <section>
                         <article>
-                            <img class="produit" src="/public/images/rillettes.png" alt="">
+                            <img class="produit" src="${imgURL}" alt="">
                             <div class="nomEtEvaluation">
-                                <p>Rillettes</p>
+                                <p>${nom}</p>
                                 <div class="evaluation">
                                     <div class="etoiles">
                                         <img src="/public/images/etoile.svg" alt="">
-                                        <p>3</p>
+                                        <p>${note}</p>
                                     </div>
-                                    <p>200 évaluation</p>
+                                    <p>${nbEval} évaluation</p>
                                 </div>
                             </div>
                             <div>
-                                <p class="prix"> 29.99 €</p>
+                                <p class="prix"> ${prix} €</p>
                                 <p class="prixAuKg"> 99.72€ / kg</p>
                             </div>
                         </article>
                     </section>
                 </div>
                 <div class="ligne"></div>
-                <section class="section2">
+                <form method="POST" action="../../controllers/creerRemise.php">
                     <div>
                         <input type="text" name="dateLimite" id="dateLimite" placeholder="Date limite">
                     </div>
                     <div>
-                        <input type="text" name="nouveauPrix" id="nouveauPrix" placeholder="Nouveau prix">
-                        <input type="reduction" name="" id="reduction" placeholder="Reduction(%)">
+                        <input type="float" name="nouveauPrix" id="nouveauPrix" placeholder="Nouveau prix">
+                        <input type="float" name="reduction" id="reduction" placeholder="Reduction(%)">
                     </div>
                     <h2>Récapitulatif :</h2>
-                    <p>Abaissement de <strong> 15€ </strong></p>
-                    <button>Appliquer la remise </button>
-                </section>
+                    <p class = "recap"> </p>
+                    <input type="hidden" name="id" value="${id}">
+                    <button type="submit">Appliquer la remise </button>
+                </form>
             </div>
         </main>`;
     document.body.appendChild(overlay);
@@ -124,6 +159,99 @@ function popUpRemise(){
 
     const dateLimite = overlay.querySelector("#dateLimite");
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
+
+    function updatePrixFromReduction(prix, nouveauPrixInput, reductionInput, recap) {
+        if (reductionInput.value !== "") {
+            const nouveauPrix = (prix * (100 - reductionInput.value) / 100).toFixed(2);
+            nouveauPrixInput.value = nouveauPrix;
+            recap.textContent = "Abaissement de " + (prix - nouveauPrix).toFixed(2) + "€";
+        } else {
+            nouveauPrixInput.value = "";
+            recap.textContent = "Abaissement de 0€";
+        }
+    }
+
+    function updateReductionFromPrix(prix, nouveauPrixInput, reductionInput, recap) {
+        if (nouveauPrixInput.value !== "") {
+            const reduction = (100 - (nouveauPrixInput.value) * 100 / prix).toFixed(2);
+            reductionInput.value = reduction;
+            recap.textContent = "Abaissement de " + (prix - nouveauPrixInput.value).toFixed(2) + "€";
+        } else {
+            reductionInput.value = "";
+            recap.textContent = "Abaissement de 0€";
+        }
+    }
+    
+    const nouveauPrix = overlay.querySelector("#nouveauPrix");
+    const reduction = overlay.querySelector("#reduction");
+    const recap = overlay.querySelector(".recap");
+
+    nouveauPrix.addEventListener("input", () => updateReductionFromPrix(prix, nouveauPrix, reduction, recap));
+    reduction.addEventListener("input", () => updatePrixFromReduction(prix, nouveauPrix, reduction, recap));
+
+    function champsVide(){
+        const bouton = overlay.querySelector("button");
+
+        if(dateLimite.value == "" || nouveauPrix.value == ""){
+            bouton.disabled = true;
+            bouton.style.cursor = "default";
+        } else {
+            bouton.disabled = false;
+            bouton.style.cursor = "pointer";
+        }
+    }
+
+    dateLimite.addEventListener("input", champsVide);
+    nouveauPrix.addEventListener("input", champsVide);
+
+
+}
+
+function popUpErreur(id, code) {
+    console.log("Erreur ID produit:", id, "Code erreur:", code);
+
+    const messages = {
+        1: "Une erreur est survenue lors du traitement de la date. Respectez le format jj/mm/aaaa et réessayez.",
+        2: "Le format de l'image n'est pas valide. Revérifiez les critères et réessayez.",
+        3: "L'image est trop volumineuse.",
+        404: "Le produit demandé est introuvable.",
+        'default': "Une erreur inattendue s'est produite. Veuillez réessayer."
+    };
+
+    const messageErreur = messages[code] || messages['default'];
+
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpErreur";
+    
+    overlay.innerHTML = `
+        <main class="popUpErreur">
+            <div class="croixFermerLaPage">
+                <div></div>
+                <div></div>
+            </div>
+            <h1>Oups !</h1>
+            <p><strong>${messageErreur}</strong></p>
+            <button class="btnFermer">Compris</button>
+        </main>`;
+
+    document.body.appendChild(overlay);
+
+    const fermerPopUp = () => {
+        overlay.remove();
+        window.history.replaceState({}, document.title, window.location.pathname);
+    };
+
+    const croixFermer = overlay.querySelector(".croixFermerLaPage");
+    const btnFermer = overlay.querySelector(".btnFermer");
+
+    croixFermer.addEventListener("click", fermerPopUp);
+    btnFermer.addEventListener("click", fermerPopUp);
+    
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUp();
+        }
+    });
 }
 
 function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
@@ -166,14 +294,14 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
                         <div>
-                            <input type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
+                            <input type="date" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
                         </div>
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">
                             <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
                         <p class="supprimer">supprimer ...</p>
-                        <p><strong>Format accepté </strong>: 21:4 (1440x275 pixels minimum)</p>
+                        <p><strong>Format accepté </strong>: 21:4 (1440x275px minimum, .jpg uniquement)</p>
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
@@ -255,7 +383,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note) {
 
         const nbJours = Math.max(0, nbJourDiff);
         const coutParJour = prix * 0.1;
-        const totalPromo = (coutParJour * nbJours).toFixed(2);
+        let totalPromo = (coutParJour * nbJours).toFixed(2);
 
         if(totalPromo == NaN) {
             totalPromo = 0;
