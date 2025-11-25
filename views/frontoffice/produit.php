@@ -2,13 +2,12 @@
 include '../../controllers/pdo.php';
 session_start();
 
+
 $productId = intval($_GET['id']) ?? 0;
 
 if($productId == 0) {
     die("Produit non spécifié");
 }
-
-
 
 $sqlProduit = "SELECT 
                 p.idProduit,
