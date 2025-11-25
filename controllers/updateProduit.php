@@ -7,7 +7,8 @@ var_dump($_FILES);
 
 // Si il y a eu un formulare de remplie, on fait 2 requêtes 
 // La première requête permet de mettre à jour les informations du produit sur lequel le formulaire à été rempli
-// La deuxième permet de mettre à jour l'image d'un produit
+// Ensuite l'image est envoyée sur le serveur puis
+// La deuxième requête permet de mettre à jour l'image d'un produit
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("UPDATE _produit SET nom = :nom, description = :description, prix = :prix, poids = :poids, mots_cles = :mot_cles WHERE idProduit = :idProduit");
@@ -54,6 +55,6 @@ catch(PDOException $e){
 
 
 
-//header("Location: ../views/backoffice/accueil.php"); 
+header("Location: ../views/backoffice/accueil.php"); 
 exit();
 ?>

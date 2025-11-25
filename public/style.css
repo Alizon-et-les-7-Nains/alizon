@@ -5861,6 +5861,12 @@ dialog.reassort form input {
   line-height: 1.4;
 }
 
+.avis-vendeur h1 {
+  font-size: 40px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+  color: #273469;
+}
 .avis-vendeur .avi {
   border-collapse: separate;
   width: 100%;
@@ -5993,6 +5999,7 @@ dialog.reassort form input {
 .pageProduit .previsualisation {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .pageProduit .textePrevi {
   display: flex;
@@ -6000,9 +6007,11 @@ dialog.reassort form input {
 }
 .pageProduit .textePrevi h1 {
   color: red;
+  font-size: 24px;
 }
 .pageProduit .boutonRetour {
   display: flex;
+  justify-content: center;
   padding: 10px;
   background-color: #273469;
   border-radius: 16px;
@@ -6011,6 +6020,9 @@ dialog.reassort form input {
 .pageProduit .boutonRetour button {
   background-color: transparent;
   text-decoration: none;
+  border: 0;
+  font-size: 24px;
+  color: #fffefa;
 }
 .pageProduit .lignePrevi {
   border-top: solid 4px red;

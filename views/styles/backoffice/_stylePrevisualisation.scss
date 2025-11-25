@@ -7,16 +7,19 @@
     .previsualisation{
         display: flex;
         align-items: center;
+        justify-content: space-between;
     }
     .textePrevi{
         display: flex;
         flex-direction: column;
         h1 {
             color: red;
+            font-size: 24px;
         }
     }
     .boutonRetour{
         display: flex;
+        justify-content: center;
         padding: 10px;
         background-color: $color-blue;  
         border-radius: 16px;
@@ -24,6 +27,9 @@
         button{
             background-color: transparent;
             text-decoration: none;
+            border:0;
+            font-size: 24px;
+            color: $color-white;
         }
     }
     .lignePrevi{
