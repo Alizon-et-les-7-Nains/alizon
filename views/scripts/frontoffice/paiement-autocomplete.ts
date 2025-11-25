@@ -1,11 +1,13 @@
-// ============================================================================
-// AUTOCOMPLETE
-// ============================================================================
+
 
 import { Maps } from "./paiement-types";
 import { clearError } from "./paiement-validation";
 
 function createSuggestionBox(input: HTMLInputElement) {
+  // Crée la boîte de suggestions attachée au parent de
+  // l'input. La boîte est stylée ici en inline pour s'assurer qu'elle
+  // apparaisse correctement au-dessus du flux normal de la page.
+  // Retourne l'élément `.suggestions` prêt à recevoir des éléments.
   let box = input.parentElement!.querySelector(
     ".suggestions"
   ) as HTMLElement | null;
@@ -45,6 +47,11 @@ export function setupAutocomplete(params: {
   const { codePostalInput, villeInput, maps, selectedDepartment } = params;
 
   function showSuggestionsForCode(query: string) {
+    // Affiche des suggestions pour le champ code postal / département.
+    // - Recherche dans `maps.departments` et `maps.postals` en fonction de la
+    //   requête (préfixe ou inclusion).
+    // - Construit des éléments cliquables qui remplissent le champ et
+    //   mettent à jour `selectedDepartment`.
     if (!codePostalInput) return;
     const box = createSuggestionBox(codePostalInput);
     const q = query.trim().toLowerCase();
@@ -71,6 +78,9 @@ export function setupAutocomplete(params: {
       el.style.padding = "6px 12px";
       el.style.cursor = "pointer";
       el.addEventListener("click", () => {
+        // Lors du clic, on récupère la clé (code postal ou numéro de
+        // département) avant le séparateur ` - ` et on met à jour l'input
+        // ainsi que `selectedDepartment`.
         const key = it.split(" - ")[0];
         codePostalInput.value = key;
         if (/^\d{5}$/.test(key)) {
@@ -86,6 +96,12 @@ export function setupAutocomplete(params: {
   }
 
   function showSuggestionsForCity(query: string) {
+    // Suggestions pour le champ ville.
+    // - Si `selectedDepartment` est renseigné, on privilégie les villes de
+    //   ce département via `maps.citiesByCode`, sinon on cherche dans
+    //   l'ensemble `maps.allCities`.
+    // - Propose d'utiliser la valeur tapée si aucune suggestion n'est
+    //   disponible.
     if (!villeInput) return;
     const box = createSuggestionBox(villeInput);
     const q = query.trim().toLowerCase();
@@ -113,6 +129,8 @@ export function setupAutocomplete(params: {
 
     const typed = villeInput.value.trim();
     if (items.length === 0) {
+      // Aucun résultat: proposer d'utiliser la valeur tapée ou indiquer
+      // qu'il n'y a pas de suggestion.
       const el = document.createElement("div");
       el.className = "suggestion-item";
       el.textContent =
@@ -136,6 +154,8 @@ export function setupAutocomplete(params: {
       typed.length > 0 &&
       !items.some((i) => i.toLowerCase() === typed.toLowerCase())
     ) {
+      // Permettre explicitement d'utiliser la valeur saisie si elle n'est
+      // pas exactement égale à une suggestion.
       const useTyped = document.createElement("div");
       useTyped.className = "suggestion-item";
       useTyped.textContent = `Utiliser "${typed}" comme ville`;

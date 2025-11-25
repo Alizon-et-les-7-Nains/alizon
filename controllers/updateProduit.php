@@ -20,13 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':mot_cles' => $_POST['mots_cles'],
         ':idProduit' => $idProd
     ]);
-
+$extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+$extension = '';
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
 
     $photoPath = '/var/www/html/images/produit' . $idProd;
 
-    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-    $extension = '';
+    
 
     foreach ($extensionsPossibles as $ext) {
         if (file_exists($photoPath . '.' . $ext)) {
@@ -44,7 +44,6 @@ if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
     $url = "/images/" . $fileName;
 
 } else {
-
     $sqlUrl = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
     $sqlUrl->execute([':idProduit' => $idProd]);
     $row = $sqlUrl->fetch(PDO::FETCH_ASSOC);

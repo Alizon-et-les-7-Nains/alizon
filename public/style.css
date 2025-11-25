@@ -1882,11 +1882,21 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin-bottom: 12px;
   box-sizing: border-box;
 }
+@media (max-width: 480px) {
+  .addr-fact-overlay .addr-fact-content input,
+  .addr-fact-overlay .addr-fact-content .adresse-fact-input,
+  .addr-fact-overlay .addr-fact-content .code-postal-fact-input,
+  .addr-fact-overlay .addr-fact-content .ville-fact-input, .pagePaiement input[type=text] {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+}
 
 /* Wrapper principal de la page de paiement */
 .pagePaiement {
   position: relative;
   overflow-x: hidden;
+  min-height: 100vh;
   /* Décor en arrière-plan (image stylisée) */
 }
 .pagePaiement::before {
@@ -1902,6 +1912,27 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   opacity: 0.12;
   pointer-events: none;
   z-index: 0;
+}
+@media (max-width: 920px) {
+  .pagePaiement::before {
+    width: 800px;
+    height: 800px;
+    top: -300px;
+    right: -100px;
+  }
+}
+@media (max-width: 720px) {
+  .pagePaiement::before {
+    width: 600px;
+    height: 600px;
+    top: -200px;
+    right: -150px;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement::before {
+    display: none;
+  }
 }
 .pagePaiement {
   /* S'assurer que le contenu est au-dessus du décor */
@@ -1920,6 +1951,24 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   box-sizing: border-box;
   width: 100%;
 }
+@media (max-width: 920px) {
+  .pagePaiement .container {
+    padding: 0 4%;
+    margin-top: 60px;
+  }
+}
+@media (max-width: 720px) {
+  .pagePaiement .container {
+    padding: 0 16px;
+    margin-top: 50px;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .container {
+    margin-top: 40px;
+    padding: 0 12px;
+  }
+}
 .pagePaiement {
   /* Grille principale : 3 colonnes par défaut */
 }
@@ -1931,10 +1980,33 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   align-items: start;
   box-sizing: border-box;
 }
+@media (max-width: 1200px) {
+  .pagePaiement .parent {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: clamp(16px, 3vw, 24px);
+  }
+}
+@media (max-width: 720px) {
+  .pagePaiement .parent {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    min-height: auto;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .parent {
+    gap: 16px;
+  }
+}
 .pagePaiement .col {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+@media (max-width: 720px) {
+  .pagePaiement .col {
+    gap: 16px;
+  }
 }
 .pagePaiement h3 {
   font-family: "lora", serif;
@@ -1943,8 +2015,20 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin: 0 0 8px;
   color: #273469;
 }
+@media (max-width: 720px) {
+  .pagePaiement h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement h3 {
+    font-size: 1rem;
+  }
+}
 .pagePaiement a {
   color: #273469;
+  word-break: break-word;
 }
 .pagePaiement input[type=text] {
   width: 100%;
@@ -1954,14 +2038,35 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   flex-direction: column;
 }
+@media (max-width: 720px) {
+  .pagePaiement .input-field {
+    width: 100% !important;
+    flex: 1 1 auto !important;
+  }
+}
 .pagePaiement .ligne .input-field.fixed-110 {
   flex: 0 0 110px;
+}
+@media (max-width: 720px) {
+  .pagePaiement .ligne .input-field.fixed-110 {
+    flex: 1 1 auto;
+  }
 }
 .pagePaiement .ligne .input-field.fixed-100 {
   flex: 0 0 100px;
 }
+@media (max-width: 720px) {
+  .pagePaiement .ligne .input-field.fixed-100 {
+    flex: 1 1 auto;
+  }
+}
 .pagePaiement .ligne .input-field.fixed-80 {
   flex: 0 0 80px;
+}
+@media (max-width: 720px) {
+  .pagePaiement .ligne .input-field.fixed-80 {
+    flex: 1 1 auto;
+  }
 }
 .pagePaiement .ligne .input-field.flex-1 {
   flex: 1 1 0;
@@ -1981,6 +2086,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   background: #b00020;
   box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.12);
 }
+@media (max-width: 480px) {
+  .pagePaiement .invalid::after {
+    right: 8px;
+    width: 10px;
+    height: 10px;
+  }
+}
 .pagePaiement .error-message {
   color: #b00020;
   font-size: 0.95rem;
@@ -1988,8 +2100,18 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: block;
   font-weight: 500;
 }
+@media (max-width: 480px) {
+  .pagePaiement .error-message {
+    font-size: 0.9rem;
+  }
+}
 .pagePaiement .suggestions {
   font-size: 0.95rem;
+}
+@media (max-width: 480px) {
+  .pagePaiement .suggestions {
+    font-size: 0.9rem;
+  }
 }
 .pagePaiement .payment-overlay {
   position: fixed;
@@ -2002,6 +2124,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   justify-content: center;
   align-items: center;
   font-family: "lora", serif;
+  z-index: 1000;
+  padding: 20px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .payment-overlay {
+    padding: 16px;
+  }
 }
 .pagePaiement .order-summary {
   background: #fff;
@@ -2013,10 +2142,28 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
   text-align: center;
 }
+@media (max-width: 720px) {
+  .pagePaiement .order-summary {
+    padding: 1.5rem 2rem;
+    width: 95%;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+  }
+}
 .pagePaiement .order-summary h2 {
   font-style: italic;
   color: #273469;
   margin-bottom: 1.5rem;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
 }
 .pagePaiement .order-summary .info {
   text-align: left;
@@ -2024,6 +2171,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .pagePaiement .order-summary .info p {
   margin: 0.4rem 0;
+  word-break: break-word;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .info p {
+    font-size: 0.9rem;
+  }
 }
 .pagePaiement .order-summary .info p strong {
   font-weight: 600;
@@ -2037,6 +2190,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   justify-content: center;
   gap: 1.5rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+@media (max-width: 720px) {
+  .pagePaiement .order-summary .cart {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
 }
 .pagePaiement .order-summary .cart .product {
   border: 2px solid #273469;
@@ -2044,6 +2204,18 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   padding: 1rem;
   width: 200px;
   text-align: center;
+}
+@media (max-width: 720px) {
+  .pagePaiement .order-summary .cart .product {
+    width: 160px;
+    padding: 0.75rem;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .cart .product {
+    width: 140px;
+    padding: 0.5rem;
+  }
 }
 .pagePaiement .order-summary .cart .product img {
   width: 100%;
@@ -2054,16 +2226,38 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: 500;
   margin-bottom: 0.4rem;
 }
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .cart .product .title {
+    font-size: 0.9rem;
+  }
+}
 .pagePaiement .order-summary .cart .product .delivery {
   color: #4a7858;
   font-size: 0.85rem;
   margin-top: 0.4rem;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .cart .product .delivery {
+    font-size: 0.8rem;
+  }
 }
 .pagePaiement .order-summary .actions {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
   margin-top: 1rem;
+  flex-wrap: wrap;
+}
+@media (max-width: 720px) {
+  .pagePaiement .order-summary .actions {
+    gap: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .actions {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 .pagePaiement .order-summary .actions .confirm {
   background: #d9d3fa;
@@ -2076,6 +2270,14 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: 500;
   cursor: pointer;
   transition: 0.2s;
+  min-width: 140px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .actions .confirm {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+    min-width: 120px;
+  }
 }
 .pagePaiement .order-summary .actions .confirm:hover {
   background: #bdb3f0;
@@ -2091,6 +2293,14 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: 500;
   cursor: pointer;
   transition: 0.2s;
+  min-width: 140px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .actions .undo {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+    min-width: 120px;
+  }
 }
 .pagePaiement .order-summary .actions .undo:hover {
   background: red;
@@ -2107,6 +2317,19 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  max-width: 500px;
+  width: 90%;
+}
+@media (max-width: 720px) {
+  .pagePaiement .thank-you {
+    padding: 1.5rem 2rem;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .thank-you {
+    padding: 1rem 1.5rem;
+    gap: 0.8rem;
+  }
 }
 .pagePaiement .thank-you .close-popup {
   margin-top: 1.5rem;
@@ -2121,6 +2344,15 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: 500;
   cursor: pointer;
   transition: 0.2s;
+  min-width: 140px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .thank-you .close-popup {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    min-width: 120px;
+  }
 }
 .pagePaiement .thank-you .close-popup:hover {
   background: #bdb3f0;
@@ -2131,6 +2363,14 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .pagePaiement input[type=checkbox] {
   accent-color: #273469;
   border: 2px solid #273469;
+  width: 18px;
+  height: 18px;
+}
+@media (max-width: 480px) {
+  .pagePaiement input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+  }
 }
 .pagePaiement input[type=checkbox]:checked {
   background: #273469;
@@ -2155,6 +2395,22 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   cursor: pointer;
   width: 100%;
   box-sizing: border-box;
+  transition: background-color 0.2s;
+}
+@media (max-width: 720px) {
+  .pagePaiement .payment .payer {
+    font-size: 16px;
+    padding: 14px;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .payment .payer {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+.pagePaiement .payment .payer:hover {
+  background: #c9bbf0;
 }
 .pagePaiement {
   /* Ligne regroupant plusieurs champs (numéro carte, date, cvv...) */
@@ -2164,6 +2420,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   gap: 12px;
   align-items: flex-start;
   flex-wrap: wrap;
+}
+@media (max-width: 720px) {
+  .pagePaiement .ligne {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 .pagePaiement {
   /* Labels alignés avec les champs */
@@ -2176,6 +2438,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   align-items: center;
   gap: 12px;
 }
+@media (max-width: 480px) {
+  .pagePaiement label {
+    font-size: 0.95rem;
+    gap: 8px;
+  }
+}
 .pagePaiement {
   /* Conditions générales / checkbox inline */
 }
@@ -2184,6 +2452,23 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   align-items: initial;
   gap: 0;
   line-height: 1.5;
+}
+@media (max-width: 480px) {
+  .pagePaiement .conditions label {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+}
+.pagePaiement .conditions .error-message-cgv {
+  color: #f14e4e;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  display: block;
+}
+@media (max-width: 480px) {
+  .pagePaiement .conditions .error-message-cgv {
+    font-size: 0.85rem;
+  }
 }
 .pagePaiement .conditions input[type=checkbox] {
   margin-right: 8px;
@@ -2198,8 +2483,19 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin-top: 6px;
   flex-wrap: wrap;
 }
+@media (max-width: 480px) {
+  .pagePaiement .logos {
+    gap: 8px;
+    justify-content: center;
+  }
+}
 .pagePaiement .logos img {
   height: 28px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .logos img {
+    height: 24px;
+  }
 }
 .pagePaiement {
   /* Récapitulatif produit : carte produit */
@@ -2212,6 +2508,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   padding: 10px;
   box-sizing: border-box;
   align-items: center;
+}
+@media (max-width: 1200px) {
+  .pagePaiement .recap .produit {
+    display: none;
+  }
 }
 .pagePaiement {
   /* Image du produit dans le récap */
@@ -2226,6 +2527,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1;
 }
 .pagePaiement .recap .titre {
   font-size: 1.05rem;
@@ -2246,6 +2548,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   gap: 10px;
   align-items: center;
 }
+@media (max-width: 480px) {
+  .pagePaiement .gestQte {
+    gap: 8px;
+  }
+}
 .pagePaiement .gestQte .qte {
   display: flex;
   align-items: center;
@@ -2255,6 +2562,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   padding: 4px;
   width: 70px;
 }
+@media (max-width: 480px) {
+  .pagePaiement .gestQte .qte {
+    width: 65px;
+  }
+}
 .pagePaiement .gestQte .qte button {
   background: none;
   border: none;
@@ -2262,6 +2574,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: #273469;
   cursor: pointer;
   padding: 0 8px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .gestQte .qte button {
+    font-size: 16px;
+    padding: 0 6px;
+  }
 }
 .pagePaiement .gestQte .delete {
   border: 2px solid #273469;
@@ -2275,6 +2593,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   width: 20px;
   height: 20px;
 }
+@media (max-width: 480px) {
+  .pagePaiement .gestQte .delete img {
+    width: 18px;
+    height: 18px;
+  }
+}
 .pagePaiement {
   /* Bouton payer adapté pour mobile (masqué par défaut) */
 }
@@ -2282,7 +2606,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: none;
 }
 .pagePaiement {
-  /* Petit écran : cacher le bouton desktop et afficher la version mobile */
+  /* Responsive spécifique pour mobile */
 }
 @media (max-width: 720px) {
   .pagePaiement {
@@ -2297,55 +2621,27 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   .pagePaiement .payer-wrapper-mobile {
     display: block;
     margin: 18px 0 40px;
+    width: 100%;
   }
   .pagePaiement .payer--mobile {
     display: block;
-    width: 50%;
-    padding: 12px;
+    width: 100%;
+    max-width: 280px;
+    padding: 14px;
     border-radius: 100px;
     background: #dcd1fa;
     color: #252b56;
-    font-size: 18px;
+    font-size: 16px;
     font-family: "lora", serif;
     font-weight: 300;
     border: none;
     cursor: pointer;
     box-sizing: border-box;
-    margin: -110px auto 0;
-    align-self: center;
-    justify-self: center;
+    margin: 20px auto;
+    transition: background-color 0.2s;
   }
-}
-.pagePaiement {
-  /* Tablette / petit desktop : passer à 2 colonnes et masquer le récap */
-}
-@media (max-width: 1200px) {
-  .pagePaiement .parent {
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-  }
-  .pagePaiement .recap {
-    display: none;
-  }
-}
-.pagePaiement {
-  /* Mobile layout : colonne unique, alignements et étirements */
-}
-@media (max-width: 720px) {
-  .pagePaiement .parent {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    min-height: 100vh; /* rempli la hauteur de la fenêtre pour pouvoir aligner le bouton en bas */
-  }
-  .pagePaiement .ligne {
-    flex-direction: column;
-  }
-  .pagePaiement input[type=text] {
-    font-size: 0.95rem;
-    padding: 10px 12px;
-  }
-  .pagePaiement .container {
-    padding: 0 4%;
-    margin-top: 40px;
+  .pagePaiement .payer--mobile:hover {
+    background: #c9bbf0;
   }
   .pagePaiement {
     /* Étire les champs contenus dans .ligne pour occuper toute la largeur */
@@ -2357,25 +2653,36 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     align-self: stretch;
   }
   .pagePaiement {
-    /* Étire la première colonne et pousse .payment en bas de la colonne */
+    /* Structure pour pousser le contenu */
   }
   .pagePaiement .parent > .col:first-child {
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto;
-    gap: 20px;
   }
   .pagePaiement {
-    /* Pousse la section paiement vers le bas pour que le bouton soit accessible */
+    /* Ajustements pour très petits écrans */
   }
-  .pagePaiement .parent > .col:first-child .payment {
-    margin-top: auto; /* pousse cette section vers le bas de la colonne */
-    display: flex;
-    flex-direction: column;
+}
+@media (max-width: 720px) and (max-width: 480px) {
+  .pagePaiement .container {
+    margin-top: 30px;
   }
-  .pagePaiement .parent > .col:first-child .payment .payer {
-    align-self: stretch;
-    margin-top: 0;
+  .pagePaiement .payer--mobile {
+    padding: 12px;
+    font-size: 15px;
+    max-width: 250px;
+  }
+  .pagePaiement input[type=text] {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+}
+.pagePaiement {
+  /* Cache le récap sur tablette */
+}
+@media (max-width: 1200px) {
+  .pagePaiement .recap {
+    display: none;
   }
 }
 
@@ -2391,6 +2698,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 20px;
+}
+@media (max-width: 480px) {
+  .addr-fact-overlay {
+    padding: 16px;
+  }
 }
 .addr-fact-overlay .addr-fact-content {
   background: white;
@@ -2405,10 +2718,29 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   min-height: 320px;
   box-sizing: border-box;
 }
+@media (max-width: 720px) {
+  .addr-fact-overlay .addr-fact-content {
+    padding: 1.5rem;
+    min-height: 300px;
+  }
+}
+@media (max-width: 480px) {
+  .addr-fact-overlay .addr-fact-content {
+    padding: 1rem;
+    border-radius: 16px;
+    min-height: 280px;
+  }
+}
 .addr-fact-overlay .addr-fact-content h2 {
   margin-bottom: 1.5rem;
   text-align: center;
   color: #273469;
+}
+@media (max-width: 480px) {
+  .addr-fact-overlay .addr-fact-content h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
 }
 .addr-fact-overlay .addr-fact-content .form-group {
   flex: 1 1 auto;
@@ -2429,12 +2761,23 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: bold;
   color: #555;
 }
+@media (max-width: 480px) {
+  .addr-fact-overlay .addr-fact-content label {
+    font-size: 0.95rem;
+  }
+}
 .addr-fact-overlay .addr-fact-content .button-group {
   display: flex;
   gap: 1rem;
   justify-content: center;
   margin-top: auto;
   width: 100%;
+  flex-wrap: wrap;
+}
+@media (max-width: 480px) {
+  .addr-fact-overlay .addr-fact-content .button-group {
+    gap: 0.75rem;
+  }
 }
 .addr-fact-overlay .addr-fact-content .btn-valider,
 .addr-fact-overlay .addr-fact-content .btn-fermer {
@@ -2444,16 +2787,52 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   cursor: pointer;
   font-size: 1rem;
   min-width: 120px;
+  transition: background-color 0.2s;
+}
+@media (max-width: 480px) {
+  .addr-fact-overlay .addr-fact-content .btn-valider,
+  .addr-fact-overlay .addr-fact-content .btn-fermer {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.95rem;
+    min-width: 110px;
+  }
 }
 .addr-fact-overlay .addr-fact-content .btn-valider {
   background: #273469;
   color: white;
 }
+.addr-fact-overlay .addr-fact-content .btn-valider:hover {
+  background: rgb(25.1875, 33.5833333333, 67.8125);
+}
 .addr-fact-overlay .addr-fact-content .btn-fermer {
   background: #f43636;
   color: white;
 }
+.addr-fact-overlay .addr-fact-content .btn-fermer:hover {
+  background: rgb(234.1839622642, 12.8160377358, 12.8160377358);
+}
 
+/* Améliorations supplémentaires pour l'accessibilité mobile */
+@media (max-width: 720px) {
+  .pagePaiement {
+    /* Augmente la taille des zones cliquables pour mobile */
+  }
+  .pagePaiement button,
+  .pagePaiement input[type=checkbox],
+  .pagePaiement label {
+    min-height: 44px;
+  }
+  .pagePaiement input[type=text] {
+    min-height: 44px;
+  }
+  .pagePaiement {
+    /* Améliore l'espacement pour le tactile */
+  }
+  .pagePaiement .gestQte button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
 .mainCompteClient {
   background-image: url("../../../public/images/triskel.png");
   background-repeat: no-repeat;
@@ -4440,7 +4819,7 @@ main.backoffice-stocks section h1 {
 }
 main.backoffice-stocks section article {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(855px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(875px, 1fr));
   gap: 1em;
   font-family: "open-sans";
 }
@@ -5071,7 +5450,6 @@ dialog.reassort form input {
 .pageProduit .infoHautProduit {
   display: flex;
   flex-direction: row;
-  overflow-y: scroll;
   position: relative;
 }
 .pageProduit .rect {
@@ -5098,6 +5476,9 @@ dialog.reassort form input {
   top: -8px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+}
+.pageProduit .banniere h1 {
+  font-size: 30px;
 }
 .pageProduit .imgBanniere {
   position: absolute;
@@ -5168,7 +5549,7 @@ dialog.reassort form input {
   height: 75px;
   margin-top: 0.5em;
 }
-.pageProduit .attributsproduit h3 {
+.pageProduit .attributsproduit h4 {
   border-radius: 8px;
   background-color: #f14e4e;
   color: white;
@@ -5197,10 +5578,11 @@ dialog.reassort form input {
   float: right;
 }
 .pageProduit .actionsProduit {
-  top: 15em;
+  top: 10em;
   right: 1em;
   position: fixed;
   width: 24%;
+  max-width: 300px;
   z-index: 10;
   height: fit-content;
   padding: 15px;
@@ -5476,6 +5858,7 @@ dialog.reassort form input {
   font-size: 20px;
   color: green;
   font-weight: bold;
+  width: 60%;
 }
 .pageProduit .stockIndisponible {
   position: relative;
@@ -5483,6 +5866,7 @@ dialog.reassort form input {
   font-size: 20px;
   color: red;
   font-weight: bold;
+  width: 60%;
 }
 .pageProduit .review-count {
   text-decoration: underline;
@@ -5763,6 +6147,9 @@ dialog.reassort form input {
     top: 5em;
     left: 20px;
   }
+  .pageProduit .infoPreviewProduit div {
+    justify-content: center;
+  }
   .pageProduit .nomProduit {
     position: absolute;
     display: flex;
@@ -5834,6 +6221,19 @@ dialog.reassort form input {
   justify-content: center;
   overflow-x: hidden;
   padding: 20px;
+}
+.connexionVendeur #error {
+  text-align: center;
+  width: 75%;
+  background-color: #f7afaf;
+  font-size: 15px;
+  color: #f14e4e;
+  font-family: "open-sans";
+  padding: 0.5em;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #f14e4e;
+  border-radius: 8px;
 }
 .connexionVendeur .triskiel {
   position: absolute;
@@ -6147,118 +6547,343 @@ dialog.reassort form input {
   font-family: "Lora", sans-serif;
 }
 
-.mesAvis {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 100%;
-  margin: 30px;
-  font-family: "Lora", serif;
-  color: #273469;
+@media (max-width: 2000px) {
+  .mesAvis {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    margin: 30px;
+    font-family: "Lora", serif;
+    color: #273469;
+  }
+  .mesAvis h1, .mesAvis h2 {
+    font-weight: bold;
+  }
+  .mesAvis h1 {
+    font-size: 48;
+  }
+  .mesAvis h2 {
+    font-size: 20;
+  }
+  .mesAvis section {
+    display: flex;
+    flex-direction: column;
+  }
+  .mesAvis article {
+    display: flex;
+    flex-direction: row;
+    border: 2px solid #273469;
+    border-radius: 20px;
+    margin: 2em 6em;
+    padding: 20px;
+    gap: 20px;
+  }
+  .mesAvis .produit {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    color: #000000;
+    width: auto;
+    padding: 10px;
+    border: 2px solid #273469;
+    border-radius: 20px;
+  }
+  .mesAvis .produit img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+  .mesAvis .infos-produit {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .mesAvis .infos-produit h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+  }
+  .mesAvis .infos-produit p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+  }
+  .mesAvis .contenu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mesAvis .note {
+    display: flex;
+    gap: 4px;
+  }
+  .mesAvis .note .etoile {
+    width: 20px;
+    height: 20px;
+  }
+  .mesAvis .note .vide {
+    opacity: 0.3;
+    width: 20px;
+    height: 20px;
+  }
+  .mesAvis .header-contenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mesAvis .header-contenu h2 {
+    margin: 0;
+  }
+  .mesAvis .date {
+    font-size: 14px;
+    font-style: italic;
+  }
+  .mesAvis .texte p {
+    margin: 0;
+  }
+  .mesAvis .actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+  .mesAvis .actions a {
+    text-decoration: none;
+    color: #273469;
+  }
+  .mesAvis .actions .supprimerAvis {
+    color: #f14e4e !important;
+  }
 }
-.mesAvis h1, .mesAvis h2 {
-  font-weight: bold;
+@media (max-width: 900px) {
+  .mesAvis {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    margin: 30px;
+    font-family: "Lora", serif;
+    color: #273469;
+  }
+  .mesAvis h1, .mesAvis h2 {
+    font-weight: bold;
+  }
+  .mesAvis h1 {
+    font-size: 48;
+  }
+  .mesAvis h2 {
+    font-size: 20;
+  }
+  .mesAvis section {
+    display: flex;
+    flex-direction: column;
+  }
+  .mesAvis article {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #273469;
+    border-radius: 20px;
+    margin: 2em 6em;
+    padding: 20px;
+    gap: 20px;
+  }
+  .mesAvis .produit {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    color: #000000;
+    width: auto;
+    padding: 10px;
+    border: 2px solid #273469;
+    border-radius: 20px;
+  }
+  .mesAvis .produit img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+  .mesAvis .infos-produit {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .mesAvis .infos-produit h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+  }
+  .mesAvis .infos-produit p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+  }
+  .mesAvis .contenu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mesAvis .note {
+    display: flex;
+    gap: 4px;
+  }
+  .mesAvis .note .etoile {
+    width: 20px;
+    height: 20px;
+  }
+  .mesAvis .note .vide {
+    opacity: 0.3;
+    width: 20px;
+    height: 20px;
+  }
+  .mesAvis .header-contenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mesAvis .header-contenu h2 {
+    margin: 0;
+  }
+  .mesAvis .date {
+    font-size: 14px;
+    font-style: italic;
+  }
+  .mesAvis .texte p {
+    margin: 0;
+  }
+  .mesAvis .actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+  .mesAvis .actions a {
+    text-decoration: none;
+    color: #273469;
+  }
+  .mesAvis .actions .supprimerAvis {
+    color: #f14e4e !important;
+  }
 }
-.mesAvis h1 {
-  font-size: 48;
+@media (max-width: 600px) {
+  .mesAvis {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    margin: 30px;
+    font-family: "Lora", serif;
+    color: #273469;
+  }
+  .mesAvis h1, .mesAvis h2 {
+    font-weight: bold;
+  }
+  .mesAvis h1 {
+    font-size: 48;
+  }
+  .mesAvis h2 {
+    font-size: 20;
+  }
+  .mesAvis section {
+    display: flex;
+    flex-direction: column;
+  }
+  .mesAvis article {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #273469;
+    border-radius: 20px;
+    margin: 2em 6em;
+    padding: 30px;
+    gap: 20px;
+  }
+  .mesAvis .produit {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    color: #000000;
+    width: auto;
+    padding: 10px;
+    border: 2px solid #273469;
+    border-radius: 20px;
+  }
+  .mesAvis .produit img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+  .mesAvis .infos-produit {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .mesAvis .infos-produit h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+  }
+  .mesAvis .infos-produit p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+  }
+  .mesAvis .contenu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mesAvis .note {
+    display: flex;
+    gap: 4px;
+  }
+  .mesAvis .note .etoile {
+    width: 20px;
+    height: 20px;
+  }
+  .mesAvis .note .vide {
+    opacity: 0.3;
+    width: 20px;
+    height: 20px;
+  }
+  .mesAvis .header-contenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mesAvis .header-contenu h2 {
+    margin: 0;
+  }
+  .mesAvis .date {
+    display: none;
+  }
+  .mesAvis .texte p {
+    margin: 0;
+  }
+  .mesAvis .actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+  .mesAvis .actions a {
+    text-decoration: none;
+    color: #273469;
+  }
+  .mesAvis .actions .supprimerAvis {
+    color: #f14e4e !important;
+  }
 }
-.mesAvis h2 {
-  font-size: 20;
-}
-.mesAvis section {
-  display: flex;
-  flex-direction: column;
-}
-.mesAvis article {
-  display: flex;
-  flex-direction: row;
-  border: 2px solid #273469;
-  border-radius: 20px;
-  margin: 2em 6em;
-  padding: 20px;
-  gap: 20px;
-}
-.mesAvis .produit {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 15px;
-  color: #000000;
-  width: auto;
-  padding: 10px;
-  border: 2px solid #273469;
-  border-radius: 20px;
-}
-.mesAvis .produit img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 15px;
-}
-.mesAvis .infos-produit {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.mesAvis .infos-produit h3 {
-  margin: 0;
-  font-size: 14px;
-  font-weight: normal;
-}
-.mesAvis .infos-produit p {
-  margin: 0;
-  font-size: 20px;
-  font-weight: bold;
-  color: #000000;
-}
-.mesAvis .contenu {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.mesAvis .note {
-  display: flex;
-  gap: 4px;
-}
-.mesAvis .note .etoile {
-  width: 20px;
-  height: 20px;
-}
-.mesAvis .note .vide {
-  opacity: 0.3;
-  width: 20px;
-  height: 20px;
-}
-.mesAvis .header-contenu {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.mesAvis .header-contenu h2 {
-  margin: 0;
-}
-.mesAvis .date {
-  font-size: 14px;
-  font-style: italic;
-}
-.mesAvis .texte p {
-  margin: 0;
-}
-.mesAvis .actions {
-  margin-top: auto;
-  display: flex;
-  justify-content: flex-end;
-  gap: 20px;
-}
-.mesAvis .actions a {
-  text-decoration: none;
-  color: #273469;
-}
-.mesAvis .actions .supprimerAvis {
-  color: #f14e4e !important;
-}
-
 .modifierAvis main {
   margin-left: 10%;
 }
