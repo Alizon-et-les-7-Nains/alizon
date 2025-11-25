@@ -4394,7 +4394,8 @@ main.backoffice-stocks section article {
 }
 main.backoffice-stocks section img:not(figure img) {
   height: 200px;
-  max-width: 400px;
+  min-width: 150px;
+  max-width: 250px;
   object-fit: contain;
   margin-top: 0.5em;
   margin-left: 0.5em;
