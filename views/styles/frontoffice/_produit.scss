@@ -44,6 +44,7 @@
     }
 
     .banniere{
+        display: block;
         position: absolute;
         top: -8px;
         border-top-left-radius: 16px;
@@ -768,6 +769,9 @@
     }
 
     @media (max-width: 800px) {
+        .banniere{
+            display: none;
+        }
         .stickyTelephone{
             display: flex;
         }

@@ -18,6 +18,7 @@ $idClient = $_SESSION['user_id'];
 // FONCTIONS DE GESTION DU PANIER
 // ============================================================================
 
+
 function getPrixProduitAvecRemise($pdo, $idProduit) {
     $sql = "SELECT 
             p.prix,
