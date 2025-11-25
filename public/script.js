@@ -97,10 +97,8 @@ btnSettings.forEach(btn => {
         });
     });
 });
-let idProduit;
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        sessionStorage.setItem('idProduitSelec', btn.id);
         modalReassort.showModal();
         modalReassort.style.display = 'flex';
     });
