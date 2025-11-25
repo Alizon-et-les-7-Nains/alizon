@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':stock' => 0,
             ':versionProd' => 1.0,
             ':note' => 0.0,
-            ':dateStockEpuise'
+            ':dateStockEpuise' => 'NOW()'
         ]);
 
         // On récupère l'ID généré
