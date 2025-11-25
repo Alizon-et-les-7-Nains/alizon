@@ -3,7 +3,7 @@ require_once 'pdo.php';
 session_start();
 
 $idProd = $_GET['id']; 
-
+var_dump($_FILES);
 
 // Si il y a eu un formulare de remplie, on fait 2 requêtes 
 // La première requête permet de mettre à jour les informations du produit sur lequel le formulaire à été rempli
@@ -21,7 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':idProduit' => $idProd
     ]);
 
-    $photoPath = '/var/www/html/images/'.$_FILES['url']['name'];
+
+    $photoPath = '/var/www/html/images/'.$idProd;
+
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $extension = '';
+
     foreach ($extensionsPossibles as $ext) {
         if (file_exists($photoPath . '.' . $ext)) {
             $extension = '.' . $ext;
@@ -33,12 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unlink($photoPath); // supprime l'ancien fichier
     }
 
-if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] != '') {
-    $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
-    $extension = '.'.$extension;
-    move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
-    $fileName = $_FILES['url']['name'];
-}
+    if (isset($_FILES['url']) && $_FILES['phurlotoProfil']['tmp_name'] != '') {
+        $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
+        $extension = '.'.$extension;
+        move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
+    }
 else{
     $sqlUrl = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = $idProd");
     $result =  $pdo->query($sqlUrl);
@@ -61,6 +65,6 @@ catch(PDOException $e){
 
 
 
-header("Location: ../views/backoffice/accueil.php"); 
+//header("Location: ../views/backoffice/accueil.php"); 
 exit();
 ?>

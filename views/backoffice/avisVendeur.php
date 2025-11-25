@@ -27,9 +27,6 @@ $stmt = $pdo->prepare($query);
 $stmt->bindValue(':idVendeur', $_SESSION['id'], PDO::PARAM_INT); 
 $stmt->execute();
 $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
-$imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
 ?>
 
 <!DOCTYPE html>
@@ -64,19 +61,34 @@ $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".s
                 <?php endif; ?>
 
                 <?php foreach ($avis as $avi): ?>
+
+                <?php
+                        $imagesAvis = (
+                            $pdo->query(
+                                str_replace(
+                                    '$idClient',
+                                    $avi['idClient'],
+                                    str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql'))
+                                )
+                            )
+                        )->fetchAll(PDO::FETCH_ASSOC);
+
+                        $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
+                    ?>
+
                 <table class="avi">
                     <tr>
                         <th rowspan="3" class="col-gauche">
                             <figure class="profil-client">
-                                <img src="<?php echo $imageClient ?>" onerror="this.style.display='none'">
-                                <figcaption><?= $avi['pseudo'] ?></figcaption>
+                                <img src=" <?= $imageClient ?>" onerror="this.style.display='none'">
+                                <figcaption><?= $avi['pseudo'] ?? $avi['nomClient'] ?></figcaption>
                             </figure>
                         </th>
 
                         <td class="ligne">
                             <figure class="etoiles">
                                 <figcaption><?= str_replace('.', ',', $avi['note']) ?></figcaption>
-                                <img src="/public/images/etoile.svg">
+                                <img src=" /public/images/etoile.svg">
                             </figure>
                             <?= $avi['titreAvis'] ?> - <?= $avi['nomProduit'] ?>
                         </td>

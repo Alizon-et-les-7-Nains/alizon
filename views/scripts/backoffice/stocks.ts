@@ -1,10 +1,14 @@
 const btnSettings: Element[] = Array.from(document.getElementsByClassName('settings'));
 const modalReassort: HTMLDialogElement | null = document.querySelector("dialog.reassort") as HTMLDialogElement;
+
 const inputSeuil: HTMLInputElement = document.getElementById('seuil') as HTMLInputElement;
+const inputDate: HTMLInputElement = document.getElementById('dateReassort') as HTMLInputElement;
 const inputReassort: HTMLInputElement = document.getElementById('reassort') as HTMLInputElement;
 const buttonConfirm: HTMLInputElement = document.getElementById('buttonConfirm') as HTMLInputElement;
+
 const errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') as HTMLElement;
 const errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
+const errorFieldDate: HTMLElement = document.getElementById('errorFieldDate') as HTMLElement;
 
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
@@ -62,20 +66,48 @@ function checkInt(value: string): boolean {
     return valid;
 }
 
+function checkDate(date: Date | null): boolean {
+    let valid: boolean = true;
+    if (date != null) {
+        if (date.getTime() < Date.now()) {
+            valid = false;
+        }
+    } else {
+        valid = false;
+    }
+    return valid;
+}
+
 inputSeuil.addEventListener('input', () => {
     if (!checkInt(inputSeuil.value)) {
-        inputSeuil.style.borderColor = '#f14e4e';
+        inputSeuil.style.cssText = 'border-color: #f14e4e !important';
         errorFieldSeuil.style.display = 'block';
+        buttonConfirm.disabled = true;
     } else {
-        inputSeuil.style.borderColor = '#273469';
+        inputSeuil.style.cssText = 'border-color: #273469 !important';
         errorFieldSeuil.style.display = 'none';
+        buttonConfirm.disabled = false;
+    }
+})
+inputDate.addEventListener('input', () => {
+    if (!checkDate(inputDate.valueAsDate)) {
+        inputDate.style.cssText = 'border-color: #f14e4e !important';
+        errorFieldDate.style.display = 'block';
+        buttonConfirm.disabled = true;
+    } else {
+        inputDate.style.cssText = 'border-color: #273469 !important';
+        errorFieldDate.style.display = 'none';
+        buttonConfirm.disabled = false;
     }
 })
 inputReassort.addEventListener('input', () => {
     if (!checkInt(inputReassort.value)) {
-        inputReassort.style.borderColor = '#f14e4e';
+        inputReassort.style.cssText = 'border-color: #f14e4e !important';
+        errorFieldReassort.style.display = 'block';
+        buttonConfirm.disabled = true;
     } else {
-        inputReassort.style.borderColor = '#273469';
+        inputReassort.style.cssText = 'border-color: #273469 !important';
         errorFieldReassort.style.display = 'none';
+        buttonConfirm.disabled = false;
     }
 })
