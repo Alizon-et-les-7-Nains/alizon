@@ -5065,6 +5065,10 @@ dialog.reassort form input {
 .pageProduit {
   overflow-x: hidden;
   width: 100%;
+  box-sizing: border-box;
+}
+.pageProduit *, .pageProduit *::before, .pageProduit *::after {
+  box-sizing: border-box;
 }
 .pageProduit main {
   display: flex;
