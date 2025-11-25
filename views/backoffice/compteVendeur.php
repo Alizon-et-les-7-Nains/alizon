@@ -16,7 +16,7 @@ $stmt = $pdo->prepare("
     SELECT v.*, a.codePostal, a.ville, a.region, a.pays, a.adresse as adresse_complete
     FROM _vendeur v 
     LEFT JOIN _adresseVendeur a ON v.idAdresse = a.idAdresse  -- 'V' majuscule
-    WHERE v.codeVendeur = :id
+    WHERE v.codeVendeur = :id;
 ");
 
 $stmt->execute([':id' => $code_vendeur]);
@@ -93,7 +93,7 @@ $stmt = $pdo->prepare("
         noTelephone = :telephone,
         raisonSocial = :raisonSociale,    -- Correction du nom de colonne
         noSiren = :noSiren
-    WHERE codeVendeur = :code_vendeur
+    WHERE codeVendeur = :code_vendeur;
 ");
 
     $stmt->execute([
@@ -117,7 +117,7 @@ $stmt = $pdo->prepare("
         ville = :ville, 
         codePostal = :codePostal,
         region = :region
-    WHERE idAdresse = :idAdresse
+    WHERE idAdresse = :idAdresse;
 ");
 
         $stmt->execute([
