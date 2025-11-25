@@ -1074,28 +1074,8 @@ function validerFormulaire() {
         formulaireValide = false;
       }
 
-      // Vérifier l'ancien mot de passe côté client si possible
-      if (formulaireValide) {
-        try {
-          if (
-            typeof vignere === "function" &&
-            typeof mdpCrypte !== "undefined" &&
-            typeof cle !== "undefined"
-          ) {
-            const mdpDecrypte = vignere(mdpCrypte, cle, -1);
-            if (ancienMdp !== mdpDecrypte) {
-              afficherErreur("ancienMdp", true);
-              formulaireValide = false;
-              alert("L'ancien mot de passe est incorrect.");
-            }
-          }
-          // Si les variables de chiffrement ne sont pas disponibles,
-          // on laisse la vérification au serveur
-        } catch (error) {
-          console.error("Erreur lors du chiffrement/déchiffrement:", error);
-          // On continue quand même, le serveur vérifiera
-        }
-      }
+      // ✅ La vérification de l'ancien mot de passe se fait côté PHP avec la base de données
+      // Le PHP compare directement : if ($ancienMdp !== $vendeur['mdp'])
     }
   }
 
