@@ -1,3 +1,4 @@
+-- Active: 1763626536266@@localhost@3306@saedb
 <?php
 require_once '../../controllers/pdo.php';
 require_once '../../controllers/prix.php';
@@ -30,7 +31,7 @@ $avis = ($pdo->query(file_get_contents('../../queries/backoffice/derniersAvis.sq
     ?>
 
     <main>
-        <section class="avis-Vendeur">
+        <section class="avis-vendeur">
             <h1>Avis Populaires</h1>
 
             <article>
