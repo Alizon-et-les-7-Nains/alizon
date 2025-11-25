@@ -381,7 +381,7 @@ body {
   height: 100vh;
 }
 .page404 h1,
-.page404 h2,
+.page404 h2, .page404 h3,
 .page404 a {
   color: #273469;
   font-family: "berkshire", serif;

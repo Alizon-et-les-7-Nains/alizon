@@ -82,11 +82,11 @@
                         <div class="prixEtPrixAuKg">
                             <?php if ($enRemise): ?>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <p class="prix"><?php echo htmlspecialchars($prixRemise); ?>€</p>
-                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                    <p class="prix"><?php echo number_format($prixRemise,2,','); ?>€</p>
+                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                                 </div>
                             <?php else: ?>
-                                <p class="prix"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                <p class="prix"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                             <?php endif; ?>
                             <?php 
                                 $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
@@ -119,7 +119,7 @@
                                                 <?php echo $idProd; ?>, 
                                                 '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', 
                                                 '<?php echo $produitEnVente[$i]['url']; ?>', 
-                                                <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, 
+                                                <?php echo htmlspecialchars(addslashes($prixRemise), ENT_QUOTES); ?>, 
                                                 <?php echo htmlspecialchars($nbEval) ?>, 
                                                 <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, 
                                                 <?php echo $prixAuKg?>, 
@@ -128,7 +128,7 @@
                                                 Modifier
                                             </button>
                                         <?php } else { ?>
-                                            <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>)">
+                                            <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($prixOriginal), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>)">
                                                 Promouvoir
                                             </button>
                                         <?php } ?>
@@ -140,11 +140,11 @@
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconeRemise.svg" alt="">
                                         <?php if(count($remise) == 1) { ?>
-                                            <button onclick="popUpModifierRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, true)">
+                                            <button onclick="popUpModifierRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($prixRemise), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, true)">
                                                 Modifier remise
                                             </button>
                                         <?php } else { ?>
-                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, false)">
+                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($prixOriginal), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, false)">
                                                 Remise
                                             </button>
                                         <?php } ?>                                    
@@ -233,10 +233,10 @@
                             <?php if ($enRemise): ?>
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <p class="prix"><?php echo htmlspecialchars($prixRemise); ?>€</p>
-                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                                 </div>
                             <?php else: ?>
-                                <p class="prix"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                <p class="prix"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                             <?php endif; ?>
                             <?php 
                                 $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
