@@ -111,13 +111,10 @@ document.querySelector('modal.reassort input#annuler')?.addEventListener('click'
     modalReassort.style.display = 'none';
 });
 function checkInt(value) {
-    let valid;
+    let valid = true;
     let intValue = parseInt(value);
     if (!intValue || intValue < 0) {
         valid = false;
-    }
-    else {
-        valid = true;
     }
     return valid;
 }

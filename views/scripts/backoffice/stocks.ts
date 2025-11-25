@@ -51,12 +51,10 @@ document.querySelector('modal.reassort input#annuler')?.addEventListener('click'
 
 
 function checkInt(value: string): boolean {
-    let valid: boolean;
+    let valid: boolean = true;
     let intValue = parseInt(value);
     if (!intValue || intValue < 0) {
         valid = false;
-    } else {
-        valid = true;
     }
     return valid;
 }
