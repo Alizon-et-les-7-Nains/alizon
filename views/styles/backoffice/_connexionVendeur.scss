@@ -13,6 +13,22 @@
     overflow-x: hidden;
     padding: 20px;
 
+    #error {
+        background-color: $color-pastel-red;
+        color: $color-red;
+        font: {
+            family: 'open-sans';
+            weight: bold;
+        }
+        padding: 0.5em;
+        border: {
+            style: solid;
+            width: 2px;
+            color: $color-red;
+            radius: 8px;
+        }
+    }
+
     .triskiel {
         position: absolute;
         top: 0;

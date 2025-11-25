@@ -5176,7 +5176,7 @@ dialog.reassort form input {
   height: 75px;
   margin-top: 0.5em;
 }
-.pageProduit .attributsproduit h3 {
+.pageProduit .attributsproduit h4 {
   border-radius: 8px;
   background-color: #f14e4e;
   color: white;
@@ -5205,8 +5205,8 @@ dialog.reassort form input {
   float: right;
 }
 .pageProduit .actionsProduit {
-  top: 15em;
-  right: 3em;
+  top: 10em;
+  right: 1em;
   position: fixed;
   width: 24%;
   max-width: 300px;
@@ -5774,6 +5774,9 @@ dialog.reassort form input {
     top: 5em;
     left: 20px;
   }
+  .pageProduit .infoPreviewProduit div {
+    justify-content: center;
+  }
   .pageProduit .nomProduit {
     position: absolute;
     display: flex;
@@ -5845,6 +5848,17 @@ dialog.reassort form input {
   justify-content: center;
   overflow-x: hidden;
   padding: 20px;
+}
+.connexionVendeur #error {
+  background-color: #f68f8f;
+  color: #f14e4e;
+  font-family: "open-sans";
+  font-weight: bold;
+  padding: 0.5em;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #f14e4e;
+  border-radius: 8px;
 }
 .connexionVendeur .triskiel {
   position: absolute;

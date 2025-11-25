@@ -138,7 +138,7 @@
         margin-top: 0.5em;
     }
 
-    .attributsproduit h3{
+    .attributsproduit h4{
         border-radius: 8px;
         background-color: $color-red;
         color: white;
@@ -173,8 +173,8 @@
     }
 
     .actionsProduit{
-        top: 15em;
-        right: 3em;
+        top: 10em;
+        right: 1em;
         position: fixed;
         width: 24%;
         max-width: 300px;
@@ -836,6 +836,10 @@
             flex-direction: row;
             top: 5em;
             left: 20px;
+        }
+
+        .infoPreviewProduit div{
+            justify-content: center;
         }
 
         .nomProduit {
