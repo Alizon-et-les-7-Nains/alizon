@@ -38,7 +38,7 @@ let idProduit: number;
 
 btnSettings.forEach(btn => {
     btn.addEventListener('click', () => {
-        idProduit = parseInt(btn.id);
+        sessionStorage.setItem('idProduitSelec', btn.id);
         modalReassort.showModal();
         modalReassort.style.display = 'flex';
     })

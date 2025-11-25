@@ -257,14 +257,17 @@
         <?php require_once './partials/retourEnHaut.php' ?>
     </main>
 
-    <?php require_once './partials/footer.php' ?>
-
     <dialog class="reassort">
+        <?php
+            $reassortSTMT = $pdo->prepare('select * from _produit where idProduit = :idProduit');
+            $reassortSTMT->execute(['idProduit' => $_SESSION['idProduitSelec']]);
+            $reassort = $reassortSTMT->fetchColumn();
+        ?>
         <h1>Paramètres de réassort</h1>
         <form action="" method="post">
-            <input type="number" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
+            <input type="number" placeholder="Seuil d'alerte"  value="<?php $reassort['seuilAlerte'] ?>" name="Seuil d'alerte" id ="seuil">
             <label for="Seuil d'alerte" id="errorFieldSeuil">Doit être un entier</label>
-            <input type="date" placeholder="Date du réassort" name="Date du réassort" id="dateReassort">
+            <input type="date" placeholder="Date du réassort" value="<?php $reassort['dateReassort'] ?>" name="Date du réassort" id="dateReassort">
             <label for="Date du réassort" id="errorFieldDate">Ne doit pas être passée</label>
             <input type="number" placeholder="Réassortir" name="Reassortir" id="reassort">
             <label for="Reassortir" id="errorFieldReassort">Doit être un entier</label>
@@ -274,6 +277,8 @@
             </ul>
         </form>
     </dialog>
+
+    <?php require_once './partials/footer.php' ?>
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>

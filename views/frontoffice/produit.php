@@ -84,7 +84,8 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         $stmtPanier->execute([$idClient]);
         $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
         
-        if (!$panier) {            $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+        if (!$panier) {            
+            $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
             $stmtCreate->execute([$idClient]);
             $idPanier = $pdo->lastInsertId();
         } else {
@@ -284,7 +285,7 @@ if (isset($_SESSION['message_panier'])) {
             <?php endif; ?>
         </div>
         <h2>Description de l'article :</h2>
-        <p><?php echo htmlspecialchars($produit['description']);?></p>
+        <p class="resume"><?php echo htmlspecialchars($produit['description']);?></p>
         <a href="#conteneurTexte">Voir plus sur le produit</a>
         <div class="version">
             <h3>Version :</h3>
@@ -312,9 +313,11 @@ if (isset($_SESSION['message_panier'])) {
         <div class="ligneActions">
             <img src="../../public/images/emplacement.png" alt="">
             <p>Livré a <a href=""><b>
-                <?php echo htmlspecialchars($adresse['ville']); ?>
-                <?php echo htmlspecialchars($adresse['codePostal']);?></b>, 
-                <?php echo htmlspecialchars($adresse['adresse']); ?></a></p>   
+                <?php if (!empty($adresse['ville'])){ echo htmlspecialchars($adresse['ville']); } ?>
+                <?php if (!empty($adresse['codePostal'])){ echo htmlspecialchars($adresse['codePostal']); }?></b>, 
+                <?php if (!empty($adresse['adresse'])){ echo htmlspecialchars($adresse['adresse']); } else{
+                    echo "Pas d'adresse définie";
+                } ?></a></p>   
         </div>
         <div class="ligneActions">
             <img src="../../public/images/tec.png" alt="">
