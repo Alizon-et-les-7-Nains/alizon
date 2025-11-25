@@ -91,11 +91,11 @@ inputSeuil.addEventListener('input', () => {
 })
 inputDate.addEventListener('input', () => {
     if (!checkDate(inputDate.valueAsDate)) {
-        inputDate.style.cssText = 'border-color: #273469 !important';
+        inputDate.style.cssText = 'border-color: #f14e4e !important';
         errorFieldDate.style.display = 'block';
         buttonConfirm.disabled = true;
     } else {
-        inputDate.style.cssText = 'border-color: #f14e4e !important';
+        inputDate.style.cssText = 'border-color: #273469 !important';
         errorFieldDate.style.display = 'none';
         buttonConfirm.disabled = false;
     }
