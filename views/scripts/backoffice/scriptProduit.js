@@ -192,7 +192,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
     function champsVide(){
         const bouton = overlay.querySelector("button");
 
-        if(dateLimite.value == "" || nouveauPrix.value == ""){
+        if(dateLimite.value == "" || nouveauPrix.value == "" || reduction.value == ""){
             bouton.disabled = true;
             bouton.style.cursor = "default";
         } else {
@@ -203,6 +203,7 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note){
 
     dateLimite.addEventListener("input", champsVide);
     nouveauPrix.addEventListener("input", champsVide);
+    reduction.addEventListener("input", champsVide);
 
 
 }
