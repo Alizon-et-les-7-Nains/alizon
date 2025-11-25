@@ -5371,7 +5371,6 @@ dialog.reassort form input {
   border: 2px solid #273469;
   background-color: white;
   border-radius: 32px;
-  padding: 0.5em 1em;
   cursor: pointer;
   font-size: 16px;
 }
@@ -5439,9 +5438,6 @@ dialog.reassort form input {
   width: 2px;
   height: 40px;
   background-color: #273469;
-}
-.pageProduit .btn-vote {
-  padding: 0;
 }
 .pageProduit .product-rating {
   display: flex;
