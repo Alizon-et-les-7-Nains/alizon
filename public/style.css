@@ -3487,7 +3487,6 @@ button#haut.visible:hover {
   border: 2px solid #273469;
   border-radius: 8px;
   font-size: 1rem;
-  box-sizing: border-box;
 }
 .modifierProduit input::placeholder {
   color: #6e6e6e;
