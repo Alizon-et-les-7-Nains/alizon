@@ -2,27 +2,7 @@
 include '../../controllers/pdo.php';
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
-    if (isset($_SESSION['user_id'])) {
-        $idClient = $_SESSION['user_id'];
-        $idProduit = intval($_POST['idProduit']);
-        $idClientAvis = intval($_POST['idClientAvis']);
-        $typeVote = $_POST['type'];
-        
-        $keyVote = "vote_{$idProduit}_{$idClientAvis}_{$idClient}";
-        
-        $votePrecedent = $_SESSION[$keyVote] ?? null;
-        
-        if ($votePrecedent === $typeVote) {
-            unset($_SESSION[$keyVote]);
-        } else {
-            $_SESSION[$keyVote] = $typeVote;
-        }
-        
-        header("Location: ?id=" . $productId);
-        exit;
-    }
-}
+
 
 function compterVotesAvis($idProduit, $idClientAvis) {
     $likes = 0;
@@ -71,6 +51,68 @@ $productId = intval($_GET['id']) ?? 0;
 
 if($productId == 0) {
     die("Produit non spécifié");
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
+    if (isset($_SESSION['user_id'])) {
+        $idClient = $_SESSION['user_id'];
+        $idProduit = intval($_POST['idProduit']);
+        $idClientAvis = intval($_POST['idClientAvis']);
+        $typeVote = $_POST['type'];
+        
+        // Clé unique pour identifier le vote dans la session
+        $keyVote = "vote_{$idProduit}_{$idClientAvis}_{$idClient}";
+        $votePrecedent = $_SESSION[$keyVote] ?? null;
+        
+        try {
+            // Commencer une transaction pour assurer la cohérence des données
+            $pdo->beginTransaction();
+            
+            if ($votePrecedent === $typeVote) {
+                // Retirer le vote
+                if ($typeVote === 'like') {
+                    $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
+                } else {
+                    $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
+                }
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$idProduit, $idClientAvis]);
+                
+                unset($_SESSION[$keyVote]);
+            } else {
+                if ($votePrecedent !== null) {
+                    // Retirer l'ancien vote
+                    if ($votePrecedent === 'like') {
+                        $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
+                    } else {
+                        $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
+                    }
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute([$idProduit, $idClientAvis]);
+                }
+                
+                // Ajouter le nouveau vote
+                if ($typeVote === 'like') {
+                    $sql = "UPDATE _avis SET positifs = positifs + 1 WHERE idProduit = ? AND idClient = ?";
+                } else {
+                    $sql = "UPDATE _avis SET negatifs = negatifs + 1 WHERE idProduit = ? AND idClient = ?";
+                }
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$idProduit, $idClientAvis]);
+                
+                $_SESSION[$keyVote] = $typeVote;
+            }
+            
+            $pdo->commit();
+            
+        } catch (Exception $e) {
+            $pdo->rollBack();
+            error_log("Erreur lors du vote: " . $e->getMessage());
+        }
+        
+        header("Location: ?id=" . $productId);
+        exit;
+    }
 }
 
 $sqlProduit = "SELECT 
@@ -265,13 +307,11 @@ $promotion = calculerPromotion($produit);
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body class="pageProduit">
-<header>
 <?php if (isset($_SESSION['user_id'])) {
     include '../../views/frontoffice/partials/headerConnecte.php';
 } else { 
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
-</header>
 <main>
 <?php
 if (isset($_SESSION['message_panier'])) {
@@ -501,8 +541,30 @@ if ($produit['stock'] > 0) {
                              <?php endforeach; ?>
                         </div>   
                         <div class="actionsAvis">
-                            <img src="../../public/images/pouceHaut.png" alt="Like" onclick="changerPouce(this, 'haut')" class="pouce">
-                            <img src="../../public/images/pouceBas.png" alt="Dislike" onclick="changerPouce(this, 'bas')" class="pouce">
+                            <div class="actionsAvis">
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="action" value="voter_avis">
+                                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                                <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
+                                <input type="hidden" name="type" value="like">
+                                <button type="submit" class="btn-vote <?php echo (getVoteUtilisateur($productId, $avis['idClient']) === 'like') ? 'active' : ''; ?>">
+                                    <img src="../../public/images/<?php echo (getVoteUtilisateur($productId, $avis['idClient']) === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png'; ?>" alt="Like">
+                                    <span><?php echo $avis['positifs']; ?></span>
+                                </button>
+                            </form>
+                            
+                            <form method="POST" style="display: inline;">
+                                <input type="hidden" name="action" value="voter_avis">
+                                <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+                                <input type="hidden" name="idClientAvis" value="<?php echo $avis['idClient']; ?>">
+                                <input type="hidden" name="type" value="dislike">
+                                <button type="submit" class="btn-vote <?php echo (getVoteUtilisateur($productId, $avis['idClient']) === 'dislike') ? 'active' : ''; ?>">
+                                    <img src="../../public/images/<?php echo (getVoteUtilisateur($productId, $avis['idClient']) === 'dislike') ? 'pouceBasActive.png' : 'pouceBas.png'; ?>" alt="Dislike">
+                                    <span><?php echo $avis['negatifs']; ?></span>
+                                </button>
+                            </form>
+                            
+                            <shape></shape>
                             <shape></shape>
                             <a href="#">Signaler</a>
                         </div>

@@ -17,7 +17,7 @@
 
     <main class="legalesMain">
 
-        <h1>Conditions générales de ventes</h1>
+        <h1 id="cgv">Conditions générales de ventes</h1>
 
         <main class="legalesMain">
 
@@ -148,7 +148,7 @@
                 </p>
             </section>
 
-            <h1>Mentions légales</h1>
+            <h1 id="ml">Mentions légales</h1>
 
             <section>
                 <h2 class="titreSection">1. Informations légales</h2>
