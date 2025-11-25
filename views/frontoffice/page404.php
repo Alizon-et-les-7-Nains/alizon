@@ -1,5 +1,5 @@
 <?php
-$fromBackoffice = strpos($_SERVER['REQUEST_URI'], '/views/backoffice/') !== false;
+$fromBackoffice = strpos($_SERVER['REQUEST_URI'], '/backoffice/') !== false;
 $homeLink = $fromBackoffice ? '/views/backoffice/accueil.php' : '/views/frontoffice/accueilConnecte.php';
 ?>
 
