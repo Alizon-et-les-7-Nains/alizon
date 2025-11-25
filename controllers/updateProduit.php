@@ -19,15 +19,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':idProduit' => $idProd
     ]);
 
-$photoPath = '/var/www/html/images/'.$idProduit;
 
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] != '') {
+    $photoPath = '/var/www/html/images/'.$_FILES['url']['name'];
+
     $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
     $extension = '.'.$extension;
     move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
 }
 else{
-    $sqlUrl = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = $idProduit");
+    $sqlUrl = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = $idProd");
     $result =  $pdo->query($sqlUrl);
     $fileName = $result->fetch(PDO::FETCH_ASSOC);
 

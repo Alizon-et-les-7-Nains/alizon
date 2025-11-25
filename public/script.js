@@ -68,8 +68,11 @@ document.querySelector('header.backoffice figure:nth-child(3)')?.addEventListene
 });
 const btnSettings = Array.from(document.getElementsByClassName('settings'));
 const modalReassort = document.querySelector("dialog.reassort");
-let inputSeuil = document.getElementById('seuil');
-let inputReassort = document.getElementById('reassort');
+const inputSeuil = document.getElementById('seuil');
+const inputReassort = document.getElementById('reassort');
+const buttonConfirm = document.getElementById('buttonConfirm');
+const errorFieldSeuil = document.getElementById('errorFieldSeuil');
+const errorFieldReassort = document.getElementById('errorFieldReassort');
 btnSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);
@@ -118,14 +121,23 @@ function checkInt(value) {
     }
     return valid;
 }
-inputSeuil.addEventListener('change', () => {
+inputSeuil.addEventListener('input', () => {
     if (!checkInt(inputSeuil.value)) {
         inputSeuil.style.borderColor = '#f14e4e';
+        errorFieldSeuil.style.display = 'block';
+    }
+    else {
+        inputSeuil.style.borderColor = '#273469';
+        errorFieldSeuil.style.display = 'none';
     }
 });
-inputReassort.addEventListener('change', () => {
+inputReassort.addEventListener('input', () => {
     if (!checkInt(inputReassort.value)) {
         inputReassort.style.borderColor = '#f14e4e';
+    }
+    else {
+        inputReassort.style.borderColor = '#273469';
+        errorFieldReassort.style.display = 'none';
     }
 });
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {

@@ -4,13 +4,27 @@ require_once '../../controllers/prix.php';
 require_once '../../controllers/date.php';
 require_once '../../controllers/auth.php';
 
-$sql = file_get_contents('../../queries/backoffice/derniersAvis.sql');
-$stmt = $pdo->prepare($sql);
+$query = "
+    SELECT 
+        a.idProduit,
+        a.idClient,
+        a.titreAvis,
+        a.contenuAvis,
+        a.note,
+        a.dateAvis,
+        p.nom as nomProduit,
+        c.prenom,
+        c.nom as nomClient
+    FROM saedb._avis a
+    JOIN saedb._produit p ON a.idProduit = p.idProduit
+    JOIN saedb._client c ON a.idClient = c.idClient
+    WHERE p.idVendeur = :idVendeur
+    ORDER BY a.dateAvis DESC
+";
 
-$stmt->execute([
-    ':idVendeur' => $_SESSION['id']
-]);
-
+$stmt = $pdo->prepare($query);
+$stmt->bindValue(':idVendeur', $_SESSION['id'], PDO::PARAM_INT); 
+$stmt->execute();
 $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 

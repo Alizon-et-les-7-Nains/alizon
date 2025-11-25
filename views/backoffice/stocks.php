@@ -263,13 +263,13 @@
         <h1>Paramètres de réassort</h1>
         <form action="" method="post">
             <input type="number" placeholder="Seuil d'alerte" name="Seuil d'alerte" id ="seuil">
-            <label for="Seuil d'alerte">Doit être un entier</label>
+            <label for="Seuil d'alerte" id="errorFieldSeuil">Doit être un entier</label>
             <input type="date" placeholder="Date du réassort" value="2025-11-05" name="Date du réassort" id="dateReassort">
             <input type="number" placeholder="Réassortir" name="Reassortir" id="reassort">
-            <label for="Reassortir">Doit être un entier</label>
+            <label for="Reassortir" id="errorFieldReassort">Doit être un entier</label>
             <ul>
                 <li><input type="button" value="Annuler" id="annuler"></li>
-                <li><input type="submit" value="Valider"></li>
+                <li><input type="submit" value="Valider" id="buttonConfirm"></li>
             </ul>
         </form>
     </dialog>
