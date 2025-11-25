@@ -5453,6 +5453,16 @@ dialog.reassort form input {
   color: #273469;
   margin: 0;
 }
+.pageProduit .stockDisponible {
+  color: green;
+  font-weight: bold;
+  margin-top: 1em;
+}
+.pageProduit .stockIndisponible {
+  color: red;
+  font-weight: bold;
+  margin-top: 1em;
+}
 .pageProduit .review-count {
   text-decoration: underline;
   color: #6e6e6e;

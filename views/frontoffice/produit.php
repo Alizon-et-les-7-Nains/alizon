@@ -80,6 +80,7 @@ $sqlProduit = "SELECT
                 p.prix,
                 p.note,
                 p.stock,
+                p.dateReassort,
                 v.prenom AS prenom_vendeur,
                 v.nom AS nom_vendeur,
                 v.raisonSocial,
@@ -412,6 +413,16 @@ if (isset($_SESSION['message_panier'])) {
         } ?>
     </div>
 </article>
+<?php 
+if ($produit['stock'] > 0) {
+    echo '<p class="stockDisponible">En stock (' . htmlspecialchars($produit['stock']) . 'restants) </p>';
+} else {
+    if ($produit['dateReassort'] !== null) {
+        echo '<p class="stockIndisponible">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($produit['dateReassort']) . '</p>';
+    } else {
+        echo '<p class="stockIndisponible">Rupture de stock - Pas de réapprovisionnement prévu</p>';
+    }
+} ?>
 </section>
 <hr>
 <section class="informations">
