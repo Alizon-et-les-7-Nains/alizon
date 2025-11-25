@@ -5071,7 +5071,6 @@ dialog.reassort form input {
 .pageProduit .infoHautProduit {
   display: flex;
   flex-direction: row;
-  overflow-y: scroll;
   position: relative;
 }
 .pageProduit .rect {
@@ -5098,6 +5097,9 @@ dialog.reassort form input {
   top: -8px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+}
+.pageProduit .banniere h1 {
+  font-size: 30px;
 }
 .pageProduit .imgBanniere {
   position: absolute;
@@ -5201,6 +5203,7 @@ dialog.reassort form input {
   right: 1em;
   position: fixed;
   width: 24%;
+  max-width: 300px;
   z-index: 10;
   height: fit-content;
   padding: 15px;
