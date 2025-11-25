@@ -14,7 +14,6 @@ if ($note === null) {
 
 $idClient = $_SESSION['user_id'];
 
-// Vérifier que tous les champs existent
 if (!isset($_POST['idProduit'], $_POST['titreAvis'], $_POST['note'], $_POST['contenuAvis'])) {
     die("Formulaire incomplet.");
 }
@@ -24,7 +23,6 @@ $titre = trim($_POST['titreAvis']);
 $note = floatval($_POST['note']);
 $contenu = trim($_POST['contenuAvis']);
 
-// Mise à jour
 $stmt = $pdo->prepare("
     UPDATE _avis 
     SET titreAvis = ?, note = ?, contenuAvis = ?, dateAvis = CURRENT_DATE
