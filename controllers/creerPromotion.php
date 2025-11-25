@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
              exit;
         }
 
-        try {
+        // try {
             $stmt = $pdo->prepare("SELECT * _promotion idProduit = :idProd");
             $stmt->execute([':idProd' => $idProd]);
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC); 
@@ -40,10 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute([':idProd' => $idProd,':dateLimite' => $dateSql]);
             }
 
-        } catch (Exception $e) {
-            header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd);
-            exit;
-        }
+        // } 
+        // catch (Exception $e) {
+        //     header('Location: ../views/backoffice/produits.php?error=1&idProduit='.$idProd);
+        //     exit;
+        // }
 
         foreach ($extensionsPossibles as $ext) {
             if (file_exists($photoPath . '.' . $ext)) {
