@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Insertion dans _produit
         $sql = "INSERT INTO _produit 
-            (nom, prix, poids, description, mots_cles, idVendeur) 
-            VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur)";
+            (nom, prix, poids, description, mots_cles, idVendeur, stock, versionProd, note) 
+            VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur, :stock, :versionProd, :note)";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -26,7 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':poids' => $poids,
             ':description' => $description,
             ':mots_cles' => $mots_cles,
-            ':idVendeur' => $_SESSION['id']
+            ':idVendeur' => $_SESSION['id'],
+            ':stock' => 1,
+            ':versionProd' => 1.0,
+            ':note' => 0.0
         ]);
 
         // On récupère l'ID généré
