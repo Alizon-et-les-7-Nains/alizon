@@ -1,6 +1,7 @@
 <?php
 require_once '../../controllers/pdo.php';
 require_once '../../controllers/auth.php';
+require_once '../../controllers/compteVendeur.php';
 
 if (!isset($_SESSION['id'])) {
     header("Location: ../backoffice/connexion.php");
@@ -30,72 +31,7 @@ if (!$idAdresse) {
 }
 
 // Traitement du formulaire
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    // Récupération des données du formulaire
-    $pseudo = $_POST['pseudo'] ?? '';
-    $nom = $_POST['nom'] ?? '';
-    $prenom = $_POST['prenom'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $dateNaissance = $_POST['dateNaissance'] ?? '';
-    $telephone = $_POST['telephone'] ?? '';
-    $codePostal = $_POST['codePostal'] ?? '';
-    $adresse = $_POST['adresse'] ?? '';
-    $pays = $_POST['pays'] ?? '';
-    $ville = $_POST['ville'] ?? '';
-    $region = $_POST['region'] ?? '';
-    $raisonSociale = $_POST['raisonSociale'] ?? '';
-    $noSiren = $_POST['noSiren'] ?? '';
 
-    // Gestion des valeurs NULL pour dateNaissance
-    $dateNaissance = ($dateNaissance === '') ? null : $dateNaissance;
-
-    // Mise à jour du vendeur
-    $stmt = $pdo->prepare("
-        UPDATE _vendeur 
-        SET pseudo = :pseudo, 
-            nom = :nom, 
-            prenom = :prenom, 
-            email = :email, 
-            dateNaissance = :dateNaissance,
-            noTelephone = :telephone,
-            raisonSocial = :raisonSocial,
-            noSiren = :noSiren
-        WHERE codeVendeur = :code_vendeur
-    ");
-
-    $stmt->execute([
-        ':pseudo' => $pseudo,
-        ':nom' => $nom,
-        ':prenom' => $prenom,
-        ':email' => $email,
-        ':dateNaissance' => $dateNaissance,
-        ':telephone' => $telephone,
-        ':raisonSocial' => $raisonSociale,
-        ':noSiren' => $noSiren,
-        ':code_vendeur' => $code_vendeur
-    ]);
-
-    // Mise à jour de l'adresse
-    $stmt = $pdo->prepare("
-        UPDATE _adresseVendeur 
-        SET adresse = :adresse,
-            pays = :pays,
-            ville = :ville, 
-            codePostal = :codePostal,
-            region = :region
-        WHERE idAdresse = :idAdresse
-    ");
-
-    $stmt->execute([
-        ':adresse' => $adresse,
-        ':pays' => $pays,
-        ':ville' => $ville,
-        ':codePostal' => $codePostal,
-        ':region' => $region,
-        ':idAdresse' => $idAdresse
-    ]);
-}
 
 // Gestion de la photo de profil
 $photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil' . $code_vendeur;
@@ -168,7 +104,8 @@ $pays          = $vendeur['pays'] ?? '';
     ?>
 
     <main class="page-compte">
-        <form class="form-compte" method="POST" action="" enctype="multipart/form-data">
+        <form class="form-compte" method="POST" action="../../controllers/compteVendeur.php"
+            enctype="multipart/form-data">
             <div class="header-compte">
                 <div class="photo-profil-container">
                     <div class="photo-profil">
