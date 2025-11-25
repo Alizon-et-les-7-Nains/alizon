@@ -6,7 +6,7 @@
     if ($fromBackoffice) {
         $homeLink = '/views/backoffice/accueil.php';
     } elseif ($fromFrontoffice) {
-        $homeLink = '/views/frontoffice/accueilConnecte.php';
+        $homeLink = '/views/frontoffice/accueilDeconnecte.php';
     } else {
         $homeLink = null;
     }
