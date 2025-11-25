@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ]);
                 }
 
-                header("Location: product.php?id=" . $productId);
+                header("Location: produit.php?id=" . $productId);
                 exit;
             }
         }
