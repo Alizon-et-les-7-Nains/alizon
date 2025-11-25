@@ -5045,8 +5045,8 @@ dialog.reassort form input {
 }
 .pageProduit .banniere h1 {
   position: absolute;
-  top: 0px;
-  left: 40px;
+  top: 28px;
+  left: 25px;
   color: #fffefa;
   z-index: 10000;
 }
@@ -5971,6 +5971,7 @@ dialog.reassort form input {
 }
 .pagePrevi .boutonRetour a {
   text-decoration: none;
+  cursor: pointer;
 }
 .pagePrevi .boutonRetour button {
   background-color: transparent;
@@ -5979,12 +5980,22 @@ dialog.reassort form input {
   font-size: 24px;
   color: #e3f2fe;
   font-family: "lora";
+  border-right: 10px;
+  cursor: pointer;
 }
 .pagePrevi .lignePrevi {
   border-top: solid 4px #f14e4e;
 }
 .pagePrevi .actionsProduit {
   margin-top: 40px;
+  margin-left: auto;
+  position: sticky;
+  top: 2em;
+  right: 1em;
+  width: 24%;
+  z-index: 10;
+  height: fit-content;
+  padding: 15px;
 }
 
 .avis-vendeur h1 {

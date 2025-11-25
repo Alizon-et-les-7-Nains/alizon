@@ -58,28 +58,19 @@ document.querySelector('modal.reassort input#annuler')?.addEventListener('click'
 
 
 function checkInt(value: string): boolean {
-    let valid: boolean = true;
+    if (!value) return true;
+
     let intValue = parseInt(value);
-    if (value) {
-        if (!intValue || intValue < 0) {
-            valid = false;
-        }
-    } else {
-        valid = true;
-    }
-    return valid;
+    return !isNaN(intValue) && intValue >= 0;
 }
 
 function checkDate(date: Date | null): boolean {
-    let valid: boolean = true;
-    if (date != null) {
-        if (date.getTime() < Date.now()) {
-            valid = false;
-        }
-    } else {
-        valid = true;
-    }
-    return valid;
+    if (!date) return true;
+
+    let now: Date = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    return now.getTime() < date.getTime();
 }
 
 function allValid(): boolean {
