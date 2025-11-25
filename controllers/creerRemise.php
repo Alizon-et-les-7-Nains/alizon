@@ -9,15 +9,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $idProd = intval($_POST['id']); 
         $dateLimite = $_POST['dateLimite'];
         $aUneRemise =  $_POST['aUneRemise'];
+        $tauxRemise = $_POST['reduction'];
+        $dateSql = DateTime::createFromFormat('d/m/Y', $dateLimite)->format('Y-m-d');
 
         if(!$aUneRemise){
-            $tauxRemise = $_POST['reduction'];
-            $dateSql = DateTime::createFromFormat('d/m/Y', $dateLimite)->format('Y-m-d');
+            
             $stmt = $pdo->prepare("INSERT INTO _remise(idProduit, tauxRemise, debutRemise, finRemise) VALUES (:idProd, :tauxRemise, CURDATE(), :dateLimite)");
             $stmt->execute([':idProd' => $idProd, ':tauxRemise'=>$tauxRemise,':dateLimite' => $dateSql]);
         } else {
-            $stmt = $pdo->prepare("UPDATE _remise idProduit = :idProd , tauxRemise = :tauxRemise, finRemise = :dateLimite)");
-            $stmt->execute([':idProd' => $idProd, ':tauxRemise'=>$tauxRemise,':dateLimite' => $dateSql]);
+            $stmt = $pdo->prepare("UPDATE _remise SET tauxRemise = :tauxRemise, finRemise = :dateLimite");
+            $stmt->execute([':tauxRemise'=>$tauxRemise,':dateLimite' => $dateSql]);
         }
     }
 
