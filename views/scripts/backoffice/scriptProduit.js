@@ -215,16 +215,75 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
     const dateLimite = overlay.querySelector("#dateLimite");
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
 
-    function updatePrixFromReduction(prix, nouveauPrixInput, reductionInput, recap) {
-        if (reductionInput.value !== "" && reductionInput.value <= 100) {
-            const nouveauPrix = (prix * (100 - reductionInput.value) / 100).toFixed(2);
-            nouveauPrixInput.value = nouveauPrix;
-            recap.textContent = "Abaissement de " + (prix - nouveauPrix).toFixed(2) + "€";
-        } else {
-            nouveauPrixInput.value = "";
+    function updatePrixFromReduction(prixOriginal, inputNouveauPrix, inputReduction, recap) {
+        const valeurReduction = parseFloat(inputReduction.value);
+
+        if (inputReduction.value === "" || valeurReduction <= 0 || valeurReduction > 100) {
+            setError(inputReduction, "Réduction entre 1% et 100%");
+            inputNouveauPrix.value = "";
             recap.textContent = "Abaissement de 0€";
+            return;
+        } else {
+            clearError(inputReduction);
+        }
+
+        const calculNouveauPrix = (prixOriginal * (100 - valeurReduction) / 100).toFixed(2);
+        inputNouveauPrix.value = calculNouveauPrix;
+        recap.textContent = "Abaissement de " + (prixOriginal - calculNouveauPrix).toFixed(2) + "€";
+
+        const prixCalc = parseFloat(inputNouveauPrix.value);
+        if (prixCalc < 0 || prixCalc > prixOriginal) {
+            setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
+        } else {
+            clearError(inputNouveauPrix);
         }
     }
+
+    function updateReductionFromPrix(prixOriginal, inputNouveauPrix, inputReduction, recap) {
+        const valeurNouveauPrix = parseFloat(inputNouveauPrix.value);
+
+        if (inputNouveauPrix.value === "" || valeurNouveauPrix < 0 || valeurNouveauPrix > prixOriginal) {
+            setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
+            inputReduction.value = "";
+            recap.textContent = "Abaissement de 0€";
+            return;
+        } else {
+            clearError(inputNouveauPrix);
+        }
+
+        const calculReduction = (100 - (valeurNouveauPrix * 100 / prixOriginal)).toFixed(2);
+        inputReduction.value = calculReduction;
+        recap.textContent = "Abaissement de " + (prixOriginal - valeurNouveauPrix).toFixed(2) + "€";
+
+        if (calculReduction <= 0 || calculReduction > 100) {
+            setError(inputReduction, "Réduction entre 1% et 100%");
+        } else {
+            clearError(inputReduction);
+        }
+    }
+    
+    const nouveauPrix = overlay.querySelector("#nouveauPrix");
+    const reduction = overlay.querySelector("#reduction");
+    const recap = overlay.querySelector(".recap");
+
+    nouveauPrix.addEventListener("input", () => updateReductionFromPrix(prix, nouveauPrix, reduction, recap));
+    reduction.addEventListener("input", () => updatePrixFromReduction(prix, nouveauPrix, reduction, recap));
+
+    function champsVide(){
+        const bouton = overlay.querySelector(".bouton");
+
+        if(dateLimite.value == "" || nouveauPrix.value == "" || reduction.value == ""){
+            bouton.disabled = true;
+            bouton.style.cursor = "default";
+        } else {
+            bouton.disabled = false;
+            bouton.style.cursor = "pointer";
+        }
+    }
+
+    dateLimite.addEventListener("input", champsVide);
+    nouveauPrix.addEventListener("input", champsVide);
+    reduction.addEventListener("input", champsVide);
 }
 
 
@@ -291,25 +350,50 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
     const dateLimite = overlay.querySelector("#dateLimite");
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
 
-    function updatePrixFromReduction(prix, nouveauPrixInput, reductionInput, recap) {
-        if (reductionInput.value !== "" && reductionInput.value <= 100) {
-            const nouveauPrix = (prix * (100 - reductionInput.value) / 100).toFixed(2);
-            nouveauPrixInput.value = nouveauPrix;
-            recap.textContent = "Abaissement de " + (prix - nouveauPrix).toFixed(2) + "€";
-        } else {
-            nouveauPrixInput.value = "";
+    function updatePrixFromReduction(prixOriginal, inputNouveauPrix, inputReduction, recap) {
+        const valeurReduction = parseFloat(inputReduction.value);
+
+        if (inputReduction.value === "" || valeurReduction <= 0 || valeurReduction > 100) {
+            setError(inputReduction, "Réduction entre 1% et 100%");
+            inputNouveauPrix.value = "";
             recap.textContent = "Abaissement de 0€";
+            return;
+        } else {
+            clearError(inputReduction);
+        }
+
+        const calculNouveauPrix = (prixOriginal * (100 - valeurReduction) / 100).toFixed(2);
+        inputNouveauPrix.value = calculNouveauPrix;
+        recap.textContent = "Abaissement de " + (prixOriginal - calculNouveauPrix).toFixed(2) + "€";
+
+        const prixCalc = parseFloat(inputNouveauPrix.value);
+        if (prixCalc < 0 || prixCalc > prixOriginal) {
+            setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
+        } else {
+            clearError(inputNouveauPrix);
         }
     }
 
-    function updateReductionFromPrix(prix, nouveauPrixInput, reductionInput, recap) {
-        if (nouveauPrixInput.value !== "" && nouveauPrixInput.value < prix) {
-            const reduction = (100 - (nouveauPrixInput.value) * 100 / prix).toFixed(2);
-            reductionInput.value = reduction;
-            recap.textContent = "Abaissement de " + (prix - nouveauPrixInput.value).toFixed(2) + "€";
-        } else {
-            reductionInput.value = "";
+    function updateReductionFromPrix(prixOriginal, inputNouveauPrix, inputReduction, recap) {
+        const valeurNouveauPrix = parseFloat(inputNouveauPrix.value);
+
+        if (inputNouveauPrix.value === "" || valeurNouveauPrix < 0 || valeurNouveauPrix > prixOriginal) {
+            setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
+            inputReduction.value = "";
             recap.textContent = "Abaissement de 0€";
+            return;
+        } else {
+            clearError(inputNouveauPrix);
+        }
+
+        const calculReduction = (100 - (valeurNouveauPrix * 100 / prixOriginal)).toFixed(2);
+        inputReduction.value = calculReduction;
+        recap.textContent = "Abaissement de " + (prixOriginal - valeurNouveauPrix).toFixed(2) + "€";
+
+        if (calculReduction <= 0 || calculReduction > 100) {
+            setError(inputReduction, "Réduction entre 1% et 100%");
+        } else {
+            clearError(inputReduction);
         }
     }
     
