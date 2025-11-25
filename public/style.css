@@ -5971,6 +5971,7 @@ dialog.reassort form input {
 }
 .pagePrevi .boutonRetour a {
   text-decoration: none;
+  cursor: pointer;
 }
 .pagePrevi .boutonRetour button {
   background-color: transparent;
@@ -5980,6 +5981,7 @@ dialog.reassort form input {
   color: #e3f2fe;
   font-family: "lora";
   border-right: 10px;
+  cursor: pointer;
 }
 .pagePrevi .lignePrevi {
   border-top: solid 4px #f14e4e;
