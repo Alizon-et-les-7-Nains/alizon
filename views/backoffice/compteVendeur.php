@@ -69,112 +69,158 @@ foreach ($extensionsPossibles as $ext) {
 // Traitement du formulaire - MÊME STRUCTURE QUE COMPTE CLIENT
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // Récupération des données du formulaire
-    $pseudo = $_POST['pseudo'] ?? '';
-    $nom = $_POST['nom'] ?? '';
-    $prenom = $_POST['prenom'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $dateNaissance = $_POST['dateNaissance'] ?? '';
-    $telephone = $_POST['telephone'] ?? '';
-    $codePostal = $_POST['codePostal'] ?? '';
-    $adresse = $_POST['adresse'] ?? '';
-    $pays = $_POST['pays'] ?? '';
-    $ville = $_POST['ville'] ?? '';
-    $region = $_POST['region'] ?? '';
-    $raisonSociale = $_POST['raisonSociale'] ?? '';
-    $noSiren = $_POST['noSiren'] ?? '';
+    try {
+        // Récupération des données du formulaire
+        $pseudo = $_POST['pseudo'] ?? '';
+        $nom = $_POST['nom'] ?? '';
+        $prenom = $_POST['prenom'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $dateNaissance = $_POST['dateNaissance'] ?? '';
+        $telephone = $_POST['telephone'] ?? '';
+        $codePostal = $_POST['codePostal'] ?? '';
+        $adresse = $_POST['adresse'] ?? '';
+        $pays = $_POST['pays'] ?? 'France'; // Valeur par défaut
+        $ville = $_POST['ville'] ?? '';
+        $region = $_POST['region'] ?? '';
+        $raisonSociale = $_POST['raisonSociale'] ?? '';
+        $noSiren = $_POST['noSiren'] ?? '';
 
-    // Gestion des valeurs NULL pour dateNaissance
-    $dateNaissance = ($dateNaissance === '') ? null : $dateNaissance;
+        // Gestion des valeurs NULL pour dateNaissance
+        $dateNaissance = ($dateNaissance === '') ? null : $dateNaissance;
 
-    // Mise à jour du vendeur - REQUÊTES SIMPLIFIÉES COMME CLIENT
-    $stmt = $pdo->prepare("
-    UPDATE _vendeur 
-    SET pseudo = :pseudo, 
-        nom = :nom, 
-        prenom = :prenom, 
-        email = :email, 
-        dateNaissance = :dateNaissance,
-        noTelephone = :telephone,
-        raisonSocial = :raisonSocial,
-        noSiren = :noSiren
-    WHERE codeVendeur = :code_vendeur;
-");
+        // ===== GESTION DE L'ADRESSE =====
+        // Si pas d'idAdresse, on en crée une
+        if (empty($idAdresse)) {
+            echo "<p style='color: blue;'>Création d'une nouvelle adresse...</p>";
+            
+            $stmt = $pdo->prepare("
+                INSERT INTO _adresseVendeur (adresse, pays, ville, codePostal, region, complementAdresse)
+                VALUES (:adresse, :pays, :ville, :codePostal, :region, NULL)
+            ");
+            
+            $stmt->execute([
+                ':adresse' => $adresse,
+                ':pays' => $pays,
+                ':ville' => $ville,
+                ':codePostal' => $codePostal,
+                ':region' => $region
+            ]);
+            
+            $idAdresse = $pdo->lastInsertId();
+            echo "<p style='color: green;'>Adresse créée avec l'ID: {$idAdresse}</p>";
+        } else {
+            // Sinon on met à jour l'adresse existante
+            echo "<p style='color: blue;'>Mise à jour de l'adresse {$idAdresse}...</p>";
+            
+            $stmt = $pdo->prepare("
+                UPDATE _adresseVendeur 
+                SET adresse = :adresse,
+                    pays = :pays,
+                    ville = :ville, 
+                    codePostal = :codePostal,
+                    region = :region
+                WHERE idAdresse = :idAdresse
+            ");
 
-$stmt->execute([
-    ':pseudo' => $pseudo,
-    ':nom' => $nom,
-    ':prenom' => $prenom,
-    ':email' => $email,
-    ':dateNaissance' => $dateNaissance,
-    ':telephone' => $telephone,
-    ':raisonSocial' => $raisonSociale,
-    ':noSiren' => $noSiren,
-    ':code_vendeur' => $code_vendeur
-]);
+            $stmt->execute([
+                ':adresse' => $adresse,
+                ':pays' => $pays,
+                ':ville' => $ville,
+                ':codePostal' => $codePostal,
+                ':region' => $region,
+                ':idAdresse' => $idAdresse
+            ]);
+            
+            echo "<p style='color: green;'>Adresse mise à jour !</p>";
+        }
 
-    // Mise à jour de l'adresse - REQUÊTES SIMPLIFIÉES
-    if ($idAdresse) {
+        // ===== MISE À JOUR DU VENDEUR =====
+        echo "<p style='color: blue;'>Mise à jour du vendeur...</p>";
+        
         $stmt = $pdo->prepare("
-            UPDATE _adresseVendeur 
-            SET adresse = :adresse,
-                pays = :pays,
-                ville = :ville, 
-                codePostal = :codePostal,
-                region = :region
-            WHERE idAdresse = :idAdresse;
+            UPDATE _vendeur 
+            SET pseudo = :pseudo, 
+                nom = :nom, 
+                prenom = :prenom, 
+                email = :email, 
+                dateNaissance = :dateNaissance,
+                noTelephone = :telephone,
+                raisonSocial = :raisonSocial,
+                noSiren = :noSiren,
+                idAdresse = :idAdresse
+            WHERE codeVendeur = :code_vendeur
         ");
 
-        $stmt->execute([
-            ':adresse' => $adresse,
-            ':pays' => $pays,
-            ':ville' => $ville,
-            ':codePostal' => $codePostal,
-            ':region' => $region,
-            ':idAdresse' => $idAdresse
+        $result = $stmt->execute([
+            ':pseudo' => $pseudo,
+            ':nom' => $nom,
+            ':prenom' => $prenom,
+            ':email' => $email,
+            ':dateNaissance' => $dateNaissance,
+            ':telephone' => $telephone,
+            ':raisonSocial' => $raisonSociale,
+            ':noSiren' => $noSiren,
+            ':idAdresse' => $idAdresse,
+            ':code_vendeur' => $code_vendeur
         ]);
-    }
-
-    // Traitement de l'upload de photo APRÈS la mise à jour des données
-    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
         
-        // Supprimer les anciennes photos
-        foreach ($extensionsPossibles as $ext) {
-            $oldFile = $photoPath . '.' . $ext;
-            if (file_exists($oldFile)) {
-                unlink($oldFile);
-            }
+        if ($result) {
+            echo "<p style='color: green; font-weight: bold;'>✅ Vendeur mis à jour avec succès !</p>";
+        } else {
+            echo "<p style='color: red;'>❌ Erreur lors de la mise à jour du vendeur</p>";
         }
+
+        // ===== TRAITEMENT DE LA PHOTO =====
+        if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+            echo "<p style='color: blue;'>Upload de la photo...</p>";
+            
+            // Supprimer les anciennes photos
+            foreach ($extensionsPossibles as $ext) {
+                $oldFile = $photoPath . '.' . $ext;
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
+            }
+            
+            // Uploader la nouvelle photo
+            $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+            move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
+            
+            echo "<p style='color: green;'>Photo uploadée !</p>";
+        }
+
+        // Recharger les données après mise à jour
+        $stmt = $pdo->prepare("
+            SELECT v.*, a.codePostal, a.ville, a.region, a.pays, a.adresse as adresse_complete
+            FROM _vendeur v 
+            LEFT JOIN _adresseVendeur a ON v.idAdresse = a.idAdresse
+            WHERE v.codeVendeur = :id
+        ");
+        $stmt->execute([':id' => $code_vendeur]);
+        $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Mettre à jour les variables
+        $raisonSociale = $vendeur['raisonSocial'] ?? '';
+        $noSiren       = $vendeur['noSiren'] ?? '';
+        $prenom        = $vendeur['prenom'] ?? '';
+        $nom           = $vendeur['nom'] ?? '';
+        $email         = $vendeur['email'] ?? '';
+        $telephone     = $vendeur['noTelephone'] ?? '';
+        $adresse       = $vendeur['adresse_complete'] ?? '';
+        $ville         = $vendeur['ville'] ?? '';
+        $codePostal    = $vendeur['codePostal'] ?? '';
+        $pseudo        = $vendeur['pseudo'] ?? '';
+        $dateNaissance = $vendeur['dateNaissance'] ?? '';
+        $region        = $vendeur['region'] ?? '';
+        $pays          = $vendeur['pays'] ?? '';
+        $idAdresse     = $vendeur['idAdresse'] ?? '';
         
-        // Uploader la nouvelle photo
-        $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
+        echo "<p style='color: green; font-weight: bold; font-size: 18px;'>🎉 TOUTES LES MODIFICATIONS ONT ÉTÉ ENREGISTRÉES !</p>";
+        
+    } catch (PDOException $e) {
+        echo "<p style='color: red; font-weight: bold;'>❌ ERREUR PDO: " . $e->getMessage() . "</p>";
+        error_log("Erreur PDO: " . $e->getMessage());
     }
-
-    // Recharger les données après mise à jour
-    $stmt = $pdo->prepare("
-        SELECT v.*, a.codePostal, a.ville, a.region, a.pays, a.adresse as adresse_complete
-        FROM _vendeur v 
-        LEFT JOIN _adresseVendeur a ON v.idAdresse = a.idAdresse
-        WHERE v.codeVendeur = :id;
-    ");
-    $stmt->execute([':id' => $code_vendeur]);
-    $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Mettre à jour les variables
-    $raisonSociale = $vendeur['raisonSocial'] ?? '';
-    $noSiren       = $vendeur['noSiren'] ?? '';
-    $prenom        = $vendeur['prenom'] ?? '';
-    $nom           = $vendeur['nom'] ?? '';
-    $email         = $vendeur['email'] ?? '';
-    $telephone     = $vendeur['noTelephone'] ?? '';
-    $adresse       = $vendeur['adresse_complete'] ?? '';
-    $ville         = $vendeur['ville'] ?? '';
-    $codePostal    = $vendeur['codePostal'] ?? '';
-    $pseudo        = $vendeur['pseudo'] ?? '';
-    $dateNaissance = $vendeur['dateNaissance'] ?? '';
-    $region        = $vendeur['region'] ?? '';
-    $pays          = $vendeur['pays'] ?? '';
 }
 ?>
 
