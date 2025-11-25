@@ -413,6 +413,7 @@ if (isset($_SESSION['message_panier'])) {
         } ?>
     </div>
 </article>
+</section>
 <?php 
 if ($produit['stock'] > 0) {
     echo '<p class="stockDisponible">En stock (' . htmlspecialchars($produit['stock']) . 'restants) </p>';
@@ -423,7 +424,6 @@ if ($produit['stock'] > 0) {
         echo '<p class="stockIndisponible">Rupture de stock - Pas de réapprovisionnement prévu</p>';
     }
 } ?>
-</section>
 <hr>
 <section class="informations">
     <input type="checkbox" id="activeVoirPlus">
