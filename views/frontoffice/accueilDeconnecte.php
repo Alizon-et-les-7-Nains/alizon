@@ -137,7 +137,7 @@ require_once "../../controllers/prix.php";
             </div>
             <div class="listeArticle">
                 <?php 
-                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE dateAjout >= DATE_SUB(NOW(), INTERVAL 2 WEEK)");
+                $stmt = $pdo->prepare("SELECT * FROM _produit ORDER BY idProduit DESC LIMIT 10 ;");
                 $stmt->execute();
                 $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
