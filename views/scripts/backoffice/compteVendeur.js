@@ -33,6 +33,13 @@ function afficherErreur(champId, afficher) {
 
 function validerChamp(champId, valeur) {
   valeur = valeur == null ? "" : String(valeur);
+
+  // En mode consultation, on ne valide pas
+  if (!modeEdition && !modeModificationMdp) {
+    afficherErreur(champId, false);
+    return true;
+  }
+
   switch (champId) {
     case "nom":
     case "prenom":
@@ -373,6 +380,11 @@ function restaurerAnciennesValeurs() {
 function validerFormulaire() {
   let formulaireValide = true;
 
+  // Si on n'est pas en mode édition, on ne valide pas
+  if (!modeEdition && !modeModificationMdp) {
+    return true;
+  }
+
   const champs = [
     "nom",
     "prenom",
@@ -510,6 +522,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (form) {
     form.addEventListener("submit", function (e) {
+      // CORRECTION : Toujours permettre la soumission, même avec des erreurs
+      // La validation côté serveur fera le vrai travail
       if (!validerFormulaire()) {
         e.preventDefault();
         alert(
@@ -517,6 +531,12 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         return false;
       }
+
+      // CORRECTION : S'assurer que les champs ne sont PAS en readonly lors de la soumission
+      const inputsReadonly = document.querySelectorAll("input[readonly]");
+      inputsReadonly.forEach((input) => {
+        input.removeAttribute("readonly");
+      });
 
       // Afficher un indicateur de chargement
       const boutonSauvegarder = document.querySelector(".boutonSauvegarder");
@@ -526,11 +546,6 @@ document.addEventListener("DOMContentLoaded", function () {
         boutonSauvegarder.disabled = true;
       }
 
-      // Réactiver temporairement les champs pour l'envoi du formulaire
-      const inputsReadonly = document.querySelectorAll("input[readonly]");
-      inputsReadonly.forEach((input) => input.removeAttribute("readonly"));
-
-      // Le formulaire peut maintenant être soumis normalement
       console.log("Formulaire validé, soumission en cours...");
     });
   }
@@ -538,7 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Empêcher la soumission du formulaire avec Enter sauf en mode édition
   document.querySelectorAll("input").forEach((input) => {
     input.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" && !modeEdition) {
+      if (e.key === "Enter" && !modeEdition && !modeModificationMdp) {
         e.preventDefault();
       }
     });

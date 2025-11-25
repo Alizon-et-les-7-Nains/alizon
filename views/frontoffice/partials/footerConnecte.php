@@ -23,8 +23,7 @@
             <a href="../frontoffice/listeDeSouhait.php">Ma liste</a>
             <a href="../frontoffice/commandes.php">Mes commandes</a>
             <a href="../frontoffice/notifications.php">Mes notifications</a>
-            <hr>
-            <a href="../frontoffice/legalesConnecte.php">Mentions légales</a>
+            <a href="../frontoffice/legalesConnecte.php" class="separation">Mentions légales</a>
             <a href="../frontoffice/support.php">Support</a>
             <a href="../frontoffice/connexionClient.php">Déconnexion</a>
             <div id="triangle-codeHeader"></div>
