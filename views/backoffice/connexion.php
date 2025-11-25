@@ -64,6 +64,24 @@
                     <button type="submit" id="btnConnexion" class="btn_connexion" disabled>Se connecter</button>
                 </div>
             </form>
+
+            <p id="error">
+                <?php
+                    if (isset($_GET['error'])) {
+                        switch ($_GET['error']) {
+                            case "1":
+                                echo "Identifiants invalides";
+                                break;
+                            case "3":
+                                echo "Session expirée";
+                                break;
+                            default:
+                                echo "Erreur innatendue";
+                                break;
+                        }
+                    }
+                ?>
+             </p>
         </div>
 
         <p class="text-footer">

@@ -5831,6 +5831,17 @@ dialog.reassort form input {
   overflow-x: hidden;
   padding: 20px;
 }
+.connexionVendeur #error {
+  background-color: #f36f6f;
+  color: #f14e4e;
+  font-family: "open-sans";
+  font-weight: bold;
+  padding: 1em;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #f14e4e;
+  border-radius: 8px;
+}
 .connexionVendeur .triskiel {
   position: absolute;
   top: 0;
