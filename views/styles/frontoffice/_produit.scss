@@ -50,19 +50,35 @@
         border-top-right-radius: 16px;
     }
 
-    .banniere img{
+    .imgBanniere{
         position: absolute;
         height: 140px;
         width: auto;
-        z-index: 2;
+        z-index: 1;
     }
 
     .banniere h2{
         position: absolute;
         top: 50px;
-        left: 25px;
+        left: 33px;
         color: $color-white;
         z-index: 10000;
+    }
+
+    .poly:nth-child(1){
+        position: absolute;
+        top: 35px;
+        left: 33px;
+        width: auto;
+        z-index: 100;
+    }
+
+    .poly:nth-child(2){
+        position: absolute;
+        top: 35px;
+        left: 33px;
+        width: auto;
+        z-index: 100;
     }
 
     #imageBouteille{
