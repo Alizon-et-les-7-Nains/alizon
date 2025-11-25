@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (Exception $e) {
         $pdo->rollBack();
-        header("Location: ../backoffice/compteVendeur.php?error=1");
+        echo "Erreur SQL : " . $e->getMessage();
         exit();
     }
 }
