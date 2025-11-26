@@ -167,7 +167,7 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
                     <div></div>
                 </div>
                 <div class="titreEtProduit">
-                    <h1> Ajouter une remise pour ce produit </h1>
+                    <h1> Modifier une remise pour ce produit </h1>
                     <section>
                         <article>
                             <img class="produit" src="${imgURL}" alt="">
