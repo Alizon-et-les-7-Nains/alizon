@@ -31,32 +31,41 @@ if (!$idAdresse) {
 
 // Traitement du formulaire
 
-// Gestion de la photo de profil
-$photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil' . $code_vendeur;
-$extension = '';
-
-$extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-foreach ($extensionsPossibles as $ext) {
-    if (file_exists($photoPath . '.' . $ext)) {
-        $extension = '.' . $ext;
-        break;
-    }
-}
-
-// Upload de la nouvelle photo
-if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-    // Supprimer les anciennes photos
-    foreach ($extensionsPossibles as $ext) {
-        $oldFile = $photoPath . '.' . $ext;
-        if (file_exists($oldFile)) {
-            unlink($oldFile);
+    // Traitement du formulaire POST (si soumis)
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // ICI vous devez traiter les données du formulaire
+        // (mise à jour du profil vendeur)
+        
+        // Gestion de l'upload de la photo de profil
+        if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+            $photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil' . $code_vendeur;
+            
+            // Supprimer les anciennes photos
+            $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+            foreach ($extensionsPossibles as $ext) {
+                $oldFile = $photoPath . '.' . $ext;
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
+            }
+            
+            // Uploader la nouvelle photo
+            $newExtension = strtolower(pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION));
+            move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . '.' . $newExtension);
         }
     }
-    
-    // Uploader la nouvelle photo
-    $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-    move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
-}
+
+    // Déterminer l'extension de la photo actuelle pour affichage
+    $photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil' . $code_vendeur;
+    $extension = '';
+
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    foreach ($extensionsPossibles as $ext) {
+        if (file_exists($photoPath . '.' . $ext)) {
+            $extension = '.' . $ext;
+            break;
+        }
+    }
 
 // Récupération des informations du vendeur pour affichage
 $stmt = $pdo->prepare("
