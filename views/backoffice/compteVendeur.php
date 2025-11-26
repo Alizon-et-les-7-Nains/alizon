@@ -94,6 +94,7 @@ $pays          = $vendeur['pays'] ?? '';
     <?php include 'partials/header.php'; ?>
 
     <?php
+        var_dump($_FILES['photoProfil']);
         $currentPage = basename(__FILE__);
         require_once './partials/aside.php';
     ?>
