@@ -201,8 +201,9 @@ body {
       display: none;
       visibility: hidden;
     }
-    .headerFront .search-wrapper input[type=search] {
-      width: 300px !important;
+    .search-wrapper input[type="search"] {
+      padding: 10px 0px 10px 10px;
+      width: 300px;
     }
   }
 
