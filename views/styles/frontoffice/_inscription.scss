@@ -31,6 +31,11 @@ $bg-z: 0;
     font-family: "lora";
     font-weight: bold;
 
+    a{
+      font-size: 12px;
+      text-align: center;
+    }
+
     &::before {
       content: "";
       position: absolute;

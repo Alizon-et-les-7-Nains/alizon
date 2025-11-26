@@ -77,10 +77,13 @@
           <br />
 
           
+
           <!-- Bouton de soumission -->
           <input id="submitButton" type="submit" value="S'inscrire"/>
+
+          <a href="connexionClient.php">Vous avez déjà un compte ? Connectez-vous</a>
         </form> 
-        <a href="connexionClient.php">Vous avez déjà un compte ? Connectez-vous</a>
+        
         <script src="../../controllers/Chiffrement.js"></script>
         <script>
             // Eléments du DOM
