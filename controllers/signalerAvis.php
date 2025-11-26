@@ -47,5 +47,5 @@ try {
     }
 } catch (PDOException $e) {
     error_log($e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Erreur SQL : ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Une erreur technique est survenue.']);
 }
