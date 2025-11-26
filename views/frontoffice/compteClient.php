@@ -120,8 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
-    <?php echo $photoPath;
-    echo $id_client;
+    <?php echo $photoPath . "+" ;
+    echo $id_client . "+";
     echo $extension;
     include 'partials/headerConnecte.php'; ?>
 
