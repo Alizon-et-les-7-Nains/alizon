@@ -34,7 +34,7 @@ if (empty($titre) || empty($message)) {
 
 try {
     $sql = "INSERT INTO _signalement 
-        (idProduitSignale, idClientSignale, idClientSignaleur, titre, message, dateSignalement) 
+        (idProduitSignale, idClientSignale, idSignaleur, titre, message, dateSignalement) 
         VALUES (?, ?, ?, ?, ?, NOW())";
 
     $stmt = $pdo->prepare($sql);
@@ -47,5 +47,5 @@ try {
     }
 } catch (PDOException $e) {
     error_log($e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Une erreur technique est survenue.']);
+    echo json_encode(['success' => false, 'message' => 'Erreur SQL : ' . $e->getMessage()]);
 }

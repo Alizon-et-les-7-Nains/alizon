@@ -523,7 +523,22 @@ if ($produit['stock'] > 0) {
         $isOwnReview = isset($_SESSION['user_id']) && $_SESSION['user_id'] == $avis['idClient'];
         ?>
         <article>
-            <img src="../../public/images/pp.png" id="pp">
+            <?php
+            // Construire le chemin de la photo de profil
+            $photoProfilPath = "/images/photoProfilClient/photo_profil" . $avis['idClient'];
+            $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+            $photoProfilUrl = "../../public/images/pp.png"; // Par défaut
+
+            // Vérifier si une photo de profil existe
+            foreach ($extensionsPossibles as $ext) {
+                $cheminComplet = "/var/www/html" . $photoProfilPath . "." . $ext;
+                if (file_exists($cheminComplet)) {
+                    $photoProfilUrl = $photoProfilPath . "." . $ext;
+                    break;
+                }
+            }
+            ?>
+            <img src="<?php echo htmlspecialchars($photoProfilUrl); ?>" id="pp" alt="Photo de profil de <?php echo htmlspecialchars($client['pseudo']); ?>">
             <div>
                 <div class="vertical">
                     <div class="horizontal">
@@ -865,7 +880,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 const formData = new FormData(this);
 
-                fetch('../controllers/signalerAvis.php', {
+                fetch('../../controllers/signalerAvis.php', {
                     method: 'POST',
                     body: formData
                 })
