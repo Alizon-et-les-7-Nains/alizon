@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //verification et upload de la nouvelle photo de profil
     $photoPathBase = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
+    $photoPath = null;
 
     $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
     $extension = '';
@@ -130,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php 
                         
                         if (file_exists($photoPathBase.$extension)) {
-                            echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'" alt="photoProfil" id="imageProfile">';
+                            echo '<img src="/images/photoProfilClient/photo_profil"' . $id_client . 'alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
