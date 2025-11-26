@@ -405,7 +405,7 @@ if (isset($_SESSION['message_panier'])) {
         <hr>
         <div class="ligneActions">
             <img src="../../public/images/camion.png" alt="">
-            <p>Livraison <b>GRATUITE</b> - Expédié par <b>mondial relais</b>. Arrivée entre le <b>mar. 21 septembre - ven. 24 septembre</b></p>
+            <p>Livraison <b>***</b> - Expédié par <b>***</b>. Arrivée entre le <b>***</b></p>
         </div>
         <div class="ligneActions">
             <img src="../../public/images/emplacement.png" alt="">
