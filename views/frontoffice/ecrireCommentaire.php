@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileName = null;
             
             if (!empty($_FILES['photo']['name'])) {
-                $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/images/";
+                $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/images/imagesAvis/";
                 
                 
                 $fileExtension = strtolower(pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION));
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (in_array($fileExtension, $allowedExtensions)) {
                     $fileName = uniqid('avis_') . '.' . $fileExtension;
                     $targetFile = $targetDir . $fileName;
-                        $fileName = "/images/imagesAvis" . $fileName;
+                        $fileName = "/images/imagesAvis/" . $fileName;
                 } else {
                     $errors[] = "Format d'image non autorisé. Utilisez JPG, PNG ou GIF.";
                 }
