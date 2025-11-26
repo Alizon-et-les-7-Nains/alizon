@@ -167,10 +167,6 @@ body {
   .headerFront .headerMain {
     justify-content: space-between;
   }
-  .headerFront .headerMain div * {
-    margin-left: 1.5px;
-    margin-right: 1.5px;
-  }
   .headerFront .categorie {
     padding: 8px 20px;
   }
@@ -3022,7 +3018,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     align-items: center;
   }
   .acceuil .banniere, .acceuil .banniere div {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
   .acceuil .banniere img {
     max-width: 170px;
@@ -3039,8 +3036,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .acceuil .banniere div {
     background-color: #E4D9FF;
-    display: block;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
   }
   .acceuil .nomCategorie h2 {
     font-size: 30px;
