@@ -311,18 +311,20 @@ $cart = getCurrentCart($pdo, $idClient);
                         if ($item['stock'] > 0) {
                             echo '<h4 class="stockDisponible">En stock</h4>';
                         } else {
+                            // Handle out of stock
                             if ($item['dateReassort'] !== null) {
                                 echo '<h4 style="color: #ff4444;">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($item['dateReassort']) . '</h4>';
-                                ?> 
-                                <script>removeFromCartInDatabase($pdo, $idClient, $idProduit)</script>
-                                <?php
                             } else {
                                 echo '<h4 style="color: #ff4444;">Rupture de stock - Pas de réapprovisionnement prévu</h4>';
-                                ?> 
-                                <script>removeFromCartInDatabase($pdo, $idClient, $idProduit)</script>
-                                <?php
                             }
-                        } ?>
+
+                            // EXECUTE PHP DIRECTLY (No <script> tags)
+                            removeFromCartInDatabase($pdo, $idClient, $idProduit);
+                            
+                            // Optional: reload page to refresh cart visually, or continue to skip rendering buttons below
+                            // header("Refresh:0"); 
+                        }
+                        ?>
                     </div>
                     <div class="quantiteProduit">
                         <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
