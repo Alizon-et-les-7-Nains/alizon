@@ -483,7 +483,7 @@ if ($produit['stock'] > 0) {
     </div> 
     <label for="activeVoirPlus" class="voirPlus"> </label> 
 </section>
-<hr>
+<hr class="margin-top-2em">
 <section class="sectionAvis">
     <h2>Ce qu'en disent nos clients</h2>
     <div class="product-rating">
