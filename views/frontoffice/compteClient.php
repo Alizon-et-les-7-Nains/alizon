@@ -121,6 +121,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <?php echo $photoPath;
+    echo $id_client;
+    echo $extension;
     include 'partials/headerConnecte.php'; ?>
 
     <main class="mainCompteClient">
@@ -131,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php 
                         
                         if (file_exists($photoPath)) {
-                            echo '<img src="' . $photoPath . '" alt="photoProfil" id="imageProfile">';
+                            echo '<img src="/images/photoProfilClient/photo_profil"' . $id_client . $extension . 'alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
@@ -150,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <article>
                     <div><p><?php echo htmlspecialchars($adresse1 ?? ''); ?></p></div>
-                    <div><p><?php echo htmlspecialchars($adresse2 ?? ''); ?></p></div>
+                    <div><p><?php echo htmlspecialchars(!empty($adresse2) ? $adresse2 : 'Complément d\'adresse'); ?></p></div>
                     <div class="double-champ">
                         <div><p><?php echo htmlspecialchars($codePostal ?? ''); ?></p></div>
                         <div><p><?php echo htmlspecialchars($ville ?? ''); ?></p></div>
