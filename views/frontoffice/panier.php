@@ -48,7 +48,7 @@ function getCurrentCart($pdo, $idClient) {
     if ($panier) {
         $idPanier = intval($panier['idPanier']); 
 
-        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit, p.stock, p.dateReassort as qty, i.URL as img
                 FROM _produitAuPanier pa
                 JOIN _produit p ON pa.idProduit = p.idProduit
                 LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
