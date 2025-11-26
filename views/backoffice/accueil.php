@@ -145,18 +145,18 @@ $commandes = $commandesSTMT->fetchAll(PDO::FETCH_ASSOC);
             <h1>Derniers Avis</h1>
             <article>
                 <?php
-$avisSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/derniersAvis.sql'));
-$avisSTMT->execute([':idVendeur' => $_SESSION['id']]);
-$avis = $avisSTMT->fetchAll(PDO::FETCH_ASSOC);
-    if (count($avis) == 0) echo "<h2>Aucun avis</h2>";
-    foreach ($avis as $avi) {
-        $imagesSTMT = $pdo->prepare("SELECT URL FROM _imageAvis WHERE idProduit = :idProduit AND idClient = :idClient");
-$imagesSTMT->execute([
-    ':idProduit' => $avi['idProduit'],
-    ':idClient' => $avi['idClient']
-]);
-$imagesAvis = $imagesSTMT->fetchAll(PDO::FETCH_ASSOC);
-        $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
+        $avisSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/derniersAvis.sql'));
+        $avisSTMT->execute([':idVendeur' => $_SESSION['id']]);
+        $avis = $avisSTMT->fetchAll(PDO::FETCH_ASSOC);
+            if (count($avis) == 0) echo "<h2>Aucun avis</h2>";
+            foreach ($avis as $avi) {
+                $imagesSTMT = $pdo->prepare("SELECT URL FROM _imageAvis WHERE idProduit = :idProduit AND idClient = :idClient");
+                $imagesSTMT->execute([
+                    ':idProduit' => $avi['idProduit'],
+                    ':idClient' => $avi['idClient']
+                ]);
+                $imagesAvis = $imagesSTMT->fetchAll(PDO::FETCH_ASSOC);
+                $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
         $html = "
         <table>
             <tr>
@@ -182,7 +182,7 @@ $imagesAvis = $imagesSTMT->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($imagesAvis as $imageAvi) {
                         $urlImage = $imageAvi['URL'];
                         if (strpos($urlImage, '/images/') !== 0) {
-                            $urlImage = '/images/imagesAvis/' . $urlImage; 
+                            $urlImage = '/images/imagesAvis/' . $urlImage;
                         }
                         $html .= "<img src='" . htmlspecialchars($urlImage) . "' class='imageAvis'>";
                     }
