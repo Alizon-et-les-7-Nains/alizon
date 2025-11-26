@@ -5430,7 +5430,11 @@ dialog.reassort form input {
   position: relative;
   width: 100%;
 }
-.pageProduit h1, .pageProduit h2, .pageProduit h3, .pageProduit h4, .pageProduit p {
+.pageProduit h1,
+.pageProduit h2,
+.pageProduit h3,
+.pageProduit h4,
+.pageProduit p {
   color: #273469;
 }
 .pageProduit #descriptionCourte {
@@ -5511,10 +5515,16 @@ dialog.reassort form input {
   align-items: baseline;
   gap: 1em;
 }
-.pageProduit .infoPreviewProduit div h1, .pageProduit .infoPreviewProduit div h2, .pageProduit .infoPreviewProduit div h4 {
+.pageProduit .infoPreviewProduit div h1,
+.pageProduit .infoPreviewProduit div h2,
+.pageProduit .infoPreviewProduit div h4 {
   margin: 0.5em 0;
 }
-.pageProduit .infoPreviewProduit h1, .pageProduit .infoPreviewProduit h2, .pageProduit .infoPreviewProduit h3, .pageProduit .infoPreviewProduit h4, .pageProduit .infoPreviewProduit p {
+.pageProduit .infoPreviewProduit h1,
+.pageProduit .infoPreviewProduit h2,
+.pageProduit .infoPreviewProduit h3,
+.pageProduit .infoPreviewProduit h4,
+.pageProduit .infoPreviewProduit p {
   margin: 0 0;
 }
 .pageProduit .infoPreviewProduit a {
@@ -5522,7 +5532,8 @@ dialog.reassort form input {
   float: right;
   color: #273469;
 }
-.pageProduit #prix h1, .pageProduit #prix h3 {
+.pageProduit #prix h1,
+.pageProduit #prix h3 {
   margin: 0.2em 0;
   font-weight: 300;
 }
@@ -5558,7 +5569,8 @@ dialog.reassort form input {
   border-radius: 8px;
   margin: 0 0;
 }
-.pageProduit .version h3, .pageProduit .version p {
+.pageProduit .version h3,
+.pageProduit .version p {
   margin: 0.2em 0;
 }
 .pageProduit .voirPlus {
@@ -5592,10 +5604,14 @@ dialog.reassort form input {
 .pageProduit #plusDarticles {
   margin: 0 0;
 }
-.pageProduit .actionsProduit h1, .pageProduit h2, .pageProduit h3, .pageProduit h4 {
+.pageProduit .actionsProduit h1,
+.pageProduit h2,
+.pageProduit h3,
+.pageProduit h4 {
   margin: 0 0;
 }
-.pageProduit .actionsProduit p, .pageProduit .ligneActions {
+.pageProduit .actionsProduit p,
+.pageProduit .ligneActions {
   margin: 0.5em 0;
   color: black;
 }
@@ -5610,7 +5626,8 @@ dialog.reassort form input {
   width: 40px;
   height: 40px;
 }
-.pageProduit .ligneActions p, .pageProduit .ligneActions a {
+.pageProduit .ligneActions p,
+.pageProduit .ligneActions a {
   color: #273469;
 }
 .pageProduit .bouton {
@@ -5740,7 +5757,10 @@ dialog.reassort form input {
   font-size: 18px;
   cursor: pointer;
 }
-.pageProduit .informations ul, .pageProduit .informations h3, .pageProduit .informations h4, .pageProduit .informations p {
+.pageProduit .informations ul,
+.pageProduit .informations h3,
+.pageProduit .informations h4,
+.pageProduit .informations p {
   font-size: 18px;
 }
 .pageProduit .informations ul li p {
@@ -6248,15 +6268,17 @@ dialog.reassort form input {
   color: #273469;
   font-weight: 500;
 }
-.pageProduit .modal-signalement .modal-content .groupe-input input, .pageProduit .modal-signalement .modal-content .groupe-input textarea {
-  width: 100%;
+.pageProduit .modal-signalement .modal-content .groupe-input input,
+.pageProduit .modal-signalement .modal-content .groupe-input textarea {
+  width: 98%;
   padding: 10px 0 10px 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-family: inherit;
   resize: vertical;
 }
-.pageProduit .modal-signalement .modal-content .groupe-input input:focus, .pageProduit .modal-signalement .modal-content .groupe-input textarea:focus {
+.pageProduit .modal-signalement .modal-content .groupe-input input:focus,
+.pageProduit .modal-signalement .modal-content .groupe-input textarea:focus {
   outline: 2px solid #273469;
   border-color: transparent;
 }
