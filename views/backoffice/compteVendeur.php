@@ -32,27 +32,19 @@ if (!$idAdresse) {
 // Traitement du formulaire
 
     // Gestion de la photo de profil
-    //verification et upload de la nouvelle photo de profil
-    $photoPathBase = '/var/www/html/images/photoProfilVendeur/photo_profil'.$code_vendeur;
-    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!empty($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+            $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+            $photoPathBase = '/var/www/html/images/photoProfilVendeur/photo_profil'.$code_vendeur;
 
-    // Cherche l'extension actuelle si une image existe
-    $extension = '';
-    foreach ($extensionsPossibles as $ext) {
-        if (file_exists($photoPathBase . '.' . $ext)) {
-            $extension = '.' . $ext;
-            break;
-        }
-    }
+            // Supprimer l'ancien fichier
+            foreach (['png','jpg','jpeg','webp','svg'] as $ext) {
+                $ancienFichier = $photoPathBase.'.'.$ext;
+                if (file_exists($ancienFichier)) unlink($ancienFichier);
+            }
 
-    // Upload du nouveau fichier si présent
-    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        // Supprime l'ancien fichier existant
-        if ($extension != '') {
-            unlink($photoPathBase . $extension);
+            move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPathBase.$extension);
         }
-        $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPathBase.$extension);
     }
 
 // Récupération des informations du vendeur pour affichage
