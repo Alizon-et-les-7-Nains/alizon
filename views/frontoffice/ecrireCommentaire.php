@@ -157,6 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="produit.php?id=<?php echo $productId; ?>" class="bouton boutonRose" style="display: inline-block; text-align: center; text-decoration: none; margin-left: 10px;">Annuler</a>
         </form>
     </section>
+    <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
 </main>
 <footer>
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
