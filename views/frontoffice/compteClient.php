@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php 
                         
                         if (file_exists($photoPath)) {
-                            echo '<img src="/images/photoProfilClient/photo_profil"' . $id_client . 'alt="photoProfil" id="imageProfile">';
+                            echo '<img src="' . $photoPath . '" alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
