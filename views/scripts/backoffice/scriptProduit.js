@@ -718,11 +718,6 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
                                 <p><strong>€</strong></p>
                             </div>
                             <div class="prixRes">
-                                <p>Baniere : </p>
-                                <p><strong class="dataBaniere">0</strong></p>
-                                <p><strong>€</strong></p>
-                            </div>
-                            <div class="prixRes">
                                 <p>Durée : </p>
                                 <p><strong class="dataDuree">0</strong></p>
                                 <p><strong>&nbsp jours</strong></p>
