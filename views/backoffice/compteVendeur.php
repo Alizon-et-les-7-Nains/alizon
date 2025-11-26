@@ -33,26 +33,22 @@ if (!$idAdresse) {
 
     // Gestion de la photo de profil
     //verification et upload de la nouvelle photo de profil
-    $photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil'.$code_vendeur;
-
+    $photoPathBase = '/var/www/html/images/photoProfilVendeur/photo_profil'.$code_vendeur;
     $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-    $extension = '';
 
+    // Supprime l'ancien fichier existant
     foreach ($extensionsPossibles as $ext) {
-        if (file_exists($photoPath . '.' . $ext)) {
-            $extension = '.' . $ext;
+        $oldFile = $photoPathBase . '.' . $ext;
+        if (file_exists($oldFile)) {
+            unlink($oldFile);
             break;
         }
     }
 
-    if (file_exists($photoPath)) {
-        unlink($photoPath); // supprime l'ancien fichier
-    }
-
+    // Upload du nouveau fichier si présent
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-        $extension = '.'.$extension;
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
+        $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPathBase.$extension);
     }
 
 // Récupération des informations du vendeur pour affichage
@@ -105,7 +101,7 @@ $pays          = $vendeur['pays'] ?? '';
                 <div class="photo-profil-container">
                     <div class="photo-profil">
                         <?php 
-                        if (file_exists($photoPath . $extension)) {
+                        if (file_exists($photoPathBase.$extension)) {
                             echo '<img src="/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension . '" alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
