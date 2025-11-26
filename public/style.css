@@ -162,6 +162,7 @@ body {
 @media (max-width: 1300px) {
   .headerFront .search-wrapper input[type=search] {
     padding: 10px 0px 10px 10px;
+    width: 400px;
   }
   .headerFront .headerMain {
     justify-content: space-between;
@@ -182,7 +183,7 @@ body {
   display: flex;
   align-items: center;
 }
-@media (max-width: 638px) {
+@media (max-width: 720px) {
   .headerFront .icons {
     display: none;
     visibility: hidden;
@@ -193,6 +194,9 @@ body {
   .headerFront #burgerIcon {
     display: none;
     visibility: hidden;
+  }
+  .headerFront .headerFront .search-wrapper input[type=search] {
+    width: 300px;
   }
 }
 @media (max-width: 500px) {

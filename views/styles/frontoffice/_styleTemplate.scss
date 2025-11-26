@@ -162,6 +162,7 @@ body {
   @media (max-width: 1300px) {
     .search-wrapper input[type="search"] {
       padding: 10px 0px 10px 10px;
+      width: 400px;
     }
 
     .headerMain {
@@ -188,7 +189,7 @@ body {
     align-items: center;
   }
 
-  @media (max-width: 638px) {
+  @media (max-width: 720px) {
     .icons {
       display: none;
       visibility: hidden;
@@ -199,6 +200,9 @@ body {
     #burgerIcon {
       display: none;
       visibility: hidden;
+    }
+    .headerFront .search-wrapper input[type=search] {
+      width: 300px;
     }
   }
 
