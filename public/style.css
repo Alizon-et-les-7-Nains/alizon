@@ -200,12 +200,6 @@ body {
     width: 300px;
   }
 }
-@media (max-width: 500px) {
-  .headerFront b {
-    display: none;
-    visibility: hidden;
-  }
-}
 
 #burgerIcon {
   display: none;
