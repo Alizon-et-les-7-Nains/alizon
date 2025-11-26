@@ -10,7 +10,6 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: ../../views/frontoffice/connexionClient.php');
     exit;
 }
-include '../../views/frontoffice/partials/footerConnecte.php';
 
 $idClient = $_SESSION['user_id'];
 
@@ -27,7 +26,7 @@ function getCommandes($pdo, $idClient, $filtre) {
             JOIN _panier p ON c.idPanier = p.idPanier
             WHERE p.idClient = :idClient";
 
-    if ($filtre === 'cours') {
+if ($filtre === 'cours') {
         $sql .= " AND c.etatLivraison NOT IN ('Livrée', 'Annulé')";
     } elseif ($filtre === '2025') {
         $sql .= " AND YEAR(c.dateCommande) = 2025";
@@ -51,7 +50,7 @@ function getCommandes($pdo, $idClient, $filtre) {
                         WHERE co.idCommande = :idCommande
                         GROUP BY p.idProduit";
                         
-        $stmtProd = $pdo->prepare($sqlProduits);
+                        $stmtProd = $pdo->prepare($sqlProduits);
         $stmtProd->execute([':idCommande' => $idCommande]);
         $produits = $stmtProd->fetchAll(PDO::FETCH_ASSOC);
 
@@ -63,7 +62,7 @@ function getCommandes($pdo, $idClient, $filtre) {
             $dateExpObj = new DateTime($row['dateExpedition']);
             $dateLivraisonFormatee = $dateExpObj->format('d/m/Y');
         }
-
+        
         $commandes[] = [
             'id' => $row['idCommande'],
             'date' => $dateCommandeFormatee,
@@ -74,7 +73,7 @@ function getCommandes($pdo, $idClient, $filtre) {
             'produits' => $produits
         ];
     }
-
+    
     return $commandes;
 }
 
@@ -101,13 +100,13 @@ if ($filtre === '2025') {
 ?>
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/style.css">
-    <link rel="icon" href="/public/images/logoBackoffice.svg">
-    <title>Alizon - Mes Commandes</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../public/style.css">
+        <link rel="icon" href="/public/images/logoBackoffice.svg">
+        <title>Alizon - Mes Commandes</title>
+    </head>
 <body class="pageCommandes">
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
@@ -127,26 +126,26 @@ if ($filtre === '2025') {
                 <option value="2024" <?php echo $filtre === '2024' ? 'selected' : ''; ?>>2024</option>
             </select>
         </section>
-
+        
         <?php if ($nombreCommandes === 0): ?>
             <section class="messageVide" style="text-align: center; padding: 60px 20px; font-size: 20px; color: #1e3a8a;">
                 <p><?php echo $messageVide; ?></p>
             </section>
-        <?php else: ?>
-            <?php foreach ($commandesAffichees as $commande): ?>
+            <?php else: ?>
+                <?php foreach ($commandesAffichees as $commande): ?>
                 <section class="commande">
                     <?php 
                         $nombreProduits = count($commande['produits']);
                         echo "<script>console.log(" . json_encode($commande) . ");</script>";
                         echo "<script>console.log(" . json_encode($commandesAffichees) . ");</script>";
-
-                    // if ($nombreProduits === 0) {
+                        
+                        // if ($nombreProduits === 0) {
                     //     echo "<div style='padding:20px;'>Détails des produits indisponibles</div>";
                     // }
                     
                     foreach ($commande['produits'] as $index => $produit): 
                         $imgSrc = !empty($produit['image']) ? htmlspecialchars($produit['image']) : '../../public/images/defaultImageProduit.png';
-                    ?>
+                        ?>
                         <section class="produit <?php echo ($index === $nombreProduits - 1) ? 'dernierProduit' : ''; ?>">
                             <div class="containerImg">
                                 <img src="<?php echo $imgSrc; ?>" alt="<?php echo htmlspecialchars($produit['nom']); ?>">
@@ -173,7 +172,7 @@ if ($filtre === '2025') {
                                 <a href="../../views/frontoffice/produit.php?id=<?= $produit['idProduit'] ?>">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Redo"></a>
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
                                     <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
-                                <?php else: ?>
+                                    <?php else: ?>
                                     <a href="">Annuler<img src="../../public/images/redoDarkBlue.svg" alt="Annuler"></a>
                                 <?php endif; ?>
                             </div>
@@ -200,10 +199,11 @@ if ($filtre === '2025') {
                         </div>
                     </section>
                 </section>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
         <?php endif; ?>
-
+        
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
 </body>
+<?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 </html>
