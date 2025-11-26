@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         codePostal = '$codePostal',
         complementAdresse = '$adresse2'
     WHERE idAdresse = '$idAdresse'");
-
+}
     //verification et upload de la nouvelle photo de profil
     $photoPathBase = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
     $photoPath = null;
