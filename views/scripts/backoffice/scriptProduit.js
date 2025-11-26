@@ -571,18 +571,12 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                         <div class="ajouterBaniere">
                             <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
-                        <p class="supprimer">supprimer ...</p>
                         <p><strong>Format accepté </strong>: .jpg uniquement</p>
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
                                 <p>Promotion : </p>
                                 <p><strong class="dataPromo">0</strong></p>
-                                <p><strong>€</strong></p>
-                            </div>
-                            <div class="prixRes">
-                                <p>Baniere : </p>
-                                <p><strong class="dataBaniere">0</strong></p>
                                 <p><strong>€</strong></p>
                             </div>
                             <div class="prixRes">
