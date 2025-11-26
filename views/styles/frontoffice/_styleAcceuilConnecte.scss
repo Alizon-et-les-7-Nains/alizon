@@ -86,8 +86,8 @@
         }
         .banniere div {
             background-color: #E4D9FF;
-            display: block;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
         }
         .nomCategorie h2 {
             font-size: 30px;
