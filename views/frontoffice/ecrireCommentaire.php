@@ -63,12 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $fileName = uniqid('avis_') . '.' . $fileExtension;
                     $targetFile = $targetDir . $fileName;
 
-                    if (!move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
-                        $errors[] = "Erreur lors de l'upload de l'image.";
-                        $fileName = null;
-                    } else {
-                        $fileName = "/images/imagesAvis/" . $fileName;
-                    }
+                    move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile);
+                    $fileName = "/images/imagesAvis/" . $fileName;
+                    
                 } else {
                     $errors[] = "Format d'image non autorisé. Utilisez JPG, PNG ou GIF.";
                 }
