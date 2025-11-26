@@ -62,26 +62,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }   
 
     //verification et upload de la nouvelle photo de profil
-    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
+    $photoPathBase = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
+    $photoPath = null;
 
     $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
     $extension = '';
 
     foreach ($extensionsPossibles as $ext) {
-        if (file_exists($photoPath . '.' . $ext)) {
+        if (file_exists($photoPathBase . '.' . $ext)) {
             $extension = '.' . $ext;
+            $photoPath = $photoPathBase . $extension;
             break;
         }
     }
 
-    if (file_exists($photoPath. $extension)) {
-        unlink($photoPath. $extension); // supprime l'ancien fichier
+    if (file_exists($photoPath)) {
+        unlink($photoPath);
     }
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-        $extension = '.'.$extension;
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
+
+        $newExt = strtolower(pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION));
+        $photoPath = $photoPathBase . '.' . $newExt;
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath);
+        $extension = '.' . $newExt;
     }
 
     //on recupère les infos du user pour les afficher
@@ -126,8 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="photo-container">
                     <?php 
                         
-                        if (file_exists($photoPath.$extension)) {
-                            echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'" alt="photoProfil" id="imageProfile">';
+                        if (file_exists($photoPathBase.$extension)) {
+                            echo '<img src="/images/photoProfilClient/photo_profil"' . $id_client . 'alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
