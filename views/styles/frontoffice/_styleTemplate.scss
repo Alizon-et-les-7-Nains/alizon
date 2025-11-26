@@ -167,11 +167,6 @@ body {
 
     .headerMain {
       justify-content: space-between;
-
-      div * {
-        margin-left: 1.5px;
-        margin-right: 1.5px;
-      }
     }
 
     .categorie {
@@ -201,17 +196,12 @@ body {
       display: none;
       visibility: hidden;
     }
-    .headerFront .search-wrapper input[type=search] {
-      width: 300px !important;
+    .search-wrapper input[type="search"] {
+      padding: 10px 0px 10px 10px;
+      width: 300px;
     }
   }
 
-  @media (max-width: 500px) {
-    b {
-      display: none;
-      visibility: hidden;
-    }
-  }
 }
 #burgerIcon {
   display: none;

@@ -31,32 +31,29 @@ if (!$idAdresse) {
 
 // Traitement du formulaire
 
-// Gestion de la photo de profil
-$photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil' . $code_vendeur;
-$extension = '';
+    // Gestion de la photo de profil
+    //verification et upload de la nouvelle photo de profil
+    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
 
-$extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-foreach ($extensionsPossibles as $ext) {
-    if (file_exists($photoPath . '.' . $ext)) {
-        $extension = '.' . $ext;
-        break;
-    }
-}
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $extension = '';
 
-// Upload de la nouvelle photo
-if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-    // Supprimer les anciennes photos
     foreach ($extensionsPossibles as $ext) {
-        $oldFile = $photoPath . '.' . $ext;
-        if (file_exists($oldFile)) {
-            unlink($oldFile);
+        if (file_exists($photoPath . '.' . $ext)) {
+            $extension = '.' . $ext;
+            break;
         }
     }
-    
-    // Uploader la nouvelle photo
-    $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-    move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
-}
+
+    if (file_exists($photoPath)) {
+        unlink($photoPath); // supprime l'ancien fichier
+    }
+
+    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+        $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+        $extension = '.'.$extension;
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
+    }
 
 // Récupération des informations du vendeur pour affichage
 $stmt = $pdo->prepare("
@@ -275,6 +272,8 @@ $pays          = $vendeur['pays'] ?? '';
                 <button type="button" class="modifier-mdp boutonModifierMdp">Modifier le mot de passe</button>
             </div>
         </form>
+
+        <?php require_once './partials/retourEnHaut.php' ?>
     </main>
     <?php include 'partials/footer.php'; ?>
 

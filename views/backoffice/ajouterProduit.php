@@ -81,6 +81,8 @@ require_once '../../controllers/auth.php';
                 </div>
             </div>
         </form>
+
+        <?php require_once './partials/retourEnHaut.php' ?>
     </main>
 
     <script src="../../public/script.js"> </script>
