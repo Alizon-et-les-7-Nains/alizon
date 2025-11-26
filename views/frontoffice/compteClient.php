@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $codePostal = $_POST['codePostal'];
     $adresse1 = $_POST['adresse1'];
     $adresse2 = $_POST['adresse2'];
+    $adresse2 = trim($adresse2);
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
 
@@ -57,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ville = '$ville', 
         codePostal = '$codePostal',
         complementAdresse = '$adresse2'
-    WHERE idAdresse = '$idAdresse'");
+    WHERE idAdresse = '$idAdresse';");
 }
     //verification et upload de la nouvelle photo de profil
     $photoPathBase = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
