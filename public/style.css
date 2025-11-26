@@ -2968,6 +2968,23 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   z-index: 1000;
 }
 
+.status-red {
+  color: #f14e4e;
+}
+
+.status-green {
+  color: #259525;
+}
+
+.input-error {
+  border-color: #f14e4e !important;
+  outline: none;
+}
+
+.hidden {
+  display: none;
+}
+
 .acceuil .nomCategorie {
   display: flex;
   align-items: center;
