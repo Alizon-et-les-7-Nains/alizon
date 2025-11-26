@@ -10,56 +10,89 @@ if (!isset($_SESSION['user_id'])) {
 
 $id_client = $_SESSION['user_id'];
 
-$stmt = $pdo->query("SELECT idAdresse FROM saedb._client WHERE idClient = '$id_client'");
+$stmt = $pdo->prepare("SELECT idAdresse FROM saedb._client WHERE idClient = :idClient");
+$stmt->execute([":idClient" => $id_client]);
 $client = $stmt->fetch(PDO::FETCH_ASSOC);
 $idAdresse = $client['idAdresse'] ?? null;
 
 
 if (!$idAdresse) {
-    $pdo->query("INSERT INTO saedb._adresseClient (`adresse`, region, codePostal, ville, pays, complementAdresse) 
-                 VALUES (NULL, NULL, NULL, NULL, NULL, NULL)");
+    $pdo->prepare("
+        INSERT INTO saedb._adresseClient 
+        (adresse, region, codePostal, ville, pays, complementAdresse)
+        VALUES (NULL, NULL, NULL, NULL, NULL, NULL)
+    ")->execute();
+
     $idAdresse = $pdo->lastInsertId();
-    $pdo->query("UPDATE saedb._client SET idAdresse = $idAdresse WHERE idClient = $id_client");
+
+    $pdo->prepare("
+        UPDATE saedb._client 
+        SET idAdresse = :idAdresse 
+        WHERE idClient = :idClient
+    ")->execute([
+        ":idAdresse" => $idAdresse,
+        ":idClient"  => $id_client
+    ]);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    //update la BDD avec les nouvelles infos du user
-    $pseudo = $_POST['pseudo'];
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $email = $_POST['email'];
+    $pseudo        = $_POST['pseudo'];
+    $nom           = $_POST['nom'];
+    $prenom        = $_POST['prenom'];
+    $email         = $_POST['email'];
     $dateNaissance = $_POST['dateNaissance'];
-    $telephone = $_POST['telephone'];
-    $codePostal = $_POST['codePostal'];
-    $adresse1 = $_POST['adresse1'];
-    $adresse2 = $_POST['adresse2'];
-    $adresse2 = trim($adresse2);
-    $pays = $_POST['pays'];
-    $ville = $_POST['ville'];
+    $telephone     = $_POST['telephone'];
+    $codePostal    = $_POST['codePostal'];
+    $adresse1      = $_POST['adresse1'];
+    $adresse2      = $_POST['adresse2'];
+    $pays          = $_POST['pays'];
+    $ville         = $_POST['ville'];
 
-    $stmt = $pdo->query( 
-    "UPDATE saedb._client 
-    SET pseudo = '$pseudo', 
-        nom = '$nom', 
-        prenom = '$prenom', 
-        email = '$email', 
-        dateNaissance = '$dateNaissance',
-        noTelephone = '$telephone',
-        idAdresse = '$idAdresse'
-        WHERE idClient = '$id_client';
+    $stmt = $pdo->prepare("
+        UPDATE saedb._client 
+        SET pseudo = :pseudo,
+            nom = :nom,
+            prenom = :prenom,
+            email = :email,
+            dateNaissance = :dateNaissance,
+            noTelephone = :telephone,
+            idAdresse = :idAdresse
+        WHERE idClient = :idClient
     ");
 
+    $stmt->execute([
+        ":pseudo"        => $pseudo,
+        ":nom"           => $nom,
+        ":prenom"        => $prenom,
+        ":email"         => $email,
+        ":dateNaissance" => $dateNaissance,
+        ":telephone"     => $telephone,
+        ":idAdresse"     => $idAdresse,
+        ":idClient"      => $id_client
+    ]);
 
-    $stmt = $pdo->query(
-    "UPDATE saedb._adresseClient 
-    SET `adresse` = '$adresse1',
-        pays = '$pays',
-        ville = '$ville', 
-        codePostal = '$codePostal',
-        complementAdresse = '$adresse2'
-    WHERE idAdresse = '$idAdresse';");
+    /* ----- UPDATE _adresseClient ----- */
+    $stmt = $pdo->prepare("
+        UPDATE saedb._adresseClient 
+        SET adresse = :adresse1,
+            pays = :pays,
+            ville = :ville,
+            codePostal = :codePostal,
+            complementAdresse = :adresse2
+        WHERE idAdresse = :idAdresse
+    ");
+
+    $stmt->execute([
+        ":adresse1"   => $adresse1,
+        ":pays"       => $pays,
+        ":ville"      => $ville,
+        ":codePostal" => $codePostal,
+        ":adresse2"   => $adresse2,
+        ":idAdresse"  => $idAdresse
+    ]);
 }
+
     //verification et upload de la nouvelle photo de profil
     $photoPathBase = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
     $photoPath = null;
