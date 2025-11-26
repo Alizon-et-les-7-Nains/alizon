@@ -16,7 +16,7 @@ $idAdresse = $client['idAdresse'] ?? null;
 
 
 if (!$idAdresse) {
-    $pdo->query("INSERT INTO saedb._adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) 
+    $pdo->query("INSERT INTO saedb._adresseClient (adresse, `region`, codePostal, ville, pays, complementAdresse) 
                  VALUES (NULL, NULL, NULL, NULL, NULL, NULL)");
     $idAdresse = $pdo->lastInsertId();
     $pdo->query("UPDATE saedb._client SET idAdresse = $idAdresse WHERE idClient = $id_client");
@@ -120,8 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
-    <?php echo $photoPath;
-    include 'partials/headerConnecte.php'; ?>
+    <?php include 'partials/headerConnecte.php'; ?>
 
     <main class="mainCompteClient">
         
@@ -130,8 +129,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="photo-container">
                     <?php 
                         
-                        if (file_exists($photoPathBase.$extension)) {
-                            echo '<img src="/images/photoProfilClient/photo_profil"' . $id_client . 'alt="photoProfil" id="imageProfile">';
+                        if (file_exists($photoPath)) {
+                            echo '<img src="/images/photoProfilClient/photo_profil' . $id_client . $extension . '" alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
@@ -150,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <article>
                     <div><p><?php echo htmlspecialchars($adresse1 ?? ''); ?></p></div>
-                    <div><p><?php echo htmlspecialchars($adresse2 ?? ''); ?></p></div>
+                    <div><p><?php echo htmlspecialchars(!empty($adresse2) ? $adresse2 : 'Complément d\'adresse'); ?></p></div>
                     <div class="double-champ">
                         <div><p><?php echo htmlspecialchars($codePostal ?? ''); ?></p></div>
                         <div><p><?php echo htmlspecialchars($ville ?? ''); ?></p></div>
