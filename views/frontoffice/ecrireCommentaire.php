@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (in_array($fileExtension, $allowedExtensions)) {
                     $fileName = uniqid('avis_') . '.' . $fileExtension;
                     $targetFile = $targetDir . $fileName;
-                        $fileName = "/images/" . $fileName;
+                        $fileName = "/images/imagesAvis" . $fileName;
                 } else {
                     $errors[] = "Format d'image non autorisé. Utilisez JPG, PNG ou GIF.";
                 }
