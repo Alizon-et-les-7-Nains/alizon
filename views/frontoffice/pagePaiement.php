@@ -153,7 +153,6 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $idPanier = null;
         $items = [];
 
-        // CAS ACHAT DIRECT: produit reçu via POST
         if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])) {
             $idProduit = intval($_POST['idProduit']);
             $items[] = [
@@ -602,9 +601,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 // Afficher un message spécial pour l'achat direct
                 if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])): 
                 ?>
-                <div class="direct-purchase-notice">
-                    <p><strong>Achat direct</strong> - Quantité fixée à 1</p>
-                </div>
                 <?php endif; ?>
                 
                 <?php foreach ($cart as $item): 
