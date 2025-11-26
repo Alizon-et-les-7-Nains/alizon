@@ -39,25 +39,32 @@ function getPrixProduitAvecRemise($pdo, $idProduit) {
 }
 
 function getCurrentCart($pdo, $idClient) {
+    if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])) {
+        $idProduit = intval($_POST['idProduit']);
+        
+        $sql = "SELECT p.idProduit, p.nom, p.prix, i.URL as img
+                FROM _produit p
+                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                WHERE p.idProduit = ?";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idProduit]);
+        $produit = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($produit) {
+            $produit['qty'] = 1;
+            return [$produit];
+        }
+        return [];
+    }
+    
     $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
     $stmt->execute([$idClient]);
     $panier = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $cart = [];
 
-    if (isset($_POST['idProduit'])){
-        $id = $_POST['idProduit'];
-        $sql = "SELECT p.idProduit, p.nom, p.prix
-                 FROM _produit p
-                 LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-                 WHERE p.idProduit = $id";
-        
-        $stmt = $pdo->prepare($sql);
-        $cart = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : [];
-    }
-
-
-    else if ($panier) {
+    if ($panier) {
         $idPanier = intval($panier['idPanier']); 
 
         $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
@@ -69,10 +76,8 @@ function getCurrentCart($pdo, $idClient) {
         $stmt->execute([$idPanier]);
         $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     } else {
-        // Créer un nouveau panier vide si aucun n'existe
         $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
         $stmtCreate->execute([$idClient]);
-        // Le panier sera vide, mais au moins il existe
     }
     
     return $cart;

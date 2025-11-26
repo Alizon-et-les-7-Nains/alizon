@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileName = null;
             
             if (!empty($_FILES['photo']['name'])) {
-                $targetDir = "../../public/images/";
+                $targetDir = "/images/";
                 $fileExtension = strtolower(pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION));
                 $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
                 
