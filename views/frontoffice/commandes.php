@@ -8,9 +8,9 @@ session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../../views/frontoffice/connexionClient.php');
-    include '../../views/frontoffice/partials/footerConnecte.php';
     exit;
 }
+include '../../views/frontoffice/partials/footerConnecte.php';
 
 $idClient = $_SESSION['user_id'];
 
