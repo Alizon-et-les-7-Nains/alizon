@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } catch(PDOException $e) {
         $errors[] = "Erreur lors de l'insertion de l'avis : " . $e->getMessage();
-    }
+    } // test
 }
 ?>
 <!DOCTYPE html>
