@@ -162,6 +162,7 @@ body {
 @media (max-width: 1300px) {
   .headerFront .search-wrapper input[type=search] {
     padding: 10px 0px 10px 10px;
+    width: 400px;
   }
   .headerFront .headerMain {
     justify-content: space-between;
@@ -182,7 +183,7 @@ body {
   display: flex;
   align-items: center;
 }
-@media (max-width: 638px) {
+@media (max-width: 720px) {
   .headerFront .icons {
     display: none;
     visibility: hidden;
@@ -193,6 +194,9 @@ body {
   .headerFront #burgerIcon {
     display: none;
     visibility: hidden;
+  }
+  .headerFront .headerFront .search-wrapper input[type=search] {
+    width: 300px !important;
   }
 }
 @media (max-width: 500px) {
@@ -2964,6 +2968,23 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   z-index: 1000;
 }
 
+.status-red {
+  color: #f14e4e;
+}
+
+.status-green {
+  color: #259525;
+}
+
+.input-error {
+  border-color: #f14e4e !important;
+  outline: none;
+}
+
+.hidden {
+  display: none;
+}
+
 .acceuil .nomCategorie {
   display: flex;
   align-items: center;
@@ -4821,21 +4842,23 @@ main.backoffice-stocks section img:not(figure img) {
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
-main.backoffice-stocks section div:not(button.settings div) *:not(img) {
+main.backoffice-stocks section div.remise {
+  border: none !important;
+}
+main.backoffice-stocks section div:not(button.settings div, div.remise) *:not(img) {
   user-select: text;
 }
-main.backoffice-stocks section div:not(button.settings div) {
-  width: 855px;
+main.backoffice-stocks section div:not(button.settings div, div.remise) {
   padding: 1em;
   padding-bottom: 0;
   background-color: #e4d9ff;
   border-radius: 16px;
   font-family: "open-sans";
 }
-main.backoffice-stocks section div:not(button.settings div) table:not(table table) {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table:not(table table) {
   border-spacing: 2em 0;
 }
-main.backoffice-stocks section div:not(button.settings div) button.settings {
+main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings {
   border: none;
   background: none;
   display: flex;
@@ -4844,13 +4867,13 @@ main.backoffice-stocks section div:not(button.settings div) button.settings {
   height: 23px;
   justify-self: right;
 }
-main.backoffice-stocks section div:not(button.settings div) button.settings div {
+main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div {
   background-color: #273469;
   border-radius: 8px;
   width: 25px;
   height: 3px;
 }
-main.backoffice-stocks section div:not(button.settings div) button.settings div div {
+main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div div {
   transition: all 0.2s ease;
   background-color: #273469;
   width: 7px;
@@ -4860,30 +4883,30 @@ main.backoffice-stocks section div:not(button.settings div) button.settings div 
   top: -2px;
   left: 4px;
 }
-main.backoffice-stocks section div:not(button.settings div) button.settings div div.right {
+main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div div.right {
   left: 14px;
 }
-main.backoffice-stocks section div:not(button.settings div) button.settings:hover {
+main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings:hover {
   cursor: pointer;
 }
-main.backoffice-stocks section div:not(button.settings div) figure {
+main.backoffice-stocks section div:not(button.settings div, div.remise) figure {
   display: flex;
   gap: 0.25em;
   align-items: center;
 }
-main.backoffice-stocks section div:not(button.settings div) ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise) ul {
   list-style: none;
 }
-main.backoffice-stocks section div:not(button.settings div) .type {
+main.backoffice-stocks section div:not(button.settings div, div.remise) .type {
   text-transform: capitalize;
 }
-main.backoffice-stocks section div:not(button.settings div) table {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table {
   width: 100%;
 }
-main.backoffice-stocks section div:not(button.settings div) table th {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table th {
   text-align: left;
 }
-main.backoffice-stocks section div:not(button.settings div) table tr th {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table tr th {
   text-align: left;
   font-weight: bold;
   font-size: 20px;
@@ -4892,54 +4915,54 @@ main.backoffice-stocks section div:not(button.settings div) table tr th {
   justify-self: center;
   padding: 0;
 }
-main.backoffice-stocks section div:not(button.settings div) table figure {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table figure {
   color: #FFD000;
   justify-content: flex-start;
   margin: 0;
   padding: 0;
 }
-main.backoffice-stocks section div:not(button.settings div) table table, main.backoffice-stocks section div:not(button.settings div) table ul:not(ul ul) {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table table, main.backoffice-stocks section div:not(button.settings div, div.remise) table ul:not(ul ul) {
   background-color: #fffefa;
   border-style: solid;
   border-width: 2px;
   border-color: #000000;
   border-radius: 16px;
 }
-main.backoffice-stocks section div:not(button.settings div) table table {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table table {
   padding-right: 1em;
   width: 100%;
 }
-main.backoffice-stocks section div:not(button.settings div) table table tr:nth-child(2) th {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table table tr:nth-child(2) th {
   text-transform: capitalize;
   padding-top: 1.5em;
   padding-bottom: 0;
 }
-main.backoffice-stocks section div:not(button.settings div) table table tr:nth-child(3) th {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table table tr:nth-child(3) th {
   padding: 0;
   vertical-align: bottom;
   height: 60px;
 }
-main.backoffice-stocks section div:not(button.settings div) table ul h3 {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table ul h3 {
   margin: 0.5em;
 }
-main.backoffice-stocks section div:not(button.settings div) table ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table ul {
   padding-left: 0;
 }
-main.backoffice-stocks section div:not(button.settings div) table ul ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul {
   display: flex;
   justify-content: space-between;
   padding: 1em;
   align-items: center;
 }
-main.backoffice-stocks section div:not(button.settings div) table ul ul li:first-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul li:first-child {
   font-size: 30px;
   font-weight: bold;
 }
-main.backoffice-stocks section div:not(button.settings div) table ul ul li:last-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul li:last-child {
   font-style: italic;
   color: #6e6e6e;
 }
-main.backoffice-stocks section div:not(button.settings div) > ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise) > ul {
   margin-top: -0.5em;
   display: flex;
   align-items: center;
@@ -4948,13 +4971,13 @@ main.backoffice-stocks section div:not(button.settings div) > ul {
   margin-left: -2em;
   font-weight: bold;
 }
-main.backoffice-stocks section div:not(button.settings div) > ul figure img {
+main.backoffice-stocks section div:not(button.settings div, div.remise) > ul figure img {
   height: 20px;
 }
-main.backoffice-stocks section div:not(button.settings div) > ul figure {
+main.backoffice-stocks section div:not(button.settings div, div.remise) > ul figure {
   gap: 0.25em;
 }
-main.backoffice-stocks section div:not(button.settings div) > ul li:last-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise) > ul li:last-child {
   color: #f14e4e;
 }
 main.backoffice-stocks section:first-child div:not(button.settings div) {

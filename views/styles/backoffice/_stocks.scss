@@ -34,12 +34,15 @@ main.backoffice-stocks {
                 right: 0.5em;
             }
         }
+
+        div.remise {
+            border: none !important;
+        }
         
-        div:not(button.settings div) {
+        div:not(button.settings div, div.remise) {
             *:not(img) {
                 user-select: text;
             }
-            width: 855px;
             padding: 1em;
             padding-bottom: 0;
             background-color: $color-pastel-purple;

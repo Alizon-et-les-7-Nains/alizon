@@ -24,9 +24,9 @@ function getPrixProduitAvecRemise($pdo, $idProduit) {
             p.prix,
             remise.tauxRemise
            FROM _produit p 
-           LEFT JOIN _remise remise ON p.idProduit = remise.idProduit 
+            LEFT JOIN _remise remise ON p.idProduit = remise.idProduit 
                 AND CURDATE() BETWEEN remise.debutRemise AND remise.finRemise
-           WHERE p.idProduit = ?";
+            WHERE p.idProduit = ?";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$idProduit]);
@@ -64,8 +64,11 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
 
-    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
-            WHERE idProduit = $idProduit AND idPanier IN (
+    // MODIFICATION: On récupère le stock en même temps pour vérifier
+    $sql = "SELECT pap.quantiteProduit, p.stock 
+            FROM _produitAuPanier pap
+            JOIN _produit p ON pap.idProduit = p.idProduit
+            WHERE pap.idProduit = $idProduit AND pap.idPanier IN (
                 SELECT idPanier FROM _panier WHERE idClient = $idClient
             )";
     $stmt = $pdo->query($sql);
@@ -73,7 +76,13 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 
     if ($current) {
         $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
+        $stockDisponible = intval($current['stock']);
         
+        // MODIFICATION: Blocage si on tente d'ajouter plus que le stock
+        if ($delta > 0 && $newQty > $stockDisponible) {
+            return false;
+        }
+
         if ($newQty > 0) {
             $sql = "UPDATE _produitAuPanier SET quantiteProduit = $newQty 
                     WHERE idProduit = $idProduit AND idPanier IN (
@@ -166,7 +175,6 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
         $idAdresse = $pdo->lastInsertId();
 
-        // Création de la commande
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
 
@@ -311,18 +319,13 @@ $cart = getCurrentCart($pdo, $idClient);
                         if ($item['stock'] > 0) {
                             echo '<h4 class="stockDisponible">En stock</h4>';
                         } else {
-                            // Handle out of stock
                             if ($item['dateReassort'] !== null) {
                                 echo '<h4 style="color: #ff4444;">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($item['dateReassort']) . '</h4>';
                             } else {
                                 echo '<h4 style="color: #ff4444;">Rupture de stock - Pas de réapprovisionnement prévu</h4>';
                             }
-
-                            // EXECUTE PHP DIRECTLY (No <script> tags)
                             removeFromCartInDatabase($pdo, $idClient, $idProduit);
-                            
-                            // Optional: reload page to refresh cart visually, or continue to skip rendering buttons below
-                            // header("Refresh:0"); 
+                            continue;
                         }
                         ?>
                     </div>
@@ -331,7 +334,9 @@ $cart = getCurrentCart($pdo, $idClient);
                             <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
                         </button>
                         <p class="quantite"><?= htmlspecialchars($item['qty'] ?? 'N/A') ?></p>
-                        <button class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
+                        <button class="plus" 
+                                data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>"
+                                data-stock="<?= intval($item['stock']) ?>">
                             <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
                         </button>
                     </div>
@@ -438,6 +443,29 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
+    
+    <!-- MODIFICATION: Script ajouté ici pour gérer le blocage stock sans toucher au fichier JS externe -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.plus').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Récupérer stock max et quantité actuelle
+                    const maxStock = parseInt(this.dataset.stock);
+                    const quantiteElement = this.parentElement.querySelector('.quantite');
+                    const currentQty = parseInt(quantiteElement.innerText);
+
+                    // Vérification
+                    if (currentQty >= maxStock) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation(); // Stoppe l'appel AJAX du fichier externe
+                        alert("Désolé, la quantité maximale en stock est atteinte pour ce produit.");
+                        return false;
+                    }
+                }, true); // 'true' pour capturer l'événement avant les autres scripts
+            });
+        });
+    </script>
 </body>
+
 
 </html>
