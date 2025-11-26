@@ -46,18 +46,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         dateNaissance = '$dateNaissance',
         noTelephone = '$telephone',
         idAdresse = '$idAdresse'
-        WHERE idClient = '$id_client';
+    WHERE idClient = '$id_client';
     ");
-
 
     $stmt = $pdo->query(
     "UPDATE saedb._adresseClient 
     SET adresse = '$adresse1',
-    pays = '$pays',
-    ville = '$ville', 
-    codePostal = '$codePostal',
-    complementAdresse = '$adresse2'
-     WHERE idAdresse = '$idAdresse';");
+        pays = '$pays',
+        ville = '$ville', 
+        codePostal = '$codePostal',
+        complementAdresse = '$adresse2'
+    WHERE idAdresse = '$idAdresse';
+    ");
 
 }   
 
@@ -120,10 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
-    <?php echo $photoPath . "+" ;
-    echo $id_client . "+";
-    echo $extension;
-    include 'partials/headerConnecte.php'; ?>
+    <?php include 'partials/headerConnecte.php'; ?>
 
     <main class="mainCompteClient">
         
