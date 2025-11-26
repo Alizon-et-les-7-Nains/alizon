@@ -1,6 +1,4 @@
 <?php
-    //Permet de détruire la session actuelle puis de retourner à l'accueil
-
     session_start();  
     session_unset();
     session_destroy();
