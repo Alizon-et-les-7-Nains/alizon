@@ -434,7 +434,11 @@ if (isset($_SESSION['message_panier'])) {
                 <p>Quantité</p>
                 <div>
                     <button type="button" id="moins"><img src="../../public/images/moins.svg" alt=""></button>
+                    <?php if ($produit['stock'] <= 0): ?>
+                    <input type="text" id="quantiteInput" name="quantite" value="0" readonly>
+                    <?php else: ?>
                     <input type="text" id="quantiteInput" name="quantite" value="1" readonly>
+                    <?php endif ?>
                     <button type="button" id="plus"><img src="../../public/images/plus.svg" alt=""></button>
                 </div>
             </div>
@@ -524,12 +528,10 @@ if ($produit['stock'] > 0) {
         ?>
         <article>
             <?php
-            // Construire le chemin de la photo de profil
             $photoProfilPath = "/images/photoProfilClient/photo_profil" . $avis['idClient'];
             $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-            $photoProfilUrl = "../../public/images/pp.png"; // Par défaut
+            $photoProfilUrl = "../../public/images/pp.png";
 
-            // Vérifier si une photo de profil existe
             foreach ($extensionsPossibles as $ext) {
                 $cheminComplet = "/var/www/html" . $photoProfilPath . "." . $ext;
                 if (file_exists($cheminComplet)) {
