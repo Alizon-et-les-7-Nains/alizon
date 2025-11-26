@@ -53,7 +53,6 @@ function getCurrentCart($pdo, $idClient) {
                  WHERE p.idProduit = $id";
         
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$id]);
         $cart = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : [];
     }
 
