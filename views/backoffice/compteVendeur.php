@@ -275,6 +275,8 @@ $pays          = $vendeur['pays'] ?? '';
                 <button type="button" class="modifier-mdp boutonModifierMdp">Modifier le mot de passe</button>
             </div>
         </form>
+
+        <?php require_once './partials/retourEnHaut.php' ?>
     </main>
     <?php include 'partials/footer.php'; ?>
 

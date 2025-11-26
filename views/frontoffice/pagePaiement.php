@@ -575,6 +575,8 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
         <div class="payer-wrapper-mobile">
             <button class="payer payer--mobile">Payer</button>
         </div>
+
+        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
 
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>

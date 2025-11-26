@@ -170,6 +170,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
 
+        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
+
     </main>
     
     <?php include 'partials/footerConnecte.php'; ?>
