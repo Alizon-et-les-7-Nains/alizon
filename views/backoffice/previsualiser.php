@@ -617,6 +617,7 @@ if ($produit['stock'] > 0) {
         </aside>
     </article>
 </section>
+<?php require_once './partials/retourEnHaut.php' ?>
 </main>
 <footer>
 <?php if (isset($_SESSION['user_id'])) {

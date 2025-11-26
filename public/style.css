@@ -195,7 +195,8 @@ body {
     display: none;
     visibility: hidden;
   }
-  .headerFront .headerFront .search-wrapper input[type=search] {
+  .headerFront .search-wrapper input[type=search] {
+    padding: 10px 0px 10px 10px;
     width: 300px;
   }
 }
@@ -2966,6 +2967,23 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   justify-content: center;
   z-index: 1000;
+}
+
+.status-red {
+  color: #f14e4e;
+}
+
+.status-green {
+  color: #259525;
+}
+
+.input-error {
+  border-color: #f14e4e !important;
+  outline: none;
+}
+
+.hidden {
+  display: none;
 }
 
 .acceuil .nomCategorie {

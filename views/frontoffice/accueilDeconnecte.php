@@ -430,6 +430,8 @@ require_once "../../controllers/prix.php";
                 <?php } ?>
             </div>
         </section>
+
+        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
 
     <section class="confirmationAjout">

@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $codePostal = $_POST['codePostal'];
     $adresse1 = $_POST['adresse1'];
     $adresse2 = $_POST['adresse2'];
+    $adresse2 = trim($adresse2);
     $pays = $_POST['pays'];
     $ville = $_POST['ville'];
 
@@ -57,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ville = '$ville', 
         codePostal = '$codePostal',
         complementAdresse = '$adresse2'
-    WHERE idAdresse = '$idAdresse'");
+    WHERE idAdresse = '$idAdresse';");
 }
     //verification et upload de la nouvelle photo de profil
     $photoPathBase = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
@@ -167,6 +168,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" class="boutonModiferProfil">Modifier</button>
             </div>
         </form>
+
+        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
 
     </main>
     <div id="overlay-mdp" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">

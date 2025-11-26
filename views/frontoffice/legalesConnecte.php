@@ -229,7 +229,7 @@
                     Les présentes mentions légales sont régies par la loi française.
                 </p>
             </section>
-
+                        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
             </main>
 
             <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
