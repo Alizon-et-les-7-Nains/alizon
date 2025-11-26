@@ -3351,6 +3351,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: red;
 }
 
+.panier main {
+  height: 100vh;
+}
 .panier .listeProduit article {
   border: 2px solid #273469;
   border-radius: 20px;
@@ -4009,7 +4012,6 @@ button#haut.visible:hover {
   font-style: italic;
   background-color: #fffefa;
   color: #273469;
-  min-height: 100vh;
   padding-top: 50px;
   padding-bottom: 50px;
   padding-right: 20px;
