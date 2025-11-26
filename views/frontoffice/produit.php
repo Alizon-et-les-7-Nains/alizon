@@ -446,17 +446,17 @@ if (isset($_SESSION['message_panier'])) {
             <input type="hidden" name="action" value="ajouter_panier">
             <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
         </form>
-        <?php if (isset($_SESSION['user_id'])) {
-            echo '  <form action="pagePaiement.php" method="POST">
-                        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-                        <button class="bouton boutonBleu" >Acheter maintenant</button>
-                    </form>';
-        } else { 
-            echo '  <form action="connexionClient.php" method="POST">
-                        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-                        <button class="bouton boutonBleu" >Acheter maintenant</button>
-                    </form>';
-        } ?>
+<?php if (isset($_SESSION['user_id'])): ?>
+    <form action="pagePaiement.php" method="POST">
+        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+        <button class="bouton boutonBleu">Acheter maintenant</button>
+    </form>
+<?php else: ?>
+    <form action="connexionClient.php" method="POST">
+        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+        <button class="bouton boutonBleu">Acheter maintenant</button>
+    </form>
+<?php endif; ?>
     </div>
 </article>
 </section>
