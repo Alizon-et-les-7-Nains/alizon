@@ -306,7 +306,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 </div>
                 <div class="infoProduit">
                     <div>
-                        <h2><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></h2>
+                        <h2><a href="./produit.php?id=<?php echo $idProduit ?>"><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></a></h2>
                         <h4>En stock</h4>
                     </div>
                     <div class="quantiteProduit">
