@@ -69,7 +69,8 @@
             align-items: center;
         }
         .banniere, .banniere div {
-            display: block;
+            display: flex;
+            flex-direction: column;
         }
         .banniere img {
             max-width: 170px;
