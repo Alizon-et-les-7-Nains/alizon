@@ -33,7 +33,7 @@ if (!$idAdresse) {
 
     // Gestion de la photo de profil
     //verification et upload de la nouvelle photo de profil
-    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
+    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$code_vendeur;
 
     $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
     $extension = '';
