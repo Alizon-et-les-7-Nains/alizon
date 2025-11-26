@@ -153,7 +153,6 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $idPanier = null;
         $items = [];
 
-        // CAS ACHAT DIRECT: produit reçu via POST
         if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])) {
             $idProduit = intval($_POST['idProduit']);
             $items[] = [
@@ -588,8 +587,8 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                     <label>
                         <input type="checkbox" aria-label="conditions générales">
                         J'ai lu et j'accepte les
-                        <a href="#">Conditions Générales de Vente</a> et les
-                        <a href="#">Mentions Légales</a> d'Alizon.
+                        <a href="legalesConnecte.php">Conditions Générales de Vente</a> et les
+                        <a href="legalesConnecte.php">Mentions Légales</a> d'Alizon.
                     </label>
                 </section>
             </div>
@@ -602,11 +601,8 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 // Afficher un message spécial pour l'achat direct
                 if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])): 
                 ?>
-                <div class="direct-purchase-notice">
-                    <p><strong>Achat direct</strong> - Quantité fixée à 1</p>
-                </div>
                 <?php endif; ?>
-                
+
                 <?php foreach ($cart as $item): 
                     $nom = $item['nom'] ?? '';
                     $imgProd = $item['img'] ?? '../../public/images/default.png';
