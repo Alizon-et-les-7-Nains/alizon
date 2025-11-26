@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Insertion dans _produit
         $sql = "INSERT INTO _produit 
-            (nom, prix, poids, description, mots_cles, idVendeur, stock, versionProd, note, dateStockEpuise, seuilAlerte) 
-            VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur, :stock, :versionProd, :note, :dateStockEpuise, :seuilAlerte)";
+            (nom, prix, poids, description, mots_cles, idVendeur, stock, versionProd, note, seuilAlerte) 
+            VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur, :stock, :versionProd, :note, :seuilAlerte)";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':stock' => 0,
             ':versionProd' => 1.0,
             ':note' => 0.0,
-            ':dateStockEpuise' => 'NOW()',
             ':seuilAlerte' => 0
         ]);
 
