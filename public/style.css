@@ -196,7 +196,7 @@ body {
     visibility: hidden;
   }
   .headerFront .headerFront .search-wrapper input[type=search] {
-    width: 300px;
+    width: 300px !important;
   }
 }
 @media (max-width: 500px) {
