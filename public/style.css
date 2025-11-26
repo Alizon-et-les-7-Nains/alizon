@@ -162,6 +162,7 @@ body {
 @media (max-width: 1300px) {
   .headerFront .search-wrapper input[type=search] {
     padding: 10px 0px 10px 10px;
+    width: 400px;
   }
   .headerFront .headerMain {
     justify-content: space-between;
@@ -182,7 +183,7 @@ body {
   display: flex;
   align-items: center;
 }
-@media (max-width: 638px) {
+@media (max-width: 720px) {
   .headerFront .icons {
     display: none;
     visibility: hidden;
@@ -193,6 +194,9 @@ body {
   .headerFront #burgerIcon {
     display: none;
     visibility: hidden;
+  }
+  .headerFront .headerFront .search-wrapper input[type=search] {
+    width: 300px !important;
   }
 }
 @media (max-width: 500px) {
@@ -2962,6 +2966,23 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   justify-content: center;
   z-index: 1000;
+}
+
+.status-red {
+  color: #f14e4e;
+}
+
+.status-green {
+  color: #259525;
+}
+
+.input-error {
+  border-color: #f14e4e !important;
+  outline: none;
+}
+
+.hidden {
+  display: none;
 }
 
 .acceuil .nomCategorie {
