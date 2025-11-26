@@ -39,25 +39,36 @@ function getPrixProduitAvecRemise($pdo, $idProduit) {
 }
 
 function getCurrentCart($pdo, $idClient) {
+    // CAS 1: Un produit unique reçu via POST (achat immédiat)
+    if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])) {
+        $idProduit = intval($_POST['idProduit']);
+        
+        // Récupérer les infos du produit
+        $sql = "SELECT p.idProduit, p.nom, p.prix, i.URL as img
+                FROM _produit p
+                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                WHERE p.idProduit = ?";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idProduit]);
+        $produit = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($produit) {
+            // Ajouter la quantité par défaut (1) pour l'affichage
+            $produit['qty'] = 1;
+            return [$produit]; // Retourner un tableau avec un seul produit
+        }
+        return [];
+    }
+    
+    // CAS 2: Panier normal depuis la base de données
     $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
     $stmt->execute([$idClient]);
     $panier = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $cart = [];
 
-    if (isset($_POST['idProduit'])){
-        $id = $_POST['idProduit'];
-        $sql = "SELECT p.idProduit, p.nom, p.prix
-                 FROM _produit p
-                 LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-                 WHERE p.idProduit = $id";
-        
-        $stmt = $pdo->prepare($sql);
-        $cart = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : [];
-    }
-
-
-    else if ($panier) {
+    if ($panier) {
         $idPanier = intval($panier['idPanier']); 
 
         $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
@@ -72,13 +83,17 @@ function getCurrentCart($pdo, $idClient) {
         // Créer un nouveau panier vide si aucun n'existe
         $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
         $stmtCreate->execute([$idClient]);
-        // Le panier sera vide, mais au moins il existe
     }
     
     return $cart;
 }
 
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+    // Si c'est un achat direct (produit reçu via POST), on ne permet pas de modification
+    if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])) {
+        return false; // Ou gérer différemment selon vos besoins
+    }
+    
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
 
@@ -109,6 +124,11 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 }
 
 function removeFromCartInDatabase($pdo, $idClient, $idProduit) {
+    // Si c'est un achat direct, rediriger vers l'accueil
+    if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])) {
+        return true; // On considère que la suppression "réussit" mais en fait on redirigera
+    }
+    
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
 
@@ -125,28 +145,51 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $pdo->beginTransaction();
         $idClient = intval($idClient);
 
-        // Récupération du panier actuel
-        $stmt = $pdo->prepare("SELECT * FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+        // Récupération ou création du panier
+        $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
         $stmt->execute([$idClient]);
         $panier = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if (!$panier) throw new Exception("Aucun panier trouvé pour ce client.");
-        $idPanier = intval($panier['idPanier']);
+        $idPanier = null;
+        $items = [];
+
+        // CAS ACHAT DIRECT: produit reçu via POST
+        if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])) {
+            $idProduit = intval($_POST['idProduit']);
+            $items[] = [
+                'idProduit' => $idProduit,
+                'quantiteProduit' => 1 // Quantité par défaut pour achat direct
+            ];
+            
+            // Créer un panier temporaire pour cet achat
+            $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+            $stmtCreate->execute([$idClient]);
+            $idPanier = $pdo->lastInsertId();
+            
+            // Ajouter le produit au panier temporaire
+            $stmtAdd = $pdo->prepare("INSERT INTO _produitAuPanier (idPanier, idProduit, quantiteProduit) VALUES (?, ?, 1)");
+            $stmtAdd->execute([$idPanier, $idProduit]);
+            
+        } 
+        // CAS PANIER NORMAL
+        else if ($panier) {
+            $idPanier = intval($panier['idPanier']);
+            
+            $sqlItems = "SELECT pap.idProduit, pap.quantiteProduit 
+                         FROM _produitAuPanier pap 
+                         WHERE pap.idPanier = ?";
+            $stmtItems = $pdo->prepare($sqlItems);
+            $stmtItems->execute([$idPanier]);
+            $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
+        if (empty($items)) {
+            throw new Exception("Aucun produit à commander.");
+        }
 
         // Calcul total AVEC REMISES
         $sousTotal = 0;
         $nbArticles = 0;
-        
-        $sqlItems = "SELECT pap.idProduit, pap.quantiteProduit 
-                     FROM _produitAuPanier pap 
-                     WHERE pap.idPanier = ?";
-        $stmtItems = $pdo->prepare($sqlItems);
-        $stmtItems->execute([$idPanier]);
-        $items = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
-        
-        if (empty($items)) {
-            throw new Exception("Le panier est vide.");
-        }
         
         foreach ($items as $item) {
             $prixProduit = getPrixProduitAvecRemise($pdo, $item['idProduit']);
@@ -233,10 +276,17 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             }
         }
 
-        // Vider le panier
-        $stmtVider = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier = ?");
-        if (!$stmtVider->execute([$idPanier])) {
-            throw new Exception("Erreur lors du vidage du panier");
+        // Vider le panier (sauf pour l'achat direct où on supprime le panier temporaire)
+        if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])) {
+            // Pour l'achat direct, supprimer le panier temporaire
+            $stmtDeletePanier = $pdo->prepare("DELETE FROM _panier WHERE idPanier = ?");
+            $stmtDeletePanier->execute([$idPanier]);
+        } else {
+            // Pour le panier normal, vider seulement les produits
+            $stmtVider = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier = ?");
+            if (!$stmtVider->execute([$idPanier])) {
+                throw new Exception("Erreur lors du vidage du panier");
+            }
         }
 
         $pdo->commit();
@@ -325,6 +375,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     try {
         switch ($_POST['action']) {
             case 'updateQty':
+                // Pour l'achat direct, on ne permet pas de modifier la quantité
+                if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])) {
+                    echo json_encode(['success' => false, 'error' => 'Quantité non modifiable pour achat direct']);
+                    break;
+                }
+                
                 $idProduit = $_POST['idProduit'] ?? '';
                 $delta = intval($_POST['delta'] ?? 0);
                 if ($idProduit && $delta != 0) {
@@ -469,7 +525,8 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
             }
             echo json_encode($formattedCart, JSON_UNESCAPED_UNICODE); 
         ?>,
-        idClient: <?php echo $idClient; ?>
+        idClient: <?php echo $idClient; ?>,
+        isDirectPurchase: <?php echo isset($_POST['idProduit']) && !empty($_POST['idProduit']) ? 'true' : 'false'; ?>
     };
     </script>
 
@@ -541,6 +598,15 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 <?php if (empty($cart)): ?>
                 <div class="empty-cart">Panier vide</div>
                 <?php else: ?>
+                <?php 
+                // Afficher un message spécial pour l'achat direct
+                if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])): 
+                ?>
+                <div class="direct-purchase-notice">
+                    <p><strong>Achat direct</strong> - Quantité fixée à 1</p>
+                </div>
+                <?php endif; ?>
+                
                 <?php foreach ($cart as $item): 
                     $nom = $item['nom'] ?? '';
                     $imgProd = $item['img'] ?? '../../public/images/default.png';
@@ -567,10 +633,16 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                         <?php endif; ?>
                         <div class="gestQte">
                             <div class="qte">
+                                <?php if (!isset($_POST['idProduit']) || empty($_POST['idProduit'])): ?>
+                                <!-- Boutons quantité seulement pour le panier normal -->
                                 <button class="minus" data-id="<?= htmlspecialchars($item['idProduit']) ?>">-</button>
                                 <span class="qty"
                                     data-id="<?= htmlspecialchars($item['idProduit']) ?>"><?= intval($qty) ?></span>
                                 <button class="plus" data-id="<?= htmlspecialchars($item['idProduit']) ?>">+</button>
+                                <?php else: ?>
+                                <!-- Pour l'achat direct, afficher seulement la quantité -->
+                                <span class="qty fixed-qty">1</span>
+                                <?php endif; ?>
                             </div>
                             <button class="delete" data-id="<?= htmlspecialchars($item['idProduit']) ?>">
                                 <img src="../../public/images/bin.svg" alt="Supprimer">
