@@ -304,6 +304,7 @@
 
             
         </script>
+        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
       </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>

@@ -98,6 +98,8 @@ function afficherEtoiles($note) {
         }      
 ?>
             </section>
+
+            <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
     <?php include './partials/footerConnecte.php'; ?>
 </body>

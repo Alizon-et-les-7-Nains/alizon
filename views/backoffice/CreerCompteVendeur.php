@@ -251,6 +251,8 @@
 
             validatePassword(); 
         </script>
+
+        <?php require_once './partials/retourEnHaut.php' ?>
     </main>
     <?php require_once "./partials/footer.php"; ?>
 </body>

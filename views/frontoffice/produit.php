@@ -647,6 +647,7 @@ if ($produit['stock'] > 0) {
         <div id="msgReponse" style="margin-top: 10px;"></div>
     </div>
 </div>
+<?php require_once '../backoffice/partials/retourEnHaut.php' ?>
 </main>
 <footer>
 <?php if (isset($_SESSION['user_id'])) {
