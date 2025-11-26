@@ -6,12 +6,12 @@
             <h1><a href="../frontoffice/accueilConnecte.php"><b>Alizon</b></a></h1>
         </div>
 
-        <div class="searchBar">
+        <!-- <div class="searchBar">
             <div class="search-wrapper">
                 <i id="validerRecherche" class="bi bi-search"></i>
                 <input type="search" name="recherche" id="searchbar" placeholder="Rechercher">
             </div>
-        </div>
+        </div> -->
 
         <div class="icons">
             <a href="../frontoffice/panier.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
