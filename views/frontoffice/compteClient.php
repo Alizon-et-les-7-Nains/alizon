@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
-    <?php echo $photoPath.$extension;
+    <?php echo $photoPath;
     include 'partials/headerConnecte.php'; ?>
 
     <main class="mainCompteClient">
