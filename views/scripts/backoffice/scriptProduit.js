@@ -627,7 +627,6 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
 
     // Section calcul de prix 
     const txtPromo = document.querySelector('.dataPromo');
-    const txtBaniere = document.querySelector('.dataBaniere');
     const txtDuree = document.querySelector('.dataDuree');
     const txtTotal = document.querySelector('.dataTotal');
 
@@ -764,7 +763,6 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
 
     // Section calcul de prix 
     const txtPromo = document.querySelector('.dataPromo');
-    const txtBaniere = document.querySelector('.dataBaniere');
     const txtDuree = document.querySelector('.dataDuree');
     const txtTotal = document.querySelector('.dataTotal');
 
