@@ -1,1004 +1,1024 @@
 @use "../colors" as *;
 @use "../fonts" as *;
 
-.pageProduit{
+.pageProduit {
+  main {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+  }
 
-    main{
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        width: 100%;
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    color: $color-blue;
+  }
+  #descriptionCourte {
+    color: black;
+  }
+
+  .infoHautProduit {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+  }
+
+  .rect {
+    width: 1440px;
+    height: 224px;
+    background: #273469;
+  }
+
+  .rectangleProduit {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3em 2em;
+    padding: 0 1em;
+    width: 37%;
+    min-height: 480px;
+    border: 1.5px inset #273469;
+    border-radius: 16px;
+    position: relative;
+  }
+
+  .banniere {
+    display: block;
+    position: absolute;
+    top: -8px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+
+  .banniere h1 {
+    font-size: 30px;
+  }
+
+  .imgBanniere {
+    position: absolute;
+    height: 140px;
+    width: auto;
+    z-index: 1;
+  }
+
+  .banniere h1 {
+    position: absolute;
+    top: 25px;
+    left: 13px;
+    color: $color-white;
+    z-index: 10000;
+  }
+
+  .poly1 {
+    position: absolute;
+    top: 35px;
+    left: 10px;
+    width: auto;
+    z-index: 100;
+  }
+
+  .poly2 {
+    position: absolute;
+    top: 90px;
+    left: 10px;
+    width: auto;
+    z-index: 1000000;
+  }
+
+  #imageBouteille {
+    width: 220px;
+    height: 330px;
+  }
+
+  .infoPreviewProduit {
+    width: 27%;
+    height: 434px;
+    margin-top: 3.5em;
+  }
+
+  .infoPreviewProduit div {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 1em;
+  }
+
+  .infoPreviewProduit div h1,
+  .infoPreviewProduit div h2,
+  .infoPreviewProduit div h4 {
+    margin: 0.5em 0;
+  }
+
+  .infoPreviewProduit h1,
+  .infoPreviewProduit h2,
+  .infoPreviewProduit h3,
+  .infoPreviewProduit h4,
+  .infoPreviewProduit p {
+    margin: 0 0;
+  }
+
+  .infoPreviewProduit a {
+    text-decoration: underline;
+    float: right;
+    color: $color-blue;
+  }
+
+  #prix h1,
+  #prix h3 {
+    margin: 0.2em 0;
+    font-weight: 300;
+  }
+
+  #prix h2 {
+    color: $color-red;
+    font-style: italic;
+  }
+
+  #prix {
+    gap: 0.5em;
+  }
+
+  .infoPreviewProduit div img {
+    width: 50px;
+    height: 75px;
+    margin-top: 0.5em;
+  }
+
+  .attributsproduit h4 {
+    border-radius: 8px;
+    background-color: $color-red;
+    color: white;
+    padding: 0.5em 1em;
+  }
+
+  .resume {
+    max-height: 55px;
+    overflow: hidden;
+  }
+
+  .version {
+    margin-top: 1.6em;
+    padding: 0 0;
+  }
+
+  .version p {
+    background-color: $color-pastel-purple;
+    padding: 0.3em 0.7em;
+    border-radius: 8px;
+    margin: 0 0;
+  }
+
+  .version h3,
+  .version p {
+    margin: 0.2em 0;
+  }
+
+  .voirPlus {
+    color: $color-blue;
+    text-decoration: underline;
+    float: right;
+  }
+
+  .actionsProduit {
+    top: 10em;
+    right: 1em;
+    position: fixed;
+    width: 24%;
+    max-width: 300px;
+    z-index: 10;
+    height: fit-content;
+    padding: 15px;
+  }
+
+  .actionsProduit h2 {
+    margin: 0 0;
+    padding: 0 0;
+  }
+
+  .actionsProduit .ligneActions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .underline {
+    text-decoration: underline;
+  }
+
+  #plusDarticles {
+    margin: 0 0;
+  }
+
+  .actionsProduit h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0 0;
+  }
+
+  .actionsProduit p,
+  .ligneActions {
+    margin: 0.5em 0;
+    color: black;
+  }
+
+  .ligneActions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+  }
+
+  .ligneActions img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ligneActions p,
+  .ligneActions a {
+    color: #273469;
+  }
+
+  .bouton {
+    height: 60px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 32px;
+    border: none;
+    position: relative;
+  }
+
+  #quantiteContainer div button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #quantiteContainer div {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #quantiteContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    font-size: 16px;
+    border-radius: 32px;
+    border: 2px solid $color-blue;
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  #moins img {
+    display: block;
+    width: 16px;
+    height: 2.25px;
+  }
+
+  #plus img {
+    width: 16px;
+    height: 16px;
+  }
+
+  #quantite {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.5em;
+  }
+
+  #quantite p {
+    font-weight: bold;
+    margin: 1em;
+    font-size: 16px;
+  }
+
+  #quantiteInput {
+    width: 40px;
+    text-align: center;
+    border: none;
+    font-size: 18px;
+    padding: 0.2em;
+    pointer-events: none;
+  }
+
+  #quantite {
+    width: 100%;
+  }
+
+  #quantite * {
+    width: 90%;
+  }
+
+  #quantite form button {
+    width: 90%;
+  }
+
+  .boutonRose {
+    background-color: $color-pastel-purple;
+    color: $color-blue;
+  }
+
+  .boutonBleu {
+    background-color: $color-blue;
+    color: $color-white;
+  }
+
+  .boutonCommentaire {
+    display: inline-block;
+    margin: 2em 0;
+    border: 2px solid $color-blue;
+    background-color: white;
+    border-radius: 32px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    color: $color-blue;
+    transition: all 0.3s ease;
+  }
+
+  .conteneurTexte {
+    width: 68%;
+    max-height: 600px;
+    margin-left: 2.5em;
+    color: $color-blue;
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  }
+
+  .conteneurTexte h2 {
+    margin-bottom: 1em;
+  }
+
+  #activeVoirPlus:checked ~ .conteneurTexte {
+    max-height: 1000px;
+    mask-image: none;
+  }
+
+  .voirPlus::after {
+    content: "Voir plus";
+  }
+
+  #activeVoirPlus:checked ~ .voirPlus::after {
+    content: "Voir moins";
+  }
+
+  #activeVoirPlus {
+    display: none;
+  }
+
+  .informations {
+    margin: 2em 0;
+  }
+
+  .informations label {
+    display: inline-block;
+    position: relative;
+    right: 60%;
+    font-weight: 500;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .informations ul,
+  .informations h3,
+  .informations h4,
+  .informations p {
+    font-size: 18px;
+  }
+
+  .informations ul li p {
+    margin: 0 0;
+    padding: 0 0;
+  }
+
+  .informations h4 {
+    font-weight: 300;
+  }
+
+  .sectionAvis {
+    width: 68%;
+    margin-left: 2.5em;
+    margin-top: 2em;
+  }
+
+  .sectionAvis h6 {
+    color: $color-blue;
+    font-weight: 100;
+  }
+
+  .sectionAvis article {
+    display: flex;
+    margin-bottom: 2em;
+  }
+
+  .sectionAvis article * {
+    margin: 0.5em 0;
+  }
+
+  .sectionAvis article div {
+    margin: 0 0;
+  }
+
+  .sectionAvis article div h3 {
+    padding-top: 0.2em;
+  }
+
+  #pp {
+    margin-right: 0.5em;
+    margin-top: 0.7em;
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 100%;
+  }
+
+  .sectionImagesAvis {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+  }
+
+  .sectionImagesAvis img {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 0.2em;
+  }
+
+  .vertical {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .baselineSpaceBetween {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: baseline;
+  }
+
+  .actionsAvis {
+    display: flex;
+    flex-direction: row;
+    gap: 0.8em;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .actionsAvis a {
+    text-decoration: underline;
+    color: $color-dark-gray;
+  }
+
+  .actionsAvis shape {
+    width: 2px;
+    height: 40px;
+    background-color: $color-blue;
+  }
+
+  .btn-vote {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .product-rating {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rating-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: $color-blue;
+    margin: 0;
+  }
+
+  .stockDisponible {
+    position: relative;
+    left: 2.5em;
+    font-size: 20px;
+    color: green;
+    font-weight: bold;
+    width: 60%;
+  }
+
+  .stockIndisponible {
+    position: relative;
+    left: 2.5em;
+    font-size: 20px;
+    color: red;
+    font-weight: bold;
+    width: 60%;
+  }
+
+  .review-count {
+    text-decoration: underline;
+    color: $color-dark-gray;
+  }
+
+  .star-rating {
+    font-size: 32px;
+    position: relative;
+    display: inline-block;
+    padding: 0 0;
+  }
+
+  .stars::before {
+    content: "★★★★★";
+    color: lightgray;
+    padding: 0 0;
+    margin-right: 0.2em;
+  }
+
+  .stars::after {
+    content: "★★★★★";
+    color: gold;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(var(--rating) / 5 * 100%);
+    overflow: hidden;
+    padding: 0 0;
+  }
+
+  .pouce-actif {
+    filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(2081%)
+      hue-rotate(202deg) brightness(93%) contrast(91%);
+  }
+
+  .pouce-inactif {
+    filter: none;
+  }
+
+  .carousel-container {
+    position: relative;
+    width: 300px;
+    height: 400px;
+    overflow: visible;
+    border-radius: 10px;
+    margin-bottom: 50px;
+  }
+
+  .carousel-slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  .carousel-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
+    border-radius: 10px;
+  }
+
+  .carousel-image.active {
+    opacity: 1;
+  }
+
+  .carousel-arrow {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease;
+    z-index: 10;
+  }
+
+  .carousel-arrow:hover {
+    transform: scale(1.1);
+  }
+
+  #lesCercles {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    margin-top: 15px;
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    right: 0;
+    z-index: 15;
+  }
+
+  .cercleNoir {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background-color: #666 !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #273469;
+    display: block !important;
+    flex-shrink: 0;
+  }
+
+  .cercleNoir.active {
+    background-color: white !important;
+    transform: scale(1.3);
+  }
+
+  .cercleNoir:hover {
+    background-color: #273469 !important;
+    transform: scale(1.15);
+  }
+
+  hr {
+    border: 0;
+    height: 2px;
+    background-color: $color-light-gray;
+    margin: 0 2.5em;
+    width: 70%;
+  }
+
+  .stickyTelephone {
+    display: none;
+    background-color: white;
+    flex-direction: row;
+    position: fixed;
+    bottom: 104px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 114px;
+    border: 2px solid $color-blue;
+  }
+
+  .stickyTelephone article {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 75%;
+  }
+
+  .stickyTelephone img {
+    width: 75px;
+    height: 75px;
+    margin-top: 17px;
+  }
+
+  .stickyTelephone article aside form {
+    width: 45%;
+  }
+
+  .stickyTelephone article aside form button {
+    width: 100%;
+    height: 39px;
+    font-size: 14px;
+  }
+
+  .stickyTelephone article aside {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .stickyTelephone article aside:nth-child(1) {
+    justify-content: space-around;
+  }
+
+  .stickyTelephone article aside:nth-child(1) h3 {
+    padding-right: 3em;
+  }
+
+  .stickyTelephone article aside:nth-child(2) {
+    justify-content: space-around;
+  }
+
+  #prixTelephone {
+    font-size: 32px;
+  }
+
+  @media (max-width: 1440px) {
+    main {
+      flex-direction: column;
+      justify-content: center;
+    }
+    h1 {
+      font-size: 36px;
+    }
+    h2 {
+      font-size: 24px;
+    }
+    h3 {
+      font-size: 18.7px;
+    }
+    p {
+      font-size: 16px;
+    }
+    .listeProduit article {
+      max-width: none;
+    }
+    .recapPanier * {
+      margin-bottom: 20px;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    main {
+      flex-direction: column;
+      justify-content: center;
     }
 
-    h1,h2,h3,h4,p{
-        color: $color-blue;
+    .rectangleProduit {
+      width: 30%;
     }
-    #descriptionCourte{
-        color: black;
+    .carousel-image {
+      left: 10%;
+      top: 20%;
+      width: 80%;
+      height: 80%;
     }
-
-    .infoHautProduit{
-        display: flex;
-        flex-direction: row;
-        position: relative;
+    h1 {
+      font-size: 30px;
     }
-
-    .rect{
-        width:1440px;
-        height:224px;
-        background:#273469;
+    h2 {
+      font-size: 20px;
     }
-
-    .rectangleProduit{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        margin: 3em 2em;
-        padding: 0 1em;
-        width: 37%;
-        min-height: 480px;
-        border: 1.5px inset #273469;
-        border-radius: 16px;
-        position: relative;
+    h3 {
+      font-size: 16px;
+    }
+    p {
+      font-size: 12px;
     }
 
-    .banniere{
-        display: block;
-        position: absolute;
-        top: -8px;
-        border-top-left-radius: 16px;
-        border-top-right-radius: 16px;
+    .infoPreviewProduit div img {
+      width: 40px;
+      height: 60px;
+      margin-top: 0.5em;
     }
 
-    .banniere h1{
-        font-size: 30px;
+    .listeProduit article {
+      max-width: none;
+    }
+    .recapPanier * {
+      margin-bottom: 20px;
+    }
+    .product-rating {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .infoHautProduit.review-count {
+      margin-top: -1em;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    main {
+      flex-direction: column;
+      justify-content: center;
     }
 
-    .imgBanniere{
-        position: absolute;
-        height: 140px;
-        width: auto;
-        z-index: 1;
+    .listeProduit article {
+      max-width: none;
+    }
+    .recapPanier * {
+      margin-bottom: 20px;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .banniere {
+      display: none;
+    }
+    .stickyTelephone {
+      display: flex;
     }
 
-    .banniere h1{
-        position: absolute;
-        top: 25px;
-        left: 13px;
-        color: $color-white;
-        z-index: 10000;
+    .infoHautProduit {
+      display: block;
     }
 
-    .poly1{
-        position: absolute;
-        top: 35px;
-        left: 10px;
-        width: auto;
-        z-index: 100;
+    .rectangleProduit {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      border: none;
+      margin: 0;
+      padding: 0;
+      margin-top: 3em;
     }
 
-    .poly2{
-        position: absolute;
-        top: 90px;
-        left: 10px;
-        width: auto;
-        z-index: 1000000;
+    .infoPreviewProduit {
+      width: 80%;
+      margin: 2em auto;
+      height: fit-content;
     }
 
-    #imageBouteille{
-        width: 220px;
-        height: 330px;
+    .actionsProduit {
+      position: static;
+      width: 80%;
+      margin: 2em auto;
     }
 
-    .infoPreviewProduit{
-        width: 27%;
-        height: 434px;
-        margin-top: 3.5em;
+    .infoPreviewProduit .product-rating {
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+      top: 5em;
+      left: 20px;
     }
 
-    .infoPreviewProduit div{
-        display: flex;
-        flex-direction: row;
-        align-items: baseline;
-        gap : 1em;  
+    .infoPreviewProduit div {
+      justify-content: center;
     }
 
-    .infoPreviewProduit div h1, .infoPreviewProduit div h2, .infoPreviewProduit div h4{
-        margin: 0.5em 0;
+    .nomProduit {
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+      top: 1.5em;
+      left: 20px;
     }
 
-    .infoPreviewProduit h1, .infoPreviewProduit h2,.infoPreviewProduit h3, .infoPreviewProduit h4, .infoPreviewProduit p{
-        margin: 0 0;
-    }
-
-    .infoPreviewProduit a{
-        text-decoration: underline;
-        float: right;
-        color: $color-blue;
-    }
-
-    #prix h1, #prix h3{
-        margin: 0.2em 0;
-        font-weight: 300;
-    }
-
-    #prix h2{
-       color: $color-red; 
-       font-style: italic;
-    }
-
-    #prix{
-        gap: 0.5em;
-    }
-
-    .infoPreviewProduit div img{
-        width: 50px;
-        height: 75px;
-        margin-top: 0.5em;
-    }
-
-    .attributsproduit h4{
-        border-radius: 8px;
-        background-color: $color-red;
-        color: white;
-        padding: 0.5em 1em;
-    }
-
-    .resume{
-        max-height: 55px;
-        overflow: hidden;
-    }
-
-    .version{
-        margin-top: 1.6em;
-        padding: 0 0;
-    }
-
-    .version p{
-        background-color: $color-pastel-purple;
-        padding: 0.3em 0.7em;
-        border-radius: 8px;
-        margin: 0 0;
-    }
-
-    .version h3, .version p{
-        margin: 0.2em 0;
-    }
-
-    .voirPlus{
-        color : $color-blue;
-        text-decoration: underline;
-        float: right;
-    }
-
-    .actionsProduit{
-        top: 10em;
-        right: 1em;
-        position: fixed;
-        width: 24%;
-        max-width: 300px;
-        z-index: 10;
-        height: fit-content;
-        padding: 15px;
-    }
-
-    .actionsProduit h2{
-        margin: 0 0;
-        padding: 0 0;
-    }
-
-    .actionsProduit .ligneActions{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: flex-start;
-    }
-
-    .underline{
-        text-decoration: underline;
-    }
-
-    #plusDarticles{
-        margin: 0 0;
-    }
-
-    .actionsProduit h1,h2,h3,h4{
-        margin: 0 0;
-    }
-
-    .actionsProduit p, .ligneActions{
-        margin: 0.5em 0;
-        color: black;
-    }
-    
-    .ligneActions{
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 1em;
-    }
-
-    .ligneActions img{
-        width: 40px;
-        height: 40px;
-    }
-
-    .ligneActions p, .ligneActions a{
-        color: #273469;
-    }
-
-    .bouton{
-        height: 60px;
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 32px;
-        border: none;
-        position: relative;
-    }
-
-    #quantiteContainer div button {
-        background: none; 
-        border: none;
-        padding: 0; 
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #quantiteContainer div{
-        display: flex;
-        flex-direction: row;
-    }
-
-    #quantiteContainer{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        width: 100%;
-        height: 60px;
-        font-size: 16px;
-        border-radius: 32px;
-        border: 2px solid $color-blue;
-        position: relative;
-        margin-bottom: 10px;
-    }
-
-    #moins img{
-        display: block;
-        width: 16px;
-        height: 2.25px;
-    }
-
-    #plus img{
-        width: 16px;
-        height: 16px;
+    .actionsProduit hr {
+      display: none;
     }
 
     #quantite {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5em;
-        padding: 0.5em;
+      display: none;
     }
 
-    #quantite p {
-        font-weight: bold;
-        margin: 1em;
-        font-size: 16px;
+    .infoPreviewProduit {
+      margin-top: -2em;
     }
 
-    #quantiteInput {
-        width: 40px;
-        text-align: center;
-        border: none;
-        font-size: 18px;
-        padding: 0.2em;
-        pointer-events: none;
+    .sectionAvis {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 5em;
     }
 
-    #quantite{
-        width: 100%;
+    .sectionAvis article {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    #quantite *{
-        width: 90%;
+    .sectionImagesAvis img {
+      width: 100px;
+      height: 66px;
     }
 
-    #quantite form button{
-        width: 90%;
+    .baselineSpaceBetween {
+      flex-direction: column;
+      gap: 0.5em;
     }
 
-    .boutonRose{
-        background-color: $color-pastel-purple;
+    .actionsProduit {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+
+    .actionsAvis {
+      justify-content: flex-start;
+    }
+  }
+  @media (max-width: 500px) {
+    h1 {
+      font-size: 26px;
+    }
+    h2 {
+      font-size: 24px;
+    }
+    h3 {
+      font-size: 12px;
+    }
+    p {
+      font-size: 10px;
+    }
+  }
+  .modal-signalement {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+
+    .modal-content {
+      background-color: white;
+      padding: 25px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border: 2px solid $color-blue;
+
+      h2 {
         color: $color-blue;
-    }
-
-    .boutonBleu{
-        background-color: $color-blue;
-        color: $color-white;
-    }
-
-    .boutonCommentaire {
-        display: inline-block;
-        margin: 2em 0;
-        border: 2px solid $color-blue;
-        background-color: white;
-        border-radius: 32px;
-        padding: 0.5em 1em;
-        cursor: pointer;
-        font-size: 16px;
-        text-decoration: none;
-        color: $color-blue;
-        transition: all 0.3s ease;
-    }
-    
-    .conteneurTexte{
-        width: 68%;
-        max-height: 600px;
-        margin-left: 2.5em;
-        color: $color-blue;
-        mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-    }
-
-    .conteneurTexte h2{
-        margin-bottom: 1em;
-    }
-
-    #activeVoirPlus:checked ~ .conteneurTexte{
-        max-height: 1000px;
-        mask-image: none;
-    }
-
-    .voirPlus::after{
-        content: "Voir plus";
-    }
-
-    #activeVoirPlus:checked ~ .voirPlus::after{
-        content: "Voir moins";
-    }
-
-    #activeVoirPlus{
-        display: none;
-    }
-
-    .informations{
-        margin: 2em 0;
-    }
-
-    .informations label{
-        display: inline-block;
-        position: relative;
-        right: 60%;
-        font-weight: 500;
-        font-size: 18px;
-        cursor: pointer;
-    }
-
-    .informations ul, .informations h3, .informations h4, .informations p{
-        font-size: 18px;
-    }
-
-    .informations ul li p{
-        margin: 0 0;
-        padding: 0 0;
-    }
-
-    .informations h4{
-        font-weight: 300;
-    }
-
-    .sectionAvis{
-        width: 68%;
-        margin-left: 2.5em;
-        margin-top: 2em;
-    }
-
-    .sectionAvis h6{
-        color: $color-blue;
-        font-weight: 100;
-    }
-
-    .sectionAvis article{
-        display: flex;
-        margin-bottom: 2em;
-    }
-
-    .sectionAvis article *{
-        margin: 0.5em 0;
-    }
-
-    .sectionAvis article div{
-        margin: 0 0;
-    }
-
-    .sectionAvis article div h3{
-        padding-top: 0.2em;
-    }
-
-    #pp{
-        margin-right: 0.5em;
-        margin-top: 0.7em;
-        width: 64px;
-        height: 64px;
-        object-fit: cover;
-        border-radius: 100%;
-    }
-
-    .sectionImagesAvis{
-        display: flex;
-        flex-direction: row;
-        gap: 1em;
-    }
-
-    .sectionImagesAvis img{
-        width: 150px;
-        height: 100px;
-        object-fit: cover;
-        border-radius: 8px;
-    }
-
-    .horizontal{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding-top: 0.2em;
-    }
-
-    .vertical{
-        display: flex;
-        flex-direction: column;
-    }
-
-    .baselineSpaceBetween{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: baseline;
-    }
-
-    .actionsAvis{
-        display: flex;
-        flex-direction: row;
-        gap: 0.8em;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .actionsAvis a{
-        text-decoration: underline;
-        color: $color-dark-gray;
-    }
-
-    .actionsAvis shape{
-        width: 2px;
-        height: 40px;
-        background-color: $color-blue;
-    }
-
-    .btn-vote{
-        background: none;
-        border: none;
-        padding: 0;
-        margin: 0;
-        cursor: pointer;
-    }
-
-    .product-rating{
-        display: flex;
-        flex-direction: column;
-    }
-
-    .rating-number{
+        margin-top: 0;
+        margin-bottom: 20px;
         font-size: 24px;
-        font-weight: bold;
-        color: $color-blue;
-        margin: 0;
-    }
+      }
 
-    .stockDisponible{
-        position: relative;
-        left: 2.5em;
-        font-size: 20px;
-        color: green;
-        font-weight: bold;
-        width: 60%;
-    }
-
-    .stockIndisponible{
-        position: relative;
-        left: 2.5em;
-        font-size: 20px;
-        color: red;
-        font-weight: bold;
-        width: 60%;
-    }
-
-    .review-count{
-        text-decoration: underline;
-        color: $color-dark-gray;
-    }
-
-    .star-rating {
-        font-size: 32px;
-        position: relative;
-        display: inline-block;
-        padding: 0 0;
-    }
-
-    .stars::before {
-        content: "★★★★★";
-        color: lightgray;
-        padding: 0 0;
-        margin-right: 0.2em;
-    }
-
-    .stars::after {
-        content: "★★★★★";
-        color: gold;
+      .close-modal {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: calc(var(--rating) / 5 * 100%);
-        overflow: hidden;
-        padding: 0 0;
-    }
-
-    .pouce-actif {
-        filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(2081%) hue-rotate(202deg) brightness(93%) contrast(91%);
-    }
-
-    .pouce-inactif {
-        filter: none;
-    }
-
-    .carousel-container {
-        position: relative;
-        width: 300px;
-        height: 400px;
-        overflow: visible;
-        border-radius: 10px;
-        margin-bottom: 50px;
-    }
-
-    .carousel-slide {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        border-radius: 10px;
-    }
-
-    .carousel-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
-        pointer-events: none;
-        border-radius: 10px;
-    }
-
-    .carousel-image.active {
-        opacity: 1;
-    }
-
-    .carousel-arrow {
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #aaa;
         cursor: pointer;
-        width: 40px;
-        height: 40px;
-        transition: transform 0.3s ease;
-        z-index: 10;
-    }
-
-    .carousel-arrow:hover {
-        transform: scale(1.1);
-    }
-
-    #lesCercles {
-        display: flex !important;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 1em;
-        margin-top: 15px;
-        position: absolute;
-        bottom: -40px;
-        left: 0;
-        right: 0;
-        z-index: 15;
-    }
-
-    .cercleNoir {
-        width: 12px !important;
-        height: 12px !important;
-        border-radius: 50% !important;
-        background-color: #666 !important;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 2px solid #273469;
-        display: block !important;
-        flex-shrink: 0;
-    }
-
-    .cercleNoir.active {
-        background-color: white !important;
-        transform: scale(1.3);
-    }
-
-    .cercleNoir:hover {
-        background-color: #273469 !important;
-        transform: scale(1.15);
-    }
-
-    hr {
-        border: 0;
-        height: 2px;
-        background-color: $color-light-gray;
-        margin: 0 2.5em;
-        width: 70%;
-    }
-
-    .stickyTelephone{
-        display: none;
-        background-color: white;
-        flex-direction: row;
-        position: fixed;
-        bottom: 104px;
-        width: 100%;
-        box-sizing: border-box;
-        height: 114px;
-        border: 2px solid $color-blue;
-    }
-    
-    .stickyTelephone article{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        width: 75%;
-    }
-
-    .stickyTelephone img{
-        width: 75px;
-        height: 75px;
-        margin-top: 17px;
-    }
-
-    .stickyTelephone article aside form{
-        width: 45%;
-    }
-
-    .stickyTelephone article aside form button{
-        width: 100%;
-        height: 39px;
-        font-size: 14px;
-    }
-
-    .stickyTelephone article aside{
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .stickyTelephone article aside:nth-child(1){
-        justify-content: space-around;
-    }
-
-    .stickyTelephone article aside:nth-child(1) h3{
-        padding-right: 3em;
-    }
-
-    .stickyTelephone article aside:nth-child(2){
-        justify-content: space-around;
-    }
-
-    #prixTelephone{
-        font-size: 32px;
-    }
-
-    @media (max-width: 1440px) {
-        main {
-        flex-direction: column;
-        justify-content: center;
-        }
-        h1{
-            font-size: 36px;
-        }
-        h2{
-            font-size: 24px;
-        }
-        h3{
-            font-size: 18.7px;
-        }
-        p{
-            font-size: 16px;
-        }
-        .listeProduit article {
-        max-width: none;
-        }
-        .recapPanier * {
-        margin-bottom: 20px;
-        }
-    }
-
-    @media (max-width: 1200px) {
-        main {
-        flex-direction: column;
-        justify-content: center;
-        }
-
-        .rectangleProduit{
-            width: 30%;
-        }
-        .carousel-image {
-            left: 10%;
-            top: 20%;
-            width: 80%;
-            height: 80%;
-        }
-        h1{
-            font-size: 30px;
-        }
-        h2{
-            font-size: 20px;
-        }
-        h3{
-            font-size: 16px;
-        }
-        p{
-            font-size: 12px;
-        }
-
-        .infoPreviewProduit div img{
-            width: 40px;
-            height: 60px;
-            margin-top: 0.5em;
-        }
-
-        .listeProduit article {
-            max-width: none;
-        }
-        .recapPanier * {
-            margin-bottom: 20px;
-        }
-        .product-rating{
-            display: flex;
-            flex-wrap: wrap;
-        }        
-        .infoHautProduit.review-count{
-            margin-top: -1em;
-        }
-    }
-
-    @media (max-width: 1000px) {
-        main {
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .listeProduit article {
-        max-width: none;
-        }
-        .recapPanier * {
-        margin-bottom: 20px;
-        }
-    }
-
-    @media (max-width: 800px) {
-        .banniere{
-            display: none;
-        }
-        .stickyTelephone{
-            display: flex;
-        }
-
-        .infoHautProduit{
-            display: block;
-        }
-
-        .rectangleProduit{
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            border: none;
-            margin: 0;
-            padding: 0;
-            margin-top: 3em;
-        }
-        
-        .infoPreviewProduit{
-            width: 80%;
-            margin: 2em auto;
-            height: fit-content;
-        }
-
-        .actionsProduit{
-            position: static;
-            width: 80%;
-            margin: 2em auto;
-        }
-
-        .infoPreviewProduit .product-rating{
-            position: absolute;
-            display: flex;
-            flex-direction: row;
-            top: 5em;
-            left: 20px;
-        }
-
-        .infoPreviewProduit div{
-            justify-content: center;
-        }
-
-        .nomProduit {
-            position: absolute;
-            display: flex;
-            flex-direction: row;
-            top: 1.5em;
-            left: 20px;
-        }
-
-        .actionsProduit hr{
-            display: none;
-        }
-
-        #quantite{
-            display: none
-        }
-
-        .infoPreviewProduit{
-            margin-top: -2em;
-        }
-
-        .sectionAvis{
-            width: 90%;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 5em;
-        }
-
-        .sectionAvis article{
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-
-        .sectionImagesAvis img{
-            width: 100px;
-            height: 66px;
-        }
-
-        .baselineSpaceBetween{
-            flex-direction: column;
-            gap: 0.5em;
-        }
-
-        .actionsProduit {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-        }
-
-        .actionsAvis{
-            justify-content: flex-start;
-        }
-    }
-    @media (max-width: 500px) {
-        h1{
-            font-size: 26px;
-        }
-        h2{
-            font-size: 24px;
-        }
-        h3{
-            font-size: 12px;
-        }
-        p{
-            font-size: 10px;
-        }
-    }
-    .modal-signalement {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-
-        .modal-content {
-            background-color: white;
-            padding: 25px;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 2px solid $color-blue;
-
-            h2 {
-                color: $color-blue;
-                margin-top: 0;
-                margin-bottom: 20px;
-                font-size: 24px;
-            }
-
-            .close-modal {
-                position: absolute;
-                top: 10px;
-                right: 15px;
-                font-size: 28px;
-                font-weight: bold;
-                color: #aaa;
-                cursor: pointer;
-                transition: color 0.3s;
-
-                &:hover {
-                    color: $color-blue;
-                }
-            }
-
-            .groupe-input {
-                margin-bottom: 15px;
-
-                label {
-                    display: block;
-                    margin-bottom: 5px;
-                    color: $color-blue;
-                    font-weight: 500;
-                }
-
-                input, textarea {
-                    width: 100%;
-                    padding: 10px 0 10px 10px;
-                    border: 1px solid #ccc;
-                    border-radius: 8px;
-                    font-family: inherit;
-                    resize: vertical;
-
-                    &:focus {
-                        outline: 2px solid $color-blue;
-                        border-color: transparent;
-                    }
-                }
-            }
-
-            button[type="submit"] {
-                width: 100%;
-                margin-top: 10px;
-                cursor: pointer;
-            }
-        }
-    }
-    .btn-signaler {
-        background: none;
-        border: none;
-        color: #666;
-        text-decoration: underline;
-        cursor: pointer;
-        font-size: 0.9em;
-        padding: 0;
-        margin-left: 10px;
+        transition: color 0.3s;
 
         &:hover {
-            color: $color-red; 
+          color: $color-blue;
         }
+      }
+
+      .groupe-input {
+        margin-bottom: 15px;
+
+        label {
+          display: block;
+          margin-bottom: 5px;
+          color: $color-blue;
+          font-weight: 500;
+        }
+
+        input,
+        textarea {
+          width: 98%;
+          padding: 10px 0 10px 10px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-family: inherit;
+          resize: vertical;
+
+          &:focus {
+            outline: 2px solid $color-blue;
+            border-color: transparent;
+          }
+        }
+      }
+
+      button[type="submit"] {
+        width: 100%;
+        margin-top: 10px;
+        cursor: pointer;
+      }
     }
+  }
+  .btn-signaler {
+    background: none;
+    border: none;
+    color: #666;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 0;
+    margin-left: 10px;
+
+    &:hover {
+      color: $color-red;
+    }
+  }
 }
