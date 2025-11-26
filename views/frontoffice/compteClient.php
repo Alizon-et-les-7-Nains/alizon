@@ -123,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="titreCompte">
                 <div class="photo-container">
                     <?php 
+                        echo $photoPath.$extension;
                         if (file_exists($photoPath.$extension)) {
                             echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'" alt="photoProfil" id="imageProfile">';
                         } else {
