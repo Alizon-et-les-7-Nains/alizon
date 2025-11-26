@@ -218,31 +218,112 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ?>
     <script src="../../controllers/Chiffrement.js"></script>
     <script>
-        //On récupère le mot de passe de la BDD et on utilise json_encode pour que les caratères comme \ soient considérés
-        const mdp = <?php echo json_encode($mdp); ?>;
-        // Fonctions pour ouvrir et fermer la pop-up
+        const mdpActuel = <?php echo json_encode($mdp); ?>;
+
         function popUpModifierMdp() {
             const overlay = document.getElementById('overlay-mdp');
-            overlay.style.display = 'flex'; // Utilise flex pour centrer
+            overlay.style.display = 'flex';
+            
+            validatePassword();
         }
 
         function fermerPopUpMdp() {
             document.getElementById('overlay-mdp').style.display = 'none';
         }
 
-        // Mise à jour du style du bouton valider (visuel) quand il est disabled/enabled
-        const btnSubmit = document.getElementById('btn_inscription');
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.attributeName === "disabled") {
-                    btnSubmit.style.opacity = btnSubmit.disabled ? "0.5" : "1";
-                    btnSubmit.style.cursor = btnSubmit.disabled ? "not-allowed" : "pointer";
+        // validation mdp
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const passwordInput = document.getElementById('mdp');
+            const confirmPasswordInput = document.getElementById('confimer_mdp'); 
+            const submitButton = document.getElementById('btn_inscription');
+            const passwordRequirementsContainer = document.getElementById('password-requirements-container');
+            const reqMatch = document.getElementById('req-match');
+
+            const rulesElements = {
+                length: document.getElementById('req-length'),
+                lowercase: document.getElementById('req-lowercase'),
+                uppercase: document.getElementById('req-uppercase'),
+                number: document.getElementById('req-number'),
+                special: document.getElementById('req-special')
+            };
+
+            // critère de validation
+            const rules = {
+                length: { regex: /^.{12,}$/, message: 'Au moins 12 caractères' },
+                lowercase: { regex: /[a-z]/, message: 'Une minuscule' },
+                uppercase: { regex: /[A-Z]/, message: 'Une majuscule' },
+                number: { regex: /[0-9]/, message: 'Un chiffre (0-9)' },
+                special: { regex: /[^a-zA-Z0-9]/, message: 'Un caractère spécial' }
+            };
+
+            // mise a jour critère
+            function updateRequirement(element, regex, password) {
+                const isValid = regex.test(password);
+                const iconClass = isValid ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
+                
+                // mise à jour statut
+                element.className = isValid ? 'status-green' : 'status-red';
+                
+                const text = element.innerText.trim(); 
+                element.innerHTML = `<i class="bi ${iconClass}" style="margin-right: 5px;"></i>${text}`;
+                
+                return isValid;
+            }
+
+            function validatePassword() {
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                let allValid = true;
+
+                for (const key in rules) {
+                    const rule = rules[key];
+                    const element = rulesElements[key];
+                    if (element) {
+                        const isValid = updateRequirement(element, rule.regex, password);
+                        if (!isValid) allValid = false;
+                    }
                 }
-            });
+
+                // correspondance
+                const passwordsMatch = password.length > 0 && password === confirmPassword;
+                if (reqMatch) {
+                    const matchIcon = passwordsMatch ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
+                    reqMatch.className = passwordsMatch ? 'status-green' : 'status-red';
+                    reqMatch.innerHTML = `<i class="bi ${matchIcon}" style="margin-right: 5px;"></i>Les mots de passe correspondent`;
+                }
+                
+                if (!passwordsMatch) allValid = false;
+
+                if (submitButton) {
+                    submitButton.disabled = !allValid;
+                    submitButton.style.opacity = allValid ? "1" : "0.5";
+                    submitButton.style.cursor = allValid ? "pointer" : "not-allowed";
+                }
+
+                return allValid;
+            }
+
+
+            if (passwordInput) {
+                passwordInput.addEventListener('focus', () => {
+                    if(passwordRequirementsContainer) passwordRequirementsContainer.classList.remove('hidden');
+                    validatePassword();
+                });
+
+                passwordInput.addEventListener('blur', () => {
+                    if (passwordInput.value.length === 0 && passwordRequirementsContainer) {
+                        passwordRequirementsContainer.classList.add('hidden');
+                    }
+                });
+
+                passwordInput.addEventListener('input', validatePassword);
+            }
+
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('input', validatePassword);
+            }
         });
-        if(btnSubmit) {
-            observer.observe(btnSubmit, { attributes: true });
-        }
     </script>
     <script src="../scripts/frontoffice/compteClient.js"></script>
 </body>
