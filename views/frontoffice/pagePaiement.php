@@ -39,14 +39,25 @@ function getPrixProduitAvecRemise($pdo, $idProduit) {
 }
 
 function getCurrentCart($pdo, $idClient) {
-    // Vérifier d'abord si un panier existe
     $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
     $stmt->execute([$idClient]);
     $panier = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $cart = [];
 
-    if ($panier) {
+    if (isset($_POST['idProduit'])){
+        $id = $_POST['idProduit'];
+        $sql = "SELECT p.idProduit, p.nom, p.prix
+                 FROM _produit p
+                 LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                 WHERE p.idProduit = $id";
+        
+        $stmt = $pdo->prepare($sql);
+        $cart = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : [];
+    }
+
+
+    else if ($panier) {
         $idPanier = intval($panier['idPanier']); 
 
         $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
