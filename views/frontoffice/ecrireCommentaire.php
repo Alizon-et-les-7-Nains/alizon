@@ -49,7 +49,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileName = null;
             
             if (!empty($_FILES['photo']['name'])) {
-                $targetDir = "/images/";
+                // Chemin absolu vers le dossier images
+                $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/images/";
+                
+                // Créer le dossier s'il n'existe pas
+                if (!is_dir($targetDir)) {
+                    mkdir($targetDir, 0755, true);
+                }
+                
                 $fileExtension = strtolower(pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION));
                 $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
                 
@@ -60,6 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (!move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
                         $errors[] = "Erreur lors de l'upload de l'image.";
                         $fileName = null;
+                    } else {
+                        // Chemin relatif pour la base de données
+                        $fileName = "/images/" . $fileName;
                     }
                 } else {
                     $errors[] = "Format d'image non autorisé. Utilisez JPG, PNG ou GIF.";
