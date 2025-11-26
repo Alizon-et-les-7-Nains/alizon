@@ -53,13 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->query(
     "UPDATE saedb._adresseClient 
     SET `adresse` = '$adresse1',
-    pays = '$pays',
-    ville = '$ville', 
-    codePostal = '$codePostal',
-    complementAdresse = '$adresse2'
-     WHERE idAdresse = '$idAdresse';");
-
-}   
+        pays = '$pays',
+        ville = '$ville', 
+        codePostal = '$codePostal',
+        complementAdresse = '$adresse2'
+    WHERE idAdresse = '$idAdresse'");
 
     //verification et upload de la nouvelle photo de profil
     $photoPathBase = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
