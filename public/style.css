@@ -4825,7 +4825,6 @@ main.backoffice-stocks section div:not(button.settings div) *:not(img) {
   user-select: text;
 }
 main.backoffice-stocks section div:not(button.settings div) {
-  width: 855px;
   padding: 1em;
   padding-bottom: 0;
   background-color: #e4d9ff;
