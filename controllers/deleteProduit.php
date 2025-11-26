@@ -4,7 +4,7 @@ session_start();
 
 $idProd = $_GET['id']; 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $supImgAvis = $pdo->prepare("DELETE FROM _imageAvis WHERE idProduit = :idProduit");
     $supAvis = $pdo->prepare("DELETE FROM _avis WHERE idProduit = :idProduit");
     $supPanier = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idProduit = :idProduit");
@@ -23,5 +23,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch(PDOException $e) {
         die("Erreur SQL : " . $e->getMessage());
     }
-}
+
 ?>
