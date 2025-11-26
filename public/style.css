@@ -4821,6 +4821,9 @@ main.backoffice-stocks section img:not(figure img) {
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
+main.backoffice-stocks section div.remise {
+  border: none !important;
+}
 main.backoffice-stocks section div:not(button.settings div, div.remise) *:not(img) {
   user-select: text;
 }
