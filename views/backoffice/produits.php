@@ -9,8 +9,10 @@
         echo "<script>window.addEventListener('load', () => popUpErreur('$idProduit', $codeErreur));</script>";
     }
 
+    //On récupère l'id du vendeur
     $idVendeur = $_SESSION['id'];
 
+    //On récupère toutes les informations des produits en vente
     $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = true AND idVendeur = '$idVendeur';");
     $produitEnVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 ?>
@@ -37,15 +39,19 @@
             <h1>Produits en Vente</h1>
             <div class = "ligneProduit">
 
-            <?php for ($i = 0; $i < count($produitEnVente); $i++) { 
+            <?php 
+            //on parcourt les produits en vente
+            for ($i = 0; $i < count($produitEnVente); $i++) { 
             $idProduit = $produitEnVente[$i]['idproduit'];
             
             $stmt = $pdo->query("SELECT count(prod.idproduit) as evaluation FROM saedb._produit as prod join saedb._avis on prod.idproduit = _avis.idproduit WHERE prod.idproduit = '$idProduit' and envente = true;");
             $evaluations = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 
+            //Pour verifier si le produit à une promotion
             $stmt = $pdo->query("SELECT * FROM saedb._promotion WHERE idproduit = '$idProduit';");
             $promo = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 
+            //Pour verifier si le produit à une remise
             $stmt = $pdo->query("SELECT * FROM saedb._remise WHERE idproduit = '$idProduit';");
             $remise = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             
@@ -82,11 +88,11 @@
                         <div class="prixEtPrixAuKg">
                             <?php if ($enRemise): ?>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <p class="prix"><?php echo htmlspecialchars($prixRemise); ?>€</p>
-                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                    <p class="prix"><?php echo number_format($prixRemise,2,','); ?>€</p>
+                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                                 </div>
                             <?php else: ?>
-                                <p class="prix"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                <p class="prix"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                             <?php endif; ?>
                             <?php 
                                 $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
@@ -115,11 +121,12 @@
                                                 $dateRaw = new DateTime($promo[$i]['finPromotion']);
                                                 $dateFinPromo = $dateRaw->format('d/m/Y'); 
                                         ?>
+                                            <!-- ca ouvre la popup de modification de promotion -->
                                             <button onclick="popUpModifierPromotion(
                                                 <?php echo $idProd; ?>, 
                                                 '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', 
                                                 '<?php echo $produitEnVente[$i]['url']; ?>', 
-                                                <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, 
+                                                <?php echo htmlspecialchars(addslashes(number_format($prixRemise)), ENT_QUOTES); ?>, 
                                                 <?php echo htmlspecialchars($nbEval) ?>, 
                                                 <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, 
                                                 <?php echo $prixAuKg?>, 
@@ -128,7 +135,8 @@
                                                 Modifier
                                             </button>
                                         <?php } else { ?>
-                                            <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>)">
+                                            <!-- ca ouvre la popup de promotion -->
+                                            <button onclick="popUpPromouvoir(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($prixOriginal), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>)">
                                                 Promouvoir
                                             </button>
                                         <?php } ?>
@@ -139,12 +147,14 @@
                                 <div class="iconeTexteLigne">
                                     <div class="iconeTexte">
                                         <img src="/public/images/iconeRemise.svg" alt="">
-                                        <?php if(count($remise) == 1) { ?>
-                                            <button onclick="popUpModifierRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, true)">
+                                        <?php 
+                                            //Si il y a une remise alors on ouvre la popup de Modification d'une remise sinon on ouvre la pop up de création d'une remise
+                                            if(count($remise) == 1) { ?>
+                                            <button onclick="popUpModifierRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($prixRemise), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, true)">
                                                 Modifier remise
                                             </button>
                                         <?php } else { ?>
-                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['prix']), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, false)">
+                                            <button onclick="popUpRemise(<?php echo $idProd; ?>, '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', '<?php echo $produitEnVente[$i]['url']; ?>', <?php echo htmlspecialchars(addslashes($prixOriginal), ENT_QUOTES); ?>, <?php echo htmlspecialchars($nbEval) ?>, <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, <?php echo $prixAuKg?>, false)">
                                                 Remise
                                             </button>
                                         <?php } ?>                                    
@@ -186,6 +196,7 @@
             </div>
             <?php 
                 require_once '../../controllers/pdo.php';
+                //On récupère les infos des produits hors vente
                 $stmt = $pdo->query("SELECT prod.idproduit, nom, note, prix, url, poids FROM _produit as prod JOIN _imageDeProduit as img on prod.idproduit = img.idproduit WHERE envente = false AND idVendeur =  '$idVendeur';");
                 $produitHorsVente = $stmt->fetchAll(PDO::FETCH_ASSOC); 
             ?>
@@ -233,10 +244,10 @@
                             <?php if ($enRemise): ?>
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <p class="prix"><?php echo htmlspecialchars($prixRemise); ?>€</p>
-                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                    <p class="prix" style="text-decoration: line-through; color: #999; font-size: 0.9em;"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                                 </div>
                             <?php else: ?>
-                                <p class="prix"><?php echo htmlspecialchars($prixOriginal); ?>€</p>
+                                <p class="prix"><?php echo number_format($prixOriginal,2,','); ?>€</p>
                             <?php endif; ?>
                             <?php 
                                 $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;

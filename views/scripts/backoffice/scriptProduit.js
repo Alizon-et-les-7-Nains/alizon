@@ -38,6 +38,7 @@ function fermerPopUpRemise() {
 
 
 function popUpInfoCalcul() {
+    //pop up sur comment est calculer le prix 
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpInfoCalcul";
     overlay.innerHTML = `
@@ -63,6 +64,7 @@ function popUpInfoCalcul() {
 
 function verifDate(input){
     let valeur = input.value.trim();
+    //On récupère la date du jour
     let dateDuJour = new Date();
     dateDuJour = dateDuJour.toLocaleDateString();
     let tabVal = valeur.split("/");
@@ -76,12 +78,14 @@ function verifDate(input){
     let moisAjd = parseInt(tabDate[1]);
     let anAjd   = parseInt(tabDate[2]);
 
+    //date au format dd/mm/aaaa
     if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
         setError(input, "Format attendu : jj/mm/aaaa");
     } else {
         clearError(input);
     }
 
+    //il faut que la date d'expiration soit ulterieur que la date courente
     if(valeur.length == 10){
         let erreur = false;
             
@@ -152,6 +156,7 @@ function popUpAnnulerRemise(id, nom) {
 
 
 function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
+        //popup de Modification de la Remise 
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
         overlay.innerHTML = `
@@ -217,7 +222,7 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
 
     function updatePrixFromReduction(prixOriginal, inputNouveauPrix, inputReduction, recap) {
         const valeurReduction = parseFloat(inputReduction.value);
-
+        //On verifie que le pourcentage n'est pas vide ou que la valeur soit inférieur à 100 ou qu'elle soit supérieur à 0
         if (inputReduction.value === "" || valeurReduction <= 0 || valeurReduction > 100) {
             setError(inputReduction, "Réduction entre 1% et 100%");
             inputNouveauPrix.value = "";
@@ -227,6 +232,7 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
             clearError(inputReduction);
         }
 
+        //calcul du nouveau prix et du recap
         const calculNouveauPrix = (prixOriginal * (100 - valeurReduction) / 100).toFixed(2);
         inputNouveauPrix.value = calculNouveauPrix;
         recap.textContent = "Abaissement de " + (prixOriginal - calculNouveauPrix).toFixed(2) + "€";
@@ -241,7 +247,8 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
 
     function updateReductionFromPrix(prixOriginal, inputNouveauPrix, inputReduction, recap) {
         const valeurNouveauPrix = parseFloat(inputNouveauPrix.value);
-
+        
+        //On verifie que le prix n'est pas vide ou que la valeur soit inférieur au prix de base ou qu'elle soit supérieur à 0
         if (inputNouveauPrix.value === "" || valeurNouveauPrix < 0 || valeurNouveauPrix > prixOriginal) {
             setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
             inputReduction.value = "";
@@ -251,6 +258,7 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
             clearError(inputNouveauPrix);
         }
 
+        //calcul du noiveau prix et du pourcentage
         const calculReduction = (100 - (valeurNouveauPrix * 100 / prixOriginal)).toFixed(2);
         inputReduction.value = calculReduction;
         recap.textContent = "Abaissement de " + (prixOriginal - valeurNouveauPrix).toFixed(2) + "€";
@@ -269,6 +277,7 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
     nouveauPrix.addEventListener("input", () => updateReductionFromPrix(prix, nouveauPrix, reduction, recap));
     reduction.addEventListener("input", () => updatePrixFromReduction(prix, nouveauPrix, reduction, recap));
 
+    //modification de l'état du bouton
     function champsVide(){
         const bouton = overlay.querySelector(".bouton");
 
@@ -288,6 +297,7 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
 
 
 function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
+        //idem que la fonction précédente sans le bouton de supression
         const overlay = document.createElement("div");
         overlay.className = "overlayPopUpRemise";
         overlay.innerHTML = `

@@ -305,13 +305,13 @@ $promotion = calculerPromotion($produit);
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
-<body class="pageProduit">
+<body>
 <?php if (isset($_SESSION['user_id'])) {
     include '../../views/frontoffice/partials/headerConnecte.php';
 } else { 
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
-<main>
+<main class="pageProduit">
 <?php
 if (isset($_SESSION['message_panier'])) {
     echo '<div class="message-panier" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">';
@@ -434,7 +434,11 @@ if (isset($_SESSION['message_panier'])) {
                 <p>Quantité</p>
                 <div>
                     <button type="button" id="moins"><img src="../../public/images/moins.svg" alt=""></button>
+                    <?php if ($produit['stock'] <= 0): ?>
+                    <input type="text" id="quantiteInput" name="quantite" value="0" readonly>
+                    <?php else: ?>
                     <input type="text" id="quantiteInput" name="quantite" value="1" readonly>
+                    <?php endif ?>
                     <button type="button" id="plus"><img src="../../public/images/plus.svg" alt=""></button>
                 </div>
             </div>
@@ -479,7 +483,7 @@ if ($produit['stock'] > 0) {
     </div> 
     <label for="activeVoirPlus" class="voirPlus"> </label> 
 </section>
-<hr>
+<hr id="margin-top-2em">
 <section class="sectionAvis">
     <h2>Ce qu'en disent nos clients</h2>
     <div class="product-rating">
@@ -523,7 +527,20 @@ if ($produit['stock'] > 0) {
         $isOwnReview = isset($_SESSION['user_id']) && $_SESSION['user_id'] == $avis['idClient'];
         ?>
         <article>
-            <img src="../../public/images/pp.png" id="pp">
+            <?php
+            $photoProfilPath = "/images/photoProfilClient/photo_profil" . $avis['idClient'];
+            $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+            $photoProfilUrl = "../../public/images/pp.png";
+
+            foreach ($extensionsPossibles as $ext) {
+                $cheminComplet = "/var/www/html" . $photoProfilPath . "." . $ext;
+                if (file_exists($cheminComplet)) {
+                    $photoProfilUrl = $photoProfilPath . "." . $ext;
+                    break;
+                }
+            }
+            ?>
+            <img src="<?php echo htmlspecialchars($photoProfilUrl); ?>" id="pp" alt="Photo de profil de <?php echo htmlspecialchars($client['pseudo']); ?>">
             <div>
                 <div class="vertical">
                     <div class="horizontal">

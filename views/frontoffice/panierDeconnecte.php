@@ -116,7 +116,7 @@ require_once "../../controllers/prix.php";
                         </div>
                     </div>
                     <div class="prixOpt">
-                        <?= number_format($panier['prix'] ?? 0, 2) ?>          
+                        <p><?= number_format($panier['prix'] ?? 0, 2) ?> €</p>       
                         <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
                         </button>
