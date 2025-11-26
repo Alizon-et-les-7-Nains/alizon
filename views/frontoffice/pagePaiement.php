@@ -587,8 +587,8 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                     <label>
                         <input type="checkbox" aria-label="conditions générales">
                         J'ai lu et j'accepte les
-                        <a href="#">Conditions Générales de Vente</a> et les
-                        <a href="#">Mentions Légales</a> d'Alizon.
+                        <a href="legalesConnecte.php">Conditions Générales de Vente</a> et les
+                        <a href="legalesConnecte.php">Mentions Légales</a> d'Alizon.
                     </label>
                 </section>
             </div>
@@ -602,7 +602,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 if (isset($_POST['idProduit']) && !empty($_POST['idProduit'])): 
                 ?>
                 <?php endif; ?>
-                
+
                 <?php foreach ($cart as $item): 
                     $nom = $item['nom'] ?? '';
                     $imgProd = $item['img'] ?? '../../public/images/default.png';
