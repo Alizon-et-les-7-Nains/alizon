@@ -70,13 +70,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($extensionsPossibles as $ext) {
         if (file_exists($photoPath . '.' . $ext)) {
             $extension = '.' . $ext;
-            $photoPath = $photoPath . $extension;
             break;
         }
     }
 
-    if (file_exists($photoPath)) {
-        unlink($photoPath); // supprime l'ancien fichier
+    if (file_exists($photoPath. $extension)) {
+        unlink($photoPath. $extension); // supprime l'ancien fichier
     }
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
@@ -117,13 +116,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
-    <?php include 'partials/headerConnecte.php'; ?>
+    <?php echo $photoPath.$extension;
+    include 'partials/headerConnecte.php'; ?>
 
     <main class="mainCompteClient">
+        
         <form method="POST" enctype="multipart/form-data" action="">
             <div id="titreCompte">
                 <div class="photo-container">
                     <?php 
+                        
                         if (file_exists($photoPath.$extension)) {
                             echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'" alt="photoProfil" id="imageProfile">';
                         } else {
