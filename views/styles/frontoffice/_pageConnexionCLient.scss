@@ -77,7 +77,7 @@ $breakpoint-small-mobile: 480px;
     // Responsive pour le conteneur principal
     @media (max-width: $breakpoint-mobile) {
         padding: 24px 12px;
-        justify-content: space-evenly;
+        justify-content: center;
         padding-top: 60px;
         display: flex;
         min-height: 72vh;

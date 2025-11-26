@@ -126,7 +126,7 @@
                                                 <?php echo $idProd; ?>, 
                                                 '<?php echo htmlspecialchars(addslashes($nom), ENT_QUOTES); ?>', 
                                                 '<?php echo $produitEnVente[$i]['url']; ?>', 
-                                                <?php echo htmlspecialchars(addslashes($prixRemise), ENT_QUOTES); ?>, 
+                                                <?php echo htmlspecialchars(addslashes(number_format($prixRemise)), ENT_QUOTES); ?>, 
                                                 <?php echo htmlspecialchars($nbEval) ?>, 
                                                 <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, 
                                                 <?php echo $prixAuKg?>, 
