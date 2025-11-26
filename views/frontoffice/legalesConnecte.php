@@ -148,7 +148,7 @@
                 </p>
             </section>
 
-            <h1>Mentions légales</h1>
+            <h1 id="mentions-legales">Mentions légales</h1>
 
             <section>
                 <h2 class="titreSection">1. Informations légales</h2>
@@ -229,10 +229,10 @@
                     Les présentes mentions légales sont régies par la loi française.
                 </p>
             </section>
-                        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-            </main>
+            <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
+        </main>
 
-            <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
+        <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
 
 </body>
 

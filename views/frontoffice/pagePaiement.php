@@ -588,7 +588,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                         <input type="checkbox" aria-label="conditions générales">
                         J'ai lu et j'accepte les
                         <a href="legalesConnecte.php">Conditions Générales de Vente</a> et les
-                        <a href="legalesConnecte.php">Mentions Légales</a> d'Alizon.
+                        <a href="legalesConnecte.php#mentions-legales">Mentions Légales</a> d'Alizon.
                     </label>
                 </section>
             </div>
