@@ -48,7 +48,7 @@ function getCurrentCart($pdo, $idClient) {
     if ($panier) {
         $idPanier = intval($panier['idPanier']); 
 
-        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+        $sql = "SELECT p.idProduit, p.stock, p.dateReassort, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
                 FROM _produitAuPanier pa
                 JOIN _produit p ON pa.idProduit = p.idProduit
                 LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
@@ -306,8 +306,25 @@ $cart = getCurrentCart($pdo, $idClient);
                 </div>
                 <div class="infoProduit">
                     <div>
-                        <h2><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></h2>
-                        <h4>En stock</h4>
+                        <h2><a style="text-decoration: none;" href="./produit.php?id=<?php echo $idProduit ?>"><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></a></h2>
+                        <?php 
+                        if ($item['stock'] > 0) {
+                            echo '<h4 class="stockDisponible">En stock</h4>';
+                        } else {
+                            // Handle out of stock
+                            if ($item['dateReassort'] !== null) {
+                                echo '<h4 style="color: #ff4444;">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($item['dateReassort']) . '</h4>';
+                            } else {
+                                echo '<h4 style="color: #ff4444;">Rupture de stock - Pas de réapprovisionnement prévu</h4>';
+                            }
+
+                            // EXECUTE PHP DIRECTLY (No <script> tags)
+                            removeFromCartInDatabase($pdo, $idClient, $idProduit);
+                            
+                            // Optional: reload page to refresh cart visually, or continue to skip rendering buttons below
+                            // header("Refresh:0"); 
+                        }
+                        ?>
                     </div>
                     <div class="quantiteProduit">
                         <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
@@ -354,7 +371,6 @@ $cart = getCurrentCart($pdo, $idClient);
                         if ($panier) {
                             $idPanier = intval($panier['idPanier']);
                             
-                            // Calcul en temps réel AVEC REMISES
                             $sqlItems = "SELECT pap.idProduit, pap.quantiteProduit as qty 
                                          FROM _produitAuPanier pap 
                                          WHERE pap.idPanier = $idPanier";
@@ -370,7 +386,6 @@ $cart = getCurrentCart($pdo, $idClient);
                                 $prixProduit = getPrixProduitAvecRemise($pdo, $item['idProduit']);
                                 $quantite = $item['qty'];
                                 
-                                // Récupérer le taux de TVA
                                 $sqlTva = "SELECT COALESCE(t.pourcentageTva, 20.0) as tva 
                                            FROM _produit p 
                                            LEFT JOIN _tva t ON p.typeTva = t.typeTva 
