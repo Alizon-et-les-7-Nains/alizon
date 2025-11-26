@@ -70,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($extensionsPossibles as $ext) {
         if (file_exists($photoPath . '.' . $ext)) {
             $extension = '.' . $ext;
+            $photoPath = $photoPath . $extension;
             break;
         }
     }
