@@ -305,13 +305,13 @@ $promotion = calculerPromotion($produit);
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
-<body class="pageProduit">
+<body>
 <?php if (isset($_SESSION['user_id'])) {
     include '../../views/frontoffice/partials/headerConnecte.php';
 } else { 
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
-<main>
+<main class="pageProduit">
 <?php
 if (isset($_SESSION['message_panier'])) {
     echo '<div class="message-panier" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px; border-radius: 5px; border: 1px solid #c3e6cb;">';
