@@ -7,12 +7,12 @@
             </div>
         <div class="searchBar">
 
-        <div class="searchBar">
+        <!-- <div class="searchBar">
             <div class="search-wrapper">
                 <i class="bi bi-search"></i>
                 <input type="search" name="recherche" id="searchbar" placeholder="Rechercher">
             </div>
-        </div>
+        </div> -->
 
         </div>
             <div class="icons">
