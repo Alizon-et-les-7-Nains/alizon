@@ -26,11 +26,12 @@ function validerMdp(mdp) {
     return false;
   }
   
-  const contientUneMaj = /[A-Z]/.test(mdp);
+  const contientMin = /[a-z]/.test(mdp);
+  const contientMaj = /[A-Z]/.test(mdp);
   const contientUnChiffre = /[0-9]/.test(mdp);
   const contientUnCharSpe = /[^a-zA-Z0-9]/.test(mdp);
   
-  return contientUneMaj && contientUnChiffre && contientUnCharSpe;
+  return (contientMin || contientMaj) && contientUnChiffre && contientUnCharSpe;
 }
 
 function fermerPopUp() {
@@ -41,7 +42,20 @@ function fermerPopUp() {
 function popUpModifierMdp() {
   const overlay = document.createElement("div");
   overlay.className = "overlayPopUpCompteClient";
-  overlay.innerHTML = `
+
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .critere-valide p { color: #198754 !important; font-weight: bold; }
+    .critere-valide .croix { display: none; } /* On cache la croix rouge */
+    .critere-valide::before { 
+        content: '✓'; color: #198754; font-weight: bold; font-size: 20px; margin-right: 10px;
+    }
+    .critere-invalide p { color: #dc3545; } /* Rouge si pas bon */
+    article { display: flex; align-items: center; margin-bottom: 5px; }
+  `;
+  overlay.appendChild(style);
+
+  overlay.innerHTML += `
                 <main class="mainPopUpCompteClient">
                 <div class="croixFermerLaPage">
                     <div></div>
@@ -55,42 +69,32 @@ function popUpModifierMdp() {
                             <div class="input"><input type="password" name="nouveauMdp" placeholder="Nouveau mot de passe"></div>
                             <div class="input"><input type="password" name="confirmationMdp" placeholder="Confirmer le nouveau mot de passe"></div>
                             
-                        
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Longueur minimale de 12 charactères</p>
-                            </article>
-    
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Au moins une minuscule / majuscule</p>
-                            </article>
-    
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Au moins un chiffre</p>
-                            </article>
-    
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div>  
-                                <p>Au moins un charactères spéciale</p>
-                            </article>
+                            <div style="margin-top:15px; text-align:left;">
+                                <article id="regle-longueur" class="critere-invalide">
+                                    <div class="croix"><div></div><div></div></div> 
+                                    <p>Longueur minimale de 12 caractères</p>
+                                </article>
+            
+                                <article id="regle-maj-min" class="critere-invalide">
+                                    <div class="croix"><div></div><div></div></div> 
+                                    <p>Au moins une minuscule / majuscule</p>
+                                </article>
+            
+                                <article id="regle-chiffre" class="critere-invalide">
+                                    <div class="croix"><div></div><div></div></div> 
+                                    <p>Au moins un chiffre</p>
+                                </article>
+            
+                                <article id="regle-special" class="critere-invalide">
+                                    <div class="croix"><div></div><div></div></div> 
+                                    <p>Au moins un caractère spécial</p>
+                                </article>
+                            </div>
+
                         </div>
-                            <button type="submit">Valider</button>
-                        </form>
-                    </section>
+                        <button type="submit" disabled style="opacity:0.5; cursor:not-allowed;">Valider</button>
+                    </form>
+                </section>
                 </main>`;
   document.body.appendChild(overlay);
   
@@ -106,47 +110,80 @@ function popUpModifierMdp() {
   let ancienMdp = input[0];
   let nouveauMdp = input[1];
   let confirmationMdp = input[2];
+
+  // maj des couleurs
+  function updateCriteres() {
+      const val = nouveauMdp.value;
+
+      // longueur
+      const rLongueur = document.getElementById('regle-longueur');
+      rLongueur.className = val.length >= 12 ? 'critere-valide' : 'critere-invalide';
+
+      // min/maj
+      const rMajMin = document.getElementById('regle-maj-min');
+      if (/[a-z]/.test(val) || /[A-Z]/.test(val)) rMajMin.className = 'critere-valide';
+      else rMajMin.className = 'critere-invalide';
+
+      // chiffre
+      const rChiffre = document.getElementById('regle-chiffre');
+      rChiffre.className = /[0-9]/.test(val) ? 'critere-valide' : 'critere-invalide';
+
+      // caractere special
+      const rSpecial = document.getElementById('regle-special');
+      rSpecial.className = /[^a-zA-Z0-9]/.test(val) ? 'critere-valide' : 'critere-invalide';
+
+      // btn valider
+      const mdpOk = validerMdp(val);
+      const confirmOk = (val === confirmationMdp.value && val.length > 0);
+
+      if (mdpOk && confirmOk) {
+          valider.disabled = false;
+          valider.style.opacity = "1";
+          valider.style.cursor = "pointer";
+      } else {
+          valider.disabled = true;
+          valider.style.opacity = "0.5";
+          valider.style.cursor = "not-allowed";
+      }
+  }
+
+  nouveauMdp.addEventListener('input', updateCriteres);
+  confirmationMdp.addEventListener('input', updateCriteres);
   
   function verifMdp(event) {
-    let testAncien = false;
-    let testNouveau = false;
-    let testConfirm = false;
+    event.preventDefault();
+
+    // verif ancien mdp
+    const ancien = (typeof vignere !== 'undefined') ? vignere(ancienMdp.value, cle, 1) : ancienMdp.value;
     
-    const ancien = vignere(ancienMdp.value, cle, 1);
-    const nouveau = vignere(nouveauMdp.value, cle, 1);
-    const confirm = vignere(confirmationMdp.value, cle, 1);
-    
-    if (ancien !== mdp) {
+    if (typeof mdp !== 'undefined' && ancien !== mdp) {
       setError(ancienMdp, "L'ancien mot de passe est incorrect");
+      return;
     } else {
       clearError(ancienMdp);
-      testAncien = true;
     }
     
-    if (!validerMdp(vignere(nouveau, cle, -1))) {
-      setError(
-        nouveauMdp,
-        "Mot de passe incorrect, il doit respecter les conditions ci-dessous"
-      );
+    if (!validerMdp(nouveauMdp.value)) {
+      setError(nouveauMdp, "Mot de passe incorrect, respectez les critères.");
+      return;
     } else {
       clearError(nouveauMdp);
-      testNouveau = true;
     }
     
-    if (nouveau !== confirm) {
+    if (nouveauMdp.value !== confirmationMdp.value) {
       setError(confirmationMdp, "Les mots de passe ne correspondent pas");
+      return;
     } else {
       clearError(confirmationMdp);
-      testConfirm = true;
     }
     
-    if (!(testAncien && testNouveau && testConfirm)) {
-      event.preventDefault();
-    } else {
-      nouveauMdp.value = nouveau;
-      confirmationMdp.value = confirm;
-      form.submit();
+    // chiffre les nouveaux mots de passe avant l'envoi
+    if (typeof vignere !== 'undefined') {
+        nouveauMdp.value = vignere(nouveauMdp.value, cle, 1);
+        confirmationMdp.value = vignere(confirmationMdp.value, cle, 1);
     }
+    
+    form.submit();
   }
   
   valider.addEventListener("click", verifMdp);
@@ -175,12 +212,14 @@ function verifierChamp() {
       continue;
     }
     
+    // Regex
     if (i === 3 && valeur !== "") {
       if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
       tousRemplis = false;
       setError(champs[i], "Format attendu : jj/mm/aaaa");
     }
   }
+    // Regex CP
     if (i === 6 && valeur !== "") {
       if (!/^[0-9]{5}$/.test(valeur)) {
           tousRemplis = false;
@@ -188,6 +227,7 @@ function verifierChamp() {
       }
   }
   
+  // Regex Tel
   if (i === 9 && valeur !== "") {
     if (
       !/^0[0-9](\s[0-9]{2}){4}$/.test(valeur) &&
@@ -198,6 +238,7 @@ function verifierChamp() {
     }
   }
   
+  // Regex Email
   if (i === 10 && valeur !== "") {
     if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/.test(valeur)) {
       tousRemplis = false;
@@ -213,7 +254,7 @@ if (bouton) {
 
 let enModif = false;
 
-// Création de l'input pour la photo de profil
+// input pour la photo de profil
 let ajoutPhoto = document.createElement("input");
 ajoutPhoto.type = "file";
 ajoutPhoto.id = "photoProfil";
@@ -232,7 +273,6 @@ function modifierProfil(event) {
   event.preventDefault();
   
   if (!enModif) {
-    // Remplacer les <p> par des <input> pour modification
     let elems = document.querySelectorAll("section p");
     const nomsChamps = [
       "pseudo",
@@ -251,59 +291,32 @@ function modifierProfil(event) {
     for (let i = 0; i < elems.length; i++) {
       let texteActuel = elems[i].innerText;
       let input = document.createElement("input");
-      input.value = texteActuel;
+      
       input.name = nomsChamps[i];
       input.id = nomsChamps[i];
       input.autocomplete = nomsChamps[i];
       
-      // Définir le type d'input approprié
       if (i === 9) input.type = "tel";
       else if (i === 10) input.type = "email";
       else input.type = "text";
       
+      // Placeholders
       switch (i) {
-        case 0:
-        input.placeholder = "Pseudo*";
-        break;
-        case 1:
-        input.placeholder = "Nom*";
-        break;
-        case 2:
-        input.placeholder = "Prénom*";
-        break;
-        case 3:
-        input.placeholder = "Date de naissance*";
-        break;
-        case 4:
-        input.placeholder = "Adresse";
-        break;
-        case 5:
-        input.placeholder = "Complément d'adresse";
-        break;
-        case 6:
-        input.placeholder = "Code postal";
-        break;
-        case 7:
-        input.placeholder = "Ville";
-        break;
-        case 8:
-        input.placeholder = "Pays";
-        break;
-        case 9:
-        input.placeholder = "Numéro de téléphone*";
-        break;
-        case 10:
-        input.placeholder = "Email*";
-        break;
+        case 0: input.placeholder = "Pseudo*"; break;
+        case 1: input.placeholder = "Nom*"; break;
+        case 2: input.placeholder = "Prénom*"; break;
+        case 3: input.placeholder = "Date de naissance*"; break;
+        case 4: input.placeholder = "Adresse"; break;
+        case 5: input.placeholder = "Complément d'adresse"; break;
+        case 6: input.placeholder = "Code postal"; break;
+        case 7: input.placeholder = "Ville"; break;
+        case 8: input.placeholder = "Pays"; break;
+        case 9: input.placeholder = "Numéro de téléphone*"; break;
+        case 10: input.placeholder = "Email*"; break;
       }
       
       elems[i].parentNode.replaceChild(input, elems[i]);
     }
-    
-    // Modifier le bouton "Modifier" en "Enregistrer"
-    bnModifier[0].innerHTML = "Enregistrer";
-    bnModifier[0].style.backgroundColor = "#64a377";
-    bnModifier[0].style.color = "#FFFEFA";
     
     conteneur.appendChild(ajoutPhoto);
     
@@ -354,24 +367,22 @@ function boutonAnnuler() {
   
   for (let i = 0; i < inputs.length; i++) {
     let p = document.createElement("p");
-    p.innerText = valeursInitiales[i].innerText;
+    let texteOriginal = valeursInitiales[i].innerText;
+    p.innerText = texteOriginal;
     
     let currentParent = inputs[i].parentNode;
     currentParent.replaceChild(p, inputs[i]);
   }
   
-  // Restaurer la preview de l'image à l'original
   if (imageProfile && typeof imageProfileOriginalSrc !== "undefined") {
     imageProfile.src = imageProfileOriginalSrc;
   }
   
-  // Si l'input file existe, réinitialiser sa valeur puis le supprimer
   const photoInput = document.getElementById("photoProfil");
   if (photoInput) {
     try {
       photoInput.value = "";
     } catch (e) {
-      // certains navigateurs bloquent l'affectation de value pour security, on ignore
     }
     photoInput.remove();
   }

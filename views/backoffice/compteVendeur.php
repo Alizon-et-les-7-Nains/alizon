@@ -31,32 +31,25 @@ if (!$idAdresse) {
 
 // Traitement du formulaire
 
-// Gestion de la photo de profil
-$photoPath = '/var/www/html/images/photoProfilVendeur/photo_profil' . $code_vendeur;
-$extension = '';
+    // Gestion de la photo de profil
+    //verification et upload de la nouvelle photo de profil
+    $photoPathBase = '/var/www/html/images/photoProfilVendeur/photo_profil'.$code_vendeur;
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
 
-$extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-foreach ($extensionsPossibles as $ext) {
-    if (file_exists($photoPath . '.' . $ext)) {
-        $extension = '.' . $ext;
-        break;
-    }
-}
-
-// Upload de la nouvelle photo
-if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-    // Supprimer les anciennes photos
+    // Supprime l'ancien fichier existant
     foreach ($extensionsPossibles as $ext) {
-        $oldFile = $photoPath . '.' . $ext;
+        $oldFile = $photoPathBase . '.' . $ext;
         if (file_exists($oldFile)) {
             unlink($oldFile);
+            break;
         }
     }
-    
-    // Uploader la nouvelle photo
-    $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-    move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath . $extension);
-}
+
+    // Upload du nouveau fichier si présent
+    if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+        $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPathBase.$extension);
+    }
 
 // Récupération des informations du vendeur pour affichage
 $stmt = $pdo->prepare("
@@ -108,7 +101,7 @@ $pays          = $vendeur['pays'] ?? '';
                 <div class="photo-profil-container">
                     <div class="photo-profil">
                         <?php 
-                        if (file_exists($photoPath . $extension)) {
+                        if (file_exists($photoPathBase.$extension)) {
                             echo '<img src="/images/photoProfilVendeur/photo_profil' . $code_vendeur . $extension . '" alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
