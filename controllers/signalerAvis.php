@@ -4,7 +4,7 @@ error_reporting(0);
 
 header('Content-Type: application/json');
 
-include '../../controllers/pdo.php';
+require_once 'pdo.php';
 session_start();
 
 // On vérif la connexion
@@ -34,7 +34,7 @@ if (empty($titre) || empty($message)) {
 
 try {
     $sql = "INSERT INTO _signalement 
-        (idProduitSignale, idClientSignale, idClientSignaleur, titre, message, dateSignalement) 
+        (idProduitSignale, idClientSignale, idSignaleur, titre, message, dateSignalement) 
         VALUES (?, ?, ?, ?, ?, NOW())";
 
     $stmt = $pdo->prepare($sql);

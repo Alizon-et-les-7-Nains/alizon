@@ -24,7 +24,7 @@
         <a href="../frontoffice/compteClient.php">Mon compte</a>
         <a href="../frontoffice/mesAvis.php">Mes commentaires</a>
         <a href="../frontoffice/panier.php">Mon panier</a>
-        <a href="../frontoffice/connexionClient.php">Déconnexion</a>
+        <a href="../../../controllers/deconnexion.php">Déconnexion</a>
     </section>
 
 </header>

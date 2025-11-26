@@ -16,7 +16,7 @@ $idAdresse = $client['idAdresse'] ?? null;
 
 
 if (!$idAdresse) {
-    $pdo->query("INSERT INTO saedb._adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) 
+    $pdo->query("INSERT INTO saedb._adresseClient (adresse, `region`, codePostal, ville, pays, complementAdresse) 
                  VALUES (NULL, NULL, NULL, NULL, NULL, NULL)");
     $idAdresse = $pdo->lastInsertId();
     $pdo->query("UPDATE saedb._client SET idAdresse = $idAdresse WHERE idClient = $id_client");
@@ -62,26 +62,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }   
 
     //verification et upload de la nouvelle photo de profil
-    $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
+    $photoPathBase = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
+    $photoPath = null;
 
     $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
     $extension = '';
 
     foreach ($extensionsPossibles as $ext) {
-        if (file_exists($photoPath . '.' . $ext)) {
+        if (file_exists($photoPathBase . '.' . $ext)) {
             $extension = '.' . $ext;
+            $photoPath = $photoPathBase . $extension;
             break;
         }
     }
 
     if (file_exists($photoPath)) {
-        unlink($photoPath); // supprime l'ancien fichier
+        unlink($photoPath);
     }
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
-        $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
-        $extension = '.'.$extension;
-        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
+
+        $newExt = strtolower(pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION));
+        $photoPath = $photoPathBase . '.' . $newExt;
+        move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath);
+        $extension = '.' . $newExt;
     }
 
     //on recupère les infos du user pour les afficher
@@ -119,12 +123,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'partials/headerConnecte.php'; ?>
 
     <main class="mainCompteClient">
+        
         <form method="POST" enctype="multipart/form-data" action="">
             <div id="titreCompte">
                 <div class="photo-container">
                     <?php 
-                        if (file_exists($photoPath.$extension)) {
-                            echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'" alt="photoProfil" id="imageProfile">';
+                        
+                        if (file_exists($photoPath)) {
+                            echo '<img src="/images/photoProfilClient/photo_profil' . $id_client . $extension . '" alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
@@ -143,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <article>
                     <div><p><?php echo htmlspecialchars($adresse1 ?? ''); ?></p></div>
-                    <div><p><?php echo htmlspecialchars($adresse2 ?? ''); ?></p></div>
+                    <div><p><?php echo htmlspecialchars(!empty($adresse2) ? $adresse2 : 'Complément d\'adresse'); ?></p></div>
                     <div class="double-champ">
                         <div><p><?php echo htmlspecialchars($codePostal ?? ''); ?></p></div>
                         <div><p><?php echo htmlspecialchars($ville ?? ''); ?></p></div>
