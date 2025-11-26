@@ -16,7 +16,7 @@ $idAdresse = $client['idAdresse'] ?? null;
 
 
 if (!$idAdresse) {
-    $pdo->query("INSERT INTO saedb._adresseClient (adresse, `region`, codePostal, ville, pays, complementAdresse) 
+    $pdo->query("INSERT INTO saedb._adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) 
                  VALUES (NULL, NULL, NULL, NULL, NULL, NULL)");
     $idAdresse = $pdo->lastInsertId();
     $pdo->query("UPDATE saedb._client SET idAdresse = $idAdresse WHERE idClient = $id_client");
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $pdo->query(
     "UPDATE saedb._adresseClient 
-    SET adresse = '$adresse1',
+    SET `adresse` = '$adresse1',
     pays = '$pays',
     ville = '$ville', 
     codePostal = '$codePostal',
