@@ -16,7 +16,7 @@ $idAdresse = $client['idAdresse'] ?? null;
 
 
 if (!$idAdresse) {
-    $pdo->query("INSERT INTO saedb._adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) 
+    $pdo->query("INSERT INTO saedb._adresseClient (`adresse`, region, codePostal, ville, pays, complementAdresse) 
                  VALUES (NULL, NULL, NULL, NULL, NULL, NULL)");
     $idAdresse = $pdo->lastInsertId();
     $pdo->query("UPDATE saedb._client SET idAdresse = $idAdresse WHERE idClient = $id_client");
@@ -52,15 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $pdo->query(
     "UPDATE saedb._adresseClient 
-    SET adresse = '$adresse1',
-    pays = '$pays',
-    ville = '$ville', 
-    codePostal = '$codePostal',
-    complementAdresse = '$adresse2'
-     WHERE idAdresse = '$idAdresse';");
-
-}   
-
+    SET `adresse` = '$adresse1',
+        pays = '$pays',
+        ville = '$ville', 
+        codePostal = '$codePostal',
+        complementAdresse = '$adresse2'
+    WHERE idAdresse = '$idAdresse'");
+}
     //verification et upload de la nouvelle photo de profil
     $photoPathBase = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
     $photoPath = null;
@@ -120,8 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
-    <?php echo $photoPath;
-    include 'partials/headerConnecte.php'; ?>
+    <?php include 'partials/headerConnecte.php'; ?>
 
     <main class="mainCompteClient">
         
@@ -131,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php 
                         
                         if (file_exists($photoPath)) {
-                            echo '<img src="' . $photoPath . '" alt="photoProfil" id="imageProfile">';
+                            echo '<img src="/images/photoProfilClient/photo_profil' . $id_client . $extension . '" alt="photoProfil" id="imageProfile">';
                         } else {
                             echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
                         }
