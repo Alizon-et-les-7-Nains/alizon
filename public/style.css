@@ -1694,10 +1694,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     font-family: "lora";
     font-weight: bold;
   }
-  .inscription a {
-    font-size: 12px;
-    text-align: center;
-  }
   .inscription::before {
     content: "";
     position: absolute;
@@ -1730,6 +1726,14 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     font-size: 16px;
     border: 2px solid #273469;
     border-radius: 8px;
+  }
+  .inscription form a {
+    color: #273469;
+    font-size: 14px;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: #273469;
+    margin-top: 8px;
   }
   .inscription h2 {
     color: #273469;

@@ -77,11 +77,12 @@
           <br />
 
           
+          <a href="connexionClient.php">Vous avez déjà un compte ? Connectez-vous</a>
 
           <!-- Bouton de soumission -->
           <input id="submitButton" type="submit" value="S'inscrire"/>
 
-          <a href="connexionClient.php">Vous avez déjà un compte ? Connectez-vous</a>
+          
         </form> 
         
         <script src="../../controllers/Chiffrement.js"></script>
