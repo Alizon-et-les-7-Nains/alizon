@@ -36,17 +36,21 @@ if (!$idAdresse) {
     $photoPathBase = '/var/www/html/images/photoProfilVendeur/photo_profil'.$code_vendeur;
     $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
 
-    // Supprime l'ancien fichier existant
+    // Cherche l'extension actuelle si une image existe
+    $extension = '';
     foreach ($extensionsPossibles as $ext) {
-        $oldFile = $photoPathBase . '.' . $ext;
-        if (file_exists($oldFile)) {
-            unlink($oldFile);
+        if (file_exists($photoPathBase . '.' . $ext)) {
+            $extension = '.' . $ext;
             break;
         }
     }
 
     // Upload du nouveau fichier si présent
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+        // Supprime l'ancien fichier existant
+        if ($extension != '') {
+            unlink($photoPathBase . $extension);
+        }
         $extension = '.' . pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
         move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPathBase.$extension);
     }
