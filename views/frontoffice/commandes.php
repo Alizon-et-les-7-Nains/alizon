@@ -201,6 +201,8 @@ if ($filtre === '2025') {
                 </section>
             <?php endforeach; ?>
         <?php endif; ?>
+
+        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
 </body>
 </html>

@@ -71,7 +71,7 @@ if (count($epuises) == 0) echo "<h2>Aucun produit épuisé</h2>";
                                     </tr>
                                     <tr>";
                                         if ($enRemise) {
-                                            $html .= "<th><div style='display: flex; align-items: center; gap: 8px;'>
+                                            $html .= "<th><div style='display: flex; align-items: center; gap: 8px;' class='remise'>
                                                 <span>" . formatPrice($prixRemise) . "</span>
                                                 <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
                                             </div></th>";
@@ -184,7 +184,7 @@ if (count($faibles) == 0) echo "<h2>Aucun produit en alerte</h2>";
                                     </tr>
                                     <tr>";
                                         if ($enRemise) {
-                                            $html .= "<th><div style='display: flex; align-items: center; gap: 8px;'>
+                                            $html .= "<th><div style='display: flex; align-items: center; gap: 8px;' class='remise'>
                                                 <span>" . formatPrice($prixRemise) . "</span>
                                                 <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
                                             </div></th>";
@@ -297,7 +297,7 @@ $stocks = $stocksSTMT->fetchAll(PDO::FETCH_ASSOC);
                                     </tr>
                                     <tr>";
                                         if ($enRemise) {
-                                            $html .= "<th><div style='display: flex; align-items: center; gap: 8px;'>
+                                            $html .= "<th><div style='display: flex; align-items: center; gap: 8px;' class='remise'>
                                                 <span>" . formatPrice($prixRemise) . "</span>
                                                 <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
                                             </div></th>";

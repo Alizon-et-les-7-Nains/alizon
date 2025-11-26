@@ -102,6 +102,7 @@ if (!$produit) {
                 </form>
             </div>
         
+            <?php require_once './partials/retourEnHaut.php' ?>
     </main>
 
     <script src="../../public/script.js"> </script>

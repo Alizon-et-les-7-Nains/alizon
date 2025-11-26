@@ -554,6 +554,8 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php } ?>
             </div>
         </section>
+
+        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
 
     <section class="confirmationAjout">
