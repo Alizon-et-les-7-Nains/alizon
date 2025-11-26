@@ -35,7 +35,7 @@ main.backoffice-stocks {
             }
         }
         
-        div:not(button.settings div) {
+        div:not(button.settings div, div.remise) {
             *:not(img) {
                 user-select: text;
             }
