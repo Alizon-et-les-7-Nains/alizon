@@ -312,7 +312,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             echo '<h4 class="stockDisponible">En stock</h4>';
                         } else {
                             if ($item['dateReassort'] !== null) {
-                                echo '<p style="color: #259525;">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($produit['dateReassort']) . '</p>';
+                                echo '<p style="color: #259525;">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($item['dateReassort']) . '</p>';
                             } else {
                                 echo '<p style="color: #ff4444;">Rupture de stock - Pas de réapprovisionnement prévu</p>';
                             }
