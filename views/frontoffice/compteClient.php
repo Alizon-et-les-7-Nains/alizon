@@ -116,14 +116,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
-    <?php include 'partials/headerConnecte.php'; ?>
+    <?php echo $photoPath.$extension;
+    include 'partials/headerConnecte.php'; ?>
 
     <main class="mainCompteClient">
+        
         <form method="POST" enctype="multipart/form-data" action="">
             <div id="titreCompte">
                 <div class="photo-container">
                     <?php 
-                        echo $photoPath.$extension;
+                        
                         if (file_exists($photoPath.$extension)) {
                             echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'" alt="photoProfil" id="imageProfile">';
                         } else {
