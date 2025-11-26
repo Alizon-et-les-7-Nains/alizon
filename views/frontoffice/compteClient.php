@@ -121,6 +121,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <?php echo $photoPath;
+    echo $id_client;
+    echo $extension;
     include 'partials/headerConnecte.php'; ?>
 
     <main class="mainCompteClient">
