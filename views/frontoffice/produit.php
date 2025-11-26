@@ -555,7 +555,7 @@ if ($produit['stock'] > 0) {
                 <div class="baselineSpaceBetween">
                     <div class="sectionImagesAvis">
                         <?php foreach ($imagesAvis as $imageAvis): ?>
-                            <img src="../../public/images/<?php echo htmlspecialchars($imageAvis['URL'] ?? '');?>" alt="">
+                            <img src="<?php echo htmlspecialchars($imageAvis['URL'] ?? '');?>" alt="">
                         <?php endforeach; ?>
                     </div>   
                     <div class="actionsAvis">
