@@ -20,6 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':mot_cles' => $_POST['mots_cles'],
         ':idProduit' => $idProd
     ]);
+
+
 $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
 $extension = '';
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
@@ -36,7 +38,7 @@ if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
     }
     
     if (file_exists($photoPath)) { 
-        unlink($photoPath); // supprime l'ancien fichier 
+        unlink($photoPath); 
     }
     move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
 
