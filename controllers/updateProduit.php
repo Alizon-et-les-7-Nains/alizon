@@ -20,8 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':mot_cles' => $_POST['mots_cles'],
         ':idProduit' => $idProd
     ]);
-
-
 $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
 $extension = '';
 if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
