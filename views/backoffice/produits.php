@@ -115,10 +115,7 @@
                                         <?php $nom = $produitEnVente[$i]['nom'] ?>
                                         <?php $nbEval = $evaluations[0]['evaluation'] ?>
                                         <?php if(count($promo) == 1) { 
-
-                                                
-
-                                                $dateRaw = new DateTime($promo[$i]['finPromotion']);
+                                                $dateRaw = new DateTime($promo[0]['finPromotion']);
                                                 $dateFinPromo = $dateRaw->format('d/m/Y'); 
                                         ?>
                                             <!-- ca ouvre la popup de modification de promotion -->
@@ -294,6 +291,8 @@
                 </section>
             <?php } ?>
             </div>
+
+            <?php require_once './partials/retourEnHaut.php' ?>
         </main>
 
         <?php require_once './partials/footer.php' ?>

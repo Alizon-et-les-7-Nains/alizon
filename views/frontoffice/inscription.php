@@ -77,9 +77,14 @@
           <br />
 
           
+          <a href="connexionClient.php">Vous avez déjà un compte ? Connectez-vous</a>
+
           <!-- Bouton de soumission -->
           <input id="submitButton" type="submit" value="S'inscrire"/>
+
+          
         </form> 
+        
         <script src="../../controllers/Chiffrement.js"></script>
         <script>
             // Eléments du DOM
@@ -304,6 +309,7 @@
 
             
         </script>
+        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
       </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>

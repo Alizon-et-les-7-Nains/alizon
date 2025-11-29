@@ -114,6 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" class="boutonConnexionClient">Se connecter</button>
             </div>
         </form>
+
+        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>

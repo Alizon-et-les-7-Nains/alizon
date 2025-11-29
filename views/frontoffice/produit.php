@@ -405,7 +405,7 @@ if (isset($_SESSION['message_panier'])) {
         <hr>
         <div class="ligneActions">
             <img src="../../public/images/camion.png" alt="">
-            <p>Livraison <b>GRATUITE</b> - Expédié par <b>mondial relais</b>. Arrivée entre le <b>mar. 21 septembre - ven. 24 septembre</b></p>
+            <p>Livraison <b>***</b> - Expédié par <b>***</b>. Arrivée entre le <b>***</b></p>
         </div>
         <div class="ligneActions">
             <img src="../../public/images/emplacement.png" alt="">
@@ -446,17 +446,17 @@ if (isset($_SESSION['message_panier'])) {
             <input type="hidden" name="action" value="ajouter_panier">
             <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
         </form>
-        <?php if (isset($_SESSION['user_id'])) {
-            echo '  <form action="pagePaiement.php" method="POST">
-                        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-                        <button class="bouton boutonBleu" >Acheter maintenant</button>
-                    </form>';
-        } else { 
-            echo '  <form action="connexionClient.php" method="POST">
-                        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-                        <button class="bouton boutonBleu" >Acheter maintenant</button>
-                    </form>';
-        } ?>
+<?php if (isset($_SESSION['user_id'])): ?>
+    <form action="pagePaiement.php" method="POST">
+        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+        <button class="bouton boutonBleu">Acheter maintenant</button>
+    </form>
+<?php else: ?>
+    <form action="connexionClient.php" method="POST">
+        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+        <button class="bouton boutonBleu">Acheter maintenant</button>
+    </form>
+<?php endif; ?>
     </div>
 </article>
 </section>
@@ -555,7 +555,7 @@ if ($produit['stock'] > 0) {
                 <div class="baselineSpaceBetween">
                     <div class="sectionImagesAvis">
                         <?php foreach ($imagesAvis as $imageAvis): ?>
-                            <img src="../../public/images/<?php echo htmlspecialchars($imageAvis['URL'] ?? '');?>" alt="">
+                            <img src="<?php echo htmlspecialchars($imageAvis['URL'] ?? '');?>" alt="">
                         <?php endforeach; ?>
                     </div>   
                     <div class="actionsAvis">
@@ -647,6 +647,7 @@ if ($produit['stock'] > 0) {
         <div id="msgReponse" style="margin-top: 10px;"></div>
     </div>
 </div>
+<?php require_once '../backoffice/partials/retourEnHaut.php' ?>
 </main>
 <footer>
 <?php if (isset($_SESSION['user_id'])) {
