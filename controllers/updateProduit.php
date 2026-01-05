@@ -22,24 +22,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
 $extension = '';
-if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '' && $_FILES['url']['error'] === UPLOAD_ERR_OK) {
-
-    $photoPath = '/var/www/html/images/produit' . $idProd;
-
-    
-
-    foreach ($extensionsPossibles as $ext) {
+foreach ($extensionsPossibles as $ext) {
         if (file_exists($photoPath . '.' . $ext)) {
             $extension = '.' . $ext;
             break;
         }
     }
-    
-    if (file_exists($photoPath)) { 
-        unlink($photoPath); 
+if (isset($_FILES['url']) && $_FILES['url']['error'] === UPLOAD_ERR_OK) {
+    $photoPath = '/var/www/html/images/produit' . $idProd;   
+
+    if (file_exists($photoPath . $extension)) { 
+        unlink($photoPath . $extension); 
     }
     move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
-
     $fileName = $_FILES['url']['name'];
     $url = "/images/" . $fileName;
 
