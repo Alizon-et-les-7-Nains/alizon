@@ -287,12 +287,15 @@ $cart = getCurrentCart($pdo, $idClient);
                     <h2 class="nomProduit"
                         onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
                         <?php echo htmlspecialchars($value['nom']); ?></h2>
-                    <div class="notation">
-                        <span><?php echo number_format($value['note'], 1); ?></span>
-                        <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
-                        <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                        <?php } ?>
-                    </div>
+                            <div class="notation">
+                                <?php if(number_format($value['note'], 1) == 0) { ?>
+                                    <span><?php echo "Pas de note" ?></span>
+                                <?php } else { ?>
+                                <span><?php echo number_format($value['note'], 1); ?></span>
+                                <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                    <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                                <?php }} ?>
+                            </div>
                     <div class="infoProd">
                         <div class="prix">
                             <?php if ($enRemise): ?>
@@ -362,12 +365,15 @@ $cart = getCurrentCart($pdo, $idClient);
                     <h2 class="nomProduit"
                         onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
                         <?php echo htmlspecialchars($value['nom']); ?></h2>
-                    <div class="notation">
-                        <span><?php echo number_format($value['note'], 1); ?></span>
-                        <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
-                        <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                        <?php } ?>
-                    </div>
+                            <div class="notation">
+                                <?php if(number_format($value['note'], 1) == 0) { ?>
+                                    <span><?php echo "Pas de note" ?></span>
+                                <?php } else { ?>
+                                <span><?php echo number_format($value['note'], 1); ?></span>
+                                <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                    <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                                <?php }} ?>
+                            </div>
                     <div class="infoProd">
                         <div class="prix">
                             <?php if ($enRemise): ?>
@@ -437,12 +443,15 @@ $cart = getCurrentCart($pdo, $idClient);
                     <h2 class="nomProduit"
                         onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
                         <?php echo htmlspecialchars($value['nom']); ?></h2>
-                    <div class="notation">
-                        <span><?php echo number_format($value['note'], 1); ?></span>
-                        <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
-                        <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                        <?php } ?>
-                    </div>
+                            <div class="notation">
+                                <?php if(number_format($value['note'], 1) == 0) { ?>
+                                    <span><?php echo "Pas de note" ?></span>
+                                <?php } else { ?>
+                                <span><?php echo number_format($value['note'], 1); ?></span>
+                                <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                    <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                                <?php }} ?>
+                            </div>
                     <div class="infoProd">
                         <div class="prix">
                             <?php if ($enRemise): ?>
