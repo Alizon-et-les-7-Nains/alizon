@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
 $extension = '';
-if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
+if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '' && $_FILES['url']['error'] === UPLOAD_ERR_OK) {
 
     $photoPath = '/var/www/html/images/produit' . $idProd;
 
