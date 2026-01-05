@@ -360,7 +360,9 @@ if (isset($_SESSION['message_panier'])) {
             <?php endif; ?>
         </div>
         <div class="product-rating">
-            <?php if ($nombreAvis == 0){
+            <?php
+            $noteFormatee = number_format($note, 1); 
+            if ($nombreAvis == 0){
                 echo '<p>Aucun avis pour ce produit.</p>';
             }
             else{ 
@@ -369,7 +371,7 @@ if (isset($_SESSION['message_panier'])) {
                 <div class='star-rating'>
                     <div class='stars' style='--rating: $note'></div>
                 </div>
-                <span class='rating-number'>number_format($note, 1)/5</span>
+                <span class='rating-number'>$noteFormatee/5</span>
             </div>
             <span class='review-count' id='reviewCountHautProduit'>$nombreAvis évaluations</span>";
             }?>
