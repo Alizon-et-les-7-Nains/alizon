@@ -5876,7 +5876,7 @@ dialog.reassort form input {
   position: relative;
   left: 2.5em;
   font-size: 20px;
-  color: green;
+  color: #273469 !important;
   font-weight: bold;
   width: 60%;
 }
@@ -5884,7 +5884,7 @@ dialog.reassort form input {
   position: relative;
   left: 2.5em;
   font-size: 20px;
-  color: red;
+  color: rgb(163, 0, 0);
   font-weight: bold;
   width: 60%;
 }
