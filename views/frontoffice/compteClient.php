@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <article>
                     <div><p><?php echo htmlspecialchars($adresse1 ?? ''); ?></p></div>
-                    <div><p><?php echo htmlspecialchars(!empty($adresse2) ? $adresse2 : 'Complément d\'adresse'); ?></p></div>
+                    <div><p><?php echo htmlspecialchars($adresse2 ?? ''); ?></p></div>
                     <div class="double-champ">
                         <div><p><?php echo htmlspecialchars($codePostal ?? ''); ?></p></div>
                         <div><p><?php echo htmlspecialchars($ville ?? ''); ?></p></div>
