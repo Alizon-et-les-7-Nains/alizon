@@ -324,40 +324,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     <link rel="stylesheet" href="../../public/style.css">
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <title>Paiement - Alizon</title>
-    <style>
-    .billing-section {
-        display: none;
-        margin-top: 20px;
-        padding: 15px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
-    }
 
-    .billing-section h4 {
-        margin-top: 0;
-        margin-bottom: 15px;
-        color: #252b56;
-    }
-
-    .checkbox-wrapper {
-        margin: 15px 0;
-        display: flex;
-        align-items: center;
-    }
-
-    .checkbox-wrapper input[type="checkbox"] {
-        margin-right: 10px;
-        width: 18px;
-        height: 18px;
-    }
-
-    .checkbox-wrapper label {
-        font-size: 1rem;
-        color: #252b56;
-        cursor: pointer;
-    }
-    </style>
 </head>
 
 <body class="pagePaiement">
