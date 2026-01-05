@@ -296,7 +296,6 @@ $promotion = calculerPromotion($produit);
     grognasseEtCompagnie
     cd /docker/data/web/html
     git pull -->
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
