@@ -3491,13 +3491,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   align-items: flex-end;
   border-bottom: 3px solid #e3f2fe;
 }
-.panier .infoCommande section:nth-child(4) {
-  border-bottom: none;
-  justify-content: flex-start;
-}
-.panier .infoCommande section:nth-child(4) * {
-  margin-right: 20px;
-}
 .panier .infoCommande section h2 {
   color: black;
 }
