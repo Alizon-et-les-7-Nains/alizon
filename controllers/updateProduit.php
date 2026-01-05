@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
 $extension = '';
 foreach ($extensionsPossibles as $ext) {
-        if (file_exists($photoPath . '.' . $ext)) {
+    $photoPathExt = $photoPath . '.' . $ext;
+        if (file_exists($photoPathExt)) {
             $extension = '.' . $ext;
             break;
         }
