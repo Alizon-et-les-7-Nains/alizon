@@ -364,7 +364,7 @@ if (isset($_SESSION['message_panier'])) {
                 echo '<p>Aucun avis pour ce produit.</p>';
             }
             else{ 
-            echo 
+            echo
             "<div>
                 <div class='star-rating'>
                     <div class='stars' style='--rating: $note'></div>
