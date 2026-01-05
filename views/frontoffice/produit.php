@@ -638,7 +638,7 @@ if ($produit['stock'] > 0) {
             
             <div class="groupe-input">
                 <label for="signal_titre">Raison du signalement :</label>
-                <select name="titre" id="signal_titre" required>
+                <select name="titre" id="signal_titre" class="raison" required>
                     <option value="" disabled selected>-- Sélectionnez une raison --</option>
 
                     <option value="injures">Injures ou propos insultants</option>

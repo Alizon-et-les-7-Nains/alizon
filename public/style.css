@@ -6310,6 +6310,12 @@ dialog.reassort form input {
 .pageProduit .btn-signaler:hover {
   color: #f14e4e;
 }
+.pageProduit .raison {
+  border: 1px solid grey;
+  padding: 5px;
+  font-family: "lora";
+  border-radius: 10px;
+}
 
 .connexionVendeur {
   position: relative;
