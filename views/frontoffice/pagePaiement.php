@@ -62,7 +62,7 @@ function updateStockAfterOrder($pdo, $idPanier) {
     }
 }
 
-function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000', $idAdresseFacturation = null) {
+function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000') {
     try {
         $pdo->beginTransaction();
 
@@ -142,13 +142,6 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
         $idAdresseLivraison = $pdo->lastInsertId();
 
-        // Déterminer l'adresse de facturation
-        if ($idAdresseFacturation && is_numeric($idAdresseFacturation)) {
-            $idAdresseFacturation = intval($idAdresseFacturation);
-        } else {
-            $idAdresseFacturation = $idAdresseLivraison;
-        }
-
         // Créer la commande
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
@@ -165,7 +158,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             )
         ";
         $stmtCommande = $pdo->prepare($sqlCommande);
-        if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarte, $idPanier])) {
+        if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseLivraison, $numeroCarte, $idPanier])) {
             throw new Exception("Erreur lors de la création de la commande.");
         }
 
@@ -217,55 +210,6 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
     }
 }
 
-function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
-    try {
-        // Vérifier si l'adresse existe déjà
-        $sqlCheck = "SELECT idAdresseLivraison FROM _adresseLivraison 
-                    WHERE idClient = ? 
-                    AND adresse = ? 
-                    AND codePostal = ? 
-                    AND ville = ?";
-        
-        $stmt = $pdo->prepare($sqlCheck);
-        $stmt->execute([$idClient, $adresse, $codePostal, $ville]);
-        
-        if ($stmt && $stmt->rowCount() > 0) {
-            $existing = $stmt->fetch(PDO::FETCH_ASSOC);
-            return [
-                'success' => true, 
-                'idAdresseFacturation' => $existing['idAdresseLivraison'], 
-                'message' => 'Adresse de facturation déjà existante'
-            ];
-        }
-
-        // Insérer la nouvelle adresse
-        $sqlInsert = "
-            INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
-            VALUES (?, ?, ?, ?)
-        ";
-        
-        $stmtInsert = $pdo->prepare($sqlInsert);
-        if (!$stmtInsert->execute([$idClient, $adresse, $codePostal, $ville])) {
-            throw new Exception("Erreur lors de l'insertion de l'adresse de facturation.");
-        }
-
-        $idAdresseFacturation = $pdo->lastInsertId();
-        
-        return [
-            'success' => true, 
-            'idAdresseFacturation' => $idAdresseFacturation, 
-            'message' => 'Adresse de facturation enregistrée avec succès'
-        ];
-
-    } catch (Exception $e) {
-        error_log("Erreur saveBillingAddress: " . $e->getMessage());
-        return [
-            'success' => false, 
-            'error' => $e->getMessage()
-        ];
-    }
-}
-
 // ============================================================================
 // GESTION DES ACTIONS AJAX
 // ============================================================================
@@ -274,42 +218,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     header('Content-Type: application/json');
     
     try {
-        switch ($_POST['action']) {
-            case 'createOrder':
-                $adresseLivraison = $_POST['adresseLivraison'] ?? '';
-                $villeLivraison = $_POST['villeLivraison'] ?? '';
-                $numeroCarte = $_POST['numeroCarte'] ?? '';
-                $cvv = $_POST['cvv'] ?? '';
-                $codePostal = $_POST['codePostal'] ?? '';
-                $nomCarte = $_POST['nomCarte'] ?? 'Client inconnu';
-                $dateExpiration = $_POST['dateExpiration'] ?? '12/30';
-                $idAdresseFacturation = $_POST['idAdresseFacturation'] ?? null;
+        if ($_POST['action'] === 'createOrder') {
+            $adresseLivraison = $_POST['adresseLivraison'] ?? '';
+            $villeLivraison = $_POST['villeLivraison'] ?? '';
+            $numeroCarte = $_POST['numeroCarte'] ?? '';
+            $cvv = $_POST['cvv'] ?? '';
+            $codePostal = $_POST['codePostal'] ?? '';
+            $nomCarte = $_POST['nomCarte'] ?? 'Client inconnu';
+            $dateExpiration = $_POST['dateExpiration'] ?? '12/30';
 
-                if (empty($adresseLivraison) || empty($villeLivraison) || empty($numeroCarte) || empty($codePostal)) {
-                    echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
-                    break;
-                }
+            if (empty($adresseLivraison) || empty($villeLivraison) || empty($numeroCarte) || empty($codePostal)) {
+                echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
+                exit;
+            }
 
-                $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExpiration, $cvv, $idAdresseFacturation);
-                echo json_encode(['success' => true, 'idCommande' => $idCommande]);
-                break;
-
-            case 'saveBillingAddress':
-                $adresse = $_POST['adresse'] ?? '';
-                $codePostal = $_POST['codePostal'] ?? '';
-                $ville = $_POST['ville'] ?? '';
-                
-                if (empty($adresse) || empty($codePostal) || empty($ville)) {
-                    echo json_encode(['success' => false, 'error' => 'Tous les champs d\'adresse sont obligatoires']);
-                    break;
-                }
-                
-                $result = saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville);
-                echo json_encode($result);
-                break;
-
-            default:
-                echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
+            $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExpiration, $cvv);
+            echo json_encode(['success' => true, 'idCommande' => $idCommande]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
         }
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
@@ -414,35 +340,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                             <small class="error-message" data-for="ville"></small>
                         </div>
                     </div>
-
-                    <!-- Checkbox pour adresse de facturation différente -->
-                    <div class="checkbox-wrapper">
-                        <input id="checkboxFactAddr" type="checkbox">
-                        <label for="checkboxFactAddr">Adresse de facturation différente</label>
-                    </div>
-
-                    <!-- Section adresse de facturation (cachée par défaut) -->
-                    <div id="billingSection" class="billing-section">
-                        <h4>Adresse de facturation :</h4>
-                        <div class="input-field">
-                            <input class="adresse-fact-input" type="text" placeholder="Adresse de facturation"
-                                aria-label="Adresse de facturation">
-                            <small class="error-message" data-for="adresse-fact"></small>
-                        </div>
-                        <div class="ligne">
-                            <div class="input-field fixed-110">
-                                <input class="code-postal-fact-input" type="text" placeholder="Code postal"
-                                    aria-label="Code postal facturation">
-                                <small class="error-message" data-for="code-postal-fact"></small>
-                            </div>
-                            <div class="input-field flex-1">
-                                <input class="ville-fact-input" type="text" placeholder="Ville"
-                                    aria-label="Ville facturation">
-                                <small class="error-message" data-for="ville-fact"></small>
-                            </div>
-                        </div>
-                        <button id="saveBillingAddress" class="btn-save">Enregistrer cette adresse</button>
-                    </div>
                 </section>
 
                 <section class="payment">
@@ -517,103 +414,11 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     <script>
     // Script principal pour la page de paiement
     document.addEventListener('DOMContentLoaded', function() {
-        // Variables globales
-        let idAdresseFacturation = null;
-        let savedBillingAddress = null;
-
         // Références aux éléments DOM
-        const factAddrCheckbox = document.getElementById('checkboxFactAddr');
-        const billingSection = document.getElementById('billingSection');
-        const saveBillingBtn = document.getElementById('saveBillingAddress');
         const confirmationPopup = document.getElementById('confirmationPopup');
         const popupContent = document.getElementById('popupContent');
         const closePopupBtn = confirmationPopup.querySelector('.close-popup');
         const payerButtons = document.querySelectorAll('.payer');
-
-        // Gestion de la checkbox adresse de facturation différente
-        if (factAddrCheckbox && billingSection) {
-            factAddrCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    billingSection.style.display = 'block';
-                    // Si une adresse est déjà enregistrée, la pré-remplir
-                    if (savedBillingAddress) {
-                        document.querySelector('.adresse-fact-input').value = savedBillingAddress
-                            .adresse;
-                        document.querySelector('.code-postal-fact-input').value = savedBillingAddress
-                            .codePostal;
-                        document.querySelector('.ville-fact-input').value = savedBillingAddress.ville;
-                    }
-                } else {
-                    billingSection.style.display = 'none';
-                    idAdresseFacturation = null;
-                }
-            });
-        }
-
-        // Gestion de l'enregistrement de l'adresse de facturation
-        if (saveBillingBtn) {
-            saveBillingBtn.addEventListener('click', async function() {
-                const adresseFactInput = document.querySelector('.adresse-fact-input');
-                const codePostalFactInput = document.querySelector('.code-postal-fact-input');
-                const villeFactInput = document.querySelector('.ville-fact-input');
-
-                // Validation des champs
-                if (!adresseFactInput.value.trim()) {
-                    showError('Adresse de facturation requise', 'adresse-fact');
-                    return;
-                }
-
-                if (!codePostalFactInput.value.trim()) {
-                    showError('Code postal requis', 'code-postal-fact');
-                    return;
-                }
-
-                if (!villeFactInput.value.trim()) {
-                    showError('Ville requise', 'ville-fact');
-                    return;
-                }
-
-                if (!/^\d{5}$/.test(codePostalFactInput.value.trim())) {
-                    showError('Le code postal doit contenir 5 chiffres', 'code-postal-fact');
-                    return;
-                }
-
-                try {
-                    // Préparation des données
-                    const formData = new URLSearchParams();
-                    formData.append('action', 'saveBillingAddress');
-                    formData.append('adresse', adresseFactInput.value.trim());
-                    formData.append('codePostal', codePostalFactInput.value.trim());
-                    formData.append('ville', villeFactInput.value.trim());
-
-                    // Envoi au serveur
-                    const response = await fetch('', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: formData
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        idAdresseFacturation = result.idAdresseFacturation;
-                        savedBillingAddress = {
-                            adresse: adresseFactInput.value.trim(),
-                            codePostal: codePostalFactInput.value.trim(),
-                            ville: villeFactInput.value.trim()
-                        };
-                        showSuccess('Adresse de facturation enregistrée avec succès');
-                    } else {
-                        showError(result.error || 'Erreur lors de l\'enregistrement');
-                    }
-                } catch (error) {
-                    showError('Erreur réseau');
-                    console.error(error);
-                }
-            });
-        }
 
         // Gestion des boutons payer
         payerButtons.forEach(btn => {
@@ -675,47 +480,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 alert(message);
             }
         }
-
-        // Fonction d'affichage de succès
-        function showSuccess(message) {
-            // Créer un toast de succès
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #4CAF50;
-                color: white;
-                padding: 12px 24px;
-                border-radius: 4px;
-                z-index: 10000;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                animation: slideIn 0.3s ease;
-            `;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    document.body.removeChild(toast);
-                }, 300);
-            }, 3000);
-        }
-
-        // Ajouter les animations CSS
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
 
         // Fonction de validation du formulaire
         function validateForm() {
@@ -795,31 +559,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 isValid = false;
             }
 
-            // Validation adresse de facturation si cochée
-            if (factAddrCheckbox && factAddrCheckbox.checked) {
-                const adresseFactInput = document.querySelector('.adresse-fact-input');
-                const codePostalFactInput = document.querySelector('.code-postal-fact-input');
-                const villeFactInput = document.querySelector('.ville-fact-input');
-
-                if (!adresseFactInput.value.trim()) {
-                    showError('Adresse de facturation requise', 'adresse-fact');
-                    isValid = false;
-                }
-
-                if (!codePostalFactInput.value.trim()) {
-                    showError('Code postal facturation requis', 'code-postal-fact');
-                    isValid = false;
-                } else if (!/^\d{5}$/.test(codePostalFactInput.value.trim())) {
-                    showError('Le code postal doit contenir 5 chiffres', 'code-postal-fact');
-                    isValid = false;
-                }
-
-                if (!villeFactInput.value.trim()) {
-                    showError('Ville facturation requise', 'ville-fact');
-                    isValid = false;
-                }
-            }
-
             return isValid;
         }
 
@@ -848,7 +587,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 
                 cartHtml += `
                     <div class="cart-item-summary">
-                        <img src="${item.img}" alt="${item.nom}" class="cart-item-image">
+                        <img src="${item.img}" alt="${item.nom}" class="cart-item-image" style="width: 60px; height: 60px; object-fit: cover;">
                         <div class="cart-item-info">
                             <div class="cart-item-name">${item.nom}</div>
                             <div class="cart-item-details">
@@ -864,13 +603,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 <div class="info">
                     <p><strong>Adresse de livraison :</strong><br>
                     ${formData.adresseLivraison}<br>
-                    ${formData.codePostal} ${formData.ville}</p>
-                    
-                    ${idAdresseFacturation && savedBillingAddress ? `
-                    <p style="margin-top: 10px;"><strong>Adresse de facturation :</strong><br>
-                    ${savedBillingAddress.adresse}<br>
-                    ${savedBillingAddress.codePostal} ${savedBillingAddress.ville}</p>
-                    ` : ''}
+                    ${formData.codePostal} ${formData.villeLivraison}</p>
                     
                     <p><strong>Paiement :</strong> Carte Visa se terminant par ${formData.numCarte.slice(-4)}</p>
                 </div>
@@ -926,10 +659,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                         orderData.append('nomCarte', formData.nomCarte);
                         orderData.append('dateExpiration', formData.dateExpiration);
                         orderData.append('codePostal', formData.codePostal);
-
-                        if (idAdresseFacturation) {
-                            orderData.append('idAdresseFacturation', idAdresseFacturation);
-                        }
 
                         // Envoi de la commande
                         const response = await fetch('', {
