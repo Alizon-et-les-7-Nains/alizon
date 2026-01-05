@@ -357,7 +357,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         <?php endif; ?>
                     </div>
                     <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
-                        <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
+                        <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
                     </button>
                 </div>
             </article>

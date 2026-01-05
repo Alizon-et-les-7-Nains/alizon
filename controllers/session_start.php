@@ -28,9 +28,10 @@
     ]);
     }
 
+    $lastId = $pdo->lastInsertId();
 
     session_start();  
-    $_SESSION['user_id'] = $user['idClient'];
+    $_SESSION['user_id'] = $lastId;
 
     header('Location: ../views/frontoffice/accueilConnecte.php');
     exit();

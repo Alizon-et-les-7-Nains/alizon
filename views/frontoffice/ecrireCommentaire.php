@@ -49,8 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileName = null;
             
             if (!empty($_FILES['photo']['name'])) {
-                $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/images/";
+                $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/images/imagesAvis/";
                 
+                // Créer le dossier s'il n'existe pas
+                if (!is_dir($targetDir)) {
+                    mkdir($targetDir, 0755, true);
+                }
                 
                 $fileExtension = strtolower(pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION));
                 $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
@@ -58,7 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (in_array($fileExtension, $allowedExtensions)) {
                     $fileName = uniqid('avis_') . '.' . $fileExtension;
                     $targetFile = $targetDir . $fileName;
-                        $fileName = "/images/" . $fileName;
+
+                    move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile);
+                    $fileName = "/images/imagesAvis/" . $fileName;
+                    
                 } else {
                     $errors[] = "Format d'image non autorisé. Utilisez JPG, PNG ou GIF.";
                 }
@@ -93,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } catch(PDOException $e) {
         $errors[] = "Erreur lors de l'insertion de l'avis : " . $e->getMessage();
-    }
+    } // test
 }
 ?>
 <!DOCTYPE html>

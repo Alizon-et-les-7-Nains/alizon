@@ -31,6 +31,8 @@ $bg-z: 0;
     font-family: "lora";
     font-weight: bold;
 
+    
+
     &::before {
       content: "";
       position: absolute;
@@ -65,6 +67,15 @@ $bg-z: 0;
         font-size: 16px;
         border: 2px solid #273469;
         border-radius: 8px;
+      }
+
+      a{
+        color: #273469;
+        font-size: 12px;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-decoration-color: #273469;
+        margin-top: 8px;
       }
 
     }

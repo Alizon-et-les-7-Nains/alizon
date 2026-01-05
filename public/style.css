@@ -1727,6 +1727,14 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     border: 2px solid #273469;
     border-radius: 8px;
   }
+  .inscription form a {
+    color: #273469;
+    font-size: 12px;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: #273469;
+    margin-top: 8px;
+  }
   .inscription h2 {
     color: #273469;
     font-family: "Lora", serif;
@@ -3351,6 +3359,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: red;
 }
 
+.panier main {
+  height: 100vh;
+}
 .panier .listeProduit article {
   border: 2px solid #273469;
   border-radius: 20px;
@@ -3482,10 +3493,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier .infoCommande section:nth-child(4) {
   border-bottom: none;
-  justify-content: flex-start;
-}
-.panier .infoCommande section:nth-child(4) * {
-  margin-right: 20px;
 }
 .panier .infoCommande section h2 {
   color: black;
@@ -3567,6 +3574,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier button .delete {
   margin-bottom: 15px;
+}
+.panier .delBtnImg {
+  height: 40px;
 }
 
 button#haut {
@@ -4009,7 +4019,6 @@ button#haut.visible:hover {
   font-style: italic;
   background-color: #fffefa;
   color: #273469;
-  min-height: 100vh;
   padding-top: 50px;
   padding-bottom: 50px;
   padding-right: 20px;
@@ -5866,7 +5875,7 @@ dialog.reassort form input {
   position: relative;
   left: 2.5em;
   font-size: 20px;
-  color: green;
+  color: blue;
   font-weight: bold;
   width: 60%;
 }
@@ -5874,7 +5883,7 @@ dialog.reassort form input {
   position: relative;
   left: 2.5em;
   font-size: 20px;
-  color: red;
+  color: rgb(163, 0, 0);
   font-weight: bold;
   width: 60%;
 }
@@ -6300,6 +6309,12 @@ dialog.reassort form input {
 }
 .pageProduit .btn-signaler:hover {
   color: #f14e4e;
+}
+.pageProduit .raison {
+  border: 1px solid grey;
+  padding: 5px;
+  font-family: "lora";
+  border-radius: 10px;
 }
 
 .connexionVendeur {

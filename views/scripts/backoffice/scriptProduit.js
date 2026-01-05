@@ -167,7 +167,7 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
                     <div></div>
                 </div>
                 <div class="titreEtProduit">
-                    <h1> Ajouter une remise pour ce produit </h1>
+                    <h1> Modifier une remise pour ce produit </h1>
                     <section>
                         <article>
                             <img class="produit" src="${imgURL}" alt="">
@@ -571,18 +571,12 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                         <div class="ajouterBaniere">
                             <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
-                        <p class="supprimer">supprimer ...</p>
                         <p><strong>Format accepté </strong>: .jpg uniquement</p>
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
                                 <p>Promotion : </p>
                                 <p><strong class="dataPromo">0</strong></p>
-                                <p><strong>€</strong></p>
-                            </div>
-                            <div class="prixRes">
-                                <p>Baniere : </p>
-                                <p><strong class="dataBaniere">0</strong></p>
                                 <p><strong>€</strong></p>
                             </div>
                             <div class="prixRes">
@@ -633,7 +627,6 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
 
     // Section calcul de prix 
     const txtPromo = document.querySelector('.dataPromo');
-    const txtBaniere = document.querySelector('.dataBaniere');
     const txtDuree = document.querySelector('.dataDuree');
     const txtTotal = document.querySelector('.dataTotal');
 
@@ -724,11 +717,6 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
                                 <p><strong>€</strong></p>
                             </div>
                             <div class="prixRes">
-                                <p>Baniere : </p>
-                                <p><strong class="dataBaniere">0</strong></p>
-                                <p><strong>€</strong></p>
-                            </div>
-                            <div class="prixRes">
                                 <p>Durée : </p>
                                 <p><strong class="dataDuree">0</strong></p>
                                 <p><strong>&nbsp jours</strong></p>
@@ -775,7 +763,6 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
 
     // Section calcul de prix 
     const txtPromo = document.querySelector('.dataPromo');
-    const txtBaniere = document.querySelector('.dataBaniere');
     const txtDuree = document.querySelector('.dataDuree');
     const txtTotal = document.querySelector('.dataTotal');
 

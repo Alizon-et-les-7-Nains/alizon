@@ -36,7 +36,7 @@ if (isset($_FILES['url']) && $_FILES['url']['tmp_name'] !== '') {
     }
     
     if (file_exists($photoPath)) { 
-        unlink($photoPath); // supprime l'ancien fichier 
+        unlink($photoPath); 
     }
     move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension);
 
