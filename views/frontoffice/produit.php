@@ -403,7 +403,7 @@ if (isset($_SESSION['message_panier'])) {
         </div> -->
     </article>
     <article class="actionsProduit">
-        <h2>Vendu par <?php echo htmlspecialchars($produit['prenom_vendeur'] . ' ' . $produit['nom_vendeur']); ?></h2>
+        <h2>Vendu par <?php echo htmlspecialchars($produit['raisonSocial']); ?></h2>
         <p class="underline" id="plusDarticles"><a href="">Plus d'article de ce vendeur</a></p>
         <br>
         <hr>
