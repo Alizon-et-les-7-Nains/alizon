@@ -38,7 +38,6 @@ if($productId == 0) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
-    // Vérifier si l'utilisateur est connecté
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
         exit;
@@ -49,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $idClientAvis = intval($_POST['idClientAvis']);
     $typeVote = $_POST['type'];
     
-    // Empêcher de voter sur son propre avis
     if ($idClientVotant === $idClientAvis) {
         http_response_code(403);
         exit;
@@ -362,13 +360,19 @@ if (isset($_SESSION['message_panier'])) {
             <?php endif; ?>
         </div>
         <div class="product-rating">
-            <div>
-                <div class="star-rating">
-                    <div class="stars" style="--rating: <?php echo $note; ?>"></div>
+            <?php if ($nombreAvis == 0){
+                echo '<p>Aucun avis pour ce produit.</p>';
+            }
+            else{ 
+            echo 
+            "<div>
+                <div class='star-rating'>
+                    <div class='stars' style='--rating: $note'></div>
                 </div>
-                <span class="rating-number"><?php echo number_format($note, 1); ?>/5</span>
+                <span class='rating-number'>number_format($note, 1)/5</span>
             </div>
-            <span class="review-count" id="reviewCountHautProduit"><?php echo $nombreAvis; ?> évaluations</span>
+            <span class='review-count' id='reviewCountHautProduit'>$nombreAvis évaluations</span>";
+            }?>
         </div>
         <div id="prix">
             <?php if ($promotion['est_en_remise']): ?>
