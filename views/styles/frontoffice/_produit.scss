@@ -528,7 +528,7 @@
     position: relative;
     left: 2.5em;
     font-size: 20px;
-    color: $color-blue;
+    color: blue;
     font-weight: bold;
     width: 60%;
   }
@@ -1024,5 +1024,11 @@
     &:hover {
       color: $color-red;
     }
+  }
+  .raison {
+      border: 1px solid grey;
+      padding: 5px;
+      font-family: 'lora';
+      border-radius: 10px;
   }
 }

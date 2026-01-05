@@ -5875,7 +5875,7 @@ dialog.reassort form input {
   position: relative;
   left: 2.5em;
   font-size: 20px;
-  color: #273469;
+  color: blue;
   font-weight: bold;
   width: 60%;
 }
@@ -6309,6 +6309,12 @@ dialog.reassort form input {
 }
 .pageProduit .btn-signaler:hover {
   color: #f14e4e;
+}
+.pageProduit .raison {
+  border: 1px solid grey;
+  padding: 5px;
+  font-family: "lora";
+  border-radius: 10px;
 }
 
 .connexionVendeur {
