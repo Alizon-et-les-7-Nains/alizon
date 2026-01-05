@@ -38,7 +38,6 @@ if($productId == 0) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
-    // Vérifier si l'utilisateur est connecté
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
         exit;
@@ -49,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $idClientAvis = intval($_POST['idClientAvis']);
     $typeVote = $_POST['type'];
     
-    // Empêcher de voter sur son propre avis
     if ($idClientVotant === $idClientAvis) {
         http_response_code(403);
         exit;
