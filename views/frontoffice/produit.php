@@ -639,8 +639,16 @@ if ($produit['stock'] > 0) {
             <input type="hidden" name="idClientAvis" id="signal_idClientAvis">
             
             <div class="groupe-input">
-                <label for="titre">Raison du signalement :</label>
-                <input type="text" name="titre" id="signal_titre" required placeholder="Ex: Contenu inapproprié">
+                <label for="signal_titre">Raison du signalement :</label>
+                <select name="titre" id="signal_titre" class="raison" required>
+                    <option value="" disabled selected>-- Sélectionnez une raison --</option>
+
+                    <option value="injures">Injures ou propos insultants</option>
+                    <option value="mensonger">Commentaire mensonger</option>
+                    <option value="spam">Spam ou publicité</option>
+                    <option value="donnees">Divulgation de données personnelles</option>
+                    <option value="autre">Autre</option>
+                </select>
             </div>
             
             <div class="groupe-input">
