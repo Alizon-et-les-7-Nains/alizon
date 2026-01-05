@@ -62,21 +62,24 @@ function updateStockAfterOrder($pdo, $idPanier) {
     }
 }
 
-function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000', $idAdresseFacturation = null) {
+function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000') {
     try {
         $pdo->beginTransaction();
 
         $idClient = intval($idClient);
 
-        $stmt = $pdo->prepare("SELECT * FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+        // Récupérer le panier
+        $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
         $stmt->execute([$idClient]);
         $panier = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if (!$panier) throw new Exception("Aucun panier trouvé pour ce client.");
+        if (!$panier) {
+            throw new Exception("Aucun panier trouvé pour ce client.");
+        }
 
         $idPanier = intval($panier['idPanier']);
 
-        // Vérifier le stock avant de procéder
+        // Vérifier le stock
         $sqlStockCheck = "
             SELECT p.idProduit, p.nom, p.stock, pap.quantiteProduit as qty_panier
             FROM _produitAuPanier pap
@@ -95,6 +98,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             throw new Exception(rtrim($errorMsg, ', '));
         }
 
+        // Calculer le total
         $sqlTotals = "
             SELECT SUM(p.prix * pap.quantiteProduit) AS sousTotal, SUM(pap.quantiteProduit) AS nbArticles
             FROM _produitAuPanier pap
@@ -111,7 +115,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             throw new Exception("Le panier est vide.");
         }
 
-        // Vérification existante carte
+        // Vérifier si la carte existe déjà
         $checkCarte = $pdo->prepare("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = ?");
         $checkCarte->execute([$numeroCarte]);
 
@@ -126,7 +130,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             }
         }
 
-        // Création de l'adresse de livraison
+        // Créer l'adresse de livraison
         $sqlAdresseLivraison = "
             INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
             VALUES (?, ?, ?, ?)
@@ -138,14 +142,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
         $idAdresseLivraison = $pdo->lastInsertId();
 
-        // Gestion adresse facturation
-        if ($idAdresseFacturation) {
-            $idAdresseFacturation = intval($idAdresseFacturation);
-        } else {
-            $idAdresseFacturation = $idAdresseLivraison;
-        }
-
-        // Création de la commande
+        // Créer la commande
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
 
@@ -161,13 +158,13 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             )
         ";
         $stmtCommande = $pdo->prepare($sqlCommande);
-        if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarte, $idPanier])) {
+        if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseLivraison, $numeroCarte, $idPanier])) {
             throw new Exception("Erreur lors de la création de la commande.");
         }
 
         $idCommande = $pdo->lastInsertId();
 
-        // Copie des produits vers _contient
+        // Copier les produits vers _contient
         $sqlContient = "
             INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
             SELECT pap.idProduit, ?, p.prix, COALESCE(t.pourcentageTva, 20.0), pap.quantiteProduit
@@ -213,53 +210,6 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
     }
 }
 
-function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
-    try {
-        $sqlCheck = "SELECT idAdresseLivraison FROM _adresseLivraison 
-                    WHERE idClient = ? 
-                    AND adresse = ? 
-                    AND codePostal = ? 
-                    AND ville = ?";
-        
-        $stmt = $pdo->prepare($sqlCheck);
-        $stmt->execute([$idClient, $adresse, $codePostal, $ville]);
-        
-        if ($stmt && $stmt->rowCount() > 0) {
-            $existing = $stmt->fetch(PDO::FETCH_ASSOC);
-            return [
-                'success' => true, 
-                'idAdresseFacturation' => $existing['idAdresseLivraison'], 
-                'message' => 'Adresse de facturation déjà existante'
-            ];
-        }
-
-        $sqlInsert = "
-            INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
-            VALUES (?, ?, ?, ?)
-        ";
-        
-        $stmtInsert = $pdo->prepare($sqlInsert);
-        if (!$stmtInsert->execute([$idClient, $adresse, $codePostal, $ville])) {
-            throw new Exception("Erreur lors de l'insertion de l'adresse de facturation.");
-        }
-
-        $idAdresseFacturation = $pdo->lastInsertId();
-        
-        return [
-            'success' => true, 
-            'idAdresseFacturation' => $idAdresseFacturation, 
-            'message' => 'Adresse de facturation enregistrée avec succès'
-        ];
-
-    } catch (Exception $e) {
-        error_log("Erreur saveBillingAddress: " . $e->getMessage());
-        return [
-            'success' => false, 
-            'error' => $e->getMessage()
-        ];
-    }
-}
-
 // ============================================================================
 // GESTION DES ACTIONS AJAX
 // ============================================================================
@@ -268,42 +218,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     header('Content-Type: application/json');
     
     try {
-        switch ($_POST['action']) {
-            case 'createOrder':
-                $adresseLivraison = $_POST['adresseLivraison'] ?? '';
-                $villeLivraison = $_POST['villeLivraison'] ?? '';
-                $numeroCarte = $_POST['numeroCarte'] ?? '';
-                $cvv = $_POST['cvv'] ?? '';
-                $codePostal = $_POST['codePostal'] ?? '';
-                $nomCarte = $_POST['nomCarte'] ?? 'Client inconnu';
-                $dateExpiration = $_POST['dateExpiration'] ?? '12/30';
-                $idAdresseFacturation = $_POST['idAdresseFacturation'] ?? null;
+        if ($_POST['action'] === 'createOrder') {
+            $adresseLivraison = $_POST['adresseLivraison'] ?? '';
+            $villeLivraison = $_POST['villeLivraison'] ?? '';
+            $numeroCarte = $_POST['numeroCarte'] ?? '';
+            $cvv = $_POST['cvv'] ?? '';
+            $codePostal = $_POST['codePostal'] ?? '';
+            $nomCarte = $_POST['nomCarte'] ?? 'Client inconnu';
+            $dateExpiration = $_POST['dateExpiration'] ?? '12/30';
 
-                if (empty($adresseLivraison) || empty($villeLivraison) || empty($numeroCarte) || empty($codePostal)) {
-                    echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
-                    break;
-                }
+            if (empty($adresseLivraison) || empty($villeLivraison) || empty($numeroCarte) || empty($codePostal)) {
+                echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
+                exit;
+            }
 
-                $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExpiration, $cvv, $idAdresseFacturation);
-                echo json_encode(['success' => true, 'idCommande' => $idCommande]);
-                break;
-
-            case 'saveBillingAddress':
-                $adresse = $_POST['adresse'] ?? '';
-                $codePostal = $_POST['codePostal'] ?? '';
-                $ville = $_POST['ville'] ?? '';
-                
-                if (empty($adresse) || empty($codePostal) || empty($ville)) {
-                    echo json_encode(['success' => false, 'error' => 'Tous les champs d\'adresse sont obligatoires']);
-                    break;
-                }
-                
-                $result = saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville);
-                echo json_encode($result);
-                break;
-
-            default:
-                echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
+            $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExpiration, $cvv);
+            echo json_encode(['success' => true, 'idCommande' => $idCommande]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
         }
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
@@ -357,187 +289,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     <link rel="stylesheet" href="../../public/style.css">
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <title>Paiement - Alizon</title>
-    <style>
-    .error-message {
-        color: #d32f2f;
-        font-size: 0.85rem;
-        margin-top: 4px;
-        display: block;
-        min-height: 20px;
-    }
-
-    .billing-section {
-        margin-top: 20px;
-        padding: 15px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        background-color: #f9f9f9;
-        display: none;
-    }
-
-    .billing-section.active {
-        display: block;
-    }
-
-    .btn-save {
-        background: #252b56;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 10px 20px;
-        cursor: pointer;
-        font-family: 'lora', serif;
-        margin-top: 10px;
-    }
-
-    .btn-save:hover {
-        background: #1a1f3f;
-    }
-
-    .popup-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .popup-content {
-        background: white;
-        border-radius: 12px;
-        padding: 30px;
-        width: 90%;
-        max-width: 800px;
-        max-height: 80vh;
-        overflow-y: auto;
-        position: relative;
-    }
-
-    .close-popup {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        color: #666;
-    }
-
-    .cart-summary {
-        max-height: 300px;
-        overflow-y: auto;
-        margin: 20px 0;
-        padding: 15px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-    }
-
-    .cart-item-summary {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .cart-item-summary:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
-    }
-
-    .cart-item-image {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 4px;
-        margin-right: 15px;
-    }
-
-    .cart-item-info {
-        flex: 1;
-    }
-
-    .cart-item-name {
-        font-weight: 500;
-        margin-bottom: 5px;
-        color: #252b56;
-    }
-
-    .cart-item-details {
-        font-size: 0.9rem;
-        color: #666;
-    }
-
-    .popup-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 20px;
-    }
-
-    .btn-confirm {
-        background: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 12px 30px;
-        cursor: pointer;
-        font-family: 'lora', serif;
-        font-size: 16px;
-    }
-
-    .btn-cancel {
-        background: #f44336;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 12px 30px;
-        cursor: pointer;
-        font-family: 'lora', serif;
-        font-size: 16px;
-    }
-
-    .thank-you-popup {
-        text-align: center;
-        padding: 40px 30px;
-    }
-
-    .thank-you-popup h2 {
-        color: #252b56;
-        margin-bottom: 20px;
-    }
-
-    .thank-you-popup p {
-        margin-bottom: 15px;
-        color: #666;
-    }
-
-    .order-number {
-        font-size: 24px;
-        font-weight: bold;
-        color: #4CAF50;
-        margin: 20px 0;
-    }
-
-    .btn-home {
-        background: #252b56;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 12px 30px;
-        cursor: pointer;
-        font-family: 'lora', serif;
-        font-size: 16px;
-        margin-top: 20px;
-    }
-    </style>
 </head>
 
 <body class="pagePaiement">
@@ -589,33 +340,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                             <small class="error-message" data-for="ville"></small>
                         </div>
                     </div>
-
-                    <label>
-                        <input id="checkboxFactAddr" type="checkbox">
-                        Adresse de facturation différente
-                    </label>
-
-                    <div id="billingSection" class="billing-section">
-                        <h4 style="margin-top: 0; margin-bottom: 15px;">Adresse de facturation :</h4>
-                        <div class="input-field">
-                            <input class="adresse-fact-input" type="text" placeholder="Adresse de facturation"
-                                aria-label="Adresse de facturation">
-                            <small class="error-message" data-for="adresse-fact"></small>
-                        </div>
-                        <div class="ligne">
-                            <div class="input-field fixed-110">
-                                <input class="code-postal-fact-input" type="text" placeholder="Code postal"
-                                    aria-label="Code postal facturation">
-                                <small class="error-message" data-for="code-postal-fact"></small>
-                            </div>
-                            <div class="input-field flex-1">
-                                <input class="ville-fact-input" type="text" placeholder="Ville"
-                                    aria-label="Ville facturation">
-                                <small class="error-message" data-for="ville-fact"></small>
-                            </div>
-                        </div>
-                        <button id="saveBillingAddress" class="btn-save">Enregistrer cette adresse</button>
-                    </div>
                 </section>
 
                 <section class="payment">
@@ -654,13 +378,15 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
             <div class="col">
                 <section class="conditions">
                     <h3>3 - Accepter les conditions générales et mentions légales</h3>
-                    <label>
+                    <div class="checkbox-wrapper">
                         <input type="checkbox" id="cgvCheckbox">
-                        J'ai lu et j'accepte les
-                        <a href="#">Conditions Générales de Vente</a> et les
-                        <a href="#">Mentions Légales</a> d'Alizon.
-                    </label>
-                    <small class="error-message" data-for="cgv" style="display: block; margin-top: 10px;"></small>
+                        <label for="cgvCheckbox">
+                            J'ai lu et j'accepte les
+                            <a href="#">Conditions Générales de Vente</a> et les
+                            <a href="#">Mentions Légales</a> d'Alizon.
+                        </label>
+                    </div>
+                    <small class="error-message" data-for="cgv"></small>
                 </section>
             </div>
         </div>
@@ -671,8 +397,8 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     </main>
 
     <!-- Popup de confirmation -->
-    <div id="confirmationPopup" class="popup-overlay">
-        <div class="popup-content">
+    <div id="confirmationPopup" class="payment-overlay" style="display: none;">
+        <div class="order-summary">
             <button class="close-popup">&times;</button>
             <div id="popupContent">
                 <!-- Contenu dynamique -->
@@ -688,103 +414,11 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     <script>
     // Script principal pour la page de paiement
     document.addEventListener('DOMContentLoaded', function() {
-        // Variables globales
-        let idAdresseFacturation = null;
-        let savedBillingAddress = null;
-
         // Références aux éléments DOM
-        const factAddrCheckbox = document.getElementById('checkboxFactAddr');
-        const billingSection = document.getElementById('billingSection');
-        const saveBillingBtn = document.getElementById('saveBillingAddress');
         const confirmationPopup = document.getElementById('confirmationPopup');
         const popupContent = document.getElementById('popupContent');
-        const closePopupBtn = document.querySelector('.close-popup');
+        const closePopupBtn = confirmationPopup.querySelector('.close-popup');
         const payerButtons = document.querySelectorAll('.payer');
-
-        // Gestion de la checkbox adresse de facturation différente
-        if (factAddrCheckbox && billingSection) {
-            factAddrCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    billingSection.classList.add('active');
-                    // Si une adresse est déjà enregistrée, la pré-remplir
-                    if (savedBillingAddress) {
-                        document.querySelector('.adresse-fact-input').value = savedBillingAddress
-                            .adresse;
-                        document.querySelector('.code-postal-fact-input').value = savedBillingAddress
-                            .codePostal;
-                        document.querySelector('.ville-fact-input').value = savedBillingAddress.ville;
-                    }
-                } else {
-                    billingSection.classList.remove('active');
-                    idAdresseFacturation = null;
-                }
-            });
-        }
-
-        // Gestion de l'enregistrement de l'adresse de facturation
-        if (saveBillingBtn) {
-            saveBillingBtn.addEventListener('click', async function() {
-                const adresseFactInput = document.querySelector('.adresse-fact-input');
-                const codePostalFactInput = document.querySelector('.code-postal-fact-input');
-                const villeFactInput = document.querySelector('.ville-fact-input');
-
-                // Validation des champs
-                if (!adresseFactInput.value.trim()) {
-                    showError('Adresse de facturation requise', 'adresse-fact');
-                    return;
-                }
-
-                if (!codePostalFactInput.value.trim()) {
-                    showError('Code postal requis', 'code-postal-fact');
-                    return;
-                }
-
-                if (!villeFactInput.value.trim()) {
-                    showError('Ville requise', 'ville-fact');
-                    return;
-                }
-
-                if (!/^\d{5}$/.test(codePostalFactInput.value.trim())) {
-                    showError('Le code postal doit contenir 5 chiffres', 'code-postal-fact');
-                    return;
-                }
-
-                try {
-                    // Préparation des données
-                    const formData = new URLSearchParams();
-                    formData.append('action', 'saveBillingAddress');
-                    formData.append('adresse', adresseFactInput.value.trim());
-                    formData.append('codePostal', codePostalFactInput.value.trim());
-                    formData.append('ville', villeFactInput.value.trim());
-
-                    // Envoi au serveur
-                    const response = await fetch('', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: formData
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        idAdresseFacturation = result.idAdresseFacturation;
-                        savedBillingAddress = {
-                            adresse: adresseFactInput.value.trim(),
-                            codePostal: codePostalFactInput.value.trim(),
-                            ville: villeFactInput.value.trim()
-                        };
-                        alert('Adresse de facturation enregistrée avec succès');
-                    } else {
-                        showError(result.error || 'Erreur lors de l\'enregistrement');
-                    }
-                } catch (error) {
-                    showError('Erreur réseau');
-                    console.error(error);
-                }
-            });
-        }
 
         // Gestion des boutons payer
         payerButtons.forEach(btn => {
@@ -925,31 +559,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 isValid = false;
             }
 
-            // Validation adresse de facturation si cochée
-            if (factAddrCheckbox && factAddrCheckbox.checked) {
-                const adresseFactInput = document.querySelector('.adresse-fact-input');
-                const codePostalFactInput = document.querySelector('.code-postal-fact-input');
-                const villeFactInput = document.querySelector('.ville-fact-input');
-
-                if (!adresseFactInput.value.trim()) {
-                    showError('Adresse de facturation requise', 'adresse-fact');
-                    isValid = false;
-                }
-
-                if (!codePostalFactInput.value.trim()) {
-                    showError('Code postal facturation requis', 'code-postal-fact');
-                    isValid = false;
-                } else if (!/^\d{5}$/.test(codePostalFactInput.value.trim())) {
-                    showError('Le code postal doit contenir 5 chiffres', 'code-postal-fact');
-                    isValid = false;
-                }
-
-                if (!villeFactInput.value.trim()) {
-                    showError('Ville facturation requise', 'ville-fact');
-                    isValid = false;
-                }
-            }
-
             return isValid;
         }
 
@@ -959,23 +568,17 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 adresseLivraison: document.querySelector('.adresse-input').value.trim(),
                 villeLivraison: document.querySelector('.ville-input').value.trim(),
                 codePostal: document.querySelector('.code-postal-input').value.trim(),
-                numCarte: document.querySelector('.num-carte').value.trim(),
+                numCarte: document.querySelector('.num-carte').value.replace(/\s+/g, ''),
                 nomCarte: document.querySelector('.nom-carte').value.trim(),
                 dateExpiration: document.querySelector('.carte-date').value.trim(),
-                cvv: document.querySelector('.cvv-input').value.trim(),
-                adresseFacturation: factAddrCheckbox && factAddrCheckbox.checked ?
-                    document.querySelector('.adresse-fact-input').value.trim() : null,
-                codePostalFacturation: factAddrCheckbox && factAddrCheckbox.checked ?
-                    document.querySelector('.code-postal-fact-input').value.trim() : null,
-                villeFacturation: factAddrCheckbox && factAddrCheckbox.checked ?
-                    document.querySelector('.ville-fact-input').value.trim() : null
+                cvv: document.querySelector('.cvv-input').value.trim()
             };
         }
 
         // Fonction pour afficher la popup de confirmation
         function showConfirmationPopup(formData, cart) {
             // Construction du contenu HTML
-            let cartHtml = '<div class="cart-summary">';
+            let cartHtml = '';
             let total = 0;
 
             cart.forEach(item => {
@@ -984,7 +587,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 
                 cartHtml += `
                     <div class="cart-item-summary">
-                        <img src="${item.img}" alt="${item.nom}" class="cart-item-image">
+                        <img src="${item.img}" alt="${item.nom}" class="cart-item-image" style="width: 60px; height: 60px; object-fit: cover;">
                         <div class="cart-item-info">
                             <div class="cart-item-name">${item.nom}</div>
                             <div class="cart-item-details">
@@ -995,34 +598,28 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 `;
             });
 
-            cartHtml += '</div>';
-
             const popupHtml = `
-                <h2 style="color: #252b56; margin-bottom: 20px;">Confirmation de commande</h2>
-                <div style="margin-bottom: 20px;">
+                <h2>Confirmation de commande</h2>
+                <div class="info">
                     <p><strong>Adresse de livraison :</strong><br>
                     ${formData.adresseLivraison}<br>
-                    ${formData.codePostal} ${formData.ville}</p>
-                    
-                    ${formData.adresseFacturation ? `
-                    <p style="margin-top: 10px;"><strong>Adresse de facturation :</strong><br>
-                    ${formData.adresseFacturation}<br>
-                    ${formData.codePostalFacturation} ${formData.villeFacturation}</p>
-                    ` : ''}
+                    ${formData.codePostal} ${formData.villeLivraison}</p>
                     
                     <p><strong>Paiement :</strong> Carte Visa se terminant par ${formData.numCarte.slice(-4)}</p>
                 </div>
                 
-                <h3 style="color: #252b56; margin-bottom: 10px;">Récapitulatif du panier</h3>
-                ${cartHtml}
-                
-                <div style="text-align: right; margin: 20px 0; padding-top: 15px; border-top: 2px solid #252b56;">
-                    <h3 style="margin: 0;">Total : ${total.toFixed(2)}€</h3>
+                <h3>Récapitulatif du panier</h3>
+                <div class="scrollable-cart">
+                    ${cartHtml}
                 </div>
                 
-                <div class="popup-buttons">
-                    <button class="btn-cancel">Annuler</button>
-                    <button class="btn-confirm">Confirmer la commande</button>
+                <div class="total-section">
+                    <h3>Total : ${total.toFixed(2)}€</h3>
+                </div>
+                
+                <div class="actions">
+                    <button class="undo">Annuler</button>
+                    <button class="confirm">Confirmer la commande</button>
                 </div>
             `;
 
@@ -1030,11 +627,11 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
             confirmationPopup.style.display = 'flex';
 
             // Gestion des boutons dans la popup
-            const confirmBtn = popupContent.querySelector('.btn-confirm');
-            const cancelBtn = popupContent.querySelector('.btn-cancel');
+            const confirmBtn = popupContent.querySelector('.confirm');
+            const undoBtn = popupContent.querySelector('.undo');
 
-            if (cancelBtn) {
-                cancelBtn.addEventListener('click', function() {
+            if (undoBtn) {
+                undoBtn.addEventListener('click', function() {
                     confirmationPopup.style.display = 'none';
                 });
             }
@@ -1047,8 +644,8 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                     try {
                         // Chiffrement des données sensibles
                         const numeroCarteChiffre = window.vignere ?
-                            window.vignere(formData.numCarte.replace(/\s+/g, ''), window
-                                .CLE_CHIFFREMENT, 1) : formData.numCarte;
+                            window.vignere(formData.numCarte, window.CLE_CHIFFREMENT, 1) : formData
+                            .numCarte;
                         const cvvChiffre = window.vignere ?
                             window.vignere(formData.cvv, window.CLE_CHIFFREMENT, 1) : formData.cvv;
 
@@ -1063,10 +660,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                         orderData.append('dateExpiration', formData.dateExpiration);
                         orderData.append('codePostal', formData.codePostal);
 
-                        if (idAdresseFacturation) {
-                            orderData.append('idAdresseFacturation', idAdresseFacturation);
-                        }
-
                         // Envoi de la commande
                         const response = await fetch('', {
                             method: 'POST',
@@ -1078,7 +671,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                         if (result.success) {
                             // Affichage du message de confirmation
                             const thankYouHtml = `
-                                <div class="thank-you-popup">
+                                <div class="thank-you">
                                     <h2>Merci pour votre commande !</h2>
                                     <p>Votre commande a été enregistrée avec succès.</p>
                                     <div class="order-number">

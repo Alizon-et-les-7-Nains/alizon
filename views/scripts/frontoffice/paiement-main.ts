@@ -39,10 +39,18 @@ if (document.body.classList.contains("pagePaiement")) {
   ) as HTMLInputElement | null;
 
   // Initialisation de l'autocomplétion
-  setupAutocomplete({
-    codePostalInput,
-    villeInput,
-    maps: { departments, citiesByCode, postals, allCities },
-    selectedDepartment,
-  });
+  if (codePostalInput && villeInput) {
+    setupAutocomplete({
+      codePostalInput,
+      villeInput,
+      maps: { departments, citiesByCode, postals, allCities },
+      selectedDepartment,
+    });
+  }
+
+  // Supprimer l'ancien overlay d'adresse de facturation s'il existe
+  const oldOverlay = document.querySelector(".addr-fact-overlay");
+  if (oldOverlay) {
+    oldOverlay.remove();
+  }
 }
