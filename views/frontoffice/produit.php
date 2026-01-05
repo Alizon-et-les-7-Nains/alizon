@@ -38,7 +38,6 @@ if($productId == 0) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
-    // Vérifier si l'utilisateur est connecté
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
         exit;
@@ -49,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $idClientAvis = intval($_POST['idClientAvis']);
     $typeVote = $_POST['type'];
     
-    // Empêcher de voter sur son propre avis
     if ($idClientVotant === $idClientAvis) {
         http_response_code(403);
         exit;
@@ -362,13 +360,21 @@ if (isset($_SESSION['message_panier'])) {
             <?php endif; ?>
         </div>
         <div class="product-rating">
-            <div>
-                <div class="star-rating">
-                    <div class="stars" style="--rating: <?php echo $note; ?>"></div>
+            <?php
+            $noteFormatee = number_format($note, 1); 
+            if ($nombreAvis == 0){
+                echo '<p>Aucun avis pour ce produit.</p>';
+            }
+            else{ 
+            echo
+            "<div>
+                <div class='star-rating'>
+                    <div class='stars' style='--rating: $note'></div>
                 </div>
-                <span class="rating-number"><?php echo number_format($note, 1); ?>/5</span>
+                <span class='rating-number'>$noteFormatee/5</span>
             </div>
-            <span class="review-count" id="reviewCountHautProduit"><?php echo $nombreAvis; ?> évaluations</span>
+            <span class='review-count' id='reviewCountHautProduit'>$nombreAvis évaluations</span>";
+            }?>
         </div>
         <div id="prix">
             <?php if ($promotion['est_en_remise']): ?>
@@ -399,7 +405,7 @@ if (isset($_SESSION['message_panier'])) {
         </div> -->
     </article>
     <article class="actionsProduit">
-        <h2>Vendu par <?php echo htmlspecialchars($produit['prenom_vendeur'] . ' ' . $produit['nom_vendeur']); ?></h2>
+        <h2>Vendu par <?php echo htmlspecialchars($produit['raisonSocial']); ?></h2>
         <p class="underline" id="plusDarticles"><a href="">Plus d'article de ce vendeur</a></p>
         <br>
         <hr>
@@ -530,7 +536,7 @@ if ($produit['stock'] > 0) {
             <?php
             $photoProfilPath = "/images/photoProfilClient/photo_profil" . $avis['idClient'];
             $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-            $photoProfilUrl = "../../public/images/pp.png";
+            $photoProfilUrl = "../../public/images/profil.png";
 
             foreach ($extensionsPossibles as $ext) {
                 $cheminComplet = "/var/www/html" . $photoProfilPath . "." . $ext;
@@ -633,8 +639,16 @@ if ($produit['stock'] > 0) {
             <input type="hidden" name="idClientAvis" id="signal_idClientAvis">
             
             <div class="groupe-input">
-                <label for="titre">Raison du signalement :</label>
-                <input type="text" name="titre" id="signal_titre" required placeholder="Ex: Contenu inapproprié">
+                <label for="signal_titre">Raison du signalement :</label>
+                <select name="titre" id="signal_titre" class="raison" required>
+                    <option value="" disabled selected>-- Sélectionnez une raison --</option>
+
+                    <option value="injures">Injures ou propos insultants</option>
+                    <option value="mensonger">Commentaire mensonger</option>
+                    <option value="spam">Spam ou publicité</option>
+                    <option value="donnees">Divulgation de données personnelles</option>
+                    <option value="autre">Autre</option>
+                </select>
             </div>
             
             <div class="groupe-input">

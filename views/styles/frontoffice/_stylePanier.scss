@@ -137,10 +137,6 @@
     border-bottom: 3px solid $color-pastel-blue;
     &:nth-child(4) {
       border-bottom: none;
-      justify-content: flex-start;
-      * {
-        margin-right: 20px;
-      }
     }
     h2 {
       color: black;
@@ -207,9 +203,6 @@
     button .delete {
       margin-top: 20px;
     }
-    .prixOpt p {
-
-    }
   }
   button {
     background: none;
@@ -226,5 +219,8 @@
   }
   button .delete {
     margin-bottom: 15px;
+  }
+  .delBtnImg {
+    height: 40px;
   }
 }

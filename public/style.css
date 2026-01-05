@@ -3493,10 +3493,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier .infoCommande section:nth-child(4) {
   border-bottom: none;
-  justify-content: flex-start;
-}
-.panier .infoCommande section:nth-child(4) * {
-  margin-right: 20px;
 }
 .panier .infoCommande section h2 {
   color: black;
@@ -3578,6 +3574,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier button .delete {
   margin-bottom: 15px;
+}
+.panier .delBtnImg {
+  height: 40px;
 }
 
 button#haut {
@@ -5876,7 +5875,7 @@ dialog.reassort form input {
   position: relative;
   left: 2.5em;
   font-size: 20px;
-  color: green;
+  color: blue;
   font-weight: bold;
   width: 60%;
 }
@@ -5884,7 +5883,7 @@ dialog.reassort form input {
   position: relative;
   left: 2.5em;
   font-size: 20px;
-  color: red;
+  color: rgb(163, 0, 0);
   font-weight: bold;
   width: 60%;
 }
@@ -6310,6 +6309,12 @@ dialog.reassort form input {
 }
 .pageProduit .btn-signaler:hover {
   color: #f14e4e;
+}
+.pageProduit .raison {
+  border: 1px solid grey;
+  padding: 5px;
+  font-family: "lora";
+  border-radius: 10px;
 }
 
 .connexionVendeur {
