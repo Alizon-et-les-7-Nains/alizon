@@ -296,6 +296,7 @@ $promotion = calculerPromotion($produit);
     grognasseEtCompagnie
     cd /docker/data/web/html
     git pull -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
@@ -359,13 +360,19 @@ if (isset($_SESSION['message_panier'])) {
             <?php endif; ?>
         </div>
         <div class="product-rating">
-            <div>
-                <div class="star-rating">
-                    <div class="stars" style="--rating: <?php echo $note; ?>"></div>
+            <?php if ($nombreAvis == 0){
+                echo '<p>Aucun avis pour ce produit.</p>';
+            }
+            else{ 
+            echo 
+            "<div>
+                <div class='star-rating'>
+                    <div class='stars' style='--rating: $note'></div>
                 </div>
-                <span class="rating-number"><?php echo number_format($note, 1); ?>/5</span>
+                <span class='rating-number'>number_format($note, 1)/5</span>
             </div>
-            <span class="review-count" id="reviewCountHautProduit"><?php echo $nombreAvis; ?> évaluations</span>
+            <span class='review-count' id='reviewCountHautProduit'>$nombreAvis évaluations</span>";
+            }?>
         </div>
         <div id="prix">
             <?php if ($promotion['est_en_remise']): ?>
