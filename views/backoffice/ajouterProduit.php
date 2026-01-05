@@ -110,7 +110,7 @@ require_once '../../controllers/auth.php';
 
         photoInput.addEventListener('change', function() {
             const file = this.files[0];
-            if (file && file.type.startsWith('image/')) {
+            if (file && file.type.startsWith('images/')) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     imagePreview.src = e.target.result;
