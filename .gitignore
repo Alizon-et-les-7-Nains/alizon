@@ -6,4 +6,4 @@
 /logs/
 /.prettierrc
 config.*
-pdo.php
+**/pdo.php
