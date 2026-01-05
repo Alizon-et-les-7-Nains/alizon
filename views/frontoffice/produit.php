@@ -534,7 +534,7 @@ if ($produit['stock'] > 0) {
             <?php
             $photoProfilPath = "/images/photoProfilClient/photo_profil" . $avis['idClient'];
             $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-            $photoProfilUrl = "../../public/images/pp.png";
+            $photoProfilUrl = "../../public/images/profil.png";
 
             foreach ($extensionsPossibles as $ext) {
                 $cheminComplet = "/var/www/html" . $photoProfilPath . "." . $ext;
