@@ -126,8 +126,8 @@
   }
   article h4 {
     font-family: "lora", serif;
-    font-style: normal;
     font-weight: bold;
+    font-style: normal;
     color: $color-green;
   }
   .infoCommande section {
@@ -135,6 +135,9 @@
     justify-content: space-between;
     align-items: flex-end;
     border-bottom: 3px solid $color-pastel-blue;
+    &:nth-child(4) {
+      border-bottom: none;
+    }
     h2 {
       color: black;
     }
@@ -199,9 +202,6 @@
     }
     button .delete {
       margin-top: 20px;
-    }
-    .prixOpt p {
-
     }
   }
   button {

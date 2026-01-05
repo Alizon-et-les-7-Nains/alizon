@@ -3491,6 +3491,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   align-items: flex-end;
   border-bottom: 3px solid #e3f2fe;
 }
+.panier .infoCommande section:nth-child(4) {
+  border-bottom: none;
+}
 .panier .infoCommande section h2 {
   color: black;
 }
@@ -3571,6 +3574,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier button .delete {
   margin-bottom: 15px;
+}
+.panier .delBtnImg {
+  height: 40px;
 }
 
 button#haut {
