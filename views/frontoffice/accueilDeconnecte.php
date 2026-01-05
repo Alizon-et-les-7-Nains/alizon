@@ -176,7 +176,7 @@ require_once "../../controllers/prix.php";
                             <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
                             <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
-                                <?php if($value['note'] < 1) { ?>
+                                <?php if(number_format($value['note'], 1) == 0) { ?>
                                     <span><?php echo "Pas de note" ?></span>
                                 <?php } else { ?>
                                 <span><?php echo number_format($value['note'], 1); ?></span>
