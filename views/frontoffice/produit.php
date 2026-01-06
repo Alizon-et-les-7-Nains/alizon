@@ -500,9 +500,9 @@ if (isset($_SESSION['message_panier'])) {
 </section>
 <?php 
 if ($produit['stock'] > 0) {
-    echo '<p class="stockDisponible">En stock (' . htmlspecialchars($produit['stock']) . ' restants) </p>';
+    echo '<p class="stockDisponible">En stock (' . htmlspecialchars($produit['stock']) . ' restants)</p>';
     if ($quantiteActuellePanier > 0) {
-        echo '<p class="stockDisponible">Vous avez déjà ' . htmlspecialchars($quantiteActuellePanier) . ' article(s) dans votre panier.</p>';
+        echo '<p class="stockDisponible"> - Vous avez déjà ' . htmlspecialchars($quantiteActuellePanier) . ' article(s) dans votre panier.</p>';
     }
 } else {
     if ($produit['dateReassort'] !== null) {
