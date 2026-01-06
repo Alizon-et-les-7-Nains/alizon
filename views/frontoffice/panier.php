@@ -310,7 +310,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';    
                         ?>
-                    <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>">
+                    <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>" class="imgProd">
                 </div>
                 <div class="infoProduit">
                     <div>
