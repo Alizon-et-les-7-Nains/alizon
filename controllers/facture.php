@@ -1,10 +1,9 @@
 <?php 
 require_once './pdo.php';
-
+$idCommande = $_GET['id'];
 use Dompdf\Dompdf;
 
-function generateFacture(int $idCommande)
-{
+
     global $pdo;
 
     $stmt = $pdo->prepare("
@@ -89,4 +88,6 @@ function generateFacture(int $idCommande)
         $path . '/facture_' . $data['idCommande'] . '.pdf',
         $dompdf->output()
     );
-}
+
+header("Location: ../views/frontoffice/commandes.php"); 
+exit();
