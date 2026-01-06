@@ -1,17 +1,12 @@
-// paiement.js - Page de paiement principale (remplace paiement-main.js)
 class PaymentPage {
   constructor() {
     this.idAdresseFacturation = null;
     this.savedBillingAddress = null;
-    this.selectedDepartment = { value: null };
-    this.autocomplete = null;
     this.init();
   }
 
   init() {
     this.setupReferences();
-    this.initializeAutocomplete();
-    this.setupFormFormatting();
     this.setupEventListeners();
   }
 
@@ -23,66 +18,9 @@ class PaymentPage {
     this.closePopupBtn = document.querySelector(".close-popup");
     this.payerButtons = document.querySelectorAll(".payer");
     this.cgvCheckbox = document.getElementById("cgvCheckbox");
-
-    // Références aux champs de formulaire
-    this.adresseInput = document.querySelector(".adresse-input");
-    this.codePostalInput = document.querySelector(".code-postal-input");
-    this.villeInput = document.querySelector(".ville-input");
-    this.numCarteInput = document.querySelector(".num-carte");
-    this.nomCarteInput = document.querySelector(".nom-carte");
-    this.carteDateInput = document.querySelector(".carte-date");
-    this.cvvInput = document.querySelector(".cvv-input");
-  }
-
-  initializeAutocomplete() {
-    const preloadedData = window.__PAYMENT_DATA__ || {};
-
-    if (this.codePostalInput && this.villeInput && preloadedData.departments) {
-      this.autocomplete = new AutocompleteManager({
-        codePostalInput: this.codePostalInput,
-        villeInput: this.villeInput,
-        maps: {
-          departments: preloadedData.departments,
-          citiesByCode: preloadedData.citiesByCode || {},
-          postals: preloadedData.postals || {},
-        },
-        selectedDepartment: this.selectedDepartment,
-      });
-    }
-  }
-
-  setupFormFormatting() {
-    // Formatage du numéro de carte avec validation Luhn
-    if (this.numCarteInput) {
-      this.numCarteInput.addEventListener("input", () => {
-        LuhnValidator.formatCardNumber(this.numCarteInput);
-      });
-
-      this.numCarteInput.addEventListener("blur", () => {
-        const value = this.numCarteInput.value.replace(/\s/g, "");
-        if (value.length >= 16) {
-          this.validateCardNumber();
-        }
-      });
-    }
-
-    // Formatage de la date d'expiration
-    if (this.carteDateInput) {
-      this.carteDateInput.addEventListener("input", () => {
-        LuhnValidator.formatExpirationDate(this.carteDateInput);
-      });
-    }
-
-    // Formatage du CVV
-    if (this.cvvInput) {
-      this.cvvInput.addEventListener("input", () => {
-        LuhnValidator.formatCVV(this.cvvInput);
-      });
-    }
   }
 
   setupEventListeners() {
-    // Toggle section facturation
     if (this.factAddrCheckbox && this.billingSection) {
       this.factAddrCheckbox.addEventListener("change", () => {
         this.billingSection.classList.toggle(
@@ -93,12 +31,10 @@ class PaymentPage {
       });
     }
 
-    // Boutons de paiement
     this.payerButtons.forEach((btn) => {
       btn.addEventListener("click", (e) => this.handlePayment(e));
     });
 
-    // Popup
     if (this.closePopupBtn) {
       this.closePopupBtn.addEventListener("click", () => this.hidePopup());
     }
@@ -108,94 +44,31 @@ class PaymentPage {
     });
   }
 
-  validateCardNumber() {
-    if (!this.numCarteInput) return false;
-
-    const cardValue = this.numCarteInput.value.replace(/\s/g, "");
-
-    if (cardValue.length < 16) {
-      LuhnValidator.setFieldError(
-        this.numCarteInput,
-        "Numéro de carte incomplet (16 chiffres requis)"
-      );
-      return false;
-    }
-
-    if (!LuhnValidator.validate(cardValue)) {
-      LuhnValidator.setFieldError(
-        this.numCarteInput,
-        "Numéro de carte invalide (algorithme de Luhn)"
-      );
-      return false;
-    }
-
-    if (!/^4/.test(cardValue)) {
-      LuhnValidator.setFieldError(
-        this.numCarteInput,
-        "Seules les cartes Visa sont acceptées"
-      );
-      return false;
-    }
-
-    LuhnValidator.clearFieldError(this.numCarteInput);
-    return true;
-  }
-
-  validateExpirationDate() {
-    if (!this.carteDateInput) return false;
-
-    if (!LuhnValidator.validateExpirationDate(this.carteDateInput.value)) {
-      LuhnValidator.setFieldError(
-        this.carteDateInput,
-        "Date d'expiration invalide ou dépassée"
-      );
-      return false;
-    }
-
-    LuhnValidator.clearFieldError(this.carteDateInput);
-    return true;
-  }
-
-  validateCVV() {
-    if (!this.cvvInput) return false;
-
-    if (!LuhnValidator.validateCVV(this.cvvInput.value)) {
-      LuhnValidator.setFieldError(
-        this.cvvInput,
-        "CVV invalide (3 chiffres requis)"
-      );
-      return false;
-    }
-
-    LuhnValidator.clearFieldError(this.cvvInput);
-    return true;
-  }
-
   validateBillingFields(adresse, codePostal, ville) {
     let valid = true;
 
-    LuhnValidator.clearFieldError(adresse);
-    LuhnValidator.clearFieldError(codePostal);
-    LuhnValidator.clearFieldError(ville);
+    this.clearError("adresse-fact");
+    this.clearError("code-postal-fact");
+    this.clearError("ville-fact");
 
     if (!adresse.value.trim()) {
-      LuhnValidator.setFieldError(adresse, "Adresse de facturation requise");
+      this.showError("Adresse de facturation requise", "adresse-fact");
       valid = false;
     }
 
     if (!codePostal.value.trim()) {
-      LuhnValidator.setFieldError(codePostal, "Code postal requis");
+      this.showError("Code postal requis", "code-postal-fact");
       valid = false;
     } else if (!/^\d{5}$/.test(codePostal.value.trim())) {
-      LuhnValidator.setFieldError(
-        codePostal,
-        "Le code postal doit contenir 5 chiffres"
+      this.showError(
+        "Le code postal doit contenir 5 chiffres",
+        "code-postal-fact"
       );
       valid = false;
     }
 
     if (!ville.value.trim()) {
-      LuhnValidator.setFieldError(ville, "Ville requise");
+      this.showError("Ville requise", "ville-fact");
       valid = false;
     }
 
@@ -234,52 +107,59 @@ class PaymentPage {
     let isValid = true;
     this.clearAllErrors();
 
-    // Validation des champs requis
     const fields = [
-      { element: this.adresseInput, errorKey: "adresse", required: true },
+      { selector: ".adresse-input", errorKey: "adresse", required: true },
       {
-        element: this.codePostalInput,
+        selector: ".code-postal-input",
         errorKey: "code-postal",
         required: true,
+        pattern: /^\d{5}$/,
       },
-      { element: this.villeInput, errorKey: "ville", required: true },
-      { element: this.nomCarteInput, errorKey: "nom-carte", required: true },
+      { selector: ".ville-input", errorKey: "ville", required: true },
+      {
+        selector: ".num-carte",
+        errorKey: "num-carte",
+        required: true,
+        pattern: /^(?:\d{4}\s?){3}\d{4}$/,
+      },
+      { selector: ".nom-carte", errorKey: "nom-carte", required: true },
+      {
+        selector: ".carte-date",
+        errorKey: "carte-date",
+        required: true,
+        pattern: /^\d{2}\/\d{2}$/,
+      },
+      {
+        selector: ".cvv-input",
+        errorKey: "cvv-input",
+        required: true,
+        pattern: /^\d{3}$/,
+      },
     ];
 
     fields.forEach((field) => {
-      if (!field.element || !field.element.value.trim()) {
+      const element = document.querySelector(field.selector);
+      if (!element) return;
+
+      const value = element.value.trim();
+
+      if (field.required && !value) {
         this.showError(
           `${this.getFieldName(field.errorKey)} requis`,
           field.errorKey
         );
         isValid = false;
+      } else if (field.pattern && !field.pattern.test(value)) {
+        this.showError(this.getPatternMessage(field.errorKey), field.errorKey);
+        isValid = false;
       }
     });
 
-    // Validation spécifique des champs de paiement
-    if (!this.validateCardNumber()) isValid = false;
-    if (!this.validateExpirationDate()) isValid = false;
-    if (!this.validateCVV()) isValid = false;
-
-    // Validation code postal
-    if (this.codePostalInput && this.codePostalInput.value.trim()) {
-      const cp = this.codePostalInput.value.trim();
-      if (!/^\d{5}$/.test(cp)) {
-        this.showError(
-          "Le code postal doit contenir 5 chiffres",
-          "code-postal"
-        );
-        isValid = false;
-      }
-    }
-
-    // Validation conditions générales
     if (!this.cgvCheckbox || !this.cgvCheckbox.checked) {
       this.showError("Veuillez accepter les conditions générales", "cgv");
       isValid = false;
     }
 
-    // Validation adresse de facturation si différente
     if (this.factAddrCheckbox && this.factAddrCheckbox.checked) {
       isValid =
         this.validateBillingFields(
@@ -294,13 +174,13 @@ class PaymentPage {
 
   getFormData() {
     return {
-      adresseLivraison: this.adresseInput.value.trim(),
-      villeLivraison: this.villeInput.value.trim(),
-      codePostal: this.codePostalInput.value.trim(),
-      numeroCarte: this.numCarteInput.value.replace(/\s/g, ""),
-      nomCarte: this.nomCarteInput.value.trim(),
-      dateExpiration: this.carteDateInput.value.trim(),
-      cvv: this.cvvInput.value.trim(),
+      adresseLivraison: document.querySelector(".adresse-input").value.trim(),
+      villeLivraison: document.querySelector(".ville-input").value.trim(),
+      codePostal: document.querySelector(".code-postal-input").value.trim(),
+      numCarte: document.querySelector(".num-carte").value.replace(/\s+/g, ""),
+      nomCarte: document.querySelector(".nom-carte").value.trim(),
+      dateExpiration: document.querySelector(".carte-date").value.trim(),
+      cvv: document.querySelector(".cvv-input").value.trim(),
     };
   }
 
@@ -338,7 +218,7 @@ class PaymentPage {
                 ${formData.adresseLivraison}<br>
                 ${formData.codePostal} ${formData.villeLivraison}</p>
                 
-                <p><strong>Paiement :</strong> Carte Visa se terminant par ${formData.numeroCarte.slice(
+                <p><strong>Paiement :</strong> Carte Visa se terminant par ${formData.numCarte.slice(
                   -4
                 )}</p>
             </div>
@@ -382,7 +262,33 @@ class PaymentPage {
     confirmBtn.textContent = "Traitement en cours...";
 
     try {
-      const result = await PaymentAPI.createOrder(formData);
+      const numeroCarteChiffre = window.vignere
+        ? window.vignere(formData.numCarte, window.CLE_CHIFFREMENT, 1)
+        : formData.numCarte;
+      const cvvChiffre = window.vignere
+        ? window.vignere(formData.cvv, window.CLE_CHIFFREMENT, 1)
+        : formData.cvv;
+
+      const orderData = new FormData();
+      orderData.append("action", "createOrder");
+      orderData.append("adresseLivraison", formData.adresseLivraison);
+      orderData.append("villeLivraison", formData.villeLivraison);
+      orderData.append("numeroCarte", numeroCarteChiffre);
+      orderData.append("cvv", cvvChiffre);
+      orderData.append("nomCarte", formData.nomCarte);
+      orderData.append("dateExpiration", formData.dateExpiration);
+      orderData.append("codePostal", formData.codePostal);
+
+      if (this.idAdresseFacturation) {
+        orderData.append("idAdresseFacturation", this.idAdresseFacturation);
+      }
+
+      const response = await fetch("", {
+        method: "POST",
+        body: orderData,
+      });
+
+      const result = await response.json();
 
       if (result.success) {
         this.showThankYouMessage(result.idCommande);
@@ -431,7 +337,7 @@ class PaymentPage {
       errorEl.textContent = message;
       errorEl.style.display = "block";
     } else {
-      console.error(message);
+      alert(message);
     }
   }
 
@@ -474,9 +380,19 @@ class PaymentPage {
     };
     return names[errorKey] || errorKey;
   }
+
+  getPatternMessage(errorKey) {
+    const messages = {
+      "code-postal": "Le code postal doit contenir 5 chiffres",
+      "num-carte":
+        "Le numéro de carte doit contenir 16 chiffres (espaces autorisés)",
+      "carte-date": "Format de date invalide (MM/AA)",
+      "cvv-input": "Le CVV doit contenir 3 chiffres",
+    };
+    return messages[errorKey] || "Format invalide";
+  }
 }
 
-// Initialisation au chargement de la page
 document.addEventListener("DOMContentLoaded", () => {
   new PaymentPage();
 });
