@@ -36,22 +36,7 @@ $page-padding: 32px 16px;
   }
 }
 
-/* Placeholder réutilisable pour les champs input */
-%input-base {
-  padding: 12px 14px;
-  border: $border-width solid $accent;
-  border-radius: $radius;
-  background: $bg;
-  font: {
-    style: italic;
-    size: 1rem;
-    family: "lora", sans-serif;
-    weight: 500;
-  }
-  margin-bottom: 12px;
-  box-sizing: border-box;
-}
-
+/* Wrapper principal de la page de paiement */
 .pagePaiement {
   position: relative;
   overflow-x: hidden;
@@ -835,383 +820,153 @@ $page-padding: 32px 16px;
       display: none;
     }
   }
+}
 
-  /* Section adresse de facturation */
-  .billing-section {
-    margin-top: 20px;
-    padding: 20px;
-    border: $border-width solid $color-blue;
-    border-radius: $radius;
-    background-color: rgba($color-blue, 0.05);
-    display: none;
+/* Style pour la popup d'adresse de facturation */
+.addr-fact-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
 
-    &.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-
-    h4 {
-      color: $color-blue;
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-family: "lora", serif;
-      font-weight: 300;
-      font-size: 1.1rem;
-    }
+  @media (max-width: $breakpoint-xs) {
+    padding: 16px;
   }
 
-  /* Bouton d'enregistrement */
-  .btn-save {
-    background: $color-blue;
-    color: white;
-    border: none;
-    border-radius: 100px;
-    padding: 12px 24px;
-    cursor: pointer;
-    font-family: "lora", serif;
-    font-size: 1rem;
-    font-weight: 300;
-    margin-top: 10px;
-    transition: background-color 0.2s;
+  .addr-fact-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
 
-    &:hover {
-      background: darken($color-blue, 10%);
-    }
-
-    &:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-  }
-
-  /* Messages d'erreur */
-  .error-message {
-    color: #d32f2f;
-    font-size: 0.85rem;
-    margin-top: 4px;
-    display: none;
-    min-height: 20px;
-    font-family: "lora", serif;
-    font-style: italic;
-
-    &[data-for="cgv"] {
-      margin-top: 10px;
-      display: block;
-    }
-  }
-
-  /* Checkbox wrapper */
-  .checkbox-wrapper {
+    /* structure pour pousser les boutons en bas */
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 15px 0;
+    flex-direction: column;
+    min-height: 320px;
+    box-sizing: border-box;
 
-    input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: $color-blue;
+    @media (max-width: $breakpoint-sm) {
+      padding: 1.5rem;
+      min-height: 300px;
+    }
+
+    @media (max-width: $breakpoint-xs) {
+      padding: 1rem;
+      border-radius: 16px;
+      min-height: 280px;
+    }
+
+    h2 {
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: $color-blue;
+
+      @media (max-width: $breakpoint-xs) {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .form-group {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    input,
+    .adresse-fact-input,
+    .code-postal-fact-input,
+    .ville-fact-input {
+      @extend %input-base;
+      width: 100%;
     }
 
     label {
-      font-family: "lora", serif;
-      font-size: 1rem;
-      font-weight: 400;
-      color: $color-blue;
-      cursor: pointer;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #555;
 
-      a {
-        color: $color-blue;
-        text-decoration: underline;
-
-        &:hover {
-          text-decoration: none;
-        }
-      }
-    }
-  }
-
-  /* Popup de confirmation */
-  .payment-overlay {
-    .order-summary {
-      background: white;
-      border-radius: 16px;
-      padding: 2rem 3rem;
-      width: 800px;
-      max-width: 90%;
-      color: $color-blue;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-      text-align: center;
-      position: relative;
-
-      h2 {
-        font-family: "lora", serif;
-        font-style: italic;
-        color: $color-blue;
-        margin-bottom: 1.5rem;
-        font-size: 1.5rem;
-        font-weight: 300;
-      }
-
-      h3 {
-        font-family: "lora", serif;
-        color: $color-blue;
-        margin-bottom: 1rem;
-        font-size: 1.2rem;
-        font-weight: 300;
-        text-align: left;
-      }
-
-      .close-popup {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: none;
-        border: none;
-        font-size: 28px;
-        cursor: pointer;
-        color: #666;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-
-        &:hover {
-          background: #f5f5f5;
-        }
-      }
-
-      .info {
-        text-align: left;
-        margin-bottom: 1.5rem;
-
-        p {
-          margin: 0.8rem 0;
-          font-family: "lora", serif;
-          line-height: 1.5;
-
-          strong {
-            font-weight: 500;
-          }
-        }
-      }
-
-      .scrollable-cart {
-        max-height: 300px;
-        overflow-y: auto;
-        padding: 15px;
-        background: #f9f9f9;
-        border-radius: 8px;
-        margin: 1rem 0;
-        text-align: left;
-
-        &::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: #f1f1f1;
-          border-radius: 4px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: #888;
-          border-radius: 4px;
-        }
-      }
-
-      .cart-item-summary {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #eee;
-
-        &:last-child {
-          border-bottom: none;
-          margin-bottom: 0;
-          padding-bottom: 0;
-        }
-      }
-
-      .cart-item-image {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 4px;
-        margin-right: 15px;
-      }
-
-      .cart-item-info {
-        flex: 1;
-      }
-
-      .cart-item-name {
-        font-weight: 500;
-        margin-bottom: 5px;
-        color: $color-blue;
-        font-family: "lora", serif;
-      }
-
-      .cart-item-details {
-        font-size: 0.9rem;
-        color: #666;
-        font-family: "open-sans", sans-serif;
-      }
-
-      .total-section {
-        text-align: right;
-        margin: 20px 0;
-        padding-top: 15px;
-        border-top: 2px solid $color-blue;
-
-        h3 {
-          text-align: right;
-          margin: 0;
-          font-size: 1.3rem;
-        }
-      }
-
-      .actions {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-top: 2rem;
-
-        .undo,
-        .confirm {
-          border: none;
-          border-radius: 100px;
-          padding: 12px 30px;
-          font-size: 1rem;
-          font-family: "lora", serif;
-          font-weight: 300;
-          cursor: pointer;
-          transition: background-color 0.2s;
-          min-width: 180px;
-        }
-
-        .undo {
-          background: #f44336;
-          color: white;
-
-          &:hover {
-            background: darken(#f44336, 10%);
-          }
-        }
-
-        .confirm {
-          background: #4caf50;
-          color: white;
-
-          &:hover {
-            background: darken(#4caf50, 10%);
-          }
-
-          &:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-          }
-        }
-      }
-
-      .thank-you {
-        text-align: center;
-        padding: 20px 0;
-
-        h2 {
-          font-size: 1.8rem;
-          margin-bottom: 1rem;
-        }
-
-        p {
-          margin: 0.8rem 0;
-          font-family: "lora", serif;
-        }
-
-        .order-number {
-          font-size: 1.5rem;
-          font-weight: bold;
-          color: #4caf50;
-          margin: 1.5rem 0;
-          font-family: "open-sans", sans-serif;
-        }
-
-        .btn-home {
-          background: $color-blue;
-          color: white;
-          border: none;
-          border-radius: 100px;
-          padding: 12px 30px;
-          font-size: 1rem;
-          font-family: "lora", serif;
-          font-weight: 300;
-          cursor: pointer;
-          margin-top: 1.5rem;
-          min-width: 180px;
-
-          &:hover {
-            background: darken($color-blue, 10%);
-          }
-        }
-      }
-    }
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .billing-section {
-      padding: 15px;
-
-      h4 {
-        font-size: 1rem;
+      @media (max-width: $breakpoint-xs) {
+        font-size: 0.95rem;
       }
     }
 
-    .btn-save {
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: auto;
       width: 100%;
-      padding: 14px;
+      flex-wrap: wrap;
+
+      @media (max-width: $breakpoint-xs) {
+        gap: 0.75rem;
+      }
     }
 
-    .payment-overlay {
-      padding: 10px;
+    .btn-valider,
+    .btn-fermer {
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      min-width: 120px;
+      transition: background-color 0.2s;
 
-      .order-summary {
-        padding: 1.5rem;
-        width: 95%;
-
-        h2 {
-          font-size: 1.3rem;
-        }
-
-        h3 {
-          font-size: 1.1rem;
-        }
-
-        .actions {
-          flex-direction: column;
-          gap: 10px;
-
-          .undo,
-          .confirm {
-            width: 100%;
-            min-width: auto;
-          }
-        }
+      @media (max-width: $breakpoint-xs) {
+        padding: 0.65rem 1.25rem;
+        font-size: 0.95rem;
+        min-width: 110px;
       }
+    }
+
+    .btn-valider {
+      background: $color-blue;
+      color: white;
+
+      &:hover {
+        background: darken($color-blue, 10%);
+      }
+    }
+
+    .btn-fermer {
+      background: #f43636;
+      color: white;
+
+      &:hover {
+        background: darken(#f43636, 10%);
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .pagePaiement {
+    button,
+    input[type="checkbox"],
+    label {
+      min-height: 44px;
+    }
+
+    input[type="text"] {
+      min-height: 44px;
+    }
+    .gestQte button {
+      min-width: 44px;
+      min-height: 44px;
     }
   }
 }
