@@ -215,7 +215,6 @@
             
             a {
                 color: $color-blue;
-                text-decoration: none;
                 font-size: 15px;              
                 font-weight: lighter;
                 &:hover {
@@ -271,7 +270,7 @@
 
     .imgProduit {
         max-height: 150px;
-        max-width: 200px;
+        min-width: 200px;
         margin: 0px 10px;
         object-fit: contain;
     }
