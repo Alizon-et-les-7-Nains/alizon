@@ -443,7 +443,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../controllers/Chiffrement.js"></script>
-    <script src="../../sricpts/frontoffice/paiement.js"></script>
+    <script src="../scripts/frontoffice/paiement.js"></script>
 </body>
 
 </html>
