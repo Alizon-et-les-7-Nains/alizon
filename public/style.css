@@ -3015,8 +3015,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   padding: 5px;
 }
 .panier .listeProduit article img {
-  height: 220px;
-  width: 220px;
+  max-height: 220px;
+  max-width: 220px;
   margin: 0px 10px;
   object-fit: contain;
 }
@@ -3211,6 +3211,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier .delBtnImg {
   height: 40px;
+}
+.panier .imgProd {
+  height: 220px;
+  width: 220px;
+  margin: 0px 10px;
+  object-fit: contain;
 }
 
 button#haut {
