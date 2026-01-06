@@ -647,7 +647,6 @@ body {
 }
 .pageCommandes .footerCommande .liensCommande a {
   color: #273469;
-  text-decoration: none;
   font-size: 15px;
   font-weight: lighter;
 }
