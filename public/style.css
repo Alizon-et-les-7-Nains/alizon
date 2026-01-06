@@ -3225,6 +3225,9 @@ button#haut.visible:hover {
   font-family: "lora";
   color: #273469;
 }
+.pageEcrireCommentaire button {
+  cursor: pointer;
+}
 .pageEcrireCommentaire .produit {
   display: flex;
   flex-direction: row;
@@ -3414,8 +3417,8 @@ button#haut.visible:hover {
   margin-bottom: 15px;
 }
 .pageEcrireCommentaire #recapAvis p {
-  margin: 10px 0;
-  line-height: 1.6;
+  margin: 20px 0;
+  line-height: 3;
 }
 .pageEcrireCommentaire #recapAvis strong {
   color: #273469;
@@ -4625,7 +4628,6 @@ dialog.reassort {
   display: none;
   flex-direction: column;
   align-items: center;
-  gap: 1em;
   position: fixed;
 }
 dialog.reassort::backdrop {
@@ -4633,7 +4635,6 @@ dialog.reassort::backdrop {
   backdrop-filter: blur(1px);
 }
 dialog.reassort h1 {
-  margin-bottom: 1em;
   text-align: center;
 }
 dialog.reassort form div {
