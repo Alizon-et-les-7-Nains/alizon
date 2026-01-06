@@ -8,10 +8,10 @@ use Dompdf\Dompdf;
 
     $stmt = $pdo->prepare("
         SELECT
-            c.idCommande, c.dateCommande, c.montantCommandeHt, c.montantCommandeTTC, c.nomTransporteur,
+            c.idCommande, c.dateCommande, c.montantCommandeHt, c.montantCommandeTTC,
             p.nbArticles, p.prixHt, p.prixTotalTvaPanier,
             cl.prenom, cl.nom, cl.email,
-            a.rue, a.codePostal, a.ville
+            a.adresse, a.codePostal, a.ville
         FROM _commande c
         JOIN _panier p ON c.idPanier = p.idPanier
         JOIN _client cl ON p.idClient = cl.idClient
