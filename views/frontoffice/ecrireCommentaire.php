@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } catch(PDOException $e) {
-        $errors[] = "Erreur lors de l'insertion de l'avis : " . $e->getMessage();
+        $errors[] = "Vous avez déjà écrit un avis sur ce produit, veuillez modifier votre avis déjà éxistant.";
     } // test
 }
 ?>

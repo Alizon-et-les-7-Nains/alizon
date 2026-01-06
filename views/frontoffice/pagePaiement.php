@@ -68,6 +68,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idClient = intval($idClient);
 
+        // Récupération du panier actuel
         $stmt = $pdo->prepare("SELECT * FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
         $stmt->execute([$idClient]);
         $panier = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -76,25 +77,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idPanier = intval($panier['idPanier']);
 
-        // Vérifier le stock avant de procéder
-        $sqlStockCheck = "
-            SELECT p.idProduit, p.nom, p.stock, pap.quantiteProduit as qty_panier
-            FROM _produitAuPanier pap
-            JOIN _produit p ON pap.idProduit = p.idProduit
-            WHERE pap.idPanier = ? AND p.stock < pap.quantiteProduit
-        ";
-        $stmtStock = $pdo->prepare($sqlStockCheck);
-        $stmtStock->execute([$idPanier]);
-        $stockIssues = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
-        
-        if (!empty($stockIssues)) {
-            $errorMsg = "Stock insuffisant pour: ";
-            foreach ($stockIssues as $issue) {
-                $errorMsg .= $issue['nom'] . " (stock: " . $issue['stock'] . ", demandé: " . $issue['qty_panier'] . "), ";
-            }
-            throw new Exception(rtrim($errorMsg, ', '));
-        }
-
+        // Calcul total
         $sqlTotals = "
             SELECT SUM(p.prix * pap.quantiteProduit) AS sousTotal, SUM(pap.quantiteProduit) AS nbArticles
             FROM _produitAuPanier pap
@@ -107,11 +90,12 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $sousTotal = floatval($totals['sousTotal'] ?? 0);
         $nbArticles = intval($totals['nbArticles'] ?? 0);
 
+        // Vérifier si le panier est vide
         if ($nbArticles === 0) {
             throw new Exception("Le panier est vide.");
         }
 
-        // Vérification existante carte
+        // Verification existante carte (avec données chiffrées)
         $checkCarte = $pdo->prepare("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = ?");
         $checkCarte->execute([$numeroCarte]);
 
@@ -122,11 +106,11 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             ";
             $stmtCarte = $pdo->prepare($sqlInsertCarte);
             if (!$stmtCarte->execute([$numeroCarte, $nomCarte, $dateExp, $cvv])) {
-                throw new Exception("Erreur lors de l'ajout de la carte bancaire.");
+                throw new Exception("Erreur lors de l'ajout de la carte bancaire : " . implode(', ', $stmtCarte->errorInfo()));
             }
         }
 
-        // Création de l'adresse de livraison
+        // CORRECTION : CRÉATION DE L'ADRESSE DE LIVRAISON DANS _adresseLivraison
         $sqlAdresseLivraison = "
             INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
             VALUES (?, ?, ?, ?)
@@ -134,21 +118,33 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $stmtAdresse = $pdo->prepare($sqlAdresseLivraison);
         
         if (!$stmtAdresse->execute([$idClient, $adresseLivraison, $codePostal, $villeLivraison])) {
-            throw new Exception("Erreur lors de l'ajout de l'adresse de livraison.");
+            throw new Exception("Erreur lors de l'ajout de l'adresse de livraison: " . implode(', ', $stmtAdresse->errorInfo()));
         }
         $idAdresseLivraison = $pdo->lastInsertId();
 
-        // Gestion adresse facturation
+        // CORRECTION : GESTION ADRESSE FACTURATION
+        // Si une adresse de facturation différente est fournie
         if ($idAdresseFacturation) {
+            // L'ID est déjà dans _adresseLivraison
             $idAdresseFacturation = intval($idAdresseFacturation);
+            
+            // Vérifier que l'adresse de facturation existe bien dans _adresseLivraison
+            $checkFact = $pdo->prepare("SELECT idAdresseLivraison FROM _adresseLivraison WHERE idAdresseLivraison = ? AND idClient = ?");
+            $checkFact->execute([$idAdresseFacturation, $idClient]);
+            if ($checkFact->rowCount() === 0) {
+                throw new Exception("Adresse de facturation invalide.");
+            }
         } else {
+            // Si pas d'adresse de facturation spécifique, utiliser la même que la livraison
             $idAdresseFacturation = $idAdresseLivraison;
         }
 
-        // Création de la commande
+        // CORRECTION : IMPORTANT - Les noms de colonnes doivent correspondre EXACTEMENT à votre structure SQL
+        // Selon votre dump SQL, les colonnes sont : idAdresseLivr et idAdresseFact (pas idAdresseLivraison/idAdresseFacturation)
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
 
+        // CORRECTION : Utilisation des bons noms de colonnes
         $sqlCommande = "
             INSERT INTO _commande (
                 dateCommande, etatLivraison, montantCommandeTTC, montantCommandeHt,
@@ -160,55 +156,62 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
                 ?, ?, ?, ?
             )
         ";
+        
+        error_log("DEBUG - SQL Commande: " . $sqlCommande);
+        error_log("DEBUG - Valeurs: idAdresseLivr=$idAdresseLivraison, idAdresseFact=$idAdresseFacturation, numeroCarte=$numeroCarte, idPanier=$idPanier");
+        
         $stmtCommande = $pdo->prepare($sqlCommande);
         if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarte, $idPanier])) {
-            throw new Exception("Erreur lors de la création de la commande.");
+            $errorInfo = $stmtCommande->errorInfo();
+            error_log("Erreur SQL: " . print_r($errorInfo, true));
+            throw new Exception("Erreur lors de la création de la commande : " . implode(', ', $errorInfo));
         }
 
         $idCommande = $pdo->lastInsertId();
-
-        // Copie des produits vers _contient
+        
+        // CORRECTION : Ajouter le calcul de la TVA correctement
         $sqlContient = "
             INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
-            SELECT pap.idProduit, ?, p.prix, COALESCE(t.pourcentageTva, 20.0), pap.quantiteProduit
+            SELECT pap.idProduit, ?, p.prix, 
+                   CASE 
+                     WHEN p.typeTva = 'Réduit' THEN 10.0
+                     WHEN p.typeTva = 'Super réduit' THEN 5.5
+                     WHEN p.typeTva = 'Aucun' THEN 0.0
+                     ELSE 20.0 
+                   END as tauxTva,
+                   pap.quantiteProduit
             FROM _produitAuPanier pap
             JOIN _produit p ON pap.idProduit = p.idProduit
-            LEFT JOIN _tva t ON p.typeTva = t.typeTva
             WHERE pap.idPanier = ?
         ";
+        
         $stmtContient = $pdo->prepare($sqlContient);
         if (!$stmtContient->execute([$idCommande, $idPanier])) {
-            throw new Exception("Erreur lors de la copie des produits.");
+            throw new Exception("Erreur lors de la copie des produits : " . implode(', ', $stmtContient->errorInfo()));
         }
 
-        // Mettre à jour les stocks
+        // CORRECTION : Mettre à jour le stock après la commande
         if (!updateStockAfterOrder($pdo, $idPanier)) {
-            throw new Exception("Erreur lors de la mise à jour des stocks.");
-        }
-
-        // Mettre à jour le nombre de ventes
-        $sqlUpdateSales = "
-            UPDATE _produit p
-            JOIN _produitAuPanier pap ON p.idProduit = pap.idProduit
-            SET p.nbVente = p.nbVente + pap.quantiteProduit
-            WHERE pap.idPanier = ?
-        ";
-        $stmtUpdateSales = $pdo->prepare($sqlUpdateSales);
-        if (!$stmtUpdateSales->execute([$idPanier])) {
-            throw new Exception("Erreur lors de la mise à jour des ventes.");
+            throw new Exception("Erreur lors de la mise à jour du stock.");
         }
 
         // Vider le panier
         $stmtVider = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier = ?");
         if (!$stmtVider->execute([$idPanier])) {
-            throw new Exception("Erreur lors du vidage du panier.");
+            throw new Exception("Erreur lors du vidage du panier : " . implode(', ', $stmtVider->errorInfo()));
         }
 
         $pdo->commit();
+        
+        error_log("DEBUG - Commande créée avec succès: ID=$idCommande");
         return $idCommande;
 
     } catch (Exception $e) {
-        $pdo->rollBack();
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        error_log("Erreur createOrderInDatabase: " . $e->getMessage());
+        error_log("Stack trace: " . $e->getTraceAsString());
         throw new Exception("Erreur lors de la création de la commande: " . $e->getMessage());
     }
 }
@@ -706,14 +709,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
             factAddrCheckbox.addEventListener('change', function() {
                 if (this.checked) {
                     billingSection.classList.add('active');
-                    // Si une adresse est déjà enregistrée, la pré-remplir
-                    if (savedBillingAddress) {
-                        document.querySelector('.adresse-fact-input').value = savedBillingAddress
-                            .adresse;
-                        document.querySelector('.code-postal-fact-input').value = savedBillingAddress
-                            .codePostal;
-                        document.querySelector('.ville-fact-input').value = savedBillingAddress.ville;
-                    }
                 } else {
                     billingSection.classList.remove('active');
                     idAdresseFacturation = null;

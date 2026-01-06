@@ -194,7 +194,8 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        padding: 20px 40px;
+        padding: 0px 40px;
+        padding-bottom: 20px;
         
         .infoCommande {
             display: flex;
@@ -266,5 +267,12 @@
         .infoCommande {
             flex-direction: row !important;
         }
+    }
+
+    .imgProduit {
+        max-height: 150px;
+        max-width: 200px;
+        margin: 0px 10px;
+        object-fit: contain;
     }
 }
