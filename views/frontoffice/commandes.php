@@ -1,6 +1,8 @@
 <?php 
 require_once "../../controllers/pdo.php";
+require_once "../../controllers/prix.php";
 session_start();
+ob_start();
 
 // ============================================================================
 // VÉRIFICATION DE LA CONNEXION
@@ -43,14 +45,15 @@ if ($filtre === 'cours') {
     foreach ($resultatsCommandes as $row) {
         $idCommande = $row['idCommande'];
         
-        $sqlProduits = "SELECT p.idProduit, p.nom, co.quantite, i.URL as image
+        $sqlProduits = "SELECT v.raisonSocial, p.idProduit, p.nom, co.quantite, i.URL as image
                         FROM _contient co
                         JOIN _produit p ON co.idProduit = p.idProduit
                         LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-                        WHERE co.idCommande = :idCommande
+                        LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur
+                        WHERE co.idCommande = :idCommande -- <--- AJOUT DU DEUX-POINTS ICI
                         GROUP BY p.idProduit";
                         
-                        $stmtProd = $pdo->prepare($sqlProduits);
+        $stmtProd = $pdo->prepare($sqlProduits);
         $stmtProd->execute([':idCommande' => $idCommande]);
         $produits = $stmtProd->fetchAll(PDO::FETCH_ASSOC);
 
@@ -85,7 +88,6 @@ $filtre = isset($_GET['filtre']) ? $_GET['filtre'] : 'cours';
 $commandesAffichees = getCommandes($pdo, $idClient, $filtre);
 $nombreCommandes = count($commandesAffichees);
 
-// Textes dynamiques selon le filtre
 $titreFiltre = "Commandes en cours";
 $messageVide = "Aucune commande en cours actuellement.";
 
@@ -97,7 +99,125 @@ if ($filtre === '2025') {
     $messageVide = "Aucune commande passée en 2024.";
 }
 
+function getCurrentCart($pdo, $idClient) {
+    $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
+    $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+
+    $cart = [];
+
+    if ($panier) {
+        $idPanier = intval($panier['idPanier']); 
+
+        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+                FROM _produitAuPanier pa
+                JOIN _produit p ON pa.idProduit = p.idProduit
+                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                WHERE pa.idPanier = " . intval($idPanier);
+        $stmt = $pdo->query($sql);
+        $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+    }
+    
+    return $cart;
+}
+
+function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+    $idProduit = intval($idProduit);
+    $idClient = intval($idClient);
+    
+    // Récupérer le panier actuel
+    $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmtPanier->execute([$idClient]);
+    $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$panier) {
+        // Créer un nouveau panier si nécessaire
+        $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+        $stmtCreate->execute([$idClient]);
+        $idPanier = $pdo->lastInsertId();
+    } else {
+        $idPanier = $panier['idPanier'];
+    }
+
+    // Vérifier si le produit existe déjà dans le panier
+    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
+            WHERE idProduit = ? AND idPanier = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idProduit, $idPanier]);
+    $current = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($current) {
+        // Produit existe : mettre à jour la quantité
+        $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
+        
+        if ($newQty > 0) {
+            $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
+                    WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$newQty, $idProduit, $idPanier]);
+        } else {
+            // Supprimer si quantité = 0
+            $sql = "DELETE FROM _produitAuPanier WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$idProduit, $idPanier]);
+        }
+    } else {
+        // Produit n'existe pas : l'ajouter si delta > 0
+        if ($delta > 0) {
+            $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$idProduit, $idPanier, $delta]);
+        } else {
+            $success = false;
+        }
+    }
+    
+    return $success;
+
+}
+
+// ============================================================================
+// GESTION DES ACTIONS AJAX
+// ============================================================================
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    header('Content-Type: application/json');
+    
+    try {
+        switch ($_POST['action']) {
+            case 'updateQty':
+                $idProduit = $_POST['idProduit'] ?? '';
+                $delta = intval($_POST['delta'] ?? 0);
+                if ($idProduit && $delta != 0) {
+                    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
+                    echo json_encode(['success' => $success]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
+                }
+                break;
+
+            case 'getCart':
+                $cart = getCurrentCart($pdo, $idClient);
+                echo json_encode($cart);
+                break;
+                
+            default:
+                echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit;
+}
+
+// ============================================================================
+// RÉCUPÉRATION DES DONNÉES POUR LA PAGE
+// ============================================================================
+
+// recuperation panier courent
+$cart = getCurrentCart($pdo, $idClient);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -138,22 +258,17 @@ if ($filtre === '2025') {
                         $nombreProduits = count($commande['produits']);
                         echo "<script>console.log(" . json_encode($commande) . ");</script>";
                         echo "<script>console.log(" . json_encode($commandesAffichees) . ");</script>";
-                        
-                        // if ($nombreProduits === 0) {
-                    //     echo "<div style='padding:20px;'>Détails des produits indisponibles</div>";
-                    // }
-                    
                     foreach ($commande['produits'] as $index => $produit): 
                         $imgSrc = !empty($produit['image']) ? htmlspecialchars($produit['image']) : '../../public/images/defaultImageProduit.png';
                         ?>
                         <section class="produit <?php echo ($index === $nombreProduits - 1) ? 'dernierProduit' : ''; ?>">
                             <div class="containerImg">
-                                <img src="<?php echo $imgSrc; ?>" alt="<?php echo htmlspecialchars($produit['nom']); ?>">
+                                <a href="../../views/frontoffice/produit.php?id=<?= $produit['idProduit'] ?>"><img src="<?php echo $imgSrc; ?>" class="imgProduit" alt="<?php echo htmlspecialchars($produit['nom']); ?>"></a>
                                 <div class="infoProduit">
                                     <h2><?php echo htmlspecialchars($produit['nom']); ?></h2>
                                     <ul>
                                         <li>Quantité : <?php echo $produit['quantite']; ?></li>
-                                        <li>Vendu par Alizon</li>
+                                        <li>Vendu par <?php echo $produit['raisonSocial']; ?></li>
                                     </ul>
                                     
                                     <div class="statutCommande <?php echo $commande['statut'] === 'Livrée' ? 'livre' : 'enCours'; ?>">
@@ -168,8 +283,8 @@ if ($filtre === '2025') {
                             </div>
                             
                             <div class="listeBtn">
-                                <a href="">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
-                                <a href="../../views/frontoffice/produit.php?id=<?= $produit['idProduit'] ?>">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Redo"></a>
+                                <a href="<?php echo "../../views/frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
+                                <button class="plus" data-id="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
                                     <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
                                     <?php else: ?>
@@ -193,9 +308,7 @@ if ($filtre === '2025') {
                             <p>#<?php echo $commande['id']; ?></p>
                         </div>
                         <div class="liensCommande">
-                            <a class="supprElem" href="#">Détails</a>
-                            <span class="supprElem">|</span>
-                            <a href="#">Facture</a>
+                            <a href="../../controllers/facture.php?id= <?php $commande['id'] ?>">Facture</a>
                         </div>
                     </section>
                 </section>
