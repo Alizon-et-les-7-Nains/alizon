@@ -48,10 +48,10 @@ if ($filtre === 'cours') {
                         JOIN _produit p ON co.idProduit = p.idProduit
                         LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
                         LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur
-                        WHERE co.idCommande = idCommande
+                        WHERE co.idCommande = :idCommande -- <--- AJOUT DU DEUX-POINTS ICI
                         GROUP BY p.idProduit";
                         
-                        $stmtProd = $pdo->prepare($sqlProduits);
+        $stmtProd = $pdo->prepare($sqlProduits);
         $stmtProd->execute([':idCommande' => $idCommande]);
         $produits = $stmtProd->fetchAll(PDO::FETCH_ASSOC);
 
