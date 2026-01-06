@@ -1872,6 +1872,828 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 
 /* Variables principales */
 /* Placeholder réutilisable pour les champs input */
+.pagePaiement input[type=text] {
+  padding: 12px 14px;
+  border: 2px solid #252b56;
+  border-radius: 8px;
+  background: #fbfaf8;
+  font-style: italic;
+  font-size: 1rem;
+  font-family: "lora", sans-serif;
+  font-weight: 500;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+@media (max-width: 480px) {
+  .pagePaiement input[type=text] {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Placeholder réutilisable pour les champs input */
+.pagePaiement input[type=text] {
+  padding: 12px 14px;
+  border: 2px solid #252b56;
+  border-radius: 8px;
+  background: #fbfaf8;
+  font-style: italic;
+  font-size: 1rem;
+  font-family: "lora", sans-serif;
+  font-weight: 500;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.pagePaiement {
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh;
+  /* arrière-plan */
+}
+.pagePaiement::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -400px;
+  width: 1000px;
+  height: 1000px;
+  background: url("../../public/images/symboleRose.png") no-repeat center center;
+  background-size: contain;
+  transform: rotate(-20deg);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+}
+@media (max-width: 920px) {
+  .pagePaiement::before {
+    width: 800px;
+    height: 800px;
+    top: -300px;
+    right: -100px;
+  }
+}
+@media (max-width: 720px) {
+  .pagePaiement::before {
+    width: 600px;
+    height: 600px;
+    top: -200px;
+    right: -150px;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement::before {
+    display: none;
+  }
+}
+.pagePaiement {
+  /* S'assurer que le contenu est au-dessus du décor */
+}
+.pagePaiement > * {
+  position: relative;
+  z-index: 1;
+}
+.pagePaiement {
+  /* Conteneur centrant le contenu et limitant la largeur */
+}
+.pagePaiement .container {
+  max-width: 1400px;
+  margin: 70px auto 0;
+  padding: 0 5%;
+  box-sizing: border-box;
+  width: 100%;
+}
+@media (max-width: 920px) {
+  .pagePaiement .container {
+    padding: 0 4%;
+    margin-top: 60px;
+  }
+}
+@media (max-width: 720px) {
+  .pagePaiement .container {
+    padding: 0 16px;
+    margin-top: 50px;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .container {
+    margin-top: 40px;
+    padding: 0 12px;
+  }
+}
+.pagePaiement {
+  /* Grille principale : 3 colonnes par défaut */
+}
+.pagePaiement .parent {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: clamp(12px, 2vw, 32px);
+  width: 100%;
+  align-items: start;
+  box-sizing: border-box;
+}
+@media (max-width: 1200px) {
+  .pagePaiement .parent {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: clamp(16px, 3vw, 24px);
+  }
+}
+@media (max-width: 720px) {
+  .pagePaiement .parent {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    min-height: auto;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .parent {
+    gap: 16px;
+  }
+}
+.pagePaiement .col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+@media (max-width: 720px) {
+  .pagePaiement .col {
+    gap: 16px;
+  }
+}
+.pagePaiement h3 {
+  font-family: "lora", serif;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-weight: 300;
+  margin: 0 0 8px;
+  color: #273469;
+}
+@media (max-width: 720px) {
+  .pagePaiement h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement h3 {
+    font-size: 1rem;
+  }
+}
+.pagePaiement a {
+  color: #273469;
+  word-break: break-word;
+}
+.pagePaiement input[type=text] {
+  width: 100%;
+}
+.pagePaiement .input-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 720px) {
+  .pagePaiement .input-field {
+    width: 100% !important;
+    flex: 1 1 auto !important;
+  }
+}
+.pagePaiement .ligne .input-field.fixed-110 {
+  flex: 0 0 110px;
+}
+@media (max-width: 720px) {
+  .pagePaiement .ligne .input-field.fixed-110 {
+    flex: 1 1 auto;
+  }
+}
+.pagePaiement .ligne .input-field.fixed-100 {
+  flex: 0 0 100px;
+}
+@media (max-width: 720px) {
+  .pagePaiement .ligne .input-field.fixed-100 {
+    flex: 1 1 auto;
+  }
+}
+.pagePaiement .ligne .input-field.fixed-80 {
+  flex: 0 0 80px;
+}
+@media (max-width: 720px) {
+  .pagePaiement .ligne .input-field.fixed-80 {
+    flex: 1 1 auto;
+  }
+}
+.pagePaiement .ligne .input-field.flex-1 {
+  flex: 1 1 0;
+}
+.pagePaiement .ligne .input-field input {
+  width: 100%;
+}
+.pagePaiement .invalid::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #b00020;
+  box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.12);
+}
+@media (max-width: 480px) {
+  .pagePaiement .invalid::after {
+    right: 8px;
+    width: 10px;
+    height: 10px;
+  }
+}
+.pagePaiement .error-message {
+  color: #b00020;
+  font-size: 0.95rem;
+  margin-top: 8px;
+  display: block;
+  font-weight: 500;
+}
+@media (max-width: 480px) {
+  .pagePaiement .error-message {
+    font-size: 0.9rem;
+  }
+}
+.pagePaiement .suggestions {
+  font-size: 0.95rem;
+}
+@media (max-width: 480px) {
+  .pagePaiement .suggestions {
+    font-size: 0.9rem;
+  }
+}
+.pagePaiement .payment-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "lora", serif;
+  z-index: 1000;
+  padding: 20px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .payment-overlay {
+    padding: 16px;
+  }
+}
+.pagePaiement .order-summary {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 3rem;
+  width: 600px;
+  max-width: 90%;
+  color: #273469;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+@media (max-width: 720px) {
+  .pagePaiement .order-summary {
+    padding: 1.5rem 2rem;
+    width: 95%;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+  }
+}
+.pagePaiement .order-summary h2 {
+  font-style: italic;
+  color: #273469;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+}
+.pagePaiement .order-summary .info {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+.pagePaiement .order-summary .info p {
+  margin: 0.4rem 0;
+  word-break: break-word;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .info p {
+    font-size: 0.9rem;
+  }
+}
+.pagePaiement .order-summary .info p strong {
+  font-weight: 600;
+}
+.pagePaiement .order-summary h3 {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+.pagePaiement .order-summary .cart {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+@media (max-width: 720px) {
+  .pagePaiement .order-summary .cart {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+.pagePaiement .order-summary .cart .product {
+  border: 2px solid #273469;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 200px;
+  text-align: center;
+}
+@media (max-width: 720px) {
+  .pagePaiement .order-summary .cart .product {
+    width: 160px;
+    padding: 0.75rem;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .cart .product {
+    width: 140px;
+    padding: 0.5rem;
+  }
+}
+.pagePaiement .order-summary .cart .product img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+}
+.pagePaiement .order-summary .cart .product .title {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .cart .product .title {
+    font-size: 0.9rem;
+  }
+}
+.pagePaiement .order-summary .cart .product .delivery {
+  color: #4a7858;
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .cart .product .delivery {
+    font-size: 0.8rem;
+  }
+}
+.pagePaiement .order-summary .actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+@media (max-width: 720px) {
+  .pagePaiement .order-summary .actions {
+    gap: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.pagePaiement .order-summary .actions .confirm {
+  background: #d9d3fa;
+  color: #273469;
+  border: none;
+  border-radius: 30px;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  font-family: "lora", serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  min-width: 140px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .actions .confirm {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+    min-width: 120px;
+  }
+}
+.pagePaiement .order-summary .actions .confirm:hover {
+  background: #bdb3f0;
+}
+.pagePaiement .order-summary .actions .undo {
+  background: none;
+  color: #273469;
+  border: 2px solid red;
+  border-radius: 30px;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  font-family: "lora", serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  min-width: 140px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .order-summary .actions .undo {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+    min-width: 120px;
+  }
+}
+.pagePaiement .order-summary .actions .undo:hover {
+  background: red;
+  color: #fff;
+}
+.pagePaiement .thank-you {
+  background-color: white;
+  color: #273469;
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 500px;
+  width: 90%;
+}
+@media (max-width: 720px) {
+  .pagePaiement .thank-you {
+    padding: 1.5rem 2rem;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .thank-you {
+    padding: 1rem 1.5rem;
+    gap: 0.8rem;
+  }
+}
+.pagePaiement .thank-you .close-popup {
+  margin-top: 1.5rem;
+  align-self: center;
+  background: #d9d3fa;
+  color: #273469;
+  border: none;
+  border-radius: 30px;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  font-family: "lora", serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  min-width: 140px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .thank-you .close-popup {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    min-width: 120px;
+  }
+}
+.pagePaiement .thank-you .close-popup:hover {
+  background: #bdb3f0;
+}
+.pagePaiement {
+  /* Checkbox : style principal et état coché */
+}
+.pagePaiement input[type=checkbox] {
+  accent-color: #273469;
+  border: 2px solid #273469;
+  width: 18px;
+  height: 18px;
+}
+@media (max-width: 480px) {
+  .pagePaiement input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+  }
+}
+.pagePaiement input[type=checkbox]:checked {
+  background: #273469;
+  border-color: #273469;
+}
+.pagePaiement {
+  /* Section paiement et bouton principal (desktop) */
+}
+.pagePaiement .payment {
+  margin-top: 8px;
+}
+.pagePaiement .payment .payer {
+  margin-top: 12px;
+  background: #dcd1fa;
+  color: #252b56;
+  font-size: 18px;
+  font-family: "lora", serif;
+  font-weight: 300;
+  border: none;
+  border-radius: 100px;
+  padding: 12px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  transition: background-color 0.2s;
+}
+@media (max-width: 720px) {
+  .pagePaiement .payment .payer {
+    font-size: 16px;
+    padding: 14px;
+  }
+}
+@media (max-width: 480px) {
+  .pagePaiement .payment .payer {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+.pagePaiement .payment .payer:hover {
+  background: #c9bbf0;
+}
+.pagePaiement {
+  /* Ligne regroupant plusieurs champs (numéro carte, date, cvv...) */
+}
+.pagePaiement .ligne {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+@media (max-width: 720px) {
+  .pagePaiement .ligne {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+.pagePaiement {
+  /* Labels alignés avec les champs */
+}
+.pagePaiement label {
+  font-size: 1rem;
+  font-family: "lora", serif;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+@media (max-width: 480px) {
+  .pagePaiement label {
+    font-size: 0.95rem;
+    gap: 8px;
+  }
+}
+.pagePaiement {
+  /* Conditions générales / checkbox inline */
+}
+.pagePaiement .conditions label {
+  display: inline;
+  align-items: initial;
+  gap: 0;
+  line-height: 1.5;
+}
+@media (max-width: 480px) {
+  .pagePaiement .conditions label {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+}
+.pagePaiement .conditions .error-message-cgv {
+  color: #f14e4e;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  display: block;
+}
+@media (max-width: 480px) {
+  .pagePaiement .conditions .error-message-cgv {
+    font-size: 0.85rem;
+  }
+}
+.pagePaiement .conditions input[type=checkbox] {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.pagePaiement {
+  /* Logos des moyens de paiement */
+}
+.pagePaiement .logos {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+@media (max-width: 480px) {
+  .pagePaiement .logos {
+    gap: 8px;
+    justify-content: center;
+  }
+}
+.pagePaiement .logos img {
+  height: 28px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .logos img {
+    height: 24px;
+  }
+}
+.pagePaiement {
+  /* Récapitulatif produit : carte produit */
+}
+.pagePaiement .recap .produit {
+  border: 2px solid #252b56;
+  border-radius: 16px;
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  box-sizing: border-box;
+  align-items: center;
+}
+@media (max-width: 1200px) {
+  .pagePaiement .recap .produit {
+    display: none;
+  }
+}
+.pagePaiement {
+  /* Image du produit dans le récap */
+}
+.pagePaiement .recap img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.pagePaiement .recap .infos {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.pagePaiement .recap .titre {
+  font-size: 1.05rem;
+  font-family: "lora", serif;
+  color: #273469;
+  font-weight: 500;
+}
+.pagePaiement .recap .prix {
+  font-size: 1.3rem;
+  font-family: "open-sans", sans-serif;
+  font-weight: 600;
+}
+.pagePaiement {
+  /* Gestion quantité et suppression produit */
+}
+.pagePaiement .gestQte {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+@media (max-width: 480px) {
+  .pagePaiement .gestQte {
+    gap: 8px;
+  }
+}
+.pagePaiement .gestQte .qte {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #273469;
+  border-radius: 30px;
+  padding: 4px;
+  width: 70px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .gestQte .qte {
+    width: 65px;
+  }
+}
+.pagePaiement .gestQte .qte button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #273469;
+  cursor: pointer;
+  padding: 0 8px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .gestQte .qte button {
+    font-size: 16px;
+    padding: 0 6px;
+  }
+}
+.pagePaiement .gestQte .delete {
+  border: 2px solid #273469;
+  border-radius: 20px;
+  padding: 4px;
+  width: 35px;
+  background: none;
+  cursor: pointer;
+}
+.pagePaiement .gestQte .delete img {
+  width: 20px;
+  height: 20px;
+}
+@media (max-width: 480px) {
+  .pagePaiement .gestQte .delete img {
+    width: 18px;
+    height: 18px;
+  }
+}
+.pagePaiement {
+  /* Bouton payer adapté pour mobile (masqué par défaut) */
+}
+.pagePaiement .payer--mobile {
+  display: none;
+}
+.pagePaiement {
+  /* Responsive spécifique pour mobile */
+}
+@media (max-width: 720px) {
+  .pagePaiement .payment .payer {
+    display: none !important;
+  }
+  .pagePaiement .promotions {
+    margin-top: -110px;
+  }
+  .pagePaiement .payer-wrapper-mobile {
+    display: block;
+    margin: 18px 0 40px;
+    width: 100%;
+  }
+  .pagePaiement .payer--mobile {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    padding: 14px;
+    border-radius: 100px;
+    background: #dcd1fa;
+    color: #252b56;
+    font-size: 16px;
+    font-family: "lora", serif;
+    font-weight: 300;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin: 20px auto;
+    transition: background-color 0.2s;
+  }
+  .pagePaiement .payer--mobile:hover {
+    background: #c9bbf0;
+  }
+  .pagePaiement {
+    /* Étire les champs contenus dans .ligne pour occuper toute la largeur */
+  }
+  .pagePaiement .ligne .input-field {
+    flex: 1 1 auto;
+    width: 100% !important;
+    min-width: 0;
+    align-self: stretch;
+  }
+  .pagePaiement {
+    /* Structure pour pousser le contenu */
+  }
+  .pagePaiement .parent > .col:first-child {
+    display: flex;
+    flex-direction: column;
+  }
+  .pagePaiement {
+    /* Ajustements pour très petits écrans */
+  }
+}
+@media (max-width: 720px) and (max-width: 480px) {
+  .pagePaiement .container {
+    margin-top: 30px;
+  }
+  .pagePaiement .payer--mobile {
+    padding: 12px;
+    font-size: 15px;
+    max-width: 250px;
+  }
+  .pagePaiement input[type=text] {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+}
+.pagePaiement {
+  /* Cache le récap sur tablette */
+}
+@media (max-width: 1200px) {
+  .pagePaiement .recap {
+    display: none;
+  }
+}
 .pagePaiement {
   /* Section adresse de facturation */
 }
