@@ -16,9 +16,10 @@ use Dompdf\Dompdf;
         JOIN _panier p ON c.idPanier = p.idPanier
         JOIN _client cl ON p.idClient = cl.idClient
         JOIN _adresseClient a ON c.idAdresseFact = a.idAdresse
-        WHERE c.idCommande = ?
+        WHERE c.idCommande = :commande
     ");
-    $stmt->execute([$idCommande]);
+
+    $stmt->execute([':commande' => $idCommande]);
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$data) {
