@@ -8,17 +8,18 @@ use Dompdf\Dompdf;
 
     $stmt = $pdo->prepare("
         SELECT
-            c.idCommande, c.dateCommande, c.montantCommandeHt, c.montantCommandeTTC, c.nomTransporteur,
+            c.idCommande, c.dateCommande, c.montantCommandeHt, c.montantCommandeTTC,
             p.nbArticles, p.prixHt, p.prixTotalTvaPanier,
             cl.prenom, cl.nom, cl.email,
-            a.rue, a.codePostal, a.ville
+            a.adresse, a.codePostal, a.ville
         FROM _commande c
         JOIN _panier p ON c.idPanier = p.idPanier
         JOIN _client cl ON p.idClient = cl.idClient
-        JOIN _adresse a ON c.idAdresseFact = a.idAdresse
-        WHERE c.idCommande = ?
+        JOIN _adresseClient a ON c.idAdresseFact = a.idAdresse
+        WHERE c.idCommande = :commande
     ");
-    $stmt->execute([$idCommande]);
+
+    $stmt->execute([':commande' => $idCommande]);
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$data) {
@@ -84,10 +85,4 @@ use Dompdf\Dompdf;
 
     $path = '../factures';
 
-    file_put_contents(
-        $path . '/facture_' . $data['idCommande'] . '.pdf',
-        $dompdf->output()
-    );
-
-header("Location: ../views/frontoffice/commandes.php"); 
-exit();
+    move_uploaded_file( $data['idCommande'] . '.pdf', $path . '/facture_');

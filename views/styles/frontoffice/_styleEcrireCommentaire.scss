@@ -8,6 +8,10 @@
     font-family: 'lora';
     color: $color-blue;
 
+    button{
+        cursor: pointer;
+    }
+
     .produit{
         display: flex;
         flex-direction: row;
@@ -181,7 +185,7 @@
     // popup //
 
     .modal-popup {
-        display: flex;
+        display: none;
         position: fixed;
         z-index: 9999;
         left: 0;
@@ -236,11 +240,18 @@
     }
 
     #recapAvis p {
-        margin: 10px 0;
-        line-height: 1.6;
+        margin: 20px 0;
+        line-height: 3;
     }
 
     #recapAvis strong {
         color: #273469;
+    }
+
+    #boutonsPopupAvis{
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
     }
 }
