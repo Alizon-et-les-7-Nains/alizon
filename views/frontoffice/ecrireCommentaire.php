@@ -168,10 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea name="sujet" id="sujet" placeholder="Ex: Excellent produit artisanal" rows="2" required><?php echo isset($_POST['sujet']) ? htmlspecialchars($_POST['sujet']) : ''; ?></textarea>
             
             <h2>Message <span style="color: red;">*</span> :</h2>
-            <textarea name="message" id="message" placeholder="Partagez votre expérience avec ce produit..." rows="6" required><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>
-            
-            <p style="color: #666; font-size: 14px; margin: 10px 0;">Les champs marqués d'un <span style="color: red;">*</span> sont obligatoires</p>
-            
+            <textarea name="message" id="message" placeholder="Partagez votre expérience avec ce produit..." rows="6" required><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>            
             <button type="submit" class="bouton boutonBleu">Publier mon avis</button>
             <a href="produit.php?id=<?php echo $productId; ?>" class="bouton boutonRose" style="display: inline-block; text-align: center; text-decoration: none; margin-left: 10px;">Annuler</a>
         </form>
@@ -237,13 +234,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeBtns = document.querySelectorAll('.close-modal');
 
     formulaire.addEventListener('submit', function(e) {
-        e.preventDefault(); // Empêcher la soumission directe
+        e.preventDefault();
 
         const note = parseInt(noteInput.value);
         const sujet = document.getElementById('sujet').value.trim();
         const message = document.getElementById('message').value.trim();
 
-        // Validation
         if (note === 0 || note < 1 || note > 5) {
             alert('Veuillez sélectionner une note entre 1 et 5 étoiles');
             return false;
@@ -259,41 +255,34 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
 
-        // Remplir le récapitulatif dans la popup
         document.getElementById('recapNote').textContent = note;
         document.getElementById('recapSujet').textContent = sujet;
-        document.getElementById('recapMessage').textContent = message;
+        // document.getElementById('recapMessage').textContent = message;
 
-        // Afficher la popup
         popupConfirmation.style.display = 'flex';
     });
 
-    // Confirmer et soumettre
     btnConfirmer.addEventListener('click', function() {
         popupConfirmation.style.display = 'none';
-        formulaire.submit(); // Soumettre le formulaire réellement
+        formulaire.submit();
     });
 
-    // Annuler (retour au formulaire)
     btnAnnuler.addEventListener('click', function() {
         popupConfirmation.style.display = 'none';
     });
 
-    // Fermer avec le X
     closeBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             this.closest('.modal-popup').style.display = 'none';
         });
     });
 
-    // Fermer en cliquant en dehors
     window.addEventListener('click', function(e) {
         if (e.target === popupConfirmation) {
             popupConfirmation.style.display = 'none';
         }
     });
 
-    // Fermer avec Échap
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             popupConfirmation.style.display = 'none';
@@ -301,7 +290,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Fonction pour supprimer la photo (doit être globale)
 function removePhoto() {
     document.getElementById('preview').innerHTML = '';
     document.getElementById('inputPhoto').value = '';
