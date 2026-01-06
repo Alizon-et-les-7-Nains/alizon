@@ -15,7 +15,6 @@
                 </div>
             </div>
 
-            </div>
                 <div class="icons">
                     <a href="../frontoffice/panierDeconnecte.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
                     <div class="seConnecter">
@@ -23,7 +22,6 @@
                         <p>Se connecter</p>
                     </div>
                 </div>
-            </div>
         </div>
 
         <div class="carousel">
