@@ -698,7 +698,7 @@ body {
 }
 .pageCommandes .imgProduit {
   max-height: 150px;
-  max-width: 200px;
+  min-width: 200px;
   margin: 0px 10px;
   object-fit: contain;
 }
