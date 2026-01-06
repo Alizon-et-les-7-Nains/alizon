@@ -665,7 +665,7 @@ if ($produit['stock'] > 0) {
         </aside>
     </article>
 </section>
-<div id="modalSignalement" class="modal-signalement" style="display: flex;">
+<div id="modalSignalement" class="modal-signalement" style="display: none;">
     <div class="modal-content">
         <span class="close-modal">&times;</span>
         <h2>Signaler cet avis</h2>
