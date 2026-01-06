@@ -358,4 +358,20 @@
         margin: 0px 10px;
         object-fit: contain;
     }
+
+    .plus {
+        display: flex;
+        align-items: center;
+        font-family: "Lora", serif;
+        justify-content: space-between;
+        width: 260px;
+        font-size: 14px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #273469;
+        border: 2px solid #273469;
+        border-radius: 20px;
+        padding: 8px 15px;
+        margin-bottom: 5px;
+    }
 }
