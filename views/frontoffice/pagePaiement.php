@@ -313,7 +313,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 
 <body class="pagePaiement">
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
-
     <script>
     window.CLE_CHIFFREMENT = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
 
@@ -322,19 +321,19 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
         citiesByCode: <?php echo json_encode($citiesByCode, JSON_UNESCAPED_UNICODE); ?>,
         postals: <?php echo json_encode($postals, JSON_UNESCAPED_UNICODE); ?>,
         cart: <?php 
-            $formattedCart = [];
-            foreach ($cart as $item) {
-                $formattedCart[] = [
-                    'id' => strval($item['idProduit']),
-                    'nom' => $item['nom'],
-                    'prix' => floatval($item['prix']),
-                    'qty' => intval($item['qty']),
-                    'stock' => intval($item['stock']),
-                    'img' => $item['img'] ?? '../../public/images/default.png'
-                ];
-            }
-            echo json_encode($formattedCart, JSON_UNESCAPED_UNICODE); 
-        ?>,
+        $formattedCart = [];
+        foreach ($cart as $item) {
+            $formattedCart[] = [
+                'id' => strval($item['idProduit']),
+                'nom' => $item['nom'],
+                'prix' => floatval($item['prix']),
+                'qty' => intval($item['qty']),
+                'stock' => intval($item['stock']),
+                'img' => $item['img'] ?? '../../public/images/default.png'
+            ];
+        }
+        echo json_encode($formattedCart, JSON_UNESCAPED_UNICODE); 
+    ?>,
         idClient: <?php echo $idClient; ?>
     };
     </script>
@@ -442,6 +441,8 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../controllers/Chiffrement.js"></script>
+    <script src="../scripts/frontoffice/paiement-luhn.js"></script>
+    <script src="../scripts/frontoffice/paiement-autocomplete.js"></script>
     <script src="../scripts/frontoffice/paiement.js"></script>
 </body>
 
