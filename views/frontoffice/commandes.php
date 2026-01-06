@@ -169,7 +169,7 @@ if ($filtre === '2025') {
                             </div>
                             
                             <div class="listeBtn">
-                                <a href="<?php echo "frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
+                                <a href="<?php echo "../../views/frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
                                 <a href="">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Redo"></a>
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
                                     <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
