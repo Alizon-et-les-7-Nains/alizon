@@ -3815,6 +3815,9 @@ button#haut.visible:hover {
   font-family: "lora";
   color: #273469;
 }
+.pageEcrireCommentaire button {
+  cursor: pointer;
+}
 .pageEcrireCommentaire .produit {
   display: flex;
   flex-direction: row;
@@ -4004,8 +4007,8 @@ button#haut.visible:hover {
   margin-bottom: 15px;
 }
 .pageEcrireCommentaire #recapAvis p {
-  margin: 10px 0;
-  line-height: 1.6;
+  margin: 20px 0;
+  line-height: 3;
 }
 .pageEcrireCommentaire #recapAvis strong {
   color: #273469;
