@@ -695,6 +695,12 @@ body {
     flex-direction: row !important;
   }
 }
+.pageCommandes .imgProduit {
+  max-height: 150px;
+  max-width: 200px;
+  margin: 0px 10px;
+  object-fit: contain;
+}
 
 /* ---- Header ---- */
 header.backoffice {
@@ -3500,6 +3506,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: red;
 }
 
+.panier {
+  width: 100vw;
+  height: 100vh;
+  transform: rotateY(85deg) scale(0.95);
+  transform-origin: center;
+}
 .panier main {
   height: 100vh;
 }
