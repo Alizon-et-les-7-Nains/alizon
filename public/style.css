@@ -778,6 +778,21 @@ body {
   margin: 0px 10px;
   object-fit: contain;
 }
+.pageCommandes .plus {
+  display: flex;
+  align-items: center;
+  font-family: "Lora", serif;
+  justify-content: space-between;
+  width: 260px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #273469;
+  border: 2px solid #273469;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-bottom: 5px;
+}
 
 /* ---- Header ---- */
 header.backoffice {
@@ -3001,7 +3016,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 20px;
   padding: 10px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: nowrap;
   max-width: 800px;
   margin-bottom: 40px;
@@ -3213,7 +3228,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   height: 40px;
 }
 .panier .imgProd {
-  height: 220px;
+  height: 200px;
   width: 220px;
   margin: 0px 10px;
   object-fit: contain;
