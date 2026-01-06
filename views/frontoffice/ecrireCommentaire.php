@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
         </div>
     <?php endif; ?>
-    <div id="popupConfirmation" class="modal-popup" style="display: flex;">
+    <div id="popupConfirmation" class="modal-popup" style="display: none;">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
             <h2>✓ Confirmer la publication</h2>
