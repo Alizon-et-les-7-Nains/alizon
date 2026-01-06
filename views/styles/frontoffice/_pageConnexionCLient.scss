@@ -293,14 +293,6 @@ $breakpoint-small-mobile: 480px;
       }
     }
 
-    .inputLabelGroup {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start !important;
-      gap: 6px;
-    }
-
     .petitTexte {
       color: #6e6e6e;
       text-align: center;
@@ -373,4 +365,11 @@ $breakpoint-small-mobile: 480px;
       margin-top: 15px;
     }
   }
+    .inputLabelGroup {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 6px;
+    }
 }
