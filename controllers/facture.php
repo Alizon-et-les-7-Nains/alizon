@@ -84,10 +84,4 @@ use Dompdf\Dompdf;
 
     $path = '../factures';
 
-    file_put_contents(
-        $path . '/facture_' . $data['idCommande'] . '.pdf',
-        $dompdf->output()
-    );
-
-header("Location: ../views/frontoffice/commandes.php"); 
-exit();
+    move_uploaded_file( $data['idCommande'] . '.pdf', $path . '/facture_');
