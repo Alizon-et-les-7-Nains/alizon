@@ -5158,11 +5158,19 @@ dialog.reassort h1 {
   margin-bottom: 1em;
   text-align: center;
 }
+dialog.reassort form div {
+  background: none !important;
+  border: none !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2em;
+}
 dialog.reassort form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2em;
+  gap: 1em;
   width: 100%;
 }
 dialog.reassort form ul {
@@ -5194,10 +5202,17 @@ dialog.reassort form ul li:last-child input:not(:disabled):hover:not(:disabled) 
   color: #273469;
   cursor: pointer;
 }
-dialog.reassort form label {
+dialog.reassort form label.error {
+  margin-top: -1em;
   display: none;
   color: #f14e4e;
-  margin-top: -1em;
+}
+dialog.reassort form label:not(.error) {
+  align-self: flex-start;
+  text-align: left;
+  margin-bottom: -1em;
+  font-weight: bold;
+  font-size: 22px;
 }
 dialog.reassort form input::placeholder {
   font-weight: normal;
