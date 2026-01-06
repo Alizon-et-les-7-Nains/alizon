@@ -2,7 +2,7 @@
 include '../../controllers/pdo.php';
 session_start();
 
-
+$userId = $_SESSION['user_id'] ?? null;
 function getVoteUtilisateur($idProduit, $idClientAvis) {
     if (!isset($_SESSION['user_id'])) {
         return null;
@@ -10,25 +10,6 @@ function getVoteUtilisateur($idProduit, $idClientAvis) {
     
     $keyVote = "vote_{$idProduit}_{$idClientAvis}";
     return $_SESSION[$keyVote] ?? null;
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
-    $idProduit = intval($_POST['idProduit']);
-    $quantite = intval($_POST['quantite']);
-    
-    $idClient = $_SESSION['user_id'];
-    try{
-        $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
-    }
-    catch(Exception $e){
-        $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
-    }
-
-    if ($success) {
-        $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
-    } else {
-        $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
-    }
 }
 
 $productId = intval($_GET['id']) ?? 0;
@@ -104,7 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         error_log("Erreur lors du vote: " . $e->getMessage());
         http_response_code(500);
     }
-    
     exit; // IMPORTANT : Ne pas rediriger, juste terminer
 }
 
@@ -285,6 +265,54 @@ function calculerPromotion($produit) {
 }
 
 $promotion = calculerPromotion($produit);
+
+$quantiteActuellePanier = 0;
+if ($idClient > 0) {
+    $sqlProduitAuPanier = "SELECT pap.quantiteProduit as qty 
+                           FROM _produitAuPanier pap 
+                           JOIN _panier p ON pap.idPanier = p.idPanier
+                           WHERE p.idClient = ? AND pap.idProduit = ?";
+    $stmtPanier = $pdo->prepare($sqlProduitAuPanier);
+    $stmtPanier->execute([$idClient, $productId]);
+    $produitAuPanier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
+    $quantiteActuellePanier = $produitAuPanier ? intval($produitAuPanier['qty']) : 0;
+}
+
+
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
+    $idProduit = intval($_POST['idProduit']);
+    $quantite = intval($_POST['quantite']);
+    
+    $idClient = $_SESSION['user_id'];
+    
+    // Vérifier la quantité disponible
+    $sqlVerifStock = "SELECT p.stock, COALESCE(pap.quantiteProduit, 0) as qtyPanier
+                      FROM _produit p
+                      LEFT JOIN _panier pan ON pan.idClient = ?
+                      LEFT JOIN _produitAuPanier pap ON pap.idPanier = pan.idPanier AND pap.idProduit = p.idProduit
+                      WHERE p.idProduit = ?";
+    $stmtVerif = $pdo->prepare($sqlVerifStock);
+    $stmtVerif->execute([$idClient, $idProduit]);
+    $verif = $stmtVerif->fetch(PDO::FETCH_ASSOC);
+    
+    if ($verif && ($verif['qtyPanier'] + $quantite) > $verif['stock']) {
+        $_SESSION['message_panier'] = "Stock insuffisant. Vous avez déjà " . $verif['qtyPanier'] . " article(s) dans votre panier.";
+    } else {
+        try{
+            $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+            if ($success) {
+                $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
+            } else {
+                $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
+            }
+        }
+        catch(Exception $e){
+            $_SESSION['message_panier'] = "Erreur lors de l'ajout au panier.";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -450,7 +478,11 @@ if (isset($_SESSION['message_panier'])) {
             </div>
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
             <input type="hidden" name="action" value="ajouter_panier">
-            <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
+            <?php if($quantiteActuellePanier >= $produit['stock']): ?>
+                <button class="bouton boutonRose" type="submit" name="ajouter_panier" disabled>Stock max atteint</button>
+            <?php else: ?>
+                <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
+            <?php endif; ?>
         </form>
 <?php if (isset($_SESSION['user_id'])): ?>
     <form action="pagePaiement.php" method="POST">
@@ -672,7 +704,6 @@ if ($produit['stock'] > 0) {
 </footer> 
 </body>
 <script>
-// ==================== CAROUSEL ====================
 class ProductCarousel {
     constructor() {
         this.currentImageIndex = 0;
@@ -752,16 +783,16 @@ class ProductCarousel {
     }
 }
 
-// ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', function() {
     new ProductCarousel();
     
-    // ==================== QUANTITÉ ====================
     let quantite = 1;
     const quantiteInput = document.getElementById('quantiteInput');
     const plusBtn = document.getElementById('plus');
     const moinsBtn = document.getElementById('moins');
     const stock = <?php echo $produit['stock']; ?>;
+    const quantiteActuellePanier = <?php echo $quantiteActuellePanier; ?>;
+    const stockDisponible = stock - quantiteActuellePanier;
     
     if (plusBtn && quantiteInput) {
         plusBtn.addEventListener('click', () => {
@@ -787,7 +818,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ==================== VOTES ====================
     const voteButtonsNotDisabled = document.querySelectorAll('.btn-vote:not([disabled])');
     
     voteButtonsNotDisabled.forEach((button) => {
@@ -860,7 +890,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-    // ==================== SIGNALEMENT ====================
     const modal = document.getElementById('modalSignalement');
     const closeBtn = document.querySelector('.close-modal');
     const formSignalement = document.getElementById('formSignalement');
