@@ -43,11 +43,12 @@ if ($filtre === 'cours') {
     foreach ($resultatsCommandes as $row) {
         $idCommande = $row['idCommande'];
         
-        $sqlProduits = "SELECT p.idProduit, p.nom, co.quantite, i.URL as image
+        $sqlProduits = "SELECT v.raisonSocial, p.idProduit, p.nom, co.quantite, i.URL as image
                         FROM _contient co
                         JOIN _produit p ON co.idProduit = p.idProduit
                         LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-                        WHERE co.idCommande = :idCommande
+                        LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur
+                        WHERE co.idCommande = idCommande
                         GROUP BY p.idProduit";
                         
                         $stmtProd = $pdo->prepare($sqlProduits);
@@ -148,12 +149,12 @@ if ($filtre === '2025') {
                         ?>
                         <section class="produit <?php echo ($index === $nombreProduits - 1) ? 'dernierProduit' : ''; ?>">
                             <div class="containerImg">
-                                <img src="<?php echo $imgSrc; ?>" alt="<?php echo htmlspecialchars($produit['nom']); ?>">
+                                <a href="../../views/frontoffice/produit.php?id=<?= $produit['idProduit'] ?>"><img src="<?php echo $imgSrc; ?>" class="imgProduit" alt="<?php echo htmlspecialchars($produit['nom']); ?>"></a>
                                 <div class="infoProduit">
                                     <h2><?php echo htmlspecialchars($produit['nom']); ?></h2>
                                     <ul>
                                         <li>Quantité : <?php echo $produit['quantite']; ?></li>
-                                        <li>Vendu par Alizon</li>
+                                        <li>Vendu par <?php echo $produit['raisonSocial']; ?></li>
                                     </ul>
                                     
                                     <div class="statutCommande <?php echo $commande['statut'] === 'Livrée' ? 'livre' : 'enCours'; ?>">
@@ -168,8 +169,8 @@ if ($filtre === '2025') {
                             </div>
                             
                             <div class="listeBtn">
-                                <a href="">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
-                                <a href="../../views/frontoffice/produit.php?id=<?= $produit['idProduit'] ?>">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Redo"></a>
+                                <a href="<?php echo "frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
+                                <a href="">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Redo"></a>
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
                                     <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
                                     <?php else: ?>
@@ -193,8 +194,6 @@ if ($filtre === '2025') {
                             <p>#<?php echo $commande['id']; ?></p>
                         </div>
                         <div class="liensCommande">
-                            <a class="supprElem" href="#">Détails</a>
-                            <span class="supprElem">|</span>
                             <a href="#">Facture</a>
                         </div>
                     </section>
