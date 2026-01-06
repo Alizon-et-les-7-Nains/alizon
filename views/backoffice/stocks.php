@@ -117,7 +117,7 @@ if (count($epuises) == 0) echo "<h2>Aucun produit épuisé</h2>";
                 </div>";
         echo $html;
 echo "
-    <dialog class='reassort' id='" . $epuise['idProduit'] ."'>
+    <dialog class='reassort' id=d-'" . $epuise['idProduit'] ."'>
         <h1>Paramètres de réassort</h1>
         <form action='../../controllers/reassort.php' method='post'> 
             <input type='hidden' name='idProduit' value='" . $epuise['idProduit'] . "'>
