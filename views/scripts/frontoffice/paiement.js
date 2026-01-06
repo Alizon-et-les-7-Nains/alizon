@@ -13,7 +13,6 @@ class PaymentPage {
   setupReferences() {
     this.factAddrCheckbox = document.getElementById("checkboxFactAddr");
     this.billingSection = document.getElementById("billingSection");
-    this.saveBillingBtn = document.getElementById("saveBillingAddress");
     this.confirmationPopup = document.getElementById("confirmationPopup");
     this.popupContent = document.getElementById("popupContent");
     this.closePopupBtn = document.querySelector(".close-popup");
@@ -32,12 +31,6 @@ class PaymentPage {
       });
     }
 
-    if (this.saveBillingBtn) {
-      this.saveBillingBtn.addEventListener("click", () =>
-        this.saveBillingAddress()
-      );
-    }
-
     this.payerButtons.forEach((btn) => {
       btn.addEventListener("click", (e) => this.handlePayment(e));
     });
@@ -49,61 +42,6 @@ class PaymentPage {
     this.confirmationPopup.addEventListener("click", (e) => {
       if (e.target === this.confirmationPopup) this.hidePopup();
     });
-  }
-
-  async saveBillingAddress() {
-    const adresseFactInput = document.querySelector(".adresse-fact-input");
-    const codePostalFactInput = document.querySelector(
-      ".code-postal-fact-input"
-    );
-    const villeFactInput = document.querySelector(".ville-fact-input");
-
-    if (
-      !this.validateBillingFields(
-        adresseFactInput,
-        codePostalFactInput,
-        villeFactInput
-      )
-    ) {
-      return;
-    }
-
-    try {
-      const formData = new URLSearchParams();
-      formData.append("action", "saveBillingAddress");
-      formData.append("adresse", adresseFactInput.value.trim());
-      formData.append("codePostal", codePostalFactInput.value.trim());
-      formData.append("ville", villeFactInput.value.trim());
-
-      const response = await fetch("", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        this.idAdresseFacturation = result.idAdresseFacturation;
-        this.savedBillingAddress = {
-          adresse: adresseFactInput.value.trim(),
-          codePostal: codePostalFactInput.value.trim(),
-          ville: villeFactInput.value.trim(),
-        };
-        this.showMessage(
-          "Adresse de facturation enregistrée avec succès",
-          "success"
-        );
-      } else {
-        this.showMessage(
-          result.error || "Erreur lors de l'enregistrement",
-          "error"
-        );
-      }
-    } catch (error) {
-      this.showMessage("Erreur réseau", "error");
-      console.error(error);
-    }
   }
 
   validateBillingFields(adresse, codePostal, ville) {
@@ -182,7 +120,7 @@ class PaymentPage {
         selector: ".num-carte",
         errorKey: "num-carte",
         required: true,
-        pattern: /^\d{16}$/,
+        pattern: /^(?:\d{4}\s?){3}\d{4}$/,
       },
       { selector: ".nom-carte", errorKey: "nom-carte", required: true },
       {
@@ -446,7 +384,8 @@ class PaymentPage {
   getPatternMessage(errorKey) {
     const messages = {
       "code-postal": "Le code postal doit contenir 5 chiffres",
-      "num-carte": "Le numéro de carte doit contenir 16 chiffres",
+      "num-carte":
+        "Le numéro de carte doit contenir 16 chiffres (espaces autorisés)",
       "carte-date": "Format de date invalide (MM/AA)",
       "cvv-input": "Le CVV doit contenir 3 chiffres",
     };
