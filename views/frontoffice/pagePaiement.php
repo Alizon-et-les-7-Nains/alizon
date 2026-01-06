@@ -149,17 +149,17 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
 
-        $sqlCommande = "
-            INSERT INTO _commande (
-                dateCommande, etatLivraison, montantCommandeTTC, montantCommandeHt,
-                quantiteCommande, nomTransporteur, dateExpedition,
-                idAdresseLivr, idAdresseFact, numeroCarte, idPanier
-            ) VALUES (
-                NOW(), 'En préparation', ?, ?,
-                ?, 'Colissimo', NULL,
-                ?, ?, ?, ?
-            )
-        ";
+$sqlCommande = "
+    INSERT INTO _commande (
+        dateCommande, etatLivraison, montantCommandeTTC, montantCommandeHt,
+        quantiteCommande, nomTransporteur, dateExpedition,
+        idAdresseLivr, idAdresseFact, numeroCarte, idPanier  // NOTEZ : pas de 'e' à la fin
+    ) VALUES (
+        NOW(), 'En préparation', ?, ?,
+        ?, 'Colissimo', NULL,
+        ?, ?, ?, ?
+    )
+";
         $stmtCommande = $pdo->prepare($sqlCommande);
         if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarte, $idPanier])) {
             throw new Exception("Erreur lors de la création de la commande.");
