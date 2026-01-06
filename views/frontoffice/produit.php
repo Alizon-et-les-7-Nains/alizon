@@ -796,7 +796,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (plusBtn && quantiteInput) {
         plusBtn.addEventListener('click', () => {
-            if (quantite < stock){
+            if (quantite < stockDisponible){
                 quantite++;
                 quantiteInput.value = quantite;
                 quantiteInput.style.color = '#273469';
