@@ -297,7 +297,7 @@ $breakpoint-small-mobile: 480px;
       width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: flex-start !important;
       gap: 6px;
     }
 
