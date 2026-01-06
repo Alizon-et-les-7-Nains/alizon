@@ -15,7 +15,7 @@ use Dompdf\Dompdf;
         FROM _commande c
         JOIN _panier p ON c.idPanier = p.idPanier
         JOIN _client cl ON p.idClient = cl.idClient
-        JOIN _adresse a ON c.idAdresseFact = a.idAdresse
+        JOIN _adresseClient a ON c.idAdresseFact = a.idAdresse
         WHERE c.idCommande = ?
     ");
     $stmt->execute([$idCommande]);
