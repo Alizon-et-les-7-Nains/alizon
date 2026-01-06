@@ -4,7 +4,6 @@
 .pageCommandes {
     font-family: "Lora", serif;
     font-size: 14px;
-    font-weight: bold;
     color: $color-blue;
 
     @media (max-width:1125px) {
@@ -15,9 +14,9 @@
     }
 
     input[type="search"] {
-        padding: 10px 20px; // Padding équilibré au lieu de 350px à droite
-        width: 100%; // Ou une largeur spécifique comme 500px si préféré
-        max-width: 600px; // Pour éviter qu'il soit trop large
+        padding: 10px 20px;
+        width: 100%;
+        max-width: 600px;
         border-radius: 25px;
         border: 2px solid $color-blue;
         background-color: #fff;
@@ -26,11 +25,11 @@
         font-size: 20px;
         font-weight: bold;
         font-style: italic;
-        box-sizing: border-box; // Important pour que le padding soit inclus dans la largeur
+        box-sizing: border-box;
         
         &::placeholder {
             color: $color-blue;
-            opacity: 0.6; // Pour un meilleur contraste visuel
+            opacity: 0.6;
         }
     }
     
@@ -373,5 +372,6 @@
         border-radius: 20px;
         padding: 8px 15px;
         margin-bottom: 5px;
+        cursor: pointer;
     }
 }

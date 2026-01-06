@@ -49,14 +49,12 @@ ob_start();
     <strong>Client</strong><br>
     <?= htmlspecialchars($data['prenom'] . ' ' . $data['nom']) ?><br>
     <?= htmlspecialchars($data['email']) ?><br>
-    <?= htmlspecialchars($data['rue']) ?><br>
     <?= htmlspecialchars($data['codePostal'] . ' ' . $data['ville']) ?>
 </div>
 
 <div class="bloc">
     Facture n° <?= 'FAC-' . date('Y') . '-' . str_pad($data['idCommande'], 6, '0', STR_PAD_LEFT) ?><br>
     Date : <?= date('d/m/Y', strtotime($data['dateCommande'])) ?><br>
-    Transporteur : <?= htmlspecialchars($data['nomTransporteur']) ?>
 </div>
 
 <table>

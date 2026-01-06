@@ -465,7 +465,6 @@ body {
 .pageCommandes {
   font-family: "Lora", serif;
   font-size: 14px;
-  font-weight: bold;
   color: #273469;
 }
 @media (max-width: 1125px) {
@@ -792,6 +791,7 @@ body {
   border-radius: 20px;
   padding: 8px 15px;
   margin-bottom: 5px;
+  cursor: pointer;
 }
 
 /* ---- Header ---- */
