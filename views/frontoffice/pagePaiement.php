@@ -380,7 +380,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                                 <small class="error-message" data-for="ville-fact"></small>
                             </div>
                         </div>
-                        <button id="saveBillingAddress" class="btn-save">Enregistrer cette adresse</button>
                     </div>
                 </section>
 
