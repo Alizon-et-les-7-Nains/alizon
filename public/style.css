@@ -2828,6 +2828,147 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     min-height: 44px;
   }
 }
+/* Styles pour la popup de confirmation */
+.payment-overlay .scrollable-cart {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin: 15px 0;
+}
+.payment-overlay .scrollable-cart::-webkit-scrollbar {
+  width: 8px;
+}
+.payment-overlay .scrollable-cart::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+.payment-overlay .scrollable-cart::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+.payment-overlay .scrollable-cart::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.cart-item-summary {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+.cart-item-summary:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.cart-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 15px;
+}
+
+.cart-item-info {
+  flex: 1;
+}
+
+.cart-item-name {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #273469;
+}
+
+.cart-item-details {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.total-section {
+  text-align: right;
+  margin: 20px 0;
+  padding-top: 15px;
+  border-top: 2px solid #273469;
+}
+.total-section h3 {
+  margin: 0;
+}
+
+/* Styles pour la section d'adresse de facturation dans la page */
+.billing-section {
+  margin-top: 20px;
+  padding: 20px;
+  border: 2px solid #273469;
+  border-radius: 8px;
+  background-color: rgba(39, 52, 105, 0.05);
+  display: none;
+}
+.billing-section.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+.billing-section h4 {
+  color: #273469;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Amélioration des messages d'erreur */
+.error-message {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  display: block;
+  min-height: 20px;
+}
+.error-message[data-for=cgv] {
+  margin-top: 10px;
+}
+
+/* Styles pour le bouton d'enregistrement */
+.btn-save {
+  background: #273469;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: "lora", serif;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+}
+.btn-save:hover {
+  background: rgb(25.1875, 33.5833333333, 67.8125);
+}
+.btn-save:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive pour la section facturation */
+@media (max-width: 720px) {
+  .billing-section {
+    padding: 15px;
+  }
+  .btn-save {
+    width: 100%;
+  }
+}
 .mainCompteClient {
   background-image: url("../../../public/images/triskel.png");
   background-repeat: no-repeat;
