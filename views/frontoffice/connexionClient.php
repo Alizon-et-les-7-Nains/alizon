@@ -101,9 +101,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form id="loginForm" method="POST" action="">
+            <label>Adresse mail ou numéro de téléphone*</label>
             <input type="text" name="email_tel" placeholder="Adresse mail ou numéro de téléphone*"
                 class="inputConnexionClient" value="<?php echo htmlspecialchars($email_tel); ?>" required>
-
+            <label>Mot de passe*</label>
             <input type="password" id="password_input" placeholder="Mot de passe*" class="inputConnexionClient"
                 required>
 
