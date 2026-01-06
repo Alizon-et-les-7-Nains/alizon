@@ -84,8 +84,8 @@ $dompdf = new \Dompdf\Dompdf();
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4');
 $dompdf->render();
-
 $path = __DIR__ . '/../factures';
+echo(realpath($path));
 
 file_put_contents($path . '/facture_' . $data['idCommande'] . '.pdf', $dompdf->output());
 
