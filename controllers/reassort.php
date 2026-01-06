@@ -16,6 +16,13 @@ if (isset($_POST['idProduit'])) {
     if (isset($_POST['date']) && $_POST['date'] !== '' && $_POST['date'] != $prod['dateReassort']) {
         $editSuilSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/editDate.sql'));
         $editSuilSTMT->execute(['idProduit' => $_POST['idProduit'], 'date' => $_POST['date']]);
+    } else {
+        try {
+            $editSuilSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/editDate.sql'));
+            $editSuilSTMT->execute(['idProduit' => $_POST['idProduit'], 'date' => null]);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+        }
     }
 
     if (isset($_POST['reassort']) && $_POST['reassort'] !== '' && $_POST['reassort'] != $prod['stock']) {

@@ -22,14 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
 $extension = '';
+$photoPath = '/var/www/html/images/produit' . $idProd;   
 foreach ($extensionsPossibles as $ext) {
-        if (file_exists($photoPath . '.' . $ext)) {
+    $photoPathExt = $photoPath . '.' . $ext;
+        if (file_exists($photoPathExt)) {
             $extension = '.' . $ext;
             break;
         }
     }
 if (isset($_FILES['url']) && $_FILES['url']['error'] === UPLOAD_ERR_OK) {
-    $photoPath = '/var/www/html/images/produit' . $idProd;   
 
     if (file_exists($photoPath . $extension)) { 
         unlink($photoPath . $extension); 
