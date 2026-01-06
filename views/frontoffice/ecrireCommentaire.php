@@ -127,7 +127,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
         </div>
     <?php endif; ?>
-
+    <div id="popupConfirmation" class="modal-popup" style="display: flex;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>✓ Confirmer la publication</h2>
+            <div id="recapAvis" style="margin: 20px 0;">
+                <p><strong>Note :</strong> <span id="recapNote"></span>/5 ⭐</p>
+                <p><strong>Sujet :</strong> <span id="recapSujet"></span></p>
+                <p><strong>Message :</strong></p>
+                <p id="recapMessage" style="font-style: italic; color: #666; max-height: 100px; overflow-y: auto;"></p>
+            </div>
+            <p style="color: #666; font-size: 14px;">Votre avis sera visible par tous les utilisateurs.</p>
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                <button id="btnConfirmerAvis" class="bouton boutonBleu">Publier mon avis</button>
+                <button id="btnAnnulerPopup" class="bouton boutonRose">Modifier</button>
+            </div>
+        </div>
+    </div>
     <section class="reviewArticle">
         <form action="" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
