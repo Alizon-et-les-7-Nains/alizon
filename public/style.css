@@ -1149,13 +1149,6 @@ body.backoffice.nonConnecte nav {
     margin-top: 15px;
   }
 }
-.pageConnexionCLient main form > div .inputLabelGroup {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start !important;
-  gap: 6px;
-}
 .pageConnexionCLient main form > div .boutonConnexionClient {
   margin-top: 25px;
   width: 70%;
@@ -1220,6 +1213,13 @@ body.backoffice.nonConnecte nav {
     margin-top: 4px;
     line-height: 1.4;
   }
+}
+.pageConnexionCLient main form .inputLabelGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  gap: 6px;
 }
 .pageConnexionCLient main .petitTexte {
   color: #6e6e6e;
