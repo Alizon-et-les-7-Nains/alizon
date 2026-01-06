@@ -34,7 +34,7 @@ main.backoffice-stocks {
                 right: 0.5em;
             }
         }
-
+        
         div.remise {
             border: none !important;
         }
@@ -271,11 +271,20 @@ dialog.reassort {
         text-align: center;
     }
     
+    form div {
+        background: none !important;
+        border: none !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2em;
+    }
+    
     form {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 2em;
+        gap: 1em;
         width: 100%;
         
         ul {
@@ -312,9 +321,19 @@ dialog.reassort {
         }
         
         label {
-            display: none;
-            color: $color-red;
-            margin-top: -1em;
+            &.error {
+                margin-top: -1em;
+                display: none;
+                color: $color-red;
+            }
+            
+            &:not(.error) {
+                align-self: flex-start;
+                text-align: left;
+                margin-bottom: -1em;
+                font-weight: bold;
+                font-size: 22px;
+            }
         }
         
         input {
@@ -325,7 +344,7 @@ dialog.reassort {
                 background-color: $color-gray !important;
                 color: $color-white !important;
                 cursor: not-allowed !important;
-
+                
                 &:hover {
                     background-color: $color-gray !important;
                     color: $color-white !important;
