@@ -1174,8 +1174,7 @@ $breakpoint-xs: 480px;
     top: -400px;
     width: 1000px;
     height: 1000px;
-    background: url("../../public/images/symboleRose.png") no-repeat center
-      center;
+    background: url("../../public/images/symboleRose.png") no-repeat center center;
     background-size: contain;
     transform: rotate(-20deg);
     opacity: 0.12;
@@ -1304,18 +1303,10 @@ $breakpoint-xs: 480px;
         flex: 1 1 auto !important;
       }
 
-      &.fixed-110 {
-        flex: 0 0 110px;
-      }
-      &.fixed-100 {
-        flex: 0 0 100px;
-      }
-      &.fixed-80 {
-        flex: 0 0 80px;
-      }
-      &.flex-1 {
-        flex: 1 1 0;
-      }
+      &.fixed-110 { flex: 0 0 110px; }
+      &.fixed-100 { flex: 0 0 100px; }
+      &.fixed-80 { flex: 0 0 80px; }
+      &.flex-1 { flex: 1 1 0; }
     }
   }
 
@@ -1570,13 +1561,13 @@ $breakpoint-xs: 480px;
 }
 
 .btn-confirm {
-  background: #4caf50;
+  background: #4CAF50;
   color: white;
   border: none;
   border-radius: 4px;
   padding: 12px 30px;
   cursor: pointer;
-  font-family: "lora", serif;
+  font-family: 'lora', serif;
   font-size: 16px;
 }
 
@@ -1587,7 +1578,7 @@ $breakpoint-xs: 480px;
   border-radius: 4px;
   padding: 12px 30px;
   cursor: pointer;
-  font-family: "lora", serif;
+  font-family: 'lora', serif;
   font-size: 16px;
 }
 
@@ -1609,7 +1600,7 @@ $breakpoint-xs: 480px;
 .order-number {
   font-size: 24px;
   font-weight: bold;
-  color: #4caf50;
+  color: #4CAF50;
   margin: 20px 0;
 }
 
@@ -1620,7 +1611,7 @@ $breakpoint-xs: 480px;
   border-radius: 4px;
   padding: 12px 30px;
   cursor: pointer;
-  font-family: "lora", serif;
+  font-family: 'lora', serif;
   font-size: 16px;
   margin-top: 20px;
 }
