@@ -1,5 +1,5 @@
 <?php 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '../vendor/autoload.php';
 require_once './pdo.php';
 $idCommande = $_GET['id'];
 use Dompdf\Dompdf;
