@@ -314,9 +314,37 @@ $cart = getCurrentCart($pdo, $idClient);
                 </section>
                 <?php endforeach; ?>
         <?php endif; ?>
+
+        <section class="confirmationAjout">
+            <h4>Produit ajouté au panier !</h4>
+        </section>
         
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-    </main>
-</body>
-<?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
+        <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
+
+        </main>
+
+            <script>
+            const popupConfirmation = document.querySelector(".confirmationAjout");
+            const boutonsAjout = document.querySelectorAll(".plus");
+
+            boutonsAjout.forEach(btn => {
+                btn.addEventListener("click", function(e) {
+
+                    // Afficher le popup
+                    popupConfirmation.style.display = "block";
+                    console.log("Clique bouton ajouter panier");
+
+                    // Cacher après 1,5 secondes
+                    setTimeout(() => {
+                        popupConfirmation.style.display = "none";
+                    }, 5000);
+                });
+            });
+        </script>
+
+        <script src="../scripts/frontoffice/paiement-ajax.js"></script>
+        <script src="../../public/amd-shim.js"></script>
+        <script src="../../public/script.js"></script>
+    </body>
 </html>
