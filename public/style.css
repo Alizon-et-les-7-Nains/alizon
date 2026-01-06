@@ -4011,6 +4011,12 @@ button#haut.visible:hover {
 .pageEcrireCommentaire #recapAvis strong {
   color: #273469;
 }
+.pageEcrireCommentaire #boutonsPopupAvis {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
 
 .modifierProduit {
   font-family: "lora", "Serif";
