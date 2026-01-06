@@ -125,18 +125,26 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         // CORRECTION : GESTION ADRESSE FACTURATION
         // Si une adresse de facturation différente est fournie
         if ($idAdresseFacturation) {
-            // Utiliser l'ID de l'adresse de facturation fourni (déjà dans _adresseLivraison)
+            // L'ID est déjà dans _adresseLivraison
             $idAdresseFacturation = intval($idAdresseFacturation);
+            
+            // Vérifier que l'adresse de facturation existe bien dans _adresseLivraison
+            $checkFact = $pdo->prepare("SELECT idAdresseLivraison FROM _adresseLivraison WHERE idAdresseLivraison = ? AND idClient = ?");
+            $checkFact->execute([$idAdresseFacturation, $idClient]);
+            if ($checkFact->rowCount() === 0) {
+                throw new Exception("Adresse de facturation invalide.");
+            }
         } else {
             // Si pas d'adresse de facturation spécifique, utiliser la même que la livraison
             $idAdresseFacturation = $idAdresseLivraison;
         }
 
-        // CORRECTION : Les noms de colonnes doivent correspondre EXACTEMENT à la structure SQL
-        // Dans votre SQL, c'est idAdresseLivr et idAdresseFact (pas idAdresseLivrE ou idAdresseFactE)
+        // CORRECTION : IMPORTANT - Les noms de colonnes doivent correspondre EXACTEMENT à votre structure SQL
+        // Selon votre dump SQL, les colonnes sont : idAdresseLivr et idAdresseFact (pas idAdresseLivraison/idAdresseFacturation)
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
 
+        // CORRECTION : Utilisation des bons noms de colonnes
         $sqlCommande = "
             INSERT INTO _commande (
                 dateCommande, etatLivraison, montantCommandeTTC, montantCommandeHt,
@@ -149,28 +157,42 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             )
         ";
         
-        error_log("DEBUG - SQL Commande: " . $sqlCommande); // Pour déboguer
+        error_log("DEBUG - SQL Commande: " . $sqlCommande);
+        error_log("DEBUG - Valeurs: idAdresseLivr=$idAdresseLivraison, idAdresseFact=$idAdresseFacturation, numeroCarte=$numeroCarte, idPanier=$idPanier");
         
         $stmtCommande = $pdo->prepare($sqlCommande);
         if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarte, $idPanier])) {
             $errorInfo = $stmtCommande->errorInfo();
+            error_log("Erreur SQL: " . print_r($errorInfo, true));
             throw new Exception("Erreur lors de la création de la commande : " . implode(', ', $errorInfo));
         }
 
         $idCommande = $pdo->lastInsertId();
-
-        // produits vers _contient
+        
+        // CORRECTION : Ajouter le calcul de la TVA correctement
         $sqlContient = "
             INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
-            SELECT pap.idProduit, ?, p.prix, COALESCE(t.pourcentageTva, 20.0), pap.quantiteProduit
+            SELECT pap.idProduit, ?, p.prix, 
+                   CASE 
+                     WHEN p.typeTva = 'Réduit' THEN 10.0
+                     WHEN p.typeTva = 'Super réduit' THEN 5.5
+                     WHEN p.typeTva = 'Aucun' THEN 0.0
+                     ELSE 20.0 
+                   END as tauxTva,
+                   pap.quantiteProduit
             FROM _produitAuPanier pap
             JOIN _produit p ON pap.idProduit = p.idProduit
-            LEFT JOIN _tva t ON p.typeTva = t.typeTva
             WHERE pap.idPanier = ?
         ";
+        
         $stmtContient = $pdo->prepare($sqlContient);
         if (!$stmtContient->execute([$idCommande, $idPanier])) {
             throw new Exception("Erreur lors de la copie des produits : " . implode(', ', $stmtContient->errorInfo()));
+        }
+
+        // CORRECTION : Mettre à jour le stock après la commande
+        if (!updateStockAfterOrder($pdo, $idPanier)) {
+            throw new Exception("Erreur lors de la mise à jour du stock.");
         }
 
         // Vider le panier
@@ -180,6 +202,8 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
 
         $pdo->commit();
+        
+        error_log("DEBUG - Commande créée avec succès: ID=$idCommande");
         return $idCommande;
 
     } catch (Exception $e) {
@@ -187,6 +211,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             $pdo->rollBack();
         }
         error_log("Erreur createOrderInDatabase: " . $e->getMessage());
+        error_log("Stack trace: " . $e->getTraceAsString());
         throw new Exception("Erreur lors de la création de la commande: " . $e->getMessage());
     }
 }
