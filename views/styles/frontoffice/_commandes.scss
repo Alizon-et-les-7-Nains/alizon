@@ -267,4 +267,11 @@
             flex-direction: row !important;
         }
     }
+
+    .imgProduit {
+        max-height: 150px;
+        max-width: 200px;
+        margin: 0px 10px;
+        object-fit: contain;
+    }
 }
