@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } catch(PDOException $e) {
-        $errors[] = "Erreur lors de l'insertion de l'avis : " . $e->getMessage();
+        $errors[] = "Vous avez déjà écrit un avis sur ce produit, veuillez modifier votre avis déjà éxistant.";
     } // test
 }
 ?>
@@ -127,7 +127,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
         </div>
     <?php endif; ?>
-
+    <div id="popupConfirmation" class="modal-popup" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>✓ Confirmer la publication</h2>
+            <div id="recapAvis">
+                <p><strong>Note :</strong> <span id="recapNote"></span>/5 ⭐</p>
+                <p><strong>Sujet :</strong> <span id="recapSujet"></span></p>
+            </div>
+            <p>Votre avis sera visible par tous les utilisateurs.</p>
+            <div id="boutonsPopupAvis">
+                <button id="btnConfirmerAvis" class="bouton boutonBleu">Publier mon avis</button>
+                <button id="btnAnnulerPopup" class="bouton boutonRose">Modifier</button>
+            </div>
+        </div>
+    </div>
     <section class="reviewArticle">
         <form action="" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
@@ -154,10 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea name="sujet" id="sujet" placeholder="Ex: Excellent produit artisanal" rows="2" required><?php echo isset($_POST['sujet']) ? htmlspecialchars($_POST['sujet']) : ''; ?></textarea>
             
             <h2>Message <span style="color: red;">*</span> :</h2>
-            <textarea name="message" id="message" placeholder="Partagez votre expérience avec ce produit..." rows="6" required><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>
-            
-            <p style="color: #666; font-size: 14px; margin: 10px 0;">Les champs marqués d'un <span style="color: red;">*</span> sont obligatoires</p>
-            
+            <textarea name="message" id="message" placeholder="Partagez votre expérience avec ce produit..." rows="6" required><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>            
             <button type="submit" class="bouton boutonBleu">Publier mon avis</button>
             <a href="produit.php?id=<?php echo $productId; ?>" class="bouton boutonRose" style="display: inline-block; text-align: center; text-decoration: none; margin-left: 10px;">Annuler</a>
         </form>
@@ -169,28 +180,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </footer>
 </body>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
     const noteInput = document.getElementById('note');
-    const noteDisplay = document.getElementById('note-display');
     const stars = document.querySelectorAll('.star');
     const emptyStar = "../../public/images/etoileVide.svg";
     const fullStar = "../../public/images/etoile.svg";
 
+    // Gestion des étoiles
     stars.forEach((star, index) => {
         star.addEventListener('click', () => {
             const rating = index + 1;
-
             stars.forEach((s, i) => {
-                if (i < rating) {
-                    s.src = fullStar;
-                } else {
-                    s.src = emptyStar;
-                }
+                s.src = i < rating ? fullStar : emptyStar;
             });
-            
             noteInput.value = rating;
         });
     });
 
+    // Gestion de l'upload photo
     const ajouterPhoto = document.getElementById('ajouterPhoto');
     const inputPhoto = document.getElementById('inputPhoto');
     
@@ -209,7 +216,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         const reader = new FileReader();
-
         reader.onload = function (e) {
             document.getElementById('preview').innerHTML =
                 `<div style="position: relative; display: inline-block; margin-top: 10px;">
@@ -217,39 +223,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button type="button" onclick="removePhoto()" style="position: absolute; top: -10px; right: -10px; background: red; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 18px;">×</button>
                 </div>`;
         };
-
         reader.readAsDataURL(file);
     });
 
-    function removePhoto() {
-        document.getElementById('preview').innerHTML = '';
-        document.getElementById('inputPhoto').value = '';
-    }
+    // Gestion de la popup de confirmation
+    const formulaire = document.querySelector('form');
+    const popupConfirmation = document.getElementById('popupConfirmation');
+    const btnConfirmer = document.getElementById('btnConfirmerAvis');
+    const btnAnnuler = document.getElementById('btnAnnulerPopup');
+    const closeBtns = document.querySelectorAll('.close-modal');
 
-    document.querySelector('form').addEventListener('submit', function(e) {
+    formulaire.addEventListener('submit', function(e) {
+        e.preventDefault();
+
         const note = parseInt(noteInput.value);
         const sujet = document.getElementById('sujet').value.trim();
         const message = document.getElementById('message').value.trim();
 
         if (note === 0 || note < 1 || note > 5) {
-            e.preventDefault();
             alert('Veuillez sélectionner une note entre 1 et 5 étoiles');
             return false;
         }
 
         if (sujet === '') {
-            e.preventDefault();
             alert('Veuillez remplir le sujet');
             return false;
         }
 
         if (message === '' || message.length < 10) {
-            e.preventDefault();
             alert('Le message doit contenir au moins 10 caractères');
             return false;
         }
 
-        return true;
+        document.getElementById('recapNote').textContent = note;
+        document.getElementById('recapSujet').textContent = sujet;
+        // document.getElementById('recapMessage').textContent = message;
+
+        popupConfirmation.style.display = 'flex';
     });
+
+    btnConfirmer.addEventListener('click', function() {
+        popupConfirmation.style.display = 'none';
+        formulaire.submit();
+    });
+
+    btnAnnuler.addEventListener('click', function() {
+        popupConfirmation.style.display = 'none';
+    });
+
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.closest('.modal-popup').style.display = 'none';
+        });
+    });
+
+    window.addEventListener('click', function(e) {
+        if (e.target === popupConfirmation) {
+            popupConfirmation.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            popupConfirmation.style.display = 'none';
+        }
+    });
+});
+
+function removePhoto() {
+    document.getElementById('preview').innerHTML = '';
+    document.getElementById('inputPhoto').value = '';
+}
 </script>
 </html>

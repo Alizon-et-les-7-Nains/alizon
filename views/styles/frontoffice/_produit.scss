@@ -531,6 +531,8 @@
     color: blue;
     font-weight: bold;
     width: 60%;
+    display: flex;
+    flex-direction: row;
   }
 
   .stockIndisponible {

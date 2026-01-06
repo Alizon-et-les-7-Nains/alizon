@@ -194,7 +194,8 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        padding: 20px 40px;
+        padding: 0px 40px;
+        padding-bottom: 20px;
         
         .infoCommande {
             display: flex;
@@ -214,7 +215,6 @@
             
             a {
                 color: $color-blue;
-                text-decoration: none;
                 font-size: 15px;              
                 font-weight: lighter;
                 &:hover {
@@ -266,5 +266,112 @@
         .infoCommande {
             flex-direction: row !important;
         }
+    }
+
+    .confirmationAjout {
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+        flex-direction: column;
+        border: 3px solid $color-green;
+        border-radius: 8px;
+        padding: 10px 60px;
+        justify-content: center;
+        max-width: 90vw;
+        z-index: 1067;
+        transition: 0.3s;
+        background-color: white;
+        text-align: center;
+
+        &::after {
+            transition: 0.3s;
+        }
+
+        h4 {
+            color: $color-green;
+            font-style: bold;
+            font-size: 24px;
+            font-family: "Lora", serif;
+            padding: 0;
+            margin: 0;
+        }
+
+        article {
+            flex-direction: row;
+            justify-content: space-around;
+            flex-wrap: nowrap;
+            
+            img {
+                max-height: 220px;
+                max-width: 150px;
+                margin: 0px 10px;
+                object-fit: contain;
+                display: flex;
+            }
+        }
+      .prixOpt {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-around;
+        align-items: center;
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 15px;
+        }
+
+        .listeProduit div {
+            margin: 0px 15px;
+        }
+        .quantiteProduit * {
+            margin: 0;
+            padding: 0;
+        }
+        .infoProduit {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-around;
+            height: 180px;
+        }
+        .infoProduit img {
+            max-width: 16px;
+        }
+        .infoProduit p {
+            margin: 0px 30px;
+        }    
+    }
+
+    @media (max-width: 1100px) {
+        .confirmationAjout {
+            font-size: 12px;
+            padding: 5px 30px;
+        }
+    }
+
+    .imgProduit {
+        max-height: 150px;
+        min-width: 220px;
+        margin: 0px 10px;
+        object-fit: contain;
+    }
+
+    .plus {
+        display: flex;
+        align-items: center;
+        font-family: "Lora", serif;
+        justify-content: space-between;
+        width: 260px;
+        font-size: 14px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #273469;
+        border: 2px solid #273469;
+        border-radius: 20px;
+        padding: 8px 15px;
+        margin-bottom: 5px;
     }
 }

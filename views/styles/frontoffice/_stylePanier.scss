@@ -10,7 +10,7 @@
     border-radius: 20px;
     padding: 10px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: nowrap;
     max-width: 800px;
     margin-bottom: 40px;
@@ -222,5 +222,12 @@
   }
   .delBtnImg {
     height: 40px;
+  }
+
+  .imgProd {
+    height: 200px;
+    width: 220px;
+    margin: 0px 10px;
+    object-fit: contain;
   }
 }

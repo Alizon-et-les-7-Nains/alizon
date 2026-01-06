@@ -2,7 +2,6 @@
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
 session_start();
-
 ob_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -270,6 +269,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 if (count($produitNouveaute) > 0) {
                     foreach ($produitNouveaute as $value) {
                         $idProduit = $value['idProduit'];
+                        $stockProduit = $value['stock'];
                         $prixOriginal = $value['prix'];
                         $tauxRemise = $value['tauxRemise'] ?? 0;
                         $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
@@ -316,9 +316,13 @@ $cart = getCurrentCart($pdo, $idClient);
                             <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
                         <div>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
-                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                            </button>
+                            <?php if(number_format($value['stock'], 1) == 0) { ?>
+                                <b style="color: red; margin-right: 5px;">Aucun stock</b>
+                            <?php } else { ?>
+                                <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                                    <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                </button>
+                            <?php } ?>
                         </div>
                     </div>
                 </article>
