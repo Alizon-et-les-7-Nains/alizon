@@ -2,7 +2,6 @@
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
 session_start();
-
 ob_start();
 
 if (!isset($_SESSION['user_id'])) {
