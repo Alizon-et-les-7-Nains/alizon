@@ -314,10 +314,14 @@ $cart = getCurrentCart($pdo, $idClient);
                 </section>
                 <?php endforeach; ?>
         <?php endif; ?>
+
+        <section class="confirmationAjout">
+            <h4>Produit ajouté au panier !</h4>
+        </section>
         
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
         <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
-        
+
         </main>
 
             <script>
