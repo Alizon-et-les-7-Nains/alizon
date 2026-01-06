@@ -3507,12 +3507,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: red;
 }
 
-.panier {
-  width: 100vw;
-  height: 100vh;
-  transform: rotateY(85deg) scale(0.95);
-  transform-origin: center;
-}
 .panier main {
   height: 100vh;
 }
