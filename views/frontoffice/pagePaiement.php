@@ -433,7 +433,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 
     <div id="confirmationPopup" class="popup-overlay">
         <div class="popup-content">
-            <button class="close-popup">&times;</button>
             <div id="popupContent"></div>
         </div>
     </div>
