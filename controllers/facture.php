@@ -85,8 +85,10 @@ $dompdf->loadHtml($html);
 $dompdf->setPaper('A4');
 $dompdf->render();
 $path = __DIR__ . '/../factures';
-echo(realpath($path));
 
+if(!is_dir($path)){
+    mkdir($path, 0755, true);
+}
 file_put_contents($path . '/facture_' . $data['idCommande'] . '.pdf', $dompdf->output());
 
 $dompdf->stream('facture_' . $data['idCommande'] . '.pdf', ['Attachment' => false]);
