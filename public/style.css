@@ -2276,7 +2276,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 
 .btn-confirm {
-  background: #4caf50;
+  background: #4CAF50;
   color: white;
   border: none;
   border-radius: 4px;
@@ -2313,7 +2313,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .order-number {
   font-size: 24px;
   font-weight: bold;
-  color: #4caf50;
+  color: #4CAF50;
   margin: 20px 0;
 }
 
@@ -3368,7 +3368,7 @@ button#haut.visible:hover {
   }
 }
 .pageEcrireCommentaire .modal-popup {
-  display: flex;
+  display: none;
   position: fixed;
   z-index: 9999;
   left: 0;

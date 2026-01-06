@@ -1,5 +1,3 @@
-import { setupAutocomplete } from "./paiement-autocomplete";
-
 if (document.body.classList.contains("pagePaiement")) {
   // Initialisation des données
   const departments = new Map<string, string>();
@@ -37,14 +35,4 @@ if (document.body.classList.contains("pagePaiement")) {
   const villeInput = document.querySelector(
     "body.pagePaiement .ville-input"
   ) as HTMLInputElement | null;
-
-  // Initialisation de l'autocomplétion
-  if (codePostalInput && villeInput) {
-    setupAutocomplete({
-      codePostalInput,
-      villeInput,
-      maps: { departments, citiesByCode, postals, allCities },
-      selectedDepartment,
-    });
-  }
 }
