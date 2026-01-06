@@ -1149,6 +1149,13 @@ body.backoffice.nonConnecte nav {
     margin-top: 15px;
   }
 }
+.pageConnexionCLient main form > div .inputLabelGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  gap: 6px;
+}
 .pageConnexionCLient main form > div .boutonConnexionClient {
   margin-top: 25px;
   width: 70%;
@@ -5169,6 +5176,9 @@ dialog.reassort form input {
   flex-direction: column;
   position: relative;
   width: 100%;
+}
+.pageProduit button {
+  cursor: pointer;
 }
 .pageProduit h1,
 .pageProduit h2,

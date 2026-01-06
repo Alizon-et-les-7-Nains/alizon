@@ -130,15 +130,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div id="popupConfirmation" class="modal-popup" style="display: none;">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>✓ Confirmer la publication</h2>
+            <h2>Confirmer la publication</h2>
             <div id="recapAvis">
-                <p><strong>Note :</strong> <span id="recapNote"></span>/5 ⭐</p>
+                <p><strong>Note :</strong> <span id="recapNote"></span>/5⭐</p>
                 <p><strong>Sujet :</strong> <span id="recapSujet"></span></p>
             </div>
             <p>Votre avis sera visible par tous les utilisateurs.</p>
             <div id="boutonsPopupAvis">
-                <button id="btnConfirmerAvis" class="bouton boutonBleu">Publier mon avis</button>
-                <button id="btnAnnulerPopup" class="bouton boutonRose">Modifier</button>
+                <button id="btnConfirmerAvis" class="bouton boutonBleu">Valider la publication</button>
+                <button id="btnAnnulerPopup" class="bouton boutonRose">Annuler</button>
             </div>
         </div>
     </div>

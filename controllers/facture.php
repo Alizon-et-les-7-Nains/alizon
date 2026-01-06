@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../dompdf/autoload.inc.php';
 require_once './pdo.php';
 
 $idCommande = $_GET['id'];
@@ -49,14 +49,12 @@ ob_start();
     <strong>Client</strong><br>
     <?= htmlspecialchars($data['prenom'] . ' ' . $data['nom']) ?><br>
     <?= htmlspecialchars($data['email']) ?><br>
-    <?= htmlspecialchars($data['rue']) ?><br>
     <?= htmlspecialchars($data['codePostal'] . ' ' . $data['ville']) ?>
 </div>
 
 <div class="bloc">
     Facture n° <?= 'FAC-' . date('Y') . '-' . str_pad($data['idCommande'], 6, '0', STR_PAD_LEFT) ?><br>
     Date : <?= date('d/m/Y', strtotime($data['dateCommande'])) ?><br>
-    Transporteur : <?= htmlspecialchars($data['nomTransporteur']) ?>
 </div>
 
 <table>
@@ -84,10 +82,11 @@ $dompdf = new \Dompdf\Dompdf();
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4');
 $dompdf->render();
-
 $path = __DIR__ . '/../factures';
-if (!is_dir($path)) mkdir($path, 0755, true);
 
+if(!is_dir($path)){
+    mkdir($path, 0755, true);
+}
 file_put_contents($path . '/facture_' . $data['idCommande'] . '.pdf', $dompdf->output());
 
 $dompdf->stream('facture_' . $data['idCommande'] . '.pdf', ['Attachment' => false]);
