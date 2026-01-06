@@ -308,7 +308,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             <p>#<?php echo $commande['id']; ?></p>
                         </div>
                         <div class="liensCommande">
-                            <a href="#">Facture</a>
+                            <a href="../../controllers/facture.php?id= <?php $commande['id'] ?>">Facture</a>
                         </div>
                     </section>
                 </section>
