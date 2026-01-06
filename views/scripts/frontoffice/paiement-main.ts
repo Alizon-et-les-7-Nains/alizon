@@ -47,10 +47,4 @@ if (document.body.classList.contains("pagePaiement")) {
       selectedDepartment,
     });
   }
-
-  // Supprimer l'ancien overlay d'adresse de facturation s'il existe
-  const oldOverlay = document.querySelector(".addr-fact-overlay");
-  if (oldOverlay) {
-    oldOverlay.remove();
-  }
 }

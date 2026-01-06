@@ -706,14 +706,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
             factAddrCheckbox.addEventListener('change', function() {
                 if (this.checked) {
                     billingSection.classList.add('active');
-                    // Si une adresse est déjà enregistrée, la pré-remplir
-                    if (savedBillingAddress) {
-                        document.querySelector('.adresse-fact-input').value = savedBillingAddress
-                            .adresse;
-                        document.querySelector('.code-postal-fact-input').value = savedBillingAddress
-                            .codePostal;
-                        document.querySelector('.ville-fact-input').value = savedBillingAddress.ville;
-                    }
                 } else {
                     billingSection.classList.remove('active');
                     idAdresseFacturation = null;
