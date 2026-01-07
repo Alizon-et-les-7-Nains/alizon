@@ -4026,8 +4026,13 @@ button#haut.visible:hover {
   display: flex;
   flex-direction: column;
 }
+.CreerCompteVendeur .container .form-vendeur label {
+  margin-left: 5px;
+}
 .CreerCompteVendeur .container .form-vendeur input.form-control {
   padding: 10px 15px;
+  height: 48px;
+  margin: 5px;
   border: 2px solid #273469;
   border-radius: 8px;
   font-size: 1rem;

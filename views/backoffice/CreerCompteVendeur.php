@@ -46,33 +46,62 @@
                 <?php endif; ?>
 
                 <div class="row g-3">
-
+                    
                     <div class="col-md-6">
-                        <input type="text" name="nom" placeholder="Nom de contact" required class="form-control"
+                        <label>Nom de contact</label>
+                        <input type="text" name="nom" required class="form-control"
                             value="<?= $nom ?>">
                     </div>
                     <div class="col-md-6">
-                        <input type="text" name="prenom" placeholder="Prénom de contact" required
+                        <label>Prénom de contact</label>
+                        <input type="text" name="prenom"required
                             class="form-control" value="<?= $prenom?>">
                     </div>
                     <div class="col-md-6">
-                        <input type="email" name="email" placeholder="Adresse E-Mail" required class="form-control"
+                        <label>Adresse E-Mail</label>
+                        <input type="email" name="email" required class="form-control"
                             value="<?= $email ?>">
                     </div>
                     <div class="col-md-6">
-                        <input type="tel" name="noTelephone" placeholder="Numéro de téléphone" required class="form-control"
+                        <label>Numéro de téléphone</label>
+                        <input type="tel" name="noTelephone" required class="form-control"
                             value="<?= $noTelephone ?>">
                     </div>
 
                     <div class="col-md-6">
-                        <input type="text" name="pseudo" placeholder="Nom d'utilisateur" required
+                        <label>Date de naissance</label>
+                        <input type="date" name="dateNaissance" required class="form-control"
+                            value="<?= $dateNaissance ?>">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Nom d'utilisateur</label>
+                        <input type="text" name="pseudo" required
                             class="form-control" value="<?= $pseudo ?>">
                     </div>
 
                     <div class="col-md-6">
-                        <input type="password" name="mdp" id="mdp" placeholder="Mot de passe" required
-                            class="form-control">
+                        <label>Numéro de SIREN</label>
+                        <input type="text" name="noSiren" required class="form-control"
+                            value="<?= $noSiren ?>">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Adresse de l'entreprise</label>
+                        <input type="text" name="idAdresse" required
+                            class="form-control" value="<?= $idAdresse ?>">
+                    </div>
 
+                    <div class="col-md-12">
+                        <label>Raison sociale</label>
+                        <input type="text" name="raisonSocial" required
+                            class="form-control" value="<?= $raisonSocial ?>">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Mot de passe</label>
+                        <input type="password" name="mdp" id="mdp" required
+                            class="form-control">
+                                       
                         <div id="password-requirements-container" class="mt-2 hidden">
                             <ul id="password-requirements">
                                 <li id="req-length" class="status-red"><i class="bi bi-x-circle-fill"
@@ -90,31 +119,12 @@
                             </ul>
                         </div>
                     </div>
-
+                    
                     <div class="col-md-6">
-                        <input type="date" name="dateNaissance" required class="form-control"
-                            value="<?= $dateNaissance ?>">
-                    </div>
-
-                    <div class="col-md-6">
+                        <label>Confirmer le mot de passe</label>
                         <input type="password" name="confimer_mdp" id="confimer_mdp"
-                            placeholder="Confirmer le mot de passe" required class="form-control">
+                             required class="form-control">
                     </div>
-
-                    <div class="col-md-6">
-                        <input type="text" name="noSiren" placeholder="Numéro SIREN" required class="form-control"
-                            value="<?= $noSiren ?>">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" name="idAdresse" placeholder="Adresse de l'entreprise" required
-                            class="form-control" value="<?= $idAdresse ?>">
-                    </div>
-
-                    <div class="col-md-6">
-                        <input type="text" name="raisonSocial" placeholder="Raison sociale" required
-                            class="form-control" value="<?= $raisonSocial ?>">
-                    </div>
-                    <div class="col-md-6"></div>
 
                     <div class="col-12 d-flex flex-column align-items-center mt-3">
                         <p class="code_vendeur"> Code vendeur : <strong>VD640</strong> </p>
