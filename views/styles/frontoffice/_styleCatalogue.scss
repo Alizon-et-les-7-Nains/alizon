@@ -75,13 +75,14 @@
     .listeArticle {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
-        gap: 50px;
+        gap: 30px;
         width: 100%;
     }
 
     .listeArticle article {
         border: 2px solid #273469;
         border-radius: 20px;
+        margin: 10px;
         padding: 10px;
         min-width: 276px;
         max-width: 276px;
