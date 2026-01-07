@@ -310,7 +310,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';    
                         ?>
-                    <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>">
+                    <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>" class="imgProd">
                 </div>
                 <div class="infoProduit">
                     <div>
@@ -357,7 +357,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         <?php endif; ?>
                     </div>
                     <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
-                        <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit">
+                        <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
                     </button>
                 </div>
             </article>
