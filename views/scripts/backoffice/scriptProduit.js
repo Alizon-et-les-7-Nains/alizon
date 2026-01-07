@@ -525,7 +525,7 @@ function popUpAnnulerPromotion(id, nom) {
     });
 }
 
-function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo) {
+function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo, defImg) {
 
     const overlay = document.createElement("div");
     
@@ -539,7 +539,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                     <div></div>
                 </div>
                 <div class="titreEtProduit">
-                    <h1> Ajouter une promotion pour ce produit </h1>
+                    <h1> Modifier une promotion pour ce produit </h1>
                     <section>
                         <article style="padding-right: 20px; padding-top: 20px; padding-left: 20px; padding-bottom: 20px;">
                             <img class="produit" src="${imgURL}" alt="Image du produit">
@@ -564,14 +564,15 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
             <div class="ligne"></div>
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
+                        <h2><strong> Date limite de la promotion : </strong> (optionnel)</h2>
                         <div>
-                            <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
+                            <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Jour/Mois/Année">
                         </div>
-                        <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
+                        <h2><strong> Bannière actuelle : </strong></h2>
                         <div class="ajouterBaniere">
-                            <input type="file" id="baniere" name="baniere" accept="image/*">  
+                            <input style="background-image: url(${defImg})" type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
-                        <p><strong>Format accepté </strong>: .jpg uniquement</p>
+                        <p><strong>Supprimer la bannière</p>
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
@@ -700,8 +701,9 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
             <div class="ligne"></div>
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
+                        <h2><strong> Date limite de la promotion : </strong> (optionnel)</h2>
                         <div>
-                            <input type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
+                            <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Jour/Mois/Année">
                         </div>
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">
@@ -793,5 +795,42 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
         txtPromo.textContent = totalPromo;
         txtDuree.textContent = nbJours;
         txtTotal.textContent = totalPromo; // Ajouter plus tard prix de la bannière
+    });
+}
+
+// POP UP DE CONFIRMATION DE RETRAIT
+function popUpConfirmerRetrait(id, nom) {
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpErreur";
+    
+    overlay.innerHTML = `
+        <main class="popUpErreur" style="text-align : center;">
+            <form method="POST" action="../../controllers/RetirerDeLaVente.php">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div>
+                <h1>Souhaitez-vous vraiment retirer ce produit de la vente ?</h1>
+                <p><strong>${nom}</strong></p>
+                <input type="hidden" name="idproduit" value="${id}">
+                <button type="submit" style="color: #ffffff; background-color: #f14e4e; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 20px;">
+                    Confirmer le retrait
+                </button>
+            </form>
+        </main>`;
+
+    document.body.appendChild(overlay);
+
+    const fermerPopUp = () => {
+        overlay.remove();
+    };
+
+    overlay.querySelector(".croixFermerLaPage").addEventListener("click", fermerPopUp);
+    
+    // Fermer si on clique à l'extérieur de la modale
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUp();
+        }
     });
 }

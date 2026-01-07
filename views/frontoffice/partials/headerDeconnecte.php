@@ -32,11 +32,8 @@
 
     <section id="burgerIcon">
         <div id="triangle-codeHeader"></div>
-        <a href="../frontoffice/compteClient.php">Mon compte</a>
-        <a href="../frontoffice/commandes.php">Mes commandes</a>
-        <a href="../frontoffice/mesAvis.php">Mes commentaires</a>
         <a href="../frontoffice/panier.php">Mon panier</a>
-        <a href="../../../controllers/deconnexion.php">Déconnexion</a>
+        <a href="../frontoffice/connexionClient.php">Connexion</a>
     </section>
 
 </header>
