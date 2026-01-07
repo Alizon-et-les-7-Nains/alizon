@@ -1,4 +1,9 @@
 <?php
+// Le code commence par appeler dompdf, recupères des information nécéssaire à la facture
+// Avant de stopper le buffer. Ensuite on fait une page html puis on récupère tout ce qui est
+// Dans le buffer. On le met dans une variable puis on transforme le contenu de cette
+// Variable en fichier pdf.
+
 require_once __DIR__ . '/../dompdf/autoload.inc.php';
 require_once './pdo.php';
 
