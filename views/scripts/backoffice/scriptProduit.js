@@ -797,3 +797,40 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
         txtTotal.textContent = totalPromo; // Ajouter plus tard prix de la bannière
     });
 }
+
+// POP UP DE CONFIRMATION DE RETRAIT
+function popUpConfirmerRetrait(id, nom) {
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpErreur";
+    
+    overlay.innerHTML = `
+        <main class="popUpErreur" style="text-align : center;">
+            <form method="POST" action="../../controllers/RetirerDeLaVente.php">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div>
+                <h1>Souhaitez-vous vraiment retirer ce produit de la vente ?</h1>
+                <p><strong>${nom}</strong></p>
+                <input type="hidden" name="idproduit" value="${id}">
+                <button type="submit" style="color: #ffffff; background-color: #f14e4e; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 20px;">
+                    Confirmer le retrait
+                </button>
+            </form>
+        </main>`;
+
+    document.body.appendChild(overlay);
+
+    const fermerPopUp = () => {
+        overlay.remove();
+    };
+
+    overlay.querySelector(".croixFermerLaPage").addEventListener("click", fermerPopUp);
+    
+    // Fermer si on clique à l'extérieur de la modale
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUp();
+        }
+    });
+}

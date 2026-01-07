@@ -187,14 +187,17 @@
                                     <div class="ligne"></div>
                                 </div>
                                 
-                                <form method="POST" action="../../controllers/RetirerDeLaVente.php" 
-                                onsubmit="return confirm('Êtes-vous sûr de vouloir retirer le produit « 
-                                <?php echo htmlspecialchars(addslashes($produitEnVente[$i]['nom']), ENT_QUOTES); ?> » de la vente ?');">>
-                                    <div>
-                                        <input type="hidden" name="idproduit" value="<?php echo $produitEnVente[$i]['idproduit']; ?>">
+                                <form method="POST" action="../../controllers/RetirerDeLaVente.php">
+                                    <div class="iconeTexte">
+                                        <?php 
+                                            $idProd = $produitEnVente[$i]['idproduit'];
+                                            $nomProd = htmlspecialchars(addslashes($produitEnVente[$i]['nom']), ENT_QUOTES); 
+                                        ?>
                                         <img src="/public/images/iconeRetirerVente.svg" alt="">
-                                        <button>Retirer de la vente</button>
-                                    </div>  
+                                        <button type="button" onclick="popUpConfirmerRetrait(<?php echo $idProd; ?>, '<?php echo $nomProd; ?>')">
+                                            Retirer de la vente
+                                        </button>
+                                    </div>
                                 </form>
 
 
