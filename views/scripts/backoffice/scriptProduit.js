@@ -569,10 +569,17 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                             <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Jour/Mois/Année">
                         </div>
                         <h2><strong> Bannière actuelle : </strong></h2>
-                        <div class="ajouterBaniere">
-                            <input style="background-image: url(${defImg})" type="file" id="baniere" name="baniere" accept="image/*">  
+                        <div style="background-image: url(${defImg})"  class="ajouterBaniere">
+                            <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
-                        <p><strong>Supprimer la bannière</p>
+                        
+                        <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="supprimer_banniere" name="supprimer_banniere" value="1">
+                            <label for="supprimer_banniere" style="color: #F14E4E; cursor: pointer; font-weight: bold;">
+                                Supprimer la bannière actuelle
+                            </label>
+                        </div>
+
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
@@ -591,7 +598,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                                 <p><strong>€</strong></p>
                             </div>
                         </div>
-                        <div class="infoCalcul">
+                        <div style="margin-top: 10px;" class="infoCalcul">
                             <img src="../../public/images/iconeInfo.svg" alt="">
                             <p class="supprimer"> Comment sont calculés les prix ? </p>
                         </div>
