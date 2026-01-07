@@ -34,7 +34,7 @@ if (!$produit) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Modifer un produit du catalogue</title>
+    <title>Alizon - Modifier produit</title>
 </head>
 <body class="backoffice">
     <?php require_once './partials/header.php' ?>

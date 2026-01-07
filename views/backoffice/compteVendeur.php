@@ -90,7 +90,7 @@ $pays          = $vendeur['pays'] ?? '';
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../../public/style.css">
-    <title>Mon compte</title>
+    <title>Alizon - Mon compte</title>
 </head>
 
 <body class="monCompte backoffice">

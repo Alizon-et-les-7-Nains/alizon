@@ -296,7 +296,7 @@ $promotion = calculerPromotion($produit);
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
+    <title>Alizon - <?php echo htmlspecialchars($produit['nom_produit'])?></title>
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>

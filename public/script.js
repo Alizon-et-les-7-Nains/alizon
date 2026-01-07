@@ -66,62 +66,18 @@ modalDeconnexion?.addEventListener("click", (e) => {
 document.querySelector('header.backoffice figure:nth-child(3)')?.addEventListener('click', () => {
     window.location.href = 'compteVendeur.php';
 });
-const btnSettings = Array.from(document.getElementsByClassName('settings'));
-const inputSeuil = document.getElementById('seuil');
-const inputDate = document.getElementById('dateReassort');
-const inputReassort = document.getElementById('reassort');
-const buttonConfirm = document.getElementById('buttonConfirm');
-const errorFieldSeuil = document.getElementById('errorFieldSeuil');
-const errorFieldReassort = document.getElementById('errorFieldReassort');
-const errorFieldDate = document.getElementById('errorFieldDate');
-const buttonCancel = Array.from(document.querySelectorAll('main.backoffice-stocks .annuler'));
-btnSettings.forEach(btn => {
-    btn.addEventListener('mouseover', () => {
-        const subDivs = Array.from(btn.children);
-        subDivs.forEach(div => {
-            if (div instanceof HTMLElement && div.firstElementChild instanceof HTMLElement) {
-                const innerDiv = div.firstElementChild;
-                innerDiv.style.left = innerDiv.classList.contains('right') ? '4px' : '14px';
-            }
-        });
-    });
-});
-btnSettings.forEach(btn => {
-    btn.addEventListener('mouseout', () => {
-        const subDivs = Array.from(btn.children);
-        subDivs.forEach(div => {
-            if (div instanceof HTMLElement && div.firstElementChild instanceof HTMLElement) {
-                const innerDiv = div.firstElementChild;
-                innerDiv.style.left = innerDiv.classList.contains('right') ? '14px' : '4px';
-            }
-        });
-    });
-});
-buttonCancel.forEach((btnCancel) => {
-    btnCancel.addEventListener('click', () => {
-        Array.from(document.getElementsByTagName('dialog')).forEach(dia => {
-            dia.close();
-            dia.style.display = 'none';
-        });
-    });
-});
-btnSettings.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const modal = document.querySelector(`main.backoffice-stocks dialog#d-${btn.id}`);
-        if (!modal) {
-            console.error('Dialog non trouvé');
-            return;
-        }
-        modal.showModal();
-        modal.style.display = 'flex';
-        modal.addEventListener("click", (e) => {
-            if (e.target === modal) {
-                modal.close();
-                modal.style.display = 'none';
-            }
-        });
-    });
-});
+const buttonsSettings = Array.from(document.getElementsByClassName('settings'));
+const inputsSeuil = Array.from(document.getElementsByClassName('seuil'));
+const inputsDate = Array.from(document.getElementsByClassName('dateReassort'));
+const inputsReassort = Array.from(document.getElementsByClassName('reassort'));
+const buttonsCancel = Array.from(document.getElementsByClassName('buttonCancel'));
+// const buttonConfirm: HTMLInputElement = document.getElementById('buttonConfirm') as HTMLInputElement;
+// const errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') as HTMLElement;
+// const errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
+// const errorFieldDate: HTMLElement = document.getElementById('errorFieldDate') as HTMLElement;
+// function allValid(): boolean {
+//     return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);
+// }
 function checkInt(value) {
     if (!value)
         return true;
@@ -135,42 +91,132 @@ function checkDate(date) {
     now.setHours(0, 0, 0, 0);
     return now.getTime() < date.getTime();
 }
-function allValid() {
-    return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);
+function allValid(seuil, date, reassort) {
+    return checkInt(seuil.value) && checkDate(date.valueAsDate) && checkInt(reassort.value);
 }
-inputSeuil?.addEventListener('input', () => {
-    if (!checkInt(inputSeuil.value)) {
-        inputSeuil.style.cssText = 'border-color: #f14e4e !important';
-        errorFieldSeuil.style.display = 'block';
-    }
-    else {
-        inputSeuil.style.cssText = 'border-color: #273469 !important';
-        errorFieldSeuil.style.display = 'none';
-    }
-    buttonConfirm.disabled = !allValid();
+inputsSeuil.forEach((inputSeuil) => {
+    inputSeuil.addEventListener('input', () => {
+        if (!checkInt(inputSeuil.value)) {
+            inputSeuil.style.cssText = 'border-color: #f14e4e !important';
+            (inputSeuil.parentElement?.parentElement?.children.namedItem('errorSeuil')).style.display = 'block';
+        }
+        else {
+            inputSeuil.style.cssText = 'border-color: #273469 !important';
+            (inputSeuil.parentElement?.parentElement?.children.namedItem('errorSeuil')).style.display = 'none';
+        }
+        (inputSeuil.parentElement?.parentElement?.children.namedItem('buttonConfirm')).disabled = !allValid(inputSeuil, inputSeuil.parentElement?.parentElement?.children.namedItem(''));
+    });
 });
-inputDate?.addEventListener('input', () => {
-    if (!checkDate(inputDate.valueAsDate)) {
-        inputDate.style.cssText = 'border-color: #f14e4e !important';
-        errorFieldDate.style.display = 'block';
-    }
-    else {
-        inputDate.style.cssText = 'border-color: #273469 !important';
-        errorFieldDate.style.display = 'none';
-    }
-    buttonConfirm.disabled = !allValid();
+// inputSeuil?.addEventListener('input', () => {
+//     console.log('input');
+//     if (!checkInt(inputSeuil.value)) {
+//         inputSeuil.style.cssText = 'border-color: #f14e4e !important';
+//         errorFieldSeuil.style.display = 'block';
+//     } else {
+//         inputSeuil.style.cssText = 'border-color: #273469 !important';
+//         errorFieldSeuil.style.display = 'none';
+//     }
+//     buttonConfirm.disabled = !allValid();
+// })
+// inputDate?.addEventListener('input', () => {
+//     console.log('input');
+//     if (!checkDate(inputDate.valueAsDate)) {
+//         inputDate.style.cssText = 'border-color: #f14e4e !important';
+//         errorFieldDate.style.display = 'block';
+//     } else {
+//         inputDate.style.cssText = 'border-color: #273469 !important';
+//         errorFieldDate.style.display = 'none';
+//     }
+//     buttonConfirm.disabled = !allValid();
+// })
+// inputReassort?.addEventListener('input', () => {
+//     console.log('input');
+//     if (!checkInt(inputReassort.value)) {
+//         inputReassort.style.cssText = 'border-color: #f14e4e !important';
+//         errorFieldReassort.style.display = 'block';
+//     } else {
+//         inputReassort.style.cssText = 'border-color: #273469 !important';
+//         errorFieldReassort.style.display = 'none';
+//     }
+//     buttonConfirm.disabled = !allValid();
+// })
+buttonsSettings.forEach(btn => {
+    btn.addEventListener('mouseover', () => {
+        const subDivs = Array.from(btn.children);
+        subDivs.forEach(div => {
+            if (div instanceof HTMLElement && div.firstElementChild instanceof HTMLElement) {
+                const innerDiv = div.firstElementChild;
+                innerDiv.style.left = innerDiv.classList.contains('right') ? '4px' : '14px';
+            }
+        });
+    });
 });
-inputReassort?.addEventListener('input', () => {
-    if (!checkInt(inputReassort.value)) {
-        inputReassort.style.cssText = 'border-color: #f14e4e !important';
-        errorFieldReassort.style.display = 'block';
-    }
-    else {
-        inputReassort.style.cssText = 'border-color: #273469 !important';
-        errorFieldReassort.style.display = 'none';
-    }
-    buttonConfirm.disabled = !allValid();
+buttonsSettings.forEach(btn => {
+    btn.addEventListener('mouseout', () => {
+        const subDivs = Array.from(btn.children);
+        subDivs.forEach(div => {
+            if (div instanceof HTMLElement && div.firstElementChild instanceof HTMLElement) {
+                const innerDiv = div.firstElementChild;
+                innerDiv.style.left = innerDiv.classList.contains('right') ? '14px' : '4px';
+            }
+        });
+    });
 });
+buttonsSettings.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const modal = document.querySelector(`main.backoffice-stocks dialog#d-${btn.id}`);
+        if (!modal)
+            return;
+        modal.showModal();
+        modal.style.display = 'flex';
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.close();
+                modal.style.display = 'none';
+            }
+        });
+    });
+});
+buttonsCancel.forEach((btnCancel) => {
+    btnCancel.addEventListener('click', () => {
+        Array.from(document.getElementsByTagName('dialog')).forEach(dia => {
+            dia.close();
+            dia.style.display = 'none';
+        });
+    });
+});
+if (document.body.classList.contains("pagePaiement")) {
+    // Initialisation des données
+    const departments = new Map();
+    const citiesByCode = new Map();
+    const allCities = new Set();
+    const postals = new Map();
+    const selectedDepartment = { value: null };
+    // Chargement des données préchargées
+    const preloaded = window.__PAYMENT_DATA__ || {};
+    if (preloaded.departments) {
+        Object.keys(preloaded.departments).forEach((code) => {
+            departments.set(code, preloaded.departments[code]);
+        });
+    }
+    if (preloaded.citiesByCode) {
+        Object.keys(preloaded.citiesByCode).forEach((code) => {
+            const set = new Set(preloaded.citiesByCode[code]);
+            citiesByCode.set(code, set);
+            preloaded.citiesByCode[code].forEach((c) => allCities.add(c));
+        });
+    }
+    if (preloaded.postals) {
+        Object.keys(preloaded.postals).forEach((postal) => {
+            const set = new Set(preloaded.postals[postal]);
+            postals.set(postal, set);
+            preloaded.postals[postal].forEach((c) => allCities.add(c));
+        });
+    }
+    // Récupération des éléments d'entrée
+    const codePostalInput = document.querySelector("body.pagePaiement .code-postal-input");
+    const villeInput = document.querySelector("body.pagePaiement .ville-input");
+}
 define("frontoffice/paiement-types", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -438,291 +484,6 @@ define("frontoffice/paiement-validation", ["require", "exports"], function (requ
             ok = false;
         }
         return ok;
-    }
-});
-define("frontoffice/paiement-autocomplete", ["require", "exports", "frontoffice/paiement-validation"], function (require, exports, paiement_validation_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.setupAutocomplete = setupAutocomplete;
-    function createSuggestionBox(input) {
-        // Crée la boîte de suggestions attachée au parent de
-        // l'input. La boîte est stylée ici en inline pour s'assurer qu'elle
-        // apparaisse correctement au-dessus du flux normal de la page.
-        // Retourne l'élément `.suggestions` prêt à recevoir des éléments.
-        let box = input.parentElement.querySelector(".suggestions");
-        if (!box) {
-            box = document.createElement("div");
-            box.className = "suggestions";
-            box.style.position = "absolute";
-            box.style.background = "white";
-            box.style.border = "1px solid rgba(0,0,0,0.12)";
-            box.style.minWidth = "260px";
-            box.style.maxWidth = "480px";
-            box.style.width = "calc(100% - 12px)";
-            box.style.maxHeight = "200px";
-            box.style.overflow = "auto";
-            box.style.zIndex = "999";
-            box.style.boxShadow = "0 6px 18px rgba(0,0,0,0.08)";
-            box.style.borderRadius = "6px";
-            box.style.padding = "8px 0";
-            box.style.fontSize = "1rem";
-            box.style.whiteSpace = "normal";
-            box.style.display = "none";
-            const parent = input.parentElement;
-            if (getComputedStyle(parent).position === "static")
-                parent.style.position = "relative";
-            parent.appendChild(box);
-        }
-        box.innerHTML = "";
-        return box;
-    }
-    function setupAutocomplete(params) {
-        const { codePostalInput, villeInput, maps, selectedDepartment } = params;
-        function showSuggestionsForCode(query) {
-            // Affiche des suggestions pour le champ code postal / département.
-            // - Recherche dans `maps.departments` et `maps.postals` en fonction de la
-            //   requête (préfixe ou inclusion).
-            // - Construit des éléments cliquables qui remplissent le champ et
-            //   mettent à jour `selectedDepartment`.
-            if (!codePostalInput)
-                return;
-            const box = createSuggestionBox(codePostalInput);
-            const q = query.trim().toLowerCase();
-            const items = [];
-            maps.departments.forEach((dept, code) => {
-                if (code.startsWith(q) || dept.toLowerCase().includes(q))
-                    items.push(`${code} - ${dept}`);
-            });
-            maps.postals.forEach((cities, postal) => {
-                if (postal.startsWith(q) || postal === q) {
-                    const sample = Array.from(cities).slice(0, 2).join(", ");
-                    items.push(`${postal} - ${sample}`);
-                }
-            });
-            if (items.length === 0) {
-                box.style.display = "none";
-                return;
-            }
-            box.style.display = "block";
-            items.slice(0, 15).forEach((it) => {
-                const el = document.createElement("div");
-                el.className = "suggestion-item";
-                el.textContent = it;
-                el.style.padding = "6px 12px";
-                el.style.cursor = "pointer";
-                el.addEventListener("click", () => {
-                    // Lors du clic, on récupère la clé (code postal ou numéro de
-                    // département) avant le séparateur ` - ` et on met à jour l'input
-                    // ainsi que `selectedDepartment`.
-                    const key = it.split(" - ")[0];
-                    codePostalInput.value = key;
-                    if (/^\d{5}$/.test(key)) {
-                        selectedDepartment.value = key.slice(0, 2);
-                    }
-                    else {
-                        selectedDepartment.value = key.padStart(2, "0");
-                    }
-                    box.style.display = "none";
-                    (0, paiement_validation_1.clearError)(codePostalInput);
-                });
-                box.appendChild(el);
-            });
-        }
-        function showSuggestionsForCity(query) {
-            // Suggestions pour le champ ville.
-            // - Si `selectedDepartment` est renseigné, on privilégie les villes de
-            //   ce département via `maps.citiesByCode`, sinon on cherche dans
-            //   l'ensemble `maps.allCities`.
-            // - Propose d'utiliser la valeur tapée si aucune suggestion n'est
-            //   disponible.
-            if (!villeInput)
-                return;
-            const box = createSuggestionBox(villeInput);
-            const q = query.trim().toLowerCase();
-            let deptKey = selectedDepartment.value;
-            if (!deptKey && codePostalInput) {
-                const cp = codePostalInput.value.trim();
-                if (/^\d{5}$/.test(cp))
-                    deptKey = cp.slice(0, 2);
-                else if (/^\d{1,2}$/.test(cp))
-                    deptKey = cp.padStart(2, "0");
-            }
-            let candidates = [];
-            if (deptKey && maps.citiesByCode.has(deptKey)) {
-                candidates = Array.from(maps.citiesByCode.get(deptKey).values());
-            }
-            else {
-                candidates = Array.from(maps.allCities.values());
-            }
-            const items = Array.from(new Set(candidates.filter((c) => c.toLowerCase().includes(q))));
-            box.style.display = "block";
-            box.innerHTML = "";
-            const typed = villeInput.value.trim();
-            if (items.length === 0) {
-                // Aucun résultat: proposer d'utiliser la valeur tapée ou indiquer
-                // qu'il n'y a pas de suggestion.
-                const el = document.createElement("div");
-                el.className = "suggestion-item";
-                el.textContent =
-                    typed.length > 0
-                        ? `Utiliser "${typed}" comme ville`
-                        : "Aucune suggestion";
-                el.style.padding = "6px 12px";
-                el.style.cursor = "pointer";
-                el.addEventListener("click", () => {
-                    villeInput.value = typed;
-                    box.style.display = "none";
-                    (0, paiement_validation_1.clearError)(villeInput);
-                    if (!selectedDepartment.value && deptKey)
-                        selectedDepartment.value = deptKey;
-                });
-                box.appendChild(el);
-                return;
-            }
-            if (typed.length > 0 &&
-                !items.some((i) => i.toLowerCase() === typed.toLowerCase())) {
-                // Permettre explicitement d'utiliser la valeur saisie si elle n'est
-                // pas exactement égale à une suggestion.
-                const useTyped = document.createElement("div");
-                useTyped.className = "suggestion-item";
-                useTyped.textContent = `Utiliser "${typed}" comme ville`;
-                useTyped.style.padding = "6px 12px";
-                useTyped.style.cursor = "pointer";
-                useTyped.addEventListener("click", () => {
-                    villeInput.value = typed;
-                    box.style.display = "none";
-                    (0, paiement_validation_1.clearError)(villeInput);
-                    if (!selectedDepartment.value && deptKey)
-                        selectedDepartment.value = deptKey;
-                });
-                box.appendChild(useTyped);
-            }
-            items.slice(0, 20).forEach((it) => {
-                const el = document.createElement("div");
-                el.className = "suggestion-item";
-                el.textContent = it;
-                el.style.padding = "6px 12px";
-                el.style.cursor = "pointer";
-                el.addEventListener("click", () => {
-                    villeInput.value = it;
-                    box.style.display = "none";
-                    (0, paiement_validation_1.clearError)(villeInput);
-                });
-                box.appendChild(el);
-            });
-        }
-        // events
-        if (codePostalInput) {
-            codePostalInput.addEventListener("input", (e) => {
-                const v = e.target.value;
-                if (v.trim().length === 0) {
-                    const box = codePostalInput.parentElement.querySelector(".suggestions");
-                    if (box)
-                        box.style.display = "none";
-                    selectedDepartment.value = null;
-                    return;
-                }
-                showSuggestionsForCode(v);
-            });
-            codePostalInput.addEventListener("blur", () => {
-                setTimeout(() => {
-                    const box = codePostalInput.parentElement.querySelector(".suggestions");
-                    if (box)
-                        box.style.display = "none";
-                }, 150);
-            });
-            codePostalInput.addEventListener("change", () => {
-                const val = codePostalInput.value.trim();
-                if (/^\d{5}$/.test(val)) {
-                    const code = val.slice(0, 2);
-                    if (maps.postals.has(val)) {
-                        selectedDepartment.value = code;
-                    }
-                    else if (maps.departments.has(code)) {
-                        selectedDepartment.value = code;
-                    }
-                    else {
-                        selectedDepartment.value = null;
-                    }
-                }
-                else if (/^\d{1,2}$/.test(val)) {
-                    const code = val.padStart(2, "0");
-                    if (maps.departments.has(code))
-                        selectedDepartment.value = code;
-                    else
-                        selectedDepartment.value = null;
-                }
-                else {
-                    selectedDepartment.value = null;
-                }
-                (0, paiement_validation_1.clearError)(codePostalInput);
-            });
-        }
-        if (villeInput) {
-            villeInput.addEventListener("input", (e) => {
-                const v = e.target.value;
-                if (v.trim().length === 0) {
-                    const box = villeInput.parentElement.querySelector(".suggestions");
-                    if (box)
-                        box.style.display = "none";
-                    return;
-                }
-                showSuggestionsForCity(v);
-            });
-            villeInput.addEventListener("blur", () => {
-                setTimeout(() => {
-                    const box = villeInput.parentElement.querySelector(".suggestions");
-                    if (box)
-                        box.style.display = "none";
-                }, 150);
-            });
-            villeInput.addEventListener("change", () => (0, paiement_validation_1.clearError)(villeInput));
-        }
-    }
-});
-define("frontoffice/paiement-main", ["require", "exports", "frontoffice/paiement-autocomplete"], function (require, exports, paiement_autocomplete_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    if (document.body.classList.contains("pagePaiement")) {
-        // Initialisation des données
-        const departments = new Map();
-        const citiesByCode = new Map();
-        const allCities = new Set();
-        const postals = new Map();
-        const selectedDepartment = { value: null };
-        // Chargement des données préchargées
-        const preloaded = window.__PAYMENT_DATA__ || {};
-        if (preloaded.departments) {
-            Object.keys(preloaded.departments).forEach((code) => {
-                departments.set(code, preloaded.departments[code]);
-            });
-        }
-        if (preloaded.citiesByCode) {
-            Object.keys(preloaded.citiesByCode).forEach((code) => {
-                const set = new Set(preloaded.citiesByCode[code]);
-                citiesByCode.set(code, set);
-                preloaded.citiesByCode[code].forEach((c) => allCities.add(c));
-            });
-        }
-        if (preloaded.postals) {
-            Object.keys(preloaded.postals).forEach((postal) => {
-                const set = new Set(preloaded.postals[postal]);
-                postals.set(postal, set);
-                preloaded.postals[postal].forEach((c) => allCities.add(c));
-            });
-        }
-        // Récupération des éléments d'entrée
-        const codePostalInput = document.querySelector("body.pagePaiement .code-postal-input");
-        const villeInput = document.querySelector("body.pagePaiement .ville-input");
-        // Initialisation de l'autocomplétion
-        if (codePostalInput && villeInput) {
-            (0, paiement_autocomplete_1.setupAutocomplete)({
-                codePostalInput,
-                villeInput,
-                maps: { departments, citiesByCode, postals, allCities },
-                selectedDepartment,
-            });
-        }
     }
 });
 //# sourceMappingURL=script.js.map
