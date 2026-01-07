@@ -4291,6 +4291,7 @@ button#haut.visible:hover {
   height: 200px;
   background-color: #e4e4e4;
   background-position: center;
+  background-size: contain;
 }
 .popUpPromouvoir .page .section2 .ajouterBaniere img {
   width: 50px;
@@ -6802,6 +6803,67 @@ dialog.reassort form input {
   border-radius: 8px;
   border: none;
   color: #fffefa;
+}
+
+.pageCatalogue {
+  display: flex;
+  flex-direction: row;
+}
+.pageCatalogue .filter-sort {
+  background-color: #e4d9ff;
+  width: 22%;
+  position: relative;
+  left: 0;
+}
+.pageCatalogue .filter-sort form {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+}
+.pageCatalogue .products-section {
+  width: 78%;
+  display: flex;
+  flex-direction: column;
+}
+.pageCatalogue .product-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.pageCatalogue .product-item {
+  border: 2px solid #273469;
+  margin-top: 5px;
+  border-radius: 20px;
+  margin: 0px 40px;
+  padding: 10px;
+  min-width: 296px;
+  max-width: 296px;
+  max-height: 310px;
+  min-height: 310px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pageCatalogue .product-item img {
+  max-width: 267px;
+  max-height: 168px;
+  object-fit: contain;
+  border-radius: 20px;
+}
+.pageCatalogue .product-item h2 {
+  color: #273469;
+  font-size: 20px;
+  font-family: "Open-sans", serif;
+  font-weight: lighter;
+}
+.pageCatalogue .product-item h2, .pageCatalogue p, .pageCatalogue h3 {
+  font-size: 1.2em;
+  margin: 0;
+}
+.pageCatalogue #resultat {
+  background: #E3F2FE;
+  position: relative;
 }
 
 /*# sourceMappingURL=style.css.map */
