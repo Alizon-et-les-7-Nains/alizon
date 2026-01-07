@@ -4291,6 +4291,7 @@ button#haut.visible:hover {
   height: 200px;
   background-color: #e4e4e4;
   background-position: center;
+  background-size: contain;
 }
 .popUpPromouvoir .page .section2 .ajouterBaniere img {
   width: 50px;

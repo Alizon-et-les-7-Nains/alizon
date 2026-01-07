@@ -114,10 +114,7 @@
                                         <?php $idProd = $produitEnVente[$i]['idproduit'] ?>
                                         <?php $nom = $produitEnVente[$i]['nom'] ?>
                                         <?php $nbEval = $evaluations[0]['evaluation'] ?>
-                                        <?php if(count($promo) == 1) { 
-                                                $dateRaw = new DateTime($promo[0]['finPromotion']);
-                                                $dateFinPromo = $dateRaw->format('d/m/Y'); 
-                     
+                                        <?php 
                                                 $cheminSysteme = "/var/www/html/images/baniere/" . $idProd . ".jpg";
                                                 if (file_exists($cheminSysteme)) {
                                                     $image = "/images/baniere/" . $idProd . ".jpg";
@@ -127,7 +124,10 @@
                                                     $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                                                     $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                                                 }
-
+                                        ?>
+                                        <?php if(count($promo) == 1) { 
+                                                $dateRaw = new DateTime($promo[0]['finPromotion']);
+                                                $dateFinPromo = $dateRaw->format('d/m/Y'); 
                                         ?>
                                             <!-- ca ouvre la popup de modification de promotion -->
                                             <button onclick="popUpModifierPromotion(
