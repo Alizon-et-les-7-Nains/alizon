@@ -80,9 +80,14 @@
         .form-vendeur{
             display: flex;
             flex-direction: column;
+            label{
+                margin-left:5px;
+            }
 
             input.form-control {
                 padding: 10px 15px;
+                height: 48px;
+                margin: 5px;
                 border: 2px solid $color-blue;
                 border-radius: 8px;
                 font-size: 1rem;
