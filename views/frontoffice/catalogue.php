@@ -261,7 +261,7 @@ $nbResultats = count($products);
     </style>
 </head>
 <body>
-<?php // include '../../views/frontoffice/partials/headerConnecte.php' ?>
+<?php include '../../views/frontoffice/partials/headerConnecte.php' ?>
 <main class="pageCatalogue">
     <aside class="filter-sort">
         <h3>Filtres</h3>
