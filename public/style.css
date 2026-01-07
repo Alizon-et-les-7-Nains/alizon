@@ -4195,9 +4195,7 @@ button#haut.visible:hover {
   width: 320px;
   margin: 20px 0;
   margin-left: 20px;
-  height: -webkit-fill-available;
   align-items: center;
-  height: -webkit-fill-available;
   justify-content: space-between;
 }
 .popUpPromouvoir .page section article {
@@ -4278,8 +4276,6 @@ button#haut.visible:hover {
   border: 2px solid #273469;
   padding: 15px;
   border-radius: 10px;
-  width: 175px;
-  margin-top: 10px;
 }
 .popUpPromouvoir .page .section2 input#baniere {
   display: none;
@@ -4331,6 +4327,11 @@ button#haut.visible:hover {
   justify-content: flex-end;
   width: 100%;
   margin-bottom: 10px;
+}
+.popUpPromouvoir .page .section2 .ajouterBaniere {
+  background-image: url(http://10.253.5.104/images/baniere/32.jpg);
+  background-position: center;
+  background-position-y: center;
 }
 
 .popUpInfoCalcul {
