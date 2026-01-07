@@ -180,11 +180,13 @@
             .ajouterBaniere {
                 display: flex;
                 justify-content: center;
-                border: 2px solid $color-blue;
+                border: 2px solid #273469;
                 padding: 20px;
                 border-radius: 10px;
                 width: 380px;
-                background-color: $color-light-gray;
+                height: 200px;
+                background-color: #e4e4e4;
+                background-position: center;
 
                 img {
                     width: 50px;
@@ -226,7 +228,7 @@
                 display: flex;
                 justify-content: flex-end;
                 width: 100%;
-                margin-bottom: 20px;
+                margin-bottom: 10px;
             }
         }
     }

@@ -117,6 +117,17 @@
                                         <?php if(count($promo) == 1) { 
                                                 $dateRaw = new DateTime($promo[0]['finPromotion']);
                                                 $dateFinPromo = $dateRaw->format('d/m/Y'); 
+                     
+                                                $cheminSysteme = "/var/www/html/images/baniere/" . $idProd . ".jpg";
+                                                if (file_exists($cheminSysteme)) {
+                                                    $image = "/images/baniere/" . $choixAleatoirePromo . ".jpg";
+                                                } else {
+                                                    $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+                                                    $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
+                                                    $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+                                                    $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+                                                }
+
                                         ?>
                                             <!-- ca ouvre la popup de modification de promotion -->
                                             <button onclick="popUpModifierPromotion(
@@ -127,7 +138,8 @@
                                                 <?php echo htmlspecialchars($nbEval) ?>, 
                                                 <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, 
                                                 <?php echo $prixAuKg?>, 
-                                                '<?php echo $dateFinPromo?>' 
+                                                '<?php echo $dateFinPromo?>',
+                                                '<?php echo $image ?>'
                                             )">
                                                 Modifier
                                             </button>
