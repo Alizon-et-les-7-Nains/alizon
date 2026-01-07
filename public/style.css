@@ -2185,7 +2185,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   background: #dcd1fa;
   color: #252b56;
   font-size: 18px;
-  font-family: "lora", serif;
+  font-family: "Open-sans", serif;
   font-weight: 300;
   border: none;
   border-radius: 100px;
@@ -2243,7 +2243,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     background: #dcd1fa;
     color: #252b56;
     font-size: 16px;
-    font-family: "lora", serif;
+    font-family: "Open-sans", serif;
     font-weight: 300;
     border: none;
     cursor: pointer;
@@ -2387,7 +2387,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 4px;
   padding: 12px 30px;
   cursor: pointer;
-  font-family: "lora", serif;
+  font-family: "Open-sans", serif;
   font-size: 16px;
 }
 
@@ -2398,7 +2398,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 4px;
   padding: 12px 30px;
   cursor: pointer;
-  font-family: "lora", serif;
+  font-family: "Open-sans", serif;
   font-size: 16px;
 }
 
@@ -2429,7 +2429,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 4px;
   padding: 12px 30px;
   cursor: pointer;
-  font-family: "lora", serif;
+  font-family: "Open-sans", serif;
   font-size: 16px;
   margin-top: 20px;
 }
@@ -2470,7 +2470,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 4px;
   padding: 10px 20px;
   cursor: pointer;
-  font-family: "lora", serif;
+  font-family: "Open-sans", serif;
   margin-top: 10px;
   transition: background-color 0.2s;
 }
@@ -2545,7 +2545,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   width: 100%;
   color: #6E6E6E;
   font-size: 16px;
-  font-family: "lora";
+  font-family: "Open-sans";
   font-weight: bold;
   font-style: italic;
   border: 0;
@@ -2568,7 +2568,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   padding: 10px;
   border: none;
   border-radius: 32px;
-  font-family: "lora";
+  font-family: "Open-sans";
   cursor: pointer;
 }
 .mainCompteClient .boutonModifierMdp {
@@ -2814,7 +2814,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin-bottom: 5px;
 }
 .acceuil .notation span {
-  font-family: "Lora", serif;
+  font-family: "Open-sans", serif;
   font-weight: bold;
   color: #273469;
   font-size: 18px;
@@ -2954,7 +2954,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border: none;
   border-radius: 32px;
   font-size: 18px;
-  font-family: "lora";
+  font-family: "Open-sans";
   text-align: center;
   margin-top: 20px;
   cursor: pointer;
@@ -3101,7 +3101,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   max-height: 660px;
 }
 .panier .recapPanier a {
-  font-family: "Lora", serif;
+  font-family: "Open-sans", serif;
   font-size: 18px;
   font-weight: normal;
   text-decoration: none;
@@ -3288,7 +3288,7 @@ button#haut.visible:hover {
   text-align: center;
 }
 .ecrireAvis main p, .ecrireAvis main label {
-  font-family: "lora";
+  font-family: "Open-sans";
   font-size: 20px;
   color: #273469;
 }
@@ -3307,7 +3307,7 @@ button#haut.visible:hover {
   height: 50px;
   margin-bottom: 30px;
   color: #6e6e6e;
-  font-family: "lora";
+  font-family: "Open-sans";
   font-size: 16px;
   border: 2px solid #273469;
   border-radius: 8px;
@@ -3333,7 +3333,7 @@ button#haut.visible:hover {
   background-image: url("../../../public/images/triskel.png");
   background-repeat: no-repeat;
   background-size: contain;
-  font-family: "lora";
+  font-family: "Open-sans";
   color: #273469;
 }
 .pageEcrireCommentaire button {
@@ -3542,7 +3542,7 @@ button#haut.visible:hover {
 }
 
 .modifierProduit {
-  font-family: "lora", "Serif";
+  font-family: "Open-sans", "Serif";
   font-weight: bold;
   font-style: italic;
   background-color: #fffefa;
@@ -3747,7 +3747,7 @@ button#haut.visible:hover {
 }
 
 .AjouterProduit {
-  font-family: "lora", "Serif";
+  font-family: "Open-sans", "Serif";
   font-weight: bold;
   font-style: italic;
   background-color: #fffefa;
@@ -3965,7 +3965,7 @@ button#haut.visible:hover {
 }
 
 .CreerCompteVendeur {
-  font-family: "lora", "Serif";
+  font-family: "Open-sans", "Serif";
   font-weight: bold;
   font-style: italic;
   background-color: #fffefa;
@@ -4038,7 +4038,7 @@ button#haut.visible:hover {
 }
 .CreerCompteVendeur .container .form-vendeur input.form-control::placeholder {
   color: #6e6e6e;
-  font-family: "Lora", "Serif";
+  font-family: "Open-sans", "Serif";
 }
 .CreerCompteVendeur .container .form-vendeur input.form-control.input-error {
   border-color: #f14e4e !important;
@@ -4218,7 +4218,7 @@ button#haut.visible:hover {
 }
 .popUpPromouvoir .page section .evaluation p {
   color: #6e6e6e;
-  font-family: "lora";
+  font-family: "Lora";
   font-weight: bold;
   font-style: italic;
   font-size: 16px;
@@ -4317,7 +4317,7 @@ button#haut.visible:hover {
   padding: 15px;
   color: white;
   border-radius: 32px;
-  font-family: "lora";
+  font-family: "Open-sans";
   margin-left: 10px;
 }
 .popUpPromouvoir .page .section2 .deuxBoutons {
@@ -4328,7 +4328,7 @@ button#haut.visible:hover {
 
 .popUpInfoCalcul {
   width: 330px;
-  font-family: "lora";
+  font-family: "Open-sans";
   background-color: #fffefa;
   border-radius: 16px;
   position: relative;
@@ -4440,7 +4440,7 @@ button#haut.visible:hover {
 }
 .popUpRemise .page section .evaluation p {
   color: #6e6e6e;
-  font-family: "lora";
+  font-family: "Open-sans";
   font-weight: bold;
   font-style: italic;
   font-size: 16px;
@@ -4499,7 +4499,7 @@ button#haut.visible:hover {
   width: 200px;
   border: 2px solid #273469;
   border-radius: 8px;
-  font-family: "lora";
+  font-family: "Open-sans";
   margin: 10px;
 }
 .popUpRemise .page form div input {
@@ -4515,7 +4515,7 @@ button#haut.visible:hover {
   background-color: #273469;
   padding: 15px;
   border-radius: 32px;
-  font-family: "lora";
+  font-family: "Open-sans";
   width: 200px;
   color: #fffefa;
   cursor: pointer;
@@ -4900,7 +4900,7 @@ dialog.reassort form input {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 .page-compte .form-compte .header-compte h1 {
-  font-family: "Lora", serif;
+  font-family: "Open-sans", serif;
   font-size: clamp(22px, 3.5vw, 42px);
   color: #273469;
   font-weight: 600;
@@ -6064,7 +6064,7 @@ dialog.reassort form input {
 .pageProduit .raison {
   border: 1px solid grey;
   padding: 5px;
-  font-family: "lora";
+  font-family: "Open-sans";
   border-radius: 10px;
 }
 
@@ -6152,7 +6152,7 @@ dialog.reassort form input {
 }
 .connexionVendeur .information_connexion .form-vendeur .custom-input::placeholder {
   color: #273469;
-  font-family: "lora", serif;
+  font-family: "Open-sans", serif;
   font-weight: 600;
   font-style: italic;
   opacity: 0.7;
@@ -6189,7 +6189,7 @@ dialog.reassort form input {
   border-radius: 24px;
   padding: 12px 80px;
   font-size: 1.1rem;
-  font-family: "lora", serif;
+  font-family: "Open-sans", serif;
   font-weight: 600;
   cursor: pointer;
 }
@@ -6269,7 +6269,7 @@ dialog.reassort form input {
   margin-bottom: 15px;
 }
 .popUpErreur p {
-  font-family: "lora", sans-serif;
+  font-family: "Open-sans", sans-serif;
   color: #6e6e6e;
   text-align: center;
   font-size: 16px;
@@ -6282,7 +6282,7 @@ dialog.reassort form input {
   padding: 12px 40px;
   color: white;
   border-radius: 32px;
-  font-family: "lora", serif;
+  font-family: "open-sans", serif;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -6327,7 +6327,7 @@ dialog.reassort form input {
   border: 0;
   font-size: 24px;
   color: #e3f2fe;
-  font-family: "lora";
+  font-family: "open-sans";
   border-right: 10px;
   cursor: pointer;
 }
@@ -6361,7 +6361,7 @@ dialog.reassort form input {
   margin-bottom: 20px;
   padding: 20px 0 25px 0;
   font-size: 18px;
-  font-family: "Lora", serif;
+  font-family: "open-sans", serif;
 }
 .avis-vendeur .avi .col-gauche {
   width: 150px;
@@ -6401,7 +6401,7 @@ dialog.reassort form input {
 }
 .avis-vendeur .avi .date-avis {
   font-size: 12px;
-  font-family: "Lora", sans-serif;
+  font-family: "open-sans", sans-serif;
 }
 
 @media (max-width: 2000px) {
@@ -6410,7 +6410,7 @@ dialog.reassort form input {
     flex-direction: column;
     position: relative;
     margin: 30px;
-    font-family: "Lora", serif;
+    font-family: "open-sans", serif;
     color: #273469;
   }
   .mesAvis h1, .mesAvis h2 {
@@ -6524,7 +6524,7 @@ dialog.reassort form input {
     flex-direction: column;
     position: relative;
     margin: 30px;
-    font-family: "Lora", serif;
+    font-family: "open-sans", serif;
     color: #273469;
   }
   .mesAvis h1, .mesAvis h2 {
@@ -6635,7 +6635,7 @@ dialog.reassort form input {
     flex-direction: column;
     position: relative;
     margin: 30px;
-    font-family: "Lora", serif;
+    font-family: "open-sans", serif;
     color: #273469;
   }
   .mesAvis h1, .mesAvis h2 {
@@ -6751,7 +6751,7 @@ dialog.reassort form input {
   text-align: center;
 }
 .modifierAvis main p, .modifierAvis main label {
-  font-family: "lora";
+  font-family: "open-sans";
   font-size: 20px;
   color: #273469;
 }
@@ -6770,7 +6770,7 @@ dialog.reassort form input {
   height: 50px;
   margin-bottom: 30px;
   color: #6e6e6e;
-  font-family: "lora";
+  font-family: "open-sans";
   font-size: 16px;
   border: 2px solid #273469;
   border-radius: 8px;
