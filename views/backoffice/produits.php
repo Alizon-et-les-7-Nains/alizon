@@ -120,10 +120,10 @@
                      
                                                 $cheminSysteme = "/var/www/html/images/baniere/" . $idProd . ".jpg";
                                                 if (file_exists($cheminSysteme)) {
-                                                    $image = "/images/baniere/" . $choixAleatoirePromo . ".jpg";
+                                                    $image = "/images/baniere/" . $idProd . ".jpg";
                                                 } else {
                                                     $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
-                                                    $stmtImg->execute([':idProduit' => $choixAleatoirePromo]);
+                                                    $stmtImg->execute([':idProduit' => $idProd]);
                                                     $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                                                     $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                                                 }
