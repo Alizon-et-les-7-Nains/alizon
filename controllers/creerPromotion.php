@@ -6,10 +6,13 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
 
     if (isset($_POST['supprimer_banniere']) && $_POST['supprimer_banniere'] == "1") {
+        
         try {
             $idProd = intval($_POST['id']); 
             $photoPath = '/var/www/html/images/baniere/'.$idProd.".jpg";
-            unlink($photoPath);
+            if (file_exists($photoPath)) {
+                unlink($photoPath);
+            }
             header('Location: ../views/backoffice/produits.php');
             exit;
         } catch(Exception $e) {
