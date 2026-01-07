@@ -668,7 +668,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
     });
 }
 
-function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
+function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo = new Date().toLocaleDateString('fr-FR', { timeZone: 'UTC' })) {
 
     console.log("ID reçu :", id);
     console.log("Nom reçu :", nom);
