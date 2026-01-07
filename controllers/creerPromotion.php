@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $photoPath = '/var/www/html/images/baniere/'.$idProd.".jpg";
             unlink($photoPath);
             header('Location: ../views/backoffice/produits.php');
+            exit;
         } catch(Exception $e) {
             header('Location: ../views/backoffice/produits.php?error=4&idProduit='.$idProd);
             exit;
