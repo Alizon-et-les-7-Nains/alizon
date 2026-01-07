@@ -179,6 +179,9 @@ body {
   display: flex;
   align-items: center;
 }
+.headerFront .icons a {
+  padding-right: 20px;
+}
 @media (max-width: 720px) {
   .headerFront .icons {
     display: none;
@@ -232,6 +235,12 @@ body {
   position: absolute;
   top: -22px;
   right: 17px;
+}
+
+.headerConteneur {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* -------------------------------------------- FIN HEADER -------------------------------------------- */

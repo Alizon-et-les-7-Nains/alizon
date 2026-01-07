@@ -1,6 +1,6 @@
 <header class="headerFront">
 
-        <div style="display: flex;">
+        <div class="headerConteneur">
             <div class="headerMain">
                 <div class="logoNom">
                     <img src="../../../public/images/logoAlizonHeader.png" alt="Logo Alizon">
