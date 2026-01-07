@@ -5,13 +5,19 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
 
+    if (isset($_POST['supprimer_banniere']) && $_POST['supprimer_banniere'] == "1") {
+        $idProd = intval($_POST['id']); 
+        $photoPath = '/var/www/html/images/baniere/'.$idProd;
+        unlink($photoPath);
+    }
+
     if(isset($_POST['date_limite']) && isset($_POST['id'])) {
         $idProd = intval($_POST['id']); 
         $dateLimite = $_POST['date_limite'];
 
         $photoPath = '/var/www/html/images/baniere/'.$idProd;
 
-        $extensionsPossibles = ['jpg', 'png'];
+        $extensionsPossibles = ['jpg'];
         $extension = '';
 
         $d = DateTime::createFromFormat('d/m/Y', $dateLimite);
