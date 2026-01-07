@@ -76,7 +76,7 @@ $nbResultats = count($products);
         .listeArticle {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
-            gap: 20px;
+            gap: 100px;
             width: 100%;
         }
 
