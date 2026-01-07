@@ -539,7 +539,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                     <div></div>
                 </div>
                 <div class="titreEtProduit">
-                    <h1> Ajouter une promotion pour ce produit </h1>
+                    <h1> Modifier une promotion pour ce produit </h1>
                     <section>
                         <article style="padding-right: 20px; padding-top: 20px; padding-left: 20px; padding-bottom: 20px;">
                             <img class="produit" src="${imgURL}" alt="Image du produit">
@@ -564,6 +564,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
             <div class="ligne"></div>
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
+                        <h2><strong> Date limite de la promotion : </strong> (optionnel)</h2>
                         <div>
                             <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
                         </div>

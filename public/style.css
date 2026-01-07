@@ -4190,12 +4190,15 @@ button#haut.visible:hover {
 .popUpPromouvoir .page section {
   display: flex;
   flex-direction: column;
-  align-items: center;
   border: 2px solid #273469;
   border-radius: 16px;
   width: 320px;
   margin: 20px 0;
   margin-left: 20px;
+  height: -webkit-fill-available;
+  align-items: center;
+  height: -webkit-fill-available;
+  justify-content: space-between;
 }
 .popUpPromouvoir .page section article {
   position: relative;
@@ -4276,6 +4279,7 @@ button#haut.visible:hover {
   padding: 15px;
   border-radius: 10px;
   width: 175px;
+  margin-top: 10px;
 }
 .popUpPromouvoir .page .section2 input#baniere {
   display: none;
@@ -4324,6 +4328,7 @@ button#haut.visible:hover {
   display: flex;
   justify-content: flex-end;
   width: 100%;
+  margin-bottom: 20px;
 }
 
 .popUpInfoCalcul {
