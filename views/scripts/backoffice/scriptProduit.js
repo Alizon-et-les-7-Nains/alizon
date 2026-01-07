@@ -820,7 +820,15 @@ function popUpConfirmerRetrait(id, nom) {
                 <h1>Souhaitez-vous vraiment retirer ce produit de la vente ?</h1>
                 <p><strong>${nom}</strong></p>
                 <input type="hidden" name="idproduit" value="${id}">
-                <button type="submit" style="color: #ffffff; background-color: #f14e4e; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 20px;">
+                <button type="submit" 
+                style="
+                    color: #ffffff; 
+                    background-color: #f14e4e; 
+                    border: none; 
+                    padding: 10px 20px; 
+                    border-radius: 5px; 
+                    cursor: pointer; 
+                    margin-top: 20px;">
                     Confirmer le retrait
                 </button>
             </form>
