@@ -67,4 +67,105 @@
         background: #E3F2FE;
         position: relative;
     }
+
+    .products-section {
+        width: 78%;
+    }
+
+    .listeArticle {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
+        gap: 50px;
+        width: 100%;
+    }
+
+    .listeArticle article {
+        border: 2px solid #273469;
+        border-radius: 20px;
+        padding: 10px;
+        min-width: 276px;
+        max-width: 276px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        margin: 0;
+    }
+
+    .listeArticle article h2 {
+        color: #273469;
+        font-size: 20px;
+        font-family: "Open-sans", serif;
+        font-weight: 500;
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+
+    .listeArticle article .imgProduit {
+        max-width: 267px;
+        max-height: 168px;
+        object-fit: contain;
+        border-radius: 20px;
+    }
+
+    .notation {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin: 5px 0;
+    }
+
+    .notation .etoile {
+        width: 20px;
+        height: 20px;
+    }
+
+    .notation span {
+        color: #273469;
+        font-family: "Lora", serif;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .infoProd {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .prix h2 {
+        color: #273469;
+        font-size: 32px;
+        font-family: "Lora", serif;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .prix h3 {
+        color: #000000;
+        font-size: 12px;
+        font-family: "Lora", serif;
+        font-weight: bold;
+        font-style: italic;
+        margin: 0;
+    }
+
+    .prix h4 {
+        color: #273469;
+        font-size: 14px;
+        font-family: "Open-sans", serif;
+        margin: 0;
+    }
+
+    .infoProd button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
