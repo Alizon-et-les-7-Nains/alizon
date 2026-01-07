@@ -8,9 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo->beginTransaction();
 
-        $mdpSaisi = $_POST['mdp'];
-        $mdpCrypte = vignere($mdpSaisi, $cle, 1);
-
         $isValidSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/connexion.sql'));
         $isValidSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
         $isValid = $isValidSTMT->fetchColumn();
@@ -25,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_session = session_id();
             $_SESSION['session_id'] = $id_session;
             $_SESSION['id'] = $vendeur['codeVendeur'];
-            $_SESSION['pass'] = $mdpCrypte;
+            $_SESSION['pass'] = $_POST['mdp'];
 
             header('Location: ../views/backoffice/accueil.php');
         } else {
