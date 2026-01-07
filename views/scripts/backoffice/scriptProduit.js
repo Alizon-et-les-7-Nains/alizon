@@ -440,6 +440,7 @@ function popUpErreur(id, code) {
         1: "Une erreur est survenue lors du traitement de la date. Respectez le format jj/mm/aaaa et réessayez.",
         2: "Le format de l'image n'est pas valide. Revérifiez les critères et réessayez.",
         3: "Erreur inattendue lors de l'annulation de la promotion. Veuillez réessayer.",
+        4: "Erreur lors de la suppression de la bannière. Veuillez réessayer.",
         404: "Le produit demandé est introuvable.",
         'default': "Une erreur inattendue s'est produite. Veuillez réessayer."
     };
@@ -569,10 +570,17 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                             <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Jour/Mois/Année">
                         </div>
                         <h2><strong> Bannière actuelle : </strong></h2>
-                        <div class="ajouterBaniere">
-                            <input style="background-image: url(${defImg})" type="file" id="baniere" name="baniere" accept="image/*">  
+                        <div style="background-image: url(${defImg})"  class="ajouterBaniere">
+                            <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
-                        <p><strong>Supprimer la bannière</p>
+                        
+                        <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="supprimer_banniere" name="supprimer_banniere" value="1">
+                            <label for="supprimer_banniere" style="color: #F14E4E; cursor: pointer; font-weight: bold;">
+                                Supprimer la bannière actuelle
+                            </label>
+                        </div>
+
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
@@ -591,7 +599,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                                 <p><strong>€</strong></p>
                             </div>
                         </div>
-                        <div class="infoCalcul">
+                        <div style="margin-top: 10px;" class="infoCalcul">
                             <img src="../../public/images/iconeInfo.svg" alt="">
                             <p class="supprimer"> Comment sont calculés les prix ? </p>
                         </div>
@@ -661,7 +669,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
     });
 }
 
-function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
+function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo = new Date().toLocaleDateString('fr-FR', { timeZone: 'UTC' })) {
 
     console.log("ID reçu :", id);
     console.log("Nom reçu :", nom);
@@ -795,5 +803,50 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
         txtPromo.textContent = totalPromo;
         txtDuree.textContent = nbJours;
         txtTotal.textContent = totalPromo; // Ajouter plus tard prix de la bannière
+    });
+}
+
+// POP UP DE CONFIRMATION DE RETRAIT
+function popUpConfirmerRetrait(id, nom) {
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpErreur";
+    
+    overlay.innerHTML = `
+        <main class="popUpErreur" style="text-align : center;">
+            <form method="POST" action="../../controllers/RetirerDeLaVente.php">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div>
+                <h1>Souhaitez-vous vraiment retirer ce produit de la vente ?</h1>
+                <p><strong>${nom}</strong></p>
+                <input type="hidden" name="idproduit" value="${id}">
+                <button type="submit" 
+                style="
+                    color: #ffffff; 
+                    background-color: #f14e4e; 
+                    border: none; 
+                    padding: 10px 20px; 
+                    border-radius: 5px; 
+                    cursor: pointer; 
+                    margin-top: 20px;">
+                    Confirmer le retrait
+                </button>
+            </form>
+        </main>`;
+
+    document.body.appendChild(overlay);
+
+    const fermerPopUp = () => {
+        overlay.remove();
+    };
+
+    overlay.querySelector(".croixFermerLaPage").addEventListener("click", fermerPopUp);
+    
+    // Fermer si on clique à l'extérieur de la modale
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUp();
+        }
     });
 }

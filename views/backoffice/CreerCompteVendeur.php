@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../public/style.css">
-    <title>Création d'un compte vendeur</title>
+    <title>Alizon</title>
 </head>
 <?php
         require_once "./partials/header.php";
@@ -265,5 +265,14 @@
         <?php require_once './partials/retourEnHaut.php' ?>
     </main>
     <?php require_once "./partials/footer.php"; ?>
+    <script src="../../controllers/Chiffrement.js"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const passwordInput = document.getElementById('mdp');
+            if (passwordInput && typeof vignere !== 'undefined') {
+                passwordInput.value = vignere(passwordInput.value, cle, 1);
+            }
+        });
+    </script>
 </body>
 </html>

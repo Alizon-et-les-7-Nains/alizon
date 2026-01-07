@@ -69,9 +69,7 @@
             width: 320px;
             margin: 20px 0;
             margin-left: 20px;
-            height: -webkit-fill-available;
             align-items: center;
-            height: -webkit-fill-available;
             justify-content: space-between;
 
             article {
@@ -168,8 +166,6 @@
                 border: 2px solid $color-blue;
                 padding: 15px;
                 border-radius: 10px;
-                width: 175px;
-                margin-top: 10px;
             }
 
             input#baniere {
@@ -187,6 +183,7 @@
                 height: 200px;
                 background-color: #e4e4e4;
                 background-position: center;
+                background-size: contain;
 
                 img {
                     width: 50px;
@@ -229,6 +226,12 @@
                 justify-content: flex-end;
                 width: 100%;
                 margin-bottom: 10px;
+            }
+
+            .ajouterBaniere {
+                background-image: url(http://10.253.5.104/images/baniere/32.jpg);
+                background-position: center;
+                background-position-y: center;
             }
         }
     }

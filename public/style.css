@@ -4200,9 +4200,7 @@ button#haut.visible:hover {
   width: 320px;
   margin: 20px 0;
   margin-left: 20px;
-  height: -webkit-fill-available;
   align-items: center;
-  height: -webkit-fill-available;
   justify-content: space-between;
 }
 .popUpPromouvoir .page section article {
@@ -4283,8 +4281,6 @@ button#haut.visible:hover {
   border: 2px solid #273469;
   padding: 15px;
   border-radius: 10px;
-  width: 175px;
-  margin-top: 10px;
 }
 .popUpPromouvoir .page .section2 input#baniere {
   display: none;
@@ -4300,6 +4296,7 @@ button#haut.visible:hover {
   height: 200px;
   background-color: #e4e4e4;
   background-position: center;
+  background-size: contain;
 }
 .popUpPromouvoir .page .section2 .ajouterBaniere img {
   width: 50px;
@@ -4336,6 +4333,11 @@ button#haut.visible:hover {
   justify-content: flex-end;
   width: 100%;
   margin-bottom: 10px;
+}
+.popUpPromouvoir .page .section2 .ajouterBaniere {
+  background-image: url(http://10.253.5.104/images/baniere/32.jpg);
+  background-position: center;
+  background-position-y: center;
 }
 
 .popUpInfoCalcul {
@@ -6806,6 +6808,155 @@ dialog.reassort form input {
   border-radius: 8px;
   border: none;
   color: #fffefa;
+}
+
+.pageCatalogue {
+  display: flex;
+  flex-direction: row;
+}
+.pageCatalogue .filter-sort {
+  background-color: #e4d9ff;
+  width: 22%;
+  position: relative;
+  left: 0;
+}
+.pageCatalogue .filter-sort form {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+}
+.pageCatalogue .products-section {
+  width: 78%;
+  display: flex;
+  flex-direction: column;
+}
+.pageCatalogue .product-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.pageCatalogue .product-item {
+  border: 2px solid #273469;
+  margin-top: 5px;
+  border-radius: 20px;
+  margin: 0px 40px;
+  padding: 10px;
+  min-width: 296px;
+  max-width: 296px;
+  max-height: 310px;
+  min-height: 310px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pageCatalogue .product-item img {
+  max-width: 267px;
+  max-height: 168px;
+  object-fit: contain;
+  border-radius: 20px;
+}
+.pageCatalogue .product-item h2 {
+  color: #273469;
+  font-size: 20px;
+  font-family: "Open-sans", serif;
+  font-weight: lighter;
+}
+.pageCatalogue .product-item h2, .pageCatalogue p, .pageCatalogue h3 {
+  font-size: 1.2em;
+  margin: 0;
+}
+.pageCatalogue #resultat {
+  background: #E3F2FE;
+  position: relative;
+}
+.pageCatalogue .products-section {
+  width: 78%;
+}
+.pageCatalogue .listeArticle {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
+  gap: 50px;
+  width: 100%;
+}
+.pageCatalogue .listeArticle article {
+  border: 2px solid #273469;
+  border-radius: 20px;
+  padding: 10px;
+  min-width: 276px;
+  max-width: 276px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 0;
+}
+.pageCatalogue .listeArticle article h2 {
+  color: #273469;
+  font-size: 20px;
+  font-family: "Open-sans", serif;
+  font-weight: 500;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+.pageCatalogue .listeArticle article .imgProduit {
+  max-width: 267px;
+  max-height: 168px;
+  object-fit: contain;
+  border-radius: 20px;
+}
+.pageCatalogue .notation {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0;
+}
+.pageCatalogue .notation .etoile {
+  width: 20px;
+  height: 20px;
+}
+.pageCatalogue .notation span {
+  color: #273469;
+  font-family: "Lora", serif;
+  font-size: 18px;
+  font-weight: bold;
+}
+.pageCatalogue .infoProd {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+}
+.pageCatalogue .prix h2 {
+  color: #273469;
+  font-size: 32px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+  margin: 0;
+}
+.pageCatalogue .prix h3 {
+  color: #000000;
+  font-size: 12px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+  font-style: italic;
+  margin: 0;
+}
+.pageCatalogue .prix h4 {
+  color: #273469;
+  font-size: 14px;
+  font-family: "Open-sans", serif;
+  margin: 0;
+}
+.pageCatalogue .infoProd button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*# sourceMappingURL=style.css.map */

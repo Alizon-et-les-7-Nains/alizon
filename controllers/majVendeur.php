@@ -31,32 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($vendeur) {
-                // Inclure le fichier de chiffrement
-                require_once 'Chiffrement.php';
-                
-                // Déchiffrer le mot de passe stocké
-                $mdpDecrypte = vignere($vendeur['mdp'], $cle, -1);
-                
-                if ($ancienMdp !== $mdpDecrypte) {
+                if ($ancienMdp !== $vendeur['mdp']) {
                     $_SESSION['error'] = "L'ancien mot de passe est incorrect.";
-                    header('Location: ../backoffice/compteVendeur.php');
+                    header('Location: ../views/backoffice/compteVendeur.php');
                     exit();
                 }
                 
-                // Valider le nouveau mot de passe
-                if (!validerMotDePasse($nouveauMdp)) {
-                    $_SESSION['error'] = "Le nouveau mot de passe ne respecte pas les critères de sécurité.";
-                    header('Location: ../backoffice/compteVendeur.php');
-                    exit();
-                }
-                
-                // Chiffrer le nouveau mot de passe
-                $nouveauMdpCrypte = vignere($nouveauMdp, $cle, 1);
-                
-                // Mettre à jour le mot de passe
                 $stmt = $pdo->prepare("UPDATE _vendeur SET mdp = :mdp WHERE codeVendeur = :id");
                 $stmt->execute([
-                    ':mdp' => $nouveauMdpCrypte,
+                    ':mdp' => $nouveauMdp,
                     ':id' => $code_vendeur
                 ]);
                 

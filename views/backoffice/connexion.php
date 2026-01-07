@@ -20,7 +20,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/style.css">
-    <title>Connexion à un compte vendeur</title>
+    <title>Alizon</title>
 </head>
 
 <body class="backoffice nonConnecte">
@@ -106,6 +106,13 @@
             pseudoInput.addEventListener('input', verifierChamps);
             mdpInput.addEventListener('input', verifierChamps);
         });
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const passwordInput = this.querySelector('input[name="mdp"]');
+            if (passwordInput && typeof vignere !== 'undefined') {
+                passwordInput.value = vignere(passwordInput.value, cle, 1);
+            }
+        });
     </script>
+    <script src="../../controllers/Chiffrement.js"></script>
 </body>
 </html>
