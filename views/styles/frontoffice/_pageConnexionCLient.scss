@@ -221,14 +221,6 @@ $breakpoint-small-mobile: 480px;
           margin-top: 15px;
         }
 
-        .inputLabelGroup {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start !important;
-          gap: 6px;
-        }
-
         .boutonConnexionClient {
           margin-top: 25px;
           width: $btn-width;
@@ -299,6 +291,13 @@ $breakpoint-small-mobile: 480px;
           }
         }
       }
+      .inputLabelGroup {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start !important;
+          gap: 6px;
+        }
     }
 
     .petitTexte {
