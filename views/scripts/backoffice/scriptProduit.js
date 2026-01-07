@@ -525,7 +525,7 @@ function popUpAnnulerPromotion(id, nom) {
     });
 }
 
-function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo) {
+function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo, defImg) {
 
     const overlay = document.createElement("div");
     
@@ -539,7 +539,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                     <div></div>
                 </div>
                 <div class="titreEtProduit">
-                    <h1> Ajouter une promotion pour ce produit </h1>
+                    <h1> Modifier une promotion pour ce produit </h1>
                     <section>
                         <article style="padding-right: 20px; padding-top: 20px; padding-left: 20px; padding-bottom: 20px;">
                             <img class="produit" src="${imgURL}" alt="Image du produit">
@@ -564,14 +564,15 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
             <div class="ligne"></div>
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
+                        <h2><strong> Date limite de la promotion : </strong> (optionnel)</h2>
                         <div>
-                            <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
+                            <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Jour/Mois/Année">
                         </div>
-                        <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
+                        <h2><strong> Bannière actuelle : </strong></h2>
                         <div class="ajouterBaniere">
-                            <input type="file" id="baniere" name="baniere" accept="image/*">  
+                            <input style="background-image: url(${defImg})" type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
-                        <p><strong>Format accepté </strong>: .jpg uniquement</p>
+                        <p><strong>Supprimer la bannière</p>
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
@@ -700,8 +701,9 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg) {
             <div class="ligne"></div>
                 <form method="POST" enctype="multipart/form-data" action="../../controllers/creerPromotion.php">
                     <section class="section2">
+                        <h2><strong> Date limite de la promotion : </strong> (optionnel)</h2>
                         <div>
-                            <input type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Date limite : Jour/Mois/Année">
+                            <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Jour/Mois/Année">
                         </div>
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
                         <div class="ajouterBaniere">

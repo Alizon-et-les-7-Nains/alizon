@@ -64,12 +64,15 @@
         section {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            border: 2px solid $color-blue;
+            border: 2px solid #273469;
             border-radius: 16px;
             width: 320px;
             margin: 20px 0;
             margin-left: 20px;
+            height: -webkit-fill-available;
+            align-items: center;
+            height: -webkit-fill-available;
+            justify-content: space-between;
 
             article {
                 position: relative;
@@ -166,6 +169,7 @@
                 padding: 15px;
                 border-radius: 10px;
                 width: 175px;
+                margin-top: 10px;
             }
 
             input#baniere {
@@ -176,11 +180,13 @@
             .ajouterBaniere {
                 display: flex;
                 justify-content: center;
-                border: 2px solid $color-blue;
+                border: 2px solid #273469;
                 padding: 20px;
                 border-radius: 10px;
                 width: 380px;
-                background-color: $color-light-gray;
+                height: 200px;
+                background-color: #e4e4e4;
+                background-position: center;
 
                 img {
                     width: 50px;
@@ -222,6 +228,7 @@
                 display: flex;
                 justify-content: flex-end;
                 width: 100%;
+                margin-bottom: 10px;
             }
         }
     }
