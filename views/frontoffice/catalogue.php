@@ -69,12 +69,6 @@ $nbResultats = count($products);
     <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
     <style>
-        .pageCatalogue {
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-        }
-
         .products-section {
             width: 78%;
         }
@@ -184,30 +178,8 @@ $nbResultats = count($products);
         <h3>Filtres</h3>
         <form method="GET" action="">
             <label for="sort">Trier par :</label>
-            <select name="sort" id="sort">
-                <option value="">Par défaut</option>
-                <option value="prix_asc" <?= $sortBy === 'prix_asc' ? 'selected' : '' ?>>Prix croissant</option>
-                <option value="prix_desc" <?= $sortBy === 'prix_desc' ? 'selected' : '' ?>>Prix décroissant</option>
-                <option value="note" <?= $sortBy === 'note' ? 'selected' : '' ?>>Meilleure note</option>
-            </select>
-
             <label for="minNote">Note minimale :</label>
-            <select name="minNote" id="minNote">
-                <option value="">Toutes les notes</option>
-                <option value="4" <?= $minNote === '4' ? 'selected' : '' ?>>4+ étoiles</option>
-                <option value="3" <?= $minNote === '3' ? 'selected' : '' ?>>3+ étoiles</option>
-                <option value="2" <?= $minNote === '2' ? 'selected' : '' ?>>2+ étoiles</option>
-            </select>
-
             <label for="category">Catégorie :</label>
-            <select name="category" id="category">
-                <option value="">Toutes les catégories</option>
-                <option value="charcuterie" <?= $category === 'charcuterie' ? 'selected' : '' ?>>Charcuterie</option>
-                <option value="alcools" <?= $category === 'alcools' ? 'selected' : '' ?>>Alcools</option>
-                <option value="fruits" <?= $category === 'fruits' ? 'selected' : '' ?>>Fruits & Légumes</option>
-            </select>
-
-            <button type="submit">Appliquer les filtres</button>
         </form>
     </aside>
     
