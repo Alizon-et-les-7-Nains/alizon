@@ -15,7 +15,7 @@
 
         <div class="icons">
             <a href="../frontoffice/panier.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
-            <a href="javascript:void(0);" onclick="menuBurger();"><img src="../../../public/images/burgerLightBlue.svg" alt="Burger icon"></a>
+            <a href="javascript:void(0);" onclick="menuBurger();"><img src="../../../public/images/burgerLightBlue.svg" alt="Burger"></a>
         </div>
     </div>
 

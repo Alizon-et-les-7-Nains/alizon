@@ -33,7 +33,7 @@
     <section id="burgerIcon">
         <div id="triangle-codeHeader"></div>
         <a href="../frontoffice/panier.php">Mon panier</a>
-        <a href="../../../controllers/connexionClient.php">Connexion</a>
+        <a href="../frontoffice/connexionClient.php">Connexion</a>
     </section>
 
 </header>
