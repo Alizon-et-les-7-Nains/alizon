@@ -255,5 +255,14 @@
         <?php require_once './partials/retourEnHaut.php' ?>
     </main>
     <?php require_once "./partials/footer.php"; ?>
+    <script src="../../controllers/Chiffrement.js"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const passwordInput = document.getElementById('mdp');
+            if (passwordInput && typeof vignere !== 'undefined') {
+                passwordInput.value = vignere(passwordInput.value, cle, 1);
+            }
+        });
+    </script>
 </body>
 </html>

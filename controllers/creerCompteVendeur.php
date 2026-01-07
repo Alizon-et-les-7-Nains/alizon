@@ -1,13 +1,9 @@
 <?php
     session_start();  
     require_once "pdo.php";
-    require_once "Chiffrement.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $mdpRaw = $_POST['mdp'] ?? '';
-        $mdp = vignere($mdpRaw, $cle, 1);
-        
         $nom = $_POST['nom'] ?? '';
         $prenom = $_POST['prenom'] ?? '';
         $email = $_POST['email'] ?? '';
