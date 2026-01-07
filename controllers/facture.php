@@ -1,4 +1,9 @@
 <?php
+// Le code commence par appeler dompdf, recupères des information nécéssaire à la facture
+// Avant de stopper le buffer. Ensuite on fait une page html puis on récupère tout ce qui est
+// Dans le buffer. On le met dans une variable puis on transforme le contenu de cette
+// Variable en fichier pdf.
+
 require_once __DIR__ . '/../dompdf/autoload.inc.php';
 require_once './pdo.php';
 
@@ -49,14 +54,12 @@ ob_start();
     <strong>Client</strong><br>
     <?= htmlspecialchars($data['prenom'] . ' ' . $data['nom']) ?><br>
     <?= htmlspecialchars($data['email']) ?><br>
-    <?= htmlspecialchars($data['rue']) ?><br>
     <?= htmlspecialchars($data['codePostal'] . ' ' . $data['ville']) ?>
 </div>
 
 <div class="bloc">
     Facture n° <?= 'FAC-' . date('Y') . '-' . str_pad($data['idCommande'], 6, '0', STR_PAD_LEFT) ?><br>
     Date : <?= date('d/m/Y', strtotime($data['dateCommande'])) ?><br>
-    Transporteur : <?= htmlspecialchars($data['nomTransporteur']) ?>
 </div>
 
 <table>
@@ -85,8 +88,10 @@ $dompdf->loadHtml($html);
 $dompdf->setPaper('A4');
 $dompdf->render();
 $path = __DIR__ . '/../factures';
-echo(realpath($path));
 
+if(!is_dir($path)){
+    mkdir($path, 0755, true);
+}
 file_put_contents($path . '/facture_' . $data['idCommande'] . '.pdf', $dompdf->output());
 
 $dompdf->stream('facture_' . $data['idCommande'] . '.pdf', ['Attachment' => false]);

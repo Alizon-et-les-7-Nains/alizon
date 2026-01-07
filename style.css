@@ -234,12 +234,6 @@ body {
   right: 17px;
 }
 
-.headerConteneur {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
 /* -------------------------------------------- FIN HEADER -------------------------------------------- */
 /* -------------------------------------------- DEBUT FOOTER -------------------------------------------- */
 .footerFront {
@@ -471,6 +465,7 @@ body {
 .pageCommandes {
   font-family: "Lora", serif;
   font-size: 14px;
+  font-weight: bold;
   color: #273469;
 }
 @media (max-width: 1125px) {
@@ -797,7 +792,6 @@ body {
   border-radius: 20px;
   padding: 8px 15px;
   margin-bottom: 5px;
-  cursor: pointer;
 }
 
 /* ---- Header ---- */
@@ -1155,6 +1149,13 @@ body.backoffice.nonConnecte nav {
     margin-top: 15px;
   }
 }
+.pageConnexionCLient main form > div .inputLabelGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  gap: 6px;
+}
 .pageConnexionCLient main form > div .boutonConnexionClient {
   margin-top: 25px;
   width: 70%;
@@ -1219,13 +1220,6 @@ body.backoffice.nonConnecte nav {
     margin-top: 4px;
     line-height: 1.4;
   }
-}
-.pageConnexionCLient main form .inputLabelGroup {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start !important;
-  gap: 6px;
 }
 .pageConnexionCLient main .petitTexte {
   color: #6e6e6e;
@@ -4190,15 +4184,12 @@ button#haut.visible:hover {
 .popUpPromouvoir .page section {
   display: flex;
   flex-direction: column;
+  align-items: center;
   border: 2px solid #273469;
   border-radius: 16px;
   width: 320px;
   margin: 20px 0;
   margin-left: 20px;
-  height: -webkit-fill-available;
-  align-items: center;
-  height: -webkit-fill-available;
-  justify-content: space-between;
 }
 .popUpPromouvoir .page section article {
   position: relative;
@@ -4279,7 +4270,6 @@ button#haut.visible:hover {
   padding: 15px;
   border-radius: 10px;
   width: 175px;
-  margin-top: 10px;
 }
 .popUpPromouvoir .page .section2 input#baniere {
   display: none;
@@ -4292,9 +4282,7 @@ button#haut.visible:hover {
   padding: 20px;
   border-radius: 10px;
   width: 380px;
-  height: 200px;
   background-color: #e4e4e4;
-  background-position: center;
 }
 .popUpPromouvoir .page .section2 .ajouterBaniere img {
   width: 50px;
@@ -4330,7 +4318,6 @@ button#haut.visible:hover {
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  margin-bottom: 10px;
 }
 
 .popUpInfoCalcul {

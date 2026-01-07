@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $photoPath = '/var/www/html/images/baniere/'.$idProd;
 
-        $extensionsPossibles = ['jpg'];
+        $extensionsPossibles = ['jpg', 'png'];
         $extension = '';
 
         $d = DateTime::createFromFormat('d/m/Y', $dateLimite);

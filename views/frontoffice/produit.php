@@ -356,7 +356,7 @@ if (isset($_SESSION['message_panier'])) {
             <img class="poly2" src="../../public/images/poly2.svg" alt="">
         </div>
     <?php endif; ?>
-    <img src="../../public/images/flecheGauche.svg" alt="Previous" class="carousel-arrow prev-arrow">
+    <!-- <img src="../../public/images/flecheGauche.svg" alt="Previous" class="carousel-arrow prev-arrow"> -->
     <div class="carousel-container">
         <div class="carousel-slide">
             <?php if (!empty($images)): ?>
@@ -378,7 +378,7 @@ if (isset($_SESSION['message_panier'])) {
             <?php endif; ?>
         </div>
     </div>
-    <img src="../../public/images/flecheDroite.svg" alt="Next" class="carousel-arrow next-arrow">
+    <!--  <img src="../../public/images/flecheDroite.svg" alt="Next" class="carousel-arrow next-arrow"> -->
     </article>
     <article class="infoPreviewProduit">
         <div class="attributsproduit">

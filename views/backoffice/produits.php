@@ -22,7 +22,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Alizon</title>
+        <title>Alizon - Produits</title>
 
         <link rel="stylesheet" href="../../public/style.css">
         <link rel="icon" href="/public/images/logoBackoffice.svg">
@@ -117,6 +117,17 @@
                                         <?php if(count($promo) == 1) { 
                                                 $dateRaw = new DateTime($promo[0]['finPromotion']);
                                                 $dateFinPromo = $dateRaw->format('d/m/Y'); 
+                     
+                                                $cheminSysteme = "/var/www/html/images/baniere/" . $idProd . ".jpg";
+                                                if (file_exists($cheminSysteme)) {
+                                                    $image = "/images/baniere/" . $idProd . ".jpg";
+                                                } else {
+                                                    $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+                                                    $stmtImg->execute([':idProduit' => $idProd]);
+                                                    $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+                                                    $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+                                                }
+
                                         ?>
                                             <!-- ca ouvre la popup de modification de promotion -->
                                             <button onclick="popUpModifierPromotion(
@@ -127,7 +138,8 @@
                                                 <?php echo htmlspecialchars($nbEval) ?>, 
                                                 <?php echo htmlspecialchars($produitEnVente[$i]['note']) ?>, 
                                                 <?php echo $prixAuKg?>, 
-                                                '<?php echo $dateFinPromo?>' 
+                                                '<?php echo $dateFinPromo?>',
+                                                '<?php echo $image ?>'
                                             )">
                                                 Modifier
                                             </button>
@@ -176,11 +188,16 @@
                                 </div>
                                 
                                 <form method="POST" action="../../controllers/RetirerDeLaVente.php">
-                                    <div>
-                                        <input type="hidden" name="idproduit" value="<?php echo $produitEnVente[$i]['idproduit']; ?>">
+                                    <div class="iconeTexte">
+                                        <?php 
+                                            $idProd = $produitEnVente[$i]['idproduit'];
+                                            $nomProd = htmlspecialchars(addslashes($produitEnVente[$i]['nom']), ENT_QUOTES); 
+                                        ?>
                                         <img src="/public/images/iconeRetirerVente.svg" alt="">
-                                        <button>Retirer de la vente</button>
-                                    </div>  
+                                        <button type="button" onclick="popUpConfirmerRetrait(<?php echo $idProd; ?>, '<?php echo $nomProd; ?>')">
+                                            Retirer de la vente
+                                        </button>
+                                    </div>
                                 </form>
 
 
