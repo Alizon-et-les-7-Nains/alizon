@@ -234,6 +234,12 @@ body {
   right: 17px;
 }
 
+.headerConteneur {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 /* -------------------------------------------- FIN HEADER -------------------------------------------- */
 /* -------------------------------------------- DEBUT FOOTER -------------------------------------------- */
 .footerFront {
