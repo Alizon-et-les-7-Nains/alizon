@@ -440,6 +440,7 @@ function popUpErreur(id, code) {
         1: "Une erreur est survenue lors du traitement de la date. Respectez le format jj/mm/aaaa et réessayez.",
         2: "Le format de l'image n'est pas valide. Revérifiez les critères et réessayez.",
         3: "Erreur inattendue lors de l'annulation de la promotion. Veuillez réessayer.",
+        4: "Erreur lors de la suppression de la bannière. Veuillez réessayer.",
         404: "Le produit demandé est introuvable.",
         'default': "Une erreur inattendue s'est produite. Veuillez réessayer."
     };

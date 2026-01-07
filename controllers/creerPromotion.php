@@ -6,9 +6,15 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
 
     if (isset($_POST['supprimer_banniere']) && $_POST['supprimer_banniere'] == "1") {
-        $idProd = intval($_POST['id']); 
-        $photoPath = '/var/www/html/images/baniere/'.$idProd;
-        unlink($photoPath);
+        try {
+            $idProd = intval($_POST['id']); 
+            $photoPath = '/var/www/html/images/baniere/'.$idProd.".jpg";
+            unlink($photoPath);
+            header('Location: ../views/backoffice/produits.php');
+        } catch(Exception $e) {
+            header('Location: ../views/backoffice/produits.php?error=4&idProduit='.$idProd);
+            exit;
+        }
     }
 
     if(isset($_POST['date_limite']) && isset($_POST['id'])) {
