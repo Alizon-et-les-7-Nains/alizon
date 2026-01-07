@@ -69,76 +69,8 @@ $nbResultats = count($products);
     <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
     <style>
-        .pageCatalogue {
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .filter-sort {
-            width: 22%;
-            background-color: #f5f5f5;
-            padding: 20px;
-            border-radius: 10px;
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-
-        .filter-sort h3 {
-            color: #273469;
-            font-family: "Lora", serif;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .filter-sort form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .filter-sort label {
-            color: #273469;
-            font-family: "Open-sans", serif;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .filter-sort select,
-        .filter-sort input {
-            padding: 8px;
-            border: 2px solid #273469;
-            border-radius: 5px;
-            font-family: "Open-sans", serif;
-        }
-
-        .filter-sort button {
-            background-color: #273469;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: "Open-sans", serif;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        .filter-sort button:hover {
-            background-color: #1a2347;
-        }
-
         .products-section {
             width: 78%;
-        }
-
-        #resultat {
-            color: #273469;
-            font-family: "Lora", serif;
-            font-size: 28px;
-            margin-bottom: 20px;
-            font-weight: 600;
         }
 
         .listeArticle {
@@ -159,12 +91,6 @@ $nbResultats = count($products);
             justify-content: space-between;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             margin: 0;
-        }
-
-        .listeArticle article:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(39, 52, 105, 0.3);
-            cursor: pointer;
         }
 
         .listeArticle article h2 {
@@ -243,21 +169,6 @@ $nbResultats = count($products);
             justify-content: center;
             align-items: center;
         }
-
-        @media (max-width: 1200px) {
-            .pageCatalogue {
-                flex-direction: column;
-            }
-
-            .filter-sort,
-            .products-section {
-                width: 100%;
-            }
-
-            .filter-sort {
-                position: static;
-            }
-        }
     </style>
 </head>
 <body>
@@ -267,30 +178,8 @@ $nbResultats = count($products);
         <h3>Filtres</h3>
         <form method="GET" action="">
             <label for="sort">Trier par :</label>
-            <select name="sort" id="sort">
-                <option value="">Par défaut</option>
-                <option value="prix_asc" <?= $sortBy === 'prix_asc' ? 'selected' : '' ?>>Prix croissant</option>
-                <option value="prix_desc" <?= $sortBy === 'prix_desc' ? 'selected' : '' ?>>Prix décroissant</option>
-                <option value="note" <?= $sortBy === 'note' ? 'selected' : '' ?>>Meilleure note</option>
-            </select>
-
             <label for="minNote">Note minimale :</label>
-            <select name="minNote" id="minNote">
-                <option value="">Toutes les notes</option>
-                <option value="4" <?= $minNote === '4' ? 'selected' : '' ?>>4+ étoiles</option>
-                <option value="3" <?= $minNote === '3' ? 'selected' : '' ?>>3+ étoiles</option>
-                <option value="2" <?= $minNote === '2' ? 'selected' : '' ?>>2+ étoiles</option>
-            </select>
-
             <label for="category">Catégorie :</label>
-            <select name="category" id="category">
-                <option value="">Toutes les catégories</option>
-                <option value="charcuterie" <?= $category === 'charcuterie' ? 'selected' : '' ?>>Charcuterie</option>
-                <option value="alcools" <?= $category === 'alcools' ? 'selected' : '' ?>>Alcools</option>
-                <option value="fruits" <?= $category === 'fruits' ? 'selected' : '' ?>>Fruits & Légumes</option>
-            </select>
-
-            <button type="submit">Appliquer les filtres</button>
         </form>
     </aside>
     
