@@ -25,7 +25,7 @@ function popUpDetailsCommande() {
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpDetailsCommande";
     overlay.innerHTML = `
-        <main>
+        <main class="popUpDetails">
 
             <div class="croixFermerLaPage">
                 <div></div>
