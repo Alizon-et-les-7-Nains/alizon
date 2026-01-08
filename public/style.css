@@ -6959,4 +6959,36 @@ dialog.reassort form input {
   align-items: center;
 }
 
+.popUpDetails {
+  background-color: #fffefa;
+  border-radius: 16px;
+  position: relative;
+}
+.popUpDetails h1 {
+  color: #273469;
+  font-family: "lora";
+  font-size: 40px;
+  text-align: center;
+}
+.popUpDetails .croixFermerLaPage {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}
+.popUpDetails .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.popUpDetails .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.popUpDetails .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 /*# sourceMappingURL=style.css.map */

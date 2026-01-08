@@ -1,0 +1,42 @@
+@use '../fonts';
+@use '../colors' as *;
+
+.popUpDetails {
+    background-color: $color-white;
+    border-radius:16px;
+    position: relative;
+    
+    h1 {
+        color: $color-blue;
+        font: {
+            family: 'lora';
+            size: 40px;
+        }
+        text-align: center;
+    }
+    
+    .croixFermerLaPage {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        cursor: pointer;
+    }
+    
+    .croixFermerLaPage div {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 30px;
+        height: 3px;
+        background-color: #BABABA;
+    }
+
+    .croixFermerLaPage div:first-of-type {
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .croixFermerLaPage div:last-of-type {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+    
+}
