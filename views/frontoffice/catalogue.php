@@ -10,7 +10,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $idClient = $_SESSION['user_id'];
 
-// Récupération des filtres
 $sortBy = $_GET['sort'] ?? '';
 $minNote = $_GET['minNote'] ?? '';
 $category = $_GET['category'] ?? '';
@@ -18,7 +17,6 @@ $zone = $_GET['zone'] ?? '';
 $vendeur = $_GET['vendeur'] ?? '';
 $searchQuery = $_GET['search'] ?? '';
 
-// Construction de la requête SQL
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
         FROM _produit p 
         LEFT JOIN _remise r ON p.idProduit = r.idProduit 
@@ -77,9 +75,11 @@ $nbResultats = count($products);
     <aside class="filter-sort">
         <h3>Filtres</h3>
         <form method="GET" action="">
-            <label for="sort">Trier par :</label>
+            <label for="tri">Trier par :</label>
             <label for="minNote">Note minimale :</label>
-            <label for="category">Catégorie :</label>
+            <label for="categorie">Catégorie :</label>
+            <label for="zone">Zone géographique :</label>
+            <label for="vendeur">Vendeur :</label>
         </form>
     </aside>
     
