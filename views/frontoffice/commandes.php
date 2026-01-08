@@ -347,6 +347,6 @@ $cart = getCurrentCart($pdo, $idClient);
         <script src="../scripts/frontoffice/paiement-ajax.js"></script>
         <script src="../../public/amd-shim.js"></script>
         <script src="/public/script.js"></script>
-        <script src="../scripts/backoffice/scriptProduit.js"></script>
+        <script src="../scripts/frontoffice/detailsCommande.js"></script>
     </body>
 </html>
