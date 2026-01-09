@@ -207,8 +207,8 @@ $nbResultats = count($products);
             sliderMax.value = max;
         }
 
-        minValue.textContent = min;
-        maxValue.textContent = max;
+        minValue.textContent = min+'€';
+        maxValue.textContent = max+'€';
 
         const percent1 = (min / sliderMin.max) * 100;
         const percent2 = (max / sliderMax.max) * 100;
