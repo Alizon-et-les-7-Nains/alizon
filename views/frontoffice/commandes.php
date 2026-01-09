@@ -77,6 +77,7 @@ function getCommandes($pdo, $idClient, $filtre) {
             'produits' => $produits,
             'idAdresseLivr' => $row['idAdresseLivr'],
             'idAdresseFact' => $row['idAdresseFact'],
+            'numCarte' => $row['numeroCarte'],
         ];
     }
     

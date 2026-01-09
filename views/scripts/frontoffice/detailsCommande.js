@@ -47,7 +47,7 @@ function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adr
                     <p>${transporteur}</p>
                   </div>
                   <div>
-                    <h2>Nom et prénom de la personne facturée :</h2>
+                    <h2>Nom et prénom figurant sur la carte :</h2>
                     <p>N/A</p>
                     <h2>Méthode de paiement :</h2>
                     <p>Visa</p>
