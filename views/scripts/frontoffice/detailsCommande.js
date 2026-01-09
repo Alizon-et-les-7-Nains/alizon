@@ -22,70 +22,35 @@ function clearError(element) {
 }
 
 function popUpDetailsCommande() {
+
     const overlay = document.createElement("div");
-    overlay.className = "overlayPopUpDetailsCommande";
+    overlay.className = "overlayPopUpErreur";
+    
     overlay.innerHTML = `
-        <main class="popUpDetails">
-
-            <div class="croixFermerLaPage">
-                <div></div>
-                <div></div>
-            </div>
-
-            <h1>Détails de ma commande</h1>
-        
+        <main class="popUpErreur">
+              <div class="croixFermerLaPage">
+                  <div></div>
+                  <div></div>
+              </div>
+              <h1>Détails de la commande ID : X</h1>
         </main>`;
+
     document.body.appendChild(overlay);
 
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
-    croixFermer.addEventListener("click", fermerPopUpDetailsCommande);
+    const btnFermer = overlay.querySelector(".btnFermer");
+
+    croixFermer.addEventListener("click", fermerPopUp);
+    if (btnFermer) btnFermer.addEventListener("click", fermerPopUp);
+    
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUp();
+        }
+    });
 }
 
-function fermerPopUpDetailsCommande() {
-    const overlay = document.querySelector(".overlayPopUpDetailsCommande");
+function fermerPopUpRemise() {
+    const overlay = document.querySelector(".overlayPopUpErreur");
     if (overlay) overlay.remove();
-}
-
-function verifDate(input){
-    let valeur = input.value.trim();
-    //On récupère la date du jour
-    let dateDuJour = new Date();
-    dateDuJour = dateDuJour.toLocaleDateString();
-    let tabVal = valeur.split("/");
-    let tabDate = dateDuJour.split("/");
-
-    let jourVal = parseInt(tabVal[0]);
-    let moisVal = parseInt(tabVal[1]);
-    let anVal  = parseInt(tabVal[2]);
-
-    let jourAjd = parseInt(tabDate[0]);
-    let moisAjd = parseInt(tabDate[1]);
-    let anAjd   = parseInt(tabDate[2]);
-
-    if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
-        setError(input, "Format attendu : jj/mm/aaaa");
-    } else {
-        clearError(input);
-    }
-
-    if(valeur.length == 10){
-        let erreur = false;
-            
-        if (anVal < anAjd){
-            erreur = true;
-        }
-        else if (anVal === anAjd && moisVal < moisAjd){
-            erreur = true;
-        }
-        else if (anVal === anAjd && moisVal === moisAjd && jourVal <= jourAjd){
-            erreur = true;
-        }
-
-        if (erreur) {
-            setError(input, "La date limite doit dépasser la date du jour");
-        } else {
-            clearError(input);
-        }
-    }
-
 }
