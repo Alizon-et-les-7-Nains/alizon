@@ -33,16 +33,12 @@ $countSql = "SELECT COUNT(*) FROM _produit p
              WHERE 1=1";
 
 $countStmt = $pdo->prepare($countSql);
-$countStmt->execute($paramsCount);
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
 $sql .= " LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($sql);
 
-foreach ($params as $key => $val) {
-    $stmt->bindValue($key, $val);
-}
 
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
