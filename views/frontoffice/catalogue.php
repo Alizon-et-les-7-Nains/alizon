@@ -32,13 +32,13 @@ $countSql = "SELECT COUNT(*) FROM _produit p
              AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
              WHERE 1=1";
 
-$countStmt = $pdo->prepare($countSql);
+$countStmt = $pdo->query($countSql);
 $totalProduits = $countStmt->fetchColumn();
+
 $nbPages = ceil($totalProduits / $produitsParPage);
 
 $sql .= " LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($sql);
-
 
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
