@@ -21,7 +21,7 @@ function clearError(element) {
   if (err) err.textContent = "";
 }
 
-function popUpDetailsCommande(id, dateCommande, adresseFact, adresseLivr) {
+function popUpDetailsCommande(id, dateCommande, adresseFact, adresseLivr, statut, transporteur) {
 
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpErreur";
@@ -41,10 +41,10 @@ function popUpDetailsCommande(id, dateCommande, adresseFact, adresseLivr) {
                     <p>${adresseFact}</p>
                     <h2>Adresse de livraison :</h2>
                     <p>${adresseLivr}</p>
-                    <h2>Date de livraison :</h2>
-                    <p>N/A</p>
+                    <h2>Statut :</h2>
+                    <p>${statut}</p>
                     <h2>Expédié par :</h2>
-                    <p>N/A</p>
+                    <p>${transporteur}</p>
                   </div>
                   <div>
                     <h2>Méthode de paiement :</h2>
