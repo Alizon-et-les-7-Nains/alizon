@@ -63,16 +63,19 @@ if (!$produit) {
                 </div>
 
                 <div class="form-details">
+                    <label> Intitulé du produit</label>
                     <input type="text" class="product-name-input" placeholder="Intitulé du produit" name="nom" required
                     value="<?= htmlspecialchars($produit['nom'] ?? '') ?>">
 
                     <div class="price-weight-kg">
+                        <label>Prix</label>
                         <input type="text" placeholder="Prix" name="prix" required
                         value="<?= htmlspecialchars($produit['prix'] ?? '') ?>">
-                        
+                        <label>Poids</label>
                         <input type="text" placeholder="Poids" name="poids" required 
                         value="<?= htmlspecialchars($produit['poids'] ?? '') ?>">
                     </div>
+                    <label>Mot clés (séparés par des virgules)</label>
                     <input type="text" class="motclé" placeholder="Mots clés (séparés par des virgules)" name="mots_cles" required
                     value="<?= htmlspecialchars($produit['mots_cles'] ?? '') ?>">
 
