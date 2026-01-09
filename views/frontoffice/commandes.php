@@ -23,7 +23,7 @@ function getCommandes($pdo, $idClient, $filtre) {
     $commandes = [];
     
     $sql = "SELECT c.idCommande, c.dateCommande, c.etatLivraison, c.montantCommandeTTC, 
-                   c.montantCommandeHT, c.dateExpedition, c.nomTransporteur, c.idAdresseLivr, c.idAdresseFact, c.nom
+                   c.montantCommandeHT, c.dateExpedition, c.nomTransporteur, c.idAdresseLivr, c.idAdresseFact, c.numeroCarte
             FROM _commande c
             JOIN _panier p ON c.idPanier = p.idPanier
             WHERE p.idClient = :idClient";
@@ -65,7 +65,7 @@ function getCommandes($pdo, $idClient, $filtre) {
             $dateExpObj = new DateTime($row['dateExpedition']);
             $dateLivraisonFormatee = $dateExpObj->format('d/m/Y');
         }
-        
+
         $commandes[] = [
             'id' => $row['idCommande'],
             'date' => $dateCommandeFormatee,
@@ -77,7 +77,7 @@ function getCommandes($pdo, $idClient, $filtre) {
             'produits' => $produits,
             'idAdresseLivr' => $row['idAdresseLivr'],
             'idAdresseFact' => $row['idAdresseFact'],
-            'nom' => $row['nom'],
+            'numeroCarte' => $row['numeroCarte'],
         ];
     }
     
@@ -341,9 +341,14 @@ $cart = getCurrentCart($pdo, $idClient);
 
                                 $adresseLivraison = $resultatAdresseLivraison['adresse'] . ", " . $resultatAdresseLivraison['codePostal'] . " " . $resultatAdresseLivraison['ville'];
 
+                                $sqlCarte = "SELECT nom FROM _carteBancaire WHERE numeroCarte = :numeroCarte";
+                                $stmtCarte = $pdo->prepare($sqlCarte);
+                                $stmtCarte->execute([':numeroCarte' => $commande['numeroCarte']]);
+                                $nomCarte = $stmtCarte->fetch(PDO::FETCH_ASSOC);
+
                             ?>
 
-                            <a onclick="popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>', '<?= $commande['montantHT'] ?>', '<?= $commande['total'] ?>', '<?= $commande['nom'] ?>')" href="#">Détails</a>
+                            <a onclick="popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>', '<?= $commande['montantHT'] ?>', '<?= $commande['total'] ?>', '<?= $nomCarte ?>')" href="#">Détails</a>
                             <span class="supprElem">|</span>
                             <a href="../../controllers/facture.php?id= <?php echo($commande['id']); ?>">Facture</a>
                         </div>
