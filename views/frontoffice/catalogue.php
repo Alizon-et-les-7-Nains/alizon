@@ -88,7 +88,7 @@ echo "console.log('Max price: " . $maxPrice . "');";
                     <div class="slider-track"></div>
                     <div class="slider-range" id="range"></div>
                     <input type="range" id="sliderMin" min="0" max="100" value="0">
-                    <input type="range" id="sliderMax" min="0" max="100" value="100">
+                    <input type="range" id="sliderMax" min="0" max="100" value="<?php echo $maxPrice; ?>">
                 </div>
             </div>
 
