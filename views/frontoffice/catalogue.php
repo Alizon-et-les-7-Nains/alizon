@@ -264,6 +264,7 @@ sliderMax.addEventListener('input', () => { updateSlider(); loadProduits(1); });
 updateSlider();
 loadProduits(1);
 
+document.querySelector('form').addEventListener('submit', e => e.preventDefault());
 
 </script>
 
