@@ -6,7 +6,7 @@
     .filter-sort{
         background-color: #e4d9ff;
         width: 22%;
-        position: sticky;
+        position: fixed;
         left: 0;
     }
 
@@ -67,8 +67,9 @@
         background: #E3F2FE;
         position: sticky;
         padding: 0.3em;
-        font-size: 12px;
-        font-weight: 400;
+        font-size: 13px;
+        font-weight: 500;
+        margin-left: 22%;
     }
 
     .products-section {
