@@ -6833,8 +6833,10 @@ dialog.reassort form input {
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
   width: 22%;
+  height: 100vh;
   position: fixed;
   left: 0;
+  z-index: 1000; /* pour rester au-dessus */
 }
 .pageCatalogue .filter-sort form {
   display: flex;
@@ -6845,6 +6847,7 @@ dialog.reassort form input {
   width: 78%;
   display: flex;
   flex-direction: column;
+  padding-left: 22%;
 }
 .pageCatalogue .product-list {
   display: flex;
@@ -6888,7 +6891,6 @@ dialog.reassort form input {
   padding: 0.3em;
   font-size: 13px;
   font-weight: 500;
-  margin-left: 22%;
 }
 .pageCatalogue .products-section {
   width: 78%;
