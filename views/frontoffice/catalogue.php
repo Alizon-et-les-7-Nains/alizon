@@ -90,7 +90,7 @@ $nbResultats = count($products);
                 </div>
             </div>
 
-            <label for="minNote">Note minimale :</label>
+            <label for="minNote" id="minNoteLabel">Note minimale :</label>
             <label for="categorie">Catégorie :</label>
             <label for="zone">Zone géographique :</label>
             <label for="vendeur">Vendeur :</label>

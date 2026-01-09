@@ -6968,24 +6968,24 @@ dialog.reassort form input {
   gap: 50px;
 }
 .pageCatalogue .slider-track {
-  top: 25px;
+  position: absolute;
   width: 100%;
   height: 15px;
   background: #ddd;
   border-radius: 16px;
 }
 .pageCatalogue .slider-range {
-  top: 25px;
+  position: absolute;
   height: 15px;
   background: #273469;
   border-radius: 16px;
 }
 .pageCatalogue input[type=range] {
+  position: absolute;
   width: 100%;
   background: transparent;
   -webkit-appearance: none;
   pointer-events: none;
-  top: 25px;
   height: 15px;
   padding: 0;
   margin: 0;
@@ -7012,6 +7012,9 @@ dialog.reassort form input {
   border-width: 8px;
   border-style: solid;
   border-color: #273469;
+}
+.pageCatalogue #minNoteLabel {
+  margin-top: 1em;
 }
 
 .popUpDetails {
