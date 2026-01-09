@@ -1,6 +1,6 @@
 <?php
-require_once "../../controllers/pdo.php";
-require_once "../../controllers/prix.php";
+require_once "../controllers/pdo.php";
+require_once "../controllers/prix.php";
 
 $minPrice = (int) ($_GET['minPrice'] ?? 0);
 $maxPrice = (int) ($_GET['maxPrice'] ?? PHP_INT_MAX);
@@ -37,7 +37,7 @@ foreach ($products as $p) {
         "SELECT URL FROM _imageDeProduit WHERE idProduit = :id LIMIT 1"
     );
     $imgStmt->execute([':id' => $p['idProduit']]);
-    $img = $imgStmt->fetchColumn() ?: '../../public/images/defaultImageProduit.png';
+    $img = $imgStmt->fetchColumn() ?: '../public/images/defaultImageProduit.png';
     ?>
     <article>
         <img src="<?= htmlspecialchars($img) ?>"
@@ -51,7 +51,7 @@ foreach ($products as $p) {
 
         <?php if ($p['stock'] > 0): ?>
             <button class="plus" data-id="<?= $p['idProduit'] ?>">
-                <img src="../../public/images/btnAjoutPanier.svg">
+                <img src="../public/images/btnAjoutPanier.svg">
             </button>
         <?php else: ?>
             <b style="color:red">Aucun stock</b>
