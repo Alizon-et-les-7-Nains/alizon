@@ -127,6 +127,7 @@ $pays          = $vendeur['pays'] ?? '';
                 <!-- Colonne gauche -->
                 <article class="col">
                     <div class="champ">
+                        <label>Nom</label>
                         <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($nom) ?>" readonly>
                         <div class="field-error">
                             <p>Le nom est obligatoire</p>
@@ -134,6 +135,7 @@ $pays          = $vendeur['pays'] ?? '';
                     </div>
 
                     <div class="champ">
+                        <label>Prénom</label>
                         <input type="text" id="prenom" name="prenom" value="<?= htmlspecialchars($prenom) ?>" readonly>
                         <div class="field-error">
                             <p>Le prénom est obligatoire</p>
@@ -142,6 +144,7 @@ $pays          = $vendeur['pays'] ?? '';
 
                     <div class="champ">
                         <div class="champ-date">
+                            <label>Date de naissance</label>
                             <input type="date" id="dateNaissance" name="dateNaissance" value="<?= $dateNaissance ?>"
                                 readonly>
                         </div>
@@ -151,6 +154,7 @@ $pays          = $vendeur['pays'] ?? '';
                     </div>
 
                     <div class="champ">
+                        <label>Adresse</label>
                         <input type="text" id="adresse" name="adresse" value="<?= htmlspecialchars($adresse) ?>"
                             readonly>
                         <div class="field-error">
@@ -160,6 +164,7 @@ $pays          = $vendeur['pays'] ?? '';
 
                     <div class="champ-double">
                         <div class="champ">
+                            <label>Code Postal</label>
                             <input type="text" id="codePostal" name="codePostal"
                                 value="<?= htmlspecialchars($codePostal) ?>" readonly>
                             <div class="field-error">
@@ -167,6 +172,7 @@ $pays          = $vendeur['pays'] ?? '';
                             </div>
                         </div>
                         <div class="champ">
+                            <label>Ville</label>
                             <input type="text" id="ville" name="ville" value="<?= htmlspecialchars($ville) ?>" readonly>
                             <div class="field-error">
                                 <p>La ville est obligatoire</p>
@@ -175,6 +181,7 @@ $pays          = $vendeur['pays'] ?? '';
                     </div>
 
                     <div class="champ">
+                        <label>Région</label>
                         <input type="text" id="region" name="region" value="<?= htmlspecialchars($region) ?>" readonly>
                         <div class="field-error">
                             <p>La région est obligatoire</p>
@@ -182,6 +189,7 @@ $pays          = $vendeur['pays'] ?? '';
                     </div>
 
                     <div class="champ">
+                        <label>Pays</label>
                         <input type="text" id="pays" name="pays" value="<?= htmlspecialchars($pays) ?>" readonly>
                         <div class="field-error">
                             <p>Le pays est obligatoire</p>
@@ -189,6 +197,7 @@ $pays          = $vendeur['pays'] ?? '';
                     </div>
 
                     <div class="champ">
+                        <label>Téléphone</label>
                         <input type="tel" id="telephone" name="telephone" value="<?= htmlspecialchars($telephone) ?>"
                             readonly>
                         <div class="field-error">
@@ -197,6 +206,7 @@ $pays          = $vendeur['pays'] ?? '';
                     </div>
 
                     <div class="champ">
+                        <label>Email</label>
                         <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" readonly>
                         <div class="field-error">
                             <p>L'email n'est pas valide</p>
@@ -207,6 +217,7 @@ $pays          = $vendeur['pays'] ?? '';
                 <!-- Colonne droite -->
                 <article class="col">
                     <div class="champ">
+                        <label>Raison sociale</label>
                         <input type="text" id="raisonSociale" name="raisonSociale"
                             value="<?= htmlspecialchars($raisonSociale) ?>" readonly>
                         <div class="field-error">
@@ -215,6 +226,7 @@ $pays          = $vendeur['pays'] ?? '';
                     </div>
 
                     <div class="champ">
+                        <label>Numéro de Siren</label>
                         <input type="text" id="noSiren" name="noSiren" value="<?= htmlspecialchars($noSiren) ?>"
                             readonly>
                         <div class="field-error">
@@ -223,6 +235,7 @@ $pays          = $vendeur['pays'] ?? '';
                     </div>
 
                     <div class="champ">
+                        <label>Pseudo</label>
                         <input type="text" id="pseudo" name="pseudo" value="<?= htmlspecialchars($pseudo) ?>" readonly>
                         <div class="field-error">
                             <p>Le pseudo est obligatoire</p>
@@ -231,6 +244,7 @@ $pays          = $vendeur['pays'] ?? '';
 
                     <!-- Section modification mot de passe -->
                     <div class="champ">
+                        <label>Ancien mot de passe</label>
                         <input type="password" id="ancienMdp" name="ancienMdp" placeholder="Ancien mot de passe"
                             readonly>
                         <div class="field-error">
@@ -239,6 +253,7 @@ $pays          = $vendeur['pays'] ?? '';
                     </div>
 
                     <div class="champ">
+                        <label>Novueau mot de passe</label>
                         <input type="password" id="nouveauMdp" name="nouveauMdp" placeholder="Nouveau mot de passe"
                             readonly>
                         <div class="field-error">
@@ -247,6 +262,7 @@ $pays          = $vendeur['pays'] ?? '';
                     </div>
 
                     <div class="champ">
+                        <label>Confirmer votre nouveau mot de passe</label>
                         <input type="password" id="confirmationMdp" name="confirmationMdp"
                             placeholder="Confirmer le nouveau mot de passe" readonly>
                         <div class="field-error">
