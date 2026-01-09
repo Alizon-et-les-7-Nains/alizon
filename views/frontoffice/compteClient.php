@@ -166,25 +166,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <section>
                 <article>
-                    <div><p><?php echo htmlspecialchars($pseudo ?? ''); ?></p></div>
-                   <div><p><?php echo htmlspecialchars($prenom ?? ''); ?></p></div>
-                   <div><p><?php echo htmlspecialchars($nom ?? ''); ?></p></div>
-                   <div><p><?php echo htmlspecialchars($dateNaissance ?? ''); ?></p></div>
-                </article>
-
-                <article>
-                    <div><p><?php echo htmlspecialchars($adresse1 ?? ''); ?></p></div>
-                    <div><p><?php echo htmlspecialchars($adresse2 ?? ''); ?></p></div>
-                    <div class="double-champ">
-                        <div><p><?php echo htmlspecialchars($codePostal ?? ''); ?></p></div>
-                        <div><p><?php echo htmlspecialchars($ville ?? ''); ?></p></div>
+                    <div>
+                        <label>Pseudo</label>
+                        <p><?php echo htmlspecialchars($pseudo ?? ''); ?></p>
                     </div>
-                    <div><p><?php echo htmlspecialchars($pays ?? ''); ?></p></div>
+                   <div>
+                        <label>Prénom</label>
+                            <p><?php echo htmlspecialchars($prenom ?? ''); ?></p>
+                    </div>
+                   <div>
+                        <label>Nom</label>
+                        <p><?php echo htmlspecialchars($nom ?? ''); ?></p>
+                    </div>
+                   <div>
+                        <label>Date de naissance</label>
+                        <p><?php echo htmlspecialchars($dateNaissance ?? ''); ?></p>
+                    </div>
                 </article>
 
                 <article>
-                    <div><p><?php echo htmlspecialchars($noTelephone ?? ''); ?></p></div>
-                    <div><p><?php echo htmlspecialchars($email ?? ''); ?></p></div>
+                    <div>
+                        <label>Adresse</label>
+                        <p><?php echo htmlspecialchars($adresse1 ?? ''); ?></p>
+                </div>
+                    <div>
+                        <label>Complément d'adresse</label>
+                        <p><?php echo htmlspecialchars($adresse2 ?? ''); ?></p>
+                </div>
+                    <div class="double-champ">
+                        <div>
+                            <label>Code Postal</label>
+                            <p><?php echo htmlspecialchars($codePostal ?? ''); ?></p>
+                        </div>
+                        <div><label>Ville</label>
+                        <p><?php echo htmlspecialchars($ville ?? ''); ?></p>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Pays</label>
+                        <p><?php echo htmlspecialchars($pays ?? ''); ?></p>
+                    </div>
+                </article>
+
+                <article>
+                    <div>
+                        <label>Numéro de téléphone</label>
+                        <p><?php echo htmlspecialchars($noTelephone ?? ''); ?></p>
+                    </div>
+                    <div>
+                        <label>Email</label>
+                        <p><?php echo htmlspecialchars($email ?? ''); ?></p>
+                    </div>
                 </article> 
             </section>
 

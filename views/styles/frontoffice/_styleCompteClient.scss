@@ -9,6 +9,10 @@
     font-weight: bold;
     font-style: italic;
 
+    label{
+        height: 30px !important;
+        margin-bottom: 115px !important;
+    }
 
     h1{
         font-family: 'lora';
@@ -71,6 +75,7 @@
         height: 100%;
         display: flex;
         align-items: center;
+        margin-top:20px;
     }
 
     #buttonsCompte{
@@ -148,10 +153,10 @@
         outline: none;
         border: 0;
     }   
-
 }
 
-    
+
+
 .overlayPopUpCompteClient{
         position: fixed;
         inset: 0;

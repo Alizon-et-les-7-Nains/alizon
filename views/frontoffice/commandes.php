@@ -23,12 +23,12 @@ function getCommandes($pdo, $idClient, $filtre) {
     $commandes = [];
     
     $sql = "SELECT c.idCommande, c.dateCommande, c.etatLivraison, c.montantCommandeTTC, 
-                   c.dateExpedition, c.nomTransporteur
+                   c.montantCommandeHT, c.dateExpedition, c.nomTransporteur, c.idAdresseLivr, c.idAdresseFact, c.numeroCarte
             FROM _commande c
             JOIN _panier p ON c.idPanier = p.idPanier
             WHERE p.idClient = :idClient";
 
-if ($filtre === 'cours') {
+    if ($filtre === 'cours') {
         $sql .= " AND c.etatLivraison NOT IN ('Livrée', 'Annulé')";
     } elseif ($filtre === '2025') {
         $sql .= " AND YEAR(c.dateCommande) = 2025";
@@ -50,7 +50,7 @@ if ($filtre === 'cours') {
                         JOIN _produit p ON co.idProduit = p.idProduit
                         LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
                         LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur
-                        WHERE co.idCommande = :idCommande -- <--- AJOUT DU DEUX-POINTS ICI
+                        WHERE co.idCommande = :idCommande
                         GROUP BY p.idProduit";
                         
         $stmtProd = $pdo->prepare($sqlProduits);
@@ -69,11 +69,11 @@ if ($filtre === 'cours') {
         $commandes[] = [
             'id' => $row['idCommande'],
             'date' => $dateCommandeFormatee,
-            'total' => number_format($row['montantCommandeTTC'], 2, ',', ' '),
-            'statut' => $row['etatLivraison'], 
+            'total' => number_format($row['montantCommandeTTC'], 2, ',', ' '), // Montant commande TTC
+            'statut' => $row['etatLivraison'],
             'dateLivraison' => $dateLivraisonFormatee,
             'transporteur' => $row['nomTransporteur'],
-            'produits' => $produits
+            'produits' => $produits,
         ];
     }
     
@@ -308,6 +308,39 @@ $cart = getCurrentCart($pdo, $idClient);
                             <p>#<?php echo $commande['id']; ?></p>
                         </div>
                         <div class="liensCommande">
+
+                            <?php 
+                                
+                                $sql = "SELECT *
+                                FROM _adresseClient a
+                                WHERE a.idAdresse = :idAdresse";
+
+                                $stmt = $pdo->prepare($sql);
+                                $stmt->execute([':idAdresse' => $commande['idAdresseFact']]);
+                                $resultatAdresseFacturation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                if(!$resultatAdresseFacturation['complementAdresse']) {
+                                    $complement = "";
+                                } else {
+                                    $complement = $resultatAdresseFacturation['complementAdresse'];
+                                }
+                            
+                                $adresseFacturation = $resultatAdresseFacturation['adresse'] . " ," . $resultatAdresseFacturation['codePostal'] . " " . $resultatAdresseFacturation['ville'] . $complement;
+
+                                $sql = "SELECT *
+                                        FROM _adresseLivraison a
+                                        WHERE a.idAdresseLivraison = :idAdresse";
+
+                                $stmt = $pdo->prepare($sql);
+                                $stmt->execute([':idAdresse' => $commande['idAdresseLivr']]);
+                                $resultatAdresseLivraison = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                $adresseLivraison = $resultatAdresseLivraison['adresse'] . " ," . $resultatAdresseLivraison['codePostal'] . " " . $resultatAdresseLivraison['ville'];
+
+                            ?>
+
+                            <a onclick="popUpDetailsCommande($commande['id'], $commande['date'], $adresseFacturation, $adresseLivraison, $commande['statut'], $commande['transporteur'])" href="#">Détails</a>
+                            <span class="supprElem">|</span>
                             <a href="../../controllers/facture.php?id= <?php echo($commande['id']); ?>">Facture</a>
                         </div>
                     </section>
@@ -325,26 +358,26 @@ $cart = getCurrentCart($pdo, $idClient);
         </main>
 
             <script>
-            const popupConfirmation = document.querySelector(".confirmationAjout");
-            const boutonsAjout = document.querySelectorAll(".plus");
+                const popupConfirmation = document.querySelector(".confirmationAjout");
+                const boutonsAjout = document.querySelectorAll(".plus");
 
-            boutonsAjout.forEach(btn => {
-                btn.addEventListener("click", function(e) {
+                boutonsAjout.forEach(btn => {
+                    btn.addEventListener("click", function(e) {
 
-                    // Afficher le popup
-                    popupConfirmation.style.display = "block";
-                    console.log("Clique bouton ajouter panier");
+                        // Afficher le popup
+                        popupConfirmation.style.display = "block";
 
-                    // Cacher après 1,5 secondes
-                    setTimeout(() => {
-                        popupConfirmation.style.display = "none";
-                    }, 5000);
+                        // Cacher après 1,5 secondes
+                        setTimeout(() => {
+                            popupConfirmation.style.display = "none";
+                        }, 5000);
+                    });
                 });
-            });
-        </script>
+            </script>
 
         <script src="../scripts/frontoffice/paiement-ajax.js"></script>
         <script src="../../public/amd-shim.js"></script>
-        <script src="../../public/script.js"></script>
+        <script src="/public/script.js"></script>
+        <script src="../scripts/frontoffice/detailsCommande.js"></script>
     </body>
 </html>

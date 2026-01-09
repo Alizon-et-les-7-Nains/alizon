@@ -1846,6 +1846,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     text-decoration-color: #273469;
     margin-top: 8px;
   }
+  .inscription form #refactor {
+    display: flex;
+    flex-direction: column;
+  }
+  .inscription form #refactor input {
+    width: 450px;
+  }
   .inscription h2 {
     color: #273469;
     font-family: "Lora", serif;
@@ -1953,6 +1960,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     font-weight: bold;
     text-align: center;
     margin: 30px 0px;
+  }
+  label {
+    margin-top: 20px;
   }
 }
 #submitButton {
@@ -2498,6 +2508,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: bold;
   font-style: italic;
 }
+.mainCompteClient label {
+  height: 30px !important;
+  margin-bottom: 115px !important;
+}
 .mainCompteClient h1 {
   font-family: "lora";
   font-size: 48px;
@@ -2552,6 +2566,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   height: 100%;
   display: flex;
   align-items: center;
+  margin-top: 20px;
 }
 .mainCompteClient #buttonsCompte {
   padding-top: 32px;
@@ -4026,8 +4041,13 @@ button#haut.visible:hover {
   display: flex;
   flex-direction: column;
 }
+.CreerCompteVendeur .container .form-vendeur label {
+  margin-left: 5px;
+}
 .CreerCompteVendeur .container .form-vendeur input.form-control {
   padding: 10px 15px;
+  height: 48px;
+  margin: 5px;
   border: 2px solid #273469;
   border-radius: 8px;
   font-size: 1rem;
@@ -6864,6 +6884,200 @@ dialog.reassort form input {
 .pageCatalogue #resultat {
   background: #E3F2FE;
   position: relative;
+}
+.pageCatalogue .products-section {
+  width: 78%;
+}
+.pageCatalogue .listeArticle {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
+  gap: 30px;
+  width: 100%;
+}
+.pageCatalogue .listeArticle article {
+  border: 2px solid #273469;
+  border-radius: 20px;
+  margin: 10px;
+  padding: 10px;
+  min-width: 276px;
+  max-width: 276px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pageCatalogue .listeArticle article h2 {
+  color: #273469;
+  font-size: 20px;
+  font-family: "Open-sans", serif;
+  font-weight: 500;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+.pageCatalogue .listeArticle article .imgProduit {
+  max-width: 267px;
+  max-height: 168px;
+  object-fit: contain;
+  border-radius: 20px;
+}
+.pageCatalogue .notation {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0;
+}
+.pageCatalogue .notation .etoile {
+  width: 20px;
+  height: 20px;
+}
+.pageCatalogue .notation span {
+  color: #273469;
+  font-family: "Lora", serif;
+  font-size: 18px;
+  font-weight: bold;
+}
+.pageCatalogue .infoProd {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+}
+.pageCatalogue .prix h2 {
+  color: #273469;
+  font-size: 32px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+  margin: 0;
+}
+.pageCatalogue .prix h3 {
+  color: #000000;
+  font-size: 12px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+  font-style: italic;
+  margin: 0;
+}
+.pageCatalogue .prix h4 {
+  color: #273469;
+  font-size: 14px;
+  font-family: "Open-sans", serif;
+  margin: 0;
+}
+.pageCatalogue .infoProd button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pageCatalogue .slider-wrapper {
+  position: relative;
+  height: 15px;
+  width: 260px;
+}
+.pageCatalogue .values {
+  display: flex;
+  gap: 200px;
+}
+.pageCatalogue .slider-track {
+  top: 10px;
+  position: absolute;
+  width: 100%;
+  height: 15px;
+  background: #ddd;
+  border-radius: 16px;
+}
+.pageCatalogue .slider-range {
+  top: 10px;
+  position: absolute;
+  height: 15px;
+  background: #273469;
+  border-radius: 16px;
+}
+.pageCatalogue input[type=range] {
+  top: 10px;
+  position: absolute;
+  width: 100%;
+  background: transparent;
+  -webkit-appearance: none;
+  pointer-events: none;
+  height: 15px;
+  padding: 0;
+  margin: 0;
+}
+.pageCatalogue input[type=range]::-webkit-slider-thumb {
+  pointer-events: all;
+  -webkit-appearance: none;
+  cursor: pointer;
+  width: 20px;
+  height: 30px;
+  background: white;
+  border-radius: 16px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: #273469;
+}
+.pageCatalogue input[type=range]::-moz-range-thumb {
+  pointer-events: all;
+  cursor: pointer;
+  width: 20px;
+  height: 30px;
+  background: white;
+  border-radius: 16px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: #273469;
+}
+.pageCatalogue #minNoteLabel {
+  margin-top: 1.5em;
+}
+
+.popUpDetails {
+  background-color: #fffefa;
+  border-radius: 16px;
+  position: relative;
+  width: 1000px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.popUpDetails h1 {
+  color: #273469;
+  font-family: "lora";
+  font-size: 40px;
+  text-align: center;
+}
+.popUpDetails .croixFermerLaPage {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}
+.popUpDetails .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.popUpDetails .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.popUpDetails .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.popUpDetails .conteneurSections {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.popUpDetails p {
+  text-align: left;
 }
 
 /*# sourceMappingURL=style.css.map */
