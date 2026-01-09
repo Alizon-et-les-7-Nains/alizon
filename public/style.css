@@ -2630,6 +2630,19 @@ label {
   border: 0;
 }
 
+label {
+  height: 30px;
+  margin-bottom: 115px;
+}
+
+p {
+  margin-top: 30px;
+}
+
+input {
+  margin-top: 30px;
+}
+
 .overlayPopUpCompteClient {
   position: fixed;
   inset: 0;
@@ -6887,12 +6900,13 @@ dialog.reassort form input {
 .pageCatalogue .listeArticle {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
-  gap: 50px;
+  gap: 30px;
   width: 100%;
 }
 .pageCatalogue .listeArticle article {
   border: 2px solid #273469;
   border-radius: 20px;
+  margin: 10px;
   padding: 10px;
   min-width: 276px;
   max-width: 276px;
@@ -6900,7 +6914,6 @@ dialog.reassort form input {
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin: 0;
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
@@ -6968,6 +6981,95 @@ dialog.reassort form input {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.pageCatalogue .slider-wrapper {
+  position: relative;
+  height: 15px;
+  width: 260px;
+}
+.pageCatalogue .values {
+  display: flex;
+  gap: 50px;
+}
+.pageCatalogue .slider-track {
+  position: absolute;
+  top: 25px;
+  width: 100%;
+  height: 15px;
+  background: #ddd;
+  border-radius: 16px;
+}
+.pageCatalogue .slider-range {
+  position: absolute;
+  top: 25px;
+  height: 15px;
+  background: #273469;
+  border-radius: 16px;
+}
+.pageCatalogue input[type=range] {
+  position: absolute;
+  width: 100%;
+  background: transparent;
+  -webkit-appearance: none;
+  pointer-events: none;
+  top: 25px;
+  height: 15px;
+  padding: 0;
+  margin: 0;
+}
+.pageCatalogue input[type=range]::-webkit-slider-thumb {
+  pointer-events: all;
+  -webkit-appearance: none;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  background: white;
+  border-radius: 50%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #273469;
+}
+.pageCatalogue input[type=range]::-moz-range-thumb {
+  pointer-events: all;
+  cursor: pointer;
+  width: 7px;
+  height: 7px;
+  background: white;
+  border-radius: 50%;
+  border: 8px outset;
+  border-color: #273469;
+}
+
+.popUpDetails {
+  background-color: #fffefa;
+  border-radius: 16px;
+  position: relative;
+}
+.popUpDetails h1 {
+  color: #273469;
+  font-family: "lora";
+  font-size: 40px;
+  text-align: center;
+}
+.popUpDetails .croixFermerLaPage {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}
+.popUpDetails .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.popUpDetails .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.popUpDetails .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 /*# sourceMappingURL=style.css.map */
