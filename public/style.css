@@ -6986,7 +6986,7 @@ dialog.reassort form input {
   position: absolute;
   width: 100%;
   background: transparent;
-  pointer-events: none;
+  -webkit-appearance: none;
   top: 25px;
   height: 15px;
   padding: 0;
