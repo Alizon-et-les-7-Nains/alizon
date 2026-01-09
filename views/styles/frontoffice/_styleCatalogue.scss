@@ -217,7 +217,8 @@
         height: 7px;
         background: white;
         border-radius: 50%;
-        border: 8px outset;
+        border-width: 8px;
+        border-style: dashed;
         border-color: #273469;
     }
 
