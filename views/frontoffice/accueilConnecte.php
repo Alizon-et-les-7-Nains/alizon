@@ -369,22 +369,20 @@ $cart = getCurrentCart($pdo, $idClient);
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                <article style="margin-top: 5px;">
-                    <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
-                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"
-                        alt="Image du produit">
-                    <h2 class="nomProduit"
+                <article style="margin-top: 5px; cursor: pointer;" 
                         onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                        <?php echo htmlspecialchars($value['nom']); ?></h2>
-                            <div class="notation">
-                                <?php if(number_format($value['note'], 1) == 0) { ?>
-                                    <span><?php echo "Pas de note" ?></span>
-                                <?php } else { ?>
-                                <span><?php echo number_format($value['note'], 1); ?></span>
-                                <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
-                                    <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                                <?php }} ?>
-                            </div>
+                    <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
+                    <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
+                    <div class="notation">
+                        <?php if(number_format($value['note'], 1) == 0) { ?>
+                            <span>Pas de note</span>
+                        <?php } else { ?>
+                            <span><?php echo number_format($value['note'], 1); ?></span>
+                            <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
                     <div class="infoProd">
                         <div class="prix">
                             <?php if ($enRemise): ?>
@@ -401,11 +399,12 @@ $cart = getCurrentCart($pdo, $idClient);
                                 $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                                 $poids = $value['poids'];
                                 $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
-                                $prixAuKg = round($prixAuKg,2) ?>
+                                $prixAuKg = round($prixAuKg,2); 
+                            ?>
                             <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
                         <div>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                         </div>
