@@ -9,7 +9,19 @@
     font-weight: bold;
     font-style: italic;
 
+    label{
+        height: 30px;
+        margin-bottom: 115px;
+    }
+        
+    p{
+        margin-top:30px;
+    }
 
+    input{
+        margin-top:30px;
+    }
+    
     h1{
         font-family: 'lora';
         font-size: 48px;
@@ -148,10 +160,10 @@
         outline: none;
         border: 0;
     }   
-
 }
 
-    
+
+
 .overlayPopUpCompteClient{
         position: fixed;
         inset: 0;
