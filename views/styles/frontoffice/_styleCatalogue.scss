@@ -244,4 +244,16 @@
     #minNoteLabel {
         margin-top: 1.5em;
     }
+
+    .pagination {
+        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .pagination a{
+        border: 2px solid black;
+        text-decoration: none;
+    }
 }
