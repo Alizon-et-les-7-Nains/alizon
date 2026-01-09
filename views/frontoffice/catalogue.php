@@ -57,7 +57,6 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $nbResultats = count($products);
 $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
-echo "console.log('Max price: " . $maxPrice . "');";
 ?>
 
 <!DOCTYPE html>
@@ -88,7 +87,7 @@ echo "console.log('Max price: " . $maxPrice . "');";
                     <div class="slider-track"></div>
                     <div class="slider-range" id="range"></div>
                     <input type="range" id="sliderMin" min="0" max="100" value="0">
-                    <input type="range" id="sliderMax" min="0" max="100" value="<?php echo $maxPrice; ?>">
+                    <input type="range" id="sliderMax" min="0" max="<?php echo $maxPrice; ?>" value="<?php echo $maxPrice; ?>">
                 </div>
             </div>
 
