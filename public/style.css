@@ -7079,5 +7079,94 @@ dialog.reassort form input {
 .popUpDetails p {
   text-align: left;
 }
+main.commandesBackoffice {
+  display: flex;
+  flex-direction: column;
+  color: #273469;
+  margin-bottom: 2em;
+}
+main.commandesBackoffice h1, main.commandesBackoffice img, main.commandesBackoffice button {
+  user-select: none;
+}
+main.commandesBackoffice h1 {
+  font-family: "lora";
+}
+main.commandesBackoffice section article {
+  font-family: "open-sans";
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-bottom: 1em;
+  background-color: #e4d9ff;
+  border-radius: 16px;
+  border-left-style: solid;
+  border-left-width: 5px;
+}
+main.commandesBackoffice section article table {
+  width: 200px;
+  border-spacing: 0;
+  outline: 2px solid #000000;
+  outline-offset: -2px;
+  margin: 0;
+  border-radius: 16px;
+}
+main.commandesBackoffice section article table tr {
+  padding: 0;
+  margin: 0;
+}
+main.commandesBackoffice section article table td {
+  padding: 0;
+  margin: 0;
+}
+main.commandesBackoffice section article table figure {
+  padding: 0;
+  margin: 0;
+}
+main.commandesBackoffice section article table {
+  font-weight: bold;
+  font-size: 15px;
+}
+main.commandesBackoffice section article table tr:last-child td {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 0.5em;
+}
+main.commandesBackoffice section article table tr:last-child td:last-child {
+  text-align: right;
+  font-size: 25px;
+  font-weight: bold;
+}
+main.commandesBackoffice section article ul {
+  padding: 0;
+  display: flex;
+  list-style: none;
+}
+main.commandesBackoffice section article ul li {
+  display: flex;
+}
+main.commandesBackoffice section article ul li figure img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+main.commandesBackoffice section article ul:first-child {
+  align-items: center;
+  justify-content: space-between;
+}
+main.commandesBackoffice section article ul:first-child li:last-child {
+  font-size: 20px;
+}
+main.commandesBackoffice section article ul:last-child {
+  flex-wrap: wrap;
+  gap: 1em;
+}
+main.commandesBackoffice section article ul:last-child li {
+  border-radius: 16px;
+  background-color: #fffefa;
+}
+main.commandesBackoffice section.livre article {
+  border-left-color: #259525;
+}
 
 /*# sourceMappingURL=style.css.map */
