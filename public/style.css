@@ -6980,7 +6980,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .values {
   display: flex;
-  gap: 240px;
+  gap: 200px;
 }
 .pageCatalogue .slider-track {
   top: 10px;
