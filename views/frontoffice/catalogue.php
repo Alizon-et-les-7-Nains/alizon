@@ -85,8 +85,8 @@ $nbResultats = count($products);
                 <div class="slider-wrapper">
                     <div class="slider-track"></div>
                     <div class="slider-range" id="range"></div>
-                    <input type="range" id="sliderMin" min="0" max="100" value="25">
-                    <input type="range" id="sliderMax" min="0" max="100" value="75">
+                    <input type="range" id="sliderMin" min="0" max="100" value="0">
+                    <input type="range" id="sliderMax" min="0" max="100" value="100">
                 </div>
             </div>
 
