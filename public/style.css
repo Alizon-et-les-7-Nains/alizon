@@ -1846,6 +1846,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     text-decoration-color: #273469;
     margin-top: 8px;
   }
+  .inscription form #refactor {
+    display: flex;
+    flex-direction: column;
+  }
+  .inscription form #refactor input {
+    width: 450px;
+  }
   .inscription h2 {
     color: #273469;
     font-family: "Lora", serif;
@@ -1979,6 +1986,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 
 #password-requirements li {
   margin-bottom: 5px;
+}
+
+label {
+  margin-top: 20px;
 }
 
 .pagePaiement input[type=text] {
@@ -2617,6 +2628,19 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient input:focus {
   outline: none;
   border: 0;
+}
+
+label {
+  height: 30px;
+  margin-bottom: 115px;
+}
+
+p {
+  margin-top: 30px;
+}
+
+input {
+  margin-top: 30px;
 }
 
 .overlayPopUpCompteClient {

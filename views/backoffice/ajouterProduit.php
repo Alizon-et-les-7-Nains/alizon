@@ -2,17 +2,6 @@
 require_once "../../controllers/pdo.php";
 require_once '../../controllers/auth.php';
 
-    $nom = $_SESSION['form_data']['nom'] ?? '';
-    $prenom = $_SESSION['form_data']['prenom'] ?? '';
-    $email = $_SESSION['form_data']['email'] ?? '';
-    $noTelephone = $_SESSION['form_data']['noTelephone'] ?? '';
-    $pseudo = $_SESSION['form_data']['pseudo'] ?? '';
-    $dateNaissance = $_SESSION['form_data']['dateNaissance'] ?? '';
-    $noSiren = $_SESSION['form_data']['noSiren'] ?? '';
-    $idAdresse = $_SESSION['form_data']['idAdresse'] ?? '';
-    $raisonSocial = $_SESSION['form_data']['raisonSocial'] ?? '';
-    $message = $_SESSION['form_data']['message'] ?? ''; 
-    unset($_SESSION['form_data']);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -56,15 +45,18 @@ require_once '../../controllers/auth.php';
                 </div>
 
                 <div class="form-details">
-                    <input type="text" name="nom" class="product-name-input" placeholder="Intitulé du produit" required>
+                    <label> Intitulé du produit </label>
+                    <input type="text" name="nom" class="product-name-input" required>
                 
                     <div class="price-weight-kg">
-                        <input type="number" step="0.01" name="prix" id="inputPrix" placeholder="Prix (€)" required>
-                        <input type="number" step="0.01" name="poids" id="inputPoids" placeholder="Poids (kg)" required>
+                        <label> Prix (€) </label>
+                        <input type="number" step="0.01" name="prix" id="inputPrix"  required>
+                        <label> Poids (kg) </label>
+                        <input type="number" step="0.01" name="poids" id="inputPoids" required>
                         <span class="prix-kg-label" id="labelPrixKg">Prix au Kg: -- €</span>
                     </div>
-
-                    <input type="text" name="mots_cles" class="keywords-input" placeholder="Mots clés (séparés par des virgules)">
+                    <label> Mots clés (séparés par des virgules) </label>
+                    <input type="text" name="mots_cles" class="keywords-input">
                 </div>
             </div>
 

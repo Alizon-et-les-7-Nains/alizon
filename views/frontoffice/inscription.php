@@ -36,31 +36,38 @@
         <form id="monForm" action="../../controllers/session_start.php" method="post" enctype="multipart/form-data">
 
           <!-- Pseudo -->
-          <input type="text" placeholder="Pseudo*" id="pseudo" name="pseudo" required />
+           <label> Pseudo* </label>
+          <input type="text" id="pseudo" name="pseudo" required />
           <br />
         <div id="refactor">
           <!-- Nom -->
-          <input type="text" placeholder="Nom*" id="nom" name="nom" required />
+           <label> Nom* </label>
+          <input type="text" id="nom" name="nom" required />
           <br />
 
           <!-- Prénom -->
-          <input type="text" placeholder="Prénom*" id="prenom" name="prenom" required />
+           <label> Prénom* </label>
+          <input type="text" id="prenom" name="prenom" required />
           <br />
         </div>
         <div id="refactor">
+            <label> Date de naissance* </label>
             <!-- Date de naissance -->
-            <input type="text" placeholder="Date de naissance*" id="birthdate" name="birthdate" required/>
+            <input type="text" id="birthdate" name="birthdate" required/>
             <br />
 
             <!-- Téléphone -->
-            <input type="tel" placeholder="Téléphone*" id="telephone" name="telephone" required/>
+             <label> Numéro de téléphone*</label>
+            <input type="tel" id="telephone" name="telephone" required/>
             <br />
         </div>
            <!-- Email -->
-          <input type="email" placeholder="Email*" id="email*" name="email" required/>
+            <label> Email* </label>
+          <input type="email" id="email*" name="email" required/>
           <br />
           <!-- Mot de passe -->
-          <input type="password" placeholder="Mot de passe*" id="mdp" name="mdp" required />
+          <label> Mot de passe* </label>
+          <input type="password" id="mdp" name="mdp" required />
           <br />
           <div id="password-requirements-container" class="mt-2 hidden">
               <ul id="password-requirements">
@@ -73,7 +80,8 @@
           </div>
 
           <!-- Confirmer Mot de passe -->
-          <input type="password" placeholder="Confirmer le mot de passe*" id="cmdp" name="cmdp" required />
+           <label> Confirmer votre mot de passe* </label>
+          <input type="password" id="cmdp" name="cmdp" required />
           <br />
 
           
@@ -123,7 +131,6 @@
 
 
             passwordInput.addEventListener('focus', () => {
-                passwordRequirementsContainer.classList.remove('hidden');
                 passwordInput.classList.remove('input-error'); // Enlève l'erreur quand l'utilisateur revient
                 validatePassword(); 
             });
@@ -167,13 +174,14 @@
                 if(!validatePassword()){
                     allValid = false;
                 }
+               
                 if(!validateBirthDate()){
                     allValid = false;
                 }
                 if(!validatePhoneNumber()){
                     allValid = false;
                 }
-                submitButton.disabled = !allValid;
+                submitButton.disabled = allValid;
                 
                 if(allValid){
                     return true;
@@ -197,12 +205,11 @@
 
                 // Validation de la correspondance des mots de passe
                 const passwordsMatch = password.length > 0 && password === confirmPassword;
-                const matchIconClass = passwordsMatch ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
-                const matchStatusClass = passwordsMatch ? 'status-green' : 'status-red';
-
-                if (!passwordsMatch) {
+                
+                if(!passwordsMatch){
                     allValid = false;
                 }
+
                 submitButton.disabled = !allValid;
 
                 return allValid;
@@ -304,10 +311,7 @@
             }
             })
             
-            validateForm(); 
-
-
-            
+            validateForm();           
         </script>
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
       </main>
