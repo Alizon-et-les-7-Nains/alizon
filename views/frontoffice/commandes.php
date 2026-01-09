@@ -66,32 +66,6 @@ function getCommandes($pdo, $idClient, $filtre) {
             $dateLivraisonFormatee = $dateExpObj->format('d/m/Y');
         }
         
-        $sql = "SELECT *
-                FROM _adresseClient a
-                WHERE a.idAdresse = :idAdresse";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':idClient' => $row['idAdresseFact']]);
-        $resultatAdresseFacturation = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if(!$resultatAdresseFacturation['complementAdresse']) {
-            $complement = "";
-        } else {
-            $complement = $resultatAdresseFacturation['complementAdresse'];
-        }
-    
-        $adresseFacturation = $resultatAdresseFacturation['adresse'] . " ," . $resultatAdresseFacturation['codePostal'] . " " . $resultatAdresseFacturation['ville'] . $complement;
-
-        $sql = "SELECT *
-                FROM _adresseLivraison a
-                WHERE a.idAdresseLivraison = :idAdresse";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':idClient' => $row['idAdresseLivr']]);
-        $resultatAdresseLivraison = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $adresseLivraison = $resultatAdresseLivraison['adresse'] . " ," . $resultatAdresseLivraison['codePostal'] . " " . $resultatAdresseLivraison['ville'];
-
         $commandes[] = [
             'id' => $row['idCommande'],
             'date' => $dateCommandeFormatee,
@@ -100,8 +74,6 @@ function getCommandes($pdo, $idClient, $filtre) {
             'dateLivraison' => $dateLivraisonFormatee,
             'transporteur' => $row['nomTransporteur'],
             'produits' => $produits,
-            'adresseFacturation' => $adresseFacturation,
-            'adresseLivraison' => $adresseLivraison
         ];
     }
     
@@ -336,7 +308,38 @@ $cart = getCurrentCart($pdo, $idClient);
                             <p>#<?php echo $commande['id']; ?></p>
                         </div>
                         <div class="liensCommande">
-                            <a onclick="popUpDetailsCommande($commande['id'], $commande['date'], $commande['adresseFacturation'], $commande['adresseLivraison'], $commande['statut'], $commande['transporteur'])" href="#">Détails</a>
+
+                            <?php 
+                                
+                                $sql = "SELECT *
+                                FROM _adresseClient a
+                                WHERE a.idAdresse = :idAdresse";
+
+                                $stmt = $pdo->prepare($sql);
+                                $stmt->execute([':idAdresse' => $commande['idAdresseFact']]);
+                                $resultatAdresseFacturation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                if(!$resultatAdresseFacturation['complementAdresse']) {
+                                    $complement = "";
+                                } else {
+                                    $complement = $resultatAdresseFacturation['complementAdresse'];
+                                }
+                            
+                                $adresseFacturation = $resultatAdresseFacturation['adresse'] . " ," . $resultatAdresseFacturation['codePostal'] . " " . $resultatAdresseFacturation['ville'] . $complement;
+
+                                $sql = "SELECT *
+                                        FROM _adresseLivraison a
+                                        WHERE a.idAdresseLivraison = :idAdresse";
+
+                                $stmt = $pdo->prepare($sql);
+                                $stmt->execute([':idAdresse' => $commande['idAdresseLivr']]);
+                                $resultatAdresseLivraison = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                $adresseLivraison = $resultatAdresseLivraison['adresse'] . " ," . $resultatAdresseLivraison['codePostal'] . " " . $resultatAdresseLivraison['ville'];
+
+                            ?>
+
+                            <a onclick="popUpDetailsCommande($commande['id'], $commande['date'], $adresseFacturation, $adresseLivraison, $commande['statut'], $commande['transporteur'])" href="#">Détails</a>
                             <span class="supprElem">|</span>
                             <a href="../../controllers/facture.php?id= <?php echo($commande['id']); ?>">Facture</a>
                         </div>
