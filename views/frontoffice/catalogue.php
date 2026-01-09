@@ -1,6 +1,6 @@
 <?php
-require_once "../../controllers/pdo.php";
-require_once "../../controllers/prix.php";
+include "../../controllers/pdo.php";
+include "../../controllers/prix.php";
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
