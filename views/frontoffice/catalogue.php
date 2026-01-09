@@ -24,24 +24,29 @@ $maxPrice = (int) $stmt->fetch()['maxPrice'];
 
 <main class="pageCatalogue">
 
-    <!-- FILTERS -->
     <aside class="filter-sort">
         <h3>Filtres</h3>
-
-        <label>Prix</label>
-        <div class="slider-container">
-            <div class="values">
-                <span id="minValue">0€</span>
-                <span id="maxValue"><?= $maxPrice ?>€</span>
+        <form method="GET" action="">
+            <label for="tri">Trier par :</label>
+            <label for="prix">Filtrer par prix :</label>
+            <div class="slider-container">
+                <div class="values">
+                    <span class="value" id="minValue">0</span>
+                    <span class="value" id="maxValue"><?php echo $maxPrice; ?></span>
+                </div>
+                <div class="slider-wrapper">
+                    <div class="slider-track"></div>
+                    <div class="slider-range" id="range"></div>
+                    <input type="range" id="sliderMin" min="0" max="<?php echo $maxPrice; ?>" value="0">
+                    <input type="range" id="sliderMax" min="0" max="<?php echo $maxPrice; ?>" value="<?php echo $maxPrice; ?>">
+                </div>
             </div>
 
-            <div class="slider-wrapper">
-                <div class="slider-track"></div>
-                <div class="slider-range" id="range"></div>
-                <input type="range" id="sliderMin" min="0" max="<?= $maxPrice ?>" value="0">
-                <input type="range" id="sliderMax" min="0" max="<?= $maxPrice ?>" value="<?= $maxPrice ?>">
-            </div>
-        </div>
+            <label for="minNote" id="minNoteLabel">Note minimale :</label>
+            <label for="categorie">Catégorie :</label>
+            <label for="zone">Zone géographique :</label>
+            <label for="vendeur">Vendeur :</label>
+        </form>
     </aside>
 
     <!-- PRODUCTS -->
@@ -78,7 +83,7 @@ function updateSliderUI(min, max) {
 }
 
 function fetchProducts(min, max) {
-    fetch(`../../controllers/catalogue_products.php?minPrice=${min}&maxPrice=${max}`)
+    fetch(`ajax/catalogue_products.php?minPrice=${min}&maxPrice=${max}`)
         .then(r => r.text())
         .then(html => {
             list.innerHTML = html;

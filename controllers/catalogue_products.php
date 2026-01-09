@@ -6,12 +6,12 @@ $minPrice = (int) ($_GET['minPrice'] ?? 0);
 $maxPrice = (int) ($_GET['maxPrice'] ?? PHP_INT_MAX);
 
 $sql = "
-SELECT p.*, r.tauxRemise
-FROM _produit p
-LEFT JOIN _remise r ON p.idProduit = r.idProduit
-AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-WHERE p.prix BETWEEN :min AND :max
-ORDER BY p.idProduit DESC
+    SELECT p.*, r.tauxRemise
+    FROM _produit p
+    LEFT JOIN _remise r ON p.idProduit = r.idProduit
+    AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+    WHERE p.prix BETWEEN :min AND :max
+    ORDER BY p.idProduit DESC
 ";
 
 $stmt = $pdo->prepare($sql);
