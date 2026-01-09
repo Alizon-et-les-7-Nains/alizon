@@ -223,7 +223,7 @@ function filtrerProduits() {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
 
-    fetch(`filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=1`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=1`)
         .then(response => response.text())
         .then(html => {
             listeArticle.innerHTML = html;
