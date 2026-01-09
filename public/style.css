@@ -6997,11 +6997,11 @@ dialog.reassort form input {
   pointer-events: all;
   -webkit-appearance: none;
   cursor: pointer;
-  width: 7px;
-  height: 7px;
+  width: 15px;
+  height: 15px;
   background: white;
   border-radius: 50%;
-  border-width: 8px;
+  border-width: 12px;
   border-style: dashed;
   border-color: #273469;
 }
