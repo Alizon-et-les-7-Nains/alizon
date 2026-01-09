@@ -7001,8 +7001,8 @@ dialog.reassort form input {
   height: 15px;
   background: white;
   border-radius: 50%;
-  border-width: 1px;
-  border-style: dashed;
+  border-width: 5px;
+  border-style: solid;
   border-color: #273469;
 }
 .pageCatalogue input[type=range]::-moz-range-thumb {
