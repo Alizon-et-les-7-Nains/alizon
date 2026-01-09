@@ -1,6 +1,6 @@
 <?php
-require_once "../../controllers/pdo.php";
-require_once "../../controllers/prix.php";
+require_once "pdo.php";
+require_once "prix.php";
 session_start();
 
 $produitsParPage = 15;
