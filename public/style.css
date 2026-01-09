@@ -7041,6 +7041,16 @@ dialog.reassort form input {
 .pageCatalogue #minNoteLabel {
   margin-top: 1.5em;
 }
+.pageCatalogue .pagination {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.pageCatalogue .pagination a {
+  border: 2px solid black;
+  text-decoration: none;
+}
 
 .overlayPopUpDetails {
   position: fixed;
