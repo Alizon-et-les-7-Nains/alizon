@@ -21,10 +21,10 @@ function clearError(element) {
   if (err) err.textContent = "";
 }
 
-function popUpDetailsCommande(id, dateCommande, adresseFact, adresseLivr, statut, transporteur) {
+function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adresseLivr = "N/A", statut = "N/A", transporteur="N/A", HT = "N/A", TTC = "N/A") {
 
     const overlay = document.createElement("div");
-    overlay.className = "overlayPopUpErreur";
+    overlay.className = " ";
     
     overlay.innerHTML = `
         <main class="popUpDetails">
@@ -47,16 +47,16 @@ function popUpDetailsCommande(id, dateCommande, adresseFact, adresseLivr, statut
                     <p>${transporteur}</p>
                   </div>
                   <div>
-                    <h2>Méthode de paiement :</h2>
-                    <p>N/A</p>
-                    <h2>Carte utilisée :</h2>
-                    <p>N/A</p>
                     <h2>Nom et prénom de la personne facturée :</h2>
                     <p>N/A</p>
+                    <h2>Méthode de paiement :</h2>
+                    <p>Visa</p>
+                    <h2>Carte utilisée :</h2>
+                    <p>Finissant par </p>
                     <h2>Montant HT :</h2>
-                    <p>30€</p>
+                    <p>${HT}</p>
                     <h2>Montant total TTC :</h2>
-                    <p>N/A</p>
+                    <p>${TTC}</p>
                   </div>
               </div>
         </main>`;
@@ -71,7 +71,7 @@ function popUpDetailsCommande(id, dateCommande, adresseFact, adresseLivr, statut
     
     overlay.addEventListener("click", (e) => {
         if (e.target === overlay) {
-            fermerPopUp();
+            fermerPopUpRemise();
         }
     });
 }

@@ -47,12 +47,16 @@
             </ul>
             <ul>";
                 foreach ($prods as $prod) {
+                    $imageSTMT = $pdo->prepare('select URL from _imageDeProduit where idProduit = ?');
+                    $imageSTMT->execute([$prod['idProduit']]);
+                    $image = $imageSTMT->fetchColumn();
+                    
                     $html .= "<li>
                         <table>
                             <tr>
                                 <td colspan=2>
                                     <figure>
-                                        <img src='../../public/images/caramels.png'>
+                                        <img src='$image'>
                                     </figure>
                                 </td>
                             </tr>
