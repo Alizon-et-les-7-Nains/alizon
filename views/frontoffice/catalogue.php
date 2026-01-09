@@ -162,22 +162,22 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
             } else { ?>
                 <h1>Aucun produit disponible</h1>
             <?php } ?>
+            <div class="pagination">
+                <?php if ($nbPages > 1): ?>
+                    <?php if ($page > 1): ?>
+                        <a href="?page=<?= $page-1 ?>">« Précédent</a>
+                    <?php endif; ?>
+
+                    <?php for ($i = 1; $i <= $nbPages; $i++): ?>
+                        <a href="?page=<?= $i ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
+                    <?php endfor; ?>
+
+                    <?php if ($page < $nbPages): ?>
+                        <a href="?page=<?= $page+1 ?>">Suivant »</a>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
         </section>
-        <div class="pagination">
-            <?php if ($nbPages > 1): ?>
-                <?php if ($page > 1): ?>
-                    <a href="?page=<?= $page-1 ?>">« Précédent</a>
-                <?php endif; ?>
-
-                <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a href="?page=<?= $i ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
-                <?php endfor; ?>
-
-                <?php if ($page < $nbPages): ?>
-                    <a href="?page=<?= $page+1 ?>">Suivant »</a>
-                <?php endif; ?>
-            <?php endif; ?>
-        </div>
     </div>
 </main>
 
