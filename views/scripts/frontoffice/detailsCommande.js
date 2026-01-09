@@ -24,7 +24,7 @@ function clearError(element) {
 function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adresseLivr = "N/A", statut = "N/A", transporteur="N/A", HT = "N/A", TTC = "N/A") {
 
     const overlay = document.createElement("div");
-    overlay.className = " ";
+    overlay.className = "overlayPopUpDetails";
     
     overlay.innerHTML = `
         <main class="popUpDetails">
@@ -66,17 +66,17 @@ function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adr
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     const btnFermer = overlay.querySelector(".btnFermer");
 
-    croixFermer.addEventListener("click", fermerPopUp);
-    if (btnFermer) btnFermer.addEventListener("click", fermerPopUp);
+    croixFermer.addEventListener("click", fermerPopUpDetailsCommande);
+    if (btnFermer) btnFermer.addEventListener("click", fermerPopUpDetailsCommande);
     
     overlay.addEventListener("click", (e) => {
         if (e.target === overlay) {
-            fermerPopUp();
+            fermerPopUpDetailsCommande();
         }
     });
 }
 
-function fermerPopUpRemise() {
-    const overlay = document.querySelector(".overlayPopUpErreur");
+function fermerPopUpDetailsCommande() {
+    const overlay = document.querySelector(".overlayPopUpDetails");
     if (overlay) overlay.remove();
 }
