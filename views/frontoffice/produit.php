@@ -319,7 +319,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <html lang="en">
 <head>
     <!-- sass --watch views/styles/main.scss:public/style.css -->
-    <!-- ssh sae@10.253.5.104
+    <!--
+    ssh sae@10.253.5.104
     su -
     grognasseEtCompagnie
     cd /docker/data/web/html

@@ -149,20 +149,21 @@
         border: 0;
     }   
 
-}
-
-label{
+    label{
     height: 30px;
     margin-bottom: 115px;
-}
-    
-p{
-    margin-top:30px;
+    }
+        
+    p{
+        margin-top:30px;
+    }
+
+    input{
+        margin-top:30px;
+    }
 }
 
-input{
-    margin-top:30px;
-}
+
 
 .overlayPopUpCompteClient{
         position: fixed;
