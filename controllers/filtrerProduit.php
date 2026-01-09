@@ -1,0 +1,64 @@
+<?php
+require_once "../../controllers/pdo.php";
+require_once "../../controllers/prix.php";
+session_start();
+
+$produitsParPage = 15;
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$offset = ($page - 1) * $produitsParPage;
+
+$minPrice = isset($_GET['minPrice']) ? (float)$_GET['minPrice'] : 0;
+$maxPrice = isset($_GET['maxPrice']) ? (float)$_GET['maxPrice'] : 1000000; // max large
+
+$sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
+        FROM _produit p
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit 
+        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+        WHERE (p.prix * (1 - COALESCE(r.tauxRemise, 0)/100)) BETWEEN :minPrice AND :maxPrice
+        ORDER BY p.idProduit DESC
+        LIMIT :limit OFFSET :offset";
+
+$stmt = $pdo->prepare($sql);
+$stmt->bindValue(':minPrice', $minPrice);
+$stmt->bindValue(':maxPrice', $maxPrice);
+$stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
+$stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+$stmt->execute();
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Générer le HTML des produits
+if (count($products) > 0) {
+    foreach ($products as $value) {
+        $idProduit = $value['idProduit'];
+        $prixOriginal = $value['prix'];
+        $tauxRemise = $value['tauxRemise'] ?? 0;
+        $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
+        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
+        $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
+
+        $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+        $stmtImg->execute([':idProduit' => $idProduit]);
+        $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+        $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+
+        echo '<article data-price="'.$prixAffichage.'">';
+        echo '<img src="'.htmlspecialchars($image).'" class="imgProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'" alt="Image du produit">';
+        echo '<h2 class="nomProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'">'.htmlspecialchars($value['nom']).'</h2>';
+        echo '<div class="notation">'.(number_format($value['note'],1) == 0 ? '<span>Pas de note</span>' : '<span>'.number_format($value['note'],1).'</span>').'</div>';
+        echo '<div class="infoProd">';
+        echo '<div class="prix">';
+        if($enRemise){
+            echo '<div style="display:flex;align-items:center;gap:8px;">';
+            echo '<h2>'.formatPrice($prixRemise).'</h2>';
+            echo '<h3 style="text-decoration: line-through; color:#999;">'.formatPrice($prixOriginal).'</h3>';
+            echo '</div>';
+        } else {
+            echo '<h2>'.formatPrice($prixOriginal).'</h2>';
+        }
+        echo '</div>'; // prix
+        echo '</div>'; // infoProd
+        echo '</article>';
+    }
+} else {
+    echo '<h1>Aucun produit disponible</h1>';
+}

@@ -197,69 +197,46 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
         });
     });
     const sliderMin = document.getElementById('sliderMin');
-    const sliderMax = document.getElementById('sliderMax');
-    const minValue = document.getElementById('minValue');
-    const maxValue = document.getElementById('maxValue');
-    const range = document.getElementById('range');
+const sliderMax = document.getElementById('sliderMax');
+const minValue = document.getElementById('minValue');
+const maxValue = document.getElementById('maxValue');
+const range = document.getElementById('range');
+const listeArticle = document.querySelector('.listeArticle');
+const resultat = document.getElementById('resultat');
 
-    function updateSlider() {
-        let min = parseInt(sliderMin.value);
-        let max = parseInt(sliderMax.value);
+function updateSlider() {
+    let min = parseInt(sliderMin.value);
+    let max = parseInt(sliderMax.value);
+    if (min > max) [min, max] = [max, min];
+    sliderMin.value = min;
+    sliderMax.value = max;
+    minValue.textContent = min+'€';
+    maxValue.textContent = max+'€';
+    const percent1 = (min / sliderMin.max) * 100;
+    const percent2 = (max / sliderMax.max) * 100;
+    range.style.left = percent1 + '%';
+    range.style.width = (percent2 - percent1) + '%';
+}
 
-        if (min > max) {
-            [min, max] = [max, min];
-            sliderMin.value = min;
-            sliderMax.value = max;
-        }
+// Fonction AJAX pour filtrer tous les produits
+function filtrerProduits() {
+    const min = parseInt(sliderMin.value);
+    const max = parseInt(sliderMax.value);
 
-        minValue.textContent = min+'€';
-        maxValue.textContent = max+'€';
-
-        const percent1 = (min / sliderMin.max) * 100;
-        const percent2 = (max / sliderMax.max) * 100;
-
-        range.style.left = percent1 + '%';
-        range.style.width = (percent2 - percent1) + '%';
-    }
-
-    sliderMin.addEventListener('input', updateSlider);
-    sliderMax.addEventListener('input', updateSlider);
-
-    updateSlider();
-</script>
-<script src="../scripts/frontoffice/paiement-ajax.js"></script>
-<script>
-    const articles = document.querySelectorAll(".listeArticle article");
-    const resultat = document.getElementById("resultat");
-
-    function filtrerProduitsParPrix() {
-        const min = parseInt(sliderMin.value);
-        const max = parseInt(sliderMax.value);
-        let visibles = 0;
-
-        articles.forEach(article => {
-            const prix = parseFloat(article.dataset.price);
-
-            if (prix >= min && prix <= max) {
-                article.style.display = "";
-                visibles++;
-            } else {
-                article.style.display = "none";
-            }
+    fetch(`filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=1`)
+        .then(response => response.text())
+        .then(html => {
+            listeArticle.innerHTML = html;
+            resultat.textContent = "Produits filtrés par prix";
         });
+}
 
-        resultat.textContent = visibles + " résultat" + (visibles > 1 ? "s" : "");
-    }
+sliderMin.addEventListener('input', () => { updateSlider(); filtrerProduits(); });
+sliderMax.addEventListener('input', () => { updateSlider(); filtrerProduits(); });
 
-    sliderMin.addEventListener("input", () => {
-        updateSlider();
-        filtrerProduitsParPrix();
-    });
+updateSlider();
+filtrerProduits();
 
-    sliderMax.addEventListener("input", () => {
-        updateSlider();
-        filtrerProduitsParPrix();
-    });
 </script>
 
 </body>
