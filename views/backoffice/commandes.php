@@ -40,10 +40,6 @@
         $prodsSTMT->execute([$encour['idCommande'], $_SESSION['id']]);
         $prods = $prodsSTMT->fetchAll(PDO::FETCH_ASSOC);
 
-        $imageSTMT = $pdo->prepare('select URL from _imageDeProduit where idProduit = ?');
-        $imageSTMT->execute([$prod['idProduit']]);
-        $image = $imageSTMT->fetchColumn();
-
         $html = "<article>
             <ul>
                 <li><h2>" . $encour['etatLivraison'] . "...</h2></li>
@@ -51,6 +47,10 @@
             </ul>
             <ul>";
                 foreach ($prods as $prod) {
+                    $imageSTMT = $pdo->prepare('select URL from _imageDeProduit where idProduit = ?');
+                    $imageSTMT->execute([$prod['idProduit']]);
+                    $image = $imageSTMT->fetchColumn();
+                    
                     $html .= "<li>
                         <table>
                             <tr>
