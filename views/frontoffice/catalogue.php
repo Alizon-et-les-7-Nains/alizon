@@ -99,7 +99,7 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
     </aside>
     
     <div class="products-section">
-        <p id="resultat"><?= $nbResultats ?> résultat<?= $nbResultats > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : '' ?></p>
+        <p id="resultat"><?= $nbResultats ?> résultat<?= $nbResultats > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : 'dans le catalogue' ?></p>
         <section class="listeArticle">
             <?php 
             if (count($products) > 0) {

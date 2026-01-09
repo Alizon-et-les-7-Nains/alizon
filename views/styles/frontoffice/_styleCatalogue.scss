@@ -6,7 +6,7 @@
     .filter-sort{
         background-color: #e4d9ff;
         width: 22%;
-        position: relative;
+        position: sticky;
         left: 0;
     }
 
@@ -66,6 +66,8 @@
     #resultat{
         background: #E3F2FE;
         position: relative;
+        padding: 0.5em;
+        font-weight: bold;
     }
 
     .products-section {
@@ -177,7 +179,7 @@
 
     .values {
         display: flex;
-        gap: 200px;
+        gap: 220px;
     }
 
     .slider-track {
