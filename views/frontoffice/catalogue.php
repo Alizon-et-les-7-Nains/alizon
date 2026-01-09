@@ -1,6 +1,6 @@
 <?php
-require_once "../../controllers/pdo.php";
-require_once "../../controllers/prix.php";
+include "../../controllers/pdo.php";
+include "../../controllers/prix.php";
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -45,7 +45,10 @@ $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
+$maxPriceStmt = $pdo->query("SELECT MAX(prix) as maxPrix FROM _produit");
+$maxPriceRow = $maxPriceStmt->fetch(PDO::FETCH_ASSOC);
+$maxPrice = $maxPriceRow['maxPrix'] ?? 100;
+
 ?>
 
 <!DOCTYPE html>
@@ -136,7 +139,6 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
                             <h2><?php echo formatPrice($prixOriginal); ?></h2>
                         <?php endif; ?>
                         <?php 
-                            $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                             $poids = $value['poids'];
                             $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
                             $prixAuKg = round($prixAuKg,2);
@@ -160,22 +162,22 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
             } else { ?>
                 <h1>Aucun produit disponible</h1>
             <?php } ?>
-            <div class="pagination">
-                <?php if ($nbPages > 1): ?>
-                    <?php if ($page > 1): ?>
-                        <a href="?page=<?= $page-1 ?>">« Précédent</a>
-                    <?php endif; ?>
-
-                    <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                        <a href="?page=<?= $i ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
-                    <?php endfor; ?>
-
-                    <?php if ($page < $nbPages): ?>
-                        <a href="?page=<?= $page+1 ?>">Suivant »</a>
-                    <?php endif; ?>
-                <?php endif; ?>
-            </div>
         </section>
+        <div class="pagination">
+            <?php if ($nbPages > 1): ?>
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?= $page-1 ?>">« Précédent</a>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $nbPages; $i++): ?>
+                    <a href="?page=<?= $i ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
+                <?php endfor; ?>
+
+                <?php if ($page < $nbPages): ?>
+                    <a href="?page=<?= $page+1 ?>">Suivant »</a>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </div>
 </main>
 
@@ -184,25 +186,18 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
 </section>
 
 <script>
-    const popupConfirmation = document.querySelector(".confirmationAjout");
-    const boutonsAjout = document.querySelectorAll(".plus");
-
-    boutonsAjout.forEach(btn => {
-        btn.addEventListener("click", function(e) {
-            e.stopPropagation();
-            popupConfirmation.style.display = "block";
-            setTimeout(() => {
-                popupConfirmation.style.display = "none";
-            }, 3000);
-        });
-    });
-    const sliderMin = document.getElementById('sliderMin');
+const sliderMin = document.getElementById('sliderMin');
 const sliderMax = document.getElementById('sliderMax');
 const minValue = document.getElementById('minValue');
 const maxValue = document.getElementById('maxValue');
 const range = document.getElementById('range');
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
+const paginationDiv = document.querySelector('.pagination');
+const popupConfirmation = document.querySelector(".confirmationAjout");
+
+let currentPage = <?= $page ?>; // Récupérer la page actuelle du PHP
+let isFiltering = false; // Flag pour savoir si on filtre ou pas
 
 function updateSlider() {
     let min = parseInt(sliderMin.value);
@@ -218,24 +213,97 @@ function updateSlider() {
     range.style.width = (percent2 - percent1) + '%';
 }
 
-// Fonction AJAX pour filtrer tous les produits
-function filtrerProduits() {
+// Fonction pour attacher les événements aux boutons panier
+function attachCartEvents() {
+    document.querySelectorAll('.plus').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            popupConfirmation.style.display = "block";
+            setTimeout(() => {
+                popupConfirmation.style.display = "none";
+            }, 3000);
+        });
+    });
+}
+
+// Fonction pour attacher les événements de pagination
+function attachPaginationEvents() {
+    document.querySelectorAll('.pageLink').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const newPage = parseInt(link.dataset.page);
+            loadProduits(newPage);
+        });
+    });
+}
+
+// Charger les produits filtrés via AJAX
+function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
 
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=1`)
-        .then(response => response.text())
-        .then(html => {
-            listeArticle.innerHTML = html;
-            resultat.textContent = "Produits filtrés par prix";
+    console.log('Chargement des produits:', {min, max, page});
+
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}`)
+        .then(res => {
+            console.log('Réponse reçue:', res.status);
+            if (!res.ok) {
+                throw new Error(`Erreur HTTP: ${res.status}`);
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log('Données reçues:', data);
+            
+            // Mettre à jour le contenu des produits
+            listeArticle.innerHTML = data.html;
+            currentPage = page;
+            resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
+
+            // Générer la pagination
+            let pagHTML = '';
+            if (data.nbPages > 1) {
+                if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
+                for (let i=1; i<=data.nbPages; i++){
+                    pagHTML += `<a href="#" class="pageLink ${i===page?'active':''}" data-page="${i}">${i}</a>`;
+                }
+                if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
+            }
+            paginationDiv.innerHTML = pagHTML;
+
+            // Réattacher les événements
+            attachPaginationEvents();
+            attachCartEvents();
+            
+            isFiltering = true; // On est maintenant en mode filtrage
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des produits:', error);
+            listeArticle.innerHTML = '<h1>Erreur lors du chargement des produits</h1>';
         });
 }
 
-sliderMin.addEventListener('input', () => { updateSlider(); filtrerProduits(); });
-sliderMax.addEventListener('input', () => { updateSlider(); filtrerProduits(); });
+// Événements slider
+sliderMin.addEventListener('input', () => { 
+    updateSlider(); 
+    loadProduits(1); 
+});
+sliderMax.addEventListener('input', () => { 
+    updateSlider(); 
+    loadProduits(1); 
+});
 
+// Initialisation
 updateSlider();
-filtrerProduits();
+
+// Attacher les événements initiaux aux boutons panier
+attachCartEvents();
+
+// NE PAS charger les produits au démarrage si on n'a pas encore filtré
+// loadProduits(1); // <-- SUPPRIMER CETTE LIGNE
+
+// Empêcher la soumission du formulaire
+document.querySelector('form').addEventListener('submit', e => e.preventDefault());
 
 </script>
 
