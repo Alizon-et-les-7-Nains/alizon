@@ -45,8 +45,6 @@ $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-$nbResultats = count($products);
 $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
 ?>
 
@@ -90,7 +88,7 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
     </aside>
     
     <div class="products-section">
-        <p id="resultat"><?= $nbResultats ?> résultat<?= $nbResultats > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
+        <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <section class="listeArticle">
             <?php 
             if (count($products) > 0) {
