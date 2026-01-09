@@ -54,9 +54,9 @@ function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adr
                     <h2>Carte utilisée :</h2>
                     <p>Finissant par </p>
                     <h2>Montant HT :</h2>
-                    <p>${HT}</p>
+                    <p>${HT} €</p>
                     <h2>Montant total TTC :</h2>
-                    <p>${TTC}</p>
+                    <p>${TTC} €</p>
                   </div>
               </div>
         </main>`;
@@ -71,7 +71,7 @@ function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adr
     
     overlay.addEventListener("click", (e) => {
         if (e.target === overlay) {
-            fermerPopUpRemise();
+            fermerPopUp();
         }
     });
 }
