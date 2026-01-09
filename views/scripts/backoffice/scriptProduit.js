@@ -612,7 +612,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                         <div class="deuxBoutons">
                             <input type="hidden" name="id" value="${id}">
                             <button type="button" onclick="popUpAnnulerPromotion(${id}, '${nom}')" style="color: white; background-color: #F14E4E;">Retirer la promotion</button>
-                            <button type="submit">Promouvoir</button>
+                            <button type="submit">Modifier</button>
                         </div>
                     </section>
                 </form>
