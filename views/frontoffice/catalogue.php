@@ -8,6 +8,10 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+$produitsParPage = 15;
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$offset = ($page - 1) * $produitsParPage;
+
 $idClient = $_SESSION['user_id'];
 
 $sortBy = $_GET['sort'] ?? '';
@@ -23,37 +27,28 @@ $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
         WHERE 1=1";
 
-$params = [];
+$countSql = "SELECT COUNT(*) FROM _produit p 
+             LEFT JOIN _remise r ON p.idProduit = r.idProduit 
+             AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+             WHERE 1=1";
 
-if (!empty($searchQuery)) {
-    $sql .= " AND p.nom LIKE :search";
-    $params[':search'] = '%' . $searchQuery . '%';
-}
+$countStmt = $pdo->prepare($countSql);
+$countStmt->execute($paramsCount);
+$totalProduits = $countStmt->fetchColumn();
+$nbPages = ceil($totalProduits / $produitsParPage);
 
-if (!empty($minNote)) {
-    $sql .= " AND p.note >= :minNote";
-    $params[':minNote'] = $minNote;
-}
-
-if (!empty($category)) {
-    $sql .= " AND p.typeProd = :category";
-    $params[':category'] = $category;
-}
-
-// Tri
-if ($sortBy === 'prix_asc') {
-    $sql .= " ORDER BY p.prix ASC";
-} elseif ($sortBy === 'prix_desc') {
-    $sql .= " ORDER BY p.prix DESC";
-} elseif ($sortBy === 'note') {
-    $sql .= " ORDER BY p.note DESC";
-} else {
-    $sql .= " ORDER BY p.idProduit DESC";
-}
-
+$sql .= " LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($sql);
-$stmt->execute($params);
+
+foreach ($params as $key => $val) {
+    $stmt->bindValue($key, $val);
+}
+
+$stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
+$stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+$stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 $nbResultats = count($products);
 $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
@@ -99,7 +94,7 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
     </aside>
     
     <div class="products-section">
-        <p id="resultat"><?= $nbResultats ?> résultat<?= $nbResultats > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : 'dans le catalogue' ?></p>
+        <p id="resultat"><?= $nbResultats ?> résultat<?= $nbResultats > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <section class="listeArticle">
             <?php 
             if (count($products) > 0) {
