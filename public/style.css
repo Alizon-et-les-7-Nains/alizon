@@ -6835,6 +6835,7 @@ dialog.reassort form input {
   width: 22%;
   position: fixed;
   left: 0;
+  z-index: 1000; /* pour rester au-dessus */
 }
 .pageCatalogue .filter-sort form {
   display: flex;
@@ -6888,7 +6889,6 @@ dialog.reassort form input {
   padding: 0.3em;
   font-size: 13px;
   font-weight: 500;
-  margin-left: 22%;
 }
 .pageCatalogue .products-section {
   width: 78%;
