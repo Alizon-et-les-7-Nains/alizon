@@ -21,10 +21,10 @@ function clearError(element) {
   if (err) err.textContent = "";
 }
 
-function popUpDetailsCommande(id, dateCommande, adresseFact, adresseLivr, statut, transporteur) {
+function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adresseLivr = "N/A", statut = "N/A", transporteur="N/A", HT = "N/A", TTC = "N/A") {
 
     const overlay = document.createElement("div");
-    overlay.className = "overlayPopUpErreur";
+    overlay.className = "overlayPopUpDetails";
     
     overlay.innerHTML = `
         <main class="popUpDetails">
@@ -47,16 +47,16 @@ function popUpDetailsCommande(id, dateCommande, adresseFact, adresseLivr, statut
                     <p>${transporteur}</p>
                   </div>
                   <div>
-                    <h2>Méthode de paiement :</h2>
-                    <p>N/A</p>
-                    <h2>Carte utilisée :</h2>
-                    <p>N/A</p>
                     <h2>Nom et prénom de la personne facturée :</h2>
                     <p>N/A</p>
+                    <h2>Méthode de paiement :</h2>
+                    <p>Visa</p>
+                    <h2>Carte utilisée :</h2>
+                    <p>Finissant par </p>
                     <h2>Montant HT :</h2>
-                    <p>30€</p>
+                    <p>${HT} €</p>
                     <h2>Montant total TTC :</h2>
-                    <p>N/A</p>
+                    <p>${TTC} €</p>
                   </div>
               </div>
         </main>`;
@@ -66,17 +66,17 @@ function popUpDetailsCommande(id, dateCommande, adresseFact, adresseLivr, statut
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     const btnFermer = overlay.querySelector(".btnFermer");
 
-    croixFermer.addEventListener("click", fermerPopUp);
-    if (btnFermer) btnFermer.addEventListener("click", fermerPopUp);
+    croixFermer.addEventListener("click", fermerPopUpDetailsCommande);
+    if (btnFermer) btnFermer.addEventListener("click", fermerPopUpDetailsCommande);
     
     overlay.addEventListener("click", (e) => {
         if (e.target === overlay) {
-            fermerPopUp();
+            fermerPopUpDetailsCommande();
         }
     });
 }
 
-function fermerPopUpRemise() {
-    const overlay = document.querySelector(".overlayPopUpErreur");
+function fermerPopUpDetailsCommande() {
+    const overlay = document.querySelector(".overlayPopUpDetails");
     if (overlay) overlay.remove();
 }

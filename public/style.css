@@ -3627,7 +3627,6 @@ button#haut.visible:hover {
 }
 .modifierProduit .motclé {
   width: 525px;
-  margin-top: 20px;
   padding: 8px 10px;
   border: 2px solid #273469;
   border-radius: 8px;
@@ -3665,7 +3664,9 @@ button#haut.visible:hover {
 }
 .modifierProduit .price-weight-kg {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  height: 80px;
+  flex-wrap: wrap;
   gap: 1em;
 }
 .modifierProduit .price-weight-kg input {
