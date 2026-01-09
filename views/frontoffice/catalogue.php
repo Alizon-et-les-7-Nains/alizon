@@ -136,7 +136,6 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
                             <h2><?php echo formatPrice($prixOriginal); ?></h2>
                         <?php endif; ?>
                         <?php 
-                            $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                             $poids = $value['poids'];
                             $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
                             $prixAuKg = round($prixAuKg,2);
