@@ -76,6 +76,20 @@ $nbResultats = count($products);
         <h3>Filtres</h3>
         <form method="GET" action="">
             <label for="tri">Trier par :</label>
+            <label for="prix">Filtrer par prix :</label>
+            <div class="slider-container">
+                <div class="values">
+                    <span class="value" id="minValue">0</span>
+                    <span class="value" id="maxValue">100</span>
+                </div>
+                <div class="slider-wrapper">
+                    <div class="slider-track"></div>
+                    <div class="slider-range" id="range"></div>
+                    <input type="range" id="sliderMin" min="0" max="100" value="25">
+                    <input type="range" id="sliderMax" min="0" max="100" value="75">
+                </div>
+            </div>
+
             <label for="minNote">Note minimale :</label>
             <label for="categorie">Catégorie :</label>
             <label for="zone">Zone géographique :</label>
@@ -176,6 +190,37 @@ $nbResultats = count($products);
             }, 3000);
         });
     });
+
+    const sliderMin = document.getElementById('sliderMin');
+    const sliderMax = document.getElementById('sliderMax');
+    const minValue = document.getElementById('minValue');
+    const maxValue = document.getElementById('maxValue');
+    const range = document.getElementById('range');
+
+    function updateSlider() {
+        let min = parseInt(sliderMin.value);
+        let max = parseInt(sliderMax.value);
+
+        if (min > max) {
+            [min, max] = [max, min];
+            sliderMin.value = min;
+            sliderMax.value = max;
+        }
+
+        minValue.textContent = min;
+        maxValue.textContent = max;
+
+        const percent1 = (min / sliderMin.max) * 100;
+        const percent2 = (max / sliderMax.max) * 100;
+
+        range.style.left = percent1 + '%';
+        range.style.width = (percent2 - percent1) + '%';
+    }
+
+    sliderMin.addEventListener('input', updateSlider);
+    sliderMax.addEventListener('input', updateSlider);
+
+    updateSlider();
 </script>
 
 <script src="../scripts/frontoffice/paiement-ajax.js"></script>
