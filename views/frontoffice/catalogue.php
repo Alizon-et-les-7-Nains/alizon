@@ -45,7 +45,10 @@ $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
+$maxPriceStmt = $pdo->query("SELECT MAX(prix) as maxPrix FROM _produit");
+$maxPriceRow = $maxPriceStmt->fetch(PDO::FETCH_ASSOC);
+$maxPrice = $maxPriceRow['maxPrix'] ?? 100;
+
 ?>
 
 <!DOCTYPE html>
