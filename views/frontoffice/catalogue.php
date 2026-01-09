@@ -82,7 +82,7 @@ echo "console.log('Max price: " . $maxPrice . "');";
             <div class="slider-container">
                 <div class="values">
                     <span class="value" id="minValue">0</span>
-                    <span class="value" id="maxValue">100</span>
+                    <span class="value" id="maxValue"><?php echo $maxPrice; ?></span>
                 </div>
                 <div class="slider-wrapper">
                     <div class="slider-track"></div>
