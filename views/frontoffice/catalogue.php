@@ -228,7 +228,7 @@ function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
 
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}`)
+    fetch("../../controllers/filtrerProduits.php?minPrice="+min+"&maxPrice="+max+"&page="+page)
         .then(res => res.json())
         .then(data => {
             listeArticle.innerHTML = data.html;
