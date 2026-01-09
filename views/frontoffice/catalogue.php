@@ -56,6 +56,8 @@ $stmt->execute($params);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $nbResultats = count($products);
+$maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
+echo "console.log('Max price: " . $maxPrice . "');";
 ?>
 
 <!DOCTYPE html>
