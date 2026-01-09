@@ -281,23 +281,51 @@ $cart = getCurrentCart($pdo, $idClient);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
                 <article style="margin-top: 5px; cursor: pointer;" 
-                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                    onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
                     
                     <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
+                    
                     <h2 class="nomProduit"><?php echo htmlspecialchars($value['nom']); ?></h2>
                     
                     <div class="notation">
-                        </div>
+                        <?php if(number_format($value['note'], 1) == 0) { ?>
+                            <span><?php echo "Pas de note" ?></span>
+                        <?php } else { ?>
+                            <span><?php echo number_format($value['note'], 1); ?></span>
+                            <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
 
                     <div class="infoProd">
                         <div class="prix">
-                            </div>
+                            <?php if ($enRemise): ?>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                    <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                        <?php echo formatPrice($prixOriginal); ?>
+                                    </h3>
+                                </div>
+                            <?php else: ?>
+                                <h2><?php echo formatPrice($prixOriginal); ?></h2>
+                            <?php endif; ?>
+                            
+                            <?php 
+                                $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
+                                $poids = $value['poids'];
+                                $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
+                                $prixAuKg = round($prixAuKg,2); 
+                            ?>
+                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
+                        </div>
+                        
                         <div>
                             <?php if(number_format($value['stock'], 1) == 0) { ?>
                                 <b style="color: red; margin-right: 5px;">Aucun stock</b>
                             <?php } else { ?>
                                 <button class="plus" 
-                                        data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" 
+                                        data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>"
                                         onclick="event.stopPropagation();">
                                     <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                                 </button>
