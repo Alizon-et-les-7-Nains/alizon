@@ -227,7 +227,6 @@ function filtrerProduits() {
         .then(response => response.text())
         .then(html => {
             listeArticle.innerHTML = html;
-            resultat.textContent = "Produits filtrés par prix";
         });
 }
 
