@@ -7000,7 +7000,7 @@ dialog.reassort form input {
   width: 20px;
   height: 40px;
   background: white;
-  border-radius: 50%;
+  border-radius: 8px;
   border-width: 5px;
   border-style: solid;
   border-color: #273469;
