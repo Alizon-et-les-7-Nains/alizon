@@ -6987,7 +6987,6 @@ dialog.reassort form input {
   width: 100%;
   background: transparent;
   pointer-events: none;
-  -webkit-appearance: none;
   top: 25px;
   height: 15px;
   padding: 0;
@@ -6996,11 +6995,11 @@ dialog.reassort form input {
 .pageCatalogue input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   cursor: pointer;
-  width: 7px; /* Largeur */
-  height: 7px; /* Hauteur */
-  background: white; /* Couleur */
-  border-radius: 50%; /* Rond */
-  border: 8px solid; /* Bordure blanche */
+  width: 7px;
+  height: 7px;
+  background: white;
+  border-radius: 50%;
+  border: 8px solid;
   border-color: #273469;
 }
 .pageCatalogue input[type=range]::-moz-range-thumb {
