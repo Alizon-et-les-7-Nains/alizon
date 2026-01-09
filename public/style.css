@@ -2629,17 +2629,14 @@ label {
   outline: none;
   border: 0;
 }
-
-label {
+.mainCompteClient label {
   height: 30px;
   margin-bottom: 115px;
 }
-
-p {
+.mainCompteClient p {
   margin-top: 30px;
 }
-
-input {
+.mainCompteClient input {
   margin-top: 30px;
 }
 
