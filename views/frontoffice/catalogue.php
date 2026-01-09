@@ -186,18 +186,6 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 </section>
 
 <script>
-    const popupConfirmation = document.querySelector(".confirmationAjout");
-    const boutonsAjout = document.querySelectorAll(".plus");
-
-    boutonsAjout.forEach(btn => {
-        btn.addEventListener("click", function(e) {
-            e.stopPropagation();
-            popupConfirmation.style.display = "block";
-            setTimeout(() => {
-                popupConfirmation.style.display = "none";
-            }, 3000);
-        });
-    });
 const sliderMin = document.getElementById('sliderMin');
 const sliderMax = document.getElementById('sliderMax');
 const minValue = document.getElementById('minValue');
