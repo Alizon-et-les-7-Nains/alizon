@@ -21,6 +21,13 @@
                 <figcaption>Stocks</figcaption>
             </figure>
         </li>
+        <?php $class = $currentPage == 'commandes.php' ? 'here' : ''; ?>
+        <li class="aside-btn <?php echo $class; ?>">
+            <figure>
+                <img src="/public/images/cartCheckDark.svg">
+                <figcaption>Commandes</figcaption>
+            </figure>
+        </li>
         <?php $class = $currentPage == 'avis.php' ? 'here' : ''; ?>
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
