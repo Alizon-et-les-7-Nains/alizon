@@ -206,8 +206,10 @@ const range = document.getElementById('range');
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
+const popupConfirmation = document.querySelector(".confirmationAjout");
 
-let currentPage = 1;
+let currentPage = <?= $page ?>; // Récupérer la page actuelle du PHP
+let isFiltering = false; // Flag pour savoir si on filtre ou pas
 
 function updateSlider() {
     let min = parseInt(sliderMin.value);
@@ -223,14 +225,49 @@ function updateSlider() {
     range.style.width = (percent2 - percent1) + '%';
 }
 
+// Fonction pour attacher les événements aux boutons panier
+function attachCartEvents() {
+    document.querySelectorAll('.plus').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            popupConfirmation.style.display = "block";
+            setTimeout(() => {
+                popupConfirmation.style.display = "none";
+            }, 3000);
+        });
+    });
+}
+
+// Fonction pour attacher les événements de pagination
+function attachPaginationEvents() {
+    document.querySelectorAll('.pageLink').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const newPage = parseInt(link.dataset.page);
+            loadProduits(newPage);
+        });
+    });
+}
+
 // Charger les produits filtrés via AJAX
 function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
 
-    fetch("../../controllers/filtrerProduits.php?minPrice="+min+"&maxPrice="+max+"&page="+page)
-        .then(res => res.json())
+    console.log('Chargement des produits:', {min, max, page});
+
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}`)
+        .then(res => {
+            console.log('Réponse reçue:', res.status);
+            if (!res.ok) {
+                throw new Error(`Erreur HTTP: ${res.status}`);
+            }
+            return res.json();
+        })
         .then(data => {
+            console.log('Données reçues:', data);
+            
+            // Mettre à jour le contenu des produits
             listeArticle.innerHTML = data.html;
             currentPage = page;
             resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
@@ -246,24 +283,38 @@ function loadProduits(page = 1) {
             }
             paginationDiv.innerHTML = pagHTML;
 
-            // Attacher les événements aux liens de page
-            document.querySelectorAll('.pageLink').forEach(link=>{
-                link.addEventListener('click', e=>{
-                    e.preventDefault();
-                    const newPage = parseInt(link.dataset.page);
-                    loadProduits(newPage);
-                });
-            });
+            // Réattacher les événements
+            attachPaginationEvents();
+            attachCartEvents();
+            
+            isFiltering = true; // On est maintenant en mode filtrage
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des produits:', error);
+            listeArticle.innerHTML = '<h1>Erreur lors du chargement des produits</h1>';
         });
 }
 
 // Événements slider
-sliderMin.addEventListener('input', () => { updateSlider(); loadProduits(1); });
-sliderMax.addEventListener('input', () => { updateSlider(); loadProduits(1); });
+sliderMin.addEventListener('input', () => { 
+    updateSlider(); 
+    loadProduits(1); 
+});
+sliderMax.addEventListener('input', () => { 
+    updateSlider(); 
+    loadProduits(1); 
+});
 
+// Initialisation
 updateSlider();
-loadProduits(1);
 
+// Attacher les événements initiaux aux boutons panier
+attachCartEvents();
+
+// NE PAS charger les produits au démarrage si on n'a pas encore filtré
+// loadProduits(1); // <-- SUPPRIMER CETTE LIGNE
+
+// Empêcher la soumission du formulaire
 document.querySelector('form').addEventListener('submit', e => e.preventDefault());
 
 </script>
