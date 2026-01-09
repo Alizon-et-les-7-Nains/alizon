@@ -36,19 +36,19 @@ function allValid(seuil: HTMLInputElement, date: HTMLInputElement, reassort: HTM
     return checkInt(seuil.value) && checkDate(date.valueAsDate) && checkInt(reassort.value);
 }
 
-inputsSeuil.forEach((inputSeuil: HTMLInputElement) => {
-    inputSeuil.addEventListener('input', () => {
-        if (!checkInt(inputSeuil.value)) {
-            inputSeuil.style.cssText = 'border-color: #f14e4e !important';
-            (inputSeuil.parentElement?.parentElement?.children.namedItem('errorSeuil') as HTMLElement).style.display = 'block';
-        } else {
-            inputSeuil.style.cssText = 'border-color: #273469 !important';
-            (inputSeuil.parentElement?.parentElement?.children.namedItem('errorSeuil') as HTMLElement).style.display = 'none';
-        }
+// inputsSeuil.forEach((inputSeuil: HTMLInputElement) => {
+//     inputSeuil.addEventListener('input', () => {
+//         if (!checkInt(inputSeuil.value)) {
+//             inputSeuil.style.cssText = 'border-color: #f14e4e !important';
+//             (inputSeuil.parentElement?.parentElement?.children.namedItem('errorSeuil') as HTMLElement).style.display = 'block';
+//         } else {
+//             inputSeuil.style.cssText = 'border-color: #273469 !important';
+//             (inputSeuil.parentElement?.parentElement?.children.namedItem('errorSeuil') as HTMLElement).style.display = 'none';
+//         }
 
-        (inputSeuil.parentElement?.parentElement?.children.namedItem('buttonConfirm') as HTMLButtonElement).disabled = !allValid(inputSeuil, inputSeuil.parentElement?.parentElement?.children.namedItem(''));
-    })
-})
+//         (inputSeuil.parentElement?.parentElement?.children.namedItem('buttonConfirm') as HTMLButtonElement).disabled = !allValid(inputSeuil, inputSeuil.parentElement?.parentElement?.children.namedItem(''));
+//     })
+// })
 
 // inputSeuil?.addEventListener('input', () => {
 //     console.log('input');
