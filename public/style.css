@@ -6958,6 +6958,61 @@ dialog.reassort form input {
   justify-content: center;
   align-items: center;
 }
+.pageCatalogue .slider-wrapper {
+  position: relative;
+  height: 15px;
+  width: 260px;
+}
+.pageCatalogue .values {
+  display: flex;
+  gap: 50px;
+}
+.pageCatalogue .slider-track {
+  position: absolute;
+  top: 25px;
+  width: 100%;
+  height: 15px;
+  background: #ddd;
+  border-radius: 16px;
+}
+.pageCatalogue .slider-range {
+  position: absolute;
+  top: 25px;
+  height: 15px;
+  background: #273469;
+  border-radius: 16px;
+}
+.pageCatalogue input[type=range] {
+  position: absolute;
+  width: 100%;
+  background: transparent;
+  pointer-events: none;
+  -webkit-appearance: none;
+  top: 25px;
+  height: 15px;
+  padding: 0;
+  margin: 0;
+}
+.pageCatalogue input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  cursor: pointer;
+  width: 7px; /* Largeur */
+  height: 7px; /* Hauteur */
+  background: white; /* Couleur */
+  border-radius: 50%; /* Rond */
+  border: 8px solid; /* Bordure blanche */
+  border-color: #273469;
+}
+.pageCatalogue input[type=range]::-moz-range-thumb {
+  pointer-events: all;
+  cursor: pointer;
+  width: 7px;
+  height: 7px;
+  background: white;
+  border-radius: 50%;
+  border: 8px solid;
+  border-color: #273469;
+}
 
 .popUpDetails {
   background-color: #fffefa;
