@@ -21,7 +21,7 @@ function clearError(element) {
   if (err) err.textContent = "";
 }
 
-function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adresseLivr = "N/A", statut = "N/A", transporteur="N/A", HT = "N/A", TTC = "N/A") {
+function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adresseLivr = "N/A", statut = "N/A", transporteur="N/A", HT = "N/A", TTC = "N/A", nom = "N/A") {
 
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpDetails";
@@ -48,11 +48,11 @@ function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adr
                   </div>
                   <div>
                     <h2>Nom et prénom figurant sur la carte :</h2>
-                    <p>N/A</p>
+                    <p>${nom}</p>
                     <h2>Méthode de paiement :</h2>
                     <p>Visa</p>
                     <h2>Carte utilisée :</h2>
-                    <p>Finissant par </p>
+                    <p>Finissant par 4242</p>
                     <h2>Montant HT :</h2>
                     <p>${HT} €</p>
                     <h2>Montant total TTC :</h2>

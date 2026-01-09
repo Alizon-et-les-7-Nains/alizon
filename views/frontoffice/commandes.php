@@ -23,7 +23,7 @@ function getCommandes($pdo, $idClient, $filtre) {
     $commandes = [];
     
     $sql = "SELECT c.idCommande, c.dateCommande, c.etatLivraison, c.montantCommandeTTC, 
-                   c.montantCommandeHT, c.dateExpedition, c.nomTransporteur, c.idAdresseLivr, c.idAdresseFact, c.numeroCarte
+                   c.montantCommandeHT, c.dateExpedition, c.nomTransporteur, c.idAdresseLivr, c.idAdresseFact, c.nom
             FROM _commande c
             JOIN _panier p ON c.idPanier = p.idPanier
             WHERE p.idClient = :idClient";
@@ -77,7 +77,7 @@ function getCommandes($pdo, $idClient, $filtre) {
             'produits' => $produits,
             'idAdresseLivr' => $row['idAdresseLivr'],
             'idAdresseFact' => $row['idAdresseFact'],
-            'numCarte' => $row['numeroCarte'],
+            'nom' => $row['nom'],
         ];
     }
     
@@ -339,11 +339,11 @@ $cart = getCurrentCart($pdo, $idClient);
                                 $stmt->execute([':idAdresse' => $commande['idAdresseLivr']]);
                                 $resultatAdresseLivraison = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                                $adresseLivraison = $resultatAdresseLivraison['adresse'] . " ," . $resultatAdresseLivraison['codePostal'] . " " . $resultatAdresseLivraison['ville'];
+                                $adresseLivraison = $resultatAdresseLivraison['adresse'] . ", " . $resultatAdresseLivraison['codePostal'] . " " . $resultatAdresseLivraison['ville'];
 
                             ?>
 
-                            <a onclick="popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>', '<?= $commande['montantHT'] ?>', '<?= $commande['total'] ?>')" href="#">Détails</a>
+                            <a onclick="popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>', '<?= $commande['montantHT'] ?>', '<?= $commande['total'] ?>', '<?= $commande['nom'] ?>')" href="#">Détails</a>
                             <span class="supprElem">|</span>
                             <a href="../../controllers/facture.php?id= <?php echo($commande['id']); ?>">Facture</a>
                         </div>
