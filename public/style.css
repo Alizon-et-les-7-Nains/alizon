@@ -6987,12 +6987,14 @@ dialog.reassort form input {
   width: 100%;
   background: transparent;
   -webkit-appearance: none;
+  pointer-events: none;
   top: 25px;
   height: 15px;
   padding: 0;
   margin: 0;
 }
 .pageCatalogue input[type=range]::-webkit-slider-thumb {
+  pointer-events: all;
   -webkit-appearance: none;
   cursor: pointer;
   width: 7px;
