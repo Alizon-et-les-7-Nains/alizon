@@ -1,8 +1,10 @@
 <?php
-include('config.php');
+include('/var/www/config/config.php');
 try {
-    $pdo = new PDO("$driver:host=$server;dbname=$dbname", $user, $pass);
+    $pdo = new PDO("$driver:host=$server;dbname=$dbname", 
+            $user, $pass);
 } catch (PDOException $e) {
-    die("Erreur PDO : " . $e->getMessage());
+    print "Erreur !: " . $e->getMessage() . "<br/>";
+    die();
 }
-?>  
+?>
