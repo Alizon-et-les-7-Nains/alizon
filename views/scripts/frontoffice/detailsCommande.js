@@ -21,18 +21,44 @@ function clearError(element) {
   if (err) err.textContent = "";
 }
 
-function popUpDetailsCommande() {
+function popUpDetailsCommande(id, dateCommande, adresseFact, adresseLivr) {
 
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpErreur";
     
     overlay.innerHTML = `
-        <main class="popUpErreur">
+        <main class="popUpDetails">
               <div class="croixFermerLaPage">
                   <div></div>
                   <div></div>
               </div>
-              <h1>Détails de la commande ID : X</h1>
+              <h1>Détails de la commande # ${id}</h1>
+              <div class="conteneurSections">
+                  <div>
+                    <h2>Date de la commande :</h2>
+                    <p>${dateCommande}</p>
+                    <h2>Adresse de facturation :</h2>
+                    <p>${adresseFact}</p>
+                    <h2>Adresse de livraison :</h2>
+                    <p>${adresseLivr}</p>
+                    <h2>Date de livraison :</h2>
+                    <p>N/A</p>
+                    <h2>Expédié par :</h2>
+                    <p>N/A</p>
+                  </div>
+                  <div>
+                    <h2>Méthode de paiement :</h2>
+                    <p>N/A</p>
+                    <h2>Carte utilisée :</h2>
+                    <p>N/A</p>
+                    <h2>Nom et prénom de la personne facturée :</h2>
+                    <p>N/A</p>
+                    <h2>Montant HT :</h2>
+                    <p>30€</p>
+                    <h2>Montant total TTC :</h2>
+                    <p>N/A</p>
+                  </div>
+              </div>
         </main>`;
 
     document.body.appendChild(overlay);

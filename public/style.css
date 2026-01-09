@@ -6985,35 +6985,66 @@ dialog.reassort form input {
 }
 .pageCatalogue .values {
   display: flex;
+<<<<<<< HEAD
+  gap: 50px;
+}
+.pageCatalogue .slider-track {
+  position: absolute;
+  top: 25px;
+=======
   gap: 240px;
 }
 .pageCatalogue .slider-track {
   top: 10px;
   position: absolute;
+>>>>>>> 1dcbe4b2a3572f84c93766722142b42471ad9bab
   width: 100%;
   height: 15px;
   background: #ddd;
   border-radius: 16px;
 }
 .pageCatalogue .slider-range {
+<<<<<<< HEAD
+  position: absolute;
+  top: 25px;
+=======
   top: 10px;
   position: absolute;
+>>>>>>> 1dcbe4b2a3572f84c93766722142b42471ad9bab
   height: 15px;
   background: #273469;
   border-radius: 16px;
 }
 .pageCatalogue input[type=range] {
+<<<<<<< HEAD
+  position: absolute;
+  width: 100%;
+  background: transparent;
+  pointer-events: none;
+  -webkit-appearance: none;
+  top: 25px;
+=======
   top: 10px;
   position: absolute;
   width: 100%;
   background: transparent;
   -webkit-appearance: none;
   pointer-events: none;
+>>>>>>> 1dcbe4b2a3572f84c93766722142b42471ad9bab
   height: 15px;
   padding: 0;
   margin: 0;
 }
 .pageCatalogue input[type=range]::-webkit-slider-thumb {
+<<<<<<< HEAD
+  -webkit-appearance: none;
+  cursor: pointer;
+  width: 7px; /* Largeur */
+  height: 7px; /* Hauteur */
+  background: white; /* Couleur */
+  border-radius: 50%; /* Rond */
+  border: 8px solid; /* Bordure blanche */
+=======
   pointer-events: all;
   -webkit-appearance: none;
   cursor: pointer;
@@ -7023,11 +7054,21 @@ dialog.reassort form input {
   border-radius: 16px;
   border-width: 8px;
   border-style: solid;
+>>>>>>> 1dcbe4b2a3572f84c93766722142b42471ad9bab
   border-color: #273469;
 }
 .pageCatalogue input[type=range]::-moz-range-thumb {
   pointer-events: all;
   cursor: pointer;
+<<<<<<< HEAD
+  width: 7px;
+  height: 7px;
+  background: white;
+  border-radius: 50%;
+  border: 8px solid;
+  border-color: #273469;
+}
+=======
   width: 20px;
   height: 30px;
   background: white;
@@ -7039,11 +7080,15 @@ dialog.reassort form input {
 .pageCatalogue #minNoteLabel {
   margin-top: 1.5em;
 }
+>>>>>>> 1dcbe4b2a3572f84c93766722142b42471ad9bab
 
 .popUpDetails {
   background-color: #fffefa;
   border-radius: 16px;
   position: relative;
+  width: 1000px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 .popUpDetails h1 {
   color: #273469;
@@ -7070,6 +7115,16 @@ dialog.reassort form input {
 }
 .popUpDetails .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+.popUpDetails .conteneurSections {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.popUpDetails p {
+  text-align: left;
 }
 
 /*# sourceMappingURL=style.css.map */
