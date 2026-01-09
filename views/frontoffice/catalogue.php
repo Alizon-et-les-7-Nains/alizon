@@ -104,6 +104,7 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
                     $stmtImg->execute([':idProduit' => $idProduit]);
                     $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                     $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+                    $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                     ?>
             <article data-price="<?= $prixAffichage ?>">
                 <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
