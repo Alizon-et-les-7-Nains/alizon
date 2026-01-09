@@ -68,7 +68,7 @@ $bg-z: 0;
         border: 2px solid #273469;
         border-radius: 8px;
       }
-
+      
       a{
         color: #273469;
         font-size: 12px;
@@ -76,6 +76,13 @@ $bg-z: 0;
         text-decoration-thickness: 1px;
         text-decoration-color: #273469;
         margin-top: 8px;
+      }
+      #refactor{
+        display:flex;
+        flex-direction: column;
+        input{
+            width: 450px;
+        } 
       }
 
     }
@@ -235,3 +242,6 @@ $bg-z: 0;
   margin-bottom: 5px;        
 }
 
+label{
+  margin-top: 20px;
+}
