@@ -116,7 +116,7 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
                     $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                     $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                     ?>
-            <article>
+            <article data-price="<?= $prixAffichage ?>">
                 <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
                     onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'"
                     alt="Image du produit">
@@ -222,7 +222,40 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
 
     updateSlider();
 </script>
-
 <script src="../scripts/frontoffice/paiement-ajax.js"></script>
+<script>
+    const articles = document.querySelectorAll(".listeArticle article");
+    const resultat = document.getElementById("resultat");
+
+    function filtrerProduitsParPrix() {
+        const min = parseInt(sliderMin.value);
+        const max = parseInt(sliderMax.value);
+        let visibles = 0;
+
+        articles.forEach(article => {
+            const prix = parseFloat(article.dataset.price);
+
+            if (prix >= min && prix <= max) {
+                article.style.display = "";
+                visibles++;
+            } else {
+                article.style.display = "none";
+            }
+        });
+
+        resultat.textContent = visibles + " résultat" + (visibles > 1 ? "s" : "");
+    }
+
+    sliderMin.addEventListener("input", () => {
+        updateSlider();
+        filtrerProduitsParPrix();
+    });
+
+    sliderMax.addEventListener("input", () => {
+        updateSlider();
+        filtrerProduitsParPrix();
+    });
+</script>
+
 </body>
 </html>
