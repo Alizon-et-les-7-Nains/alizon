@@ -2508,6 +2508,16 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: bold;
   font-style: italic;
 }
+.mainCompteClient label {
+  height: 30px;
+  margin-bottom: 115px;
+}
+.mainCompteClient p {
+  margin-top: 30px;
+}
+.mainCompteClient input {
+  margin-top: 30px;
+}
 .mainCompteClient h1 {
   font-family: "lora";
   font-size: 48px;
@@ -2627,16 +2637,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient input:focus {
   outline: none;
   border: 0;
-}
-.mainCompteClient label {
-  height: 30px;
-  margin-bottom: 115px;
-}
-.mainCompteClient p {
-  margin-top: 30px;
-}
-.mainCompteClient input {
-  margin-top: 30px;
 }
 
 .overlayPopUpCompteClient {
@@ -6985,7 +6985,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .values {
   display: flex;
-  gap: 260px;
+  gap: 240px;
 }
 .pageCatalogue .slider-track {
   top: 10px;
