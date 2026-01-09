@@ -1,0 +1,121 @@
+@use '../fonts';
+@use '../colors' as *;
+
+main.commandesBackoffice {
+    display: flex;
+    flex-direction: column;
+    color: $color-blue;
+    margin-bottom: 2em;
+    
+    h1, img, button {
+        user-select: none;
+    }
+    
+    h1 {
+        font: {
+            family: 'lora';
+        }
+    }
+    
+    section {
+        article {
+            font-family: 'open-sans';
+            padding: {
+                left: 2em;
+                right: 2em;
+                bottom: 1em;
+            }
+            background-color: $color-pastel-purple;
+            border-radius: 16px;
+            border-left: {
+                style: solid;
+                width: 5px;
+            }
+
+            table {
+                width: 200px;
+                border-spacing: 0;
+                outline: 2px solid $color-black;
+                outline-offset: -2px;
+                margin: 0;
+                border-radius: 16px;
+                tr {
+                    padding: 0;
+                    margin: 0;
+                }
+                td {
+                    padding: 0;
+                    margin: 0;
+                }
+                figure {
+                    padding: 0;
+                    margin: 0;
+                }
+                
+                font-weight: bold;
+                font-size: 15px;
+
+                tr:last-child {
+                    td {
+                        padding-left: 0.5em;
+                        padding-right: 0.5em;
+                        padding-bottom: 0.5em;
+
+                        &:last-child {
+                            text-align: right;
+                            font-size: 25px;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+            
+            ul {
+                padding: 0;
+                display: flex;
+                list-style: none;
+                
+                li {
+                    display: flex;
+                    
+                    figure {
+                        img {
+                            width: 200px;
+                            height: 200px;
+                            object-fit: cover;
+                            border-top-left-radius: 12px;
+                            border-top-right-radius: 12px;
+                        }
+                    }
+                }
+
+                &:first-child {
+                    align-items: center;
+                    justify-content: space-between;
+
+                    li:last-child {
+                        font-size: 20px;
+                    }
+                }
+                
+                &:last-child {
+                    flex-wrap: wrap;
+                    gap: 1em;
+
+                    li {
+                        border-radius: 16px;
+                        background-color: $color-white;
+                    }
+                }
+            }
+        }
+        
+        &.livre {
+            article {
+                border-left: {
+                    color: $color-green;
+                }
+            }
+        }
+    }
+}

@@ -317,7 +317,7 @@ $cart = getCurrentCart($pdo, $idClient);
 
                                 $stmt = $pdo->prepare($sql);
                                 $stmt->execute([':idAdresse' => $commande['idAdresseFact']]);
-                                $resultatAdresseFacturation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                $resultatAdresseFacturation = $stmt->fetch(PDO::FETCH_ASSOC);
 
                                 if(!$resultatAdresseFacturation['complementAdresse']) {
                                     $complement = "";
@@ -333,14 +333,13 @@ $cart = getCurrentCart($pdo, $idClient);
 
                                 $stmt = $pdo->prepare($sql);
                                 $stmt->execute([':idAdresse' => $commande['idAdresseLivr']]);
-                                $resultatAdresseLivraison = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                $resultatAdresseLivraison = $stmt->fetch(PDO::FETCH_ASSOC);
 
                                 $adresseLivraison = $resultatAdresseLivraison['adresse'] . " ," . $resultatAdresseLivraison['codePostal'] . " " . $resultatAdresseLivraison['ville'];
 
                             ?>
 
-                            <a onclick="popUpDetailsCommande($commande['id'], $commande['date'], $adresseFacturation, $adresseLivraison, $commande['statut'], $commande['transporteur'])" href="#">Détails</a>
-                            <span class="supprElem">|</span>
+                            <a onclick="popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>')" href="#">Détails</a>                            <span class="supprElem">|</span>
                             <a href="../../controllers/facture.php?id= <?php echo($commande['id']); ?>">Facture</a>
                         </div>
                     </section>
