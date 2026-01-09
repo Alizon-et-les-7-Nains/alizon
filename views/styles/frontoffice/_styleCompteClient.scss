@@ -10,8 +10,8 @@
     font-style: italic;
 
     label{
-        height: 30px;
-        margin-bottom: 115px;
+        height: 30px !important;
+        margin-bottom: 115px !important;
     }
 
     h1{
@@ -75,7 +75,7 @@
         height: 100%;
         display: flex;
         align-items: center;
-        margin-top:30px;
+        margin-top:20px;
     }
 
     #buttonsCompte{
