@@ -78,7 +78,7 @@ function updateSliderUI(min, max) {
 }
 
 function fetchProducts(min, max) {
-    fetch(`ajax/catalogue_products.php?minPrice=${min}&maxPrice=${max}`)
+    fetch(`../../controllers/catalogue_products.php?minPrice=${min}&maxPrice=${max}`)
         .then(r => r.text())
         .then(html => {
             list.innerHTML = html;
