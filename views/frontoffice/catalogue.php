@@ -196,13 +196,16 @@ $maxPrice = !empty($products) ? max(array_column($products, 'prix')) : 0;
             }, 3000);
         });
     });
-    const sliderMin = document.getElementById('sliderMin');
+const sliderMin = document.getElementById('sliderMin');
 const sliderMax = document.getElementById('sliderMax');
 const minValue = document.getElementById('minValue');
 const maxValue = document.getElementById('maxValue');
 const range = document.getElementById('range');
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
+const paginationDiv = document.querySelector('.pagination');
+
+let currentPage = 1;
 
 function updateSlider() {
     let min = parseInt(sliderMin.value);
@@ -218,23 +221,47 @@ function updateSlider() {
     range.style.width = (percent2 - percent1) + '%';
 }
 
-// Fonction AJAX pour filtrer tous les produits
-function filtrerProduits() {
+// Charger les produits filtrés via AJAX
+function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
 
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=1`)
-        .then(response => response.text())
-        .then(html => {
-            listeArticle.innerHTML = html;
+    fetch(`filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}`)
+        .then(res => res.json())
+        .then(data => {
+            listeArticle.innerHTML = data.html;
+            currentPage = page;
+            resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
+
+            // Générer la pagination
+            let pagHTML = '';
+            if (data.nbPages > 1) {
+                if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
+                for (let i=1; i<=data.nbPages; i++){
+                    pagHTML += `<a href="#" class="pageLink ${i===page?'active':''}" data-page="${i}">${i}</a>`;
+                }
+                if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
+            }
+            paginationDiv.innerHTML = pagHTML;
+
+            // Attacher les événements aux liens de page
+            document.querySelectorAll('.pageLink').forEach(link=>{
+                link.addEventListener('click', e=>{
+                    e.preventDefault();
+                    const newPage = parseInt(link.dataset.page);
+                    loadProduits(newPage);
+                });
+            });
         });
 }
 
-sliderMin.addEventListener('input', () => { updateSlider(); filtrerProduits(); });
-sliderMax.addEventListener('input', () => { updateSlider(); filtrerProduits(); });
+// Événements slider
+sliderMin.addEventListener('input', () => { updateSlider(); loadProduits(1); });
+sliderMax.addEventListener('input', () => { updateSlider(); loadProduits(1); });
 
 updateSlider();
-filtrerProduits();
+loadProduits(1);
+
 
 </script>
 
