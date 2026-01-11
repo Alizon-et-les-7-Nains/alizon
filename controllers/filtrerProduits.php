@@ -48,6 +48,9 @@ if (count($products) > 0) {
         $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
         $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
         $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
+        $poids = $value['poids'];
+        $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
+        $prixAuKg = round($prixAuKg,2);
 
         $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
         $stmtImg->execute([':idProduit' => $idProduit]);
@@ -55,26 +58,25 @@ if (count($products) > 0) {
         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
 
         $data['html'] .= 
-        '<article data-price="'.$prixAffichage.'">';
-            '<img src="'.htmlspecialchars($image).'" class="imgProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'" alt="Image du produit">';
-            '<h2 class="nomProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'">'.htmlspecialchars($value['nom']).'</h2>';
+        '<article data-price="'.$prixAffichage.'">'.
+            '<img src="'.htmlspecialchars($image).'" class="imgProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'" alt="Image du produit">'.
+            '<h2 class="nomProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'">'.htmlspecialchars($value['nom']).'</h2>'.
             '<div class="notation">'.(number_format($value['note'],1)==0?'<span>Pas de note</span>':'<span>'.number_format($value['note'],1).'</span>');
-        for ($i = 0; $i < number_format($value['note'],0) <0; $i++){
+        for ($i = 0; $i < number_format($value['note'],0); $i++){
             $data['html'] .= '<img src="../../public/images/etoile.svg" alt="Note" class="etoile">';
         }
-        $data['html'] .= '</div>';
-        $data['html'] .= '<div class="infoProd"><div class="prix">';
+        $data['html'] .=
+        '</div>'.
+        '<div class="infoProd"><div class="prix">';
         if($enRemise){
-            $data['html'] .= '<div style="display:flex;align-items:center;gap:8px;">';
-            $data['html'] .= '<h2>'.formatPrice($prixRemise).'</h2>';
-            $data['html'] .= '<h3 style="text-decoration: line-through; color:#999;">'.formatPrice($prixOriginal).'</h3>';
-            $data['html'] .= '</div>';
+            $data['html'] .=
+            '<div style="display:flex;align-items:center;gap:8px;">'.
+                '<h2>'.formatPrice($prixRemise).'</h2>'.
+                '<h3 style="text-decoration: line-through; color:#999;">'.formatPrice($prixOriginal).'</h3>'.
+            '</div>';
         } else {
             $data['html'] .= '<h2>'.formatPrice($prixOriginal).'</h2>';
         }
-        $poids = $value['poids'];
-        $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
-        $prixAuKg = round($prixAuKg,2);
         if ($poids > 0) {
             $data['html'] .= '<h4>'.formatPrice($prixAuKg).'€/kg</h4>';
         }
@@ -85,7 +87,6 @@ if (count($products) > 0) {
         else{
             $data['html'] .= '<button class="plus" data-id="'.htmlspecialchars($value["idProduit"]).'"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></button>';
         }
-        
         $data['html'] .= '</div></article>';
     }
 } else {
