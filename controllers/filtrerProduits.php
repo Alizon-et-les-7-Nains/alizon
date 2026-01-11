@@ -61,6 +61,7 @@ if (count($products) > 0) {
         for ($i; $i < number_format($value['note'],0) <0; $i++){
             $data['html'] .= '<img src="../../public/images/etoile.svg" alt="Note" class="etoile">';
         }
+        $data['html'] .= '</div>'
         $data['html'] .= '<div class="infoProd"><div class="prix">';
         if($enRemise){
             $data['html'] .= '<div style="display:flex;align-items:center;gap:8px;">';
