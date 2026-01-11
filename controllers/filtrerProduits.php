@@ -57,7 +57,10 @@ if (count($products) > 0) {
         $data['html'] .= '<article data-price="'.$prixAffichage.'">';
         $data['html'] .= '<img src="'.htmlspecialchars($image).'" class="imgProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'" alt="Image du produit">';
         $data['html'] .= '<h2 class="nomProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'">'.htmlspecialchars($value['nom']).'</h2>';
-        $data['html'] .= '<div class="notation">'.(number_format($value['note'],1)==0?'<span>Pas de note</span>':'<span>'.number_format($value['note'],1).'</span>').'</div>';
+        $data['html'] .= '<div class="notation">'.(number_format($value['note'],1)==0?'<span>Pas de note</span>':'<span>'.number_format($value['note'],1).'</span>');
+        for ($i; $i < number_format($value['note'],0) <0; $i++){
+            $data['html'] .= '<img src="../../public/images/etoile.svg" alt="Note" class="etoile">';
+        }
         $data['html'] .= '<div class="infoProd"><div class="prix">';
         if($enRemise){
             $data['html'] .= '<div style="display:flex;align-items:center;gap:8px;">';
