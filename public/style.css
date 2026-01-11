@@ -511,7 +511,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-evenly;
+  justify-content: stretch;
   width: 250px;
 }
 .pageCommandes .produit {
@@ -783,7 +783,7 @@ body {
   margin: 0px 10px;
   object-fit: contain;
 }
-.pageCommandes .plus, .pageCommandes .btnCommande {
+.pageCommandes .plus {
   display: flex;
   align-items: center;
   font-family: "Lora", serif;
