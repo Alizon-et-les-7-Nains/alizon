@@ -71,17 +71,17 @@ if (count($products) > 0) {
         $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
         $prixAuKg = round($prixAuKg,2);
         if ($poids > 0) {
-            $data['html'] .= '<h4>'.formatPrice($prixAuKg).'€/kg)</h4>';
+            $data['html'] .= '<h4>'.formatPrice($prixAuKg).'€/kg</h4>';
         }
         $data['html'] .= '</div>';
         if (number_format($value['stock'], 1) == 0){
             $data['html'] .= '<b style="color: red; margin-right: 5px;">Aucun stock</b>';
         }
         else{
-            $data['html'] .= '<button class="plus" data-id="<?= htmlspecialchars('.$value["idProduit"] ?? ''.') ?>"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></button>';
+            $data['html'] .= '<button class="plus" data-id="'.htmlspecialchars($value["idProduit"]).'"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></button>';
         }
         
-        $data['html'] .= '</div></div></article>';
+        $data['html'] .= '</div></article>';
     }
 } else {
     $data['html'] = '<h1>Aucun produit disponible</h1>';
