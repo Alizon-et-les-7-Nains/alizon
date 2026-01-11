@@ -3037,7 +3037,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 
 .panier main {
-  min-height: 100vh;
+  min-height: 62vh;
 }
 .panier .listeProduit article {
   border: 2px solid #273469;

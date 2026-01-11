@@ -294,7 +294,10 @@ $cart = getCurrentCart($pdo, $idClient);
                             
                             <div class="listeBtn">
                                 <a href="<?php echo "../../views/frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
-                                <button class="plus" data-id="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
+                                <form action="pagePaiement.php" method="POST">
+                                    <input type="hidden" name="idProduit" value="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">
+                                    <button class="plus">Acheter à nouveau<img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
+                                </form>
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
                                     <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
                                     <?php else: ?>
