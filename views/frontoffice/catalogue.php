@@ -3,11 +3,6 @@ include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../../views/frontoffice/connexionClient.php');
-    exit;
-}
-
 $produitsParPage = 15;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $produitsParPage;
@@ -196,8 +191,8 @@ const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
 const popupConfirmation = document.querySelector(".confirmationAjout");
 
-let currentPage = <?= $page ?>; // Récupérer la page actuelle du PHP
-let isFiltering = false; // Flag pour savoir si on filtre ou pas
+let currentPage = <?= $page ?>;
+let isFiltering = false;
 
 function updateSlider() {
     let min = parseInt(sliderMin.value);
@@ -213,7 +208,6 @@ function updateSlider() {
     range.style.width = (percent2 - percent1) + '%';
 }
 
-// Fonction pour attacher les événements aux boutons panier
 function attachCartEvents() {
     document.querySelectorAll('.plus').forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -226,7 +220,6 @@ function attachCartEvents() {
     });
 }
 
-// Fonction pour attacher les événements de pagination
 function attachPaginationEvents() {
     document.querySelectorAll('.pageLink').forEach(link => {
         link.addEventListener('click', e => {
@@ -237,7 +230,6 @@ function attachPaginationEvents() {
     });
 }
 
-// Charger les produits filtrés via AJAX
 function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
@@ -260,7 +252,6 @@ function loadProduits(page = 1) {
             currentPage = page;
             resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
 
-            // Générer la pagination
             let pagHTML = '';
             if (data.nbPages > 1) {
                 if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
@@ -271,11 +262,10 @@ function loadProduits(page = 1) {
             }
             paginationDiv.innerHTML = pagHTML;
 
-            // Réattacher les événements
             attachPaginationEvents();
             attachCartEvents();
             
-            isFiltering = true; // On est maintenant en mode filtrage
+            isFiltering = true;
         })
         .catch(error => {
             console.error('Erreur lors du chargement des produits:', error);
@@ -293,16 +283,10 @@ sliderMax.addEventListener('input', () => {
     loadProduits(1); 
 });
 
-// Initialisation
 updateSlider();
 
-// Attacher les événements initiaux aux boutons panier
 attachCartEvents();
 
-// NE PAS charger les produits au démarrage si on n'a pas encore filtré
-// loadProduits(1); // <-- SUPPRIMER CETTE LIGNE
-
-// Empêcher la soumission du formulaire
 document.querySelector('form').addEventListener('submit', e => e.preventDefault());
 
 </script>
