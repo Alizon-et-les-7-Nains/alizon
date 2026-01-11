@@ -73,7 +73,7 @@ if (count($products) > 0) {
         if ($poids > 0) {
             $data['html'] .= '<h4>'.formatPrice($prixAuKg).'€/kg)</h4>';
         }
-        $data['html'] .= '</div><div>';
+        $data['html'] .= '</div>';
         if (number_format($value['stock'], 1) == 0){
             $data['html'] .= '<b style="color: red; margin-right: 5px;">Aucun stock</b>';
         }
