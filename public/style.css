@@ -783,7 +783,7 @@ body {
   margin: 0px 10px;
   object-fit: contain;
 }
-.pageCommandes .plus {
+.pageCommandes .plus, .pageCommandes .btnCommande {
   display: flex;
   align-items: center;
   font-family: "Lora", serif;
