@@ -48,26 +48,46 @@ if (count($products) > 0) {
         $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
         $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
         $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
+        $poids = $value['poids'];
+        $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
+        $prixAuKg = round($prixAuKg,2);
 
         $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
         $stmtImg->execute([':idProduit' => $idProduit]);
         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
 
-        $data['html'] .= '<article data-price="'.$prixAffichage.'">';
-        $data['html'] .= '<img src="'.htmlspecialchars($image).'" class="imgProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'" alt="Image du produit">';
-        $data['html'] .= '<h2 class="nomProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'">'.htmlspecialchars($value['nom']).'</h2>';
-        $data['html'] .= '<div class="notation">'.(number_format($value['note'],1)==0?'<span>Pas de note</span>':'<span>'.number_format($value['note'],1).'</span>').'</div>';
-        $data['html'] .= '<div class="infoProd"><div class="prix">';
+        $data['html'] .= 
+        '<article data-price="'.$prixAffichage.'">'.
+            '<img src="'.htmlspecialchars($image).'" class="imgProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'" alt="Image du produit">'.
+            '<h2 class="nomProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'">'.htmlspecialchars($value['nom']).'</h2>'.
+            '<div class="notation">'.(number_format($value['note'],1)==0?'<span>Pas de note</span>':'<span>'.number_format($value['note'],1).'</span>');
+        for ($i = 0; $i < number_format($value['note'],0); $i++){
+            $data['html'] .= '<img src="../../public/images/etoile.svg" alt="Note" class="etoile">';
+        }
+        $data['html'] .=
+        '</div>'.
+        '<div class="infoProd"><div class="prix">';
         if($enRemise){
-            $data['html'] .= '<div style="display:flex;align-items:center;gap:8px;">';
-            $data['html'] .= '<h2>'.formatPrice($prixRemise).'</h2>';
-            $data['html'] .= '<h3 style="text-decoration: line-through; color:#999;">'.formatPrice($prixOriginal).'</h3>';
-            $data['html'] .= '</div>';
+            $data['html'] .=
+            '<div style="display:flex;align-items:center;gap:8px;">'.
+                '<h2>'.formatPrice($prixRemise).'</h2>'.
+                '<h3 style="text-decoration: line-through; color:#999;">'.formatPrice($prixOriginal).'</h3>'.
+            '</div>';
         } else {
             $data['html'] .= '<h2>'.formatPrice($prixOriginal).'</h2>';
         }
-        $data['html'] .= '</div></div></article>';
+        if ($poids > 0) {
+            $data['html'] .= '<h4>'.formatPrice($prixAuKg).'€/kg</h4>';
+        }
+        $data['html'] .= '</div>';
+        if (number_format($value['stock'], 1) == 0){
+            $data['html'] .= '<b style="color: red; margin-right: 5px;">Aucun stock</b>';
+        }
+        else{
+            $data['html'] .= '<button class="plus" data-id="'.htmlspecialchars($value["idProduit"]).'"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></button>';
+        }
+        $data['html'] .= '</div></article>';
     }
 } else {
     $data['html'] = '<h1>Aucun produit disponible</h1>';
