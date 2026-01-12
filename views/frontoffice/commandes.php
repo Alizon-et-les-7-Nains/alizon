@@ -28,8 +28,7 @@ $idClient = $_SESSION['user_id'];
 // FONCTION DE RÉCUPÉRATION DES COMMANDES
 // ============================================================================
 
-function getCommandes($pdo, $idClient, $filtre)
-{
+function getCommandes($pdo, $idClient, $filtre){
     $commandes = [];
 
     $sql = "SELECT c.idCommande, c.dateCommande, c.etatLivraison, c.montantCommandeTTC, 
@@ -419,6 +418,8 @@ $cart = getCurrentCart($pdo, $idClient);
                 <p><?php echo htmlspecialchars($tabIdDestination[0]["idCommande"]) ?></p>
                 <p>destination</p>
                 <p><?php echo htmlspecialchars($tabIdDestination[0]["destination"]) ?></p>
+                <p>Numéro de bordereau</p>
+                <p><?php echo htmlspecialchars($_SESSION['noBordereau']) ?></p>
                 <a href="./commandes.php" class="close">Fermer</a>
             </div>
         </div>

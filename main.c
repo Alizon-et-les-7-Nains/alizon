@@ -222,7 +222,11 @@ MYSQL* config_BD() {
     }
 
     
+<<<<<<< HEAD
     if (!mysql_real_connect(local_conn, "maraidb", "sae", "grognasseEtCompagnie", "saedb", 3306, NULL, 0)) {
+=======
+    if (!mysql_real_connect(local_conn, "mariadb", "sae", "grognasseEtCompagnie", "saedb", 3306, NULL, 0)) {
+>>>>>>> 1f62f029eea1bf6cf91251f4f1be2adcc56f55f7
         fprintf(stderr, "Connexion échouée : %s\n", mysql_error(local_conn));
         mysql_close(local_conn);
         exit(EXIT_FAILURE);
