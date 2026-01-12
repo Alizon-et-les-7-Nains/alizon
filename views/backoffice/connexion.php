@@ -84,7 +84,8 @@
     </main>
     
     <?php require_once "./partials/footer.php"; ?>
-
+    
+    <script src="../../controllers/Chiffrement.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // éléments
