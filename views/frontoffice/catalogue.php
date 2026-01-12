@@ -75,9 +75,9 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
             <label for="tri">Trier par :</label>
             <div class="triNote">
                 <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
-                <label for="triNoteCroissant">Prix croissant</label>
+                <label for="triNoteCroissant">Note croissante</label>
                 <input type="radio" id="triNoteDecroissant" name="tri" value="noteDesc">
-                <label for="triNoteDecroissant">Prix décroissant</label>
+                <label for="triNoteDecroissant">Note décroissante</label>
             </div>
             <div class="triPrix">
                 <input type="radio" id="triPrixCroissant" name="tri" value="prixAsc">
