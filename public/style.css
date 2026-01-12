@@ -179,7 +179,7 @@ body {
   display: flex;
   align-items: center;
 }
-@media (max-width: 720px) {
+@media (max-width: 845px) {
   .headerFront .icons {
     display: none;
     visibility: hidden;
@@ -194,6 +194,19 @@ body {
   .headerFront .search-wrapper input[type=search] {
     padding: 10px 0px 10px 10px;
     width: 300px;
+  }
+}
+@media (max-width: 580px) {
+  .headerFront img {
+    width: 30px;
+    margin-right: 0px;
+  }
+  .headerFront b {
+    font-size: x-large;
+  }
+  .headerFront .search-wrapper input[type=search] {
+    width: 200px;
+    height: 40px;
   }
 }
 
@@ -2010,6 +2023,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
 }
 
+.visaImg {
+  margin-top: 10px;
+}
+
 .pagePaiement {
   position: relative;
   overflow-x: hidden;
@@ -2056,10 +2073,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .pagePaiement .container {
   max-width: 1400px;
-  margin: 70px auto 0;
+  margin: 30px auto 0;
   padding: 0 5%;
   box-sizing: border-box;
   width: 100%;
+  min-height: 63vh;
 }
 @media (max-width: 920px) {
   .pagePaiement .container {
@@ -2086,6 +2104,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   width: 100%;
   align-items: start;
   box-sizing: border-box;
+  align-items: baseline;
 }
 @media (max-width: 1200px) {
   .pagePaiement .parent {
@@ -2190,7 +2209,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .pagePaiement .payment {
   margin-top: 8px;
 }
-.pagePaiement .payment .payer {
+.pagePaiement .payer {
   margin-top: 12px;
   background: #dcd1fa;
   color: #252b56;
@@ -2205,11 +2224,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   box-sizing: border-box;
   transition: background-color 0.2s;
 }
-.pagePaiement .payment .payer:hover {
+.pagePaiement .payer:hover {
   background: #c9bbf0;
 }
 @media (max-width: 720px) {
-  .pagePaiement .payment .payer {
+  .pagePaiement .payer {
     display: none !important;
   }
 }
@@ -7052,7 +7071,7 @@ dialog.reassort form input {
   text-decoration: none;
 }
 
-.overlayPopUpDetails {
+.overlayPopUpDetails, .overlayPopUpSuiviCommande {
   position: fixed;
   top: 0;
   left: 0;
@@ -7108,6 +7127,10 @@ dialog.reassort form input {
 }
 .popUpDetails p {
   text-align: left;
+}
+
+.popUpSuivi {
+  width: 500px;
 }
 
 main.commandesBackoffice {

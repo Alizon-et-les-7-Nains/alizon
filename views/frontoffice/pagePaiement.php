@@ -341,7 +341,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 
     <main class="container">
         <div class="parent">
-            <div class="col">
                 <section class="delivery">
                     <h3>1 - Informations pour la livraison :</h3>
                     <div class="input-field">
@@ -402,17 +401,10 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                             <input class="cvv-input" type="text" placeholder="CVV" required minlength="3" maxlength="3">
                             <small class="error-message" data-for="cvv-input"></small>
                         </div>
+                        <img class="visaImg" src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
                     </div>
-
-                    <div class="logos">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
-                    </div>
-
-                    <button class="payer">Payer</button>
                 </section>
-            </div>
 
-            <div class="col">
                 <section class="conditions">
                     <h3>3 - Accepter les conditions générales et mentions légales</h3>
                     <label>
@@ -422,8 +414,8 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                         <a href="#">Mentions Légales</a> d'Alizon.
                     </label>
                     <small class="error-message" data-for="cgv"></small>
+                    <button class="payer">Payer</button>
                 </section>
-            </div>
         </div>
 
         <div class="payer-wrapper-mobile">

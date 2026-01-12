@@ -286,7 +286,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                             <p>Livrée le <?php echo $commande['dateLivraison']; ?></p>
                                         <?php else: ?>
                                             <p><?php echo htmlspecialchars($commande['statut']); ?></p>
-                                            <a href="#">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
+                                            <a onclick="popUpSuiviCommande('<?= $commande['id'] ?>')" href="#">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -294,11 +294,15 @@ $cart = getCurrentCart($pdo, $idClient);
                             
                             <div class="listeBtn">
                                 <a href="<?php echo "../../views/frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
+                                
+                                
                                 <a href="pagePaiement.php" class="plus">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Image redo"></a>
+                                <!-- Ajouter l'id du produit en param POST ou GET et transmettre à la pagePaiement.php ? -->
+
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
-                                    <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
+                                    <a>Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
                                     <?php else: ?>
-                                    <a href="">Annuler<img src="../../public/images/redoDarkBlue.svg" alt="Annuler"></a>
+                                    <a onclick="popUpAnnulerCommande('<?= $commande['id'] ?>')">Annuler<img src="../../public/images/redoDarkBlue.svg" alt="Annuler"></a>
                                 <?php endif; ?>
                             </div>
                         </section>

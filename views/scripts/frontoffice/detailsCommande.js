@@ -80,3 +80,77 @@ function fermerPopUpDetailsCommande() {
     const overlay = document.querySelector(".overlayPopUpDetails");
     if (overlay) overlay.remove();
 }
+
+// Suivi de commande 
+
+function popUpSuiviCommande(id) {
+
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpSuiviCommande";
+    
+    overlay.innerHTML = `
+        <main class="popUpSuivi">
+              <div class="croixFermerLaPage">
+                  <div></div>
+                  <div></div>
+              </div>
+              <h1>Suivi de la commande # ${id}</h1>
+        </main>`;
+
+    document.body.appendChild(overlay);
+
+    const croixFermer = overlay.querySelector(".croixFermerLaPage");
+    const btnFermer = overlay.querySelector(".btnFermer");
+
+    croixFermer.addEventListener("click", fermerPopUpSuiviCommande);
+    if (btnFermer) btnFermer.addEventListener("click", fermerPopUpSuiviCommande);
+    
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUpDetailsCommande();
+        }
+    });
+}
+
+function fermerPopUpSuiviCommande() {
+    const overlay = document.querySelector(".overlayPopUpSuiviCommande");
+    if (overlay) overlay.remove();
+}
+
+// Confirmer annulation commande 
+
+function popUpAnnulerCommande(id) {
+
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpAnnulerCommande";
+    
+    overlay.innerHTML = `
+        <main class="popUpSuivi">
+            <div class="croixFermerLaPage">
+                <div></div>
+                <div></div>
+            </div>
+            <h1>Annuler la commande # ${id} ?</h1>
+            <h3>Cliquer sur "Confirmer" pour annuler votre commande</h3>
+            <button type="submit" style="color: #ffffff; background-color: #f14e4e;">Confirmer</button>
+         </main>`;
+
+    document.body.appendChild(overlay);
+
+    const croixFermer = overlay.querySelector(".croixFermerLaPage");
+    const btnFermer = overlay.querySelector(".btnFermer");
+
+    croixFermer.addEventListener("click", fermerPopUpAnnulerCommande);
+    if (btnFermer) btnFermer.addEventListener("click", fermerPopUpAnnulerCommande);
+    
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            fermerPopUpDetailsCommande();
+        }
+    });
+}
+
+function fermerPopUpAnnulerCommande() {
+    const overlay = document.querySelector(".overlayPopUpAnnulerCommande");
+    if (overlay) overlay.remove();
+}
