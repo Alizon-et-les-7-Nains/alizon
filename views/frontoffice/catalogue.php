@@ -74,9 +74,9 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
         <form method="GET" action="">
             <label for="tri">Trier par :</label>
             <div class="triNote">
-                <input type="radio" id="triNoteCroissant" name="tri" value="prixAsc">
+                <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
                 <label for="triNoteCroissant">Prix croissant</label>
-                <input type="radio" id="triNoteDecroissant" name="tri" value="prixDesc">
+                <input type="radio" id="triNoteDecroissant" name="tri" value="noteDesc">
                 <label for="triNoteDecroissant">Prix décroissant</label>
             </div>
             <label for="prix">Filtrer par prix :</label>
@@ -219,7 +219,7 @@ const range = document.getElementById('range');
 // Tri notes
 const triNoteCroissant = document.getElementById('triNoteCroissant');
 const triNoteDecroissant = document.getElementById('triNoteDecroissant');
-const sortOrder = '';
+let sortOrder = '';
 
 // Variables globales
 const listeArticle = document.querySelector('.listeArticle');
@@ -288,8 +288,6 @@ function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
-
-    console.log('Chargement des produits:', {min, max, notemin, page});
 
     fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}`)
         .then(res => {
