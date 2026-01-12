@@ -57,4 +57,6 @@ echo $help_response;
 
 // Fermeture de la connexion
 fclose($socket);
+header('Location: views/frontoffice/commandes.php');
+exit;
 ?>
