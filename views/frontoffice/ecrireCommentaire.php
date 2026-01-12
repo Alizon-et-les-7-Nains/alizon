@@ -26,32 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sujet = trim($_POST['sujet'] ?? '');
         $message = trim($_POST['message'] ?? '');
 
-        if ($clientId === 0) {
-            $errors[] = "Vous devez être connecté pour laisser un avis.";
-        }
-        if ($productId === 0) {
-            $errors[] = "Produit invalide.";
-        }
-        if ($note === 0 || $note < 1 || $note > 5) {
-            $errors[] = "Veuillez sélectionner une note entre 1 et 5 étoiles.";
-        }
-        if (empty($sujet)) {
-            $errors[] = "Le sujet est obligatoire.";
-        }
-        if (empty($message)) {
-            $errors[] = "Le message est obligatoire.";
-        }
-        if (strlen($message) < 10) {
-            $errors[] = "Le message doit contenir au moins 10 caractères.";
-        }
+        // Validations
+        if ($clientId === 0) $errors[] = "Vous devez être connecté pour laisser un avis.";
+        if ($note < 1 || $note > 5) $errors[] = "Veuillez sélectionner une note.";
+        if (empty($sujet)) $errors[] = "Le sujet est obligatoire.";
+        if (strlen($message) < 10) $errors[] = "Le message doit contenir au moins 10 caractères.";
 
         if (empty($errors)) {
             $fileName = null;
             
+            // Traitement de l'image
             if (!empty($_FILES['photo']['name'])) {
-                $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/images/imagesAvis/";
+                // Utilisation d'un chemin relatif au dossier public pour plus de fiabilité
+                $targetDir = __DIR__ . "/../../public/images/imagesAvis/";
                 
-                // Créer le dossier s'il n'existe pas
                 if (!is_dir($targetDir)) {
                     mkdir($targetDir, 0755, true);
                 }
@@ -60,20 +48,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
                 
                 if (in_array($fileExtension, $allowedExtensions)) {
-                    $fileName = uniqid('avis_') . '.' . $fileExtension;
-                    $targetFile = $targetDir . $fileName;
+                    $dbFileName = uniqid('avis_') . '.' . $fileExtension;
+                    $targetFile = $targetDir . $dbFileName;
 
-                    move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile);
-                    $fileName = "/images/imagesAvis/" . $fileName;
-                    
+                    if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
+                        // Chemin stocké en base de données pour l'affichage web
+                        $fileName = "../../public/images/imagesAvis/" . $dbFileName;
+                    } else {
+                        $errors[] = "Erreur lors de l'upload de l'image.";
+                    }
                 } else {
-                    $errors[] = "Format d'image non autorisé. Utilisez JPG, PNG ou GIF.";
+                    $errors[] = "Format d'image non autorisé.";
                 }
             }
 
             if (empty($errors)) {
+                // 1. Insertion ou mise à jour de l'avis
                 $sqlAvis = "INSERT INTO _avis (idProduit, idClient, titreAvis, contenuAvis, note, dateAvis) 
-                            VALUES (:idProduit, :idClient, :titre, :contenu, :note, CURDATE())";
+                            VALUES (:idProduit, :idClient, :titre, :contenu, :note, CURDATE())
+                            ON DUPLICATE KEY UPDATE titreAvis = VALUES(titreAvis), contenuAvis = VALUES(contenuAvis), note = VALUES(note), dateAvis = CURDATE()";
                 $stmt = $pdo->prepare($sqlAvis);
                 $stmt->execute([
                     ':idProduit' => $productId,
@@ -83,9 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':note' => $note
                 ]);
 
+                // 2. Insertion de l'image si présente
                 if ($fileName) {
                     $sqlImageAvis = "INSERT INTO _imageAvis (idProduit, idClient, URL) 
-                                    VALUES (:idProduit, :idClient, :urlImage)";
+                                    VALUES (:idProduit, :idClient, :urlImage)
+                                    ON DUPLICATE KEY UPDATE URL = VALUES(URL)";
                     $stmtImageAvis = $pdo->prepare($sqlImageAvis);
                     $stmtImageAvis->execute([
                         ':idProduit' => $productId,
@@ -99,8 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } catch(PDOException $e) {
-        $errors[] = "Vous avez déjà écrit un avis sur ce produit, veuillez modifier votre avis déjà éxistant.";
-    } // test
+        $errors[] = "Erreur base de données : " . $e->getMessage();
+    }
 }
 ?>
 <!DOCTYPE html>
