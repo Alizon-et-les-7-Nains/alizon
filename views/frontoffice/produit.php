@@ -598,7 +598,11 @@ if ($produit['stock'] > 0) {
                 <div class="baselineSpaceBetween">
                     <div class="sectionImagesAvis">
                         <?php foreach ($imagesAvis as $imageAvis): ?>
-                            <img src="<?php echo htmlspecialchars($imageAvis['URL'] ?? '');?>" alt="">
+                            <?php if (!empty($imageAvis['URL'])): ?>
+                                <img src="../../public/images/imagesAvis/<?php echo htmlspecialchars($imageAvis['URL']); ?>" 
+                                    alt="Photo avis" 
+                                    style="max-width: 100px; height: auto; border-radius: 5px; margin-top: 10px; border: 1px solid #ddd;">
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </div>   
                     <div class="actionsAvis">
