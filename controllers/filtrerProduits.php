@@ -13,7 +13,7 @@ $sortOrder = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : '';
 $noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
 $categorie = isset($_GET['categorie']) ? $_GET['categorie'] : "";
 $noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
-$vendeur = $vendeur = $_GET['vendeur'] ?? null;
+$vendeur = $_GET['vendeur'] ?? null;
 $sqlVendeur="";
 if(!empty($vendeur)){
     $sqlVendeur = "AND p.idVendeur = :idVendeur";
