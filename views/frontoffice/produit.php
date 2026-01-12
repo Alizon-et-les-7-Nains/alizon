@@ -548,6 +548,7 @@ if ($produit['stock'] > 0) {
         Écrire un commentaire
     </a>';
     }
+
     ?>
 
 <?php if (!empty($lesAvis)): ?>

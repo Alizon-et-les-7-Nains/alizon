@@ -30,6 +30,8 @@ function getCommandes($pdo, $idClient, $filtre) {
 
     if ($filtre === 'cours') {
         $sql .= " AND c.etatLivraison NOT IN ('Livrée', 'Annulé')";
+    } elseif ($filtre === '2026') {
+        $sql .= " AND YEAR(c.dateCommande) = 2026";
     } elseif ($filtre === '2025') {
         $sql .= " AND YEAR(c.dateCommande) = 2025";
     } elseif ($filtre === '2024') {
@@ -95,7 +97,10 @@ $nombreCommandes = count($commandesAffichees);
 $titreFiltre = "Commandes en cours";
 $messageVide = "Aucune commande en cours actuellement.";
 
-if ($filtre === '2025') {
+if ($filtre === '2026') {
+    $titreFiltre = "Commandes 2026";
+    $messageVide = "Aucune commande passée en 2026.";
+} elseif ($filtre === '2025') {
     $titreFiltre = "Commandes 2025";
     $messageVide = "Aucune commande passée en 2025.";
 } elseif ($filtre === '2024') {
@@ -246,6 +251,7 @@ $cart = getCurrentCart($pdo, $idClient);
             
             <select name="typeFiltrage" id="typeFiltrage" onchange="window.location.href='?filtre=' + this.value">
                 <option value="cours" <?php echo $filtre === 'cours' ? 'selected' : ''; ?>>En cours</option>
+                <option value="2026" <?php echo $filtre === '2026' ? 'selected' : ''; ?>>2026</option>
                 <option value="2025" <?php echo $filtre === '2025' ? 'selected' : ''; ?>>2025</option>
                 <option value="2024" <?php echo $filtre === '2024' ? 'selected' : ''; ?>>2024</option>
             </select>
@@ -280,7 +286,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                             <p>Livrée le <?php echo $commande['dateLivraison']; ?></p>
                                         <?php else: ?>
                                             <p><?php echo htmlspecialchars($commande['statut']); ?></p>
-                                            <a href="#">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
+                                            <a onclick="popUpSuiviCommande('<?= $commande['id'] ?>')" href="#">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -288,11 +294,15 @@ $cart = getCurrentCart($pdo, $idClient);
                             
                             <div class="listeBtn">
                                 <a href="<?php echo "../../views/frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
-                                <button class="plus" data-id="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
+                                
+                                
+                                <a href="pagePaiement.php" class="plus">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Image redo"></a>
+                                <!-- Ajouter l'id du produit en param POST ou GET et transmettre à la pagePaiement.php ? -->
+
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
-                                    <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
+                                    <a>Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
                                     <?php else: ?>
-                                    <a href="">Annuler<img src="../../public/images/redoDarkBlue.svg" alt="Annuler"></a>
+                                    <a onclick="popUpAnnulerCommande('<?= $commande['id'] ?>')">Annuler<img src="../../public/images/redoDarkBlue.svg" alt="Annuler"></a>
                                 <?php endif; ?>
                             </div>
                         </section>

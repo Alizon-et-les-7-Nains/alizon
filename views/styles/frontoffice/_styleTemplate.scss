@@ -184,7 +184,7 @@ body {
     align-items: center;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 845px) {
     .icons {
       display: none;
       visibility: hidden;
@@ -199,6 +199,20 @@ body {
     .search-wrapper input[type="search"] {
       padding: 10px 0px 10px 10px;
       width: 300px;
+    }
+  }
+
+  @media (max-width: 580px) {
+    img {
+      width: 30px;
+      margin-right: 0px;
+    }
+    b {
+        font-size: x-large;
+    }
+    .search-wrapper input[type="search"] {
+      width: 200px;
+      height: 40px;
     }
   }
 
