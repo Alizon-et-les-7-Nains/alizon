@@ -229,11 +229,20 @@ class PaymentPage {
             <div class="total-section">
                 <h3>Total : ${total.toFixed(2)}€</h3>
             </div>
-            
-            <div class="popup-buttons">
-                <button class="btn-cancel">Annuler</button>
-                <button class="btn-confirm">Confirmer la commande</button>
-            </div>
+            <form method="POST" action="../../../alizon.php">
+              <div class="popup-buttons">
+                  <button type = "button" class="btn-cancel">Annuler</button>
+                  <button type = "submit" class="btn-confirm">Confirmer la commande</button>
+              </div>
+              <input type="hidden" name="adresseLivraison" value="${formData.adresseLivraison}">
+              <input type="hidden" name="villeLivraison" value="${formData.villeLivraison}">
+              <input type="hidden" name="codePostal" value="${formData.codePostal}">
+              <input type="hidden" name="numeroCarte" value="${formData.numCarte}">
+              <input type="hidden" name="nomCarte" value="${formData.nomCarte}">
+              <input type="hidden" name="dateExpiration" value="${formData.dateExpiration}">
+              <input type="hidden" name="cvv" value="${formData.cvv}">
+              <input type="hidden" name="idAdresseFacturation" value="${this.idAdresseFacturation}">
+            </form>
         `;
 
     this.popupContent.innerHTML = popupHtml;
@@ -243,71 +252,12 @@ class PaymentPage {
   }
 
   setupPopupButtons(formData, cart) {
-    const confirmBtn = this.popupContent.querySelector(".btn-confirm");
     const cancelBtn = this.popupContent.querySelector(".btn-cancel");
 
     if (cancelBtn) {
       cancelBtn.addEventListener("click", () => this.hidePopup());
     }
 
-    if (confirmBtn) {
-      confirmBtn.addEventListener("click", () =>
-        this.processOrder(formData, confirmBtn)
-      );
-    }
-  }
-
-  async processOrder(formData, confirmBtn) {
-    confirmBtn.disabled = true;
-    confirmBtn.textContent = "Traitement en cours...";
-
-    try {
-      const numeroCarteChiffre = window.vignere
-        ? window.vignere(formData.numCarte, window.CLE_CHIFFREMENT, 1)
-        : formData.numCarte;
-      const cvvChiffre = window.vignere
-        ? window.vignere(formData.cvv, window.CLE_CHIFFREMENT, 1)
-        : formData.cvv;
-
-      const orderData = new FormData();
-      orderData.append("action", "createOrder");
-      orderData.append("adresseLivraison", formData.adresseLivraison);
-      orderData.append("villeLivraison", formData.villeLivraison);
-      orderData.append("numeroCarte", numeroCarteChiffre);
-      orderData.append("cvv", cvvChiffre);
-      orderData.append("nomCarte", formData.nomCarte);
-      orderData.append("dateExpiration", formData.dateExpiration);
-      orderData.append("codePostal", formData.codePostal);
-
-      if (this.idAdresseFacturation) {
-        orderData.append("idAdresseFacturation", this.idAdresseFacturation);
-      }
-
-      const response = await fetch("", {
-        method: "POST",
-        body: orderData,
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        this.showThankYouMessage(result.idCommande);
-      } else {
-        this.showMessage(
-          "Erreur : " +
-            (result.error || "Erreur lors de la création de la commande"),
-          "error"
-        );
-        this.hidePopup();
-        confirmBtn.disabled = false;
-        confirmBtn.textContent = "Confirmer la commande";
-      }
-    } catch (error) {
-      console.error("Erreur lors de la commande:", error);
-      this.showMessage("Une erreur est survenue. Veuillez réessayer.", "error");
-      confirmBtn.disabled = false;
-      confirmBtn.textContent = "Confirmer la commande";
-    }
   }
 
   showThankYouMessage(orderId) {

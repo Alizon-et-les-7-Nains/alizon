@@ -384,4 +384,30 @@
         margin-bottom: 5px;
         cursor: pointer;
     }
+
+    .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+    
+    .popup {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        min-width: 300px;
+        text-align: center;
+    }
+    
+    .close {
+        display: inline-block;
+        margin-top: 10px;
+        text-decoration: none;
+        color: red;
+    }
+    
 }

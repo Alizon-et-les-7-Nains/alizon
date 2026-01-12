@@ -75,9 +75,15 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
             <label for="tri">Trier par :</label>
             <div class="triNote">
                 <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
-                <label for="triNoteCroissant">Prix croissant</label>
+                <label for="triNoteCroissant">Note croissante</label>
                 <input type="radio" id="triNoteDecroissant" name="tri" value="noteDesc">
-                <label for="triNoteDecroissant">Prix décroissant</label>
+                <label for="triNoteDecroissant">Note décroissante</label>
+            </div>
+            <div class="triPrix">
+                <input type="radio" id="triPrixCroissant" name="tri" value="prixAsc">
+                <label for="triPrixCroissant">Prix croissant</label>
+                <input type="radio" id="triPrixDecroissant" name="tri" value="prixDesc">
+                <label for="triPrixDecroissant">Prix décroissant</label>
             </div>
             <label for="prix">Filtrer par prix :</label>
             <div class="slider-container">
@@ -345,6 +351,20 @@ triNoteCroissant.addEventListener('change', () => {
 triNoteDecroissant.addEventListener('change', () => {
     if (triNoteDecroissant.checked) {
         sortOrder = 'noteDesc';
+        loadProduits(1);
+    }
+});
+
+triPrixCroissant.addEventListener('change', () => {
+    if (triPrixCroissant.checked) {
+        sortOrder = 'prixAsc';
+        loadProduits(1);
+    }
+});
+
+triPrixDecroissant.addEventListener('change', () => {
+    if (triPrixDecroissant.checked) {
+        sortOrder = 'prixDesc';
         loadProduits(1);
     }
 });
