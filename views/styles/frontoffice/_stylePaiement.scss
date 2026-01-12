@@ -1208,6 +1208,10 @@ $breakpoint-xs: 480px;
     position: relative;
     z-index: 1;
   }
+
+  .infoCarte div input {
+    margin-right: 15px;
+  }
   
   .container {
     max-width: 1400px;
