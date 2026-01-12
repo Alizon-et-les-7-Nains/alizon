@@ -7168,6 +7168,29 @@ dialog.reassort form input {
   text-align: left;
 }
 
+.popUpAnnulerCommande {
+  text-align: center;
+}
+.popUpAnnulerCommande h1 {
+  margin: 0px;
+}
+.popUpAnnulerCommande h3 {
+  padding: 30px;
+}
+.popUpAnnulerCommande button {
+  border: 0;
+  padding: 12px 40px;
+  color: white;
+  border-radius: 32px;
+  font-family: "lora", serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.popUpAnnulerCommande button:hover {
+  opacity: 0.9;
+}
+
 main.commandesBackoffice {
   display: flex;
   flex-direction: column;
