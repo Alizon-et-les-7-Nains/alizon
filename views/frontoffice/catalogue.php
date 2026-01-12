@@ -3,17 +3,12 @@ include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
 session_start();
 
-$produitsParPage = 5;
+$produitsParPage = 15;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $produitsParPage;
 
 $idClient = $_SESSION['user_id'];
-
-$sortBy = $_GET['sort'] ?? '';
-$minNote = $_GET['minNote'] ?? '';
 $category = $_GET['category'] ?? '';
-$zone = $_GET['zone'] ?? '';
-$vendeur = $_GET['vendeur'] ?? '';  
 $searchQuery = $_GET['search'] ?? '';
 
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
@@ -27,6 +22,16 @@ $countSql = "SELECT COUNT(*) FROM _produit p
              AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
              WHERE 1=1";
 
+$vendeur = "SELECT 
+            v.codeVendeur,
+            v.raisonSocial,
+            COUNT(p.idProduit) AS nbProduits
+            FROM _vendeur v
+            JOIN _produit p ON p.idVendeur = v.codeVendeur
+            GROUP BY p.idVendeur
+            ORDER BY nbProduits DESC
+            LIMIT 10";
+
 $countStmt = $pdo->query($countSql);
 $totalProduits = $countStmt->fetchColumn();
 
@@ -39,6 +44,10 @@ $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+$stmt = $pdo->prepare($vendeur);
+$stmt->execute();
+$vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $maxPriceStmt = $pdo->query("SELECT MAX(prix) as maxPrix FROM _produit");
 $maxPriceRow = $maxPriceStmt->fetch(PDO::FETCH_ASSOC);
@@ -89,8 +98,15 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
             </div>
 
             <label for="categorie">Catégorie :</label>
-            <label for="zone">Zone géographique :</label>
             <label for="vendeur">Vendeur :</label>
+            <select id="vendeur" name="vendeur">
+                <option value="">-- Tous les vendeurs --</option>
+                <?php foreach ($vendeurs as $vendeur) { ?>
+                    <option value="<?= $vendeur['codeVendeur'] ?>">
+                        <?= $vendeur['raisonSocial'] ?>
+                    </option>
+                <?php } ?>
+            </select>
         </form>
     </aside>
     
@@ -200,6 +216,7 @@ const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
 const popupConfirmation = document.querySelector(".confirmationAjout");
 const noteInput = document.getElementById('note');
+const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
 
@@ -219,7 +236,14 @@ document.addEventListener('DOMContentLoaded', function() {
             loadProduits(1);
         });
     });
+    const vendeur = document.getElementById('vendeur');
+
+    vendeur.addEventListener('change', function () {
+        const idVendeur = vendeur.value;
+        loadProduits(1);
+    });
 });
+
 
 function updateSlider() {
     let min = parseInt(sliderMin.value);
@@ -261,10 +285,16 @@ function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
+    let idVendeur;
+    if(vendeur.value!=""){
+        idVendeur = parseInt(vendeur.value);
+    }
+    else{
+        idVendeur = "";
+    }
+    console.log('Chargement des produits:', {min, max, notemin, page, idVendeur});
 
-    console.log('Chargement des produits:', {min, max, notemin, page});
-
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&minNote=${notemin}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&minNote=${notemin}&vendeur=${idVendeur}`)
         .then(res => {
             console.log('Réponse reçue:', res.status);
             if (!res.ok) {

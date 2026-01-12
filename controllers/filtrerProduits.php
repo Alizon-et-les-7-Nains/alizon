@@ -9,15 +9,29 @@ $offset = ($page - 1) * $produitsParPage;
 
 $minPrice = isset($_GET['minPrice']) ? (float)$_GET['minPrice'] : 0;
 $maxPrice = isset($_GET['maxPrice']) ? (float)$_GET['maxPrice'] : 1000000;
-$noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 5;
+$noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
+$vendeur = $vendeur = $_GET['vendeur'] ?? null;
+
+
+
+$sqlVendeur="";
+if(!empty($vendeur)){
+    $sqlVendeur = "AND p.idVendeur = :idVendeur";
+}
 
 // Compter tous les produits filtrés
 $countSql = "SELECT COUNT(*) FROM _produit p
-             LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-             WHERE (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice";
+             LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur 
+             AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+             WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice";
+
 $countStmt = $pdo->prepare($countSql);
 $countStmt->bindValue(':minPrice', $minPrice);
 $countStmt->bindValue(':maxPrice', $maxPrice);
+$countStmt->bindValue(':noteMin', $noteMin);
+if(!empty($vendeur)){
+    $countStmt->bindValue(':idVendeur',$vendeur);
+}
 $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
@@ -25,8 +39,9 @@ $nbPages = ceil($totalProduits / $produitsParPage);
 // Récupérer les produits filtrés avec pagination
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         FROM _produit p
-        LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-        WHERE p.note >= :noteMin AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur 
+        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+        WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice
         ORDER BY p.idProduit DESC
         LIMIT :limit OFFSET :offset";
 
@@ -36,6 +51,9 @@ $stmt->bindValue(':maxPrice', $maxPrice);
 $stmt->bindValue(':noteMin', $noteMin);
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+if(!empty($vendeur)){
+    $stmt->bindValue(':idVendeur',$vendeur);
+}
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
