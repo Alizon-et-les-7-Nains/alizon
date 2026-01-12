@@ -7203,6 +7203,9 @@ main.commandesBackoffice h1, main.commandesBackoffice img, main.commandesBackoff
 main.commandesBackoffice h1 {
   font-family: "lora";
 }
+main.commandesBackoffice h2 {
+  font-family: "open-sans";
+}
 main.commandesBackoffice section article {
   font-family: "open-sans";
   padding-left: 2em;
@@ -7277,8 +7280,102 @@ main.commandesBackoffice section article ul:last-child li {
   border-radius: 16px;
   background-color: #fffefa;
 }
+main.commandesBackoffice section article:hover {
+  cursor: pointer;
+}
 main.commandesBackoffice section.livre article {
   border-left-color: #259525;
+}
+
+dialog {
+  padding-top: 0;
+  transition: all 0.2s ease;
+  border-radius: 16px;
+  border: none;
+  color: #273469;
+  font-family: "open-sans";
+  align-items: center;
+  max-width: fit-content;
+}
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(1px);
+}
+dialog h2 {
+  justify-self: center;
+}
+dialog table:not(ul li table) {
+  max-width: min(75vw, 500px);
+  width: auto;
+  padding-top: 1em;
+}
+dialog table:not(ul li table) td {
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+}
+dialog table:not(ul li table) td:last-child {
+  width: 1%;
+  white-space: nowrap;
+}
+dialog ul {
+  display: flex;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 1em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+dialog ul li table {
+  width: 250px;
+  table-layout: fixed;
+  border-spacing: 0;
+  outline: 2px solid #000000;
+  outline-offset: -2px;
+  margin: 0;
+  border-radius: 16px;
+}
+dialog ul li table tr {
+  padding: 0;
+  margin: 0;
+}
+dialog ul li table td {
+  padding: 0;
+  margin: 0;
+  text-wrap: wrap;
+}
+dialog ul li table img {
+  margin: 0;
+  padding: 0;
+  height: 200px;
+  width: 250px;
+  object-fit: cover;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+dialog ul li table {
+  font-weight: bold;
+  font-size: 15px;
+}
+dialog ul li table tr:nth-child(2) td, dialog ul li table tr:nth-child(3) td {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 0.5em;
+  word-wrap: break-word;
+}
+dialog ul li table tr:nth-child(2) td:last-child, dialog ul li table tr:nth-child(3) td:last-child {
+  text-align: right;
+  font-size: 25px;
+  font-weight: bold;
+}
+dialog ul li table tr:last-child {
+  font-size: 25px;
+}
+dialog:focus {
+  outline: none;
 }
 
 /*# sourceMappingURL=style.css.map */
