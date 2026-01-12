@@ -374,6 +374,8 @@ triPrixDecroissant.addEventListener('change', () => {
     }
 });
 
+
+
 updateSlider();
 
 reattacherAjouterPanier();
