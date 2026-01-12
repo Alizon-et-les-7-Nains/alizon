@@ -6933,6 +6933,10 @@ dialog.reassort form input {
   gap: 5px;
   margin: 5px 0;
 }
+.pageCatalogue .star {
+  width: 50px;
+  height: 50px;
+}
 .pageCatalogue .notation .etoile {
   width: 20px;
   height: 20px;
