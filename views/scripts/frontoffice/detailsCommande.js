@@ -125,7 +125,7 @@ function popUpAnnulerCommande(id) {
     overlay.className = "overlayPopUpAnnulerCommande";
     
     overlay.innerHTML = `
-        <main class="popUpSuivi">
+        <main class="popUpAnnulerCommande">
             <div class="croixFermerLaPage">
                 <div></div>
                 <div></div>

@@ -715,12 +715,11 @@ body {
     justify-content: space-around;
   }
   .pageCommandes .infoCommande {
-    flex-direction: row !important;
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: row !important;
     justify-content: space-between !important;
   }
-  .pageCommandes .infoCommande p :first-child {
+  .pageCommandes .infoCommande :first-child {
     font-weight: bold;
   }
 }
@@ -7089,7 +7088,7 @@ dialog.reassort form input {
   text-decoration: none;
 }
 
-.overlayPopUpDetails, .overlayPopUpSuiviCommande {
+.overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
   position: fixed;
   top: 0;
   left: 0;
@@ -7102,7 +7101,7 @@ dialog.reassort form input {
   z-index: 1000;
 }
 
-.popUpDetails {
+.popUpDetails, .popUpSuivi, .popUpAnnulerCommande {
   background-color: #fffefa;
   border-radius: 16px;
   position: relative;
@@ -7110,19 +7109,19 @@ dialog.reassort form input {
   padding: 40px 30px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-.popUpDetails h1 {
+.popUpDetails h1, .popUpSuivi h1, .popUpAnnulerCommande h1 {
   color: #273469;
   font-family: "lora";
   font-size: 40px;
   text-align: center;
 }
-.popUpDetails .croixFermerLaPage {
+.popUpDetails .croixFermerLaPage, .popUpSuivi .croixFermerLaPage, .popUpAnnulerCommande .croixFermerLaPage {
   position: absolute;
   top: 30px;
   right: 30px;
   cursor: pointer;
 }
-.popUpDetails .croixFermerLaPage div {
+.popUpDetails .croixFermerLaPage div, .popUpSuivi .croixFermerLaPage div, .popUpAnnulerCommande .croixFermerLaPage div {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -7130,25 +7129,21 @@ dialog.reassort form input {
   height: 3px;
   background-color: #BABABA;
 }
-.popUpDetails .croixFermerLaPage div:first-of-type {
+.popUpDetails .croixFermerLaPage div:first-of-type, .popUpSuivi .croixFermerLaPage div:first-of-type, .popUpAnnulerCommande .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.popUpDetails .croixFermerLaPage div:last-of-type {
+.popUpDetails .croixFermerLaPage div:last-of-type, .popUpSuivi .croixFermerLaPage div:last-of-type, .popUpAnnulerCommande .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
-.popUpDetails .conteneurSections {
+.popUpDetails .conteneurSections, .popUpSuivi .conteneurSections, .popUpAnnulerCommande .conteneurSections {
   padding-top: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
 }
-.popUpDetails p {
+.popUpDetails p, .popUpSuivi p, .popUpAnnulerCommande p {
   text-align: left;
-}
-
-.popUpSuivi {
-  width: 500px;
 }
 
 main.commandesBackoffice {

@@ -1,7 +1,7 @@
 @use '../fonts';
 @use '../colors' as *;
 
-.overlayPopUpDetails, .overlayPopUpSuiviCommande {
+.overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
     position: fixed;
     top: 0;
     left: 0;
@@ -14,7 +14,7 @@
     z-index: 1000;
 }
 
-.popUpDetails {
+.popUpDetails, .popUpSuivi, .popUpAnnulerCommande {
     background-color: #fffefa;
     border-radius: 16px;
     position: relative;
@@ -67,8 +67,4 @@
         text-align: left;
     }
     
-}
-
-.popUpSuivi {
-    width: 500px;
 }

@@ -268,11 +268,10 @@
             justify-content: space-around;
         }
         .infoCommande {
-            flex-direction: row !important;
             display: flex !important;
-            flex-direction: column !important;
+            flex-direction: row !important;
             justify-content: space-between !important;
-            p :first-child{
+            :first-child{
                 font-weight: bold;
             }
         }
