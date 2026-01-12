@@ -95,6 +95,11 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+  padding: 10px 450px 10px 20px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  background-color: #fff;
 }
 .headerFront .search-wrapper i {
   position: absolute;
@@ -104,11 +109,6 @@ body {
   pointer-events: none;
 }
 .headerFront .search-wrapper input[type=search] {
-  padding: 10px 450px 10px 20px;
-  border-radius: 25px;
-  border: none;
-  outline: none;
-  background-color: #fff;
   color: #273469;
   font-family: "Lora", serif;
   font-size: 20px;
@@ -7092,7 +7092,7 @@ dialog.reassort form input {
   height: 20px;
   background: white;
   border-radius: 16px;
-  border-width: 8px;
+  border-width: 4px;
   border-style: solid;
   border-color: #273469;
 }
@@ -7166,6 +7166,29 @@ dialog.reassort form input {
 }
 .popUpDetails p, .popUpSuivi p, .popUpAnnulerCommande p {
   text-align: left;
+}
+
+.popUpAnnulerCommande {
+  text-align: center;
+}
+.popUpAnnulerCommande h1 {
+  margin: 0px;
+}
+.popUpAnnulerCommande h3 {
+  padding: 30px;
+}
+.popUpAnnulerCommande button {
+  border: 0;
+  padding: 12px 40px;
+  color: white;
+  border-radius: 32px;
+  font-family: "lora", serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.popUpAnnulerCommande button:hover {
+  opacity: 0.9;
 }
 
 main.commandesBackoffice {

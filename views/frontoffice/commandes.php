@@ -241,15 +241,13 @@ $cart = getCurrentCart($pdo, $idClient);
 
 <!DOCTYPE html>
 <html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/style.css">
-    <link rel="icon" href="/public/images/logoBackoffice.svg">
-    <title>Alizon - Mes Commandes</title>
-</head>
-
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../public/style.css">
+        <link rel="icon" href="../../public/images/logoBackoffice.svg">
+        <title>Alizon - Mes Commandes</title>
+    </head>
 <body class="pageCommandes">
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
