@@ -1,8 +1,17 @@
-<?php 
+<?php
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
 session_start();
 ob_start();
+
+$showPopup = false;
+
+if (!empty($_SESSION['commandePayee'])) {
+    $showPopup = true;
+    unset($_SESSION['commandePayee']);
+}
+
+$tabIdDestination = $_SESSION['tabIdDestination'];
 
 // ============================================================================
 // VÉRIFICATION DE LA CONNEXION
@@ -19,23 +28,24 @@ $idClient = $_SESSION['user_id'];
 // FONCTION DE RÉCUPÉRATION DES COMMANDES
 // ============================================================================
 
-function getCommandes($pdo, $idClient, $filtre) {
+function getCommandes($pdo, $idClient, $filtre)
+{
     $commandes = [];
-    
+
     $sql = "SELECT c.idCommande, c.dateCommande, c.etatLivraison, c.montantCommandeTTC, 
                    c.montantCommandeHT, c.dateExpedition, c.nomTransporteur, c.idAdresseLivr, c.idAdresseFact, c.numeroCarte
             FROM _commande c
             JOIN _panier p ON c.idPanier = p.idPanier
             WHERE p.idClient = :idClient";
 
-if ($filtre === 'cours') {
+    if ($filtre === 'cours') {
         $sql .= " AND c.etatLivraison NOT IN ('Livrée', 'Annulé')";
     } elseif ($filtre === '2025') {
         $sql .= " AND YEAR(c.dateCommande) = 2025";
     } elseif ($filtre === '2024') {
         $sql .= " AND YEAR(c.dateCommande) = 2024";
     }
-    
+
     $sql .= " ORDER BY c.dateCommande DESC";
 
     $stmt = $pdo->prepare($sql);
@@ -44,7 +54,7 @@ if ($filtre === 'cours') {
 
     foreach ($resultatsCommandes as $row) {
         $idCommande = $row['idCommande'];
-        
+
         $sqlProduits = "SELECT v.raisonSocial, p.idProduit, p.nom, co.quantite, i.URL as image
                         FROM _contient co
                         JOIN _produit p ON co.idProduit = p.idProduit
@@ -52,20 +62,20 @@ if ($filtre === 'cours') {
                         LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur
                         WHERE co.idCommande = :idCommande
                         GROUP BY p.idProduit";
-                        
+
         $stmtProd = $pdo->prepare($sqlProduits);
         $stmtProd->execute([':idCommande' => $idCommande]);
         $produits = $stmtProd->fetchAll(PDO::FETCH_ASSOC);
 
         $dateCommandeObj = new DateTime($row['dateCommande']);
         $dateCommandeFormatee = $dateCommandeObj->format('d/m/Y');
-        
+
         $dateLivraisonFormatee = "En attente";
         if (!empty($row['dateExpedition'])) {
             $dateExpObj = new DateTime($row['dateExpedition']);
             $dateLivraisonFormatee = $dateExpObj->format('d/m/Y');
         }
-        
+
         $commandes[] = [
             'id' => $row['idCommande'],
             'date' => $dateCommandeFormatee,
@@ -76,7 +86,7 @@ if ($filtre === 'cours') {
             'produits' => $produits
         ];
     }
-    
+
     return $commandes;
 }
 
@@ -99,14 +109,15 @@ if ($filtre === '2025') {
     $messageVide = "Aucune commande passée en 2024.";
 }
 
-function getCurrentCart($pdo, $idClient) {
+function getCurrentCart($pdo, $idClient)
+{
     $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
     $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
     $cart = [];
 
     if ($panier) {
-        $idPanier = intval($panier['idPanier']); 
+        $idPanier = intval($panier['idPanier']);
 
         $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
                 FROM _produitAuPanier pa
@@ -116,19 +127,20 @@ function getCurrentCart($pdo, $idClient) {
         $stmt = $pdo->query($sql);
         $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     }
-    
+
     return $cart;
 }
 
-function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta)
+{
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
-    
+
     // Récupérer le panier actuel
     $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
     $stmtPanier->execute([$idClient]);
     $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
-    
+
     if (!$panier) {
         // Créer un nouveau panier si nécessaire
         $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
@@ -148,7 +160,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     if ($current) {
         // Produit existe : mettre à jour la quantité
         $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
-        
+
         if ($newQty > 0) {
             $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
                     WHERE idProduit = ? AND idPanier = ?";
@@ -170,7 +182,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
             $success = false;
         }
     }
-    
+
     return $success;
 
 }
@@ -181,7 +193,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     header('Content-Type: application/json');
-    
+
     try {
         switch ($_POST['action']) {
             case 'updateQty':
@@ -199,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $cart = getCurrentCart($pdo, $idClient);
                 echo json_encode($cart);
                 break;
-                
+
             default:
                 echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
         }
@@ -220,80 +232,89 @@ $cart = getCurrentCart($pdo, $idClient);
 
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../../public/style.css">
-        <link rel="icon" href="/public/images/logoBackoffice.svg">
-        <title>Alizon - Mes Commandes</title>
-    </head>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="icon" href="/public/images/logoBackoffice.svg">
+    <title>Alizon - Mes Commandes</title>
+</head>
+
 <body class="pageCommandes">
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
     <main>
         <section class="topRecherche">
             <h1>Vos commandes</h1>
-            <input class="supprElem" type="search" name="rechercheCommande" id="rechercheCommande" placeholder="Rechercher une commande">
+            <input class="supprElem" type="search" name="rechercheCommande" id="rechercheCommande"
+                placeholder="Rechercher une commande">
         </section>
-        
+
         <section class="filtreRecherche">
             <p><?php echo $nombreCommandes; ?></p>
             <p>commande<?php echo $nombreCommandes > 1 ? 's' : ''; ?></p>
-            
+
             <select name="typeFiltrage" id="typeFiltrage" onchange="window.location.href='?filtre=' + this.value">
                 <option value="cours" <?php echo $filtre === 'cours' ? 'selected' : ''; ?>>En cours</option>
                 <option value="2025" <?php echo $filtre === '2025' ? 'selected' : ''; ?>>2025</option>
                 <option value="2024" <?php echo $filtre === '2024' ? 'selected' : ''; ?>>2024</option>
             </select>
         </section>
-        
+
         <?php if ($nombreCommandes === 0): ?>
             <section class="messageVide" style="text-align: center; padding: 60px 20px; font-size: 20px; color: #1e3a8a;">
                 <p><?php echo $messageVide; ?></p>
             </section>
-            <?php else: ?>
-                <?php foreach ($commandesAffichees as $commande): ?>
+        <?php else: ?>
+            <?php foreach ($commandesAffichees as $commande): ?>
                 <section class="commande">
-                    <?php 
-                        $nombreProduits = count($commande['produits']);
-                        echo "<script>console.log(" . json_encode($commande) . ");</script>";
-                        echo "<script>console.log(" . json_encode($commandesAffichees) . ");</script>";
-                    foreach ($commande['produits'] as $index => $produit): 
+                    <?php
+                    $nombreProduits = count($commande['produits']);
+                    echo "<script>console.log(" . json_encode($commande) . ");</script>";
+                    echo "<script>console.log(" . json_encode($commandesAffichees) . ");</script>";
+                    foreach ($commande['produits'] as $index => $produit):
                         $imgSrc = !empty($produit['image']) ? htmlspecialchars($produit['image']) : '../../public/images/defaultImageProduit.png';
                         ?>
                         <section class="produit <?php echo ($index === $nombreProduits - 1) ? 'dernierProduit' : ''; ?>">
                             <div class="containerImg">
-                                <a href="../../views/frontoffice/produit.php?id=<?= $produit['idProduit'] ?>"><img src="<?php echo $imgSrc; ?>" class="imgProduit" alt="<?php echo htmlspecialchars($produit['nom']); ?>"></a>
+                                <a href="../../views/frontoffice/produit.php?id=<?= $produit['idProduit'] ?>"><img
+                                        src="<?php echo $imgSrc; ?>" class="imgProduit"
+                                        alt="<?php echo htmlspecialchars($produit['nom']); ?>"></a>
                                 <div class="infoProduit">
                                     <h2><?php echo htmlspecialchars($produit['nom']); ?></h2>
                                     <ul>
                                         <li>Quantité : <?php echo $produit['quantite']; ?></li>
                                         <li>Vendu par <?php echo $produit['raisonSocial']; ?></li>
                                     </ul>
-                                    
-                                    <div class="statutCommande <?php echo $commande['statut'] === 'Livrée' ? 'livre' : 'enCours'; ?>">
+
+                                    <div
+                                        class="statutCommande <?php echo $commande['statut'] === 'Livrée' ? 'livre' : 'enCours'; ?>">
                                         <?php if ($commande['statut'] === 'Livrée'): ?>
                                             <p>Livrée le <?php echo $commande['dateLivraison']; ?></p>
                                         <?php else: ?>
                                             <p><?php echo htmlspecialchars($commande['statut']); ?></p>
-                                            <a href="#">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
+                                            <a href="#">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img
+                                                    src="../../public/images/truckWhite.svg" alt="Icône"></a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="listeBtn">
-                                <a href="<?php echo "../../views/frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
-                                <button class="plus" data-id="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
+                                <a href="<?php echo "../../views/frontoffice/ecrireCommentaire.php?id=" . $produit['idProduit'] ?>">Écrire
+                                    un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
+                                <button class="plus" data-id="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">Acheter à
+                                    nouveau <img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
                                     <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
-                                    <?php else: ?>
+                                <?php else: ?>
                                     <a href="">Annuler<img src="../../public/images/redoDarkBlue.svg" alt="Annuler"></a>
                                 <?php endif; ?>
                             </div>
                         </section>
                     <?php endforeach; ?>
-                    
+
                     <section class="footerCommande">
                         <div class="infoCommande">
                             <p class="supprElem">Commande effectuée le</p>
@@ -310,43 +331,58 @@ $cart = getCurrentCart($pdo, $idClient);
                         <div class="liensCommande">
                             <a onclick="popUpDetailsCommande()" href="#">Détails</a>
                             <span class="supprElem">|</span>
-                            <a href="../../controllers/facture.php?id= <?php echo($commande['id']); ?>">Facture</a>
+                            <a href="../../controllers/facture.php?id= <?php echo ($commande['id']); ?>">Facture</a>
                         </div>
                     </section>
                 </section>
-                <?php endforeach; ?>
+            <?php endforeach; ?>
         <?php endif; ?>
 
         <section class="confirmationAjout">
             <h4>Produit ajouté au panier !</h4>
         </section>
-        
+
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
         <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
-        </main>
+    </main>
 
-            <script>
-                const popupConfirmation = document.querySelector(".confirmationAjout");
-                const boutonsAjout = document.querySelectorAll(".plus");
+    <script>
+        const popupConfirmation = document.querySelector(".confirmationAjout");
+        const boutonsAjout = document.querySelectorAll(".plus");
 
-                boutonsAjout.forEach(btn => {
-                    btn.addEventListener("click", function(e) {
+        boutonsAjout.forEach(btn => {
+            btn.addEventListener("click", function (e) {
 
-                        // Afficher le popup
-                        popupConfirmation.style.display = "block";
+                // Afficher le popup
+                popupConfirmation.style.display = "block";
 
-                        // Cacher après 1,5 secondes
-                        setTimeout(() => {
-                            popupConfirmation.style.display = "none";
-                        }, 5000);
-                    });
-                });
-            </script>
+                // Cacher après 1,5 secondes
+                setTimeout(() => {
+                    popupConfirmation.style.display = "none";
+                }, 5000);
+            });
+        });
+    </script>
 
-        <script src="../scripts/frontoffice/paiement-ajax.js"></script>
-        <script src="../../public/amd-shim.js"></script>
-        <script src="/public/script.js"></script>
-        <script src="../scripts/frontoffice/detailsCommande.js"></script>
-    </body>
+    <script src="../scripts/frontoffice/paiement-ajax.js"></script>
+    <script src="../../public/amd-shim.js"></script>
+    <script src="/public/script.js"></script>
+    <script src="../scripts/frontoffice/detailsCommande.js"></script>
+
+
+    <?php if ($showPopup): ?>
+        <div class="overlay">
+            <div class="popup">
+                <p>idCommande</p>
+                <p><?php echo htmlspecialchars($tabIdDestination[0]["idCommande"]) ?></p>
+                <p>destination</p>
+                <p><?php echo htmlspecialchars($tabIdDestination[0]["destination"]) ?></p>
+                <a href="./commandes.php" class="close">Fermer</a>
+            </div>
+        </div>
+    <?php endif; ?>
+
+</body>
+
 </html>
