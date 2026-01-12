@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
                         // Chemin stocké en base de données pour l'affichage web
-                        $fileName = "../../public/images/imagesAvis/" . $dbFileName;
+                        $fileName = $dbFileName;
                     } else {
                         $errors[] = "Erreur lors de l'upload de l'image.";
                     }
