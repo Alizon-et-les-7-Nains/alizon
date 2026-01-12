@@ -19,13 +19,17 @@ $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         LEFT JOIN _remise r ON p.idProduit = r.idProduit 
         AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
+if (!empty($searchQuery)) {
+    $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
+}
+
 // Compter tous les produits
 $countSql = "SELECT COUNT(*) FROM _produit p 
              LEFT JOIN _remise r ON p.idProduit = r.idProduit 
              AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
-// Récuperer la totalité des catégories
 
+// Récuperer la totalité des catégories
 $catSql = "SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;";
 $stmt = $pdo->prepare($catSql);
 $stmt->execute();
@@ -54,6 +58,9 @@ $stmt = $pdo->prepare($sql);
 // Liaison des paramètres pour la pagination
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+if (!empty($searchQuery)) {
+    $stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+}
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -130,9 +137,14 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
-                <option value="" class="opt-highlight">Toutes les catégories</option>
                 <?php foreach ($listeCategories as $categorie) { 
-                    if ($categorie['typeProd'] != NULL) ?>
+                    if (isset($_GET['categorie'])) {
+                        $nomCategorie = $_GET['categorie'];
+                        $nomCategorie = str_replace("_", " ", $nomCategorie); ?>
+                        <option value="<?= $nomCategorie ?>" class="choix"><?= $nomCategorie ?></option>
+                    <?php } else { ?>
+                        <option value="" class="opt-highlight">Toutes les catégories</option>
+                    <?php } ?>
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
             </select>
@@ -263,7 +275,7 @@ const triNoteDecroissant = document.getElementById('triNoteDecroissant');
 let sortOrder = '';
 
 // Variables globales
-let searchQuery = "<?= "$searchQuery" ?>";
+let searchQuery = "<?= htmlspecialchars($searchQuery) ?>";
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
@@ -425,11 +437,11 @@ triPrixDecroissant.addEventListener('change', () => {
     }
 });
 
-if(searchQuery = ""){
+if(searchQuery === ""){
     searchbar.placeholder = 'Recherche';
 }
 else{
-    searchbar.placeholder = "Recherche : " + searchQuery;
+    searchbar.value = searchQuery;
 }
 
 
