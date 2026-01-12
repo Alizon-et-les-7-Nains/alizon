@@ -260,7 +260,7 @@ const triNoteDecroissant = document.getElementById('triNoteDecroissant');
 let sortOrder = '';
 
 // Variables globales
-let searchQuery = "<?= $searchQuery ?>";
+let searchQuery = "<?= "$searchQuery" ?>";
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
