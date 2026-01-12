@@ -1,4 +1,7 @@
 <?php
+session_start();
+require_once "../../controllers/pdo.php";
+
 $tabIdDestination = $_SESSION['tabIdDestination'];
 // auto_test.php
 function send_command($socket, $command)
@@ -39,7 +42,9 @@ $auth_response = send_command($socket, "AUTH admin e10adc3949ba59abbe56e057f20f8
 // Test 2: Création
 //echo "Test CREATE:\n";
 $create_response = send_command($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"] . " " . $tabIdDestination[0]["destination"]);
-$_SESSION['noBordereau'] = $create_response;
+$sql = "UPDATE _commande SET bordereau = :noBordereau WHERE idCommande = :idCommande";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDestination[0]["idCommande"]]);
 //echo "Réponse: $create_response\n\n";
 
 // Extraire le numéro de bordereau
@@ -59,6 +64,7 @@ $help_response = send_command($socket, "HELP");
 
 // Fermeture de la connexion
 fclose($socket);
+
 header('Location: views/frontoffice/commandes.php');
 exit;
 ?>

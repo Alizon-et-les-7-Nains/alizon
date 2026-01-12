@@ -410,6 +410,12 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="/public/script.js"></script>
     <script src="../scripts/frontoffice/detailsCommande.js"></script>
 
+    <?php
+        $sql = "SELECT bordereau FROM _commande WHERE idCommande = :idCommande";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    ?>
 
     <?php if ($showPopup): ?>
         <div class="overlay">
@@ -419,7 +425,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <p>destination</p>
                 <p><?php echo htmlspecialchars($tabIdDestination[0]["destination"]) ?></p>
                 <p>Numéro de bordereau</p>
-                <p><?php echo htmlspecialchars($_SESSION['noBordereau']) ?></p>
+                <p><?php echo htmlspecialchars($result['noBordereau']) ?></p>
                 <a href="./commandes.php" class="close">Fermer</a>
             </div>
         </div>
