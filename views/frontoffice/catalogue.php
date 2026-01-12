@@ -391,7 +391,7 @@ if(searchQuery = ""){
     searchbar.placeholder = 'Recherche';
 }
 else{
-    searchbar.value = searchQuery;
+    searchbar.textContent = searchQuery;
 }
 
 
