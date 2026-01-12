@@ -1,0 +1,56 @@
+
+# --------------------------------------------------
+# Comptes administrateurs et de test
+# --------------------------------------------------
+
+# Administrateur principal (mot de passe : "admin123")
+admin:e10adc3949ba59abbe56e057f20f883e
+
+# Administrateur système (mot de passe : "sysadmin2024")
+sysadmin:8d969eef6ecad3c29a3a629280e686cf
+
+# --------------------------------------------------
+# Comptes clients Alizon
+# --------------------------------------------------
+
+# Compte Alizon principal (mot de passe : "alizon2024")
+alizon:5f4dcc3b5aa765d61d8327deb882cf99
+
+# Compte Alizon backup (mot de passe : "alizonbackup")
+alizon_backup:25d55ad283aa400af464c76d713c07ad
+
+# --------------------------------------------------
+# Comptes de développement et test
+# --------------------------------------------------
+
+# Développeur (mot de passe : "dev")
+dev:098f6bcd4621d373cade4e832627b4f6
+
+# Testeur (mot de passe : "test")
+test:098f6bcd4621d373cade4e832627b4f6
+
+# Compte de démo (mot de passe : "demo")
+demo:fe01ce2a7fbac8fafaed7c982a04e229
+
+# --------------------------------------------------
+# Comptes pour la SAÉ (étudiants)
+# --------------------------------------------------
+
+# Équipe 1 (mot de passe : "equipe1")
+equipe1:6f5902ac237024bdd0c176cb93063dc4
+
+# Équipe 2 (mot de passe : "equipe2")
+equipe2:7c222fb2927d828af22f592134e89324
+
+# Équipe 3 (mot de passe : "equipe3")
+equipe3:8ce4b16b22b58894aa86c421e8759df3
+
+# --------------------------------------------------
+# Comptes spéciaux pour tests de capacité
+# --------------------------------------------------
+
+# Test capacité file (mot de passe : "capacity")
+capacity:9a618248b64db62d15b300a07b00580b
+
+# Test erreurs (mot de passe : "error")
+error:5d41402abc4b2a76b9719d911017c592

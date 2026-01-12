@@ -49,7 +49,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        justify-content: space-evenly;
+        justify-content: stretch;
         width: 250px;
     }
     
@@ -208,10 +208,12 @@
         }
         
         .liensCommande {
+            margin: 5px;
             display: flex;
             align-items: center;
             font-size: 12px;
-            
+            justify-content: space-around;
+                    
             a {
                 color: $color-blue;
                 font-size: 15px;              
@@ -259,11 +261,19 @@
     }
     @media (max-width:630px) {
         .footerCommande {
-            display: block;
+            display: flex;
             padding-top: 0;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: space-around;
         }
         .infoCommande {
+            display: flex !important;
             flex-direction: row !important;
+            justify-content: space-between !important;
+            :first-child{
+                font-weight: bold;
+            }
         }
     }
 
@@ -374,4 +384,30 @@
         margin-bottom: 5px;
         cursor: pointer;
     }
+
+    .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+    
+    .popup {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        min-width: 300px;
+        text-align: center;
+    }
+    
+    .close {
+        display: inline-block;
+        margin-top: 10px;
+        text-decoration: none;
+        color: red;
+    }
+    
 }

@@ -6,8 +6,11 @@
     .filter-sort{
         background-color: #e4d9ff;
         width: 22%;
-        position: sticky;
+        height: 100vh;
+        position: fixed;
         left: 0;
+        z-index: 1000; /* pour rester au-dessus */
+
     }
 
     .filter-sort form{
@@ -20,6 +23,7 @@
         width: 78%;
         display: flex;
         flex-direction: column;
+        padding-left: 22%;
     }
 
     .product-list{
@@ -65,9 +69,10 @@
 
     #resultat{
         background: #E3F2FE;
-        position: relative;
-        padding: 0.5em;
-        font-weight: bold;
+        position: sticky;
+        padding: 0.3em;
+        font-size: 13px;
+        font-weight: 500;
     }
 
     .products-section {
@@ -115,6 +120,11 @@
         align-items: center;
         gap: 5px;
         margin: 5px 0;
+    }
+
+    .star{
+        width: 50px;
+        height: 50px;
     }
 
     .notation .etoile {
@@ -238,5 +248,17 @@
 
     #minNoteLabel {
         margin-top: 1.5em;
+    }
+
+    .pagination {
+        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .pagination a{
+        border: 2px solid black;
+        text-decoration: none;
     }
 }

@@ -179,7 +179,7 @@ body {
   display: flex;
   align-items: center;
 }
-@media (max-width: 720px) {
+@media (max-width: 845px) {
   .headerFront .icons {
     display: none;
     visibility: hidden;
@@ -194,6 +194,19 @@ body {
   .headerFront .search-wrapper input[type=search] {
     padding: 10px 0px 10px 10px;
     width: 300px;
+  }
+}
+@media (max-width: 580px) {
+  .headerFront img {
+    width: 30px;
+    margin-right: 0px;
+  }
+  .headerFront b {
+    font-size: x-large;
+  }
+  .headerFront .search-wrapper input[type=search] {
+    width: 200px;
+    height: 40px;
   }
 }
 
@@ -511,7 +524,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-evenly;
+  justify-content: stretch;
   width: 250px;
 }
 .pageCommandes .produit {
@@ -646,9 +659,11 @@ body {
   font-weight: lighter;
 }
 .pageCommandes .footerCommande .liensCommande {
+  margin: 5px;
   display: flex;
   align-items: center;
   font-size: 12px;
+  justify-content: space-around;
 }
 .pageCommandes .footerCommande .liensCommande a {
   color: #273469;
@@ -693,11 +708,19 @@ body {
 }
 @media (max-width: 630px) {
   .pageCommandes .footerCommande {
-    display: block;
+    display: flex;
     padding-top: 0;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-around;
   }
   .pageCommandes .infoCommande {
+    display: flex !important;
     flex-direction: row !important;
+    justify-content: space-between !important;
+  }
+  .pageCommandes .infoCommande :first-child {
+    font-weight: bold;
   }
 }
 .pageCommandes .confirmationAjout {
@@ -798,6 +821,28 @@ body {
   padding: 8px 15px;
   margin-bottom: 5px;
   cursor: pointer;
+}
+.pageCommandes .overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.pageCommandes .popup {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 300px;
+  text-align: center;
+}
+.pageCommandes .close {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: red;
 }
 
 /* ---- Header ---- */
@@ -2010,6 +2055,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
 }
 
+.visaImg {
+  margin-top: 10px;
+}
+
 .pagePaiement {
   position: relative;
   overflow-x: hidden;
@@ -2054,12 +2103,16 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   position: relative;
   z-index: 1;
 }
+.pagePaiement .infoCarte div input {
+  margin-right: 15px;
+}
 .pagePaiement .container {
   max-width: 1400px;
-  margin: 70px auto 0;
+  margin: 30px auto 0;
   padding: 0 5%;
   box-sizing: border-box;
   width: 100%;
+  min-height: 63vh;
 }
 @media (max-width: 920px) {
   .pagePaiement .container {
@@ -2086,6 +2139,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   width: 100%;
   align-items: start;
   box-sizing: border-box;
+  align-items: baseline;
 }
 @media (max-width: 1200px) {
   .pagePaiement .parent {
@@ -2190,7 +2244,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .pagePaiement .payment {
   margin-top: 8px;
 }
-.pagePaiement .payment .payer {
+.pagePaiement .payer {
   margin-top: 12px;
   background: #dcd1fa;
   color: #252b56;
@@ -2205,11 +2259,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   box-sizing: border-box;
   transition: background-color 0.2s;
 }
-.pagePaiement .payment .payer:hover {
+.pagePaiement .payer:hover {
   background: #c9bbf0;
 }
 @media (max-width: 720px) {
-  .pagePaiement .payment .payer {
+  .pagePaiement .payer {
     display: none !important;
   }
 }
@@ -3037,7 +3091,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 
 .panier main {
-  height: 100vh;
+  min-height: 62vh;
 }
 .panier .listeProduit article {
   border: 2px solid #273469;
@@ -3627,7 +3681,6 @@ button#haut.visible:hover {
 }
 .modifierProduit .motclé {
   width: 525px;
-  margin-top: 20px;
   padding: 8px 10px;
   border: 2px solid #273469;
   border-radius: 8px;
@@ -3665,7 +3718,9 @@ button#haut.visible:hover {
 }
 .modifierProduit .price-weight-kg {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  height: 80px;
+  flex-wrap: wrap;
   gap: 1em;
 }
 .modifierProduit .price-weight-kg input {
@@ -6832,8 +6887,10 @@ dialog.reassort form input {
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
   width: 22%;
-  position: sticky;
+  height: 100vh;
+  position: fixed;
   left: 0;
+  z-index: 1000; /* pour rester au-dessus */
 }
 .pageCatalogue .filter-sort form {
   display: flex;
@@ -6844,6 +6901,7 @@ dialog.reassort form input {
   width: 78%;
   display: flex;
   flex-direction: column;
+  padding-left: 22%;
 }
 .pageCatalogue .product-list {
   display: flex;
@@ -6883,9 +6941,10 @@ dialog.reassort form input {
 }
 .pageCatalogue #resultat {
   background: #E3F2FE;
-  position: relative;
-  padding: 0.5em;
-  font-weight: bold;
+  position: sticky;
+  padding: 0.3em;
+  font-size: 13px;
+  font-weight: 500;
 }
 .pageCatalogue .products-section {
   width: 78%;
@@ -6927,6 +6986,10 @@ dialog.reassort form input {
   align-items: center;
   gap: 5px;
   margin: 5px 0;
+}
+.pageCatalogue .star {
+  width: 50px;
+  height: 50px;
 }
 .pageCatalogue .notation .etoile {
   width: 20px;
@@ -7036,8 +7099,31 @@ dialog.reassort form input {
 .pageCatalogue #minNoteLabel {
   margin-top: 1.5em;
 }
+.pageCatalogue .pagination {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.pageCatalogue .pagination a {
+  border: 2px solid black;
+  text-decoration: none;
+}
 
-.popUpDetails {
+.overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popUpDetails, .popUpSuivi, .popUpAnnulerCommande {
   background-color: #fffefa;
   border-radius: 16px;
   position: relative;
@@ -7045,19 +7131,19 @@ dialog.reassort form input {
   padding: 40px 30px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-.popUpDetails h1 {
+.popUpDetails h1, .popUpSuivi h1, .popUpAnnulerCommande h1 {
   color: #273469;
   font-family: "lora";
   font-size: 40px;
   text-align: center;
 }
-.popUpDetails .croixFermerLaPage {
+.popUpDetails .croixFermerLaPage, .popUpSuivi .croixFermerLaPage, .popUpAnnulerCommande .croixFermerLaPage {
   position: absolute;
   top: 30px;
   right: 30px;
   cursor: pointer;
 }
-.popUpDetails .croixFermerLaPage div {
+.popUpDetails .croixFermerLaPage div, .popUpSuivi .croixFermerLaPage div, .popUpAnnulerCommande .croixFermerLaPage div {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -7065,20 +7151,20 @@ dialog.reassort form input {
   height: 3px;
   background-color: #BABABA;
 }
-.popUpDetails .croixFermerLaPage div:first-of-type {
+.popUpDetails .croixFermerLaPage div:first-of-type, .popUpSuivi .croixFermerLaPage div:first-of-type, .popUpAnnulerCommande .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.popUpDetails .croixFermerLaPage div:last-of-type {
+.popUpDetails .croixFermerLaPage div:last-of-type, .popUpSuivi .croixFermerLaPage div:last-of-type, .popUpAnnulerCommande .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
-.popUpDetails .conteneurSections {
+.popUpDetails .conteneurSections, .popUpSuivi .conteneurSections, .popUpAnnulerCommande .conteneurSections {
   padding-top: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
 }
-.popUpDetails p {
+.popUpDetails p, .popUpSuivi p, .popUpAnnulerCommande p {
   text-align: left;
 }
 
