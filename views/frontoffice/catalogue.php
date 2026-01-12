@@ -116,7 +116,6 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 <?php foreach ($listeCategories as $categorie) { ?>
                     <option value="<?= $categorie['typeProd'] ?>" class="choix">Charcuterie</option>
                 <?php } ?>
-                <input type="hidden" name="categorie" id="categorie" value=""> 
             </select>
 
             <label for="zone">Zone géographique :</label>
