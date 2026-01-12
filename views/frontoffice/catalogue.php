@@ -26,8 +26,9 @@ $countSql = "SELECT COUNT(*) FROM _produit p
 
 // Récuperer la totalité des catégories
 
-$catSql = "SELECT UNIQUE typeProd FROM _produit p;";
+$catSql = "SELECT DISTINCT typeProd FROM _produit p;";
 $stmt = $pdo->prepare($catSql);
+$stmt->execute();
 $listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $countStmt = $pdo->query($countSql);
@@ -116,7 +117,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
             <select name="categorie" id="categorieSelect" class="filter-select">
                 <option value="" class="opt-highlight">Toutes les catégories</option>
                 <?php foreach ($listeCategories as $categorie) { ?>
-                    <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?>"</option>
+                    <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
             </select>
 
