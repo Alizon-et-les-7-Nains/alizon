@@ -3,7 +3,7 @@ include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
 session_start();
 
-$produitsParPage = 15;
+$produitsParPage = 5;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $produitsParPage;
 
@@ -13,7 +13,7 @@ $sortBy = $_GET['sort'] ?? '';
 $minNote = $_GET['minNote'] ?? '';
 $category = $_GET['category'] ?? '';
 $zone = $_GET['zone'] ?? '';
-$vendeur = $_GET['vendeur'] ?? '';
+$vendeur = $_GET['vendeur'] ?? '';  
 $searchQuery = $_GET['search'] ?? '';
 
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
@@ -78,7 +78,16 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 </div>
             </div>
 
-            <label for="minNote" id="minNoteLabel">Note minimale :</label>
+            <label for="minNote" id="minNoteLabel">Trier par note :</label>
+            <div>
+                <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
+                <img src="../../public/images/etoileVide.svg" data-index="2" class="star" alt="2 étoiles">
+                <img src="../../public/images/etoileVide.svg" data-index="3" class="star" alt="3 étoiles">
+                <img src="../../public/images/etoileVide.svg" data-index="4" class="star" alt="4 étoiles">
+                <img src="../../public/images/etoileVide.svg" data-index="5" class="star" alt="5 étoiles">
+                <input type="hidden" name="note" id="note" value="0"> 
+            </div>
+
             <label for="categorie">Catégorie :</label>
             <label for="zone">Zone géographique :</label>
             <label for="vendeur">Vendeur :</label>
@@ -190,9 +199,27 @@ const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
 const popupConfirmation = document.querySelector(".confirmationAjout");
-
+const noteInput = document.getElementById('note');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star');
+    const emptyStar = "../../public/images/etoileVide.svg";
+    const fullStar = "../../public/images/etoile.svg";
+
+    // Gestion des étoiles
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            const rating = index + 1;
+            stars.forEach((s, i) => {
+                s.src = i < rating ? fullStar : emptyStar;
+            });
+            noteInput.value = rating;
+            loadProduits(1);
+        });
+    });
+});
 
 function updateSlider() {
     let min = parseInt(sliderMin.value);
@@ -233,10 +260,11 @@ function attachPaginationEvents() {
 function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
+    const notemin = parseInt(noteInput.value);
 
-    console.log('Chargement des produits:', {min, max, page});
+    console.log('Chargement des produits:', {min, max, notemin, page});
 
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&minNote=${notemin}`)
         .then(res => {
             console.log('Réponse reçue:', res.status);
             if (!res.ok) {

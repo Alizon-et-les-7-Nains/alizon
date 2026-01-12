@@ -9,6 +9,7 @@ $offset = ($page - 1) * $produitsParPage;
 
 $minPrice = isset($_GET['minPrice']) ? (float)$_GET['minPrice'] : 0;
 $maxPrice = isset($_GET['maxPrice']) ? (float)$_GET['maxPrice'] : 1000000;
+$noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 5;
 
 // Compter tous les produits filtrés
 $countSql = "SELECT COUNT(*) FROM _produit p
@@ -25,13 +26,14 @@ $nbPages = ceil($totalProduits / $produitsParPage);
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         FROM _produit p
         LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-        WHERE (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice
+        WHERE p.note >= :noteMin AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice
         ORDER BY p.idProduit DESC
         LIMIT :limit OFFSET :offset";
 
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':minPrice', $minPrice);
 $stmt->bindValue(':maxPrice', $maxPrice);
+$stmt->bindValue(':noteMin', $noteMin);
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
