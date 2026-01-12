@@ -1,6 +1,5 @@
 <?php
-session_start();
-require_once "../../controllers/pdo.php";
+require_once __DIR__ . "/controllers/pdo.php";
 
 $tabIdDestination = $_SESSION['tabIdDestination'];
 // auto_test.php
@@ -42,7 +41,7 @@ $auth_response = send_command($socket, "AUTH admin e10adc3949ba59abbe56e057f20f8
 // Test 2: Création
 //echo "Test CREATE:\n";
 $create_response = send_command($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"] . " " . $tabIdDestination[0]["destination"]);
-$sql = "UPDATE _commande SET bordereau = :noBordereau WHERE idCommande = :idCommande";
+$sql = "UPDATE _commande SET noBordereau = :noBordereau WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDestination[0]["idCommande"]]);
 //echo "Réponse: $create_response\n\n";
