@@ -716,7 +716,12 @@ body {
   }
   .pageCommandes .infoCommande {
     flex-direction: row !important;
-    margin-right: 15px;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+  .pageCommandes .infoCommande p :first-child {
+    font-weight: bold;
   }
 }
 .pageCommandes .confirmationAjout {

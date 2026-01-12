@@ -269,7 +269,12 @@
         }
         .infoCommande {
             flex-direction: row !important;
-            margin-right: 15px;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            p :first-child{
+                font-weight: bold;
+            }
         }
     }
 
