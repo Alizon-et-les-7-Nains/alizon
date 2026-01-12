@@ -19,7 +19,7 @@ function send_command($socket, $command)
 
 // Utilisation
 $host = '10.253.5.104';
-$port = 8080;
+$port = 9090;
 
 // Connexion persistante
 $socket = @fsockopen($host, $port, $errno, $errstr, 5);
