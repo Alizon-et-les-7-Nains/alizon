@@ -181,7 +181,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const emptyStar = "../../public/images/etoileVide.svg";
     const fullStar = "../../public/images/etoile.svg";
 
-    // Gestion des étoiles
+    // Pour toutes les étoiles, si on clique desus alors on change celle-ci 
+    // Ainsi que les précédentes en étoiles pleines. Cela permet aussi de stocker
+    // L'information du nombre d'étoiles que l'on souhaite mettre.
     stars.forEach((star, index) => {
         star.addEventListener('click', () => {
             const rating = index + 1;

@@ -25,6 +25,8 @@ if (!$avis) {
 }
 
 function afficherEtoiles($note) {
+    // Cette fonction permet d'afficher les étoiles pleines et vides 
+    // En fonction de la note de l'avis que l'on a écrit
     $html = "";
     for ($i = 1; $i <= 5; $i++) {
         if ($i <= $note) $html .= "<img class='star' src='../../public/images/etoile.svg'>";
@@ -48,7 +50,8 @@ function afficherEtoiles($note) {
         <main>
 
     <h2>Modifier mon avis</h2>
-
+    
+    <!-- Formulaire de modification de l'avis -->
     <form action="../../controllers/modifierAvis_action.php" method="POST">
         
         <input type="hidden" name="idProduit" value="<?php echo $idProduit; ?>">
@@ -78,6 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const emptyStar = "/public/images/etoileVide.svg";
     const fullStar = "/public/images/etoile.svg";
 
+    // Pour toutes les étoiles, si on clique desus alors on change celle-ci 
+    // Ainsi que les précédentes en étoiles pleines. Cela permet aussi de stocker
+    // L'information du nombre d'étoiles que l'on souhaite mettre.
     stars.forEach((star, index) => {
         star.addEventListener('click', () => {
             const rating = index + 1;
