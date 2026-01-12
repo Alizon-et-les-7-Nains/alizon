@@ -341,6 +341,7 @@ function loadProduits(page = 1) {
 sliderMin.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
+    console.log(searchbar.value)
 });
 
 sliderMax.addEventListener('input', () => { 

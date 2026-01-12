@@ -53,7 +53,7 @@ const loupe = document.getElementById('recherche');
 const searchbar = document.getElementById('searchbar');
 
 loupe.addEventListener('click', () => {
-    const query = searchbar.value;
-    window.location.href = `catalogue.php?search=${encodeURIComponent(query)}`;
+    const recherche = searchbar.value;
+    window.location.href = `catalogue.php?search=${encodeURIComponent(recherche)}`;
 });
 </script>
