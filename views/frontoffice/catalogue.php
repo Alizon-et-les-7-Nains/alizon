@@ -19,10 +19,6 @@ $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         LEFT JOIN _remise r ON p.idProduit = r.idProduit 
         AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
-if ($searchQuery !== "") {
-    $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
-}
-
 // Compter tous les produits
 $countSql = "SELECT COUNT(*) FROM _produit p 
              LEFT JOIN _remise r ON p.idProduit = r.idProduit 
