@@ -10,7 +10,7 @@
             <div class="search-wrapper">
                 <i id="validerRecherche" class="bi bi-search"></i>
                 <input type="search" name="recherche" id="searchbar" placeholder="Rechercher">
-                <img id ="rehcerche" src="../../../public/images/searchDarkBlue.svg" alt="">
+                <img id ="recherche" src="../../../public/images/searchDarkBlue.svg" alt="">
             </div>
         </div>
 
