@@ -13,7 +13,7 @@ $sortBy = $_GET['sort'] ?? '';
 $minNote = $_GET['minNote'] ?? '';
 $category = $_GET['category'] ?? '';
 $zone = $_GET['zone'] ?? '';
-$vendeur = $_GET['vendeur'] ?? '';
+$vendeur = $_GET['vendeur'] ?? '';  
 $searchQuery = $_GET['search'] ?? '';
 
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
