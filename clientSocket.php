@@ -38,7 +38,7 @@ $auth_response = send_command($socket, "AUTH admin e10adc3949ba59abbe56e057f20f8
 
 // Test 2: Création
 //echo "Test CREATE:\n";
-$create_response = send_command($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"] . " " . $tabIdDestination[0]["montantCommandeTTC"]);
+$create_response = send_command($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"] . " " . $tabIdDestination[0]["destination"]);
 $_SESSION['noBordereau'] = $create_response;
 //echo "Réponse: $create_response\n\n";
 
