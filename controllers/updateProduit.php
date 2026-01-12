@@ -20,6 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':mot_cles' => $_POST['mots_cles'],
         ':idProduit' => $idProd
     ]);
+
+// On choisit la liste des format possibles pour les images
 $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
 $extension = '';
 $photoPath = '/var/www/html/images/produit' . $idProd;   
@@ -30,6 +32,9 @@ foreach ($extensionsPossibles as $ext) {
             break;
         }
     }
+
+// Si une image à été mise et qu'il n'y a pas d'erreur alors on le met dans le serveur
+// Cela permet d'éviter le cas où aucun fichier n'a été mis ce qui aurait supprimer l'image
 if (isset($_FILES['url']) && $_FILES['url']['error'] === UPLOAD_ERR_OK) {
 
     if (file_exists($photoPath . $extension)) { 
