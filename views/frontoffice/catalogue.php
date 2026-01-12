@@ -26,7 +26,7 @@ $countSql = "SELECT COUNT(*) FROM _produit p
 
 // Récuperer la totalité des catégories
 
-$catSql = "SELECT DISTINCT typeProd FROM _produit p;";
+$catSql = "SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;";
 $stmt = $pdo->prepare($catSql);
 $stmt->execute();
 $listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);

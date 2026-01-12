@@ -1,3 +1,11 @@
+<?php 
+include "../../controllers/pdo.php";
+
+$query = $pdo->prepare("SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;");
+$query->execute();
+$produits = $query->fetchAll(PDO::FETCH_ASSOC);
+
+?>
 
 <header class="headerFront">
 
