@@ -659,9 +659,11 @@ body {
   font-weight: lighter;
 }
 .pageCommandes .footerCommande .liensCommande {
+  margin: 5px;
   display: flex;
   align-items: center;
   font-size: 12px;
+  justify-content: space-around;
 }
 .pageCommandes .footerCommande .liensCommande a {
   color: #273469;
@@ -706,11 +708,15 @@ body {
 }
 @media (max-width: 630px) {
   .pageCommandes .footerCommande {
-    display: block;
+    display: flex;
     padding-top: 0;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-around;
   }
   .pageCommandes .infoCommande {
     flex-direction: row !important;
+    margin-right: 15px;
   }
 }
 .pageCommandes .confirmationAjout {
@@ -2070,6 +2076,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .pagePaiement > * {
   position: relative;
   z-index: 1;
+}
+.pagePaiement .infoCarte div input {
+  margin-right: 15px;
 }
 .pagePaiement .container {
   max-width: 1400px;

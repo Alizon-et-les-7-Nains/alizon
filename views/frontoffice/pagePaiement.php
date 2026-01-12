@@ -393,13 +393,15 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                         <small class="error-message" data-for="nom-carte"></small>
                     </div>
                     <div class="ligne">
-                        <div class="input-field fixed-100">
-                            <input class="carte-date" type="text" placeholder="MM/AA" required>
-                            <small class="error-message" data-for="carte-date"></small>
-                        </div>
-                        <div class="input-field fixed-80">
-                            <input class="cvv-input" type="text" placeholder="CVV" required minlength="3" maxlength="3">
-                            <small class="error-message" data-for="cvv-input"></small>
+                        <div class="infoCarte">
+                            <div class="input-field fixed-100">
+                                <input class="carte-date" type="text" placeholder="MM/AA" required>
+                                <small class="error-message" data-for="carte-date"></small>
+                            </div>
+                            <div class="input-field fixed-80">
+                                <input class="cvv-input" type="text" placeholder="CVV" required minlength="3" maxlength="3">
+                                <small class="error-message" data-for="cvv-input"></small>
+                            </div>
                         </div>
                         <img class="visaImg" src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
                     </div>
