@@ -224,7 +224,7 @@ MYSQL* config_BD() {
     }
 
     
-    if (!mysql_real_connect(local_conn, "127.0.0.1", "sae", "grognasseEtCompagnie", "saedb", 0, NULL, 0)) {
+    if (!mysql_real_connect(local_conn, "mariadb", "sae", "grognasseEtCompagnie", "saedb", 0, NULL, 0)) {
         fprintf(stderr, "Connexion échouée : %s\n", mysql_error(local_conn));
         mysql_close(local_conn);
         exit(EXIT_FAILURE);
