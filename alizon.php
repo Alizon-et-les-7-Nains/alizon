@@ -236,14 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $_SESSION['tabIdDestination'] = $tab;
 
-    header('Location: views/frontoffice/commandes.php');
-    exit;
+   
 
 }
-
-
-
-header('Location: views/frontoffice/commandes.php');
-exit;
-
 ?>

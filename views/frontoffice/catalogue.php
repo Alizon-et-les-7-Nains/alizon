@@ -11,6 +11,8 @@ $offset = ($page - 1) * $produitsParPage;
 
 $idClient = $_SESSION['user_id'];
 
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
+
 // Récupérer les produits avec pagination
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
         FROM _produit p 
@@ -381,6 +383,8 @@ triPrixDecroissant.addEventListener('change', () => {
         loadProduits(1);
     }
 });
+
+
 
 updateSlider();
 
