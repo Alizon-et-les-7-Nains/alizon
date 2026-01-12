@@ -11,6 +11,8 @@ $offset = ($page - 1) * $produitsParPage;
 
 $idClient = $_SESSION['user_id'];
 
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
+
 // Récupérer les produits avec pagination
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
         FROM _produit p 
@@ -21,6 +23,13 @@ $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
 $countSql = "SELECT COUNT(*) FROM _produit p 
              LEFT JOIN _remise r ON p.idProduit = r.idProduit 
              AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
+
+// Récuperer la totalité des catégories
+
+$catSql = "SELECT DISTINCT typeProd FROM _produit p;";
+$stmt = $pdo->prepare($catSql);
+$stmt->execute();
+$listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $countStmt = $pdo->query($countSql);
 $totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
@@ -105,8 +114,10 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
                 <option value="" class="opt-highlight">Toutes les catégories</option>
-                <option value="Alcools" class="opt-highlight">Alcools</option>
-                <option value="Charcuterie" class="opt-highlight">Charcuterie</option>
+                <?php foreach ($listeCategories as $categorie) { 
+                    if ($categorie['typeProd'] != NULL) ?>
+                    <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
+                <?php } ?>
             </select>
 
             <label for="zone">Zone géographique :</label>
@@ -227,6 +238,7 @@ const triNoteDecroissant = document.getElementById('triNoteDecroissant');
 let sortOrder = '';
 
 // Variables globales
+let searchQuery = "<?= "$searchQuery" ?>";
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
@@ -339,6 +351,7 @@ function loadProduits(page = 1) {
 sliderMin.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
+    console.log(searchbar.value)
 });
 
 sliderMax.addEventListener('input', () => { 
@@ -373,6 +386,14 @@ triPrixDecroissant.addEventListener('change', () => {
         loadProduits(1);
     }
 });
+
+if(searchQuery = ""){
+    searchbar.placeholder = 'Recherche';
+}
+else{
+    searchbar.placeholder = searchQuery;
+}
+
 
 updateSlider();
 

@@ -1,3 +1,4 @@
+
 <header class="headerFront">
 
     <div class="headerMain">
@@ -10,7 +11,7 @@
             <div class="search-wrapper">
                 <i id="validerRecherche" class="bi bi-search"></i>
                 <input type="search" name="recherche" id="searchbar" placeholder="Rechercher">
-                <img src="../../../public/images/searchDarkBlue.svg" alt="">
+                <img id ="recherche" src="../../../public/images/searchDarkBlue.svg" alt="">
             </div>
         </div>
 
@@ -47,4 +48,12 @@ function menuBurger() {
     var burgerIcon = document.getElementById("burgerIcon");
     burgerIcon.style.display = (burgerIcon.style.display === "flex") ? "none" : "flex";
 }
+
+const loupe = document.getElementById('recherche');
+const searchbar = document.getElementById('searchbar');
+
+loupe.addEventListener('click', () => {
+    const recherche = searchbar.value;
+    window.location.href = `catalogue.php?search=${encodeURIComponent(recherche)}`;
+});
 </script>
