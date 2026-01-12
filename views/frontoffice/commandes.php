@@ -411,7 +411,7 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="../scripts/frontoffice/detailsCommande.js"></script>
 
     <?php
-        $sql = "SELECT bordereau FROM _commande WHERE idCommande = :idCommande";
+        $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
