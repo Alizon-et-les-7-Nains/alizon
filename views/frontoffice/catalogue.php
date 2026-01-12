@@ -238,7 +238,7 @@ const triNoteDecroissant = document.getElementById('triNoteDecroissant');
 let sortOrder = '';
 
 // Variables globales
-let searchQuery = "<?= "$searchQuery" ?>";
+let searchQuery = "<?= htmlspecialchars($searchQuery) ?>";
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
@@ -387,11 +387,11 @@ triPrixDecroissant.addEventListener('change', () => {
     }
 });
 
-if(searchQuery = ""){
+if(searchQuery === ""){
     searchbar.placeholder = 'Recherche';
 }
 else{
-    searchbar.placeholder = "Recherche : " + searchQuery;
+    searchbar.value = searchQuery;
 }
 
 
