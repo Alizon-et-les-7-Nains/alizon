@@ -28,8 +28,8 @@ $countSql = "SELECT COUNT(*) FROM _produit p
              LEFT JOIN _remise r ON p.idProduit = r.idProduit 
              AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
-// Récuperer la totalité des catégories
 
+// Récuperer la totalité des catégories
 $catSql = "SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;";
 $stmt = $pdo->prepare($catSql);
 $stmt->execute();
@@ -58,7 +58,9 @@ $stmt = $pdo->prepare($sql);
 // Liaison des paramètres pour la pagination
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-$stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+if (!empty($searchQuery)) {
+    $stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+}
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
