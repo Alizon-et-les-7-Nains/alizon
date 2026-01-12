@@ -3,7 +3,7 @@
 function send_command($socket, $command)
 {
     // Envoi de la commande
-    fwrite($socket, $command . "\n");
+    //fwrite($socket, $command . "\n");
 
     // Lecture de la réponse
     $response = '';
