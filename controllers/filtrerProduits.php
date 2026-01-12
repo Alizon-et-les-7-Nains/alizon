@@ -18,6 +18,7 @@ $countSql = "SELECT COUNT(*) FROM _produit p
 $countStmt = $pdo->prepare($countSql);
 $countStmt->bindValue(':minPrice', $minPrice);
 $countStmt->bindValue(':maxPrice', $maxPrice);
+$countStmt->bindValue(':noteMin', $noteMin);
 $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
