@@ -18,7 +18,7 @@ function send_command($socket, $command)
 }
 
 // Utilisation
-$host = '10.253.5.104';
+$host = 'mariadb';
 $port = 8080;
 
 // Connexion persistante
