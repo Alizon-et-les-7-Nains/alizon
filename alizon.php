@@ -1,6 +1,5 @@
 <?php
 session_start();
-include "clientSocket.php";
 require_once __DIR__ . '/controllers/pdo.php';
 
 
@@ -200,6 +199,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 $_SESSION['commandePayee'] = true;
 $idClient = $_SESSION['user_id'];
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $adresseLivraison = $_POST['adresseLivraison'] ?? '';
@@ -236,7 +236,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $_SESSION['tabIdDestination'] = $tab;
 
-   
-
-}
+    include "clientSocket.php";
+}   
 ?>
