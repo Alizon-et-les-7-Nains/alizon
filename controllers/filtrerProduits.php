@@ -9,8 +9,9 @@ $offset = ($page - 1) * $produitsParPage;
 
 $minPrice = isset($_GET['minPrice']) ? (float)$_GET['minPrice'] : 0;
 $maxPrice = isset($_GET['maxPrice']) ? (float)$_GET['maxPrice'] : 1000000;
+$sortOrder = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : '';
 
-// Compter tous les produits filtrés
+// Calcul du nombre total de produits correspondant aux filtres de prix
 $countSql = "SELECT COUNT(*) FROM _produit p
              LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
              WHERE (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice";
@@ -21,13 +22,23 @@ $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
-// Récupérer les produits filtrés avec pagination
+// Récupération des produits avec pagination et filtres de prix
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         FROM _produit p
         LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-        WHERE (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice
-        ORDER BY p.idProduit DESC
-        LIMIT :limit OFFSET :offset";
+        WHERE (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice";
+
+if ($sortOrder === 'noteAsc') {
+    $sql .= " ORDER BY p.note ASC";
+} elseif ($sortOrder === 'noteDesc') {
+    $sql .= " ORDER BY p.note DESC";
+} elseif ($sortOrder === 'prixAsc') {
+    $sql .= " ORDER BY (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) ASC";
+} elseif ($sortOrder === 'prixDesc') {
+    $sql .= " ORDER BY (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) DESC";
+}
+
+$sql .= " LIMIT :limit OFFSET :offset";
 
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':minPrice', $minPrice);
@@ -37,9 +48,10 @@ $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Retour JSON
+// Objet JSON encodé JSON afin de manipuler les données en AJAX
 $data = ['html' => '', 'nbPages' => $nbPages, 'totalProduits' => $totalProduits];
 
+// Restructruration du code HTML selon la page et les filtres
 if (count($products) > 0) {
     foreach ($products as $value) {
         $idProduit = $value['idProduit'];
@@ -78,7 +90,7 @@ if (count($products) > 0) {
             $data['html'] .= '<h2>'.formatPrice($prixOriginal).'</h2>';
         }
         if ($poids > 0) {
-            $data['html'] .= '<h4>'.formatPrice($prixAuKg).'€/kg</h4>';
+            $data['html'] .= '<h4>'.htmlspecialchars($prixAuKg).'€/kg</h4>';
         }
         $data['html'] .= '</div>';
         if (number_format($value['stock'], 1) == 0){
