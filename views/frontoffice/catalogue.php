@@ -263,7 +263,7 @@ const triNoteDecroissant = document.getElementById('triNoteDecroissant');
 let sortOrder = '';
 
 // Variables globales
-const searchQuery = <?php $searchQuery ?>;
+let searchQuery = "<?= "$searchQuery" ?>";
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
@@ -416,7 +416,7 @@ if(searchQuery = ""){
     searchbar.placeholder = 'Recherche';
 }
 else{
-    searchbar.value = searchQuery;
+    searchbar.placeholder = searchQuery;
 }
 
 
