@@ -391,7 +391,7 @@ if(searchQuery = ""){
     searchbar.placeholder = 'Recherche';
 }
 else{
-    searchbar.textContent = searchQuery;
+    searchbar.textContent = "<?= "$searchQuery" ?>";
 }
 
 
