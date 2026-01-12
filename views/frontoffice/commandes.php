@@ -324,15 +324,9 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <a href="<?php echo "../../views/frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
                                 <button class="plus" data-id="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
-<<<<<<< HEAD
-                                    <a style="cursor: pointer;">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
-                                    <?php else: ?>
-                                    <a style="cursor: pointer;" onclick="popUpAnnulerCommande('<?= $commande['id'] ?>')">Annuler<img src="../../public/images/redoDarkBlue.svg" alt="Annuler"></a>
-=======
                                     <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
                                     <?php else: ?>
                                     <a href="">Annuler<img src="../../public/images/redoDarkBlue.svg" alt="Annuler"></a>
->>>>>>> 5e1bba8da786b9d7a31631ed61793ef9f6b92160
                                 <?php endif; ?>
                             </div>
                         </section>
