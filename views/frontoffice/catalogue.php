@@ -26,10 +26,21 @@ $countSql = "SELECT COUNT(*) FROM _produit p
 
 // Récuperer la totalité des catégories
 
-$catSql = "SELECT DISTINCT typeProd FROM _produit p;";
+$catSql = "SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;";
 $stmt = $pdo->prepare($catSql);
 $stmt->execute();
 $listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$vendeur = "SELECT 
+            v.codeVendeur,
+            v.raisonSocial,
+            COUNT(p.idProduit) AS nbProduits
+            FROM _vendeur v
+            JOIN _produit p ON p.idVendeur = v.codeVendeur
+            GROUP BY p.idVendeur
+            ORDER BY nbProduits DESC
+            LIMIT 10";
+
 
 $countStmt = $pdo->query($countSql);
 $totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
@@ -46,10 +57,16 @@ $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$stmt = $pdo->prepare($vendeur);
+$stmt->execute();
+$vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // Récupérer le prix maximum pour le slider
 $maxPriceStmt = $pdo->query("SELECT MAX(prix) as maxPrix FROM _produit");
 $maxPriceRow = $maxPriceStmt->fetch(PDO::FETCH_ASSOC);
 $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
+
+
 
 ?>
 
@@ -122,6 +139,14 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 
             <label for="zone">Zone géographique :</label>
             <label for="vendeur">Vendeur :</label>
+            <select id="vendeur" name="vendeur">
+                <option value="">-- Tous les vendeurs --</option>
+                <?php foreach ($vendeurs as $vendeur) { ?>
+                    <option value="<?= $vendeur['codeVendeur'] ?>">
+                        <?= $vendeur['raisonSocial'] ?>
+                    </option>
+                <?php } ?>
+            </select>
         </form>
     </aside>
     
@@ -244,6 +269,7 @@ const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
 const popupConfirmation = document.querySelector(".confirmationAjout");
 const noteInput = document.getElementById('note');
+const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
 
@@ -262,6 +288,12 @@ document.addEventListener('DOMContentLoaded', function() {
             noteInput.value = rating;
             loadProduits(1);
         });
+    });
+    const vendeur = document.getElementById('vendeur');
+
+    vendeur.addEventListener('change', function () {
+        const idVendeur = vendeur.value;
+        loadProduits(1);
     });
 });
 
@@ -311,8 +343,14 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value; 
-
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}`)
+    let idVendeur;
+    if(vendeur.value!=""){
+        idVendeur = parseInt(vendeur.value);
+    }
+    else{
+        idVendeur = "";
+    }
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}`)
         .then(res => {
             // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {
