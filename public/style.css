@@ -7078,7 +7078,7 @@ dialog.reassort form input {
   -webkit-appearance: none;
   cursor: pointer;
   width: 20px;
-  height: 30px;
+  height: 20px;
   background: white;
   border-radius: 16px;
   border-width: 8px;
@@ -7089,7 +7089,7 @@ dialog.reassort form input {
   pointer-events: all;
   cursor: pointer;
   width: 20px;
-  height: 30px;
+  height: 20px;
   background: white;
   border-radius: 16px;
   border-width: 8px;
