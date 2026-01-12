@@ -1,6 +1,4 @@
-// delivraptor_server.c - Serveur principal Délivraptor
-// Compilation : cc main2.c $(mysql_config --cflags --libs) -o delivraptor_server
-
+// Compilation : cc main.c $(mysql_config --cflags --libs) -o delivraptor_server
 
 #include <mysql/mysql.h>      // Bibliothèque MySQL pour accès à la base de données
 #include <stdio.h>            // Entrées/sorties standard (printf, fprintf, fopen, etc.)
@@ -17,7 +15,7 @@
 #include <signal.h>           // Gestion des signaux (SIGCHLD pour détecter fin des processus fils)
 #include <errno.h>            // Gestion des codes d'erreur (errno)
 
-// Variable extern pour errno (standard C)
+
 extern int errno;
 MYSQL *conn = NULL;
 char *global_log_file = NULL;
@@ -224,7 +222,7 @@ MYSQL* config_BD() {
     }
 
     
-    if (!mysql_real_connect(local_conn, "127.0.0.1", "sae", "grognasseEtCompagnie", "saedb", 0, NULL, 0)) {
+    if (!mysql_real_connect(local_conn, "maraidb", "sae", "grognasseEtCompagnie", "saedb", 3306, NULL, 0)) {
         fprintf(stderr, "Connexion échouée : %s\n", mysql_error(local_conn));
         mysql_close(local_conn);
         exit(EXIT_FAILURE);
@@ -460,7 +458,10 @@ int require_auth(struct ClientSession *session) {
 /**
  * create() - Traite la commande de création de bordereau CREATE
  */
-void create(struct ClientSession *session, char *commande_id, 
+/**
+ * create() - Traite la commande de création de bordereau CREATE
+ */
+void create(struct ClientSession *session, char *commande_id, char *destination,
             struct ServerConfig config, MYSQL *conn) {
     if(!require_auth(session)) {
         write_log(config.log_file, session->client_ip, session->client_port,
@@ -471,9 +472,17 @@ void create(struct ClientSession *session, char *commande_id,
     char query[512];
     char response[BUFFER_SIZE];
     
+    // Échapper les chaînes pour éviter les injections SQL
+    char escaped_commande_id[256];
+    char escaped_destination[256];
+    
+    mysql_real_escape_string(conn, escaped_commande_id, commande_id, strlen(commande_id));
+    mysql_real_escape_string(conn, escaped_destination, destination, strlen(destination));
+    
     // Vérifier si un bordereau existe déjà pour cette commande
     snprintf(query, sizeof(query), 
-             "SELECT numBordereau FROM _delivraptor_colis WHERE noCommande = %s", commande_id);
+             "SELECT numBordereau FROM _delivraptor_colis WHERE noCommande = '%s'", 
+             escaped_commande_id);
     
     if (mysql_query(conn, query)) {
         snprintf(response, sizeof(response), "ERROR DB_QUERY\n");
@@ -528,8 +537,8 @@ void create(struct ClientSession *session, char *commande_id,
     // Insérer le nouveau colis dans la base de données
     snprintf(query, sizeof(query),
              "INSERT INTO _delivraptor_colis(numBordereau, noCommande, destination, localisation, etape, date_etape) "
-             "VALUES (%lld, %s, 'En attente chez Alizon', 'Entrepôt Alizon', 1, NOW())",
-             new_bordereau, commande_id);
+             "VALUES (%lld, '%s', '%s', 'Entrepôt Alizon', 1, NOW())",
+             new_bordereau, escaped_commande_id, escaped_destination);
     
     if (mysql_query(conn, query)) {
         snprintf(response, sizeof(response), "ERROR DB_INSERT\n");
@@ -559,7 +568,7 @@ void create(struct ClientSession *session, char *commande_id,
     }
     
     // Renvoyer le nouveau numéro de bordereau au client
-    snprintf(response, sizeof(response), "BORDEREAU %lld\n", new_bordereau);
+    snprintf(response, sizeof(response), "%lld\n", new_bordereau);
     send(session->client_socket, response, strlen(response), 0);
     
     write_log(config.log_file, session->client_ip, session->client_port,
@@ -840,20 +849,28 @@ void gerer_client(struct ClientSession session, struct ServerConfig config) {
             }
             
             // COMMANDE CREATE : CRÉATION DE BORDEREAU
-            else if (strcmp(token, "CREATE") == 0) {
-                // Récupère le paramètre : commande_id
-                char *commande_id = strtok(NULL, " \n");
-                if (commande_id) {
-                    // Crée un nouveau bordereau pour cette commande
-                    create(&session, commande_id, config, conn_client);
-                } else {
-                    // Paramètre manquant : envoie une erreur
-                    char response[] = "ERROR MISSING_COMMANDE_ID\n";
-                    send(session.client_socket, response, strlen(response), 0);
-                    write_log(config.log_file, session.client_ip, session.client_port,
-                              session.username, "CREATE", "Commande_id manquant");
-                }
-            }
+            // COMMANDE CREATE : CRÉATION DE BORDEREAU
+else if (strcmp(token, "CREATE") == 0) {
+    // Récupère les deux paramètres : commande_id et destination
+    char *commande_id = strtok(NULL, " \n");
+    char *destination = strtok(NULL, "\n");  // Prend tout le reste de la ligne
+    
+    if (commande_id && destination) {
+        // Supprimer les espaces en début de destination
+        while (*destination == ' ') {
+            destination++;
+        }
+        
+        // Crée un nouveau bordereau pour cette commande
+        create(&session, commande_id, destination, config, conn_client);
+    } else {
+        // Paramètre manquant : envoie une erreur
+        char response[] = "ERROR MISSING_PARAMETERS\n";
+        send(session.client_socket, response, strlen(response), 0);
+        write_log(config.log_file, session.client_ip, session.client_port,
+                  session.username, "CREATE", "Paramètres manquants (commande_id ou destination)");
+    }
+}
             
             // COMMANDE STATUS : CONSULTATION DE STATUT
             else if (strcmp(token, "STATUS") == 0) {
