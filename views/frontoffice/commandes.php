@@ -28,8 +28,7 @@ $idClient = $_SESSION['user_id'];
 // FONCTION DE RÉCUPÉRATION DES COMMANDES
 // ============================================================================
 
-function getCommandes($pdo, $idClient, $filtre)
-{
+function getCommandes($pdo, $idClient, $filtre){
     $commandes = [];
 
     $sql = "SELECT c.idCommande, c.dateCommande, c.etatLivraison, c.montantCommandeTTC, 
