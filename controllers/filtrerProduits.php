@@ -10,8 +10,14 @@ $offset = ($page - 1) * $produitsParPage;
 $minPrice = isset($_GET['minPrice']) ? (float)$_GET['minPrice'] : 0;
 $maxPrice = isset($_GET['maxPrice']) ? (float)$_GET['maxPrice'] : 1000000;
 $sortOrder = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : '';
-$noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 0; // Défaut à 0, pas 5
+$noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
 $categorie = isset($_GET['categorie']) ? $_GET['categorie'] : "";
+$noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
+$vendeur = $vendeur = $_GET['vendeur'] ?? null;
+$sqlVendeur="";
+if(!empty($vendeur)){
+    $sqlVendeur = "AND p.idVendeur = :idVendeur";
+}
 
 // Construction de la condition de catégorie dynamique
 $catCondition = "";
@@ -21,24 +27,27 @@ if (!empty($categorie)) {
 
 // 1. Compter les produits
 $countSql = "SELECT COUNT(*) FROM _produit p
-             LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-             WHERE p.note >= :noteMin 
+             LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur  AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+             WHERE p.note >= :noteMin ". $sqlVendeur ."
              AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
+
 
 $countStmt = $pdo->prepare($countSql);
 $countStmt->bindValue(':minPrice', $minPrice);
 $countStmt->bindValue(':maxPrice', $maxPrice);
 $countStmt->bindValue(':noteMin', $noteMin);
 if (!empty($categorie)) $countStmt->bindValue(':categorie', $categorie);
+if(!empty($vendeur)){
+    $countStmt->bindValue(':idVendeur',$vendeur);
+}
 $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         FROM _produit p
-        LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-        WHERE p.note >= :noteMin 
-        AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+        WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
 
 if ($sortOrder === 'noteAsc') {
     $sql .= " ORDER BY p.note ASC";
@@ -59,6 +68,9 @@ $stmt->bindValue(':noteMin', $noteMin);
 if (!empty($categorie)) $stmt->bindValue(':categorie', $categorie); // Correction ici : liaison au $stmt
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+if(!empty($vendeur)){
+    $stmt->bindValue(':idVendeur',$vendeur);
+}
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
