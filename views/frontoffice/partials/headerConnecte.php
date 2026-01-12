@@ -1,4 +1,4 @@
-<?php $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "Rechercher"; ?>
+
 <header class="headerFront">
 
     <div class="headerMain">
@@ -10,7 +10,7 @@
         <div class="searchBar">
             <div class="search-wrapper">
                 <i id="validerRecherche" class="bi bi-search"></i>
-                <input type="search" name="recherche" id="searchbar" placeholder="<?php $searchQuery?>">
+                <input type="search" name="recherche" id="searchbar" placeholder="Rechercher">
                 <img id ="recherche" src="../../../public/images/searchDarkBlue.svg" alt="">
             </div>
         </div>

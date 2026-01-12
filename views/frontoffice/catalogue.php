@@ -385,7 +385,7 @@ triPrixDecroissant.addEventListener('change', () => {
     }
 });
 
-
+searchbar.placeholder='Recherche'
 
 updateSlider();
 
