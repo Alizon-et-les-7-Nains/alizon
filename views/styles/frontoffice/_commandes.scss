@@ -269,7 +269,9 @@
         }
         .infoCommande {
             flex-direction: row !important;
-            margin-right: 15px;
+            p {
+                margin-right: 15px;
+            }
         }
     }
 

@@ -716,6 +716,8 @@ body {
   }
   .pageCommandes .infoCommande {
     flex-direction: row !important;
+  }
+  .pageCommandes .infoCommande p {
     margin-right: 15px;
   }
 }
