@@ -110,11 +110,13 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 <input type="hidden" name="note" id="note" value="0"> 
             </div>
 
+<?php echo var_dump($listeCategories) ?>
+
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
                 <option value="" class="opt-highlight">Toutes les catégories</option>
                 <?php foreach ($listeCategories as $categorie) { ?>
-                    <option value="<?= $categorie['typeProd'] ?>" class="choix">Charcuterie</option>
+                    <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?>"</option>
                 <?php } ?>
             </select>
 
