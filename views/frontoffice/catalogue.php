@@ -219,7 +219,7 @@ const range = document.getElementById('range');
 // Tri notes
 const triNoteCroissant = document.getElementById('triNoteCroissant');
 const triNoteDecroissant = document.getElementById('triNoteDecroissant');
-const sortOrder = '';
+let sortOrder = '';
 
 // Variables globales
 const listeArticle = document.querySelector('.listeArticle');
