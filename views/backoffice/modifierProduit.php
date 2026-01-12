@@ -33,7 +33,6 @@ if (!$produit) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Alizon - Modifier produit</title>
 </head>
 <body class="backoffice">
@@ -44,7 +43,7 @@ if (!$produit) {
         require_once './partials/aside.php';
     ?>
        
-    <main class="modifierProduit"> 
+    <main class="modifierProduit">  
         <form class="product-content" id="monForm" action="../../controllers/updateProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">
             <div class="left-section">
                 <div class="ajouterPhoto">
@@ -91,7 +90,7 @@ if (!$produit) {
             <div class="form-actions">
                 <button type="submit" class="btn-ajouter">Modifier le produit</button>
             </form>
-                <form class="supprimerProduit" id="monForm" action="../../controllers/deleteProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">            
+                <form class="supprimerProduit" id="formSupprimer" action="../../controllers/deleteProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">            
                         <button type="submit" class="btn-supprimer">Supprimer</button>
                          <dialog>
                             <h1>Êtes-vous sûr de vouloir vous déconnecter ?</h1>
