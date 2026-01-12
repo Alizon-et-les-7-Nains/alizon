@@ -24,6 +24,12 @@ $countSql = "SELECT COUNT(*) FROM _produit p
              LEFT JOIN _remise r ON p.idProduit = r.idProduit 
              AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
+// Récuperer la totalité des catégories
+
+$catSql = "SELECT UNIQUE typeProd FROM _produit p;";
+$stmt = $pdo->prepare($catSql);
+$listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 $countStmt = $pdo->query($countSql);
 $totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
 
@@ -104,11 +110,14 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 <input type="hidden" name="note" id="note" value="0"> 
             </div>
 
+<?php echo var_dump($listeCategories) ?>
+
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
                 <option value="" class="opt-highlight">Toutes les catégories</option>
-                <option value="Alcools" class="opt-highlight">Alcools</option>
-                <option value="Charcuterie" class="opt-highlight">Charcuterie</option>
+                <?php foreach ($listeCategories as $categorie) { ?>
+                    <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?>"</option>
+                <?php } ?>
             </select>
 
             <label for="zone">Zone géographique :</label>
@@ -341,6 +350,7 @@ function loadProduits(page = 1) {
 sliderMin.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
+    console.log(searchbar.value)
 });
 
 sliderMax.addEventListener('input', () => { 
@@ -376,7 +386,7 @@ triPrixDecroissant.addEventListener('change', () => {
     }
 });
 
-
+searchbar.placeholder='Recherche'
 
 updateSlider();
 
