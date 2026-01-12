@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "controllers/pdo.php";
+require_once __DIR__ . "/controllers/pdo.php";
 
 $tabIdDestination = $_SESSION['tabIdDestination'];
 // auto_test.php
