@@ -18,7 +18,7 @@ function send_command($socket, $command)
 }
 
 // Utilisation
-$host = 'localhost';
+$host = '10.253.5.104';
 $port = 8080;
 
 // Connexion persistante
