@@ -19,7 +19,7 @@ function send_command($socket, $command)
 
 // Utilisation
 $host = 'mariadb';
-$port = 6000;
+$port = 9191;
 
 // Connexion persistante
 $socket = @fsockopen($host, $port, $errno, $errstr, 5);
