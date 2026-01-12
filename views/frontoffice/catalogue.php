@@ -10,8 +10,8 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $produitsParPage;
 
 $idClient = $_SESSION['user_id'];
-$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 
 // Récupérer les produits avec pagination
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
@@ -26,20 +26,10 @@ $countSql = "SELECT COUNT(*) FROM _produit p
 
 // Récuperer la totalité des catégories
 
-$catSql = "SELECT DISTINCT typeProd FROM _produit p AND typeProd IS NOT NULL;";
+$catSql = "SELECT DISTINCT typeProd FROM _produit WHERE typeProd IS NOT NULL AND typeProd != '';";
 $stmt = $pdo->prepare($catSql);
 $stmt->execute();
 $listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$vendeur = "SELECT 
-            v.codeVendeur,
-            v.raisonSocial,
-            COUNT(p.idProduit) AS nbProduits
-            FROM _vendeur v
-            JOIN _produit p ON p.idVendeur = v.codeVendeur
-            GROUP BY p.idVendeur
-            ORDER BY nbProduits DESC
-            LIMIT 10";
 
 $countStmt = $pdo->query($countSql);
 $totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
@@ -55,10 +45,6 @@ $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-$stmt = $pdo->prepare($vendeur);
-$stmt->execute();
-$vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Récupérer le prix maximum pour le slider
 $maxPriceStmt = $pdo->query("SELECT MAX(prix) as maxPrix FROM _produit");
@@ -128,22 +114,14 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
                 <option value="" class="opt-highlight">Toutes les catégories</option>
-                <?php foreach ($listeCategories as $categorie) { ?>
+                <?php foreach ($listeCategories as $categorie) { 
+                    if ($categorie['typeProd'] != NULL) ?>
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
             </select>
 
             <label for="zone">Zone géographique :</label>
-
             <label for="vendeur">Vendeur :</label>
-            <select id="vendeur" name="vendeur">
-                <option value="">-- Tous les vendeurs --</option>
-                <?php foreach ($vendeurs as $vendeur) { ?>
-                    <option value="<?= $vendeur['codeVendeur'] ?>">
-                        <?= $vendeur['raisonSocial'] ?>
-                    </option>
-                <?php } ?>
-            </select>
         </form>
     </aside>
     
@@ -260,13 +238,12 @@ const triNoteDecroissant = document.getElementById('triNoteDecroissant');
 let sortOrder = '';
 
 // Variables globales
-const searchQuery = "<?= $searchQuery ?>";
+const searchQuery = <?php $searchQuery ?>;
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
 const popupConfirmation = document.querySelector(".confirmationAjout");
 const noteInput = document.getElementById('note');
-const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
 
@@ -286,19 +263,12 @@ document.addEventListener('DOMContentLoaded', function() {
             loadProduits(1);
         });
     });
-    const vendeur = document.getElementById('vendeur');
-
-    vendeur.addEventListener('change', function () {
-        const idVendeur = vendeur.value;
-        loadProduits(1);
-    });
 });
 
 const categorieSelect = document.getElementById('categorieSelect');
 categorieSelect.addEventListener('change', () => {
     loadProduits(1);
 });
-
 
 function updateSlider() {
     let min = parseInt(sliderMin.value);
@@ -341,16 +311,8 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value; 
-    let idVendeur;
-    if(vendeur.value!=""){
-        idVendeur = parseInt(vendeur.value);
-    }
-    else{
-        idVendeur = "";
-    }
-    console.log('Chargement des produits:', {min, max, notemin, page, idVendeur});
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}`)
 
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}`)
         .then(res => {
             // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {
