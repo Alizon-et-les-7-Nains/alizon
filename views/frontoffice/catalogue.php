@@ -103,6 +103,12 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
             </div>
 
             <label for="categorie">Catégorie :</label>
+            <select name="categorie" id="categorieSelect" class="filter-select">
+                <option value="" class="opt-highlight">Toutes les catégories</option>
+                <option value="Alcools" class="opt-highlight">Alcools</option>
+                <option value="Charcuterie" class="opt-highlight">Charcuterie</option>
+            </select>
+
             <label for="zone">Zone géographique :</label>
             <label for="vendeur">Vendeur :</label>
         </form>
@@ -247,6 +253,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+const categorieSelect = document.getElementById('categorieSelect');
+categorieSelect.addEventListener('change', () => {
+    loadProduits(1);
+});
+
 function updateSlider() {
     let min = parseInt(sliderMin.value);
     let max = parseInt(sliderMax.value);
@@ -287,8 +298,9 @@ function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
+    const catValue = categorieSelect.value; 
 
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}`)
         .then(res => {
             // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {

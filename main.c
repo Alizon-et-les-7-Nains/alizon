@@ -27,7 +27,7 @@ struct ServerConfig *global_config = NULL;
 #define BUFFER_SIZE 1024
 #define MAX_LINE_LENGTH 256
 #define MAX_LOG_MESSAGE 512
-#define PORT_SERVER_DEFAULT 3306
+#define PORT_SERVER_DEFAULT 8080
 
 // Structure pour stocker l'état d'une session client
 // Chaque client connecté au serveur a sa propre session associée
@@ -224,7 +224,7 @@ MYSQL* config_BD() {
     }
 
     
-    if (!mysql_real_connect(local_conn, "mariadb", "sae", "grognasseEtCompagnie", "saedb", 0, NULL, 0)) {
+    if (!mysql_real_connect(local_conn, "mariadb", "sae", "grognasseEtCompagnie", "saedb", 3306, NULL, 0)) {
         fprintf(stderr, "Connexion échouée : %s\n", mysql_error(local_conn));
         mysql_close(local_conn);
         exit(EXIT_FAILURE);

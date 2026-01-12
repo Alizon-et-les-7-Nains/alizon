@@ -1,7 +1,8 @@
 <?php
+session_start();
 include "clientSocket.php";
 require_once __DIR__ . '/controllers/pdo.php';
-session_start();
+
 
 function creerNoCommande($pdo)
 {
