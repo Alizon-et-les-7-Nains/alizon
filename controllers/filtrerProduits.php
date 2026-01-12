@@ -17,7 +17,7 @@ $categorie = isset($_GET['categorie']) ? $_GET['categorie'] : "";
 // Calcul du nombre total de produits correspondant aux filtres de prix
 $countSql = "SELECT COUNT(*) FROM _produit p
              LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-             WHERE p.note >= :noteMin AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice AND p.categorie = :categorie";
+             WHERE p.note >= :noteMin AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice AND p.typeProd = :categorie";
 $countStmt = $pdo->prepare($countSql);
 $countStmt->bindValue(':minPrice', $minPrice);
 $countStmt->bindValue(':maxPrice', $maxPrice);
@@ -31,7 +31,7 @@ $nbPages = ceil($totalProduits / $produitsParPage);
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         FROM _produit p
         LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-        WHERE p.note >= :noteMin AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice AND p.categorie = :categorie";
+        WHERE p.note >= :noteMin AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice AND p.typeProd = :categorie";
 
 if ($sortOrder === 'noteAsc') {
     $sql .= " ORDER BY p.note ASC";
