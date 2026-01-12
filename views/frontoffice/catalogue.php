@@ -139,7 +139,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 
             <label for="zone">Zone géographique :</label>
             <label for="vendeur">Vendeur :</label>
-             <select id="vendeur" name="vendeur">
+            <select id="vendeur" name="vendeur">
                 <option value="">-- Tous les vendeurs --</option>
                 <?php foreach ($vendeurs as $vendeur) { ?>
                     <option value="<?= $vendeur['codeVendeur'] ?>">
