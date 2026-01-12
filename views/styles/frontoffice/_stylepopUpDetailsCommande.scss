@@ -68,3 +68,26 @@
     }
     
 }
+
+.popUpAnnulerCommande {
+    text-align: center;
+    h1 {
+        margin: 0px;
+    }
+    h3 {
+        padding: 30px;
+    }
+    button {
+        border: 0;
+        padding: 12px 40px;
+        color: white;
+        border-radius: 32px;
+        font-family: 'lora', serif;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+}

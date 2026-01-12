@@ -233,7 +233,7 @@ $cart = getCurrentCart($pdo, $idClient);
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../public/style.css">
-        <link rel="icon" href="/public/images/logoBackoffice.svg">
+        <link rel="icon" href="../../public/images/logoBackoffice.svg">
         <title>Alizon - Mes Commandes</title>
     </head>
 <body class="pageCommandes">
@@ -300,9 +300,9 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <!-- Ajouter l'id du produit en param POST ou GET et transmettre à la pagePaiement.php ? -->
 
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
-                                    <a>Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
+                                    <a style="cursor: pointer;">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
                                     <?php else: ?>
-                                    <a onclick="popUpAnnulerCommande('<?= $commande['id'] ?>')">Annuler<img src="../../public/images/redoDarkBlue.svg" alt="Annuler"></a>
+                                    <a style="cursor: pointer;" onclick="popUpAnnulerCommande('<?= $commande['id'] ?>')">Annuler<img src="../../public/images/redoDarkBlue.svg" alt="Annuler"></a>
                                 <?php endif; ?>
                             </div>
                         </section>

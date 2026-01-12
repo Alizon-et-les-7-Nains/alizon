@@ -12,14 +12,17 @@ $maxPrice = isset($_GET['maxPrice']) ? (float)$_GET['maxPrice'] : 1000000;
 $sortOrder = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : '';
 $noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 5;
 
+$categorie = isset($_GET['categorie']) ? $_GET['categorie'] : "";
+
 // Calcul du nombre total de produits correspondant aux filtres de prix
 $countSql = "SELECT COUNT(*) FROM _produit p
              LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-             WHERE p.note >= :noteMin AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice";
+             WHERE p.note >= :noteMin AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice AND p.categorie = :categorie";
 $countStmt = $pdo->prepare($countSql);
 $countStmt->bindValue(':minPrice', $minPrice);
 $countStmt->bindValue(':maxPrice', $maxPrice);
 $countStmt->bindValue(':noteMin', $noteMin);
+$countStmt->bindValue(':categorie', $categorie);
 $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
@@ -28,7 +31,7 @@ $nbPages = ceil($totalProduits / $produitsParPage);
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         FROM _produit p
         LEFT JOIN _remise r ON p.idProduit = r.idProduit AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-        WHERE p.note >= :noteMin AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice";
+        WHERE p.note >= :noteMin AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice AND p.categorie = :categorie";
 
 if ($sortOrder === 'noteAsc') {
     $sql .= " ORDER BY p.note ASC";
@@ -46,6 +49,7 @@ $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':minPrice', $minPrice);
 $stmt->bindValue(':maxPrice', $maxPrice);
 $stmt->bindValue(':noteMin', $noteMin);
+$countStmt->bindValue(':categorie', $categorie);
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
