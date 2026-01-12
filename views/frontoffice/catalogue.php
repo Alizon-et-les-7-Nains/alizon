@@ -269,6 +269,7 @@ const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
 const popupConfirmation = document.querySelector(".confirmationAjout");
 const noteInput = document.getElementById('note');
+const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
 
@@ -287,6 +288,12 @@ document.addEventListener('DOMContentLoaded', function() {
             noteInput.value = rating;
             loadProduits(1);
         });
+    });
+    const vendeur = document.getElementById('vendeur');
+
+    vendeur.addEventListener('change', function () {
+        const idVendeur = vendeur.value;
+        loadProduits(1);
     });
 });
 
@@ -336,8 +343,14 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value; 
-
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}`)
+    let idVendeur;
+    if(vendeur.value!=""){
+        idVendeur = parseInt(vendeur.value);
+    }
+    else{
+        idVendeur = "";
+    }
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}`)
         .then(res => {
             // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {
