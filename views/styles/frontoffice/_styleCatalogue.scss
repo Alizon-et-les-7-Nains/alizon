@@ -6,8 +6,11 @@
     .filter-sort{
         background-color: #e4d9ff;
         width: 22%;
-        position: relative;
+        height: 100vh;
+        position: fixed;
         left: 0;
+        z-index: 1000; /* pour rester au-dessus */
+
     }
 
     .filter-sort form{
@@ -20,6 +23,7 @@
         width: 78%;
         display: flex;
         flex-direction: column;
+        padding-left: 22%;
     }
 
     .product-list{
@@ -65,7 +69,10 @@
 
     #resultat{
         background: #E3F2FE;
-        position: relative;
+        position: sticky;
+        padding: 0.3em;
+        font-size: 13px;
+        font-weight: 500;
     }
 
     .products-section {
@@ -113,6 +120,11 @@
         align-items: center;
         gap: 5px;
         margin: 5px 0;
+    }
+
+    .star{
+        width: 50px;
+        height: 50px;
     }
 
     .notation .etoile {
@@ -167,5 +179,86 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .slider-wrapper {
+        position: relative;
+        height: 15px;
+        width: 260px;
+    }
+
+    .values {
+        display: flex;
+        gap: 220px;
+    }
+
+    .slider-track {
+        top: 10px;
+        position: absolute;
+        width: 100%;
+        height: 15px;
+        background: #ddd;
+        border-radius: 16px;
+    }
+
+    .slider-range {
+        top: 10px;
+        position: absolute;
+        height: 15px;
+        background: #273469;
+        border-radius: 16px;
+    }
+
+    input[type="range"] {
+        top: 10px;
+        position: absolute;
+        width: 100%;
+        background: transparent;
+        -webkit-appearance: none;
+        pointer-events: none;
+        height: 15px;
+        padding: 0;
+        margin: 0;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        pointer-events: all;
+        -webkit-appearance: none;
+        cursor: pointer;
+        width: 20px;
+        height: 30px;
+        background: white;
+        border-radius: 16px;
+        border-width: 8px;
+        border-style: solid;
+        border-color: #273469;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        pointer-events: all;
+        cursor: pointer;
+        width: 20px;
+        height: 30px;
+        background: white;
+        border-radius: 16px;
+        border-width: 8px;
+        border-style: solid;
+        border-color: #273469;
+    }
+
+    #minNoteLabel {
+        margin-top: 1.5em;
+    }
+
+    .pagination {
+        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .pagination a{
+        border: 2px solid black;
+        text-decoration: none;
     }
 }

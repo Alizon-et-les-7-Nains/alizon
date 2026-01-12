@@ -1155,18 +1155,22 @@ $breakpoint-xs: 480px;
   }
   margin-bottom: 12px;
   box-sizing: border-box;
-
+  
   @media (max-width: $breakpoint-xs) {
     padding: 10px 12px;
     font-size: 0.95rem;
   }
 }
 
+.visaImg {
+  margin-top: 10px;
+}
+
 .pagePaiement {
   position: relative;
   overflow-x: hidden;
   min-height: 100vh;
-
+  
   &::before {
     content: "";
     position: absolute;
@@ -1180,54 +1184,59 @@ $breakpoint-xs: 480px;
     opacity: 0.12;
     pointer-events: none;
     z-index: 0;
-
+    
     @media (max-width: $breakpoint-md) {
       width: 800px;
       height: 800px;
       top: -300px;
       right: -100px;
     }
-
+    
     @media (max-width: $breakpoint-sm) {
       width: 600px;
       height: 600px;
       top: -200px;
       right: -150px;
     }
-
+    
     @media (max-width: $breakpoint-xs) {
       display: none;
     }
   }
-
+  
   > * {
     position: relative;
     z-index: 1;
   }
 
+  .infoCarte div input {
+    margin-right: 15px;
+  }
+  
   .container {
     max-width: 1400px;
-    margin: 70px auto 0;
+    margin: 30px auto 0;
     padding: 0 5%;
     box-sizing: border-box;
     width: 100%;
-
+    min-height: 63vh;
+    
     @media (max-width: $breakpoint-md) {
       padding: 0 4%;
       margin-top: 60px;
     }
-
+    
     @media (max-width: $breakpoint-sm) {
       padding: 0 16px;
       margin-top: 50px;
     }
-
+    
     @media (max-width: $breakpoint-xs) {
       margin-top: 40px;
       padding: 0 12px;
     }
   }
-
+  
   .parent {
     display: grid;
     grid-template-columns: repeat(3, minmax(240px, 1fr));
@@ -1235,81 +1244,82 @@ $breakpoint-xs: 480px;
     width: 100%;
     align-items: start;
     box-sizing: border-box;
-
+    align-items: baseline;
+    
     @media (max-width: $breakpoint-lg) {
       grid-template-columns: repeat(2, minmax(220px, 1fr));
       gap: clamp(16px, 3vw, 24px);
     }
-
+    
     @media (max-width: $breakpoint-sm) {
       grid-template-columns: 1fr;
       gap: 20px;
     }
   }
-
+  
   .col {
     display: flex;
     flex-direction: column;
     gap: $gap;
-
+    
     @media (max-width: $breakpoint-sm) {
       gap: 16px;
     }
   }
-
+  
   h3 {
     font-family: "lora", serif;
     font-size: clamp(1rem, 1.8vw, 1.25rem);
     font-weight: 300;
     margin: 0 0 8px;
     color: $color-blue;
-
+    
     @media (max-width: $breakpoint-sm) {
       font-size: 1.1rem;
       margin-bottom: 12px;
     }
   }
-
+  
   a {
     color: $color-blue;
     word-break: break-word;
   }
-
+  
   input[type="text"] {
     @extend %input-base;
     width: 100%;
   }
-
+  
   .input-field {
     position: relative;
     display: flex;
     flex-direction: column;
   }
-
+  
   .ligne {
     display: flex;
     gap: 12px;
     align-items: flex-start;
     flex-wrap: wrap;
-
+    
     @media (max-width: $breakpoint-sm) {
       flex-direction: column;
       gap: 8px;
     }
-
+    
     .input-field {
       @media (max-width: $breakpoint-sm) {
         width: 100% !important;
         flex: 1 1 auto !important;
       }
-
+      
       &.fixed-110 { flex: 0 0 110px; }
       &.fixed-100 { flex: 0 0 100px; }
       &.fixed-80 { flex: 0 0 80px; }
       &.flex-1 { flex: 1 1 0; }
     }
   }
-
+  
   .invalid::after {
     content: "";
     position: absolute;
@@ -1322,50 +1332,50 @@ $breakpoint-xs: 480px;
     background: #b00020;
     box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.12);
   }
-
+  
   .error-message {
     color: #b00020;
     font-size: 0.95rem;
     margin-top: 8px;
     display: block;
     font-weight: 500;
-
+    
     &[data-for="cgv"] {
       color: #f14e4e;
       margin-top: 10px;
     }
   }
-
+  
   .payment {
     margin-top: 8px;
-
-    .payer {
-      margin-top: 12px;
-      background: #dcd1fa;
-      color: $accent;
-      font: {
-        size: 18px;
-        family: "lora", serif;
-        weight: 300;
-      }
-      border: none;
-      border-radius: 100px;
-      padding: 12px;
-      cursor: pointer;
-      width: 100%;
-      box-sizing: border-box;
-      transition: background-color 0.2s;
-
-      &:hover {
-        background: #c9bbf0;
-      }
-
-      @media (max-width: $breakpoint-sm) {
-        display: none !important;
-      }
+  }
+  
+  .payer {
+    margin-top: 12px;
+    background: #dcd1fa;
+    color: $accent;
+    font: {
+      size: 18px;
+      family: "lora", serif;
+      weight: 300;
+    }
+    border: none;
+    border-radius: 100px;
+    padding: 12px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background: #c9bbf0;
+    }
+    
+    @media (max-width: $breakpoint-sm) {
+      display: none !important;
     }
   }
-
+  
   label {
     font: {
       size: 1rem;
@@ -1376,7 +1386,7 @@ $breakpoint-xs: 480px;
     align-items: center;
     gap: 12px;
   }
-
+  
   .conditions {
     label {
       display: inline;
@@ -1384,27 +1394,27 @@ $breakpoint-xs: 480px;
       gap: 0;
       line-height: 1.5;
     }
-
+    
     input[type="checkbox"] {
       margin-right: 8px;
       vertical-align: middle;
     }
   }
-
+  
   .logos {
     display: flex;
     gap: 12px;
     margin-top: 6px;
     flex-wrap: wrap;
-
+    
     img {
       height: 28px;
     }
   }
-
+  
   .payer--mobile {
     display: none;
-
+    
     @media (max-width: $breakpoint-sm) {
       display: block;
       width: 100%;
@@ -1423,30 +1433,30 @@ $breakpoint-xs: 480px;
       box-sizing: border-box;
       margin: 20px auto;
       transition: background-color 0.2s;
-
+      
       &:hover {
         background: #c9bbf0;
       }
     }
   }
-
+  
   .payer-wrapper-mobile {
     display: none;
-
+    
     @media (max-width: $breakpoint-sm) {
       display: block;
       margin: 18px 0 40px;
       width: 100%;
     }
   }
-
+  
   @media (max-width: $breakpoint-sm) {
     button,
     input[type="checkbox"],
     label {
       min-height: 44px;
     }
-
+    
     input[type="text"] {
       min-height: 44px;
     }
@@ -1503,7 +1513,7 @@ $breakpoint-xs: 480px;
   margin-bottom: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid #eee;
-
+  
   &:last-child {
     border-bottom: none;
     margin-bottom: 0;
@@ -1539,7 +1549,7 @@ $breakpoint-xs: 480px;
   margin: 20px 0;
   padding-top: 15px;
   border-top: 2px solid $color-blue;
-
+  
   h3 {
     margin: 0;
   }
@@ -1547,7 +1557,7 @@ $breakpoint-xs: 480px;
 
 .order-info {
   margin-bottom: 20px;
-
+  
   p {
     margin-bottom: 10px;
   }
@@ -1585,12 +1595,12 @@ $breakpoint-xs: 480px;
 .thank-you-popup {
   text-align: center;
   padding: 40px 30px;
-
+  
   h2 {
     color: $color-blue;
     margin-bottom: 20px;
   }
-
+  
   p {
     margin-bottom: 15px;
     color: #666;
@@ -1623,12 +1633,12 @@ $breakpoint-xs: 480px;
   border-radius: 8px;
   background-color: rgba($color-blue, 0.05);
   display: none;
-
+  
   &.active {
     display: block;
     animation: fadeIn 0.3s ease;
   }
-
+  
   h4 {
     color: $color-blue;
     margin-top: 0;
@@ -1658,11 +1668,11 @@ $breakpoint-xs: 480px;
   font-family: "lora", serif;
   margin-top: 10px;
   transition: background-color 0.2s;
-
+  
   &:hover {
     background: darken($color-blue, 10%);
   }
-
+  
   &:disabled {
     background: #ccc;
     cursor: not-allowed;
@@ -1673,7 +1683,7 @@ $breakpoint-xs: 480px;
   .billing-section {
     padding: 15px;
   }
-
+  
   .btn-save {
     width: 100%;
   }

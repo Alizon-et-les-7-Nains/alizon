@@ -191,10 +191,13 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
                 <div class="ligne"></div>
                 <form method="POST" action="../../controllers/creerRemise.php">
                     <div>
+                        <label> Date limite </label>
                         <input type="text" name="dateLimite" id="dateLimite" placeholder="Date limite">
                     </div>
                     <div>
+                        <label>Nouveau Prix<label>
                         <input type="float" name="nouveauPrix" id="nouveauPrix" placeholder="Nouveau prix">
+                        <label>Reduction(%)</label>
                         <input type="float" name="reduction" id="reduction" placeholder="Reduction(%)">
                     </div>
                     <h2>Récapitulatif :</h2>
@@ -332,10 +335,13 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
                 <div class="ligne"></div>
                 <form method="POST" action="../../controllers/creerRemise.php">
                     <div>
+                        <label>Date limite</label>
                         <input type="text" name="dateLimite" id="dateLimite" placeholder="Date limite">
                     </div>
                     <div>
+                        <label>Nouveau Prix</label>
                         <input type="float" name="nouveauPrix" id="nouveauPrix" placeholder="Nouveau prix">
+                        <label>Reduction(%)</label>
                         <input type="float" name="reduction" id="reduction" placeholder="Reduction(%)">
                     </div>
                     <h2>Récapitulatif :</h2>
@@ -606,7 +612,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                         <div class="deuxBoutons">
                             <input type="hidden" name="id" value="${id}">
                             <button type="button" onclick="popUpAnnulerPromotion(${id}, '${nom}')" style="color: white; background-color: #F14E4E;">Retirer la promotion</button>
-                            <button type="submit">Promouvoir</button>
+                            <button type="submit">Modifier</button>
                         </div>
                     </section>
                 </form>

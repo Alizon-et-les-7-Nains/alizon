@@ -179,7 +179,7 @@ body {
   display: flex;
   align-items: center;
 }
-@media (max-width: 720px) {
+@media (max-width: 845px) {
   .headerFront .icons {
     display: none;
     visibility: hidden;
@@ -194,6 +194,19 @@ body {
   .headerFront .search-wrapper input[type=search] {
     padding: 10px 0px 10px 10px;
     width: 300px;
+  }
+}
+@media (max-width: 580px) {
+  .headerFront img {
+    width: 30px;
+    margin-right: 0px;
+  }
+  .headerFront b {
+    font-size: x-large;
+  }
+  .headerFront .search-wrapper input[type=search] {
+    width: 200px;
+    height: 40px;
   }
 }
 
@@ -511,7 +524,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-evenly;
+  justify-content: stretch;
   width: 250px;
 }
 .pageCommandes .produit {
@@ -646,9 +659,11 @@ body {
   font-weight: lighter;
 }
 .pageCommandes .footerCommande .liensCommande {
+  margin: 5px;
   display: flex;
   align-items: center;
   font-size: 12px;
+  justify-content: space-around;
 }
 .pageCommandes .footerCommande .liensCommande a {
   color: #273469;
@@ -693,11 +708,19 @@ body {
 }
 @media (max-width: 630px) {
   .pageCommandes .footerCommande {
-    display: block;
+    display: flex;
     padding-top: 0;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-around;
   }
   .pageCommandes .infoCommande {
+    display: flex !important;
     flex-direction: row !important;
+    justify-content: space-between !important;
+  }
+  .pageCommandes .infoCommande :first-child {
+    font-weight: bold;
   }
 }
 .pageCommandes .confirmationAjout {
@@ -1846,6 +1869,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     text-decoration-color: #273469;
     margin-top: 8px;
   }
+  .inscription form #refactor {
+    display: flex;
+    flex-direction: column;
+  }
+  .inscription form #refactor input {
+    width: 450px;
+  }
   .inscription h2 {
     color: #273469;
     font-family: "Lora", serif;
@@ -1954,6 +1984,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     text-align: center;
     margin: 30px 0px;
   }
+  label {
+    margin-top: 20px;
+  }
 }
 #submitButton {
   width: 450px;
@@ -2000,6 +2033,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
 }
 
+.visaImg {
+  margin-top: 10px;
+}
+
 .pagePaiement {
   position: relative;
   overflow-x: hidden;
@@ -2044,12 +2081,16 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   position: relative;
   z-index: 1;
 }
+.pagePaiement .infoCarte div input {
+  margin-right: 15px;
+}
 .pagePaiement .container {
   max-width: 1400px;
-  margin: 70px auto 0;
+  margin: 30px auto 0;
   padding: 0 5%;
   box-sizing: border-box;
   width: 100%;
+  min-height: 63vh;
 }
 @media (max-width: 920px) {
   .pagePaiement .container {
@@ -2076,6 +2117,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   width: 100%;
   align-items: start;
   box-sizing: border-box;
+  align-items: baseline;
 }
 @media (max-width: 1200px) {
   .pagePaiement .parent {
@@ -2180,7 +2222,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .pagePaiement .payment {
   margin-top: 8px;
 }
-.pagePaiement .payment .payer {
+.pagePaiement .payer {
   margin-top: 12px;
   background: #dcd1fa;
   color: #252b56;
@@ -2195,11 +2237,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   box-sizing: border-box;
   transition: background-color 0.2s;
 }
-.pagePaiement .payment .payer:hover {
+.pagePaiement .payer:hover {
   background: #c9bbf0;
 }
 @media (max-width: 720px) {
-  .pagePaiement .payment .payer {
+  .pagePaiement .payer {
     display: none !important;
   }
 }
@@ -2498,6 +2540,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: bold;
   font-style: italic;
 }
+.mainCompteClient label {
+  height: 30px !important;
+  margin-bottom: 115px !important;
+}
 .mainCompteClient h1 {
   font-family: "lora";
   font-size: 48px;
@@ -2552,6 +2598,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   height: 100%;
   display: flex;
   align-items: center;
+  margin-top: 20px;
 }
 .mainCompteClient #buttonsCompte {
   padding-top: 32px;
@@ -3022,7 +3069,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 
 .panier main {
-  height: 100vh;
+  min-height: 62vh;
 }
 .panier .listeProduit article {
   border: 2px solid #273469;
@@ -3612,7 +3659,6 @@ button#haut.visible:hover {
 }
 .modifierProduit .motclé {
   width: 525px;
-  margin-top: 20px;
   padding: 8px 10px;
   border: 2px solid #273469;
   border-radius: 8px;
@@ -3650,7 +3696,9 @@ button#haut.visible:hover {
 }
 .modifierProduit .price-weight-kg {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  height: 80px;
+  flex-wrap: wrap;
   gap: 1em;
 }
 .modifierProduit .price-weight-kg input {
@@ -6817,8 +6865,10 @@ dialog.reassort form input {
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
   width: 22%;
-  position: relative;
+  height: 100vh;
+  position: fixed;
   left: 0;
+  z-index: 1000; /* pour rester au-dessus */
 }
 .pageCatalogue .filter-sort form {
   display: flex;
@@ -6829,6 +6879,7 @@ dialog.reassort form input {
   width: 78%;
   display: flex;
   flex-direction: column;
+  padding-left: 22%;
 }
 .pageCatalogue .product-list {
   display: flex;
@@ -6868,7 +6919,10 @@ dialog.reassort form input {
 }
 .pageCatalogue #resultat {
   background: #E3F2FE;
-  position: relative;
+  position: sticky;
+  padding: 0.3em;
+  font-size: 13px;
+  font-weight: 500;
 }
 .pageCatalogue .products-section {
   width: 78%;
@@ -6910,6 +6964,10 @@ dialog.reassort form input {
   align-items: center;
   gap: 5px;
   margin: 5px 0;
+}
+.pageCatalogue .star {
+  width: 50px;
+  height: 50px;
 }
 .pageCatalogue .notation .etoile {
   width: 20px;
@@ -6958,25 +7016,112 @@ dialog.reassort form input {
   justify-content: center;
   align-items: center;
 }
+.pageCatalogue .slider-wrapper {
+  position: relative;
+  height: 15px;
+  width: 260px;
+}
+.pageCatalogue .values {
+  display: flex;
+  gap: 220px;
+}
+.pageCatalogue .slider-track {
+  top: 10px;
+  position: absolute;
+  width: 100%;
+  height: 15px;
+  background: #ddd;
+  border-radius: 16px;
+}
+.pageCatalogue .slider-range {
+  top: 10px;
+  position: absolute;
+  height: 15px;
+  background: #273469;
+  border-radius: 16px;
+}
+.pageCatalogue input[type=range] {
+  top: 10px;
+  position: absolute;
+  width: 100%;
+  background: transparent;
+  -webkit-appearance: none;
+  pointer-events: none;
+  height: 15px;
+  padding: 0;
+  margin: 0;
+}
+.pageCatalogue input[type=range]::-webkit-slider-thumb {
+  pointer-events: all;
+  -webkit-appearance: none;
+  cursor: pointer;
+  width: 20px;
+  height: 30px;
+  background: white;
+  border-radius: 16px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: #273469;
+}
+.pageCatalogue input[type=range]::-moz-range-thumb {
+  pointer-events: all;
+  cursor: pointer;
+  width: 20px;
+  height: 30px;
+  background: white;
+  border-radius: 16px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: #273469;
+}
+.pageCatalogue #minNoteLabel {
+  margin-top: 1.5em;
+}
+.pageCatalogue .pagination {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.pageCatalogue .pagination a {
+  border: 2px solid black;
+  text-decoration: none;
+}
 
-.popUpDetails {
+.overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popUpDetails, .popUpSuivi, .popUpAnnulerCommande {
   background-color: #fffefa;
   border-radius: 16px;
   position: relative;
+  width: 1000px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-.popUpDetails h1 {
+.popUpDetails h1, .popUpSuivi h1, .popUpAnnulerCommande h1 {
   color: #273469;
   font-family: "lora";
   font-size: 40px;
   text-align: center;
 }
-.popUpDetails .croixFermerLaPage {
+.popUpDetails .croixFermerLaPage, .popUpSuivi .croixFermerLaPage, .popUpAnnulerCommande .croixFermerLaPage {
   position: absolute;
   top: 30px;
   right: 30px;
   cursor: pointer;
 }
-.popUpDetails .croixFermerLaPage div {
+.popUpDetails .croixFermerLaPage div, .popUpSuivi .croixFermerLaPage div, .popUpAnnulerCommande .croixFermerLaPage div {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -6984,11 +7129,111 @@ dialog.reassort form input {
   height: 3px;
   background-color: #BABABA;
 }
-.popUpDetails .croixFermerLaPage div:first-of-type {
+.popUpDetails .croixFermerLaPage div:first-of-type, .popUpSuivi .croixFermerLaPage div:first-of-type, .popUpAnnulerCommande .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.popUpDetails .croixFermerLaPage div:last-of-type {
+.popUpDetails .croixFermerLaPage div:last-of-type, .popUpSuivi .croixFermerLaPage div:last-of-type, .popUpAnnulerCommande .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+.popUpDetails .conteneurSections, .popUpSuivi .conteneurSections, .popUpAnnulerCommande .conteneurSections {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.popUpDetails p, .popUpSuivi p, .popUpAnnulerCommande p {
+  text-align: left;
+}
+
+main.commandesBackoffice {
+  display: flex;
+  flex-direction: column;
+  color: #273469;
+  margin-bottom: 2em;
+}
+main.commandesBackoffice h1, main.commandesBackoffice img, main.commandesBackoffice button {
+  user-select: none;
+}
+main.commandesBackoffice h1 {
+  font-family: "lora";
+}
+main.commandesBackoffice section article {
+  font-family: "open-sans";
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-bottom: 1em;
+  background-color: #e4d9ff;
+  border-radius: 16px;
+  border-left-style: solid;
+  border-left-width: 5px;
+}
+main.commandesBackoffice section article table {
+  width: 200px;
+  border-spacing: 0;
+  outline: 2px solid #000000;
+  outline-offset: -2px;
+  margin: 0;
+  border-radius: 16px;
+}
+main.commandesBackoffice section article table tr {
+  padding: 0;
+  margin: 0;
+}
+main.commandesBackoffice section article table td {
+  padding: 0;
+  margin: 0;
+}
+main.commandesBackoffice section article table figure {
+  padding: 0;
+  margin: 0;
+}
+main.commandesBackoffice section article table {
+  font-weight: bold;
+  font-size: 15px;
+}
+main.commandesBackoffice section article table tr:last-child td {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 0.5em;
+}
+main.commandesBackoffice section article table tr:last-child td:last-child {
+  text-align: right;
+  font-size: 25px;
+  font-weight: bold;
+}
+main.commandesBackoffice section article ul {
+  padding: 0;
+  display: flex;
+  list-style: none;
+}
+main.commandesBackoffice section article ul li {
+  display: flex;
+}
+main.commandesBackoffice section article ul li figure img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+main.commandesBackoffice section article ul:first-child {
+  align-items: center;
+  justify-content: space-between;
+}
+main.commandesBackoffice section article ul:first-child li:last-child {
+  font-size: 20px;
+}
+main.commandesBackoffice section article ul:last-child {
+  flex-wrap: wrap;
+  gap: 1em;
+}
+main.commandesBackoffice section article ul:last-child li {
+  border-radius: 16px;
+  background-color: #fffefa;
+}
+main.commandesBackoffice section.livre article {
+  border-left-color: #259525;
 }
 
 /*# sourceMappingURL=style.css.map */

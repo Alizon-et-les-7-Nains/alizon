@@ -49,7 +49,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        justify-content: space-evenly;
+        justify-content: stretch;
         width: 250px;
     }
     
@@ -208,10 +208,12 @@
         }
         
         .liensCommande {
+            margin: 5px;
             display: flex;
             align-items: center;
             font-size: 12px;
-            
+            justify-content: space-around;
+                    
             a {
                 color: $color-blue;
                 font-size: 15px;              
@@ -259,11 +261,19 @@
     }
     @media (max-width:630px) {
         .footerCommande {
-            display: block;
+            display: flex;
             padding-top: 0;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: space-around;
         }
         .infoCommande {
+            display: flex !important;
             flex-direction: row !important;
+            justify-content: space-between !important;
+            :first-child{
+                font-weight: bold;
+            }
         }
     }
 

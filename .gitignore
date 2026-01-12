@@ -8,3 +8,5 @@
 config.*
 **/pdo.php
 **/*.map.*
+/controllers/config.php
+/controllers/pdo.php

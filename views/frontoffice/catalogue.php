@@ -1,12 +1,13 @@
 <?php
-require_once "../../controllers/pdo.php";
-require_once "../../controllers/prix.php";
+include "../../controllers/pdo.php";
+include "../../controllers/prix.php";
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../../views/frontoffice/connexionClient.php');
-    exit;
-}
+$produitsParPage = 15;
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+
+// Reglage du decalage pour la pagination
+$offset = ($page - 1) * $produitsParPage;
 
 $idClient = $_SESSION['user_id'];
 
@@ -14,48 +15,40 @@ $sortBy = $_GET['sort'] ?? '';
 $minNote = $_GET['minNote'] ?? '';
 $category = $_GET['category'] ?? '';
 $zone = $_GET['zone'] ?? '';
-$vendeur = $_GET['vendeur'] ?? '';
+$vendeur = $_GET['vendeur'] ?? '';  
 $searchQuery = $_GET['search'] ?? '';
 
+// Récupérer les produits avec pagination
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
         FROM _produit p 
         LEFT JOIN _remise r ON p.idProduit = r.idProduit 
-        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-        WHERE 1=1";
+        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
-$params = [];
+// Compter tous les produits
+$countSql = "SELECT COUNT(*) FROM _produit p 
+             LEFT JOIN _remise r ON p.idProduit = r.idProduit 
+             AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
-if (!empty($searchQuery)) {
-    $sql .= " AND p.nom LIKE :search";
-    $params[':search'] = '%' . $searchQuery . '%';
-}
+$countStmt = $pdo->query($countSql);
+$totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
 
-if (!empty($minNote)) {
-    $sql .= " AND p.note >= :minNote";
-    $params[':minNote'] = $minNote;
-}
+$nbPages = ceil($totalProduits / $produitsParPage);
 
-if (!empty($category)) {
-    $sql .= " AND p.typeProd = :category";
-    $params[':category'] = $category;
-}
 
-// Tri
-if ($sortBy === 'prix_asc') {
-    $sql .= " ORDER BY p.prix ASC";
-} elseif ($sortBy === 'prix_desc') {
-    $sql .= " ORDER BY p.prix DESC";
-} elseif ($sortBy === 'note') {
-    $sql .= " ORDER BY p.note DESC";
-} else {
-    $sql .= " ORDER BY p.idProduit DESC";
-}
-
+$sql .= " LIMIT :limit OFFSET :offset"; // LIMIT : nommbre de produits par page (15), OFFSET : decalage sur l'ensemble des résultats
 $stmt = $pdo->prepare($sql);
-$stmt->execute($params);
+
+// Liaison des paramètres pour la pagination
+$stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
+$stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+$stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$nbResultats = count($products);
+// Récupérer le prix maximum pour le slider
+$maxPriceStmt = $pdo->query("SELECT MAX(prix) as maxPrix FROM _produit");
+$maxPriceRow = $maxPriceStmt->fetch(PDO::FETCH_ASSOC);
+$maxPrice = $maxPriceRow['maxPrix'] ?? 100;
+
 ?>
 
 <!DOCTYPE html>
@@ -70,13 +63,46 @@ $nbResultats = count($products);
     </style>
 </head>
 <body>
-<?php include '../../views/frontoffice/partials/headerConnecte.php' ?>
+<?php if (isset($_SESSION['user_id'])) {
+    include '../../views/frontoffice/partials/headerConnecte.php';
+} else { 
+    include '../../views/frontoffice/partials/headerDeconnecte.php';
+} ?>
 <main class="pageCatalogue">
     <aside class="filter-sort">
         <h3>Filtres</h3>
         <form method="GET" action="">
             <label for="tri">Trier par :</label>
-            <label for="minNote">Note minimale :</label>
+            <div class="triNote">
+                <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
+                <label for="triNoteCroissant">Prix croissant</label>
+                <input type="radio" id="triNoteDecroissant" name="tri" value="noteDesc">
+                <label for="triNoteDecroissant">Prix décroissant</label>
+            </div>
+            <label for="prix">Filtrer par prix :</label>
+            <div class="slider-container">
+                <div class="values">
+                    <span class="value" id="minValue">0</span>
+                    <span class="value" id="maxValue"><?php echo $maxPrice; ?></span>
+                </div>
+                <div class="slider-wrapper">
+                    <div class="slider-track"></div>
+                    <div class="slider-range" id="range"></div>
+                    <input type="range" id="sliderMin" min="0" max="<?php echo $maxPrice; ?>" value="0">
+                    <input type="range" id="sliderMax" min="0" max="<?php echo $maxPrice; ?>" value="<?php echo $maxPrice; ?>">
+                </div>
+            </div>
+
+            <label for="minNote" id="minNoteLabel">Trier par note :</label>
+            <div>
+                <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
+                <img src="../../public/images/etoileVide.svg" data-index="2" class="star" alt="2 étoiles">
+                <img src="../../public/images/etoileVide.svg" data-index="3" class="star" alt="3 étoiles">
+                <img src="../../public/images/etoileVide.svg" data-index="4" class="star" alt="4 étoiles">
+                <img src="../../public/images/etoileVide.svg" data-index="5" class="star" alt="5 étoiles">
+                <input type="hidden" name="note" id="note" value="0"> 
+            </div>
+
             <label for="categorie">Catégorie :</label>
             <label for="zone">Zone géographique :</label>
             <label for="vendeur">Vendeur :</label>
@@ -84,7 +110,7 @@ $nbResultats = count($products);
     </aside>
     
     <div class="products-section">
-        <p id="resultat"><?= $nbResultats ?> résultat<?= $nbResultats > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : '' ?></p>
+        <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <section class="listeArticle">
             <?php 
             if (count($products) > 0) {
@@ -97,11 +123,16 @@ $nbResultats = count($products);
                     $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
                     
                     $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
-                    $stmtImg->execute([':idProduit' => $idProduit]);
-                    $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+                        $stmtImg->execute([':idProduit' => $idProduit]);
+                        $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                     $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+                    if ($prixAffichage = $enRemise) {
+                        $prixAffichage = $prixRemise;
+                    } else {
+                        $prixAffichage = $prixOriginal;
+                    }
                     ?>
-            <article>
+            <article data-price="<?= $prixAffichage ?>">
                 <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
                     onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'"
                     alt="Image du produit">
@@ -131,7 +162,6 @@ $nbResultats = count($products);
                             <h2><?php echo formatPrice($prixOriginal); ?></h2>
                         <?php endif; ?>
                         <?php 
-                            $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                             $poids = $value['poids'];
                             $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
                             $prixAuKg = round($prixAuKg,2);
@@ -156,6 +186,21 @@ $nbResultats = count($products);
                 <h1>Aucun produit disponible</h1>
             <?php } ?>
         </section>
+        <div class="pagination">
+            <?php if ($nbPages > 1): ?>
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?= $page-1 ?>">« Précédent</a>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $nbPages; $i++): ?>
+                    <a href="?page=<?= $i ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
+                <?php endfor; ?>
+
+                <?php if ($page < $nbPages): ?>
+                    <a href="?page=<?= $page+1 ?>">Suivant »</a>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </div>
 </main>
 
@@ -164,11 +209,62 @@ $nbResultats = count($products);
 </section>
 
 <script>
-    const popupConfirmation = document.querySelector(".confirmationAjout");
-    const boutonsAjout = document.querySelectorAll(".plus");
+// Filtres prix
+const sliderMin = document.getElementById('sliderMin');
+const sliderMax = document.getElementById('sliderMax');
+const minValue = document.getElementById('minValue');
+const maxValue = document.getElementById('maxValue');
+const range = document.getElementById('range');
 
-    boutonsAjout.forEach(btn => {
-        btn.addEventListener("click", function(e) {
+// Tri notes
+const triNoteCroissant = document.getElementById('triNoteCroissant');
+const triNoteDecroissant = document.getElementById('triNoteDecroissant');
+let sortOrder = '';
+
+// Variables globales
+const listeArticle = document.querySelector('.listeArticle');
+const resultat = document.getElementById('resultat');
+const paginationDiv = document.querySelector('.pagination');
+const popupConfirmation = document.querySelector(".confirmationAjout");
+const noteInput = document.getElementById('note');
+let currentPage = <?= $page ?>;
+let isFiltering = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star');
+    const emptyStar = "../../public/images/etoileVide.svg";
+    const fullStar = "../../public/images/etoile.svg";
+
+    // Gestion des étoiles
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            const rating = index + 1;
+            stars.forEach((s, i) => {
+                s.src = i < rating ? fullStar : emptyStar;
+            });
+            noteInput.value = rating;
+            loadProduits(1);
+        });
+    });
+});
+
+function updateSlider() {
+    let min = parseInt(sliderMin.value);
+    let max = parseInt(sliderMax.value);
+    if (min > max) [min, max] = [max, min];
+    sliderMin.value = min;
+    sliderMax.value = max;
+    minValue.textContent = min+'€';
+    maxValue.textContent = max+'€';
+    const percent1 = (min / sliderMin.max) * 100;
+    const percent2 = (max / sliderMax.max) * 100;
+    range.style.left = percent1 + '%';
+    range.style.width = (percent2 - percent1) + '%';
+}
+
+function reattacherAjouterPanier() {
+    document.querySelectorAll('.plus').forEach(btn => {
+        btn.addEventListener('click', function(e) {
             e.stopPropagation();
             popupConfirmation.style.display = "block";
             setTimeout(() => {
@@ -176,8 +272,90 @@ $nbResultats = count($products);
             }, 3000);
         });
     });
+}
+
+function pagination() {
+    document.querySelectorAll('.pageLink').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const newPage = parseInt(link.dataset.page);
+            loadProduits(newPage);
+        });
+    });
+}
+
+function loadProduits(page = 1) {
+    const min = parseInt(sliderMin.value);
+    const max = parseInt(sliderMax.value);
+    const notemin = parseInt(noteInput.value);
+
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}`)
+        .then(res => {
+            // Vérifie si la réponse HTTP est correcte (status 200-299)
+            if (!res.ok) {
+                throw new Error(`Erreur HTTP: ${res.status}`);
+            }
+            return res.json(); // Conversion en JSON
+        })
+        .then(data => {
+            listeArticle.innerHTML = data.html; // Recuperation des nouvelles données et mise à jour des produits
+            currentPage = page; // Mise à jour de la page cournante
+            resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`; // Mise à jour du nombre de résultats
+            
+            // Mise à jour de la pagination
+            let pagHTML = '';
+            if (data.nbPages > 1) {
+                if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
+                for (let i=1; i<=data.nbPages; i++){
+                    pagHTML += `<a href="#" class="pageLink ${i===page?'active':''}" data-page="${i}">${i}</a>`;
+                }
+                if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
+            }
+            paginationDiv.innerHTML = pagHTML;  // Recuperation des nouvelles données et mise à jour des produits
+
+            pagination();
+            reattacherAjouterPanier();
+            
+            isFiltering = true;
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des produits:', error);
+            listeArticle.innerHTML = '<h1>Erreur lors du chargement des produits</h1>';
+        });
+}
+
+// Events listeners sur les sliders
+sliderMin.addEventListener('input', () => { 
+    updateSlider(); 
+    loadProduits(1); 
+});
+
+sliderMax.addEventListener('input', () => { 
+    updateSlider(); 
+    loadProduits(1); 
+});
+
+triNoteCroissant.addEventListener('change', () => {
+    if (triNoteCroissant.checked) {
+        sortOrder = 'noteAsc';
+        loadProduits(1);
+    }
+});
+
+triNoteDecroissant.addEventListener('change', () => {
+    if (triNoteDecroissant.checked) {
+        sortOrder = 'noteDesc';
+        loadProduits(1);
+    }
+});
+
+updateSlider();
+
+reattacherAjouterPanier();
+
+document.querySelector('form').addEventListener('submit', e => e.preventDefault());
+
 </script>
 
-<script src="../scripts/frontoffice/paiement-ajax.js"></script>
 </body>
 </html>
