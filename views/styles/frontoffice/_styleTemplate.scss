@@ -86,6 +86,11 @@ body {
     position: relative;
     display: flex;
     align-items: center;
+    padding: 10px 450px 10px 20px;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    background-color: #fff;
 
     i {
       position: absolute;
@@ -96,11 +101,6 @@ body {
     }
 
     input[type="search"] {
-      padding: 10px 450px 10px 20px;
-      border-radius: 25px;
-      border: none;
-      outline: none;
-      background-color: #fff;
       color: $color-blue;
       font-family: "Lora", serif;
       font-size: 20px;
