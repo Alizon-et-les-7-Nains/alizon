@@ -18,10 +18,10 @@
         flex-direction: column;
     } 
 
-    .filter-sort form div{
+    .triNote .triPrix{
         display: flex;
         flex-direction: column;
-    } 
+    }
 
     .products-section{
         width: calc(100% - 300px); /* Ajustement automatique */
@@ -36,7 +36,6 @@
         flex-direction: row;
         flex-wrap: wrap;
     }
-
 
     #resultat{
         background: #E3F2FE;

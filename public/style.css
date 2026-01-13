@@ -6897,7 +6897,7 @@ dialog.reassort form input {
   display: flex;
   flex-direction: column;
 }
-.pageCatalogue .filter-sort form div {
+.pageCatalogue .triNote .triPrix {
   display: flex;
   flex-direction: column;
 }
