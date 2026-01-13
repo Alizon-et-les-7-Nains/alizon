@@ -67,7 +67,7 @@ if ($sortOrder === 'noteAsc') {
 } elseif ($sortOrder === 'prixDesc') {
     $sql .= " ORDER BY (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) DESC";
 }
-
+// Rien
 $sql .= " LIMIT :limit OFFSET :offset";
 
 $stmt = $pdo->prepare($sql);
