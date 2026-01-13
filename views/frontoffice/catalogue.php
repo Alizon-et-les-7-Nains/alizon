@@ -74,7 +74,7 @@ if (!empty($searchQuery)) {
     $stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
 }
 if (!empty($categoryQuery)) {
-    $stmt->bindValue(':searchQuery', '%' . $categoryQuery . '%', PDO::PARAM_STR);
+    $stmt->bindValue(':categoryQuery', '%' . $categoryQuery . '%', PDO::PARAM_STR);
 }
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
