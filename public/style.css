@@ -95,7 +95,8 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  padding: 10px 450px 10px 20px;
+  justify-content: space-between;
+  padding: 10px 10px 10px 20px;
   border-radius: 25px;
   border: none;
   outline: none;
@@ -114,9 +115,14 @@ body {
   font-size: 20px;
   font-weight: bold;
   font-style: italic;
+  width: 700px;
+  border: none;
 }
 .headerFront .search-wrapper input[type=search]::-webkit-search-cancel-button {
   display: none;
+}
+.headerFront .search-wrapper input[type=search]:focus {
+  outline: none;
 }
 .headerFront .carousel {
   margin-top: 20px;
@@ -3413,57 +3419,6 @@ button#haut.visible:hover {
   background-color: #e3f2fe;
 }
 
-.ecrireAvis main {
-  margin-left: 10%;
-}
-.ecrireAvis main h2 {
-  margin-top: 30px;
-  font-family: "lora";
-  color: #273469;
-  text-align: center;
-}
-.ecrireAvis main p, .ecrireAvis main label {
-  font-family: "lora";
-  font-size: 20px;
-  color: #273469;
-}
-.ecrireAvis main form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: left;
-  font-size: 16px;
-  font-weight: bold;
-}
-.ecrireAvis main form input, .ecrireAvis main form textarea {
-  width: 80%;
-  padding: 5px;
-  margin-right: 10%;
-  height: 50px;
-  margin-bottom: 30px;
-  color: #6e6e6e;
-  font-family: "lora";
-  font-size: 16px;
-  border: 2px solid #273469;
-  border-radius: 8px;
-}
-.ecrireAvis main form textarea {
-  height: 300px;
-}
-
-#publishButton {
-  width: 80%;
-  padding: 5px;
-  margin-right: 10%;
-  height: 50px;
-  margin-bottom: 30px;
-  font-size: 16px;
-  background-color: #273469;
-  border-radius: 8px;
-  border: none;
-  color: #fffefa;
-}
-
 .pageEcrireCommentaire {
   background-image: url("../../../public/images/triskel.png");
   background-repeat: no-repeat;
@@ -3553,6 +3508,7 @@ button#haut.visible:hover {
   justify-content: center;
   align-items: center;
   align-self: last baseline;
+  padding-top: 10px;
 }
 @media screen and (max-width: 768px) {
   .pageEcrireCommentaire h1 {
@@ -6952,22 +6908,26 @@ dialog.reassort form input {
 }
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
-  width: 22%;
+  width: 240px; /* Largeur fixe au lieu de 22% */
   height: 100vh;
   position: fixed;
   left: 0;
-  z-index: 1000; /* pour rester au-dessus */
+  z-index: 1000;
+  padding: 20px;
 }
 .pageCatalogue .filter-sort form {
   display: flex;
   flex-direction: column;
-  padding: 1em;
 }
-.pageCatalogue .products-section {
-  width: 78%;
+.pageCatalogue .triNote .triPrix {
   display: flex;
   flex-direction: column;
-  padding-left: 22%;
+}
+.pageCatalogue .products-section {
+  width: calc(100% - 280px); /* Ajustement automatique */
+  display: flex;
+  flex-direction: column;
+  margin-left: 280px; /* Au lieu de padding-left: 22% */
   overflow-x: hidden;
 }
 .pageCatalogue .product-list {
@@ -6981,9 +6941,7 @@ dialog.reassort form input {
   padding: 0.3em;
   font-size: 13px;
   font-weight: 500;
-}
-.pageCatalogue .products-section {
-  width: 78%;
+  margin: 0;
 }
 .pageCatalogue .listeArticle {
   display: grid;
@@ -7007,7 +6965,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
-  font-size: 20px;
+  font-size: 16px;
   font-family: "Open-sans", serif;
   font-weight: 500;
   margin-top: 10px;
@@ -7079,7 +7037,7 @@ dialog.reassort form input {
 .pageCatalogue .slider-wrapper {
   position: relative;
   height: 15px;
-  width: 80%;
+  width: 100%;
 }
 .pageCatalogue .values {
   display: flex;
@@ -7148,6 +7106,34 @@ dialog.reassort form input {
   text-decoration: none;
 }
 
+/* Media queries pour les petits écrans */
+@media (max-width: 1300px) {
+  .pageCatalogue .filter-sort {
+    width: 250px;
+  }
+  .pageCatalogue .products-section {
+    width: calc(100% - 250px);
+    margin-left: 250px;
+  }
+}
+@media (max-width: 1024px) {
+  .pageCatalogue .filter-sort {
+    width: 220px;
+  }
+  .pageCatalogue .products-section {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+  }
+}
+@media (max-width: 768px) {
+  .pageCatalogue .filter-sort {
+    width: 200px;
+  }
+  .pageCatalogue .products-section {
+    width: calc(100% - 200px);
+    margin-left: 200px;
+  }
+}
 .overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
   position: fixed;
   top: 0;
@@ -7415,5 +7401,14 @@ dialog ul li table tr:last-child {
 dialog:focus {
   outline: none;
 }
+
+dialog {
+    pointer-events: auto;
+}
+
+dialog:not([open]) {
+    display: none;
+}
+
 
 /*# sourceMappingURL=style.css.map */

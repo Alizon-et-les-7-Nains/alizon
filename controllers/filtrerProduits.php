@@ -15,6 +15,8 @@ $categorie = isset($_GET['categorie']) ? $_GET['categorie'] : "";
 $noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
 $vendeur = $_GET['vendeur'] ?? null;
 $sqlVendeur="";
+$recherche = isset($_GET['search']) ? trim($_GET['search']) : '';
+
 if(!empty($vendeur)){
     $sqlVendeur = "AND p.idVendeur = :idVendeur";
 }
@@ -31,8 +33,12 @@ $countSql = "SELECT COUNT(*) FROM _produit p
              WHERE p.note >= :noteMin ". $sqlVendeur ."
              AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
 
+if ($recherche !== '') {
+    $countSql .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
+}
 
 $countStmt = $pdo->prepare($countSql);
+$countStmt->bindValue(':search', '%' . $recherche . '%');
 $countStmt->bindValue(':minPrice', $minPrice);
 $countStmt->bindValue(':maxPrice', $maxPrice);
 $countStmt->bindValue(':noteMin', $noteMin);
@@ -49,6 +55,10 @@ $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
         WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
 
+if ($recherche !== '') {
+    $sql .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
+}
+
 if ($sortOrder === 'noteAsc') {
     $sql .= " ORDER BY p.note ASC";
 } elseif ($sortOrder === 'noteDesc') {
@@ -58,10 +68,11 @@ if ($sortOrder === 'noteAsc') {
 } elseif ($sortOrder === 'prixDesc') {
     $sql .= " ORDER BY (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) DESC";
 }
-
+// Rien
 $sql .= " LIMIT :limit OFFSET :offset";
 
 $stmt = $pdo->prepare($sql);
+$stmt->bindValue(':search', '%' . $recherche . '%');
 $stmt->bindValue(':minPrice', $minPrice);
 $stmt->bindValue(':maxPrice', $maxPrice);
 $stmt->bindValue(':noteMin', $noteMin);
