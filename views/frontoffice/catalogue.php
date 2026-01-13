@@ -45,8 +45,11 @@ $vendeur = "SELECT
             ORDER BY nbProduits DESC
             LIMIT 10";
 
-
-$countStmt = $pdo->query($countSql);
+$countStmt = $pdo->prepare($countSql);
+if (!empty($searchQuery)) {
+    $countStmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+}
+$countStmt->execute();
 $totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
 
 $nbPages = ceil($totalProduits / $produitsParPage);
