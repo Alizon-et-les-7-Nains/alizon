@@ -151,16 +151,19 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
-                <?php foreach ($listeCategories as $categorie) { 
-                    if (isset($_GET['categorie'])) {
-                        $nomCategorie = $_GET['categorie'];
-                        $nomCategorie = str_replace("_", " ", $nomCategorie); ?>
-                        <option value="<?= $nomCategorie ?>" class="choix"><?= $nomCategorie ?></option>
-                    <?php } else { ?>
-                        <option value="" class="opt-highlight">Toutes les catégories</option>
-                    <?php } ?>
+                
+                <?php if (isset($_GET['categorie'])) {
+                    $nomCategorie = $_GET['categorie'];
+                    $nomCategorie = str_replace("_", " ", $nomCategorie); ?>
+                    <option value="<?= $nomCategorie ?>" class="choix"><?= $nomCategorie ?></option>
+                <?php } else { ?>
+                    <option value="" class="opt-highlight">Toutes les catégories</option>
+                <?php } ?>
+
+                <?php foreach ($listeCategories as $categorie) { ?>
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
+
             </select>
 
             <label for="zone">Zone géographique :</label>
