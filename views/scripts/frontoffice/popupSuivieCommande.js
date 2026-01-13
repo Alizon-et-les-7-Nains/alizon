@@ -5,10 +5,7 @@ const demiTraitElements = document.querySelectorAll(".demiTrait");
 const croix = document.getElementsByClassName("croixFermerLaPage")[0];
 
 function fermerPopUp() {
-    const popup = document.getElementsByClassName("popup");
-    popup[0].style.display = "none";
-    const overlay = document.getElementsByClassName("overlay");
-    overlay[0].style.display = "none";
+    window.location.href = '/views/frontoffice/commandes.php';
 }
 
 function changeRondColor(elem){
