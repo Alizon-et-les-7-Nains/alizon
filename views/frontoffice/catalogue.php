@@ -12,6 +12,7 @@ $offset = ($page - 1) * $produitsParPage;
 $idClient = $_SESSION['user_id'];
 
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
+$categoryQuery = isset($_GET['categorie']) ? trim($_GET['categorie']) : "";
 
 // Récupérer les produits avec pagination
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
@@ -27,6 +28,11 @@ $countSql = "SELECT COUNT(*) FROM _produit p
 if (!empty($searchQuery)) {
     $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
     $countSql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
+}
+
+if (!empty($categoryQuery)) {
+    $sql .= " WHERE p.typeProd = :categoryQuery";
+    $countSql .= " WHERE p.typeProd = :categoryQuery";
 }
 
 // Récuperer la totalité des catégories
@@ -49,6 +55,9 @@ $countStmt = $pdo->prepare($countSql);
 if (!empty($searchQuery)) {
     $countStmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
 }
+if (!empty($categoryQuery)) {
+    $countStmt->bindValue(':categoryQuery', '%' . $categoryQuery . '%', PDO::PARAM_STR);
+}
 $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
 
@@ -63,6 +72,9 @@ $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 if (!empty($searchQuery)) {
     $stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+}
+if (!empty($categoryQuery)) {
+    $stmt->bindValue(':categoryQuery', '%' . $categoryQuery . '%', PDO::PARAM_STR);
 }
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -278,6 +290,7 @@ let sortOrder = '';
 
 // Variables globales
 let searchQuery = "<?= htmlspecialchars($searchQuery) ?>";
+let categoryQuery = "<?= htmlspecialchars($categoryQuery) ?>";
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
