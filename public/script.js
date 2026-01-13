@@ -15,7 +15,7 @@ Array.from(document.getElementsByClassName('aside-btn')).forEach(asideButton => 
         }
     });
 });
-Array.from(document.getElementsByTagName('article')).forEach((command) => {
+document.querySelectorAll('main.commandesBackoffice article').forEach((command) => {
     command.addEventListener('click', () => {
         const modal = document.querySelector(`main.commandesBackoffice dialog#${command.id}`);
         modal.showModal();
