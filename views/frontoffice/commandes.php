@@ -436,7 +436,6 @@ $cart = getCurrentCart($pdo, $idClient);
         <div id="popupLivraison" class="overlay">
             <div class="popup">
                 <h2>Suivi de la livraison</h2>
-                <p>Votre commande est en cours de livraison. Pour plus d'informations, veuillez consulter le site du transporteur.</p>
                 <a href="./commandes.php" class="close">Fermer</a>
             </div>
         </div>

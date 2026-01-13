@@ -3,7 +3,7 @@
 // Script autonome pour faire avancer d'une étape tous les colis en transit
 
 // 1. Connexion BDD
-$host = 'localhost';
+$host = 'mariadb';
 $dbname = 'saedb';
 $user = 'sae';
 $pass = 'grognasseEtCompagnie';
