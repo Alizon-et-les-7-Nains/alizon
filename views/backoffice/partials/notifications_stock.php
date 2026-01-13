@@ -4,14 +4,15 @@ $sqlContent = file_get_contents($sqlPath);
 
 if ($sqlContent !== false) {
     $notifSTMT = $pdo->prepare($sqlContent);
-    $idVendeur = $_SESSION['id'] ?? 0;
-    $notifSTMT->execute([':idVendeur' => $idVendeur]);
+    $notifSTMT->execute([':idVendeur' => $_SESSION['id'] ?? 0]);
     $produitsAlerte = $notifSTMT->fetchAll(PDO::FETCH_ASSOC);
 
     if (!empty($produitsAlerte)): ?>
         <div id="stock-notifications-container">
             <?php foreach ($produitsAlerte as $produit): ?>
-                <a href="/views/backoffice/stocks.php?reassort_id=<?php echo $produit['idProduit']; ?>" class="stock-notif">
+                <a href="/views/backoffice/stocks.php?reassort_id=<?php echo $produit['idProduit']; ?>" 
+                   class="stock-notif" 
+                   onclick="this.remove()">
                     <img src="/public/images/infoDark.svg" alt="Alerte">
                     <p>Le produit <strong><?php echo htmlspecialchars($produit['nom']); ?></strong> est à <strong><?php echo $produit['stock']; ?></strong> unités. Réassort nécessaire !</p>
                 </a>
@@ -21,15 +22,17 @@ if ($sqlContent !== false) {
         <style>
             #stock-notifications-container {
                 position: fixed;
-                top: 80px;
+                top: 20px;
                 left: 20px;
                 z-index: 9999;
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
                 max-width: 320px;
+                pointer-events: none;
             }
             .stock-notif {
+                pointer-events: auto;
                 background: #fff;
                 border-left: 5px solid #d9534f;
                 box-shadow: 0 4px 15px rgba(0,0,0,0.2);
