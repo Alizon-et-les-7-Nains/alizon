@@ -93,7 +93,7 @@
                             </tr>
                             <tr>
                                 <td>" . $prod['nom'] . "</td>
-                                <td>x" . $prod['quanttie'] . "</td>
+                                <td>x" . $prod['quantite'] . "</td>
                             </tr>
                             <tr>
                                 <td>" . formatPrice($prod['prix']) . "</td>
