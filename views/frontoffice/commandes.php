@@ -4,7 +4,7 @@ require_once "../../controllers/prix.php";
 session_start();
 ob_start();
 
-$etape = 0;
+$etape = 5;
 $showPopup = false;
 $showPopupLivraison = isset($_GET['showLivraison']);
 
@@ -250,7 +250,9 @@ $cart = getCurrentCart($pdo, $idClient);
         <title>Alizon - Mes Commandes</title>
     </head>
 <body class="pageCommandes">
-    <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
+    <?php if (!$showPopupLivraison): ?>
+        <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
+    <?php endif; ?>
 
     <main>
         <section class="topRecherche">
