@@ -19,6 +19,11 @@
 
 <body class="backoffice">
     <?php require_once './partials/header.php' ?>
+    <?php
+        if (isset($_GET['reassort_id'])) {
+            $_SESSION['hide_notif'] = true;
+        }
+    ?>
     <?php require_once './partials/notifications_stock.php' ?>
 
     <?php

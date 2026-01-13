@@ -7336,4 +7336,13 @@ dialog:focus {
   outline: none;
 }
 
+dialog {
+    pointer-events: auto;
+}
+
+dialog:not([open]) {
+    display: none;
+}
+
+
 /*# sourceMappingURL=style.css.map */

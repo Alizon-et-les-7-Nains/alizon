@@ -32,8 +32,9 @@ $countSql = "SELECT COUNT(*) FROM _produit p
              LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur  AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
              WHERE p.note >= :noteMin ". $sqlVendeur ."
              AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
+
 if (!empty($recherche)) {
-    $countSql .= " AND p.nom LIKE :search OR p.description LIKE :search";
+    $countSql .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
 }
 
 $countStmt = $pdo->prepare($countSql);
@@ -55,7 +56,7 @@ $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
 
 if (!empty($recherche)) {
-    $sql .= " AND p.nom LIKE :search OR p.description LIKE :search";
+    $sql .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
 }
 
 if ($sortOrder === 'noteAsc') {
