@@ -6909,37 +6909,6 @@ dialog.reassort form input {
   flex-direction: row;
   flex-wrap: wrap;
 }
-.pageCatalogue .product-item {
-  border: 2px solid #273469;
-  margin-top: 5px;
-  border-radius: 20px;
-  margin: 0px 40px;
-  padding: 10px;
-  min-width: 296px;
-  max-width: 296px;
-  max-height: 310px;
-  min-height: 310px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.pageCatalogue .product-item img {
-  max-width: 267px;
-  max-height: 168px;
-  object-fit: contain;
-  border-radius: 20px;
-}
-.pageCatalogue .product-item h2 {
-  color: #273469;
-  font-size: 20px;
-  font-family: "Open-sans", serif;
-  font-weight: lighter;
-}
-.pageCatalogue .product-item h2, .pageCatalogue p, .pageCatalogue h3 {
-  font-size: 1.2em;
-  margin: 0;
-}
 .pageCatalogue #resultat {
   background: #E3F2FE;
   position: sticky;
@@ -6949,6 +6918,12 @@ dialog.reassort form input {
 }
 .pageCatalogue .products-section {
   width: 78%;
+}
+.pageCatalogue .listeArticle {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
+  gap: 10px;
+  width: 100%;
 }
 .pageCatalogue .listeArticle article {
   border: 2px solid #273469;
