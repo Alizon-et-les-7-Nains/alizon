@@ -19,6 +19,7 @@
 
 <body class="backoffice">
     <?php require_once './partials/header.php' ?>
+    <?php require_once './partials/notifications_stock.php' ?>
 
     <?php
         $currentPage = basename(__FILE__);
