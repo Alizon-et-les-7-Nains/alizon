@@ -17,7 +17,6 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="searchBar">
             <div class="search-wrapper">
-                <i id="validerRecherche" class="bi bi-search"></i>
                 <input type="search" name="recherche" id="searchbar" placeholder="Rechercher">
                 <img id ="recherche" src="../../../public/images/searchDarkBlue.svg" alt="">
             </div>

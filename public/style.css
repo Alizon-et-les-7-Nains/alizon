@@ -95,7 +95,8 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  padding: 10px 450px 10px 20px;
+  justify-content: space-between;
+  padding: 10px 10px 10px 20px;
   border-radius: 25px;
   border: none;
   outline: none;
@@ -114,9 +115,14 @@ body {
   font-size: 20px;
   font-weight: bold;
   font-style: italic;
+  width: 700px;
+  border: none;
 }
 .headerFront .search-wrapper input[type=search]::-webkit-search-cancel-button {
   display: none;
+}
+.headerFront .search-wrapper input[type=search]:focus {
+  outline: none;
 }
 .headerFront .carousel {
   margin-top: 20px;
@@ -6836,58 +6842,32 @@ dialog.reassort form input {
 }
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
-  width: 22%;
+  width: 240px; /* Largeur fixe au lieu de 22% */
   height: 100vh;
   position: fixed;
   left: 0;
-  z-index: 1000; /* pour rester au-dessus */
+  z-index: 1000;
+  padding: 20px;
 }
 .pageCatalogue .filter-sort form {
   display: flex;
   flex-direction: column;
-  padding: 1em;
 }
-.pageCatalogue .products-section {
-  width: 78%;
+.pageCatalogue .triNote .triPrix {
   display: flex;
   flex-direction: column;
-  padding-left: 22%;
+}
+.pageCatalogue .products-section {
+  width: calc(100% - 280px); /* Ajustement automatique */
+  display: flex;
+  flex-direction: column;
+  margin-left: 280px; /* Au lieu de padding-left: 22% */
+  overflow-x: hidden;
 }
 .pageCatalogue .product-list {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-}
-.pageCatalogue .product-item {
-  border: 2px solid #273469;
-  margin-top: 5px;
-  border-radius: 20px;
-  margin: 0px 40px;
-  padding: 10px;
-  min-width: 296px;
-  max-width: 296px;
-  max-height: 310px;
-  min-height: 310px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.pageCatalogue .product-item img {
-  max-width: 267px;
-  max-height: 168px;
-  object-fit: contain;
-  border-radius: 20px;
-}
-.pageCatalogue .product-item h2 {
-  color: #273469;
-  font-size: 20px;
-  font-family: "Open-sans", serif;
-  font-weight: lighter;
-}
-.pageCatalogue .product-item h2, .pageCatalogue p, .pageCatalogue h3 {
-  font-size: 1.2em;
-  margin: 0;
 }
 .pageCatalogue #resultat {
   background: #E3F2FE;
@@ -6895,14 +6875,12 @@ dialog.reassort form input {
   padding: 0.3em;
   font-size: 13px;
   font-weight: 500;
-}
-.pageCatalogue .products-section {
-  width: 78%;
+  margin: 0;
 }
 .pageCatalogue .listeArticle {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+  gap: 10px;
   width: 100%;
 }
 .pageCatalogue .listeArticle article {
@@ -6910,8 +6888,10 @@ dialog.reassort form input {
   border-radius: 20px;
   margin: 10px;
   padding: 10px;
-  min-width: 276px;
-  max-width: 276px;
+  min-width: 220px;
+  max-width: 220px;
+  min-height: 250px;
+  max-height: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -6919,15 +6899,15 @@ dialog.reassort form input {
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
-  font-size: 20px;
+  font-size: 16px;
   font-family: "Open-sans", serif;
   font-weight: 500;
   margin-top: 10px;
   margin-bottom: 0;
 }
 .pageCatalogue .listeArticle article .imgProduit {
-  max-width: 267px;
-  max-height: 168px;
+  max-width: 220px;
+  max-height: 120px;
   object-fit: contain;
   border-radius: 20px;
 }
@@ -6991,7 +6971,7 @@ dialog.reassort form input {
 .pageCatalogue .slider-wrapper {
   position: relative;
   height: 15px;
-  width: 260px;
+  width: 100%;
 }
 .pageCatalogue .values {
   display: flex;
@@ -7060,6 +7040,34 @@ dialog.reassort form input {
   text-decoration: none;
 }
 
+/* Media queries pour les petits écrans */
+@media (max-width: 1300px) {
+  .pageCatalogue .filter-sort {
+    width: 250px;
+  }
+  .pageCatalogue .products-section {
+    width: calc(100% - 250px);
+    margin-left: 250px;
+  }
+}
+@media (max-width: 1024px) {
+  .pageCatalogue .filter-sort {
+    width: 220px;
+  }
+  .pageCatalogue .products-section {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+  }
+}
+@media (max-width: 768px) {
+  .pageCatalogue .filter-sort {
+    width: 200px;
+  }
+  .pageCatalogue .products-section {
+    width: calc(100% - 200px);
+    margin-left: 200px;
+  }
+}
 .overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
   position: fixed;
   top: 0;
@@ -7153,6 +7161,9 @@ main.commandesBackoffice h1, main.commandesBackoffice img, main.commandesBackoff
 main.commandesBackoffice h1 {
   font-family: "lora";
 }
+main.commandesBackoffice h2 {
+  font-family: "open-sans";
+}
 main.commandesBackoffice section article {
   font-family: "open-sans";
   padding-left: 2em;
@@ -7227,8 +7238,102 @@ main.commandesBackoffice section article ul:last-child li {
   border-radius: 16px;
   background-color: #fffefa;
 }
+main.commandesBackoffice section article:hover {
+  cursor: pointer;
+}
 main.commandesBackoffice section.livre article {
   border-left-color: #259525;
+}
+
+dialog {
+  padding-top: 0;
+  transition: all 0.2s ease;
+  border-radius: 16px;
+  border: none;
+  color: #273469;
+  font-family: "open-sans";
+  align-items: center;
+  max-width: fit-content;
+}
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(1px);
+}
+dialog h2 {
+  justify-self: center;
+}
+dialog table:not(ul li table) {
+  max-width: min(75vw, 500px);
+  width: auto;
+  padding-top: 1em;
+}
+dialog table:not(ul li table) td {
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+}
+dialog table:not(ul li table) td:last-child {
+  width: 1%;
+  white-space: nowrap;
+}
+dialog ul {
+  display: flex;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 1em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+dialog ul li table {
+  width: 250px;
+  table-layout: fixed;
+  border-spacing: 0;
+  outline: 2px solid #000000;
+  outline-offset: -2px;
+  margin: 0;
+  border-radius: 16px;
+}
+dialog ul li table tr {
+  padding: 0;
+  margin: 0;
+}
+dialog ul li table td {
+  padding: 0;
+  margin: 0;
+  text-wrap: wrap;
+}
+dialog ul li table img {
+  margin: 0;
+  padding: 0;
+  height: 200px;
+  width: 250px;
+  object-fit: cover;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+dialog ul li table {
+  font-weight: bold;
+  font-size: 15px;
+}
+dialog ul li table tr:nth-child(2) td, dialog ul li table tr:nth-child(3) td {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 0.5em;
+  word-wrap: break-word;
+}
+dialog ul li table tr:nth-child(2) td:last-child, dialog ul li table tr:nth-child(3) td:last-child {
+  text-align: right;
+  font-size: 25px;
+  font-weight: bold;
+}
+dialog ul li table tr:last-child {
+  font-size: 25px;
+}
+dialog:focus {
+  outline: none;
 }
 
 /*# sourceMappingURL=style.css.map */
