@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('reassort_id');
-    
+
     if (productId) {
+        document.querySelectorAll('dialog[open]').forEach(d => d.close());
+
         const targetDialog = document.getElementById('d-' + productId);
-        
+
         if (targetDialog) {
-            targetDialog.showModal();
+            targetDialog.show();
             targetDialog.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             const btnCancel = targetDialog.querySelector('.buttonCancel');
