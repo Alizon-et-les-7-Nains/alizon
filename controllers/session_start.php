@@ -3,6 +3,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // Récupération des données du formulaire d'inscription
     $pseudo = $_POST['pseudo'] ?? '';
     $prenom = $_POST['prenom'] ?? '';
     $nom = $_POST['nom'] ?? '';
@@ -11,12 +12,13 @@
     $mdp = $_POST['mdp'] ?? '';
     $date_naissance = $_POST['birthdate'] ?? '';
 
+    // Ajout d'un nouveau client dans la base de donnée
     $sql = "INSERT INTO _client 
         (dateNaissance, prenom, nom, email, mdp, noTelephone, pseudo)
         VALUES (:dateNaissance, :prenom, :nom, :email, :mdp, :noTelephone, :pseudo)";
 
     $stmt = $pdo->prepare($sql);
-
+    
     $stmt->execute([
         ':dateNaissance' => $date_naissance,
         ':prenom' => $prenom,
@@ -29,7 +31,7 @@
     }
 
     $lastId = $pdo->lastInsertId();
-
+    // Création de la session
     session_start();  
     $_SESSION['user_id'] = $lastId;
 

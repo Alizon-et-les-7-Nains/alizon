@@ -15,6 +15,17 @@ Array.from(document.getElementsByClassName('aside-btn')).forEach(asideButton => 
         }
     });
 });
+document.querySelectorAll('main.commandesBackoffice article').forEach((command) => {
+    command.addEventListener('click', () => {
+        const modal = document.querySelector(`main.commandesBackoffice dialog#${command.id}`);
+        modal.showModal();
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.close();
+            }
+        });
+    });
+});
 const modalSupprProduit = document.querySelector("main.modifierProduit dialog");
 document.querySelector("main.modifierProduit .btn-supprimer")?.addEventListener("click", () => {
     modalSupprProduit?.showModal();

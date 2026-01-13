@@ -19,17 +19,17 @@ $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         LEFT JOIN _remise r ON p.idProduit = r.idProduit 
         AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
-if (!empty($searchQuery)) {
-    $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
-}
-
 // Compter tous les produits
 $countSql = "SELECT COUNT(*) FROM _produit p 
              LEFT JOIN _remise r ON p.idProduit = r.idProduit 
              AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
-// Récuperer la totalité des catégories
+if (!empty($searchQuery)) {
+    $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
+    $countSql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
+}
 
+// Récuperer la totalité des catégories
 $catSql = "SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;";
 $stmt = $pdo->prepare($catSql);
 $stmt->execute();
@@ -45,8 +45,11 @@ $vendeur = "SELECT
             ORDER BY nbProduits DESC
             LIMIT 10";
 
-
-$countStmt = $pdo->query($countSql);
+$countStmt = $pdo->prepare($countSql);
+if (!empty($searchQuery)) {
+    $countStmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+}
+$countStmt->execute();
 $totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
 
 $nbPages = ceil($totalProduits / $produitsParPage);
@@ -58,7 +61,9 @@ $stmt = $pdo->prepare($sql);
 // Liaison des paramètres pour la pagination
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-$stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+if (!empty($searchQuery)) {
+    $stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+}
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -135,9 +140,14 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
-                <option value="" class="opt-highlight">Toutes les catégories</option>
                 <?php foreach ($listeCategories as $categorie) { 
-                    if ($categorie['typeProd'] != NULL) ?>
+                    if (isset($_GET['categorie'])) {
+                        $nomCategorie = $_GET['categorie'];
+                        $nomCategorie = str_replace("_", " ", $nomCategorie); ?>
+                        <option value="<?= $nomCategorie ?>" class="choix"><?= $nomCategorie ?></option>
+                    <?php } else { ?>
+                        <option value="" class="opt-highlight">Toutes les catégories</option>
+                    <?php } ?>
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
             </select>
@@ -235,15 +245,15 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
         <div class="pagination">
             <?php if ($nbPages > 1): ?>
                 <?php if ($page > 1): ?>
-                    <a href="?page=<?= $page-1 ?>">« Précédent</a>
+                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>">« Précédent</a>
                 <?php endif; ?>
 
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a href="?page=<?= $i ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
+                    <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
                 <?php endfor; ?>
 
                 <?php if ($page < $nbPages): ?>
-                    <a href="?page=<?= $page+1 ?>">Suivant »</a>
+                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
                 <?php endif; ?>
             <?php endif; ?>
         </div>

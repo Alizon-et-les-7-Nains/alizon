@@ -15,6 +15,9 @@ $stmt = $pdo->query("SELECT * FROM _avis WHERE idClient = $id_client");
 $mesAvis = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 function afficherEtoiles($note) {
+    // Fonction permettant d'afficher le nombre
+    // d'étoiles d'un commentaire écrit en fonction de 
+    // la note ayant été attribuée
     $html = "";
     for ($i = 1; $i <= 5; $i++) {
         if ($i <= $note) $html .= "<img class='etoile' src='/public/images/etoile.svg'>";
@@ -22,10 +25,7 @@ function afficherEtoiles($note) {
     }
     return $html;
 }
-
 ?>
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -50,6 +50,7 @@ function afficherEtoiles($note) {
             else{
                 ?>
                 <section> <?php
+                // Pour tous les avis, on récupère les produits associés ainsi que leurs images
                 foreach ($mesAvis as $avis) {
                 $p = $avis['idProduit'];
                 $stmt2 = $pdo->query("SELECT * FROM _produit WHERE idProduit = $p");
@@ -57,20 +58,17 @@ function afficherEtoiles($note) {
                 $stmt3 = $pdo->query("SELECT * FROM _imageDeProduit WHERE idProduit = $p");
                 $imageProduit = $stmt3->fetch(PDO::FETCH_ASSOC); 
                 ?> 
-
                 <article>
+                <!-- Carte du produit-->
                     <div class="produit">
                         <img src=<?php echo($imageProduit['URL']) ?>>
-
                         <div class="infos-produit">
                             <h3><?php echo($monProduit['nom']); ?></h3>
                             <p><?php echo($monProduit['prix'] . "€"); ?></p>
                         </div>
                     </div>
-
-
+                    <!-- Contenu de l'avis-->
                     <div class="contenu">
-
                         <div class="header-contenu">
                             <h2><?php echo($avis['titreAvis']); ?></h2>
                             <span class="date"><?php echo("Publié le " . formatDate($avis['dateAvis'])); ?></span>
@@ -81,19 +79,13 @@ function afficherEtoiles($note) {
                         <div class="texte">
                             <p><?php echo($avis['contenuAvis']); ?></p>
                         </div>
-
                         <div class="actions">
                             <a href="./modifierAvis.php?id=<?php echo $avis['idProduit']; ?>">Modifier</a>
-
                             <a href="../../controllers/supprimerAvis.php?id=<?php echo($p);?>" class="supprimerAvis">Supprimer</a>
                         </div>
-
                     </div>
-
             </article>
-
-                <?php
-                
+                <?php               
             }  
         }      
 ?>

@@ -2,12 +2,43 @@
 require_once "../../controllers/pdo.php";
 session_start();
 
+// Charger les variables d'environnement depuis .env
+$envPath = __DIR__ . '/../../.env';
+if (file_exists($envPath)) {
+    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue;
+        list($name, $value) = explode('=', $line, 2);
+        $_ENV[trim($name)] = trim($value);
+    }
+}
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../../views/frontoffice/connexionClient.php');
     exit;
 }
 
 $idClient = $_SESSION['user_id'];
+
+// Fonction de chiffrement AES-256-CBC
+function encryptData($data) {
+    $key = $_ENV['ENCRYPTION_KEY'] ?? 'default_key_change_this';
+    $method = 'AES-256-CBC';
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
+    $encrypted = openssl_encrypt($data, $method, $key, 0, $iv);
+    return base64_encode($iv . $encrypted);
+}
+
+// Fonction de déchiffrement AES-256-CBC
+function decryptData($data) {
+    $key = $_ENV['ENCRYPTION_KEY'] ?? 'default_key_change_this';
+    $method = 'AES-256-CBC';
+    $data = base64_decode($data);
+    $ivLength = openssl_cipher_iv_length($method);
+    $iv = substr($data, 0, $ivLength);
+    $encrypted = substr($data, $ivLength);
+    return openssl_decrypt($encrypted, $method, $key, 0, $iv);
+}
 
 function getCurrentCart($pdo, $idClient) {
     $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
@@ -81,8 +112,11 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             throw new Exception("Le panier est vide.");
         }
 
+        // Chiffrer le numéro de carte avant de le stocker
+        $numeroCarteChiffre = encryptData($numeroCarte);
+        
         $checkCarte = $pdo->prepare("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = ?");
-        $checkCarte->execute([$numeroCarte]);
+        $checkCarte->execute([$numeroCarteChiffre]);
 
         if ($checkCarte->rowCount() === 0) {
             $sqlInsertCarte = "
@@ -90,7 +124,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
                 VALUES (?, ?, ?, ?)
             ";
             $stmtCarte = $pdo->prepare($sqlInsertCarte);
-            if (!$stmtCarte->execute([$numeroCarte, $nomCarte, $dateExp, $cvv])) {
+            if (!$stmtCarte->execute([$numeroCarteChiffre, $nomCarte, $dateExp, $cvv])) {
                 throw new Exception("Erreur lors de l'ajout de la carte bancaire.");
             }
         }
@@ -133,7 +167,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         ";
         
         $stmtCommande = $pdo->prepare($sqlCommande);
-        if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarte, $idPanier])) {
+        if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarteChiffre, $idPanier])) {
             throw new Exception("Erreur lors de la création de la commande.");
         }
 
@@ -315,7 +349,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
     <script>
-    window.CLE_CHIFFREMENT = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
+    window.CLE_CHIFFREMENT = "<?php echo htmlspecialchars($_ENV['ENCRYPTION_KEY'] ?? 'default_key'); ?>";
 
     window.__PAYMENT_DATA__ = {
         departments: <?php echo json_encode($departments, JSON_UNESCAPED_UNICODE); ?>,
@@ -341,83 +375,84 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 
     <main class="container">
         <div class="parent">
-                <section class="delivery">
-                    <h3>1 - Informations pour la livraison :</h3>
+            <section class="delivery">
+                <h3>1 - Informations pour la livraison :</h3>
+                <div class="input-field">
+                    <input class="adresse-input" type="text" placeholder="Adresse de livraison" required>
+                    <small class="error-message" data-for="adresse"></small>
+                </div>
+                <div class="ligne">
+                    <div class="input-field fixed-110">
+                        <input class="code-postal-input" type="text" placeholder="Code postal" required>
+                        <small class="error-message" data-for="code-postal"></small>
+                    </div>
+                    <div class="input-field flex-1">
+                        <input class="ville-input" type="text" placeholder="Ville" required>
+                        <small class="error-message" data-for="ville"></small>
+                    </div>
+                </div>
+
+                <label>
+                    <input id="checkboxFactAddr" type="checkbox">
+                    Adresse de facturation différente
+                </label>
+
+                <div id="billingSection" class="billing-section">
+                    <h4>Adresse de facturation :</h4>
                     <div class="input-field">
-                        <input class="adresse-input" type="text" placeholder="Adresse de livraison" required>
-                        <small class="error-message" data-for="adresse"></small>
+                        <input class="adresse-fact-input" type="text" placeholder="Adresse de facturation">
+                        <small class="error-message" data-for="adresse-fact"></small>
                     </div>
                     <div class="ligne">
                         <div class="input-field fixed-110">
-                            <input class="code-postal-input" type="text" placeholder="Code postal" required>
-                            <small class="error-message" data-for="code-postal"></small>
+                            <input class="code-postal-fact-input" type="text" placeholder="Code postal">
+                            <small class="error-message" data-for="code-postal-fact"></small>
                         </div>
                         <div class="input-field flex-1">
-                            <input class="ville-input" type="text" placeholder="Ville" required>
-                            <small class="error-message" data-for="ville"></small>
+                            <input class="ville-fact-input" type="text" placeholder="Ville">
+                            <small class="error-message" data-for="ville-fact"></small>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    <label>
-                        <input id="checkboxFactAddr" type="checkbox">
-                        Adresse de facturation différente
-                    </label>
-
-                    <div id="billingSection" class="billing-section">
-                        <h4>Adresse de facturation :</h4>
-                        <div class="input-field">
-                            <input class="adresse-fact-input" type="text" placeholder="Adresse de facturation">
-                            <small class="error-message" data-for="adresse-fact"></small>
+            <section class="payment">
+                <h3>2 - Informations de paiement :</h3>
+                <div class="input-field">
+                    <input class="num-carte" type="text" placeholder="Numéro sur la carte" required>
+                    <small class="error-message" data-for="num-carte"></small>
+                </div>
+                <div class="input-field">
+                    <input class="nom-carte" type="text" placeholder="Nom sur la carte" required>
+                    <small class="error-message" data-for="nom-carte"></small>
+                </div>
+                <div class="ligne">
+                    <div class="infoCarte">
+                        <div class="input-field fixed-100">
+                            <input class="carte-date" type="text" placeholder="MM/AA" required>
+                            <small class="error-message" data-for="carte-date"></small>
                         </div>
-                        <div class="ligne">
-                            <div class="input-field fixed-110">
-                                <input class="code-postal-fact-input" type="text" placeholder="Code postal">
-                                <small class="error-message" data-for="code-postal-fact"></small>
-                            </div>
-                            <div class="input-field flex-1">
-                                <input class="ville-fact-input" type="text" placeholder="Ville">
-                                <small class="error-message" data-for="ville-fact"></small>
-                            </div>
+                        <div class="input-field fixed-80">
+                            <input class="cvv-input" type="text" placeholder="CVV" required minlength="3" maxlength="3">
+                            <small class="error-message" data-for="cvv-input"></small>
                         </div>
                     </div>
-                </section>
+                    <img class="visaImg" src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
+                        alt="Visa">
+                </div>
+            </section>
 
-                <section class="payment">
-                    <h3>2 - Informations de paiement :</h3>
-                    <div class="input-field">
-                        <input class="num-carte" type="text" placeholder="Numéro sur la carte" required>
-                        <small class="error-message" data-for="num-carte"></small>
-                    </div>
-                    <div class="input-field">
-                        <input class="nom-carte" type="text" placeholder="Nom sur la carte" required>
-                        <small class="error-message" data-for="nom-carte"></small>
-                    </div>
-                    <div class="ligne">
-                        <div class="infoCarte">
-                            <div class="input-field fixed-100">
-                                <input class="carte-date" type="text" placeholder="MM/AA" required>
-                                <small class="error-message" data-for="carte-date"></small>
-                            </div>
-                            <div class="input-field fixed-80">
-                                <input class="cvv-input" type="text" placeholder="CVV" required minlength="3" maxlength="3">
-                                <small class="error-message" data-for="cvv-input"></small>
-                            </div>
-                        </div>
-                        <img class="visaImg" src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
-                    </div>
-                </section>
-
-                <section class="conditions">
-                    <h3>3 - Accepter les conditions générales et mentions légales</h3>
-                    <label>
-                        <input type="checkbox" id="cgvCheckbox">
-                        J'ai lu et j'accepte les
-                        <a href="#">Conditions Générales de Vente</a> et les
-                        <a href="#">Mentions Légales</a> d'Alizon.
-                    </label>
-                    <small class="error-message" data-for="cgv"></small>
-                    <button class="payer">Payer</button>
-                </section>
+            <section class="conditions">
+                <h3>3 - Accepter les conditions générales et mentions légales</h3>
+                <label>
+                    <input type="checkbox" id="cgvCheckbox">
+                    J'ai lu et j'accepte les
+                    <a href="#">Conditions Générales de Vente</a> et les
+                    <a href="#">Mentions Légales</a> d'Alizon.
+                </label>
+                <small class="error-message" data-for="cgv"></small>
+                <button class="payer">Payer</button>
+            </section>
         </div>
 
         <div class="payer-wrapper-mobile">
