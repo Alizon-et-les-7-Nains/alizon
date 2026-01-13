@@ -83,7 +83,7 @@
     .listeArticle {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
-        gap: 30px;
+        gap: 10px;
         width: 100%;
     }
 
@@ -112,8 +112,8 @@
     }
 
     .listeArticle article .imgProduit {
-        max-width: 267px;
-        max-height: 168px;
+        max-width: 220px;
+        max-height: 120px;
         object-fit: contain;
         border-radius: 20px;
     }
