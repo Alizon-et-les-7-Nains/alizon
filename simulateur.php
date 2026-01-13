@@ -154,4 +154,5 @@ foreach ($colis as $col) {
 
 echo "\n=== Simulation terminée ===\n";
 echo "$compteur colis avancés d'une étape.\n";
+
 ?>
