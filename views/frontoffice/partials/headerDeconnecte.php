@@ -1,3 +1,11 @@
+<?php 
+include "../../controllers/pdo.php";
+
+$query = $pdo->prepare("SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;");
+$query->execute();
+$listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
+
+?>
 
 <header class="headerFront">
 
@@ -23,9 +31,8 @@
     <div class="carousel">
         <div class="group">
             <?php 
-                $categorie = ($pdo->query("SELECT * FROM _categorie"))->fetchAll(PDO::FETCH_ASSOC);
-                foreach ($categorie as $value) { ?>
-                    <a class="categorie"><?php echo $value['nomCategorie']; ?></a>
+                foreach ($listeCategories as $categorie) { ?>
+                    <a class="categorie" style="cursor: pointer;"><?php echo $categorie['typeProd']; ?></a>
             <?php } ?>
         </div>
     </div>

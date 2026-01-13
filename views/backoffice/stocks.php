@@ -412,6 +412,7 @@ echo "
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
+    <script src="../../public/scriptNotif.js"></script>
 </body>
 
 </html>

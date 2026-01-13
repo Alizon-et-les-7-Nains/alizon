@@ -3353,57 +3353,6 @@ button#haut.visible:hover {
   background-color: #e3f2fe;
 }
 
-.ecrireAvis main {
-  margin-left: 10%;
-}
-.ecrireAvis main h2 {
-  margin-top: 30px;
-  font-family: "lora";
-  color: #273469;
-  text-align: center;
-}
-.ecrireAvis main p, .ecrireAvis main label {
-  font-family: "lora";
-  font-size: 20px;
-  color: #273469;
-}
-.ecrireAvis main form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: left;
-  font-size: 16px;
-  font-weight: bold;
-}
-.ecrireAvis main form input, .ecrireAvis main form textarea {
-  width: 80%;
-  padding: 5px;
-  margin-right: 10%;
-  height: 50px;
-  margin-bottom: 30px;
-  color: #6e6e6e;
-  font-family: "lora";
-  font-size: 16px;
-  border: 2px solid #273469;
-  border-radius: 8px;
-}
-.ecrireAvis main form textarea {
-  height: 300px;
-}
-
-#publishButton {
-  width: 80%;
-  padding: 5px;
-  margin-right: 10%;
-  height: 50px;
-  margin-bottom: 30px;
-  font-size: 16px;
-  background-color: #273469;
-  border-radius: 8px;
-  border: none;
-  color: #fffefa;
-}
-
 .pageEcrireCommentaire {
   background-image: url("../../../public/images/triskel.png");
   background-repeat: no-repeat;
@@ -3493,6 +3442,7 @@ button#haut.visible:hover {
   justify-content: center;
   align-items: center;
   align-self: last baseline;
+  padding-top: 10px;
 }
 @media screen and (max-width: 768px) {
   .pageEcrireCommentaire h1 {
