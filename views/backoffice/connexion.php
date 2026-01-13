@@ -84,7 +84,8 @@
     </main>
     
     <?php require_once "./partials/footer.php"; ?>
-
+    
+    <script src="../../controllers/Chiffrement.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // éléments
@@ -106,6 +107,7 @@
             pseudoInput.addEventListener('input', verifierChamps);
             mdpInput.addEventListener('input', verifierChamps);
         });
+
         document.querySelector('form').addEventListener('submit', function(e) {
             const passwordInput = this.querySelector('input[name="mdp"]');
             if (passwordInput && typeof vignere !== 'undefined') {
@@ -113,6 +115,5 @@
             }
         });
     </script>
-    <script src="../../controllers/Chiffrement.js"></script>
 </body>
 </html>

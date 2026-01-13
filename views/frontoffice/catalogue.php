@@ -10,8 +10,8 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $produitsParPage;
 
 $idClient = $_SESSION['user_id'];
-$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 
 // Récupérer les produits avec pagination
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
@@ -24,9 +24,13 @@ $countSql = "SELECT COUNT(*) FROM _produit p
              LEFT JOIN _remise r ON p.idProduit = r.idProduit 
              AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
-// Récuperer la totalité des catégories
+if (!empty($searchQuery)) {
+    $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
+    $countSql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
+}
 
-$catSql = "SELECT DISTINCT typeProd FROM _produit p AND typeProd IS NOT NULL;";
+// Récuperer la totalité des catégories
+$catSql = "SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;";
 $stmt = $pdo->prepare($catSql);
 $stmt->execute();
 $listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -41,7 +45,11 @@ $vendeur = "SELECT
             ORDER BY nbProduits DESC
             LIMIT 10";
 
-$countStmt = $pdo->query($countSql);
+$countStmt = $pdo->prepare($countSql);
+if (!empty($searchQuery)) {
+    $countStmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+}
+$countStmt->execute();
 $totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
 
 $nbPages = ceil($totalProduits / $produitsParPage);
@@ -53,9 +61,12 @@ $stmt = $pdo->prepare($sql);
 // Liaison des paramètres pour la pagination
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+if (!empty($searchQuery)) {
+    $stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+}
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
 $stmt = $pdo->prepare($vendeur);
 $stmt->execute();
 $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -64,6 +75,8 @@ $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $maxPriceStmt = $pdo->query("SELECT MAX(prix) as maxPrix FROM _produit");
 $maxPriceRow = $maxPriceStmt->fetch(PDO::FETCH_ASSOC);
 $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
+
+
 
 ?>
 
@@ -127,14 +140,19 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
-                <option value="" class="opt-highlight">Toutes les catégories</option>
-                <?php foreach ($listeCategories as $categorie) { ?>
+                <?php foreach ($listeCategories as $categorie) { 
+                    if (isset($_GET['categorie'])) {
+                        $nomCategorie = $_GET['categorie'];
+                        $nomCategorie = str_replace("_", " ", $nomCategorie); ?>
+                        <option value="<?= $nomCategorie ?>" class="choix"><?= $nomCategorie ?></option>
+                    <?php } else { ?>
+                        <option value="" class="opt-highlight">Toutes les catégories</option>
+                    <?php } ?>
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
             </select>
 
             <label for="zone">Zone géographique :</label>
-
             <label for="vendeur">Vendeur :</label>
             <select id="vendeur" name="vendeur">
                 <option value="">-- Tous les vendeurs --</option>
@@ -227,15 +245,15 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
         <div class="pagination">
             <?php if ($nbPages > 1): ?>
                 <?php if ($page > 1): ?>
-                    <a href="?page=<?= $page-1 ?>">« Précédent</a>
+                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>">« Précédent</a>
                 <?php endif; ?>
 
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a href="?page=<?= $i ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
+                    <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
                 <?php endfor; ?>
 
                 <?php if ($page < $nbPages): ?>
-                    <a href="?page=<?= $page+1 ?>">Suivant »</a>
+                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
@@ -260,7 +278,7 @@ const triNoteDecroissant = document.getElementById('triNoteDecroissant');
 let sortOrder = '';
 
 // Variables globales
-let searchQuery = "<?= $searchQuery ?>";
+let searchQuery = "<?= htmlspecialchars($searchQuery) ?>";
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
@@ -298,7 +316,6 @@ const categorieSelect = document.getElementById('categorieSelect');
 categorieSelect.addEventListener('change', () => {
     loadProduits(1);
 });
-
 
 function updateSlider() {
     let min = parseInt(sliderMin.value);
@@ -348,9 +365,7 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    console.log('Chargement des produits:', {min, max, notemin, page, idVendeur});
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}`)
-
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}`)
         .then(res => {
             // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {
@@ -425,12 +440,13 @@ triPrixDecroissant.addEventListener('change', () => {
     }
 });
 
-if(searchQuery = ""){
+if(searchQuery === ""){
     searchbar.placeholder = 'Recherche';
 }
 else{
-    searchbar.textContent = searchQuery;
+    searchbar.value = searchQuery;
 }
+
 
 updateSlider();
 

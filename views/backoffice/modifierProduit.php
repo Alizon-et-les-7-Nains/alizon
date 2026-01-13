@@ -122,31 +122,43 @@ if (!$produit) {
         ajouterPhotoDiv.addEventListener('click', function() {
             photoUploadInput.click();
         });
+        
+        
+        photoUploadInput.addEventListener('change', function () {
+        const files = this.files;
 
-        photoUploadInput.addEventListener('change', function() {
-            const files = this.files;
-            if (files && files.length > 0) {
-                const file = files[0];
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imagePreview.src = e.target.result;
-                        placeholderText.style.display = 'none';
-                        overlayText.style.opacity = '1';
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    imagePreview.src = originalImageSrc;
-                    placeholderText.style.display = 'block';
-                    overlayText.style.opacity = '0';
-                    alert("Votre fichier n'est pas une image, merci de réessayer.");
-                }
+        // Vérifie qu'un fichier a bien été sélectionné
+        if (files && files.length > 0) {
+            const file = files[0];
+
+            // Vérifie que le fichier est une image via son type MIME
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+
+                // Exécuté une fois le fichier lu (lecture asynchrone)
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result; // image en base64
+                    placeholderText.style.display = 'none';
+                    overlayText.style.opacity = '1';
+                };
+
+                // Convertit le fichier en URL lisible par une balise <img>
+                reader.readAsDataURL(file);
             } else {
+                // Réinitialisation si le fichier n'est pas une image
                 imagePreview.src = originalImageSrc;
                 placeholderText.style.display = 'block';
                 overlayText.style.opacity = '0';
+                alert("Votre fichier n'est pas une image, merci de réessayer.");
             }
-        });
+        } else {
+            // Cas où l'utilisateur annule la sélection
+            imagePreview.src = originalImageSrc;
+            placeholderText.style.display = 'block';
+            overlayText.style.opacity = '0';
+        }
+    });
+
         // Ajouter un margin-bottom pour séparer les boutons du bas du footer
         const formActions = document.querySelector('.form-actions');
         formActions.style.marginBottom = '50px';

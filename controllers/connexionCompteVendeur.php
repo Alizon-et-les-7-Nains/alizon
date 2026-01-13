@@ -4,6 +4,7 @@ ob_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once 'pdo.php';
+    error_log("connexion");
 
     try {
         $pdo->beginTransaction();

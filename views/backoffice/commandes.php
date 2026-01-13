@@ -2,6 +2,7 @@
     require_once '../../controllers/auth.php';
 
     require_once '../../controllers/date.php';
+    require_once '../../controllers/prix.php';
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +28,6 @@
     <main class="commandesBackoffice">
         <section>
             <h1>En Cours</h1>
-            
 <?php
     $cmdsSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/commandes/encours.sql'));
     $cmdsSTMT->execute([$_SESSION['id']]);
@@ -40,7 +40,7 @@
         $prodsSTMT->execute([$encour['idCommande'], $_SESSION['id']]);
         $prods = $prodsSTMT->fetchAll(PDO::FETCH_ASSOC);
 
-        $html = "<article>
+        $html = "<article id='c-" . $encour['idCommande'] . "'>
             <ul>
                 <li><h2>" . $encour['etatLivraison'] . "...</h2></li>
                 <li>" . formatDate($encour['dateCommande']) . "</li>
@@ -62,7 +62,7 @@
                             </tr>
                             <tr>
                                 <td>" . $prod['nom'] . "</td>
-                                <td>x" . $prod['quantiteProduit'] . "</td>
+                                <td>x" . $prod['quantite'] . "</td>
                             </tr>
                         </table>
                     </li>";
@@ -70,14 +70,59 @@
             $html .= "</ul>
         </article>";
         echo $html;
+        
+        $dateExp = formatDate($encour['dateExpedition']); $dateExp = ($dateExp === '01/01/1970') ? 'Non expédiée' : $dateExp;
+        $dateLiv = formatDate($encour['dateLivraison']); $dateLiv = ($dateLiv === '01/01/1970') ? 'Non livrée' : $dateLiv;
+
+        echo "<dialog id='c-" . $encour['idCommande'] . "' class='popup-commande'>
+            <h2>Commande du " . formatDate($encour['dateCommande']) . "</h2>
+            <ul>";
+                $total = 0;
+                foreach ($prods as $prod) {
+                    $imageSTMT = $pdo->prepare('select URL from _imageDeProduit where idProduit = ?');
+                    $imageSTMT->execute([$prod['idProduit']]);
+                    $image = $imageSTMT->fetchColumn();
+
+                    $total += $prod['prix'] * $prod['quantite'];
+                    $total = formatPrice($total);
+
+                    echo "<li>
+                        <table>
+                            <tr>
+                                <td colspan=2><img src='../../public/images/caramels.png'></td>
+                            </tr>
+                            <tr>
+                                <td>" . $prod['nom'] . "</td>
+                                <td>x" . $prod['quantite'] . "</td>
+                            </tr>
+                            <tr>
+                                <td>" . formatPrice($prod['prix']) . "</td>
+                                <td>" . formatPrice($prod['prix'] * $prod['quantite']) . "</td>
+                            </tr>
+                        </table>
+                    </li>";
+                }
+            echo "</ul>
+            <table>
+                <tr>
+                    <td>Expédition : $dateExp</td>
+                    <td>Client : " . $encour['pseudo'] . "</td>
+                </tr>
+                <tr>
+                    <td>Livraison : $dateLiv</td>
+                    <td>N° Commande : " . $encour['idCommande'] . "</td>
+                </tr>
+                <tr>
+                    <td colspan=2>Total : $total</td>
+                </tr>
+            </table>
+        </dialog>";
     }
 ?>
-
         </section>
 
         <section class="livre">
             <h1>Finalisées</h1>
-
 <?php
     $cmdsSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/commandes/livre.sql'));
     $cmdsSTMT->execute([$_SESSION['id']]);
@@ -90,9 +135,9 @@
         $prodsSTMT->execute([$livre['idCommande'], $_SESSION['id']]);
         $prods = $prodsSTMT->fetchAll(PDO::FETCH_ASSOC);
 
-        $html = "<article>
+        $html = "<article id='c-" . $livre['idCommande'] . "'>
             <ul>
-                <li><h2>" . $livre['etatLivraison'] . "...</h2></li>
+                <li><h2>" . $livre['etatLivraison'] . "</h2></li>
                 <li>" . formatDate($livre['dateCommande']) . "</li>
             </ul>
             <ul>";
@@ -108,7 +153,7 @@
                             </tr>
                             <tr>
                                 <td>" . $prod['nom'] . "</td>
-                                <td>x" . $prod['quantiteProduit'] . "</td>
+                                <td>x" . $prod['quantite'] . "</td>
                             </tr>
                         </table>
                     </li>";
@@ -116,9 +161,55 @@
             $html .= "</ul>
         </article>";
         echo $html;
+
+        $dateExp = formatDate($livre['dateExpedition']); $dateExp = ($dateExp === '01/01/1970') ? 'Non expédiée' : $dateExp;
+        $dateLiv = formatDate($livre['dateLivraison']); $dateLiv = ($dateLiv === '01/01/1970') ? 'Non livrée' : $dateLiv;
+
+        echo "<dialog id='c-" . $livre['idCommande'] . "' class='popup-commande'>
+            <h2>Commande du " . formatDate($livre['dateCommande']) . "</h2>
+            <ul>";
+                $total = 0;
+                foreach ($prods as $prod) {
+                    $imageSTMT = $pdo->prepare('select URL from _imageDeProduit where idProduit = ?');
+                    $imageSTMT->execute([$prod['idProduit']]);
+                    $image = $imageSTMT->fetchColumn();
+
+                    $total += $prod['prix'] * $prod['quantite'];
+                    $total = formatPrice($total);
+
+                    echo "<li>
+                        <table>
+                            <tr>
+                                <td colspan=2><img src='../../public/images/caramels.png'></td>
+                            </tr>
+                            <tr>
+                                <td>" . $prod['nom'] . "</td>
+                                <td>x" . $prod['quantite'] . "</td>
+                            </tr>
+                            <tr>
+                                <td>" . formatPrice($prod['prix']) . "</td>
+                                <td>" . formatPrice($prod['prix'] * $prod['quantite']) . "</td>
+                            </tr>
+                        </table>
+                    </li>";
+                }
+            echo "</ul>
+            <table>
+                <tr>
+                    <td>Expédition : $dateExp</td>
+                    <td>Client : " . $livre['pseudo'] . "</td>
+                </tr>
+                <tr>
+                    <td>Livraison : $dateLiv</td>
+                    <td>N° Commande : " . $livre['idCommande'] . "</td>
+                </tr>
+                <tr>
+                    <td colspan=2>Total : $total</td>
+                </tr>
+            </table>
+        </dialog>";
     }
 ?>
-
         </section>
 
         <?php require_once './partials/retourEnHaut.php' ?>

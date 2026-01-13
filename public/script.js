@@ -15,6 +15,17 @@ Array.from(document.getElementsByClassName('aside-btn')).forEach(asideButton => 
         }
     });
 });
+Array.from(document.getElementsByTagName('article')).forEach((command) => {
+    command.addEventListener('click', () => {
+        const modal = document.querySelector(`dialog#${command.id}`);
+        modal.showModal();
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.close();
+            }
+        });
+    });
+});
 const modalSupprProduit = document.querySelector("main.modifierProduit dialog");
 document.querySelector("main.modifierProduit .btn-supprimer")?.addEventListener("click", () => {
     modalSupprProduit?.showModal();

@@ -5,6 +5,7 @@ session_start();
 ob_start();
 
 $showPopup = false;
+$showPopupLivraison = isset($_GET['showLivraison']);
 
 if (!empty($_SESSION['commandePayee'])) {
     $showPopup = true;
@@ -301,7 +302,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                             <p>Livrée le <?php echo $commande['dateLivraison']; ?></p>
                                         <?php else: ?>
                                             <p><?php echo htmlspecialchars($commande['statut']); ?></p>
-                                            <a href="#">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
+                                            <a href="commandes.php?showLivraison=<?= $commande['id'] ?>">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -410,6 +411,12 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="/public/script.js"></script>
     <script src="../scripts/frontoffice/detailsCommande.js"></script>
 
+    <?php
+        $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    ?>
 
     <?php if ($showPopup): ?>
         <div class="overlay">
@@ -419,7 +426,16 @@ $cart = getCurrentCart($pdo, $idClient);
                 <p>destination</p>
                 <p><?php echo htmlspecialchars($tabIdDestination[0]["destination"]) ?></p>
                 <p>Numéro de bordereau</p>
-                <p><?php echo htmlspecialchars($_SESSION['noBordereau']) ?></p>
+                <p><?php echo htmlspecialchars($result['noBordereau']) ?></p>
+                <a href="./commandes.php" class="close">Fermer</a>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($showPopupLivraison): ?>
+        <div id="popupLivraison" class="overlay">
+            <div class="popup">
+                <h2>Suivi de la livraison</h2>
                 <a href="./commandes.php" class="close">Fermer</a>
             </div>
         </div>
