@@ -4,6 +4,7 @@ require_once "../../controllers/prix.php";
 session_start();
 ob_start();
 
+$etape = 0;
 $showPopup = false;
 $showPopupLivraison = isset($_GET['showLivraison']);
 
@@ -435,12 +436,39 @@ $cart = getCurrentCart($pdo, $idClient);
     <?php if ($showPopupLivraison): ?>
         <div id="popupLivraison" class="overlay">
             <div class="popup">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div> 
                 <h2>Suivi de la livraison</h2>
-                <a href="./commandes.php" class="close">Fermer</a>
+                <div class="stepper">
+                    <p>En cours de préparation</p>
+                    <p>Prise en charge du colis</p>
+                    <p>Arrivé à la plateforme Régional</p>
+                    <p>Arrivé à la plateforme local</p>
+                    <p>Colis livré</p>
+                    <div class="rond"></div>
+                    <div class="trait">
+                        <div class="demiTrait"></div>
+                    </div>
+                    <div class="rond"></div>
+                    <div class="trait">
+                        <div class="demiTrait"></div>
+                    </div>
+                    <div class="rond"></div>
+                    <div class="trait">
+                        <div class="demiTrait"></div>
+                    </div>
+                    <div class="rond"></div>
+                    <div class="trait">
+                        <div class="demiTrait"></div>
+                    </div>
+                    <div class="rond"></div>
+                </div>
             </div>
         </div>
     <?php endif; ?>
-
+    <script>const etape = <?php echo json_encode($etape); ?>;</script>
+    <script src="../scripts/frontoffice/popupSuivieCommande.js"></script>
 </body>
-
 </html>
