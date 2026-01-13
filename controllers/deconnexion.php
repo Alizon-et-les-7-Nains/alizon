@@ -1,4 +1,5 @@
 <?php
+    // Suppression et destruction de la session ainsi que des cookies
     session_start();  
     session_unset();
     session_destroy();

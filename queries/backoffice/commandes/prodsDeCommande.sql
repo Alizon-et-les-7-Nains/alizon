@@ -1,4 +1,4 @@
-select unique idPanier, p.idProduit, quantiteProduit, p.nom, p.prix
-from _commande natural join _produitAuPanier pp join _produit p on p.idProduit = pp.idProduit 
+select unique idPanier, p.idProduit, quantite, p.nom, p.prix
+from _commande natural join _contient pp join _produit p on p.idProduit = pp.idProduit 
 where idCommande = ? and p.idVendeur = ?
-order by quantiteProduit desc;
+order by quantite desc;

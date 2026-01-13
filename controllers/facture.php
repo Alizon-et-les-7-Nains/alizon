@@ -1,8 +1,7 @@
 <?php
 // Le code commence par appeler dompdf, recupères des information nécéssaire à la facture
 // Avant de stopper le buffer. Ensuite on fait une page html puis on récupère tout ce qui est
-// Dans le buffer. On le met dans une variable puis on transforme le contenu de cette
-// Variable en fichier pdf.
+// Dans le buffer. 
 
 require_once __DIR__ . '/../dompdf/autoload.inc.php';
 require_once './pdo.php';
@@ -10,7 +9,6 @@ require_once './pdo.php';
 $idCommande = $_GET['id'];
 
 global $pdo;
-
 
 $stmt = $pdo->prepare("
     SELECT
@@ -80,7 +78,8 @@ ob_start();
 </body>
 </html>
 <?php
-
+// On met le HTML dans une variable puis on transforme le contenu 
+// De cette variable en fichier pdf.
 $html = ob_get_clean();
 
 $dompdf = new \Dompdf\Dompdf(); 
@@ -89,6 +88,7 @@ $dompdf->setPaper('A4');
 $dompdf->render();
 $path = __DIR__ . '/../factures';
 
+// Si le dossier n'éxiste pas, on force sa création
 if(!is_dir($path)){
     mkdir($path, 0755, true);
 }

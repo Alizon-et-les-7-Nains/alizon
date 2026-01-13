@@ -49,7 +49,7 @@ $stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDesti
 // Extraire le numéro de bordereau
 if (preg_match('/BORDEREAU (\d+)/', $create_response, $matches)) {
     $bordereau = $matches[1];
-
+    
     // Test 3: Consultation
     //echo "Test STATUS:\n";
     $status_response = send_command($socket, "STATUS $bordereau");

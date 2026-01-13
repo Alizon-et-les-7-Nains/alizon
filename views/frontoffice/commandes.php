@@ -5,6 +5,7 @@ session_start();
 ob_start();
 
 $showPopup = false;
+$showPopupLivraison = isset($_GET['showLivraison']);
 
 if (!empty($_SESSION['commandePayee'])) {
     $showPopup = true;
@@ -301,7 +302,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                             <p>Livrée le <?php echo $commande['dateLivraison']; ?></p>
                                         <?php else: ?>
                                             <p><?php echo htmlspecialchars($commande['statut']); ?></p>
-                                            <a href="#">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
+                                            <a href="commandes.php?showLivraison=<?= $commande['id'] ?>">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -426,6 +427,15 @@ $cart = getCurrentCart($pdo, $idClient);
                 <p><?php echo htmlspecialchars($tabIdDestination[0]["destination"]) ?></p>
                 <p>Numéro de bordereau</p>
                 <p><?php echo htmlspecialchars($result['noBordereau']) ?></p>
+                <a href="./commandes.php" class="close">Fermer</a>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($showPopupLivraison): ?>
+        <div id="popupLivraison" class="overlay">
+            <div class="popup">
+                <h2>Suivi de la livraison</h2>
                 <a href="./commandes.php" class="close">Fermer</a>
             </div>
         </div>

@@ -19,6 +19,7 @@
 
 <body class="backoffice">
     <?php require_once './partials/header.php' ?>
+    <?php require_once './partials/notifications_stock.php' ?>
 
     <?php
         $currentPage = basename(__FILE__);
@@ -411,6 +412,7 @@ echo "
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
+    <script src="../../public/scriptNotif.js"></script>
 </body>
 
 </html>

@@ -19,15 +19,15 @@ $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         LEFT JOIN _remise r ON p.idProduit = r.idProduit 
         AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
-if (!empty($searchQuery)) {
-    $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
-}
-
 // Compter tous les produits
 $countSql = "SELECT COUNT(*) FROM _produit p 
              LEFT JOIN _remise r ON p.idProduit = r.idProduit 
              AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
 
+if (!empty($searchQuery)) {
+    $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
+    $countSql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
+}
 
 // Récuperer la totalité des catégories
 $catSql = "SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;";
@@ -45,8 +45,11 @@ $vendeur = "SELECT
             ORDER BY nbProduits DESC
             LIMIT 10";
 
-
-$countStmt = $pdo->query($countSql);
+$countStmt = $pdo->prepare($countSql);
+if (!empty($searchQuery)) {
+    $countStmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+}
+$countStmt->execute();
 $totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
 
 $nbPages = ceil($totalProduits / $produitsParPage);
@@ -96,7 +99,6 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 } ?>
 <main class="pageCatalogue">
     <aside class="filter-sort">
-        <h3>Filtres</h3>
         <form method="GET" action="">
             <label for="tri">Trier par :</label>
             <div class="triNote">
@@ -242,15 +244,15 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
         <div class="pagination">
             <?php if ($nbPages > 1): ?>
                 <?php if ($page > 1): ?>
-                    <a href="?page=<?= $page-1 ?>">« Précédent</a>
+                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>">« Précédent</a>
                 <?php endif; ?>
 
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a href="?page=<?= $i ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
+                    <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
                 <?php endfor; ?>
 
                 <?php if ($page < $nbPages): ?>
-                    <a href="?page=<?= $page+1 ?>">Suivant »</a>
+                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
