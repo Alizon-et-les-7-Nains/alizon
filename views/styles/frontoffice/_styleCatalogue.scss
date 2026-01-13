@@ -5,12 +5,12 @@
 
     .filter-sort{
         background-color: #e4d9ff;
-        width: 300px; /* Largeur fixe au lieu de 22% */
+        width: 260px; /* Largeur fixe au lieu de 22% */
         height: 100vh;
         position: fixed;
         left: 0;
         z-index: 1000;
-        padding: 1em;
+        padding: 20px;
     }
 
     .filter-sort form{
@@ -18,10 +18,10 @@
         flex-direction: column;
     } 
 
-    .filter-sort form div{
+    .triNote .triPrix{
         display: flex;
         flex-direction: column;
-    } 
+    }
 
     .products-section{
         width: calc(100% - 300px); /* Ajustement automatique */
@@ -36,7 +36,6 @@
         flex-direction: row;
         flex-wrap: wrap;
     }
-
 
     #resultat{
         background: #E3F2FE;

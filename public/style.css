@@ -94,7 +94,8 @@ body {
 .headerFront .search-wrapper {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: space-between;
+  justify-content: space-between;
   padding: 10px 450px 10px 20px;
   border-radius: 25px;
   border: none;
@@ -114,6 +115,7 @@ body {
   font-size: 20px;
   font-weight: bold;
   font-style: italic;
+  width: 100%;
 }
 .headerFront .search-wrapper input[type=search]::-webkit-search-cancel-button {
   display: none;
@@ -6886,18 +6888,18 @@ dialog.reassort form input {
 }
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
-  width: 300px; /* Largeur fixe au lieu de 22% */
+  width: 260px; /* Largeur fixe au lieu de 22% */
   height: 100vh;
   position: fixed;
   left: 0;
   z-index: 1000;
-  padding: 1em;
+  padding: 20px;
 }
 .pageCatalogue .filter-sort form {
   display: flex;
   flex-direction: column;
 }
-.pageCatalogue .filter-sort form div {
+.pageCatalogue .triNote .triPrix {
   display: flex;
   flex-direction: column;
 }
