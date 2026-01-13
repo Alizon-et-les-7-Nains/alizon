@@ -426,7 +426,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <p>destination</p>
                 <p><?php echo htmlspecialchars($tabIdDestination[0]["destination"]) ?></p>
                 <p>Numéro de bordereau</p>
-                <p><?php echo $result['noBordereau'] ?></p>
+                <p><?php echo htmlspecialchars($result['noBordereau']) ?></p>
                 <a href="./commandes.php" class="close">Fermer</a>
             </div>
         </div>
