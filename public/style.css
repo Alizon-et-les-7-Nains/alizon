@@ -6891,11 +6891,15 @@ dialog.reassort form input {
   position: fixed;
   left: 0;
   z-index: 1000;
+  padding: 1em;
 }
 .pageCatalogue .filter-sort form {
   display: flex;
   flex-direction: column;
-  padding: 1em;
+}
+.pageCatalogue .filter-sort form div {
+  display: flex;
+  flex-direction: column;
 }
 .pageCatalogue .products-section {
   width: calc(100% - 300px); /* Ajustement automatique */
@@ -6915,6 +6919,7 @@ dialog.reassort form input {
   padding: 0.3em;
   font-size: 13px;
   font-weight: 500;
+  margin: 0;
 }
 .pageCatalogue .listeArticle {
   display: grid;
@@ -6938,7 +6943,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
-  font-size: 20px;
+  font-size: 16px;
   font-family: "Open-sans", serif;
   font-weight: 500;
   margin-top: 10px;

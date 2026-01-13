@@ -10,12 +10,17 @@
         position: fixed;
         left: 0;
         z-index: 1000;
+        padding: 1em;
     }
 
     .filter-sort form{
         display: flex;
         flex-direction: column;
-        padding: 1em;
+    } 
+
+    .filter-sort form div{
+        display: flex;
+        flex-direction: column;
     } 
 
     .products-section{
@@ -39,6 +44,7 @@
         padding: 0.3em;
         font-size: 13px;
         font-weight: 500;
+        margin: 0;
     }
 
     .listeArticle {
@@ -65,7 +71,7 @@
 
     .listeArticle article h2 {
         color: #273469;
-        font-size: 20px;
+        font-size: 16px;
         font-family: "Open-sans", serif;
         font-weight: 500;
         margin-top: 10px;
