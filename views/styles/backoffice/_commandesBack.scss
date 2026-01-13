@@ -16,6 +16,10 @@ main.commandesBackoffice {
             family: 'lora';
         }
     }
+
+    h2 {
+        font-family: 'open-sans';
+    }
     
     section {
         article {
@@ -107,6 +111,10 @@ main.commandesBackoffice {
                         background-color: $color-white;
                     }
                 }
+            }
+
+            &:hover {
+                cursor: pointer;
             }
         }
         
