@@ -2,6 +2,16 @@
 $sqlPath = __DIR__ . '/../../../queries/backoffice/stockFaible.sql';
 $sqlContent = file_get_contents($sqlPath);
 
+if (isset($_GET['reassort_id'])) {
+    return;
+}
+
+if (!empty($_SESSION['hide_notif'])) {
+    unset($_SESSION['hide_notif']);
+    return;
+}
+
+
 if ($sqlContent !== false) {
     $notifSTMT = $pdo->prepare($sqlContent);
     $notifSTMT->execute([':idVendeur' => $_SESSION['id'] ?? 0]);
@@ -10,9 +20,9 @@ if ($sqlContent !== false) {
     if (!empty($produitsAlerte)): ?>
         <div id="stock-notifications-container">
             <?php foreach ($produitsAlerte as $produit): ?>
-                <a href="/views/backoffice/stocks.php?reassort_id=<?php echo $produit['idProduit']; ?>" 
-                   class="stock-notif" 
-                   onclick="this.remove()">
+                <a href="/views/backoffice/stocks.php?reassort_id=<?php echo $produit['idProduit']; ?>"
+                class="stock-notif"
+                onclick="sessionStorage.setItem('fromNotif', '1')">
                     <img src="/public/images/infoDark.svg" alt="Alerte">
                     <p>Le produit <strong><?php echo htmlspecialchars($produit['nom']); ?></strong> est à <strong><?php echo $produit['stock']; ?></strong> unités. Réassort nécessaire !</p>
                 </a>
