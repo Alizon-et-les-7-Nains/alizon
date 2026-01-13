@@ -5,12 +5,12 @@
 
     .filter-sort{
         background-color: #e4d9ff;
-        width: 300px; /* Largeur fixe au lieu de 22% */
+        width: 280px; /* Largeur fixe au lieu de 22% */
         height: 100vh;
         position: fixed;
         left: 0;
         z-index: 1000;
-        padding: 1em;
+        padding: 20px;
     }
 
     .filter-sort form{
