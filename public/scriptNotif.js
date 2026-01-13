@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetDialog = document.getElementById('d-' + productId);
         
         if (targetDialog) {
-            targetDialog.showModal();
+            targetDialog.show();
             targetDialog.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             const btnCancel = targetDialog.querySelector('.buttonCancel');
