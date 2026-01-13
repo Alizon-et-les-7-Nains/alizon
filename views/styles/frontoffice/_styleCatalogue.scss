@@ -48,7 +48,7 @@
 
     .listeArticle {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(276px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         gap: 10px;
         width: 100%;
     }
