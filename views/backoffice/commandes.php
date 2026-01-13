@@ -62,7 +62,7 @@
                             </tr>
                             <tr>
                                 <td>" . $prod['nom'] . "</td>
-                                <td>x" . $prod['quantiteProduit'] . "</td>
+                                <td>x" . $prod['quantite'] . "</td>
                             </tr>
                         </table>
                     </li>";
@@ -83,7 +83,7 @@
                     $imageSTMT->execute([$prod['idProduit']]);
                     $image = $imageSTMT->fetchColumn();
 
-                    $total += $prod['prix'] * $prod['quantiteProduit'];
+                    $total += $prod['prix'] * $prod['quantite'];
                     $total = formatPrice($total);
 
                     echo "<li>
@@ -93,11 +93,11 @@
                             </tr>
                             <tr>
                                 <td>" . $prod['nom'] . "</td>
-                                <td>x" . $prod['quantiteProduit'] . "</td>
+                                <td>x" . $prod['quanttie'] . "</td>
                             </tr>
                             <tr>
                                 <td>" . formatPrice($prod['prix']) . "</td>
-                                <td>" . formatPrice($prod['prix'] * $prod['quantiteProduit']) . "</td>
+                                <td>" . formatPrice($prod['prix'] * $prod['quantite']) . "</td>
                             </tr>
                         </table>
                     </li>";
@@ -153,7 +153,7 @@
                             </tr>
                             <tr>
                                 <td>" . $prod['nom'] . "</td>
-                                <td>x" . $prod['quantiteProduit'] . "</td>
+                                <td>x" . $prod['quantite'] . "</td>
                             </tr>
                         </table>
                     </li>";
@@ -174,7 +174,7 @@
                     $imageSTMT->execute([$prod['idProduit']]);
                     $image = $imageSTMT->fetchColumn();
 
-                    $total += $prod['prix'] * $prod['quantiteProduit'];
+                    $total += $prod['prix'] * $prod['quantite'];
                     $total = formatPrice($total);
 
                     echo "<li>
@@ -184,11 +184,11 @@
                             </tr>
                             <tr>
                                 <td>" . $prod['nom'] . "</td>
-                                <td>x" . $prod['quantiteProduit'] . "</td>
+                                <td>x" . $prod['quantite'] . "</td>
                             </tr>
                             <tr>
                                 <td>" . formatPrice($prod['prix']) . "</td>
-                                <td>" . formatPrice($prod['prix'] * $prod['quantiteProduit']) . "</td>
+                                <td>" . formatPrice($prod['prix'] * $prod['quantite']) . "</td>
                             </tr>
                         </table>
                     </li>";
