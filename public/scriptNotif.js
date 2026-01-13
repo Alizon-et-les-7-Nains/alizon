@@ -1,3 +1,15 @@
+document.addEventListener('click', (e) => {
+    const settingsBtn = e.target.closest('.settings');
+    if (!settingsBtn) return;
+
+    document.querySelectorAll('dialog[open]').forEach(d => d.close());
+
+    const dialog = document.getElementById('d-' + settingsBtn.id);
+    if (dialog) {
+        dialog.show();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('reassort_id');
@@ -21,3 +33,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
