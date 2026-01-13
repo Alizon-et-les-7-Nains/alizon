@@ -1,6 +1,6 @@
 Array.from(document.getElementsByTagName('article')).forEach((command: HTMLElement) => {
     command.addEventListener('click', () => {
-        const modal = document.querySelector(`dialog#${command.id}`) as HTMLDialogElement;
+        const modal = document.querySelector(`main.commandesBackoffice dialog#${command.id}`) as HTMLDialogElement;
 
         modal.showModal();
 
