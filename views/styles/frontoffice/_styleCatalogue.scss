@@ -19,7 +19,7 @@
     } 
 
     .products-section{
-        width: calc(100% - 280px); /* Ajustement automatique */
+        width: calc(100% - 300px); /* Ajustement automatique */
         display: flex;
         flex-direction: column;
         margin-left: 280px; /* Au lieu de padding-left: 22% */
@@ -230,7 +230,7 @@
 /* Media queries pour les petits écrans */
 @media (max-width: 1300px) {
     .pageCatalogue .filter-sort {
-        width: 260px;
+        width: 250px;
     }
     
     .pageCatalogue .products-section {
