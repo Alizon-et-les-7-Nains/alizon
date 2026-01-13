@@ -32,7 +32,7 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
         <div class="group">
             <?php 
                 foreach ($listeCategories as $categorie) { 
-                    $nomCat = str_replace(" ", "_", $categorie);
+                    $nomCat = str_replace(" ", "_", $categorie['typeProd']);
                     ?>
                     <a class="categorie" style="cursor: pointer;" href="http://10.253.5.104/views/frontoffice/catalogue.php?categorie=<?= $nomCat ?>"><?php echo $categorie['typeProd']; ?></a>
             <?php } ?>
