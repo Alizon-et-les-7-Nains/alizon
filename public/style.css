@@ -121,6 +121,9 @@ body {
 .headerFront .search-wrapper input[type=search]::-webkit-search-cancel-button {
   display: none;
 }
+.headerFront .search-wrapper input[type=search]:focus {
+  outline: none;
+}
 .headerFront .carousel {
   margin-top: 20px;
   padding-top: 10px;

@@ -113,6 +113,9 @@ body {
       &::-webkit-search-cancel-button {
         display: none;
       }
+      &:focus {
+        outline: none;
+      }
     }
   }
 
