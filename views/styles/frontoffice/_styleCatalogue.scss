@@ -5,7 +5,7 @@
 
     .filter-sort{
         background-color: #e4d9ff;
-        width: 280px; /* Largeur fixe au lieu de 22% */
+        width: 300px; /* Largeur fixe au lieu de 22% */
         height: 100vh;
         position: fixed;
         left: 0;
@@ -230,7 +230,7 @@
 /* Media queries pour les petits écrans */
 @media (max-width: 1300px) {
     .pageCatalogue .filter-sort {
-        width: 250px;
+        width: 260px;
     }
     
     .pageCatalogue .products-section {
