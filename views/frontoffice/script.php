@@ -1,5 +1,5 @@
 <?php
-require_once "../../controllers/pdo.php";
+require_once __DIR__ . '/../../controllers/pdo.php';
     
 // Fonctions de déchiffrement
 function convert($char, $cle, $sens) {
@@ -47,10 +47,18 @@ function dechiffrerMotDePasse($mdpChiffre, $cle) {
     return vignere($mdpChiffre, $cle, -1);
 }
 
+// Récupère prix + tauxRemise pour un produit (utilise la connexion $pdo)
+function getProduitPrixRemise($pdo, $idProduit) {
+    $sql = "SELECT \
+            p.prix,\n+            remise.tauxRemise\n+           FROM _produit p \n+            LEFT JOIN _remise remise ON p.idProduit = remise.idProduit \n+                AND CURDATE() BETWEEN remise.debutRemise AND remise.finRemise\n+            WHERE p.idProduit = ?";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([(int)$idProduit]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+    // connexion PDO fournie par controllers/pdo.php (variable $pdo)
     // 1. Récupérer les mots de passe à traiter
     $sqlSelect = "
         SELECT idClient, email, mdp 
