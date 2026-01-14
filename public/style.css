@@ -7014,7 +7014,7 @@ dialog.reassort form input {
 .pageCatalogue .poly1 {
   position: absolute;
   top: 15px;
-  left: 8px;
+  left: 6px;
   width: 40px;
   transform: scaleY(2);
   z-index: 1000000;
@@ -7022,20 +7022,21 @@ dialog.reassort form input {
 .pageCatalogue .poly2 {
   position: absolute;
   top: 50px;
-  left: 8px;
+  left: 6px;
   width: 40px;
   transform: scaleY(2);
   z-index: 1000000;
 }
 .pageCatalogue .tempsRestant {
   position: absolute;
-  top: 0px;
-  left: 50%;
+  top: -8px;
+  right: -5px;
   background-color: #fffefa;
   color: #273469;
+  padding: 3px 3px;
   z-index: 10000;
-  font-size: 10px;
-  font-weight: bold;
+  font-size: 12px;
+  font-weight: bolder;
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
@@ -7342,6 +7343,15 @@ dialog.reassort form input {
   border: 1px solid #273469;
   border-radius: 25px;
   margin: 30px 50px;
+  max-height: 500px;
+  min-height: 500px;
+}
+.mesNotif .ensembleNotif .sidebarNotif {
+  overflow: scroll;
+  scrollbar-width: thin;
+}
+.mesNotif .ensembleNotif .sidebarNotif:first-child, .mesNotif .ensembleNotif .sidebarNotif:last-child {
+  border-top-left-radius: 25px;
 }
 .mesNotif .apercuNotif {
   display: flex;
@@ -7350,6 +7360,13 @@ dialog.reassort form input {
   color: #273469;
   border: 1px solid #273469;
   padding: 10px 5px;
+}
+.mesNotif .apercuNotif img {
+  height: 40px;
+  padding: 20px;
+}
+.mesNotif .apercuNotif {
+  cursor: pointer;
 }
 .mesNotif .apercuNotif * {
   margin: 0;
@@ -7365,9 +7382,23 @@ dialog.reassort form input {
   width: 150%;
 }
 .mesNotif .ecranNotif h3 {
-  border-bottom: 1px solid black;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.mesNotif .ecranNotif .contenuNotif {
+  margin: 20px;
   color: black;
+}
+.mesNotif .ecranNotif .titleNotif {
+  border-bottom: 1px solid black;
+  padding: 0px 30px;
   font-size: medium;
+}
+.mesNotif .ecranNotif .titleNotif h1 {
+  margin-bottom: 0;
+}
+.mesNotif .ecranNotif .titleNotif h3 {
+  margin-bottom: 21px;
 }
 
 main.commandesBackoffice {
