@@ -1,5 +1,5 @@
 <?php
-require_once '../../controllers/pdo.php' ;
+require_once __DIR__ . '/../backoffice/controllers/pdo.php';
     
 // Fonctions de déchiffrement
 function convert($char, $cle, $sens) {
