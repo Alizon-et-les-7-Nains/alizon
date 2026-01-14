@@ -4,9 +4,8 @@ require_once "../../controllers/prix.php";
 session_start();
 ob_start();
 
-$etape = 5;
 $showPopup = false;
-$showPopupLivraison = isset($_GET['showLivraison']);
+$showPopupLivraison = isset($_GET['idCommande']);
 
 if (!empty($_SESSION['commandePayee'])) {
     $showPopup = true;
@@ -305,7 +304,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                             <p>Livrée le <?php echo $commande['dateLivraison']; ?></p>
                                         <?php else: ?>
                                             <p><?php echo htmlspecialchars($commande['statut']); ?></p>
-                                            <a href="commandes.php?showLivraison=<?= $commande['id'] ?>">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
+                                            <a href="commandes.php?idCommande=<?= $commande['id'] ?>">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -436,6 +435,12 @@ $cart = getCurrentCart($pdo, $idClient);
     <?php endif; ?>
 
     <?php if ($showPopupLivraison): ?>
+        <?php
+            $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([":idCommande" => $_GET['idCommande']]);
+            $etape = $stmt->fetch(PDO::FETCH_ASSOC);
+        ?>
         <div id="popupLivraison" class="overlay">
             <div class="popup">
                 <div class="croixFermerLaPage">
@@ -443,6 +448,7 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div></div>
                 </div> 
                 <h2>Suivi de la livraison</h2>
+
                 <div class="stepper">
                     <p>En cours de préparation</p>
                     <p>Prise en charge du colis</p>
@@ -469,8 +475,10 @@ $cart = getCurrentCart($pdo, $idClient);
                 </div>
             </div>
         </div>
-    <?php endif; ?>
-    <script>const etape = <?php echo json_encode($etape); ?>;</script>
+    <?php endif; 
+    var_dump($etape[0]);
+    var_dump($_GET['idCommande'])?>
+    <script>const etape = <?php echo json_encode($etape[0]); ?>;</script>
     <script src="../scripts/frontoffice/popupSuivieCommande.js"></script>
 </body>
 </html>
