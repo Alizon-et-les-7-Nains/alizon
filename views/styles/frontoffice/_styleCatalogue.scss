@@ -59,7 +59,9 @@
         width: 100%;
     }
 
+
     .listeArticle article {
+        position: relative;
         border: 2px solid #273469;
         border-radius: 20px;
         margin: 10px;
@@ -72,6 +74,12 @@
         flex-direction: column;
         justify-content: space-between;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .bannierePromo{
+        position:absolute;
+        top:0px;
+        left:50px;
     }
 
     .listeArticle article h2 {
