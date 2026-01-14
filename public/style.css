@@ -7120,8 +7120,8 @@ dialog.reassort form input {
     margin-left: 250px;
   }
   .pageCatalogue .star {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
   }
   .pageCatalogue .notation {
     gap: 4px;
@@ -7138,8 +7138,8 @@ dialog.reassort form input {
     margin-left: 220px;
   }
   .pageCatalogue .star {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30pxx;
   }
   .pageCatalogue .notation {
     gap: 3px;
@@ -7156,8 +7156,8 @@ dialog.reassort form input {
     margin-left: 200px;
   }
   .pageCatalogue .star {
-    width: 10px;
-    height: 10px;
+    width: 25px;
+    height: 25px;
   }
   .pageCatalogue .notation {
     gap: 1px;
