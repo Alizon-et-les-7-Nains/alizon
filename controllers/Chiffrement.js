@@ -22,7 +22,7 @@ function convert(char, cle, sens) {
   return String.fromCharCode(newCode);
 }
 
-const cle = process.env.CIPHER_KEY;
+const cle = process.env.ENCRYPTION_KEY;
 
 function vignere(texte, cle, sens) {
   let result = "";

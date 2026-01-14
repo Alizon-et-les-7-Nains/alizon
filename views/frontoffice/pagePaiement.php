@@ -1,9 +1,9 @@
 <?php
 require_once "../../controllers/pdo.php";
 session_start();
-
-// Charger les variables d'environnement depuis .env
 $envPath = __DIR__ . '/../../.env';
+
+
 if (file_exists($envPath)) {
     $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lines as $line) {
@@ -19,26 +19,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $idClient = $_SESSION['user_id'];
-
-// Fonction de chiffrement AES-256-CBC
-function encryptData($data) {
-    $key = $_ENV['ENCRYPTION_KEY'] ?? 'default_key_change_this';
-    $method = 'AES-256-CBC';
-    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
-    $encrypted = openssl_encrypt($data, $method, $key, 0, $iv);
-    return base64_encode($iv . $encrypted);
-}
-
-// Fonction de déchiffrement AES-256-CBC
-function decryptData($data) {
-    $key = $_ENV['ENCRYPTION_KEY'] ?? 'default_key_change_this';
-    $method = 'AES-256-CBC';
-    $data = base64_decode($data);
-    $ivLength = openssl_cipher_iv_length($method);
-    $iv = substr($data, 0, $ivLength);
-    $encrypted = substr($data, $ivLength);
-    return openssl_decrypt($encrypted, $method, $key, 0, $iv);
-}
 
 function getCurrentCart($pdo, $idClient) {
     $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
@@ -113,7 +93,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
 
         // Chiffrer le numéro de carte avant de le stocker
-        $numeroCarteChiffre = encryptData($numeroCarte);
+        $numeroCarteChiffre = $numeroCarte;
         
         $checkCarte = $pdo->prepare("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = ?");
         $checkCarte->execute([$numeroCarteChiffre]);
