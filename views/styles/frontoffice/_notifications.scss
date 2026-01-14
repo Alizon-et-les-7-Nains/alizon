@@ -4,7 +4,7 @@
 .mesNotif {
     font-family: "Lora", serif;
     color: #273469;
-
+    
     .topRecherche {
         display: flex;
         justify-content: space-between;
@@ -30,6 +30,15 @@
         border: 1px solid #273469;
         border-radius: 25px;
         margin: 30px 50px;
+        max-height: 500px;
+        min-height: 500px;
+        
+        .sidebarNotif {
+            overflow: scroll;
+        }
+        .sidebarNotif:first-child {
+            border-top-left-radius: 25px;
+        }
     }
     .apercuNotif {
         display: flex;
@@ -38,6 +47,11 @@
         color: #273469;
         border: 1px solid #273469;
         padding: 10px 5px;
+        img {
+            height: 40px;
+            padding: 20px;
+        }
+        cursor: pointer;
         * {
             margin: 0;
         }
@@ -52,6 +66,14 @@
     .ecranNotif {
         width: 150%;
         h3 {            
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .contenuNotif {
+            margin: 20px;    
+            color: black;
+        }
+        .titleNotif {
             border-bottom: 1px solid black;
             color: black;
             font-size: medium;
