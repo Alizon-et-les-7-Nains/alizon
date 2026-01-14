@@ -26,7 +26,7 @@ $id_client = $_SESSION['user_id'];
 <body>
     <?php include './partials/headerConnecte.php'; ?>
 
-    <main class="mesAvis">
+    <main class="mesNotif">
         <section class="topRecherche">
             <h1>Mes notifications</h1>
         </section>

@@ -92,7 +92,7 @@
         }
     }
     
-    .topRecherche {
+    @mixin topRechercheMX {
         display: flex;
         justify-content: space-between;
         align-content: center;
@@ -109,6 +109,10 @@
             margin-left: 80px;
             margin-right: 80px;
         }
+    }
+
+    .topRecherche {
+        @include topRechercheMX;
     }
     
     .filtreRecherche {
