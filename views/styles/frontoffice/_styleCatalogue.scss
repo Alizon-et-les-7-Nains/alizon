@@ -235,7 +235,8 @@
 /* Media queries pour les petits écrans */
 @media (max-width: 1300px) {
     .pageCatalogue .filter-sort {
-        width: 250px;
+        width: 220px;
+        padding: 15px;
     }
     
     .pageCatalogue .products-section {
@@ -246,7 +247,8 @@
 
 @media (max-width: 1024px) {
     .pageCatalogue .filter-sort {
-        width: 220px;
+        width: 200px;
+        padding: 10px;
     }
     
     .pageCatalogue .products-section {
@@ -257,7 +259,8 @@
 
 @media (max-width: 768px) {
     .pageCatalogue .filter-sort {
-        width: 200px;
+        width: 190px;
+        padding: 5px;
     }
     
     .pageCatalogue .products-section {
