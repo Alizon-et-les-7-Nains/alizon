@@ -96,7 +96,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 10px 10px 20px;
+  padding: 10px 10px 5px 5px;
   border-radius: 25px;
   border: none;
   outline: none;
@@ -853,18 +853,84 @@ body {
   align-items: center;
   z-index: 999;
 }
-.pageCommandes .popup {
+.pageCommandes .overlay .popup {
   background: white;
   padding: 20px;
   border-radius: 8px;
   min-width: 300px;
   text-align: center;
+  width: 60%;
+  height: 50%;
+  display: block;
 }
-.pageCommandes .close {
-  display: inline-block;
-  margin-top: 10px;
-  text-decoration: none;
-  color: red;
+.pageCommandes .overlay .popup .croixFermerLaPage {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}
+.pageCommandes .overlay .popup .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.pageCommandes .overlay .popup .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.pageCommandes .overlay .popup .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.pageCommandes .overlay .popup .stepper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 100px;
+}
+.pageCommandes .overlay .popup .stepper .rond {
+  width: 10px;
+  height: 10px;
+  background-color: #BABABA;
+  border: #BABABA 5px solid;
+  border-radius: 50%;
+  z-index: 1;
+}
+.pageCommandes .overlay .popup .stepper .trait {
+  height: 2px;
+  flex: 1;
+  background-color: #BABABA;
+}
+.pageCommandes .overlay .popup .stepper .trait .demiTrait {
+  height: 2px;
+  width: 50%;
+  background-color: #BABABA;
+}
+.pageCommandes .overlay .popup .stepper p:first-of-type {
+  position: absolute;
+  top: 45%;
+  left: 20%;
+}
+.pageCommandes .overlay .popup .stepper p:nth-of-type(2) {
+  position: absolute;
+  top: 57%;
+  left: 32%;
+}
+.pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
+  position: absolute;
+  top: 45%;
+  left: 43%;
+}
+.pageCommandes .overlay .popup .stepper p:nth-of-type(4) {
+  position: absolute;
+  top: 57%;
+  left: 58%;
+}
+.pageCommandes .overlay .popup .stepper p:last-of-type {
+  position: absolute;
+  top: 45%;
+  left: 74%;
 }
 
 /* ---- Header ---- */
@@ -6869,9 +6935,14 @@ dialog.reassort form input {
   display: flex;
   flex-direction: column;
 }
-.pageCatalogue .triNote .triPrix {
+.pageCatalogue .filter-sort form article {
   display: flex;
   flex-direction: column;
+}
+.pageCatalogue .filter-sort form article div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .pageCatalogue .products-section {
   width: calc(100% - 280px); /* Ajustement automatique */
@@ -6934,8 +7005,8 @@ dialog.reassort form input {
   margin: 5px 0;
 }
 .pageCatalogue .star {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 }
 .pageCatalogue .notation .etoile {
   width: 20px;
@@ -7055,35 +7126,61 @@ dialog.reassort form input {
   border: 2px solid black;
   text-decoration: none;
 }
-
-/* Media queries pour les petits écrans */
 @media (max-width: 1300px) {
   .pageCatalogue .filter-sort {
-    width: 250px;
+    width: 220px;
+    padding: 15px;
   }
   .pageCatalogue .products-section {
     width: calc(100% - 250px);
     margin-left: 250px;
   }
+  .pageCatalogue .star {
+    width: 35px;
+    height: 35px;
+  }
+  .pageCatalogue .notation {
+    gap: 4px;
+    margin: 4px 0;
+  }
 }
 @media (max-width: 1024px) {
   .pageCatalogue .filter-sort {
-    width: 220px;
+    width: 200px;
+    padding: 10px;
   }
   .pageCatalogue .products-section {
     width: calc(100% - 220px);
     margin-left: 220px;
   }
+  .pageCatalogue .star {
+    width: 33px;
+    height: 33px;
+  }
+  .pageCatalogue .notation {
+    gap: 3px;
+    margin: 3px 0;
+  }
 }
 @media (max-width: 768px) {
   .pageCatalogue .filter-sort {
-    width: 200px;
+    width: 190px;
+    padding: 5px;
   }
   .pageCatalogue .products-section {
     width: calc(100% - 200px);
     margin-left: 200px;
   }
+  .pageCatalogue .star {
+    width: 30px;
+    height: 30px;
+  }
+  .pageCatalogue .notation {
+    gap: 1px;
+    margin: 1px 0;
+  }
 }
+
 .overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
   position: fixed;
   top: 0;

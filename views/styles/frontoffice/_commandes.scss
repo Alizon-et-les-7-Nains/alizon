@@ -385,6 +385,7 @@
         cursor: pointer;
     }
 
+<<<<<<< HEAD
     .btnCom {
         display: flex;
         align-items: center;
@@ -401,6 +402,9 @@
         margin-bottom: 5px;
         cursor: pointer;
     }
+=======
+    
+>>>>>>> 8a7266d14ecddbd3f212f258fab103917f301bdc
 
     .overlay {
         position: fixed;
@@ -410,21 +414,97 @@
         justify-content: center;
         align-items: center;
         z-index: 999;
-    }
-    
-    .popup {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        min-width: 300px;
-        text-align: center;
-    }
-    
-    .close {
-        display: inline-block;
-        margin-top: 10px;
-        text-decoration: none;
-        color: red;
-    }
-    
+
+        .popup {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 300px;
+            text-align: center;
+            width: 60%;
+            height: 50%;
+            display: block;
+            
+            .croixFermerLaPage {
+                position: absolute; 
+                top: 30px;
+                right: 30px;
+                cursor: pointer;
+            }
+            .croixFermerLaPage div {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 30px; 
+                height: 3px;
+                background-color: #BABABA;
+            }
+            .croixFermerLaPage div:first-of-type {
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+            .croixFermerLaPage div:last-of-type {
+                transform: translate(-50%, -50%) rotate(-45deg);
+            }
+
+            .stepper{
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                margin-top: 100px;
+
+                .rond{
+                    width: 10px;
+                    height: 10px;
+                    background-color: #BABABA;
+                    border: #BABABA 5px solid;
+                    border-radius: 50%;
+                    z-index: 1;
+                }
+
+                .trait{
+                    height: 2px;
+                    flex : 1;
+                    background-color: #BABABA;
+
+                    .demiTrait{
+                        height: 2px;
+                        width: 50%;
+                        background-color: #BABABA;
+                    }
+                }
+
+                
+
+                p:first-of-type {
+                    position: absolute;
+                    top: 45%;
+                    left: 20%;
+                }
+
+                p:nth-of-type(2) {
+                    position: absolute;
+                    top: 57%;
+                    left: 32%;
+                }
+
+                p:nth-of-type(3) {
+                    position: absolute;
+                    top: 45%;
+                    left: 43%;
+                }
+
+                p:nth-of-type(4) {
+                    position: absolute;
+                    top: 57%;
+                    left: 58%;
+                }
+
+                p:last-of-type {
+                    position: absolute;
+                    top: 45%;
+                    left: 74%;
+                }
+            }
+        }
+    }    
 }
