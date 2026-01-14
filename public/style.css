@@ -7003,9 +7003,9 @@ dialog.reassort form input {
 }
 .pageCatalogue .bannierePromo h1 {
   position: absolute;
-  font-size: 20px;
+  font-size: 16px;
   top: 25px;
-  left: 13px;
+  left: 8px;
   color: #fffefa;
   z-index: 10000;
   margin: 0;
@@ -7014,7 +7014,7 @@ dialog.reassort form input {
 .pageCatalogue .poly1 {
   position: absolute;
   top: 15px;
-  left: 10px;
+  left: 8px;
   width: 40px;
   transform: scaleY(2);
   z-index: 1000000;
@@ -7022,7 +7022,7 @@ dialog.reassort form input {
 .pageCatalogue .poly2 {
   position: absolute;
   top: 50px;
-  left: 10px;
+  left: 8px;
   width: 40px;
   transform: scaleY(2);
   z-index: 1000000;
@@ -7034,7 +7034,7 @@ dialog.reassort form input {
   background-color: #fffefa;
   color: #273469;
   z-index: 10000;
-  font-size: 14px;
+  font-size: 10px;
   font-weight: bold;
 }
 .pageCatalogue .listeArticle article h2 {
