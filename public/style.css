@@ -6919,7 +6919,7 @@ dialog.reassort form input {
   display: flex;
   flex-direction: column;
 }
-.pageCatalogue .filter-sort form div {
+.pageCatalogue .filter-sort form article {
   display: flex;
   flex-direction: column;
 }
