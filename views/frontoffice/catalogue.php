@@ -211,6 +211,12 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                     }
                     ?>
             <article data-price="<?= $prixAffichage ?>">
+                <div class="bannierePromo">
+                    <h1>-<?php echo number_format($tauxRemise); ?>%</h1>
+                    <img class="poly1" src="../../public/images/poly1.svg" alt="">
+                    <img class="imgBanniere" src="../../public/images/laBanniere.png" alt="">
+                    <img class="poly2" src="../../public/images/poly2.svg" alt="">
+                </div>
                 <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
                     onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'"
                     alt="Image du produit">
@@ -257,12 +263,6 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                             </button>
                         <?php } ?>
                     </div>
-                </div>
-                <div class="bannierePromo">
-                    <h1>-<?php echo number_format($tauxRemise); ?>%</h1>
-                    <img class="poly1" src="../../public/images/poly1.svg" alt="">
-                    <img class="imgBanniere" src="../../public/images/laBanniere.png" alt="">
-                    <img class="poly2" src="../../public/images/poly2.svg" alt="">
                 </div>
             </article>
             <?php } 

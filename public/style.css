@@ -6986,9 +6986,41 @@ dialog.reassort form input {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .pageCatalogue .bannierePromo {
+  display: block;
   position: absolute;
-  top: 0px;
-  left: 50px;
+  top: -8px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+.pageCatalogue .bannierePromo h1 {
+  font-size: 30px;
+}
+.pageCatalogue .imgBanniere {
+  position: absolute;
+  height: 50px;
+  width: auto;
+  z-index: 1;
+}
+.pageCatalogue .bannierePromo h1 {
+  position: absolute;
+  top: 25px;
+  left: 13px;
+  color: #fffefa;
+  z-index: 10000;
+}
+.pageCatalogue .poly1 {
+  position: absolute;
+  top: 35px;
+  left: 10px;
+  width: auto;
+  z-index: 100;
+}
+.pageCatalogue .poly2 {
+  position: absolute;
+  top: 90px;
+  left: 10px;
+  width: auto;
+  z-index: 1000000;
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;

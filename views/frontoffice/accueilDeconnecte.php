@@ -11,9 +11,7 @@ require_once "../../controllers/prix.php";
     // Récupération du cookie existant ou création d'un tableau vide
     if (((isset($_COOKIE['produitConsulte'])) && (isset($_COOKIE['produitPanier']))) && (!empty($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitPanier']))) {
         $tabIDProduitConsulte = unserialize($_COOKIE['produitConsulte']);
-        var_dump($tabIDProduitConsulte);
         $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
-        var_dump($tabIDProduitPanier);
         if (!is_array($tabIDProduitConsulte)) {
             $tabIDProduitConsulte = [];
             $tabIDProduitPanier = [];
