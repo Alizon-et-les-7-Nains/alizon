@@ -72,16 +72,14 @@ if ($sortOrder === 'noteAsc') {
 $sql .= " LIMIT :limit OFFSET :offset";
 
 $stmt = $pdo->prepare($sql);
-$stmt->bindValue(':search', '%' . $recherche . '%');
 $stmt->bindValue(':minPrice', $minPrice);
 $stmt->bindValue(':maxPrice', $maxPrice);
 $stmt->bindValue(':noteMin', $noteMin);
-if (!empty($categorie)) $stmt->bindValue(':categorie', $categorie); // Correction ici : liaison au $stmt
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-if(!empty($vendeur)){
-    $stmt->bindValue(':idVendeur',$vendeur);
-}
+if ($recherche !== '') $stmt->bindValue(':search', '%' . $recherche . '%');
+if (!empty($categorie)) $stmt->bindValue(':categorie', $categorie);
+if(!empty($vendeur)) $stmt->bindValue(':idVendeur',$vendeur);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
