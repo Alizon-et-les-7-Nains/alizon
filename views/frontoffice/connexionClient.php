@@ -115,9 +115,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div>
                 <a href="inscription.php">Pas encore client ? Inscrivez-vous ici</a>
+                <span class="popuptext" id="openModal"><a>Mot de passe oublié ?</a></span>
                 <button type="submit" class="boutonConnexionClient">Se connecter</button>
             </div>
         </form>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                    <h2>Entrez votre mail</h2>
+                    <form id="monForm" action="../../controllers/mdpOublie.php" method="post" enctype="multipart/form-data">
+                        <label>Entrez votre mail :</label>
+                        <input type="email" name="mail" id="mail" placeholder="Votre mail">
+                        <button type="submit" id="validate" class="boutonConnexionClient">Valider</button>
+                    </form>
+            </div>
+        </div>
 
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
@@ -140,6 +153,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         this.submit();
     });
+
+    const modal = document.getElementById("modal");
+    const openBtn = document.getElementById("openModal");
+    const closeBtn = document.querySelector(".close");
+    const validateBtn = document.getElementById("validate");
+
+    openBtn.onclick = () => {
+    modal.style.display = "block";
+    };
+
+    closeBtn.onclick = () => {
+    modal.style.display = "none";
+    };
+
+    validateBtn.onclick = () => {
+    const value = document.getElementById("mail").value;
+    console.log("Valeur saisie :", value);
+    modal.style.display = "none";
+    };
+
+    window.onclick = (e) => {
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
+    };
+
+
     </script>
 </body>
 

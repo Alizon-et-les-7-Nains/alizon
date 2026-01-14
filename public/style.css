@@ -1015,6 +1015,50 @@ body.backoffice.nonConnecte nav {
   position: relative;
   min-height: 100vh;
 }
+.pageConnexionCLient .modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.pageConnexionCLient .modal-content {
+  background: white;
+  padding: 20px;
+  width: 500px;
+  height: 200px;
+  margin: 15% auto;
+  border-radius: 24px;
+  position: relative;
+}
+.pageConnexionCLient .modal-content h2 {
+  margin-left: 10px;
+}
+.pageConnexionCLient .modal-content input {
+  width: 95%;
+  height: 40px;
+  margin-top: 10px;
+  border-radius: 24px;
+}
+.pageConnexionCLient .modal-content button {
+  width: 10%;
+  height: 40px;
+  width: 90px;
+  position: absolute;
+  color: #273469;
+  right: 10px;
+  bottom: 10px;
+}
+.pageConnexionCLient .close {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
 .pageConnexionCLient::before {
   content: "";
   position: absolute;
@@ -1142,7 +1186,6 @@ body.backoffice.nonConnecte nav {
 .pageConnexionCLient main form {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 16px;
   width: 100%;
   max-width: 420px;
