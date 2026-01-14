@@ -6988,7 +6988,7 @@ dialog.reassort form input {
 .pageCatalogue .bannierePromo {
   display: block;
   position: absolute;
-  top: 0px;
+  top: -4px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
@@ -7003,23 +7003,26 @@ dialog.reassort form input {
 }
 .pageCatalogue .bannierePromo h1 {
   position: absolute;
-  top: 15px;
+  font-size: 12px;
+  top: 32px;
   left: 13px;
   color: #fffefa;
   z-index: 10000;
 }
 .pageCatalogue .poly1 {
   position: absolute;
-  top: 5px;
+  top: 15px;
   left: 10px;
-  width: auto;
+  width: 30px;
+  min-height: 10px;
   z-index: 100;
 }
 .pageCatalogue .poly2 {
   position: absolute;
-  top: 25px;
+  top: 50px;
   left: 10px;
-  width: auto;
+  width: 30px;
+  min-height: 10px;
   z-index: 1000000;
 }
 .pageCatalogue .tempsRestant {
