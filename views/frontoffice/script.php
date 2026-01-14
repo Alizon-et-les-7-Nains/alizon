@@ -47,26 +47,16 @@ function dechiffrerMotDePasse($mdpChiffre, $cle) {
     return vignere($mdpChiffre, $cle, -1);
 }
 
-// Récupère prix + tauxRemise pour un produit (utilise la connexion $pdo)
-function getProduitPrixRemise($pdo, $idProduit) {
-    $sql = "SELECT \
-            p.prix,\n+            remise.tauxRemise\n+           FROM _produit p \n+            LEFT JOIN _remise remise ON p.idProduit = remise.idProduit \n+                AND CURDATE() BETWEEN remise.debutRemise AND remise.finRemise\n+            WHERE p.idProduit = ?";
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([(int)$idProduit]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
 try {
     // connexion PDO fournie par controllers/pdo.php (variable $pdo)
     // 1. Récupérer les mots de passe à traiter
     $sqlSelect = "
-        SELECT idClient, email, mdp 
-        FROM _client 
-        WHERE mdp IS NOT NULL 
-          AND mdp != ''
-          AND mdp NOT LIKE '$2y$%'
-        ORDER BY idClient
+        SELECT codeVendeur, email, mdp, raisonSocial
+FROM _vendeur 
+WHERE mdp IS NOT NULL 
+  AND mdp != ''
+  AND mdp NOT LIKE '$2y$%'
+ORDER BY codeVendeur;
     ";
     
     $stmt = $pdo->query($sqlSelect);
@@ -87,7 +77,9 @@ try {
         $mdpHache = password_hash($mdpClair, PASSWORD_DEFAULT);
         
         // 3. Mettre à jour le mot de passe dans la base de données
-        $sqlUpdate = "UPDATE _client SET mdp = :mdp WHERE idClient = :id";
+        $sqlUpdate = "UPDATE _vendeur 
+SET mdp = :mdp 
+WHERE codeVendeur = :codeVendeur;";
         $updateStmt = $pdo->prepare($sqlUpdate);
         $updateStmt->execute([
             ':mdp' => $mdpHache,
