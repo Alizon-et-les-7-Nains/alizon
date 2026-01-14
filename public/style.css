@@ -7346,12 +7346,23 @@ dialog.reassort form input {
   align-items: center;
   background-color: #e3f2fe;
   color: #273469;
+  border: 1px solid #273469;
+  padding: 10px 5px;
 }
 .mesNotif .apercuNotif * {
   margin: 0;
 }
-.mesNotif .apercuNotif h3 {
-  text-align: center;
+.mesNotif .apercuNotif h4, .mesNotif .apercuNotif h5 {
+  font-weight: 400;
+  padding: 4px 0px;
+}
+.mesNotif .apercuNotif h5 {
+  color: black;
+}
+.mesNotif .ecranNotif h3 {
+  border-bottom: 1px solid black;
+  color: black;
+  font-size: medium;
 }
 
 main.commandesBackoffice {
