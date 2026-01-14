@@ -7003,7 +7003,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .bannierePromo h1 {
   position: absolute;
-  font-size: 12px;
+  font-size: 20px;
   top: 20px;
   left: 13px;
   color: #fffefa;
@@ -7012,17 +7012,17 @@ dialog.reassort form input {
 .pageCatalogue .poly1 {
   position: absolute;
   top: 15px;
-  left: 10px;
+  left: 12px;
   width: 30px;
-  min-height: 15px;
-  z-index: 100;
+  transform: scaleY(1.5);
+  z-index: 1000000;
 }
 .pageCatalogue .poly2 {
   position: absolute;
   top: 50px;
-  left: 10px;
+  left: 12px;
   width: 30px;
-  min-height: 15px;
+  transform: scaleY(1.5);
   z-index: 1000000;
 }
 .pageCatalogue .tempsRestant {
@@ -7358,6 +7358,9 @@ dialog.reassort form input {
 }
 .mesNotif .apercuNotif h5 {
   color: black;
+}
+.mesNotif .ecranNotif {
+  width: 150%;
 }
 .mesNotif .ecranNotif h3 {
   border-bottom: 1px solid black;
