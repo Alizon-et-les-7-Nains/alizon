@@ -46,48 +46,46 @@ $cle = "?zu6j,xX{N12I]0r6C=v57IoASU~?6_y";
 function dechiffrerMotDePasse($mdpChiffre, $cle) {
     return vignere($mdpChiffre, $cle, -1);
 }
-
 try {
-    // connexion PDO fournie par controllers/pdo.php (variable $pdo)
-    // 1. Récupérer les mots de passe à traiter
+    // 1. Récupérer les mots de passe des vendeurs à traiter
     $sqlSelect = "
         SELECT codeVendeur, email, mdp, raisonSocial
-FROM _vendeur 
-WHERE mdp IS NOT NULL 
-  AND mdp != ''
-  AND mdp NOT LIKE '$2y$%'
-ORDER BY codeVendeur;
+        FROM vendeur 
+        WHERE mdp IS NOT NULL 
+          AND mdp != ''
+          AND mdp NOT LIKE '$2y$%'
+        ORDER BY codeVendeur
     ";
     
     $stmt = $pdo->query($sqlSelect);
-    $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    echo "Nombre de clients à traiter : " . count($clients) . "<br><br>";
+    echo "Nombre de vendeurs à traiter : " . count($vendeurs) . "<br><br>";
     
-    // 2. Pour chaque client, déchiffrer et hacher le mot de passe
-    foreach ($clients as $client) {
-        $idClient = $client['idClient'];
-        $email = $client['email'];
-        $mdpChiffre = $client['mdp'];
+    // 2. Pour chaque vendeur, déchiffrer et hacher le mot de passe
+    foreach ($vendeurs as $vendeur) {
+        $codeVendeur = $vendeur['codeVendeur'];
+        $email = $vendeur['email'];
+        $raisonSocial = $vendeur['raisonSocial'];
+        $mdpChiffre = $vendeur['mdp'];
         
         // Déchiffrer le mot de passe
         $mdpClair = dechiffrerMotDePasse($mdpChiffre, $cle);
         
-        // Hacher avec password_hash (utilisation de BCRYPT par défaut)
+        // Hacher avec password_hash
         $mdpHache = password_hash($mdpClair, PASSWORD_DEFAULT);
         
         // 3. Mettre à jour le mot de passe dans la base de données
-        $sqlUpdate = "UPDATE _vendeur 
-SET mdp = :mdp 
-WHERE codeVendeur = :codeVendeur;";
+        $sqlUpdate = "UPDATE vendeur SET mdp = :mdp WHERE codeVendeur = :codeVendeur";
         $updateStmt = $pdo->prepare($sqlUpdate);
         $updateStmt->execute([
             ':mdp' => $mdpHache,
-            ':id' => $idClient
+            ':codeVendeur' => $codeVendeur
         ]);
         
         // Afficher les résultats
-        echo "Client ID: $idClient<br>";
+        echo "Vendeur Code: $codeVendeur<br>";
+        echo "Raison Sociale: $raisonSocial<br>";
         echo "Email: $email<br>";
         echo "Mot de passe chiffré: " . htmlspecialchars($mdpChiffre) . "<br>";
         echo "Mot de passe déchiffré: $mdpClair<br>";
@@ -96,7 +94,7 @@ WHERE codeVendeur = :codeVendeur;";
         echo "----------------------------------------<br>";
     }
     
-    echo "<br>Traitement terminé avec succès !";
+    echo "<br>Traitement des vendeurs terminé avec succès !";
     
 } catch (PDOException $e) {
     echo "Erreur : " . $e->getMessage();
