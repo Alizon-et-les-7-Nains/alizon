@@ -221,10 +221,10 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                     <?php 
                     if ($enRemise) {
                         $finRemise = new DateTime($value['finRemise']);
-                        $now = new DateTime();
-                        $interval = $now->diff($finRemise);
-                        if ($interval->days > 0) {
-                            echo "<span>Remise valable encore " . $interval->days . " jour" . ($interval->days > 1 ? "s" : "") . "</span>";
+                        $mtn = new DateTime();
+                        $intervale = $mtn->diff($finRemise);
+                        if ($intervale->days > 0) {
+                            echo "<span>Remise valable encore " . $intervale->days . " jour" . ($intervale->days > 1 ? "s" : "") . "</span>";
                         } else {
                             echo "<span>Dernier jour de remise !</span>";
                         }
