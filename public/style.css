@@ -7348,8 +7348,9 @@ dialog.reassort form input {
 }
 .mesNotif .ensembleNotif .sidebarNotif {
   overflow: scroll;
+  scrollbar-width: thin;
 }
-.mesNotif .ensembleNotif .sidebarNotif:first-child {
+.mesNotif .ensembleNotif .sidebarNotif:first-child, .mesNotif .ensembleNotif .sidebarNotif:last-child {
   border-top-left-radius: 25px;
 }
 .mesNotif .apercuNotif {
@@ -7390,8 +7391,14 @@ dialog.reassort form input {
 }
 .mesNotif .ecranNotif .titleNotif {
   border-bottom: 1px solid black;
-  color: black;
+  padding: 0px 30px;
   font-size: medium;
+}
+.mesNotif .ecranNotif .titleNotif h1 {
+  margin-bottom: 0;
+}
+.mesNotif .ecranNotif .titleNotif h3 {
+  margin-bottom: 21px;
 }
 
 main.commandesBackoffice {

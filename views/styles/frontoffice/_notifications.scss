@@ -35,8 +35,9 @@
         
         .sidebarNotif {
             overflow: scroll;
+            scrollbar-width: thin;
         }
-        .sidebarNotif:first-child {
+        .sidebarNotif:first-child, .sidebarNotif:last-child {
             border-top-left-radius: 25px;
         }
     }
@@ -75,8 +76,14 @@
         }
         .titleNotif {
             border-bottom: 1px solid black;
-            color: black;
+            padding: 0px 30px;
             font-size: medium;
+            h1 {
+                margin-bottom: 0;
+            }
+            h3 {
+                margin-bottom: 21px;
+            }
         }
     }
 }
