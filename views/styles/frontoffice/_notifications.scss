@@ -1,0 +1,46 @@
+@use "../colors" as *;
+@use "../fonts" as fonts;
+
+.mesNotif {
+    font-family: "Lora", serif;
+    color: #273469;
+
+    .topRecherche {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        align-items: flex-end;
+        margin-top: 20px;
+        h1 {
+            margin-top: 30px;
+            margin-bottom: 0px;
+            margin-right: 10px;
+            font-size: 48px;
+        }
+        
+        * {
+            margin-left: 80px;
+            margin-right: 80px;
+        }
+    }
+    
+    .ensembleNotif {
+        display: flex;
+        flex-direction: row;
+        border: 1px solid #273469;
+        border-radius: 25px;
+        margin: 30px 50px;
+    }
+    .apercuNotif {
+        display: flex;
+        align-items: center;
+        background-color: $color-pastel-blue;
+        color: $color-blue;
+        * {
+            margin: 0;
+        }
+        h3 {
+            text-align: center;
+        }
+    }
+}

@@ -8,11 +8,10 @@ $password = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email_tel = trim($_POST['email_tel']);
-    $password_chiffre = trim($_POST['password_chiffre']); 
+    $password_clair = trim($_POST['password_clair']); 
     
     // Debug simple
     error_log("Tentative connexion: " . $email_tel);
-    error_log("MDP chiffré reçu: " . $password_chiffre);
     
     // Email ou téléphone
     if (filter_var($email_tel, FILTER_VALIDATE_EMAIL)) {
@@ -28,24 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if ($user) {
-        error_log("MDP en BD: " . $user['mdp']);
+        error_log("MDP en BD (hash): " . $user['mdp']);
         
-        // SOLUTION AVEC JSON_ENCODE - Gère automatiquement les backslashes
-        $mdp_bd = $user['mdp'];
-        
-        // Normaliser les deux chaînes avec json_encode
-        $mdp_input_normalized = json_encode($password_chiffre);
-        $mdp_bd_normalized = json_encode($mdp_bd);
-        
-        // Retirer les guillemets ajoutés par json_encode
-        $mdp_input_normalized = trim($mdp_input_normalized, '"');
-        $mdp_bd_normalized = trim($mdp_bd_normalized, '"');
-        
-        error_log("MDP input normalisé: " . $mdp_input_normalized);
-        error_log("MDP BD normalisé: " . $mdp_bd_normalized);
-        
-        // Comparaison avec les chaînes normalisées
-        if ($mdp_input_normalized === $mdp_bd_normalized) {
+        // Vérification avec password_verify
+        if (password_verify($password_clair, $user['mdp'])) {
             // Connexion réussie
             $_SESSION['user_id'] = $user['idClient'];
             $_SESSION['user_email'] = $user['email'];
@@ -76,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body class="pageConnexionCLient">
-    
+
     <header class="headerFront">
 
         <div class="headerMain">
@@ -101,17 +86,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form id="loginForm" method="POST" action="">
-            <div class = "inputLabelGroup">
-            <label>Adresse mail ou numéro de téléphone*</label>
+            <div class="inputLabelGroup">
+                <label>Adresse mail ou numéro de téléphone*</label>
                 <input type="text" name="email_tel" placeholder="Adresse mail ou numéro de téléphone*"
                     class="inputConnexionClient" value="<?php echo htmlspecialchars($email_tel); ?>" required>
             </div>
-            <div class = "inputLabelGroup">
-            <label>Mot de passe*</label>
-                <input type="password" id="password_input" placeholder="Mot de passe*" class="inputConnexionClient"
-                    required>
+            <div class="inputLabelGroup">
+                <label>Mot de passe*</label>
+                <input type="password" id="password_input" name="password_clair" placeholder="Mot de passe*"
+                    class="inputConnexionClient" required>
             </div>
-            <input type="hidden" name="password_chiffre" id="password_chiffre">
 
             <div>
                 <a href="inscription.php">Pas encore client ? Inscrivez-vous ici</a>
@@ -123,24 +107,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
-
-    <script src="../../controllers/Chiffrement.js"></script>
-    <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const passwordClair = document.getElementById('password_input').value;
-
-        if (typeof vignere !== 'undefined') {
-            const passwordChiffre = vignere(passwordClair, cle, 1);
-            document.getElementById('password_chiffre').value = passwordChiffre;
-            console.log("Envoi - Mot de passe clair:", passwordClair);
-            console.log("Envoi - Mot de passe chiffré:", passwordChiffre);
-        }
-
-        this.submit();
-    });
-    </script>
 </body>
 
 </html>

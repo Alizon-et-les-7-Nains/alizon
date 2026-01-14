@@ -828,6 +828,22 @@ body {
   margin-bottom: 5px;
   cursor: pointer;
 }
+.pageCommandes .btnCom {
+  display: flex;
+  align-items: center;
+  font-family: "Lora", serif;
+  justify-content: space-between;
+  width: 260px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #273469;
+  background-color: #fff;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
 .pageCommandes .overlay {
   position: fixed;
   inset: 0;
@@ -6955,6 +6971,7 @@ dialog.reassort form input {
   width: 100%;
 }
 .pageCatalogue .listeArticle article {
+  position: relative;
   border: 2px solid #273469;
   border-radius: 20px;
   margin: 10px;
@@ -6967,6 +6984,53 @@ dialog.reassort form input {
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pageCatalogue .bannierePromo {
+  display: block;
+  position: absolute;
+  top: 0px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+.pageCatalogue .bannierePromo h1 {
+  font-size: 30px;
+}
+.pageCatalogue .imgBanniere {
+  position: absolute;
+  height: 75px;
+  width: auto;
+  z-index: 1;
+}
+.pageCatalogue .bannierePromo h1 {
+  position: absolute;
+  top: 15px;
+  left: 13px;
+  color: #fffefa;
+  z-index: 10000;
+}
+.pageCatalogue .poly1 {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  width: auto;
+  z-index: 100;
+}
+.pageCatalogue .poly2 {
+  position: absolute;
+  top: 25px;
+  left: 10px;
+  width: auto;
+  z-index: 1000000;
+}
+.pageCatalogue .tempsRestant {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  background-color: #fffefa;
+  color: #273469;
+  z-index: 10000;
+  font-size: 14px;
+  font-weight: bold;
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
@@ -7244,6 +7308,47 @@ dialog.reassort form input {
 }
 .popUpAnnulerCommande button:hover {
   opacity: 0.9;
+}
+
+.mesNotif {
+  font-family: "Lora", serif;
+  color: #273469;
+}
+.mesNotif .topRecherche {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+.mesNotif .topRecherche h1 {
+  margin-top: 30px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  font-size: 48px;
+}
+.mesNotif .topRecherche * {
+  margin-left: 80px;
+  margin-right: 80px;
+}
+.mesNotif .ensembleNotif {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #273469;
+  border-radius: 25px;
+  margin: 30px 50px;
+}
+.mesNotif .apercuNotif {
+  display: flex;
+  align-items: center;
+  background-color: #e3f2fe;
+  color: #273469;
+}
+.mesNotif .apercuNotif * {
+  margin: 0;
+}
+.mesNotif .apercuNotif h3 {
+  text-align: center;
 }
 
 main.commandesBackoffice {
