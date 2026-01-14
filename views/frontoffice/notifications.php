@@ -33,7 +33,7 @@ $id_client = $_SESSION['user_id'];
 
         <section class="ensembleNotif">
             <div class="sidebarNotif">
-                <details class="apercuNotif">
+                <div class="apercuNotif">
                     <div>
                         <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                     </div>
@@ -42,8 +42,8 @@ $id_client = $_SESSION['user_id'];
                         <h4>Votre commande "Cidre brut breton" a été livrée au 19 Rue de Cerbar, 56300 Pluvigner le 29/10/2026 à 12h56</h4>
                         <h5>Il y a 59 minutes</h5>
                     </div>
-                </details>
-                <details class="apercuNotif">
+                </div>
+                <div class="apercuNotif">
                     <div>
                         <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                     </div>
@@ -52,8 +52,8 @@ $id_client = $_SESSION['user_id'];
                         <h4>Votre commande "Cidre brut breton" a été livrée au 19 Rue de Cerbar, 56300 Pluvigner le 29/10/2026 à 12h56</h4>
                         <h5>Il y a 59 minutes</h5>
                     </div>
-                </details>
-                        <details class="apercuNotif">
+                </div>
+                        <div class="apercuNotif">
                     <div>
                         <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                     </div>
@@ -62,8 +62,8 @@ $id_client = $_SESSION['user_id'];
                         <h4>Votre commande "Cidre brut breton" a été livrée au 19 Rue de Cerbar, 56300 Pluvigner le 29/10/2026 à 12h56</h4>
                         <h5>Il y a 59 minutes</h5>
                     </div>
-                </details>
-                <details class="apercuNotif">
+                </div>
+                <div class="apercuNotif">
                     <div>
                         <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                     </div>
@@ -72,8 +72,8 @@ $id_client = $_SESSION['user_id'];
                         <h4>Votre commande "Cidre brut breton" a été livrée au 19 Rue de Cerbar, 56300 Pluvigner le 29/10/2026 à 12h56</h4>
                         <h5>Il y a 59 minutes</h5>
                     </div>
-                </details>
-                        <details class="apercuNotif">
+                </div>
+                        <div class="apercuNotif">
                     <div>
                         <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                     </div>
@@ -82,8 +82,8 @@ $id_client = $_SESSION['user_id'];
                         <h4>Votre commande "Cidre brut breton" a été livrée au 19 Rue de Cerbar, 56300 Pluvigner le 29/10/2026 à 12h56</h4>
                         <h5>Il y a 59 minutes</h5>
                     </div>
-                </details>
-                <details class="apercuNotif">
+                </div>
+                <div class="apercuNotif">
                     <div>
                         <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                     </div>
@@ -92,8 +92,8 @@ $id_client = $_SESSION['user_id'];
                         <h4>Votre commande "Cidre brut breton" a été livrée au 19 Rue de Cerbar, 56300 Pluvigner le 29/10/2026 à 12h56</h4>
                         <h5>Il y a 59 minutes</h5>
                     </div>
-                </details>
-                        <details class="apercuNotif">
+                </div>
+                        <div class="apercuNotif">
                     <div>
                         <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                     </div>
@@ -102,8 +102,8 @@ $id_client = $_SESSION['user_id'];
                         <h4>Votre commande "Cidre brut breton" a été livrée au 19 Rue de Cerbar, 56300 Pluvigner le 29/10/2026 à 12h56</h4>
                         <h5>Il y a 59 minutes</h5>
                     </div>
-                </details>
-                <details class="apercuNotif">
+                </div>
+                <div class="apercuNotif">
                     <div>
                         <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                     </div>
@@ -112,7 +112,7 @@ $id_client = $_SESSION['user_id'];
                         <h4>Votre commande "Cidre brut breton" a été livrée au 19 Rue de Cerbar, 56300 Pluvigner le 29/10/2026 à 12h56</h4>
                         <h5>Il y a 59 minutes</h5>
                     </div>
-                </details>
+                </div>
             </div>
             <article class="ecranNotif">
                 <div class="titleNotif">
