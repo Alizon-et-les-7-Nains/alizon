@@ -475,7 +475,8 @@ $cart = getCurrentCart($pdo, $idClient);
                 </div>
             </div>
         </div>
-    <?php endif; ?>
+    <?php endif; 
+    var_dump($etape[0])?>
     <script>const etape = <?php echo json_encode($etape[0]); ?>;</script>
     <script src="../scripts/frontoffice/popupSuivieCommande.js"></script>
 </body>
