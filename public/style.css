@@ -837,18 +837,84 @@ body {
   align-items: center;
   z-index: 999;
 }
-.pageCommandes .popup {
+.pageCommandes .overlay .popup {
   background: white;
   padding: 20px;
   border-radius: 8px;
   min-width: 300px;
   text-align: center;
+  width: 60%;
+  height: 50%;
+  display: block;
 }
-.pageCommandes .close {
-  display: inline-block;
-  margin-top: 10px;
-  text-decoration: none;
-  color: red;
+.pageCommandes .overlay .popup .croixFermerLaPage {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}
+.pageCommandes .overlay .popup .croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.pageCommandes .overlay .popup .croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.pageCommandes .overlay .popup .croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.pageCommandes .overlay .popup .stepper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 100px;
+}
+.pageCommandes .overlay .popup .stepper .rond {
+  width: 10px;
+  height: 10px;
+  background-color: #BABABA;
+  border: #BABABA 5px solid;
+  border-radius: 50%;
+  z-index: 1;
+}
+.pageCommandes .overlay .popup .stepper .trait {
+  height: 2px;
+  flex: 1;
+  background-color: #BABABA;
+}
+.pageCommandes .overlay .popup .stepper .trait .demiTrait {
+  height: 2px;
+  width: 50%;
+  background-color: #BABABA;
+}
+.pageCommandes .overlay .popup .stepper p:first-of-type {
+  position: absolute;
+  top: 45%;
+  left: 20%;
+}
+.pageCommandes .overlay .popup .stepper p:nth-of-type(2) {
+  position: absolute;
+  top: 57%;
+  left: 32%;
+}
+.pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
+  position: absolute;
+  top: 45%;
+  left: 43%;
+}
+.pageCommandes .overlay .popup .stepper p:nth-of-type(4) {
+  position: absolute;
+  top: 57%;
+  left: 58%;
+}
+.pageCommandes .overlay .popup .stepper p:last-of-type {
+  position: absolute;
+  top: 45%;
+  left: 74%;
 }
 
 /* ---- Header ---- */
