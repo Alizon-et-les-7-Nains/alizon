@@ -14,20 +14,17 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
             <img src="../../../public/images/logoAlizonHeader.png" alt="Logo Alizon">
             <h1><a href="../frontoffice/accueilConnecte.php" class="alizonMarque"><b>Alizon</b></a></h1>
         </div>
-
         <div class="searchBar">
             <div class="search-wrapper">
                 <input type="search" name="recherche" id="searchbar" placeholder="Rechercher">
                 <img id ="recherche" src="../../../public/images/searchDarkBlue.svg" alt="">
             </div>
         </div>
-
         <div class="icons">
             <a href="../frontoffice/panier.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
             <a href="javascript:void(0);" onclick="menuBurger();"><img src="../../../public/images/burgerLightBlue.svg" alt="Burger"></a>
         </div>
     </div>
-
     <div class="carousel">
         <div class="group">
             <?php 
