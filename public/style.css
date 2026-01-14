@@ -7110,8 +7110,6 @@ dialog.reassort form input {
   border: 2px solid black;
   text-decoration: none;
 }
-
-/* Media queries pour les petits écrans */
 @media (max-width: 1300px) {
   .pageCatalogue .filter-sort {
     width: 220px;
@@ -7121,11 +7119,11 @@ dialog.reassort form input {
     width: calc(100% - 250px);
     margin-left: 250px;
   }
-  .star {
+  .pageCatalogue .star {
     width: 30px;
     height: 30px;
   }
-  .notation {
+  .pageCatalogue .notation {
     gap: 4px;
     margin: 4px 0;
   }
@@ -7139,11 +7137,11 @@ dialog.reassort form input {
     width: calc(100% - 220px);
     margin-left: 220px;
   }
-  .star {
+  .pageCatalogue .star {
     width: 20px;
     height: 20px;
   }
-  .notation {
+  .pageCatalogue .notation {
     gap: 3px;
     margin: 3px 0;
   }
@@ -7157,15 +7155,16 @@ dialog.reassort form input {
     width: calc(100% - 200px);
     margin-left: 200px;
   }
-  .star {
+  .pageCatalogue .star {
     width: 10px;
     height: 10px;
   }
-  .notation {
+  .pageCatalogue .notation {
     gap: 1px;
     margin: 1px 0;
   }
 }
+
 .overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
   position: fixed;
   top: 0;

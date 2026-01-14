@@ -236,71 +236,70 @@
         border: 2px solid black;
         text-decoration: none;
     }
-}
 
-/* Media queries pour les petits écrans */
-@media (max-width: 1300px) {
-    .pageCatalogue .filter-sort {
-        width: 220px;
-        padding: 15px;
-    }
-    
-    .pageCatalogue .products-section {
-        width: calc(100% - 250px);
-        margin-left: 250px;
-    }
+    @media (max-width: 1300px) {
+    .filter-sort {
+            width: 220px;
+            padding: 15px;
+        }
+        
+        .products-section {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+        }
 
-    .star{
-        width: 30px;
-        height: 30px;
-    }
+        .star{
+            width: 30px;
+            height: 30px;
+        }
 
-    .notation {
-        gap: 4px;
-        margin: 4px 0;
-    }
-}
-
-@media (max-width: 1024px) {
-    .pageCatalogue .filter-sort {
-        width: 200px;
-        padding: 10px;
-    }
-    
-    .pageCatalogue .products-section {
-        width: calc(100% - 220px);
-        margin-left: 220px;
+        .notation {
+            gap: 4px;
+            margin: 4px 0;
+        }
     }
 
-    .star{
-        width: 20px;
-        height: 20px;
+    @media (max-width: 1024px) {
+        .filter-sort {
+            width: 200px;
+            padding: 10px;
+        }
+        
+        .products-section {
+            width: calc(100% - 220px);
+            margin-left: 220px;
+        }
+
+        .star{
+            width: 20px;
+            height: 20px;
+        }
+
+        .notation {
+            gap: 3px;
+            margin: 3px 0;
+        }
     }
 
-    .notation {
-        gap: 3px;
-        margin: 3px 0;
-    }
-}
+    @media (max-width: 768px) {
+        .filter-sort {
+            width: 190px;
+            padding: 5px;
+        }
+        
+        .products-section {
+            width: calc(100% - 200px);
+            margin-left: 200px;
+        }
 
-@media (max-width: 768px) {
-    .pageCatalogue .filter-sort {
-        width: 190px;
-        padding: 5px;
-    }
-    
-    .pageCatalogue .products-section {
-        width: calc(100% - 200px);
-        margin-left: 200px;
-    }
+        .star{
+            width: 10px;
+            height: 10px;
+        }
 
-    .star{
-        width: 10px;
-        height: 10px;
-    }
-
-    .notation {
-        gap: 1px;
-        margin: 1px 0;
+        .notation {
+            gap: 1px;
+            margin: 1px 0;
+        }
     }
 }
