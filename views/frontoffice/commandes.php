@@ -439,7 +439,7 @@ $cart = getCurrentCart($pdo, $idClient);
             $idCommande = intval( $_GET['idCommande']);
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([":idCommande" => $_GET['idCommande']]);
+            $stmt->execute([":idCommande" => $idCommande]);
             $etape = $stmt->fetch(PDO::FETCH_ASSOC);
         ?>
         <div id="popupLivraison" class="overlay">
