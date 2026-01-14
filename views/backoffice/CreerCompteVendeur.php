@@ -34,7 +34,7 @@ unset($_SESSION['form_data']);
     <title>Alizon</title>
 </head>
 
-<body>
+<body class="backoffice nonConnecte">
     <?php require_once "./partials/header.php"; ?>
     <main class="CreerCompteVendeur">
         <img class="triskiel" src="../../public/images/triskiel gris.svg" alt="">
