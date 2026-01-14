@@ -6971,6 +6971,7 @@ dialog.reassort form input {
   width: 100%;
 }
 .pageCatalogue .listeArticle article {
+  position: relative;
   border: 2px solid #273469;
   border-radius: 20px;
   margin: 10px;
@@ -6983,6 +6984,11 @@ dialog.reassort form input {
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pageCatalogue .bannierePromo {
+  position: absolute;
+  top: 0px;
+  left: 50px;
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
