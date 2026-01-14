@@ -460,6 +460,7 @@ int require_auth(struct ClientSession *session) {
  */
 /**
  * create() - Traite la commande de création de bordereau CREATE
+ * Version avec file d'attente
  */
 void create(struct ClientSession *session, char *commande_id, char *destination,
             struct ServerConfig config, MYSQL *conn) {
@@ -472,14 +473,14 @@ void create(struct ClientSession *session, char *commande_id, char *destination,
     char query[512];
     char response[BUFFER_SIZE];
     
-    // Échapper les chaînes pour éviter les injections SQL
+    // Échapper les chaînes
     char escaped_commande_id[256];
     char escaped_destination[256];
     
     mysql_real_escape_string(conn, escaped_commande_id, commande_id, strlen(commande_id));
     mysql_real_escape_string(conn, escaped_destination, destination, strlen(destination));
     
-    // Vérifier si un bordereau existe déjà pour cette commande
+    // 1. Vérifier si un bordereau existe déjà pour cette commande
     snprintf(query, sizeof(query), 
              "SELECT numBordereau FROM _delivraptor_colis WHERE noCommande = '%s'", 
              escaped_commande_id);
@@ -487,9 +488,6 @@ void create(struct ClientSession *session, char *commande_id, char *destination,
     if (mysql_query(conn, query)) {
         snprintf(response, sizeof(response), "ERROR DB_QUERY\n");
         send(session->client_socket, response, strlen(response), 0);
-        
-        write_log(config.log_file, session->client_ip, session->client_port,
-                  session->username, "CREATE", "Erreur DB_QUERY lors de la vérification d'existence");
         return;
     }
     
@@ -508,71 +506,75 @@ void create(struct ClientSession *session, char *commande_id, char *destination,
     }
     mysql_free_result(result);
     
-    // Vérifier la capacité actuelle du système
+    // 2. Vérifier la capacité actuelle
     int current_load = get_capacite_actuelle(conn);
     if (current_load < 0) {
         snprintf(response, sizeof(response), "ERROR DB_QUERY_CAPACITY\n");
         send(session->client_socket, response, strlen(response), 0);
-        
-        write_log(config.log_file, session->client_ip, session->client_port,
-                  session->username, "CREATE", "Erreur DB_QUERY_CAPACITY");
         return;
     }
     
-    // Vérifie si on peut ajouter un nouveau colis
-    if (current_load >= config.capacity) {
-        snprintf(response, sizeof(response), "ERROR CAPACITE\n");
+    // 3. Si capacité disponible, créer immédiatement
+    if (current_load < config.capacity) {
+        long long new_bordereau = num_bordereau_unique();
+        
+        // Insérer le colis
+        snprintf(query, sizeof(query),
+                 "INSERT INTO _delivraptor_colis(numBordereau, noCommande, destination, localisation, etape, date_etape) "
+                 "VALUES (%lld, '%s', '%s', 'Entrepôt Alizon', 1, NOW())",
+                 new_bordereau, escaped_commande_id, escaped_destination);
+        
+        if (mysql_query(conn, query)) {
+            snprintf(response, sizeof(response), "ERROR DB_INSERT\n");
+            send(session->client_socket, response, strlen(response), 0);
+            return;
+        }
+        
+        // Insérer dans la file de prise en charge
+        snprintf(query, sizeof(query),
+                 "INSERT INTO _delivraptor_file_prise_en_charge (numBordereau, date_entree) VALUES (%lld, NOW())",
+                 new_bordereau);
+        
+        if (mysql_query(conn, query)) {
+            snprintf(response, sizeof(response), "ERROR DB_INSERT_FILE\n");
+            send(session->client_socket, response, strlen(response), 0);
+            
+            // Rollback
+            snprintf(query, sizeof(query), "DELETE FROM _delivraptor_colis WHERE numBordereau = %lld", new_bordereau);
+            mysql_query(conn, query);
+            return;
+        }
+        
+        snprintf(response, sizeof(response), "BORDEREAU %lld\n", new_bordereau);
+        send(session->client_socket, response, strlen(response), 0);
+        
+        write_log(config.log_file, session->client_ip, session->client_port,
+                  session->username, "CREATE", "Nouveau bordereau créé immédiatement");
+    } 
+    // 4. Si capacité pleine, mettre en file d'attente
+    else {
+        // Insérer dans la queue d'attente
+        snprintf(query, sizeof(query),
+                 "INSERT INTO _delivraptor_queue (noCommande, destination, username) "
+                 "VALUES ('%s', '%s', '%s')",
+                 escaped_commande_id, escaped_destination, session->username);
+        
+        if (mysql_query(conn, query)) {
+            snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT\n");
+            send(session->client_socket, response, strlen(response), 0);
+            return;
+        }
+        
+        snprintf(response, sizeof(response), "QUEUED Commande %s mise en attente\n", commande_id);
         send(session->client_socket, response, strlen(response), 0);
         
         char log_msg[256];
-        snprintf(log_msg, sizeof(log_msg), "Capacité maximale atteinte (actuel: %d, max: %d)", current_load, config.capacity);
+        snprintf(log_msg, sizeof(log_msg), 
+                 "Commande %s mise en file d'attente (capacité: %d/%d)", 
+                 commande_id, current_load, config.capacity);
         write_log(config.log_file, session->client_ip, session->client_port,
                   session->username, "CREATE", log_msg);
-        return;
     }
-    
-    // Générer un nouveau numéro de bordereau unique
-    long long new_bordereau = num_bordereau_unique();
-    
-    // Insérer le nouveau colis dans la base de données
-    snprintf(query, sizeof(query),
-             "INSERT INTO _delivraptor_colis(numBordereau, noCommande, destination, localisation, etape, date_etape) "
-             "VALUES (%lld, '%s', '%s', 'Entrepôt Alizon', 1, NOW())",
-             new_bordereau, escaped_commande_id, escaped_destination);
-    
-    if (mysql_query(conn, query)) {
-        snprintf(response, sizeof(response), "ERROR DB_INSERT\n");
-        send(session->client_socket, response, strlen(response), 0);
-        
-        write_log(config.log_file, session->client_ip, session->client_port,
-                  session->username, "CREATE", "Erreur DB_INSERT lors de l'insertion");
-        return;
-    }
-    
-    // Insertion dans la file de prise en charge (CRITIQUE pour la gestion de capacité)
-    snprintf(query, sizeof(query),
-             "INSERT INTO _delivraptor_file_prise_en_charge (numBordereau, date_entree) VALUES (%lld, NOW())",
-             new_bordereau);
-    
-    if (mysql_query(conn, query)) {
-        snprintf(response, sizeof(response), "ERROR DB_INSERT_FILE\n");
-        send(session->client_socket, response, strlen(response), 0);
-        
-        write_log(config.log_file, session->client_ip, session->client_port,
-                  session->username, "CREATE", "Erreur insertion dans la file");
-        
-        // Rollback: supprimer le colis créé
-        snprintf(query, sizeof(query), "DELETE FROM _delivraptor_colis WHERE numBordereau = %lld", new_bordereau);
-        mysql_query(conn, query);
-        return;
-    }
-    
-    // Renvoyer le nouveau numéro de bordereau au client
-    snprintf(response, sizeof(response), "%lld\n", new_bordereau);
-    send(session->client_socket, response, strlen(response), 0);
-    
-    write_log(config.log_file, session->client_ip, session->client_port,
-              session->username, "CREATE", "Nouveau bordereau créé");
 }
 
 /**
@@ -655,6 +657,99 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
     }
     
     mysql_free_result(result);
+}
+
+/**
+ * status_queue() - Affiche l'état de la file d'attente
+ */
+void status_queue(struct ClientSession *session, struct ServerConfig config, MYSQL *conn) {
+    if(!require_auth(session)) {
+        return;
+    }
+    
+    char query[256];
+    char response[BUFFER_SIZE * 4]; // Plus grand buffer pour liste
+    
+    snprintf(query, sizeof(query),
+             "SELECT COUNT(*) as total, "
+             "SUM(CASE WHEN traite = 0 THEN 1 ELSE 0 END) as en_attente "
+             "FROM _delivraptor_queue");
+    
+    if (mysql_query(conn, query)) {
+        snprintf(response, sizeof(response), "ERROR DB_QUERY_QUEUE\n");
+        send(session->client_socket, response, strlen(response), 0);
+        return;
+    }
+    
+    MYSQL_RES *result = mysql_store_result(conn);
+    if (!result) {
+        snprintf(response, sizeof(response), "ERROR DB_RESULT_QUEUE\n");
+        send(session->client_socket, response, strlen(response), 0);
+        return;
+    }
+    
+    MYSQL_ROW row = mysql_fetch_row(result);
+    int total = row[0] ? atoi(row[0]) : 0;
+    int en_attente = row[1] ? atoi(row[1]) : 0;
+    int traites = total - en_attente;
+    
+    mysql_free_result(result);
+    
+    // Récupérer les détails des commandes en attente
+    snprintf(query, sizeof(query),
+             "SELECT noCommande, destination, date_creation "
+             "FROM _delivraptor_queue "
+             "WHERE traite = 0 "
+             "ORDER BY date_creation ASC");
+    
+    if (mysql_query(conn, query)) {
+        snprintf(response, sizeof(response), "ERROR DB_QUERY_DETAILS\n");
+        send(session->client_socket, response, strlen(response), 0);
+        return;
+    }
+    
+    result = mysql_store_result(conn);
+    if (!result) {
+        snprintf(response, sizeof(response), "ERROR DB_RESULT_DETAILS\n");
+        send(session->client_socket, response, strlen(response), 0);
+        return;
+    }
+    
+    // Construire la réponse
+    snprintf(response, sizeof(response),
+             "QUEUE_STATUS\n"
+             "Capacité maximale: %d\n"
+             "Colis actifs: %d\n"
+             "Commandes totales: %d\n"
+             "  - Traitées: %d\n"
+             "  - En attente: %d\n\n"
+             "File d'attente (FIFO):\n",
+             config.capacity,
+             get_capacite_actuelle(conn),
+             total, traites, en_attente);
+    
+    int pos = strlen(response);
+    int compteur = 1;
+    
+    while ((row = mysql_fetch_row(result))) {
+        char ligne[256];
+        snprintf(ligne, sizeof(ligne), "%d. %s -> %s (%s)\n",
+                 compteur++, row[0], row[1], row[2]);
+        
+        // Vérifier si on dépasse la taille du buffer
+        if (pos + strlen(ligne) < sizeof(response) - 1) {
+            strcat(response + pos, ligne);
+            pos += strlen(ligne);
+        }
+    }
+    
+    mysql_free_result(result);
+    
+    if (en_attente == 0) {
+        strcat(response, "(file d'attente vide)\n");
+    }
+    
+    send(session->client_socket, response, strlen(response), 0);
 }
 
 /**
@@ -765,6 +860,127 @@ void gerer_sigchld(int sig) {
 }
 
 /**
+ * traiter_queue() - Traite les commandes en attente quand de la capacité se libère
+ * 
+ * Appelée quand un colis passe de l'étape 4 à 5 (livraison)
+ * Prend les commandes en attente dans l'ordre FIFO et les transforme en bordereaux
+ */
+void traiter_queue(MYSQL *conn, int capacity) {
+    // Vérifier la capacité actuelle
+    int current_load = get_capacite_actuelle(conn);
+    if (current_load < 0 || current_load >= capacity) {
+        return; // Pas de capacité disponible
+    }
+    
+    // Combien de places libres ?
+    int places_libres = capacity - current_load;
+    
+    char query[512];
+    
+    // Prendre les N premières commandes en attente (FIFO)
+    snprintf(query, sizeof(query),
+             "SELECT id, noCommande, destination, username "
+             "FROM _delivraptor_queue "
+             "WHERE traite = 0 "
+             "ORDER BY date_creation ASC "
+             "LIMIT %d",
+             places_libres);
+    
+    if (mysql_query(conn, query)) {
+        return;
+    }
+    
+    MYSQL_RES *result = mysql_store_result(conn);
+    if (!result) {
+        return;
+    }
+    
+    int traites = 0;
+    MYSQL_ROW row;
+    
+    while ((row = mysql_fetch_row(result))) {
+        int queue_id = atoi(row[0]);
+        char *commande_id = row[1];
+        char *destination = row[2];
+        char *username = row[3];
+        
+        // Créer le bordereau
+        long long new_bordereau = num_bordereau_unique();
+        
+        // Échapper les chaînes (à nouveau pour sécurité)
+        char escaped_commande_id[256];
+        char escaped_destination[256];
+        mysql_real_escape_string(conn, escaped_commande_id, commande_id, strlen(commande_id));
+        mysql_real_escape_string(conn, escaped_destination, destination, strlen(destination));
+        
+        // Insérer le colis
+        snprintf(query, sizeof(query),
+                 "INSERT INTO _delivraptor_colis(numBordereau, noCommande, destination, localisation, etape, date_etape) "
+                 "VALUES (%lld, '%s', '%s', 'Entrepôt Alizon', 1, NOW())",
+                 new_bordereau, escaped_commande_id, escaped_destination);
+        
+        if (mysql_query(conn, query)) {
+            continue; // Passer à la suivante en cas d'erreur
+        }
+        
+        // Insérer dans la file de prise en charge
+        snprintf(query, sizeof(query),
+                 "INSERT INTO _delivraptor_file_prise_en_charge (numBordereau, date_entree) VALUES (%lld, NOW())",
+                 new_bordereau);
+        
+        if (mysql_query(conn, query)) {
+            // Rollback
+            snprintf(query, sizeof(query), "DELETE FROM _delivraptor_colis WHERE numBordereau = %lld", new_bordereau);
+            mysql_query(conn, query);
+            continue;
+        }
+        
+        // Marquer comme traité dans la queue
+        snprintf(query, sizeof(query),
+                 "UPDATE _delivraptor_queue SET traite = 1 WHERE id = %d",
+                 queue_id);
+        mysql_query(conn, query);
+        
+        // Log
+        char log_msg[256];
+        snprintf(log_msg, sizeof(log_msg), 
+                 "Commande %s traitée depuis queue -> bordereau %lld", 
+                 commande_id, new_bordereau);
+        write_log(global_log_file, "0.0.0.0", 0, username, "QUEUE", log_msg);
+        
+        traites++;
+    }
+    
+    mysql_free_result(result);
+    
+    if (traites > 0) {
+        printf("[Queue] %d commandes traitées depuis la file d'attente\n", traites);
+    }
+}
+
+
+void liberer_file_colis(MYSQL *conn, long long bordereau) {
+    char query[256];
+    
+    snprintf(query, sizeof(query),
+             "DELETE FROM _delivraptor_file_prise_en_charge WHERE numBordereau = %lld",
+             bordereau);
+    
+    if (mysql_query(conn, query)) {
+        fprintf(stderr, "Erreur libération file: %s\n", mysql_error(conn));
+    } else {
+        printf("Colis %lld libéré de la file (passage étape 4->5)\n", bordereau);
+        
+        // Traiter la file d'attente si on a global_config
+        if (global_config) {
+            traiter_queue(conn, global_config->capacity);
+        }
+    }
+}
+
+
+
+/**
  * gerer_client() - Fonction exécutée par chaque processus fils pour gérer un client
  * 
  * Cette fonction est le point d'entrée du processus fils après fork().
@@ -849,28 +1065,31 @@ void gerer_client(struct ClientSession session, struct ServerConfig config) {
             }
             
             // COMMANDE CREATE : CRÉATION DE BORDEREAU
-            // COMMANDE CREATE : CRÉATION DE BORDEREAU
-else if (strcmp(token, "CREATE") == 0) {
-    // Récupère les deux paramètres : commande_id et destination
-    char *commande_id = strtok(NULL, " \n");
-    char *destination = strtok(NULL, "\n");  // Prend tout le reste de la ligne
-    
-    if (commande_id && destination) {
-        // Supprimer les espaces en début de destination
-        while (*destination == ' ') {
-            destination++;
-        }
-        
-        // Crée un nouveau bordereau pour cette commande
-        create(&session, commande_id, destination, config, conn_client);
-    } else {
-        // Paramètre manquant : envoie une erreur
-        char response[] = "ERROR MISSING_PARAMETERS\n";
-        send(session.client_socket, response, strlen(response), 0);
-        write_log(config.log_file, session.client_ip, session.client_port,
-                  session.username, "CREATE", "Paramètres manquants (commande_id ou destination)");
-    }
-}
+            else if (strcmp(token, "CREATE") == 0) {
+                // Récupère les deux paramètres : commande_id et destination
+                char *commande_id = strtok(NULL, " \n");
+                char *destination = strtok(NULL, "\n");  // Prend tout le reste de la ligne
+                
+                if (commande_id && destination) {
+                    // Supprimer les espaces en début de destination
+                    while (*destination == ' ') {
+                        destination++;
+                    }
+                    
+                    // Crée un nouveau bordereau pour cette commande
+                    create(&session, commande_id, destination, config, conn_client);
+                } else {
+                    // Paramètre manquant : envoie une erreur
+                    char response[] = "ERROR MISSING_PARAMETERS\n";
+                    send(session.client_socket, response, strlen(response), 0);
+                    write_log(config.log_file, session.client_ip, session.client_port,
+                            session.username, "CREATE", "Paramètres manquants (commande_id ou destination)");
+                }
+            }
+            // COMMANDE QUEUE_STATUS : ÉTAT DE LA FILE D'ATTENTE
+            else if (strcmp(token, "QUEUE_STATUS") == 0) {
+                status_queue(&session, config, conn_client);
+            }
             
             // COMMANDE STATUS : CONSULTATION DE STATUT
             else if (strcmp(token, "STATUS") == 0) {
