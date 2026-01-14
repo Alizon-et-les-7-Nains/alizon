@@ -99,40 +99,43 @@
 
     .bannierePromo h1 {
         position: absolute;
-        font-size: 20px;
-        top: 20px;
-        left: 13px;
+        font-size: 16px;
+        top: 25px;
+        left: 8px;
         color: $color-white;
         z-index: 10000;
+        margin: 0;
+        padding: 0;
     }
 
     .poly1 {
         position: absolute;
         top: 15px;
-        left: 12px;
-        width: 30px;
-        transform: scaleY(1.5);
+        left: 6px;
+        width: 40px;
+        transform: scaleY(2);
         z-index: 1000000;
     }
 
     .poly2 {
         position: absolute;
         top: 50px;
-        left: 12px;
-        width: 30px;
-        transform: scaleY(1.5);
+        left: 6px;
+        width: 40px;
+        transform: scaleY(2);
         z-index: 1000000;
     }
 
     .tempsRestant {
         position: absolute;
-        top: 0px;
-        left: 50%;
+        top: -10px;
+        right: 5px;
         background-color: $color-white;
         color: $color-blue;
+        padding: 0 5px;
         z-index: 10000;
-        font-size: 14px;
-        font-weight: bold;
+        font-size: 12px;
+        font-weight: bolder;
     }  
 
     .listeArticle article h2 {
