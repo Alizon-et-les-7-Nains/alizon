@@ -128,13 +128,13 @@
 
     .tempsRestant {
         position: absolute;
-        top: 0px;
-        right: 10px;
+        top: -5px;
+        right: 5px;
         background-color: $color-white;
         color: $color-blue;
         z-index: 10000;
         font-size: 12px;
-        font-weight: bold;
+        font-weight: bolder;
     }  
 
     .listeArticle article h2 {
