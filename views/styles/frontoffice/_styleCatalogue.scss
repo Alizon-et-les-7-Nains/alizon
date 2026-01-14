@@ -99,9 +99,9 @@
 
     .bannierePromo h1 {
         position: absolute;
-        font-size: 20px;
+        font-size: 16px;
         top: 25px;
-        left: 13px;
+        left: 8px;
         color: $color-white;
         z-index: 10000;
         margin: 0;
@@ -111,7 +111,7 @@
     .poly1 {
         position: absolute;
         top: 15px;
-        left: 10px;
+        left: 8px;
         width: 40px;
         transform: scaleY(2);
         z-index: 1000000;
@@ -120,7 +120,7 @@
     .poly2 {
         position: absolute;
         top: 50px;
-        left: 10px;
+        left: 8px;
         width: 40px;
         transform: scaleY(2);
         z-index: 1000000;
@@ -133,7 +133,7 @@
         background-color: $color-white;
         color: $color-blue;
         z-index: 10000;
-        font-size: 14px;
+        font-size: 10px;
         font-weight: bold;
     }  
 
