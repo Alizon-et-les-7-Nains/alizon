@@ -81,7 +81,7 @@
     .bannierePromo {
         display: block;
         position: absolute;
-        top: -8px;
+        top: 0px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
     }
@@ -92,14 +92,14 @@
 
     .imgBanniere {
         position: absolute;
-        height: 50px;
+        height: 75px;
         width: auto;
         z-index: 1;
     }
 
     .bannierePromo h1 {
         position: absolute;
-        top: 25px;
+        top: 15px;
         left: 13px;
         color: $color-white;
         z-index: 10000;
@@ -107,7 +107,7 @@
 
     .poly1 {
         position: absolute;
-        top: 35px;
+        top: 5px;
         left: 10px;
         width: auto;
         z-index: 100;
@@ -115,11 +115,22 @@
 
     .poly2 {
         position: absolute;
-        top: 90px;
+        top: 25px;
         left: 10px;
         width: auto;
         z-index: 1000000;
     }
+
+    .tempsRestant {
+        position: absolute;
+        top: 0px;
+        left: 50%;
+        background-color: $color-white;
+        color: $color-blue;
+        z-index: 10000;
+        font-size: 14px;
+        font-weight: bold;
+    }  
 
     .listeArticle article h2 {
         color: #273469;
