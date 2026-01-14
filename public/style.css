@@ -828,6 +828,22 @@ body {
   margin-bottom: 5px;
   cursor: pointer;
 }
+.pageCommandes .btnCom {
+  display: flex;
+  align-items: center;
+  font-family: "Lora", serif;
+  justify-content: space-between;
+  width: 260px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #273469;
+  background-color: #fff;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
 .pageCommandes .overlay {
   position: fixed;
   inset: 0;
@@ -7335,14 +7351,5 @@ dialog ul li table tr:last-child {
 dialog:focus {
   outline: none;
 }
-
-dialog {
-    pointer-events: auto;
-}
-
-dialog:not([open]) {
-    display: none;
-}
-
 
 /*# sourceMappingURL=style.css.map */

@@ -385,6 +385,23 @@
         cursor: pointer;
     }
 
+    .btnCom {
+        display: flex;
+        align-items: center;
+        font-family: "Lora", serif;
+        justify-content: space-between;
+        width: 260px;
+        font-size: 14px;
+        text-decoration: none;
+        color: #273469;
+        background-color: #fff;
+        border: 2px solid #fff;
+        border-radius: 20px;
+        padding: 8px 15px;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+
     .overlay {
         position: fixed;
         inset: 0;
