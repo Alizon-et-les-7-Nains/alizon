@@ -478,7 +478,7 @@ $cart = getCurrentCart($pdo, $idClient);
         </div>
     <?php endif; 
     var_dump($etape[0]);
-    var_dump($_GET['idCommande'])?>
+    var_dump($idCommande)?>
     <script>const etape = <?php echo json_encode($etape[0]); ?>;</script>
     <script src="../scripts/frontoffice/popupSuivieCommande.js"></script>
 </body>
