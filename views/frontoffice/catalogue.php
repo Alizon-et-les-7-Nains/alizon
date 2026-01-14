@@ -258,6 +258,12 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                         <?php } ?>
                     </div>
                 </div>
+                <div class="bannierePromo">
+                    <h1>-<?php echo number_format($tauxRemise); ?>%</h1>
+                    <img class="poly1" src="../../public/images/poly1.svg" alt="">
+                    <img class="imgBanniere" src="../../public/images/laBanniere.png" alt="">
+                    <img class="poly2" src="../../public/images/poly2.svg" alt="">
+                </div>
             </article>
             <?php } 
             } else { ?>
