@@ -50,7 +50,7 @@ try {
     // 1. Récupérer les mots de passe des vendeurs à traiter
     $sqlSelect = "
         SELECT codeVendeur, email, mdp, raisonSocial
-        FROM vendeur 
+        FROM _vendeur 
         WHERE mdp IS NOT NULL 
           AND mdp != ''
           AND mdp NOT LIKE '$2y$%'
@@ -76,7 +76,7 @@ try {
         $mdpHache = password_hash($mdpClair, PASSWORD_DEFAULT);
         
         // 3. Mettre à jour le mot de passe dans la base de données
-        $sqlUpdate = "UPDATE vendeur SET mdp = :mdp WHERE codeVendeur = :codeVendeur";
+        $sqlUpdate = "UPDATE _vendeur SET mdp = :mdp WHERE codeVendeur = :codeVendeur";
         $updateStmt = $pdo->prepare($sqlUpdate);
         $updateStmt->execute([
             ':mdp' => $mdpHache,
