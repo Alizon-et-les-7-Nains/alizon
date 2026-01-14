@@ -7011,16 +7011,18 @@ dialog.reassort form input {
 }
 .pageCatalogue .poly1 {
   position: absolute;
-  top: 5px;
+  top: 32px;
   left: 10px;
-  width: 20px;
+  width: 30px;
+  min-height: 10px;
   z-index: 100;
 }
 .pageCatalogue .poly2 {
   position: absolute;
-  top: 25px;
+  top: 50px;
   left: 10px;
-  width: 20px;
+  width: 30px;
+  min-height: 10px;
   z-index: 1000000;
 }
 .pageCatalogue .tempsRestant {
