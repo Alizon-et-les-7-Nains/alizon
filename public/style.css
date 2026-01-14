@@ -7004,14 +7004,14 @@ dialog.reassort form input {
 .pageCatalogue .bannierePromo h1 {
   position: absolute;
   font-size: 12px;
-  top: 15px;
+  top: 32px;
   left: 13px;
   color: #fffefa;
   z-index: 10000;
 }
 .pageCatalogue .poly1 {
   position: absolute;
-  top: 32px;
+  top: 15px;
   left: 10px;
   width: 30px;
   min-height: 10px;
