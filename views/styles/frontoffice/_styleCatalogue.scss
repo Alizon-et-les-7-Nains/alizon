@@ -128,10 +128,11 @@
 
     .tempsRestant {
         position: absolute;
-        top: -5px;
+        top: -10px;
         right: 5px;
         background-color: $color-white;
         color: $color-blue;
+        padding: 0 5px;
         z-index: 10000;
         font-size: 12px;
         font-weight: bolder;
