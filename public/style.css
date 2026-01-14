@@ -6988,7 +6988,7 @@ dialog.reassort form input {
 .pageCatalogue .bannierePromo {
   display: block;
   position: absolute;
-  top: -8px;
+  top: 0px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
@@ -6997,30 +6997,40 @@ dialog.reassort form input {
 }
 .pageCatalogue .imgBanniere {
   position: absolute;
-  height: 50px;
+  height: 75px;
   width: auto;
   z-index: 1;
 }
 .pageCatalogue .bannierePromo h1 {
   position: absolute;
-  top: 25px;
+  top: 15px;
   left: 13px;
   color: #fffefa;
   z-index: 10000;
 }
 .pageCatalogue .poly1 {
   position: absolute;
-  top: 35px;
+  top: 5px;
   left: 10px;
   width: auto;
   z-index: 100;
 }
 .pageCatalogue .poly2 {
   position: absolute;
-  top: 90px;
+  top: 25px;
   left: 10px;
   width: auto;
   z-index: 1000000;
+}
+.pageCatalogue .tempsRestant {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  background-color: #fffefa;
+  color: #273469;
+  z-index: 10000;
+  font-size: 14px;
+  font-weight: bold;
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;

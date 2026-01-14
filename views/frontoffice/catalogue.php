@@ -217,6 +217,20 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                     <img class="imgBanniere" src="../../public/images/laBanniere.png" alt="">
                     <img class="poly2" src="../../public/images/poly2.svg" alt="">
                 </div>
+                <div class="tempsRestant">
+                    <?php 
+                    if ($enRemise) {
+                        $finRemise = new DateTime($value['finRemise']);
+                        $now = new DateTime();
+                        $interval = $now->diff($finRemise);
+                        if ($interval->days > 0) {
+                            echo "<span>Remise valable encore " . $interval->days . " jour" . ($interval->days > 1 ? "s" : "") . "</span>";
+                        } else {
+                            echo "<span>Dernier jour de remise !</span>";
+                        }
+                    }
+                    ?>       
+                </div>
                 <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
                     onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'"
                     alt="Image du produit">
