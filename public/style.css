@@ -7014,7 +7014,7 @@ dialog.reassort form input {
   top: 15px;
   left: 10px;
   width: 30px;
-  min-height: 10px;
+  min-height: 15px;
   z-index: 100;
 }
 .pageCatalogue .poly2 {
@@ -7022,7 +7022,7 @@ dialog.reassort form input {
   top: 50px;
   left: 10px;
   width: 30px;
-  min-height: 10px;
+  min-height: 15px;
   z-index: 1000000;
 }
 .pageCatalogue .tempsRestant {
