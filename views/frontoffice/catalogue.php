@@ -114,16 +114,24 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
         <form method="GET" action="">
             <label for="tri">Trier par :</label>
             <article class="triNote">
-                <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
-                <label for="triNoteCroissant">Note croissante</label>
-                <input type="radio" id="triNoteDecroissant" name="tri" value="noteDesc">
-                <label for="triNoteDecroissant">Note décroissante</label>
+                <div>
+                    <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
+                    <label for="triNoteCroissant">Note croissante</label>
+                </div>
+                <div>
+                    <input type="radio" id="triNoteDecroissant" name="tri" value="noteDesc">
+                    <label for="triNoteDecroissant">Note décroissante</label>
+                </div>
             </article>
             <article class="triPrix">
-                <input type="radio" id="triPrixCroissant" name="tri" value="prixAsc">
-                <label for="triPrixCroissant">Prix croissant</label>
-                <input type="radio" id="triPrixDecroissant" name="tri" value="prixDesc">
-                <label for="triPrixDecroissant">Prix décroissant</label>
+                <div>
+                    <input type="radio" id="triPrixCroissant" name="tri" value="prixAsc">
+                    <label for="triPrixCroissant">Prix croissant</label>
+                </div>
+                <div>
+                    <input type="radio" id="triPrixDecroissant" name="tri" value="prixDesc">
+                    <label for="triPrixDecroissant">Prix décroissant</label>
+                </div>
             </article>
             <label for="prix">Filtrer par prix :</label>
             <div class="slider-container">

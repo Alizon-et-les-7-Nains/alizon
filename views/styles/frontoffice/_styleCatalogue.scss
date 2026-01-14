@@ -23,6 +23,12 @@
         flex-direction: column;
     }
 
+    .filter-sort form article div{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
     .products-section{
         width: calc(100% - 280px); /* Ajustement automatique */
         display: flex;
