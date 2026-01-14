@@ -436,9 +436,10 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <?php if ($showPopupLivraison): ?>
         <?php
+            $idCommande = intval( $_GET['idCommande']);
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([":idCommande" => $_GET['idCommande']]);
+            $stmt->execute([":idCommande" => $idCommande]);
             $etape = $stmt->fetch(PDO::FETCH_ASSOC);
         ?>
         <div id="popupLivraison" class="overlay">
@@ -475,9 +476,8 @@ $cart = getCurrentCart($pdo, $idClient);
                 </div>
             </div>
         </div>
-    <?php endif; 
-    var_dump($etape[0])?>
-    <script>const etape = <?php echo json_encode($etape[0]); ?>;</script>
+    <?php endif; ?>
+    <script>const etape = <?php echo json_encode($etape['etape']); ?>;</script>
     <script src="../scripts/frontoffice/popupSuivieCommande.js"></script>
 </body>
 </html>

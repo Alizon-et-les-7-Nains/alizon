@@ -7003,37 +7003,40 @@ dialog.reassort form input {
 }
 .pageCatalogue .bannierePromo h1 {
   position: absolute;
-  font-size: 12px;
-  top: 20px;
-  left: 13px;
+  font-size: 16px;
+  top: 25px;
+  left: 8px;
   color: #fffefa;
   z-index: 10000;
+  margin: 0;
+  padding: 0;
 }
 .pageCatalogue .poly1 {
   position: absolute;
   top: 15px;
-  left: 10px;
-  width: 30px;
-  min-height: 15px;
-  z-index: 100;
+  left: 6px;
+  width: 40px;
+  transform: scaleY(2);
+  z-index: 1000000;
 }
 .pageCatalogue .poly2 {
   position: absolute;
   top: 50px;
-  left: 10px;
-  width: 30px;
-  min-height: 15px;
+  left: 6px;
+  width: 40px;
+  transform: scaleY(2);
   z-index: 1000000;
 }
 .pageCatalogue .tempsRestant {
   position: absolute;
-  top: 0px;
-  left: 50%;
+  top: -10px;
+  right: 5px;
   background-color: #fffefa;
   color: #273469;
+  padding: 0 5px;
   z-index: 10000;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 12px;
+  font-weight: bolder;
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
@@ -7346,12 +7349,26 @@ dialog.reassort form input {
   align-items: center;
   background-color: #e3f2fe;
   color: #273469;
+  border: 1px solid #273469;
+  padding: 10px 5px;
 }
 .mesNotif .apercuNotif * {
   margin: 0;
 }
-.mesNotif .apercuNotif h3 {
-  text-align: center;
+.mesNotif .apercuNotif h4, .mesNotif .apercuNotif h5 {
+  font-weight: 400;
+  padding: 4px 0px;
+}
+.mesNotif .apercuNotif h5 {
+  color: black;
+}
+.mesNotif .ecranNotif {
+  width: 150%;
+}
+.mesNotif .ecranNotif h3 {
+  border-bottom: 1px solid black;
+  color: black;
+  font-size: medium;
 }
 
 main.commandesBackoffice {

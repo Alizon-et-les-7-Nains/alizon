@@ -34,13 +34,27 @@
     .apercuNotif {
         display: flex;
         align-items: center;
-        background-color: $color-pastel-blue;
-        color: $color-blue;
+        background-color: #e3f2fe;
+        color: #273469;
+        border: 1px solid #273469;
+        padding: 10px 5px;
         * {
             margin: 0;
         }
-        h3 {
-            text-align: center;
+        h4, h5 {
+            font-weight: 400;
+            padding: 4px 0px;;
+        }
+        h5 {
+            color: black;
+        }
+    }
+    .ecranNotif {
+        width: 150%;
+        h3 {            
+            border-bottom: 1px solid black;
+            color: black;
+            font-size: medium;
         }
     }
 }
