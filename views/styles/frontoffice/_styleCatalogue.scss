@@ -81,7 +81,7 @@
     .bannierePromo {
         display: block;
         position: absolute;
-        top: 0px;
+        top: -4px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
     }
@@ -99,6 +99,7 @@
 
     .bannierePromo h1 {
         position: absolute;
+        font-size: 12px;
         top: 15px;
         left: 13px;
         color: $color-white;
@@ -109,7 +110,7 @@
         position: absolute;
         top: 5px;
         left: 10px;
-        width: auto;
+        width: 20px;
         z-index: 100;
     }
 
@@ -117,7 +118,7 @@
         position: absolute;
         top: 25px;
         left: 10px;
-        width: auto;
+        width: 20px;
         z-index: 1000000;
     }
 
