@@ -38,7 +38,7 @@ if ($recherche !== '') {
 }
 
 $countStmt = $pdo->prepare($countSql);
-$countStmt->bindValue(':search', '%' . $recherche . '%');
+if (!empty($recherche)) $countStmt->bindValue(':search', '%' . $recherche . '%');
 $countStmt->bindValue(':minPrice', $minPrice);
 $countStmt->bindValue(':maxPrice', $maxPrice);
 $countStmt->bindValue(':noteMin', $noteMin);
