@@ -86,7 +86,8 @@ body {
     position: relative;
     display: flex;
     align-items: center;
-    padding: 10px 450px 10px 20px;
+    justify-content: space-between;
+    padding: 10px 10px 5px 5px;
     border-radius: 25px;
     border: none;
     outline: none;
@@ -106,9 +107,14 @@ body {
       font-size: 20px;
       font-weight: bold;
       font-style: italic;
+      width: 700px;
+      border: none;
 
       &::-webkit-search-cancel-button {
         display: none;
+      }
+      &:focus {
+        outline: none;
       }
     }
   }

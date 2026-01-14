@@ -12,6 +12,7 @@ $offset = ($page - 1) * $produitsParPage;
 $idClient = $_SESSION['user_id'];
 
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
+$categoryQuery = isset($_GET['categorie']) ? trim($_GET['categorie']) : "";
 
 // Récupérer les produits avec pagination
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
@@ -27,6 +28,11 @@ $countSql = "SELECT COUNT(*) FROM _produit p
 if (!empty($searchQuery)) {
     $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
     $countSql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
+}
+
+if (!empty($categoryQuery)) {
+    $sql .= " WHERE p.typeProd = :categoryQuery";
+    $countSql .= " WHERE p.typeProd = :categoryQuery";
 }
 
 // Récuperer la totalité des catégories
@@ -49,6 +55,9 @@ $countStmt = $pdo->prepare($countSql);
 if (!empty($searchQuery)) {
     $countStmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
 }
+if (!empty($categoryQuery)) {
+    $countStmt->bindValue(':categoryQuery', '%' . $categoryQuery . '%', PDO::PARAM_STR);
+}
 $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
 
@@ -63,6 +72,9 @@ $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 if (!empty($searchQuery)) {
     $stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
+}
+if (!empty($categoryQuery)) {
+    $stmt->bindValue(':categoryQuery', '%' . $categoryQuery . '%', PDO::PARAM_STR);
 }
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -99,21 +111,28 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 } ?>
 <main class="pageCatalogue">
     <aside class="filter-sort">
-        <h3>Filtres</h3>
         <form method="GET" action="">
             <label for="tri">Trier par :</label>
-            <div class="triNote">
-                <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
-                <label for="triNoteCroissant">Note croissante</label>
-                <input type="radio" id="triNoteDecroissant" name="tri" value="noteDesc">
-                <label for="triNoteDecroissant">Note décroissante</label>
-            </div>
-            <div class="triPrix">
-                <input type="radio" id="triPrixCroissant" name="tri" value="prixAsc">
-                <label for="triPrixCroissant">Prix croissant</label>
-                <input type="radio" id="triPrixDecroissant" name="tri" value="prixDesc">
-                <label for="triPrixDecroissant">Prix décroissant</label>
-            </div>
+            <article class="triNote">
+                <div>
+                    <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
+                    <label for="triNoteCroissant">Note croissante</label>
+                </div>
+                <div>
+                    <input type="radio" id="triNoteDecroissant" name="tri" value="noteDesc">
+                    <label for="triNoteDecroissant">Note décroissante</label>
+                </div>
+            </article>
+            <article class="triPrix">
+                <div>
+                    <input type="radio" id="triPrixCroissant" name="tri" value="prixAsc">
+                    <label for="triPrixCroissant">Prix croissant</label>
+                </div>
+                <div>
+                    <input type="radio" id="triPrixDecroissant" name="tri" value="prixDesc">
+                    <label for="triPrixDecroissant">Prix décroissant</label>
+                </div>
+            </article>
             <label for="prix">Filtrer par prix :</label>
             <div class="slider-container">
                 <div class="values">
@@ -140,16 +159,19 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
-                <?php foreach ($listeCategories as $categorie) { 
-                    if (isset($_GET['categorie'])) {
-                        $nomCategorie = $_GET['categorie'];
-                        $nomCategorie = str_replace("_", " ", $nomCategorie); ?>
-                        <option value="<?= $nomCategorie ?>" class="choix"><?= $nomCategorie ?></option>
-                    <?php } else { ?>
-                        <option value="" class="opt-highlight">Toutes les catégories</option>
-                    <?php } ?>
+                
+                <?php if (isset($_GET['categorie'])) {
+                    $nomCategorie = $_GET['categorie'];
+                    $nomCategorie = str_replace("_", " ", $nomCategorie); ?>
+                    <option value="<?= $nomCategorie ?>" class="choix"><?= $nomCategorie ?></option>
+                <?php } else { ?>
+                    <option value="" class="opt-highlight">Toutes les catégories</option>
+                <?php } ?>
+
+                <?php foreach ($listeCategories as $categorie) { ?>
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
+
             </select>
 
             <label for="zone">Zone géographique :</label>
@@ -279,6 +301,7 @@ let sortOrder = '';
 
 // Variables globales
 let searchQuery = "<?= htmlspecialchars($searchQuery) ?>";
+let categoryQuery = "<?= htmlspecialchars($categoryQuery) ?>";
 const listeArticle = document.querySelector('.listeArticle');
 const resultat = document.getElementById('resultat');
 const paginationDiv = document.querySelector('.pagination');
@@ -365,7 +388,7 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}`)
         .then(res => {
             // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {
