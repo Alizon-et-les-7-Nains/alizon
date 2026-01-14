@@ -7343,6 +7343,14 @@ dialog.reassort form input {
   border: 1px solid #273469;
   border-radius: 25px;
   margin: 30px 50px;
+  max-height: 500px;
+  min-height: 500px;
+}
+.mesNotif .ensembleNotif .sidebarNotif {
+  overflow: scroll;
+}
+.mesNotif .ensembleNotif .sidebarNotif:first-child {
+  border-top-left-radius: 25px;
 }
 .mesNotif .apercuNotif {
   display: flex;
@@ -7351,6 +7359,13 @@ dialog.reassort form input {
   color: #273469;
   border: 1px solid #273469;
   padding: 10px 5px;
+}
+.mesNotif .apercuNotif img {
+  height: 40px;
+  padding: 20px;
+}
+.mesNotif .apercuNotif {
+  cursor: pointer;
 }
 .mesNotif .apercuNotif * {
   margin: 0;
@@ -7366,6 +7381,14 @@ dialog.reassort form input {
   width: 150%;
 }
 .mesNotif .ecranNotif h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.mesNotif .ecranNotif .contenuNotif {
+  margin: 20px;
+  color: black;
+}
+.mesNotif .ecranNotif .titleNotif {
   border-bottom: 1px solid black;
   color: black;
   font-size: medium;
