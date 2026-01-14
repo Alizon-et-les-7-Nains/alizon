@@ -6919,7 +6919,7 @@ dialog.reassort form input {
   display: flex;
   flex-direction: column;
 }
-.pageCatalogue .triNote .triPrix {
+.pageCatalogue .filter-sort form div {
   display: flex;
   flex-direction: column;
 }
@@ -6984,8 +6984,8 @@ dialog.reassort form input {
   margin: 5px 0;
 }
 .pageCatalogue .star {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 }
 .pageCatalogue .notation .etoile {
   width: 20px;
@@ -7116,6 +7116,10 @@ dialog.reassort form input {
     width: calc(100% - 250px);
     margin-left: 250px;
   }
+  .star {
+    width: 35px;
+    height: 35px;
+  }
 }
 @media (max-width: 1024px) {
   .pageCatalogue .filter-sort {
@@ -7126,6 +7130,10 @@ dialog.reassort form input {
     width: calc(100% - 220px);
     margin-left: 220px;
   }
+  .star {
+    width: 30px;
+    height: 30px;
+  }
 }
 @media (max-width: 768px) {
   .pageCatalogue .filter-sort {
@@ -7135,6 +7143,10 @@ dialog.reassort form input {
   .pageCatalogue .products-section {
     width: calc(100% - 200px);
     margin-left: 200px;
+  }
+  .star {
+    width: 25px;
+    height: 25px;
   }
 }
 .overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {

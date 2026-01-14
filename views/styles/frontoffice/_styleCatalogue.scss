@@ -18,7 +18,7 @@
         flex-direction: column;
     } 
 
-    .triNote .triPrix{
+    .filter-sort form div{
         display: flex;
         flex-direction: column;
     }
@@ -92,8 +92,8 @@
     }
 
     .star{
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
     }
 
     .notation .etoile {
@@ -243,6 +243,11 @@
         width: calc(100% - 250px);
         margin-left: 250px;
     }
+
+    .star{
+        width: 35px;
+        height: 35px;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -255,6 +260,11 @@
         width: calc(100% - 220px);
         margin-left: 220px;
     }
+
+    .star{
+        width: 30px;
+        height: 30px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -266,5 +276,10 @@
     .pageCatalogue .products-section {
         width: calc(100% - 200px);
         margin-left: 200px;
+    }
+
+    .star{
+        width: 25px;
+        height: 25px;
     }
 }
