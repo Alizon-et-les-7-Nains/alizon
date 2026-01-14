@@ -76,11 +76,48 @@
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .bannierePromo{
-        position:absolute;
-        top:0px;
-        left:50px;
-    }
+  .bannierePromo {
+    display: block;
+    position: absolute;
+    top: -8px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+
+  .bannierePromo h1 {
+    font-size: 30px;
+  }
+
+  .imgBanniere {
+    position: absolute;
+    height: 50px;
+    width: auto;
+    z-index: 1;
+  }
+
+  .bannierePromo h1 {
+    position: absolute;
+    top: 25px;
+    left: 13px;
+    color: $color-white;
+    z-index: 10000;
+  }
+
+  .poly1 {
+    position: absolute;
+    top: 35px;
+    left: 10px;
+    width: auto;
+    z-index: 100;
+  }
+
+  .poly2 {
+    position: absolute;
+    top: 90px;
+    left: 10px;
+    width: auto;
+    z-index: 1000000;
+  }
 
     .listeArticle article h2 {
         color: #273469;
