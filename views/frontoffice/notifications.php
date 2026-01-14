@@ -93,7 +93,7 @@ $id_client = $_SESSION['user_id'];
                         <h5>Il y a 59 minutes</h5>
                     </div>
                 </div>
-                        <div class="apercuNotif">
+                <div class="apercuNotif">
                     <div>
                         <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                     </div>

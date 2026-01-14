@@ -1,150 +1,24 @@
 <?php
-require_once "../../controllers/pdo.php";
-require_once "../../controllers/prix.php";
-session_start();
-
 ob_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../../views/frontoffice/connexionClient.php');
-    exit;
-}
+require_once "../../controllers/pdo.php";
+require_once "../../controllers/prix.php";
 
-$idClient = $_SESSION['user_id'];
-
-function getCurrentCart($pdo, $idClient) {
-    $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
-    $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
-
-    $cart = [];
-
-    if ($panier) {
-        $idPanier = intval($panier['idPanier']); 
-
-        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
-                FROM _produitAuPanier pa
-                JOIN _produit p ON pa.idProduit = p.idProduit
-                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-                WHERE pa.idPanier = " . intval($idPanier);
-        $stmt = $pdo->query($sql);
-        $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
-    }
-    
-    return $cart;
-}
-
-function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
-    $idProduit = intval($idProduit);
-    $idClient = intval($idClient);
-    
-    // Récupérer le panier actuel
-    $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
-    $stmtPanier->execute([$idClient]);
-    $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$panier) {
-        // Créer un nouveau panier si nécessaire
-        $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
-        $stmtCreate->execute([$idClient]);
-        $idPanier = $pdo->lastInsertId();
-    } else {
-        $idPanier = $panier['idPanier'];
-    }
-
-    // Vérifier si le produit existe déjà dans le panier
-    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
-            WHERE idProduit = ? AND idPanier = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$idProduit, $idPanier]);
-    $current = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($current) {
-        // Produit existe : mettre à jour la quantité
-        $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
-        
-        if ($newQty > 0) {
-            $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
-                    WHERE idProduit = ? AND idPanier = ?";
-            $stmt = $pdo->prepare($sql);
-            $success = $stmt->execute([$newQty, $idProduit, $idPanier]);
-        } else {
-            // Supprimer si quantité = 0
-            $sql = "DELETE FROM _produitAuPanier WHERE idProduit = ? AND idPanier = ?";
-            $stmt = $pdo->prepare($sql);
-            $success = $stmt->execute([$idProduit, $idPanier]);
-        }
-    } else {
-        // Produit n'existe pas : l'ajouter si delta > 0
-        if ($delta > 0) {
-            $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
-            $stmt = $pdo->prepare($sql);
-            $success = $stmt->execute([$idProduit, $idPanier, $delta]);
-        } else {
-            $success = false;
-        }
-    }
-    
-    return $success;
-
-}
-
-// ============================================================================
-// GESTION DES ACTIONS AJAX
-// ============================================================================
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    header('Content-Type: application/json');
-    
-    try {
-        switch ($_POST['action']) {
-            case 'updateQty':
-                $idProduit = $_POST['idProduit'] ?? '';
-                $delta = intval($_POST['delta'] ?? 0);
-                if ($idProduit && $delta != 0) {
-                    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
-                    echo json_encode(['success' => $success]);
-                } else {
-                    echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
-                }
-                break;
-
-            case 'getCart':
-                $cart = getCurrentCart($pdo, $idClient);
-                echo json_encode($cart);
-                break;
-                
-            default:
-                echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
-        }
-    } catch (Exception $e) {
-        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
-    }
-    exit;
-}
-
-// ============================================================================
-// RÉCUPÉRATION DES DONNÉES POUR LA PAGE
-// ============================================================================
-
-// recuperation panier courent
-$cart = getCurrentCart($pdo, $idClient);
-
-// ============================================================================
-// GESTION DES COOKIES
-// ============================================================================
-?>
-
-<?php 
     const PRODUIT_CONSULTE_MAX_SIZE = 4;
 
+    const PRODUIT_DANS_PANIER_MAX_SIZE = 10;
+
     // Récupération du cookie existant ou création d'un tableau vide
-    if (isset($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitConsulte'])) {
+    if (((isset($_COOKIE['produitConsulte'])) && (isset($_COOKIE['produitPanier']))) && (!empty($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitPanier']))) {
         $tabIDProduitConsulte = unserialize($_COOKIE['produitConsulte']);
+        $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
         if (!is_array($tabIDProduitConsulte)) {
             $tabIDProduitConsulte = [];
+            $tabIDProduitPanier = [];
         }
     } else {
         $tabIDProduitConsulte = [];
+        $tabIDProduitPanier = [];
     }
 
     // Fonction pour ajouter un produit consulté
@@ -164,6 +38,22 @@ $cart = getCurrentCart($pdo, $idClient);
         setcookie("produitConsulte", serialize($tabIDProduit), time() + (60*60*24*90), "/");
     }
 
+    function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
+        if (isset($tabIDProduitPanier[$idProduit])) {
+            $tabIDProduitPanier[$idProduit] += $quantite;
+        } else {
+            if (count($tabIDProduitPanier) >= PRODUIT_DANS_PANIER_MAX_SIZE) {
+                $message = "Impossible d'ajouter plus de ".PRODUIT_DANS_PANIER_MAX_SIZE." produits différents. Connectez-vous pour en ajouter plus.";
+                echo "<script>alert(".json_encode($message).");</script>";
+                return false;
+            }
+            $tabIDProduitPanier[$idProduit] = $quantite;
+        }
+        
+        setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
+        return true;
+    }
+
     // Gestion de l'ajout d'un produit via GET
     if (isset($_GET['addRecent']) && !empty($_GET['addRecent'])) {
         $idProduitAjoute = intval($_GET['addRecent']);
@@ -175,16 +65,10 @@ $cart = getCurrentCart($pdo, $idClient);
         }
     }
 
-    // Récupérer les promotions
-
-    $stmt = $pdo->prepare("SELECT * FROM _promotion");
-    $stmt->execute();
-    $arrayProduit = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    if (count($arrayProduit) === 0) {
-        $choixAleatoirePromo = "N/A";
-    } else {
-        $choixAleatoirePromo = $arrayProduit[array_rand($arrayProduit)]['idProduit'];
+    if (isset($_GET['addPanier']) && !empty($_GET['addPanier'])) {
+        $idProduitAjoute = intval($_GET['addPanier']);
+        $quantite = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
+        ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute);
     }
 
     // Récupérer les promotions
@@ -192,6 +76,20 @@ $cart = getCurrentCart($pdo, $idClient);
     $stmt = $pdo->prepare("SELECT * FROM _promotion");
     $stmt->execute();
     $arrayProduit = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmtNoteProduit = $pdo->prepare(
+        "UPDATE _produit p
+        LEFT JOIN (
+            SELECT idProduit, AVG(note) AS avg_note
+            FROM _avis
+            GROUP BY idProduit
+        ) a ON p.idProduit = a.idProduit
+        SET p.note = COALESCE(a.avg_note, 0)
+        ");
+
+    $stmtNoteProduit->execute();
+    $noteProduit = $stmtNoteProduit->fetchAll(PDO::FETCH_ASSOC);
+
 
     if (count($arrayProduit) === 0) {
         $choixAleatoirePromo = "N/A";
@@ -206,20 +104,15 @@ $cart = getCurrentCart($pdo, $idClient);
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/style.css">
-
-    <link rel="icon" type="image/png" href="/public/images/favicon.png">
-    <link rel="icon" href="/public/images/logoBackoffice.svg">
-
-    <title>Alizon - Accueil</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/public/images/logoBackoffice.svg">
+  <link rel="stylesheet" href="../../public/style.css">
+  <title>Alizon - Accueil</title>
 </head>
-
 <body class="acceuil">
-    <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
+    <?php include '../../views/frontoffice/partials/headerDeconnecte.php'; ?>
 
     <section class="banniere">
         <?php if($choixAleatoirePromo == "N/A") { ?>
@@ -245,8 +138,8 @@ $cart = getCurrentCart($pdo, $idClient);
             
             <h1 style="cursor: pointer;" onclick="window.location.href='?addRecent=<?php echo $choixAleatoirePromo; ?>&id=<?php echo $choixAleatoirePromo; ?>'"><?php echo htmlspecialchars($produitEnPromo['nom']); ?></h1>
             <img style="cursor: pointer;" onclick="window.location.href='?addRecent=<?php echo $choixAleatoirePromo; ?>&id=<?php echo $choixAleatoirePromo; ?>'" src="<?php echo htmlspecialchars($image); ?>" alt="Image du produit">
-
         <?php } ?>
+
     </section>
 
     <main>
@@ -262,10 +155,9 @@ $cart = getCurrentCart($pdo, $idClient);
                                       FROM _produit p 
                                       LEFT JOIN _remise r ON p.idProduit = r.idProduit 
                                         AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
-                                      ORDER BY p.idProduit DESC LIMIT 10;");
+                                      ORDER BY p.idProduit DESC LIMIT 10 ;");
                 $stmt->execute();
                 $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
                 
                 if (count($produitNouveaute) > 0) {
                     foreach ($produitNouveaute as $value) {
@@ -280,13 +172,9 @@ $cart = getCurrentCart($pdo, $idClient);
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                <article style="margin-top: 5px;">
-                    <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
-                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"
-                        alt="Image du produit">
-                    <h2 class="nomProduit"
-                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                        <?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <article style="margin-top: 5px;">
+                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
+                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <?php if(number_format($value['note'], 1) == 0) { ?>
                                     <span><?php echo "Pas de note" ?></span>
@@ -296,35 +184,35 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
                                 <?php }} ?>
                             </div>
-                    <div class="infoProd">
-                        <div class="prix">
-                            <?php if ($enRemise): ?>
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <h2><?php echo formatPrice($prixRemise); ?></h2>
-                                    <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
-                                        <?php echo formatPrice($prixOriginal); ?>
-                                    </h3>
+                            <div class="infoProd">
+                                <div class="prix">
+                                    <?php if ($enRemise): ?>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                            <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                                <?php echo formatPrice($prixOriginal); ?>
+                                            </h3>
+                                        </div>
+                                    <?php else: ?>
+                                        <h2><?php echo formatPrice($prixOriginal); ?></h2>
+                                    <?php endif; ?>
+                                    <?php 
+                                        $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
+                                        $poids = $value['poids'];
+                                        $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
+                                        $prixAuKg = round($prixAuKg,2) ?>
+                                    <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                 </div>
-                            <?php else: ?>
-                                <h2><?php echo formatPrice($prixOriginal); ?></h2>
-                            <?php endif; ?>
-                            <?php 
-                                $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
-                                $poids = $value['poids'];
-                                $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
-                                $prixAuKg = round($prixAuKg,2) ?>
-                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
-                        </div>
-                        <div>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
-                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                            </button>
-                        </div>
-                    </div>
-                </article>
-                <?php } 
+                                <div>
+                                    <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    <?php } 
                 } else { ?>
-                <h1>Aucun produit disponible</h1>
+                    <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -358,13 +246,9 @@ $cart = getCurrentCart($pdo, $idClient);
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                <article style="margin-top: 5px;">
-                    <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
-                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"
-                        alt="Image du produit">
-                    <h2 class="nomProduit"
-                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                        <?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <article style="margin-top: 5px;">
+                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
+                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <?php if(number_format($value['note'], 1) == 0) { ?>
                                     <span><?php echo "Pas de note" ?></span>
@@ -374,35 +258,35 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
                                 <?php }} ?>
                             </div>
-                    <div class="infoProd">
-                        <div class="prix">
-                            <?php if ($enRemise): ?>
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <h2><?php echo formatPrice($prixRemise); ?></h2>
-                                    <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
-                                        <?php echo formatPrice($prixOriginal); ?>
-                                    </h3>
+                            <div class="infoProd">
+                                <div class="prix">
+                                    <?php if ($enRemise): ?>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                            <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                                <?php echo formatPrice($prixOriginal); ?>
+                                            </h3>
+                                        </div>
+                                    <?php else: ?>
+                                        <h2><?php echo formatPrice($prixOriginal); ?></h2>
+                                    <?php endif; ?>
+                                    <?php 
+                                        $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
+                                        $poids = $value['poids'];
+                                        $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
+                                        $prixAuKg = round($prixAuKg,2) ?>
+                                    <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                 </div>
-                            <?php else: ?>
-                                <h2><?php echo formatPrice($prixOriginal); ?></h2>
-                            <?php endif; ?>
-                            <?php 
-                                $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
-                                $poids = $value['poids'];
-                                $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
-                                $prixAuKg = round($prixAuKg,2) ?>
-                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
-                        </div>
-                        <div>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
-                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                            </button>
-                        </div>
-                    </div>
-                </article>
-                <?php } 
+                                <div>
+                                    <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    <?php } 
                 } else { ?>
-                <h1>Aucun produit disponible</h1>
+                    <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -436,13 +320,9 @@ $cart = getCurrentCart($pdo, $idClient);
                         $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                         $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                         ?>
-                <article style="margin-top: 5px;">
-                    <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
-                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"
-                        alt="Image du produit">
-                    <h2 class="nomProduit"
-                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                        <?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <article style="margin-top: 5px;">
+                            <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
+                            <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($value['nom']); ?></h2>
                             <div class="notation">
                                 <?php if(number_format($value['note'], 1) == 0) { ?>
                                     <span><?php echo "Pas de note" ?></span>
@@ -452,35 +332,35 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
                                 <?php }} ?>
                             </div>
-                    <div class="infoProd">
-                        <div class="prix">
-                            <?php if ($enRemise): ?>
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <h2><?php echo formatPrice($prixRemise); ?></h2>
-                                    <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
-                                        <?php echo formatPrice($prixOriginal); ?>
-                                    </h3>
+                            <div class="infoProd">
+                                <div class="prix">
+                                    <?php if ($enRemise): ?>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                            <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                                <?php echo formatPrice($prixOriginal); ?>
+                                            </h3>
+                                        </div>
+                                    <?php else: ?>
+                                        <h2><?php echo formatPrice($prixOriginal); ?></h2>
+                                    <?php endif; ?>
+                                    <?php 
+                                        $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
+                                        $poids = $value['poids'];
+                                        $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
+                                        $prixAuKg = round($prixAuKg,2) ?>
+                                    <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                                 </div>
-                            <?php else: ?>
-                                <h2><?php echo formatPrice($prixOriginal); ?></h2>
-                            <?php endif; ?>
-                            <?php 
-                                $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
-                                $poids = $value['poids'];
-                                $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
-                                $prixAuKg = round($prixAuKg,2) ?>
-                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
-                        </div>
-                        <div>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
-                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                            </button>
-                        </div>
-                    </div>
-                </article>
-                <?php } 
+                                <div>
+                                    <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                                        <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    <?php } 
                 } else { ?>
-                <h1>Aucun produit disponible</h1>
+                    <h1>Aucun produit disponible</h1>
                 <?php } ?>
             </div>
         </section>
@@ -517,52 +397,48 @@ $cart = getCurrentCart($pdo, $idClient);
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
                             ?>
-                <article style="margin-top: 5px;">
-                    <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
-                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"
-                        alt="Image du produit">
-                    <h2 class="nomProduit"
-                        onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
-                        <?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
-                            <div class="notation">
-                                <?php if(number_format($value['note'], 1) == 0) { ?>
-                                    <span><?php echo "Pas de note" ?></span>
-                                <?php } else { ?>
-                                <span><?php echo number_format($value['note'], 1); ?></span>
-                                <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
-                                    <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
-                                <?php }} ?>
-                            </div>
-                    <div class="infoProd">
-                        <div class="prix">
-                            <?php if ($enRemise): ?>
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <h2><?php echo formatPrice($prixRemise); ?></h2>
-                                    <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
-                                        <?php echo formatPrice($prixOriginal); ?>
-                                    </h3>
+                            <article style="margin-top: 5px;">
+                                <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'" alt="Image du produit">
+                                <h2 class="nomProduit" onclick="window.location.href='?addRecent=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'"><?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
+                                <div class="notation">
+                                    <?php if(number_format($value['note'], 1) == 0) { ?>
+                                        <span><?php echo "Pas de note" ?></span>
+                                    <?php } else { ?>
+                                    <span><?php echo number_format($value['note'], 1); ?></span>
+                                    <?php for ($i=0; $i < number_format($value['note'], 0); $i++) { ?>
+                                        <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
+                                    <?php }} ?>
                                 </div>
-                            <?php else: ?>
-                                <h2><?php echo formatPrice($prixOriginal); ?></h2>
-                            <?php endif; ?>
-                            <?php 
-                                $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
-                                $poids = $produitRecent['poids'];
-                                $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
-                                $prixAuKg = round($prixAuKg,2) ?>
-                            <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
-                        </div>
-                        <div>
-                            <button class="plus" data-id="<?= htmlspecialchars($produitRecent['idProduit'] ?? '') ?>">
-                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                            </button>
-                        </div>
-                    </div>
-                </article>
-                <?php }
+                                <div class="infoProd">
+                                    <div class="prix">
+                                        <?php if ($enRemise): ?>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <h2><?php echo formatPrice($prixRemise); ?></h2>
+                                                <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
+                                                    <?php echo formatPrice($prixOriginal); ?>
+                                                </h3>
+                                            </div>
+                                        <?php else: ?>
+                                            <h2><?php echo formatPrice($prixOriginal); ?></h2>
+                                        <?php endif; ?>
+                                        <?php 
+                                            $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
+                                            $poids = $produitRecent['poids'];
+                                            $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
+                                            $prixAuKg = round($prixAuKg,2) ?>
+                                        <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
+                                    </div>
+                                    <div>
+                                        <button class="plus" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&id=<?php echo $idProduit; ?>'">
+                                            <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                        </button>
+                                    </div>
+                                </div>
+                            </article>
+                        <?php }
                     }
                 } else { ?>
-                <h1>Aucun produit récemment consultés !</h1>
+                    <h1>Aucun produit récemment consultés !</h1>
                 <?php } ?>
             </div>
         </section>
@@ -573,8 +449,6 @@ $cart = getCurrentCart($pdo, $idClient);
     <section class="confirmationAjout">
         <h4>Produit ajouté au panier !</h4>
     </section>
-    
-    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
     <script>
         const popupConfirmation = document.querySelector(".confirmationAjout");
@@ -595,11 +469,13 @@ $cart = getCurrentCart($pdo, $idClient);
         });
     </script>
 
+    <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
+
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
-</body>
 
+</body>
 </html>
 
 <?php
