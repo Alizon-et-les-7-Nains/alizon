@@ -53,6 +53,9 @@ if (preg_match('/BORDEREAU (\d+)/', $create_response, $matches)) {
     // Test 3: Consultation
     //echo "Test STATUS:\n";
     $status_response = send_command($socket, "STATUS $bordereau");
+    $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":etape" => $status_response, ":idCommande" => $tabIdDestination[0]["idCommande"]]);
     //echo "Réponse: $status_response\n\n";
 }
 
