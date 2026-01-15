@@ -128,15 +128,21 @@
 
     .tempsRestant {
         position: absolute;
-        top: -8px;
+        top: -9px;
         right: -5px;
         background-color: $color-white;
         color: $color-blue;
         padding: 3px 3px;
         z-index: 10000;
         font-size: 12px;
-        font-weight: bolder;
     }  
+
+    #promoTexte{
+        color: white;
+        font-weight: bold;
+        background-color: #f14e4e;
+        border-radius: 5px;
+    }
 
     .listeArticle article h2 {
         color: #273469;
