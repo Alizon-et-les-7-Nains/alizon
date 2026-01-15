@@ -5,7 +5,7 @@
   main h1 {
     color: $color-blue;
     font-family: $font-lora;
-    font-size: 48px;
+    font-size: 38px;
     font-weight: bold;
     font-style: italic;
     text-align: center;
@@ -16,15 +16,15 @@
     margin: 0px 80px;
   }
 
-  .titreSection {
+  h2 {
     font-family: $font-lora;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
   }
 
-  .texteSection {
+  p {
     font-family: $font-open-sans;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   @media (max-width: 1300px) {

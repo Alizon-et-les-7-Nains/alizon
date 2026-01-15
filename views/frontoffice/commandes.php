@@ -436,9 +436,10 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <?php if ($showPopupLivraison): ?>
         <?php
+            $idCommande = intval( $_GET['idCommande']);
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([":idCommande" => $_GET['idCommande']]);
+            $stmt->execute([":idCommande" => $idCommande]);
             $etape = $stmt->fetch(PDO::FETCH_ASSOC);
         ?>
         <div id="popupLivraison" class="overlay">
@@ -447,8 +448,26 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div></div>
                     <div></div>
                 </div> 
-                <h2>Suivi de la livraison</h2>
+                <div class="popup-content">
+                    
+                    <h2>Suivi de la livraison</h2>
 
+                    <?php
+                        $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute([":idCommande" => $idCommande]);
+                        $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    ?>
+                    <?php foreach ($produits as $produit): ?>
+                        <div class="recapProduit">
+                            <img src="<?= htmlspecialchars($produit['URL']) ?>" alt="Image du produit">
+                            <div class="nomEtDescription">
+                                <h3><?= htmlspecialchars($produit['nom']) ?></h3>
+                                <p><?= htmlspecialchars($produit['description']) ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                    </div>
                 <div class="stepper">
                     <p>En cours de préparation</p>
                     <p>Prise en charge du colis</p>
@@ -476,7 +495,7 @@ $cart = getCurrentCart($pdo, $idClient);
             </div>
         </div>
     <?php endif; ?>
-    <script>const etape = <?php echo json_encode($etape[0]); ?>;</script>
+    <script>const etape = <?php echo json_encode($etape['etape']); ?>;</script>
     <script src="../scripts/frontoffice/popupSuivieCommande.js"></script>
 </body>
 </html>

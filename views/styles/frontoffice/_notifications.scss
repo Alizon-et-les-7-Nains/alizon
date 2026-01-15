@@ -4,7 +4,7 @@
 .mesNotif {
     font-family: "Lora", serif;
     color: #273469;
-
+    
     .topRecherche {
         display: flex;
         justify-content: space-between;
@@ -30,17 +30,86 @@
         border: 1px solid #273469;
         border-radius: 25px;
         margin: 30px 50px;
+        max-height: 483px;
+        min-height: 483px;
+        
+        .sidebarNotif {
+            overflow: scroll;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            width: 1000px;
+            background-color: #e4e4e4;
+        }
+        .sidebarNotif:first-child, .sidebarNotif:last-child {
+            border-top-left-radius: 25px;
+        }
     }
     .apercuNotif {
         display: flex;
         align-items: center;
-        background-color: $color-pastel-blue;
-        color: $color-blue;
+        background-color: #e3f2fe;
+        color: #273469;
+        border: 1px solid #273469;
+        padding: 10px 5px;
+        img {
+            height: 40px;
+            padding: 20px;
+        }
+        cursor: pointer;
         * {
             margin: 0;
         }
-        h3 {
-            text-align: center;
+        h4, h5 {
+            font-weight: 400;
+            padding: 4px 0px;;
+        }
+        h5 {
+            color: black;
         }
     }
+    .ecranNotif {
+        width: 150%;
+        h3 {            
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .contenuNotif {
+            margin: 20px;    
+            color: black;
+        }
+        .titleNotif {
+            border-bottom: 1px solid black;
+            padding: 0px 30px;
+            font-size: medium;
+            h1 {
+                margin-bottom: 0;
+            }
+            h3 {
+                margin-bottom: 21px;
+            }
+        }
+    }
+    @media (max-width: 1100px) {
+        .ensembleNotif {
+            max-height: 680px;
+            min-height: 680px;
+    }
+  }
+    @media (max-width: 840px) {
+        .ecranNotif {
+            display: none;
+            visibility: hidden;
+    }
+  }
+    @media (max-width: 840px) {
+        .ensembleNotif {
+            min-height: fit-content;
+            max-height: fit-content;
+            border-radius: 0;
+    }
+  }
+.sidebarNotif:first-child, .sidebarNotif:last-child {
+    border-top-left-radius: 0;
+}
+  
 }

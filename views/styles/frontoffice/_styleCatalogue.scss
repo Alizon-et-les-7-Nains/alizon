@@ -99,41 +99,58 @@
 
     .bannierePromo h1 {
         position: absolute;
-        font-size: 12px;
-        top: 20px;
-        left: 13px;
+        font-size: 16px;
+        top: 25px;
+        left: 8px;
         color: $color-white;
-        z-index: 10000;
+        z-index: 100;
+        margin: 0;
+        padding: 0;
     }
 
     .poly1 {
         position: absolute;
         top: 15px;
-        left: 10px;
-        width: 30px;
-        min-height: 10px;
-        z-index: 100;
+        left: 6px;
+        width: 40px;
+        transform: scaleY(2);
+        z-index: 1000;
     }
 
     .poly2 {
         position: absolute;
         top: 50px;
-        left: 10px;
-        width: 30px;
-        min-height: 10px;
-        z-index: 1000000;
+        left: 6px;
+        width: 40px;
+        transform: scaleY(2);
+        z-index: 100;
     }
 
     .tempsRestant {
         position: absolute;
-        top: 0px;
-        left: 50%;
+        top: -9px;
+        right: -5px;
         background-color: $color-white;
         color: $color-blue;
-        z-index: 10000;
-        font-size: 14px;
-        font-weight: bold;
+        padding: 3px 3px;
+        z-index: 2;
+        font-size: 12px;
     }  
+
+    #promoTexte{
+        color: white;
+        font-weight: bold;
+        background-color: #f14e4e;
+        border-radius: 5px;
+        padding: 0 2px;
+    }
+
+    .nomEtPromo{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+    }
 
     .listeArticle article h2 {
         color: #273469;
@@ -149,6 +166,7 @@
         max-height: 120px;
         object-fit: contain;
         border-radius: 20px;
+        z-index: 1;
     }
 
     .notation {
@@ -184,6 +202,14 @@
     }
 
     .prix h2 {
+        color: #273469;
+        font-size: 32px;
+        font-family: "Lora", serif;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .nomProduit h2{
         color: #273469;
         font-size: 32px;
         font-family: "Lora", serif;

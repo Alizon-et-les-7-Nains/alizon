@@ -211,6 +211,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                     }
                     ?>
             <article data-price="<?= $prixAffichage ?>">
+            <?php if ($enRemise) { ?>
                 <div class="bannierePromo">
                     <h1>-<?php echo number_format($tauxRemise); ?>%</h1>
                     <img class="poly1" src="../../public/images/poly1.svg" alt="">
@@ -219,24 +220,25 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 </div>
                 <div class="tempsRestant">
                     <?php 
-                    if ($enRemise) {
                         $finRemise = new DateTime($value['finRemise']);
-                        $now = new DateTime();
-                        $interval = $now->diff($finRemise);
-                        if ($interval->days > 0) {
-                            echo "<span>Remise valable encore " . $interval->days . " jour" . ($interval->days > 1 ? "s" : "") . "</span>";
+                        $mtn = new DateTime();
+                        $intervale = $mtn->diff($finRemise);
+                        if ($intervale->days > 0 && $intervale->days < 8) {
+                            echo "<span style=font-weight:bolder>Remise valable encore " . $intervale->days . " jour" . ($intervale->days > 1 ? "s" : "") . "!</span>";
                         } else {
-                            echo "<span>Dernier jour de remise !</span>";
+                            echo "<span style=font-weight:900>Dernier jour de remise !</span>";
                         }
-                    }
                     ?>       
                 </div>
+            <?php } ?>
                 <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
                     onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'"
                     alt="Image du produit">
-                <h2 class="nomProduit"
-                    onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
-                    <?php echo htmlspecialchars($value['nom']); ?></h2>
+                <div class="nomEtPromo">
+                    <h2 class="nomProduit"
+                        onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
+                        <?php if ($enRemise){echo "<h4 id='promoTexte'>Promo</h4>";} echo htmlspecialchars($value['nom']); ?></h2>
+                </div>
                 <div class="notation">
                     <?php if(number_format($value['note'], 1) == 0) { ?>
                         <span>Pas de note</span>
