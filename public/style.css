@@ -869,6 +869,7 @@ body {
   width: 60%;
   height: 60%;
   display: block;
+  position: relative;
 }
 .pageCommandes .overlay .popup .croixFermerLaPage {
   position: absolute;

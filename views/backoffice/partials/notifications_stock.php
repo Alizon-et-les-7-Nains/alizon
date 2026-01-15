@@ -1,64 +1,93 @@
 <?php
-$sqlPath = __DIR__ . '/../../../queries/backoffice/stockFaible.sql';
-$sqlContent = file_get_contents($sqlPath);
+    $sqlPath = __DIR__ . '/../../../queries/backoffice/stockFaible.sql';
+    $sqlContent = file_get_contents($sqlPath);
+?>
 
-if (isset($_GET['reassort_id'])) {
-    return;
-}
+<?php
+    if (isset($_GET['reassort_id'])) {
+        return;
+    }
 
-if (!empty($_SESSION['hide_notif'])) {
-    unset($_SESSION['hide_notif']);
-    return;
-}
+    if (!empty($_SESSION['hide_notif'])) {
+        unset($_SESSION['hide_notif']);
+        return;
+    }
 
+    $idVendeur = $_SESSION['id'] ?? 0;
 
-if ($sqlContent !== false) {
-    $notifSTMT = $pdo->prepare($sqlContent);
-    $notifSTMT->execute([':idVendeur' => $_SESSION['id'] ?? 0]);
-    $produitsAlerte = $notifSTMT->fetchAll(PDO::FETCH_ASSOC);
+    $sql = "SELECT idNotif, titreNotif, contenuNotif 
+            FROM _notification 
+            WHERE idClient = :idVendeur 
+            AND est_vendeur = 1 
+            ORDER BY dateNotif DESC";
 
-    if (!empty($produitsAlerte)): ?>
+    $notifSTMT = $pdo->prepare($sql);
+    $notifSTMT->execute([':idVendeur' => $idVendeur]);
+    $notifications = $notifSTMT->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!empty($notifications)): ?>
         <div id="stock-notifications-container">
-            <?php foreach ($produitsAlerte as $produit): ?>
-                <a href="/views/backoffice/stocks.php?reassort_id=<?php echo $produit['idProduit']; ?>"
+            <?php foreach ($notifications as $notif): 
+                preg_match('/ID:(\d+)/', $notif['contenuNotif'], $matches);
+                $idProduit = $matches[1] ?? 0;
+            ?>
+                <a href="/views/backoffice/stocks.php?reassort_id=<?php echo $idProduit; ?>&idNotif=<?php echo $notif['idNotif']; ?>"
                 class="stock-notif"
                 onclick="sessionStorage.setItem('fromNotif', '1')">
                     <img src="/public/images/infoDark.svg" alt="Alerte">
-                    <p>Le produit <strong><?php echo htmlspecialchars($produit['nom']); ?></strong> est à <strong><?php echo $produit['stock']; ?></strong> unités. Réassort nécessaire !</p>
+                    <div>
+                        <p><strong><?php echo htmlspecialchars($notif['titreNotif']); ?></strong></p>
+                        <p><?php echo htmlspecialchars($notif['contenuNotif']); ?></p>
+                    </div>
                 </a>
             <?php endforeach; ?>
-        </div>
-        
-        <style>
-            #stock-notifications-container {
-                position: fixed;
-                top: 20px;
-                left: 20px;
-                z-index: 9999;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                max-width: 320px;
-                pointer-events: none;
-            }
-            .stock-notif {
-                pointer-events: auto;
-                background: #fff;
-                border-left: 5px solid #d9534f;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                padding: 15px;
-                text-decoration: none;
-                color: #333;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                border-radius: 4px;
-                animation: slideIn 0.4s ease-out;
-            }
-            .stock-notif:hover { background: #fcfcfc; transform: translateX(5px); }
-            .stock-notif img { width: 24px; }
-            .stock-notif p { margin: 0; font-size: 0.9em; }
-            @keyframes slideIn { from { opacity: 0; transform: translateX(-100%); } to { opacity: 1; transform: translateX(0); } }
-        </style>
-    <?php endif; 
-} ?>
+    </div>
+    <style>
+        #stock-notifications-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 320px;
+            pointer-events: none;
+        }
+        .stock-notif {
+            pointer-events: auto;
+            background: #fff;
+            border-left: 5px solid #d9534f;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 12px;
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 4px;
+            animation: slideIn 0.4s ease-out;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .stock-notif:hover { 
+            background: #fcfcfc; 
+            transform: translateX(5px); 
+        }
+        .stock-notif img { 
+            width: 24px; 
+            flex-shrink: 0;
+        }
+        .stock-notif p { 
+            margin: 0; 
+            font-size: 0.85em; 
+            line-height: 1.3;
+        }
+        .stock-notif strong {
+            color: #d9534f;
+        }
+        @keyframes slideIn { 
+            from { opacity: 0; transform: translateX(-100%); } 
+            to { opacity: 1; transform: translateX(0); } 
+        }
+    </style>
+<?php endif; ?>
