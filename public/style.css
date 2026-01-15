@@ -7227,6 +7227,13 @@ dialog.reassort form input {
   font-weight: bold;
   margin: 0;
 }
+.pageCatalogue .nomProduit h2 {
+  color: #273469;
+  font-size: 32px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+  margin: 0;
+}
 .pageCatalogue .prix h3 {
   color: #000000;
   font-size: 12px;
