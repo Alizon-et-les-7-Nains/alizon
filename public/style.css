@@ -7553,6 +7553,23 @@ dialog.reassort form input {
   opacity: 0.9;
 }
 
+@keyframes tilt-shaking {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(0eg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
 .mesNotif {
   font-family: "Lora", serif;
   color: #273469;
@@ -7638,6 +7655,13 @@ dialog.reassort form input {
 }
 .mesNotif .apercuNotif h5 {
   color: black;
+}
+.mesNotif .apercuNotif:focus {
+  color: #e3f2fe;
+  background-color: #273469;
+}
+.mesNotif .apercuNotif:hover img {
+  animation: tilt-shaking 0.25s infinite;
 }
 .mesNotif .ecranNotif {
   width: 150%;

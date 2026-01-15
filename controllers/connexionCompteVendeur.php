@@ -7,13 +7,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         $pdo->beginTransaction();
-        $mdpHash = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
-        
-        $isValidSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/connexion.sql'));
-        $isValidSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $mdpHash]);
-        $isValid = $isValidSTMT->fetchColumn();
 
-        if ($isValid) {
+        $isValidSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/connexion.sql'));
+        $isValidSTMT->execute([':pseudo' => $_POST['pseudo']]);
+        $isValid = $isValidSTMT->fetchColumn();
+        var_dump($isValid);
+        if(password_verify($_POST['mdp'], $isValid)){
             $vendeurSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/vendeur.sql'));
             $vendeurSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
             $vendeur = $vendeurSTMT->fetch(PDO::FETCH_ASSOC);
@@ -25,10 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['id'] = $vendeur['codeVendeur'];
             $_SESSION['pass'] = $_POST['mdp'];
 
-            header('Location: ../views/backoffice/accueil.php');
+            //header('Location: ../views/backoffice/accueil.php');
         } else {
             $pdo->rollback();
-            header('Location: ../views/backoffice/connexion.php?error=1');
+            //header('Location: ../views/backoffice/connexion.php?error=1');
 }
     } catch (Exception $e) {
         header('Location: ../views/backoffice/connexion.php?error=0');
