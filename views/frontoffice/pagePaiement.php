@@ -20,6 +20,13 @@ if (!isset($_SESSION['user_id'])) {
 
 $idClient = $_SESSION['user_id'];
 
+function encryptCardNumber($plainText, $key) {
+    $ivLength = openssl_cipher_iv_length('AES-256-CBC');
+    $iv = openssl_random_pseudo_bytes($ivLength);
+    $cipherText = openssl_encrypt($plainText, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
+    return base64_encode($iv . $cipherText);
+}
+
 function getCurrentCart($pdo, $idClient) {
     $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
     $stmt->execute([$idClient]);
@@ -93,7 +100,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
 
         // Chiffrer le numéro de carte avant de le stocker
-        $numeroCarteChiffre = $numeroCarte;
+        $numeroCarteChiffre = encryptCardNumber($numeroCarte, $_ENV['ENCRYPTION_KEY'] ?? 'default_key');
         
         $checkCarte = $pdo->prepare("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = ?");
         $checkCarte->execute([$numeroCarteChiffre]);
@@ -313,6 +320,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     $citiesByCode['22'] = ['Saint-Brieuc','Lannion','Dinan'];
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -445,7 +453,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
     <script src="../../public/amd-shim.js"></script>
-    <script src="../../controllers/Chiffrement.js"></script>
     <script src="../scripts/frontoffice/paiement.js"></script>
 </body>
 
