@@ -935,10 +935,12 @@ body {
 .pageCommandes .recapProduit {
   display: flex;
   align-items: center;
-  margin-left: 20px img;
-  margin-left-width: 150px;
-  margin-left-height: 150px;
-  margin-left-margin-right: 20px;
+  margin-left: 20px;
+}
+.pageCommandes .recapProduit img {
+  width: 150px;
+  height: 150px;
+  margin-right: 20px;
 }
 .pageCommandes .recapProduit .nomEtDescription {
   display: flex;
