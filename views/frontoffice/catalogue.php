@@ -527,6 +527,7 @@ if (toggleFiltersBtn) {
         if (window.innerWidth <= 512) {
             if (!filterSort.contains(e.target) && !toggleFiltersBtn.contains(e.target)) {
                 filterSort.classList.remove('active');
+                toggleFiltersBtn.style.width = '20%';
                 toggleFiltersBtn.style.backgroundColor = '#fffefa';
                 toggleFiltersBtn.style.color = '#273469';
                 imgFiltre.style.filter = 'none';
