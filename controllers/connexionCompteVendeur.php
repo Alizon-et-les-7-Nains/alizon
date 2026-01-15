@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($vendeur) {
         // Vérifier le mot de passe avec password_verify
         if (password_verify($mdp_clair, $vendeur['mdp'])) {
-                $_SESSION['vendeur_id'] = $vendeur['idVendeur'];
+                $_SESSION['vendeur_id'] = $vendeur['codeVendeur'];
                 $_SESSION['vendeur_pseudo'] = $vendeur['pseudo'];
                 $_SESSION['vendeur_nom'] = $vendeur['nom'];
                 $_SESSION['vendeur_prenom'] = $vendeur['prenom'];
