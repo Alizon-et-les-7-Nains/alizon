@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     // Rechercher le vendeur par pseudo
     $sql = "SELECT codeVendeur, pseudo, mdp, nom, prenom, email, noTelephone, dateNaissance, 
-                   noSiren, idAdresse, raisonSocial, dateCreation, valide 
+                   noSiren, idAdresse, raisonSocial
             FROM _vendeur 
             WHERE pseudo = ?";
     
