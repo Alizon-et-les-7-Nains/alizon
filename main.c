@@ -443,7 +443,7 @@ void create(struct ClientSession *session, int commande_id, char *destination,
             return;
         }
         
-        snprintf(response, sizeof(response), "QUEUED %d\n", commande_id);
+        snprintf(response, sizeof(response), "%d\n", commande_id);
         send(session->client_socket, response, strlen(response), 0);
         
         char log_msg[256];
