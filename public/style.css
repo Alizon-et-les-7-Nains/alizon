@@ -860,7 +860,7 @@ body {
   min-width: 300px;
   text-align: center;
   width: 60%;
-  height: 50%;
+  height: 55%;
   display: block;
 }
 .pageCommandes .overlay .popup .croixFermerLaPage {
@@ -907,6 +907,16 @@ body {
   width: 50%;
   background-color: #BABABA;
 }
+.pageCommandes .overlay .popup .stepper p:first-of-type {
+  position: absolute;
+  top: 45%;
+  left: 43%;
+}
+.pageCommandes .overlay .popup .stepper p:nth-of-type(2) {
+  position: absolute;
+  top: 57%;
+  left: 58%;
+}
 .pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
   position: absolute;
   top: 45%;
@@ -916,16 +926,6 @@ body {
   position: absolute;
   top: 57%;
   left: 32%;
-}
-.pageCommandes .overlay .popup .stepper p:nth-of-type(5) {
-  position: absolute;
-  top: 45%;
-  left: 43%;
-}
-.pageCommandes .overlay .popup .stepper p:nth-of-type(6) {
-  position: absolute;
-  top: 57%;
-  left: 58%;
 }
 .pageCommandes .overlay .popup .stepper p:last-of-type {
   position: absolute;

@@ -459,7 +459,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <div class="recapProduit">
                     <img src="<?php echo htmlspecialchars($produit['URL']); ?>" alt="Image du produit">
                     <div class="nomEtDescription">
-                        <h2><?php echo htmlspecialchars($produit['nom']); ?></h2>
+                        <h3><?php echo htmlspecialchars($produit['nom']); ?></h3>
                         <p><?php echo htmlspecialchars($produit['description']); ?></p>                   
                      </div>
                 </div> 
