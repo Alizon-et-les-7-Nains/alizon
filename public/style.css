@@ -7665,7 +7665,7 @@ dialog.reassort form input {
   color: black;
 }
 .mesNotif .apercuNotif:hover img {
-  animation: tilt-shaking 0.25s 1s;
+  animation: tilt-shaking 0.25s 4;
 }
 .mesNotif .ecranNotif {
   width: 150%;
