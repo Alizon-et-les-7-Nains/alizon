@@ -511,7 +511,9 @@ if (toggleFiltersBtn) {
         
         // Toggle le style du bouton
         if (filterSort.classList.contains('active')) {
-            toggleFiltersBtn.style.backgroundColor = '#e4d9ff';
+            toggleFiltersBtn.style.transition = '0.2s ease, box-shadow 0.2s ease';
+            toggleFiltersBtn.style.backgroundColor = '#273469';
+            toggleFiltersBtn.style.width = '280px';
             toggleFiltersBtn.style.color = '#000000';
             imgFiltre.style.filter = 'brightness(0)';
         } else {
