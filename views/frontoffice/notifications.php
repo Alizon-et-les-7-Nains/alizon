@@ -47,7 +47,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
     <?php include './partials/headerConnecte.php'; ?>
 
     <main class="mesNotif">
-        <section class="topRecherche">
+        <section class="topRecherche" >
             <h1>Mes notifications</h1>
         </section>
 
@@ -92,7 +92,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
                 </article>
             </section>
         <?php } else { ?>
-            <h2>Aucune notification</h2>
+            <h2 class="aucuneNotif">Aucune notification</h2>
         <?php } ?>
 
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
@@ -108,7 +108,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
             if (titreContent) titreContent.innerText = t;
             if (contenuContent) contenuContent.innerText = d;
             if (dateContent) dateContent.innerText = c;
-            
+
             const mobileContent = el.nextElementSibling;
 
             if (window.innerWidth <= 840) {
