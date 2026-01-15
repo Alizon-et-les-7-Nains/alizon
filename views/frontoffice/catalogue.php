@@ -511,12 +511,13 @@ if (toggleFiltersBtn) {
         
         // Toggle le style du bouton
         if (filterSort.classList.contains('active')) {
-            toggleFiltersBtn.style.transition = '0.2s ease, box-shadow 0.2s ease';
-            toggleFiltersBtn.style.backgroundColor = '#273469';
-            toggleFiltersBtn.style.width = '280px';
+            toggleFiltersBtn.style.transition = '0.6s ease, box-shadow 0.6s ease';
+            toggleFiltersBtn.style.backgroundColor = '#e3f2fe';
+            toggleFiltersBtn.style.width = '100%';
             toggleFiltersBtn.style.color = '#000000';
             imgFiltre.style.filter = 'brightness(0)';
         } else {
+            toggleFiltersBtn.style.width = '20%';
             toggleFiltersBtn.style.backgroundColor = '#fffefa';
             toggleFiltersBtn.style.color = '#273469';
             imgFiltre.style.filter = 'none';
@@ -527,6 +528,7 @@ if (toggleFiltersBtn) {
         if (window.innerWidth <= 512) {
             if (!filterSort.contains(e.target) && !toggleFiltersBtn.contains(e.target)) {
                 filterSort.classList.remove('active');
+                toggleFiltersBtn.style.width = '20%';
                 toggleFiltersBtn.style.backgroundColor = '#fffefa';
                 toggleFiltersBtn.style.color = '#273469';
                 imgFiltre.style.filter = 'none';
