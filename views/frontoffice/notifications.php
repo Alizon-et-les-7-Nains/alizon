@@ -51,13 +51,12 @@ $notifs = getNotifications($pdo, $id_client, 0)
             <h1>Mes notifications</h1>
         </section>
 
-        <?php if(!empty($notifs)) { 
-            $contenuNotif = $notif['contenuNotif'];
-            $contenuNotif = substr($contenuNotif, 0, 50) . "...";
-            ?>
+        <?php if(!empty($notifs)) { ?>
             <section class="ensembleNotif">
                 <div class="sidebarNotif">
-                <?php foreach($notifs as $notif) { ?>
+                <?php foreach($notifs as $notif) { 
+                    $contenuNotif = $notif['contenuNotif'];
+                    $contenuNotif = substr($contenuNotif, 0, 50) . "...";?>
                     <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu('<?= $notif['titreNotif'] ?>', '<?= $notif['dateNotif'] ?>', '<?= $notif['contenuNotif'] ?>')">
                         <div>
                             <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
