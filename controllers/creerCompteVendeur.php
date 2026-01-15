@@ -1,44 +1,40 @@
 <?php
-session_start();
-require_once "pdo.php";
+    session_start();  
+    require_once "pdo.php";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $pseudo = trim($_POST['pseudo'] ?? '');
-    $mdp_clair = $_POST['mdp'] ?? '';
-    
-    // Rechercher le vendeur par pseudo
-    $sql = "SELECT codeVendeur, pseudo, mdp, nom, prenom, email, noTelephone, dateNaissance, 
-                   noSiren, idAdresse, raisonSocial 
-            FROM _vendeur 
-            WHERE pseudo = ?";
-    
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$pseudo]);
-    $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if ($vendeur) {
-        // Vérifier le mot de passe avec password_verify
-        if (password_verify($mdp_clair, $vendeur['mdp'])) {
-                // Connexion réussie
-                $_SESSION['vendeur_id'] = $vendeur['codeVendeur'];
-                $_SESSION['vendeur_pseudo'] = $vendeur['pseudo'];
-                $_SESSION['vendeur_nom'] = $vendeur['nom'];
-                $_SESSION['vendeur_prenom'] = $vendeur['prenom'];
-                $_SESSION['vendeur_email'] = $vendeur['email'];
-                $_SESSION['vendeur_telephone'] = $vendeur['noTelephone'];
-                $_SESSION['vendeur_raison_social'] = $vendeur['raisonSocial'];
-                $_SESSION['vendeur_siren'] = $vendeur['noSiren'];
-                $_SESSION['vendeur_adresse'] = $vendeur['idAdresse'];
-                
-                header('Location: ../views/backoffice/accueil.php');
-                exit;
-            }
-    } else {
-        // Mdp incorrect
-        header('Location: ../views/backoffice/connexion.php?error=1');
-        exit;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $nom = $_POST['nom'] ?? '';
+        $prenom = $_POST['prenom'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $noTelephone = $_POST['noTelephone'] ?? '';
+        $pseudo = $_POST['pseudo'] ?? '';
+        $mdp = $_POST['mdp'] ?? '';
+        $dateNaissance = $_POST['dateNaissance'] ?? '';
+        $noSiren = $_POST['noSiren'] ?? '';
+        $raisonSocial = $_POST['raisonSocial'] ?? '';
+
+        $sql = "INSERT INTO _vendeur 
+            (nom, prenom, email, noTelephone, pseudo, mdp, dateNaissance, noSiren, raisonSocial)
+            VALUES (:nom, :prenom, :email, :noTelephone, :pseudo, :mdp, :dateNaissance, :noSiren, :raisonSocial)";
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute([
+            ':nom' => $nom,
+            ':prenom' => $prenom,
+            ':email' => $email,
+            ':noTelephone' => $noTelephone,
+            ':pseudo' => $pseudo, 
+            ':mdp' => $mdp,
+            ':dateNaissance' => $dateNaissance,
+            ':noSiren' => $noSiren,
+            ':raisonSocial' => $raisonSocial,
+        ]);
     }
-} else {
-    header('Location: ../views/backoffice/connexion.php');
-    exit;
-}?>
+
+    $id_session = session_id();
+    $_SESSION['session_id'] = $id_session;
+    header('Location: ../views/backoffice/accueil.php');
+    exit();
+?>

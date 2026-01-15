@@ -39,8 +39,7 @@ body {
   top: 0;
   z-index: 1000;
 }
-.headerFront a,
-.headerFront p {
+.headerFront a, .headerFront p {
   text-decoration: none;
   color: #e3f2fe;
 }
@@ -63,8 +62,7 @@ body {
   align-items: end;
   justify-content: space-between;
 }
-.headerFront .headerMain div *,
-.headerFront .headerMain .categorie {
+.headerFront .headerMain div *, .headerFront .headerMain .categorie {
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -111,7 +109,7 @@ body {
   font-size: 1rem;
   pointer-events: none;
 }
-.headerFront .search-wrapper input[type="search"] {
+.headerFront .search-wrapper input[type=search] {
   color: #273469;
   font-family: "Lora", serif;
   font-size: 20px;
@@ -120,12 +118,10 @@ body {
   width: 700px;
   border: none;
 }
-.headerFront
-  .search-wrapper
-  input[type="search"]::-webkit-search-cancel-button {
+.headerFront .search-wrapper input[type=search]::-webkit-search-cancel-button {
   display: none;
 }
-.headerFront .search-wrapper input[type="search"]:focus {
+.headerFront .search-wrapper input[type=search]:focus {
   outline: none;
 }
 .headerFront .carousel {
@@ -170,7 +166,7 @@ body {
   }
 }
 @media (max-width: 1300px) {
-  .headerFront .search-wrapper input[type="search"] {
+  .headerFront .search-wrapper input[type=search] {
     padding: 10px 0px 10px 10px;
     width: 400px;
   }
@@ -201,7 +197,7 @@ body {
     display: none;
     visibility: hidden;
   }
-  .headerFront .search-wrapper input[type="search"] {
+  .headerFront .search-wrapper input[type=search] {
     padding: 10px 0px 10px 10px;
     width: 300px;
   }
@@ -214,7 +210,7 @@ body {
   .headerFront b {
     font-size: x-large;
   }
-  .headerFront .search-wrapper input[type="search"] {
+  .headerFront .search-wrapper input[type=search] {
     width: 200px;
     height: 40px;
   }
@@ -226,7 +222,7 @@ body {
   position: absolute;
   top: 100px;
   right: 30px;
-  background-color: #e3f2fe;
+  background-color: #E3F2FE;
   border: 3px solid #273469;
   border-radius: 20px;
   font-size: 24px;
@@ -250,7 +246,7 @@ body {
   height: 0;
   width: 0;
   border-right: 16px solid transparent;
-  border-bottom: 30px solid #e3f2fe;
+  border-bottom: 30px solid #E3F2FE;
   border-left: 14px solid transparent;
   position: absolute;
   top: -22px;
@@ -269,8 +265,7 @@ body {
   margin-top: 50px;
 }
 
-.footerFront a,
-.footerFront p {
+.footerFront a, .footerFront p {
   text-decoration: none;
   color: #e3f2fe;
   margin: 0;
@@ -295,8 +290,7 @@ body {
   align-items: center;
 }
 
-.footerFront a,
-.footerFront p {
+.footerFront a, .footerFront p {
   padding: 10px 10px;
 }
 
@@ -340,7 +334,7 @@ body {
   position: absolute;
   bottom: 110px;
   right: 30px;
-  background-color: #e3f2fe;
+  background-color: #E3F2FE;
   border: 3px solid #273469;
   border-radius: 20px;
   font-size: 24px;
@@ -407,8 +401,7 @@ body {
   height: 100vh;
 }
 .page404 h1,
-.page404 h2,
-.page404 h3,
+.page404 h2, .page404 h3,
 .page404 a {
   color: #273469;
   font-family: "berkshire", serif;
@@ -505,7 +498,7 @@ body {
     visibility: hidden;
   }
 }
-.pageCommandes input[type="search"] {
+.pageCommandes input[type=search] {
   padding: 10px 20px;
   width: 100%;
   max-width: 600px;
@@ -519,7 +512,7 @@ body {
   font-style: italic;
   box-sizing: border-box;
 }
-.pageCommandes input[type="search"]::placeholder {
+.pageCommandes input[type=search]::placeholder {
   color: #273469;
   opacity: 0.6;
 }
@@ -530,9 +523,7 @@ body {
   border-radius: 20px;
   margin-bottom: 30px;
 }
-.pageCommandes .commande h1,
-.pageCommandes .commande p,
-.pageCommandes .commande select {
+.pageCommandes .commande h1, .pageCommandes .commande p, .pageCommandes .commande select {
   margin: 0;
 }
 .pageCommandes .listeBtn {
@@ -595,8 +586,7 @@ body {
   margin-left: 80px;
   align-items: center;
 }
-.pageCommandes .filtreRecherche p,
-.pageCommandes .filtreRecherche select {
+.pageCommandes .filtreRecherche p, .pageCommandes .filtreRecherche select {
   margin-bottom: 60px;
   font-size: 16px;
   margin-top: 30px;
@@ -704,8 +694,7 @@ body {
     justify-content: center;
     align-content: space-between;
   }
-  .pageCommandes .containerImg,
-  .pageCommandes .listeBtn a {
+  .pageCommandes .containerImg, .pageCommandes .listeBtn a {
     margin-bottom: 10px;
   }
   .pageCommandes .containerImg {
@@ -714,8 +703,7 @@ body {
     text-align: center;
     margin-right: 0;
   }
-  .pageCommandes .filtreRecherche p,
-  .pageCommandes .filtreRecherche select {
+  .pageCommandes .filtreRecherche p, .pageCommandes .filtreRecherche select {
     margin-bottom: 20px;
     margin-top: 20px;
   }
@@ -887,7 +875,7 @@ body {
   left: 50%;
   width: 30px;
   height: 3px;
-  background-color: #bababa;
+  background-color: #BABABA;
 }
 .pageCommandes .overlay .popup .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
@@ -924,20 +912,20 @@ body {
 .pageCommandes .overlay .popup .stepper .rond {
   width: 10px;
   height: 10px;
-  background-color: #bababa;
-  border: #bababa 5px solid;
+  background-color: #BABABA;
+  border: #BABABA 5px solid;
   border-radius: 50%;
   z-index: 1;
 }
 .pageCommandes .overlay .popup .stepper .trait {
   height: 2px;
   flex: 1;
-  background-color: #bababa;
+  background-color: #BABABA;
 }
 .pageCommandes .overlay .popup .stepper .trait .demiTrait {
   height: 2px;
   width: 50%;
-  background-color: #bababa;
+  background-color: #BABABA;
 }
 .pageCommandes .overlay .popup .stepper p:first-of-type {
   position: absolute;
@@ -980,9 +968,7 @@ header.backoffice a {
 header.backoffice * {
   margin: 0;
 }
-header.backoffice img,
-header.backoffice figure,
-header.backoffice h1 {
+header.backoffice img, header.backoffice figure, header.backoffice h1 {
   user-select: none;
 }
 header.backoffice div {
@@ -1044,17 +1030,14 @@ header.backoffice nav figure:nth-child(1) figcaption {
 header.backoffice nav figure:nth-child(1) img {
   height: 40px;
 }
-header.backoffice nav figure:nth-child(2),
-header.backoffice nav figure:nth-child(3) {
+header.backoffice nav figure:nth-child(2), header.backoffice nav figure:nth-child(3) {
   flex-direction: column;
   align-items: center;
 }
-header.backoffice nav figure:nth-child(2) img,
-header.backoffice nav figure:nth-child(3) img {
+header.backoffice nav figure:nth-child(2) img, header.backoffice nav figure:nth-child(3) img {
   height: 40px;
 }
-header.backoffice nav figure:nth-child(2) figcaption,
-header.backoffice nav figure:nth-child(3) figcaption {
+header.backoffice nav figure:nth-child(2) figcaption, header.backoffice nav figure:nth-child(3) figcaption {
   color: #273469;
   font-family: "lora";
   font-size: 20px;
@@ -1122,8 +1105,7 @@ body.backoffice.nouveauProduit nav figure:first-child {
   display: none;
 }
 
-body.backoffice.monCompte nav figure:nth-child(2),
-body.backoffice.monCompte nav figure:nth-child(3) {
+body.backoffice.monCompte nav figure:nth-child(2), body.backoffice.monCompte nav figure:nth-child(3) {
   display: none;
 }
 
@@ -1592,8 +1574,7 @@ main.acceuilBackoffice {
   display: flex;
   flex-direction: column;
 }
-main.acceuilBackoffice img,
-main.acceuilBackoffice button {
+main.acceuilBackoffice img, main.acceuilBackoffice button {
   user-select: none;
 }
 main.acceuilBackoffice section {
@@ -1644,29 +1625,14 @@ main.acceuilBackoffice section.stock article table tr:nth-child(3) {
   align-items: center;
   width: 100%;
 }
-main.acceuilBackoffice
-  section.stock
-  article
-  table
-  tr:nth-child(3)
-  td:nth-child(2) {
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2) {
   margin-left: auto;
   font-size: 30px;
 }
-main.acceuilBackoffice
-  section.stock
-  article
-  table
-  tr:nth-child(3)
-  td:nth-child(2).epuise {
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).epuise {
   color: #f14e4e;
 }
-main.acceuilBackoffice
-  section.stock
-  article
-  table
-  tr:nth-child(3)
-  td:nth-child(2).faible {
+main.acceuilBackoffice section.stock article table tr:nth-child(3) td:nth-child(2).faible {
   color: #ffc25a;
 }
 main.acceuilBackoffice section.commandes article {
@@ -1720,58 +1686,30 @@ main.acceuilBackoffice section.avis article table {
   background-color: #e4d9ff;
   border-radius: 16px;
 }
-main.acceuilBackoffice section.avis article table td,
-main.acceuilBackoffice section.avis article table th {
+main.acceuilBackoffice section.avis article table td, main.acceuilBackoffice section.avis article table th {
   padding: 0.5em;
 }
-main.acceuilBackoffice
-  section.avis
-  article
-  table
-  tr:first-child
-  th:first-child {
+main.acceuilBackoffice section.avis article table tr:first-child th:first-child {
   vertical-align: top;
 }
-main.acceuilBackoffice
-  section.avis
-  article
-  table
-  tr:first-child
-  figure:first-child
-  img {
+main.acceuilBackoffice section.avis article table tr:first-child figure:first-child img {
   height: 80px;
   width: 80px;
   object-fit: cover;
   border-radius: 100%;
 }
-main.acceuilBackoffice
-  section.avis
-  article
-  table
-  tr:first-child
-  figure:last-child {
+main.acceuilBackoffice section.avis article table tr:first-child figure:last-child {
   display: flex;
   align-items: center;
   gap: 0.25em;
   justify-self: center;
-  color: #ffd000;
+  color: #FFD000;
 }
-main.acceuilBackoffice
-  section.avis
-  article
-  table
-  tr:first-child
-  figure:last-child
-  img {
+main.acceuilBackoffice section.avis article table tr:first-child figure:last-child img {
   height: 25px;
   width: 25px;
 }
-main.acceuilBackoffice
-  section.avis
-  article
-  table
-  tr:first-child
-  th:nth-child(2) {
+main.acceuilBackoffice section.avis article table tr:first-child th:nth-child(2) {
   white-space: nowrap;
   text-align: left;
 }
@@ -1812,12 +1750,7 @@ main.acceuilBackoffice section.produits article table th {
 main.acceuilBackoffice section.produits article table tr:last-child td {
   font-family: "open-sans";
 }
-main.acceuilBackoffice
-  section.produits
-  article
-  table
-  tr:last-child
-  td:last-child {
+main.acceuilBackoffice section.produits article table tr:last-child td:last-child {
   text-align: right;
   font-weight: bold;
 }
@@ -1931,8 +1864,7 @@ main.acceuilBackoffice
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 30px;
 }
-.produitBackOffice .prix,
-.produitBackOffice .prixAuKg {
+.produitBackOffice .prix, .produitBackOffice .prixAuKg {
   font-size: 24px;
   color: #273469;
   margin: 0 10px;
@@ -1957,13 +1889,10 @@ main.acceuilBackoffice
 .produitBackOffice .bouton:hover {
   width: 150px;
 }
-.produitBackOffice .bouton:hover .hoverBouton,
-.produitBackOffice .bouton:hover .hoverBouton img,
-.produitBackOffice .bouton:hover .hoverBouton button {
+.produitBackOffice .bouton:hover .hoverBouton, .produitBackOffice .bouton:hover .hoverBouton img, .produitBackOffice .bouton:hover .hoverBouton button {
   display: block;
 }
-.produitBackOffice .bouton:hover button,
-.produitBackOffice .bouton:hover img {
+.produitBackOffice .bouton:hover button, .produitBackOffice .bouton:hover img {
   display: none;
 }
 .produitBackOffice .ligne {
@@ -2036,8 +1965,7 @@ main.acceuilBackoffice
     top: 50px;
     width: 600px;
     height: 600px;
-    background: url("../../public/images/symboleRose.png") no-repeat center
-      center;
+    background: url("../../public/images/symboleRose.png") no-repeat center center;
     background-size: contain;
     transform: rotate(-180deg);
     opacity: 0.3;
@@ -2099,8 +2027,7 @@ main.acceuilBackoffice
     top: 50px;
     width: 400px;
     height: 600px;
-    background: url("../../public/images/symboleRose.png") no-repeat center
-      center;
+    background: url("../../public/images/symboleRose.png") no-repeat center center;
     background-size: contain;
     transform: rotate(-180deg);
     opacity: 0.3;
@@ -2147,8 +2074,7 @@ main.acceuilBackoffice
     top: 50px;
     width: 352.9411764706px 5;
     height: 600px;
-    background: url("../../public/images/symboleRose.png") no-repeat center
-      center;
+    background: url("../../public/images/symboleRose.png") no-repeat center center;
     background-size: contain;
     transform: rotate(-180deg);
     opacity: 0.3;
@@ -2233,11 +2159,7 @@ main.acceuilBackoffice
   top: -300px;
   width: 800px;
   height: 800px;
-  background: radial-gradient(
-    circle,
-    rgba(220, 209, 250, 0.3) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, rgba(220, 209, 250, 0.3) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -2435,7 +2357,7 @@ main.acceuilBackoffice
   align-items: center;
   gap: 4px;
 }
-.pagePaiement input[type="text"] {
+.pagePaiement input[type=text] {
   padding: 14px 16px;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
@@ -2446,12 +2368,12 @@ main.acceuilBackoffice
   width: 100%;
   box-sizing: border-box;
 }
-.pagePaiement input[type="text"]:focus {
+.pagePaiement input[type=text]:focus {
   outline: none;
   border-color: #252b56;
   box-shadow: 0 0 0 3px rgba(37, 43, 86, 0.1);
 }
-.pagePaiement input[type="text"].error {
+.pagePaiement input[type=text].error {
   border-color: #b00020;
 }
 .pagePaiement .error-message {
@@ -2463,7 +2385,7 @@ main.acceuilBackoffice
 .pagePaiement .error-message.show {
   display: block;
 }
-.pagePaiement .error-message[data-for="cgv"] {
+.pagePaiement .error-message[data-for=cgv] {
   color: #f14e4e;
   margin-top: 8px;
 }
@@ -2481,7 +2403,7 @@ main.acceuilBackoffice
 .pagePaiement .checkbox-group:hover {
   background: rgba(220, 209, 250, 0.3);
 }
-.pagePaiement input[type="checkbox"] {
+.pagePaiement input[type=checkbox] {
   width: 20px;
   height: 20px;
   cursor: pointer;
@@ -2862,11 +2784,10 @@ main.acceuilBackoffice
   display: flex;
   align-items: center;
 }
-.mainCompteClient article div p,
-.mainCompteClient input {
+.mainCompteClient article div p, .mainCompteClient input {
   background-color: transparent;
   width: 100%;
-  color: #6e6e6e;
+  color: #6E6E6E;
   font-size: 16px;
   font-family: "lora";
   font-weight: bold;
@@ -2971,9 +2892,8 @@ main.acceuilBackoffice
   border: none;
   margin-left: 20px;
 }
-.acceuil .banniere,
-.acceuil .banniere div {
-  background-color: #e4d9ff;
+.acceuil .banniere, .acceuil .banniere div {
+  background-color: #E4D9FF;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -3012,8 +2932,7 @@ main.acceuilBackoffice
   .acceuil .banniere {
     align-items: center;
   }
-  .acceuil .banniere,
-  .acceuil .banniere div {
+  .acceuil .banniere, .acceuil .banniere div {
     display: flex;
     flex-direction: column;
   }
@@ -3026,12 +2945,12 @@ main.acceuilBackoffice
   }
   .acceuil .banniere h1 {
     font-size: 32px;
-    background-color: #e3f2fe;
+    background-color: #E3F2FE;
     padding: 10px;
     margin-bottom: 10px;
   }
   .acceuil .banniere div {
-    background-color: #e4d9ff;
+    background-color: #E4D9FF;
     display: flex;
     flex-direction: column;
   }
@@ -3261,7 +3180,7 @@ main.acceuilBackoffice
 }
 .mainPopUpCompteClient input {
   padding: 10px;
-  color: #6e6e6e;
+  color: #6E6E6E;
   font-size: 16px;
   border: 2px solid #273469;
   border-radius: 8px;
@@ -3274,7 +3193,7 @@ main.acceuilBackoffice
 .mainPopUpCompteClient button {
   width: 200px;
   color: #273469;
-  background-color: #e4d9ff;
+  background-color: #E4D9FF;
   border-radius: 32px;
   padding: 10px;
   border: none;
@@ -3294,7 +3213,7 @@ main.acceuilBackoffice
   left: 50%;
   width: 20px;
   height: 2px;
-  background-color: #bababa;
+  background-color: #BABABA;
 }
 .mainPopUpCompteClient .croix div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
@@ -3333,7 +3252,7 @@ main.acceuilBackoffice
   left: 50%;
   width: 30px;
   height: 3px;
-  background-color: #bababa;
+  background-color: #BABABA;
 }
 .mainPopUpCompteClient .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
@@ -3438,8 +3357,7 @@ main.acceuilBackoffice
   padding: 15px 40px;
   border-radius: 32px;
 }
-.panier .recapPanier h1,
-.panier .recapPanier .cardRecap {
+.panier .recapPanier h1, .panier .recapPanier .cardRecap {
   margin-bottom: 40px;
 }
 .panier .cardRecap {
@@ -3628,8 +3546,7 @@ button#haut.visible:hover {
   justify-content: center;
   align-items: center;
 }
-.pageEcrireCommentaire h1,
-.pageEcrireCommentaire h2 {
+.pageEcrireCommentaire h1, .pageEcrireCommentaire h2 {
   font-weight: 200;
 }
 .pageEcrireCommentaire .produit img {
@@ -4128,9 +4045,7 @@ button#haut.visible:hover {
   flex-direction: column;
   gap: 15px;
 }
-.AjouterProduit input[type="text"],
-.AjouterProduit input[type="number"],
-.AjouterProduit textarea {
+.AjouterProduit input[type=text], .AjouterProduit input[type=number], .AjouterProduit textarea {
   padding: 8px 10px;
   border: 2px solid #273469;
   border-radius: 8px;
@@ -4138,9 +4053,7 @@ button#haut.visible:hover {
   width: 100%;
   box-sizing: border-box;
 }
-.AjouterProduit input[type="text"]::placeholder,
-.AjouterProduit input[type="number"]::placeholder,
-.AjouterProduit textarea::placeholder {
+.AjouterProduit input[type=text]::placeholder, .AjouterProduit input[type=number]::placeholder, .AjouterProduit textarea::placeholder {
   color: #6e6e6e;
   font-weight: bold;
 }
@@ -4222,14 +4135,12 @@ button#haut.visible:hover {
   cursor: pointer;
   font-weight: bold;
 }
-.AjouterProduit .form-actions .btn-previsualiser,
-.AjouterProduit .form-actions .btn-annuler {
+.AjouterProduit .form-actions .btn-previsualiser, .AjouterProduit .form-actions .btn-annuler {
   background-color: #e4d9ff;
   color: #273469;
   width: 200px;
 }
-.AjouterProduit .form-actions .btn-previsualiser:hover,
-.AjouterProduit .form-actions .btn-annuler:hover {
+.AjouterProduit .form-actions .btn-previsualiser:hover, .AjouterProduit .form-actions .btn-annuler:hover {
   background-color: rgb(191.7631578947, 166, 255);
 }
 .AjouterProduit .form-actions .btn-ajouter {
@@ -4323,7 +4234,7 @@ button#haut.visible:hover {
   font-size: 1rem;
   color: #273469;
 }
-.CreerCompteVendeur .container .form-vendeur input.form-control[type="date"] {
+.CreerCompteVendeur .container .form-vendeur input.form-control[type=date] {
   line-height: normal;
 }
 .CreerCompteVendeur .container .form-vendeur input.form-control::placeholder {
@@ -4334,30 +4245,18 @@ button#haut.visible:hover {
   border-color: #f14e4e !important;
   color: #f14e4e;
 }
-.CreerCompteVendeur
-  .container
-  .form-vendeur
-  input.form-control.input-error::placeholder {
+.CreerCompteVendeur .container .form-vendeur input.form-control.input-error::placeholder {
   color: rgba(241, 78, 78, 0.7);
 }
 .CreerCompteVendeur .container .form-vendeur #password-requirements-container {
   padding-left: 12px;
 }
-.CreerCompteVendeur
-  .container
-  .form-vendeur
-  #password-requirements-container
-  #password-requirements {
+.CreerCompteVendeur .container .form-vendeur #password-requirements-container #password-requirements {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.CreerCompteVendeur
-  .container
-  .form-vendeur
-  #password-requirements-container
-  #password-requirements
-  li {
+.CreerCompteVendeur .container .form-vendeur #password-requirements-container #password-requirements li {
   margin-bottom: 5px;
 }
 .CreerCompteVendeur .container .form-vendeur .btn_inscription {
@@ -4378,8 +4277,7 @@ button#haut.visible:hover {
   opacity: 0.7;
   cursor: not-allowed;
 }
-.CreerCompteVendeur .container .form-vendeur p,
-.CreerCompteVendeur .container .form-vendeur .connexion_lien {
+.CreerCompteVendeur .container .form-vendeur p, .CreerCompteVendeur .container .form-vendeur .connexion_lien {
   font-weight: normal;
   font-style: normal;
   text-align: center;
@@ -4479,7 +4377,7 @@ button#haut.visible:hover {
   left: 50%;
   width: 30px;
   height: 3px;
-  background-color: #bababa;
+  background-color: #BABABA;
 }
 .popUpPromouvoir .page .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
@@ -4657,7 +4555,7 @@ button#haut.visible:hover {
   left: 50%;
   width: 30px;
   height: 3px;
-  background-color: #bababa;
+  background-color: #BABABA;
 }
 .popUpInfoCalcul .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
@@ -4710,7 +4608,7 @@ button#haut.visible:hover {
   left: 50%;
   width: 30px;
   height: 3px;
-  background-color: #bababa;
+  background-color: #BABABA;
 }
 .popUpRemise .page .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
@@ -4846,9 +4744,7 @@ button#haut.visible:hover {
   color: red;
 }
 
-main.backoffice-stocks h1,
-main.backoffice-stocks button,
-main.backoffice-stocks div {
+main.backoffice-stocks h1, main.backoffice-stocks button, main.backoffice-stocks div {
   user-select: none;
 }
 main.backoffice-stocks section {
@@ -4876,10 +4772,7 @@ main.backoffice-stocks section img:not(figure img) {
 main.backoffice-stocks section div.remise {
   border: none !important;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  *:not(img) {
+main.backoffice-stocks section div:not(button.settings div, div.remise) *:not(img) {
   user-select: text;
 }
 main.backoffice-stocks section div:not(button.settings div, div.remise) {
@@ -4889,16 +4782,10 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) {
   border-radius: 16px;
   font-family: "open-sans";
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table:not(table table) {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table:not(table table) {
   border-spacing: 2em 0;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  button.settings {
+main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings {
   border: none;
   background: none;
   display: flex;
@@ -4907,22 +4794,13 @@ main.backoffice-stocks
   height: 23px;
   justify-self: right;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  button.settings
-  div {
+main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div {
   background-color: #273469;
   border-radius: 8px;
   width: 25px;
   height: 3px;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  button.settings
-  div
-  div {
+main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div div {
   transition: all 0.2s ease;
   background-color: #273469;
   width: 7px;
@@ -4932,18 +4810,10 @@ main.backoffice-stocks
   top: -2px;
   left: 4px;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  button.settings
-  div
-  div.right {
+main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div div.right {
   left: 14px;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  button.settings:hover {
+main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings:hover {
   cursor: pointer;
 }
 main.backoffice-stocks section div:not(button.settings div, div.remise) figure {
@@ -4960,19 +4830,10 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) .type {
 main.backoffice-stocks section div:not(button.settings div, div.remise) table {
   width: 100%;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  th {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table th {
   text-align: left;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  tr
-  th {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table tr th {
   text-align: left;
   font-weight: bold;
   font-size: 20px;
@@ -4981,105 +4842,50 @@ main.backoffice-stocks
   justify-self: center;
   padding: 0;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  figure {
-  color: #ffd000;
+main.backoffice-stocks section div:not(button.settings div, div.remise) table figure {
+  color: #FFD000;
   justify-content: flex-start;
   margin: 0;
   padding: 0;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  table,
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  ul:not(ul ul) {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table table, main.backoffice-stocks section div:not(button.settings div, div.remise) table ul:not(ul ul) {
   background-color: #fffefa;
   border-style: solid;
   border-width: 2px;
   border-color: #000000;
   border-radius: 16px;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  table {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table table {
   padding-right: 1em;
   width: 100%;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  table
-  tr:nth-child(2)
-  th {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table table tr:nth-child(2) th {
   text-transform: capitalize;
   padding-top: 1.5em;
   padding-bottom: 0;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  table
-  tr:nth-child(3)
-  th {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table table tr:nth-child(3) th {
   padding: 0;
   vertical-align: bottom;
   height: 60px;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  ul
-  h3 {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table ul h3 {
   margin: 0.5em;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table ul {
   padding-left: 0;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  ul
-  ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul {
   display: flex;
   justify-content: space-between;
   padding: 1em;
   align-items: center;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  ul
-  ul
-  li:first-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul li:first-child {
   font-size: 30px;
   font-weight: bold;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  table
-  ul
-  ul
-  li:last-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul li:last-child {
   font-style: italic;
   color: #6e6e6e;
 }
@@ -5092,26 +4898,13 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) > ul {
   margin-left: -2em;
   font-weight: bold;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  > ul
-  figure
-  img {
+main.backoffice-stocks section div:not(button.settings div, div.remise) > ul figure img {
   height: 20px;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  > ul
-  figure {
+main.backoffice-stocks section div:not(button.settings div, div.remise) > ul figure {
   gap: 0.25em;
 }
-main.backoffice-stocks
-  section
-  div:not(button.settings div, div.remise)
-  > ul
-  li:last-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise) > ul li:last-child {
   color: #f14e4e;
 }
 main.backoffice-stocks section:first-child div:not(button.settings div) {
@@ -5119,11 +4912,7 @@ main.backoffice-stocks section:first-child div:not(button.settings div) {
   border-left-width: 5px;
   border-left-color: #f14e4e;
 }
-main.backoffice-stocks
-  section:first-child
-  div:not(button.settings div)
-  > ul
-  li:last-child {
+main.backoffice-stocks section:first-child div:not(button.settings div) > ul li:last-child {
   color: #f14e4e;
 }
 main.backoffice-stocks section:nth-child(2) div:not(button.settings div) {
@@ -5131,11 +4920,7 @@ main.backoffice-stocks section:nth-child(2) div:not(button.settings div) {
   border-left-width: 5px;
   border-left-color: #ffc25a;
 }
-main.backoffice-stocks
-  section:nth-child(2)
-  div:not(button.settings div)
-  > ul
-  li:last-child {
+main.backoffice-stocks section:nth-child(2) div:not(button.settings div) > ul li:last-child {
   color: #ffc25a;
 }
 main.backoffice-stocks section:nth-child(3) div:not(button.settings div) {
@@ -5143,11 +4928,7 @@ main.backoffice-stocks section:nth-child(3) div:not(button.settings div) {
   border-left-width: 5px;
   border-left-color: #259525;
 }
-main.backoffice-stocks
-  section:nth-child(3)
-  div:not(button.settings div)
-  > ul
-  li:last-child {
+main.backoffice-stocks section:nth-child(3) div:not(button.settings div) > ul li:last-child {
   color: #259525;
 }
 main.backoffice-stocks {
@@ -5216,11 +4997,7 @@ dialog.reassort form ul li:last-child input:not(:disabled) {
   background-color: #273469;
   color: #fffefa;
 }
-dialog.reassort
-  form
-  ul
-  li:last-child
-  input:not(:disabled):hover:not(:disabled) {
+dialog.reassort form ul li:last-child input:not(:disabled):hover:not(:disabled) {
   background-color: #e3f2fe;
   color: #273469;
   cursor: pointer;
@@ -6098,8 +5875,7 @@ dialog.reassort form input {
   padding: 0 0;
 }
 .pageProduit .pouce-actif {
-  filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(2081%)
-    hue-rotate(202deg) brightness(93%) contrast(91%);
+  filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(2081%) hue-rotate(202deg) brightness(93%) contrast(91%);
 }
 .pageProduit .pouce-inactif {
   filter: none;
@@ -6483,7 +6259,7 @@ dialog.reassort form input {
   outline: 2px solid #273469;
   border-color: transparent;
 }
-.pageProduit .modal-signalement .modal-content button[type="submit"] {
+.pageProduit .modal-signalement .modal-content button[type=submit] {
   width: 100%;
   margin-top: 10px;
   cursor: pointer;
@@ -6590,10 +6366,7 @@ dialog.reassort form input {
   color: #273469;
   box-sizing: border-box;
 }
-.connexionVendeur
-  .information_connexion
-  .form-vendeur
-  .custom-input::placeholder {
+.connexionVendeur .information_connexion .form-vendeur .custom-input::placeholder {
   color: #273469;
   font-family: "lora", serif;
   font-weight: 600;
@@ -6614,12 +6387,7 @@ dialog.reassort form input {
   font-style: normal;
   cursor: pointer;
 }
-.connexionVendeur
-  .information_connexion
-  .form-vendeur
-  .liens-utiles
-  a
-  :visited {
+.connexionVendeur .information_connexion .form-vendeur .liens-utiles a :visited {
   color: #273469 !important;
 }
 .connexionVendeur .information_connexion .form-vendeur .liens-utiles a :hover {
@@ -6641,11 +6409,7 @@ dialog.reassort form input {
   font-weight: 600;
   cursor: pointer;
 }
-.connexionVendeur
-  .information_connexion
-  .form-vendeur
-  .actions
-  .btn_connexion:disabled {
+.connexionVendeur .information_connexion .form-vendeur .actions .btn_connexion:disabled {
   cursor: not-allowed;
   opacity: 0.8;
 }
@@ -6699,7 +6463,7 @@ dialog.reassort form input {
   left: 50%;
   width: 20px;
   height: 3px;
-  background-color: #bababa;
+  background-color: #BABABA;
 }
 .popUpErreur .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
@@ -6841,7 +6605,7 @@ dialog.reassort form input {
   margin-bottom: 0;
   margin-left: 0;
   margin-right: 20px;
-  color: #ffd000;
+  color: #FFD000;
   gap: 5px;
   display: flex;
 }
@@ -6865,8 +6629,7 @@ dialog.reassort form input {
     font-family: "Lora", serif;
     color: #273469;
   }
-  .mesAvis h1,
-  .mesAvis h2 {
+  .mesAvis h1, .mesAvis h2 {
     font-weight: bold;
   }
   .mesAvis h1 {
@@ -6980,8 +6743,7 @@ dialog.reassort form input {
     font-family: "Lora", serif;
     color: #273469;
   }
-  .mesAvis h1,
-  .mesAvis h2 {
+  .mesAvis h1, .mesAvis h2 {
     font-weight: bold;
   }
   .mesAvis h1 {
@@ -7092,8 +6854,7 @@ dialog.reassort form input {
     font-family: "Lora", serif;
     color: #273469;
   }
-  .mesAvis h1,
-  .mesAvis h2 {
+  .mesAvis h1, .mesAvis h2 {
     font-weight: bold;
   }
   .mesAvis h1 {
@@ -7205,8 +6966,7 @@ dialog.reassort form input {
   color: #273469;
   text-align: center;
 }
-.modifierAvis main p,
-.modifierAvis main label {
+.modifierAvis main p, .modifierAvis main label {
   font-family: "lora";
   font-size: 20px;
   color: #273469;
@@ -7219,8 +6979,7 @@ dialog.reassort form input {
   font-size: 16px;
   font-weight: bold;
 }
-.modifierAvis main form input,
-.modifierAvis main form textarea {
+.modifierAvis main form input, .modifierAvis main form textarea {
   width: 80%;
   padding: 5px;
   margin-right: 10%;
@@ -7281,7 +7040,7 @@ dialog.reassort form input {
   flex-direction: row;
   align-items: center;
 }
-.pageCatalogue .filter-sort form article div label {
+.pageCatalogue .filter-sort form label {
   font-weight: bold;
 }
 .pageCatalogue .products-section {
@@ -7297,7 +7056,7 @@ dialog.reassort form input {
   flex-wrap: wrap;
 }
 .pageCatalogue #resultat {
-  background: #e3f2fe;
+  background: #E3F2FE;
   position: sticky;
   padding: 0.3em;
   font-size: 13px;
@@ -7496,7 +7255,7 @@ dialog.reassort form input {
   background: #273469;
   border-radius: 16px;
 }
-.pageCatalogue input[type="range"] {
+.pageCatalogue input[type=range] {
   top: 10px;
   position: absolute;
   width: 100%;
@@ -7507,7 +7266,7 @@ dialog.reassort form input {
   padding: 0;
   margin: 0;
 }
-.pageCatalogue input[type="range"]::-webkit-slider-thumb {
+.pageCatalogue input[type=range]::-webkit-slider-thumb {
   pointer-events: all;
   -webkit-appearance: none;
   cursor: pointer;
@@ -7519,7 +7278,7 @@ dialog.reassort form input {
   border-style: solid;
   border-color: #273469;
 }
-.pageCatalogue input[type="range"]::-moz-range-thumb {
+.pageCatalogue input[type=range]::-moz-range-thumb {
   pointer-events: all;
   cursor: pointer;
   width: 20px;
@@ -7616,6 +7375,7 @@ dialog.reassort form input {
 }
 @media (max-width: 512px) {
   .pageCatalogue .filter-sort {
+    display: none;
     width: 160px;
     padding: 5px;
     font-size: 12px;
@@ -7685,9 +7445,7 @@ dialog.reassort form input {
   }
 }
 
-.overlayPopUpDetails,
-.overlayPopUpSuiviCommande,
-.overlayPopUpAnnulerCommande {
+.overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
   position: fixed;
   top: 0;
   left: 0;
@@ -7700,9 +7458,7 @@ dialog.reassort form input {
   z-index: 1000;
 }
 
-.popUpDetails,
-.popUpSuivi,
-.popUpAnnulerCommande {
+.popUpDetails, .popUpSuivi, .popUpAnnulerCommande {
   background-color: #fffefa;
   border-radius: 16px;
   position: relative;
@@ -7710,54 +7466,40 @@ dialog.reassort form input {
   padding: 40px 30px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-.popUpDetails h1,
-.popUpSuivi h1,
-.popUpAnnulerCommande h1 {
+.popUpDetails h1, .popUpSuivi h1, .popUpAnnulerCommande h1 {
   color: #273469;
   font-family: "lora";
   font-size: 40px;
   text-align: center;
 }
-.popUpDetails .croixFermerLaPage,
-.popUpSuivi .croixFermerLaPage,
-.popUpAnnulerCommande .croixFermerLaPage {
+.popUpDetails .croixFermerLaPage, .popUpSuivi .croixFermerLaPage, .popUpAnnulerCommande .croixFermerLaPage {
   position: absolute;
   top: 30px;
   right: 30px;
   cursor: pointer;
 }
-.popUpDetails .croixFermerLaPage div,
-.popUpSuivi .croixFermerLaPage div,
-.popUpAnnulerCommande .croixFermerLaPage div {
+.popUpDetails .croixFermerLaPage div, .popUpSuivi .croixFermerLaPage div, .popUpAnnulerCommande .croixFermerLaPage div {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 30px;
   height: 3px;
-  background-color: #bababa;
+  background-color: #BABABA;
 }
-.popUpDetails .croixFermerLaPage div:first-of-type,
-.popUpSuivi .croixFermerLaPage div:first-of-type,
-.popUpAnnulerCommande .croixFermerLaPage div:first-of-type {
+.popUpDetails .croixFermerLaPage div:first-of-type, .popUpSuivi .croixFermerLaPage div:first-of-type, .popUpAnnulerCommande .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.popUpDetails .croixFermerLaPage div:last-of-type,
-.popUpSuivi .croixFermerLaPage div:last-of-type,
-.popUpAnnulerCommande .croixFermerLaPage div:last-of-type {
+.popUpDetails .croixFermerLaPage div:last-of-type, .popUpSuivi .croixFermerLaPage div:last-of-type, .popUpAnnulerCommande .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
-.popUpDetails .conteneurSections,
-.popUpSuivi .conteneurSections,
-.popUpAnnulerCommande .conteneurSections {
+.popUpDetails .conteneurSections, .popUpSuivi .conteneurSections, .popUpAnnulerCommande .conteneurSections {
   padding-top: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
 }
-.popUpDetails p,
-.popUpSuivi p,
-.popUpAnnulerCommande p {
+.popUpDetails p, .popUpSuivi p, .popUpAnnulerCommande p {
   text-align: left;
 }
 
@@ -7790,9 +7532,10 @@ dialog.reassort form input {
 }
 .mesNotif .topRecherche {
   display: flex;
-  justify-content: space-between;
   align-content: center;
-  align-items: flex-end;
+  align-items: flex-start;
+  margin-top: 20px;
+  flex-direction: column;
   margin-top: 20px;
 }
 .mesNotif .topRecherche h1 {
@@ -7821,8 +7564,7 @@ dialog.reassort form input {
   width: 1000px;
   background-color: #e4e4e4;
 }
-.mesNotif .ensembleNotif .sidebarNotif:first-child,
-.mesNotif .ensembleNotif .sidebarNotif:last-child {
+.mesNotif .ensembleNotif .sidebarNotif:first-child, .mesNotif .ensembleNotif .sidebarNotif:last-child {
   border-top-left-radius: 25px;
 }
 .mesNotif .apercuNotif {
@@ -7863,8 +7605,7 @@ dialog.reassort form input {
 .mesNotif .apercuNotif * {
   margin: 0;
 }
-.mesNotif .apercuNotif h4,
-.mesNotif .apercuNotif h5 {
+.mesNotif .apercuNotif h4, .mesNotif .apercuNotif h5 {
   font-weight: 400;
   padding: 4px 0px;
 }
@@ -7912,8 +7653,7 @@ dialog.reassort form input {
     border-radius: 0;
   }
 }
-.mesNotif .sidebarNotif:first-child,
-.mesNotif .sidebarNotif:last-child {
+.mesNotif .sidebarNotif:first-child, .mesNotif .sidebarNotif:last-child {
   border-top-left-radius: 0;
 }
 
@@ -7923,9 +7663,7 @@ main.commandesBackoffice {
   color: #273469;
   margin-bottom: 2em;
 }
-main.commandesBackoffice h1,
-main.commandesBackoffice img,
-main.commandesBackoffice button {
+main.commandesBackoffice h1, main.commandesBackoffice img, main.commandesBackoffice button {
   user-select: none;
 }
 main.commandesBackoffice h1 {
@@ -8088,15 +7826,13 @@ dialog ul li table {
   font-weight: bold;
   font-size: 15px;
 }
-dialog ul li table tr:nth-child(2) td,
-dialog ul li table tr:nth-child(3) td {
+dialog ul li table tr:nth-child(2) td, dialog ul li table tr:nth-child(3) td {
   padding-left: 0.5em;
   padding-right: 0.5em;
   padding-bottom: 0.5em;
   word-wrap: break-word;
 }
-dialog ul li table tr:nth-child(2) td:last-child,
-dialog ul li table tr:nth-child(3) td:last-child {
+dialog ul li table tr:nth-child(2) td:last-child, dialog ul li table tr:nth-child(3) td:last-child {
   text-align: right;
   font-size: 25px;
   font-weight: bold;

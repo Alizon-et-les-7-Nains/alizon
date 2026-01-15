@@ -34,7 +34,7 @@
         align-items: center;
     }
 
-    .filter-sort form article div label{
+    .filter-sort form label{
         font-weight: bold;
     }
 
@@ -423,6 +423,7 @@
 
     @media (max-width: 512px) {
         .filter-sort {
+            display: none;
             width: 160px;
             padding: 5px;
             font-size: 12px;
