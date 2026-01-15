@@ -866,7 +866,7 @@ body {
 .pageCommandes .overlay .popup .croixFermerLaPage {
   position: absolute;
   top: 155px;
-  right: 230px;
+  right: 310px;
   cursor: pointer;
 }
 .pageCommandes .overlay .popup .croixFermerLaPage div {
