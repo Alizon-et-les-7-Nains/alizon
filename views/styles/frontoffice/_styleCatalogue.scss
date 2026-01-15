@@ -143,7 +143,13 @@
         background-color: #f14e4e;
         border-radius: 5px;
         padding: 0 2px;
-        width: fit-content;
+    }
+
+    .nomEtPromo{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
     }
 
     .listeArticle article h2 {
