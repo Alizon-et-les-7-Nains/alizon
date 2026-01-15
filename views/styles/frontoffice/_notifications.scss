@@ -12,6 +12,13 @@
 .mesNotif {
     font-family: "Lora", serif;
     color: #273469;
+
+    #focus {
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+    }
     
     .topRecherche {
         display: flex;
@@ -146,9 +153,9 @@
             max-height: fit-content;
             border-radius: 0;
         }
-    }
-    .sidebarNotif:first-child, .sidebarNotif:last-child {
-        border-top-left-radius: 0;
+        .sidebarNotif:first-child, .sidebarNotif:last-child {
+            border-top-left-radius: 0;
+        }
     }
     
 }

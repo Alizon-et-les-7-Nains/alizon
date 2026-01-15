@@ -61,6 +61,7 @@ body {
   display: flex;
   align-items: end;
   justify-content: space-between;
+  align-items: center;
 }
 .headerFront .headerMain div *, .headerFront .headerMain .categorie {
   margin-left: 10px;
@@ -161,6 +162,12 @@ body {
 }
 @media (min-width: 1300px) {
   .headerFront #burgerIconTel {
+    display: none;
+    visibility: hidden;
+  }
+}
+@media (min-width: 655px) {
+  .headerFront .alizonMarque {
     display: none;
     visibility: hidden;
   }
@@ -7584,6 +7591,12 @@ dialog.reassort form input {
   font-family: "Lora", serif;
   color: #273469;
 }
+.mesNotif #focus {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
 .mesNotif .topRecherche {
   display: flex;
   align-content: center;
@@ -7713,9 +7726,9 @@ dialog.reassort form input {
     max-height: fit-content;
     border-radius: 0;
   }
-}
-.mesNotif .sidebarNotif:first-child, .mesNotif .sidebarNotif:last-child {
-  border-top-left-radius: 0;
+  .mesNotif .sidebarNotif:first-child, .mesNotif .sidebarNotif:last-child {
+    border-top-left-radius: 0;
+  }
 }
 
 main.commandesBackoffice {
