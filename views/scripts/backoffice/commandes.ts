@@ -1,12 +1,12 @@
-Array.from(document.getElementsByTagName('article')).forEach((command: HTMLElement) => {
+Array.from(document.querySelectorAll('main.backofficeCommandes article')).forEach(command => {
     command.addEventListener('click', () => {
         const modal = document.querySelector(`main.commandesBackoffice dialog#${command.id}`) as HTMLDialogElement;
 
-        modal.showModal();
+        modal?.showModal();
 
-        modal.addEventListener("click", (e) => {
+        modal?.addEventListener("click", (e) => {
             if (e.target === modal) {
-                modal.close();
+                modal?.close();
             }
         });
     })
