@@ -853,11 +853,6 @@ body {
   align-items: center;
   z-index: 999;
 }
-.pageCommandes .overlay .popup-content {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 10px;
-}
 .pageCommandes .overlay .popup {
   background: white;
   padding: 20px;
@@ -887,6 +882,25 @@ body {
 }
 .pageCommandes .overlay .popup .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+.pageCommandes .overlay .popup .popup-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+.pageCommandes .overlay .popup .popup-content .recapProduit {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+.pageCommandes .overlay .popup .popup-content .recapProduit img {
+  width: 150px;
+  height: 150px;
+  margin-right: 20px;
+}
+.pageCommandes .overlay .popup .popup-content .recapProduit .nomEtDescription {
+  display: flex;
+  flex-direction: column;
 }
 .pageCommandes .overlay .popup .stepper {
   display: flex;
@@ -936,20 +950,6 @@ body {
   position: absolute;
   top: 60.5%;
   left: 76%;
-}
-.pageCommandes .recapProduit {
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-}
-.pageCommandes .recapProduit img {
-  width: 150px;
-  height: 150px;
-  margin-right: 20px;
-}
-.pageCommandes .recapProduit .nomEtDescription {
-  display: flex;
-  flex-direction: column;
 }
 
 /* ---- Header ---- */

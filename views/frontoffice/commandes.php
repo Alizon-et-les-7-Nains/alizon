@@ -467,30 +467,30 @@ $cart = getCurrentCart($pdo, $idClient);
                             </div>
                         </div>
                     <?php endforeach; ?>
-                    <div class="stepper">
-                        <p>En cours de préparation</p>
-                        <p>Prise en charge du colis</p>
-                        <p>Arrivé à la plateforme Régional</p>
-                        <p>Arrivé à la plateforme local</p>
-                        <p>Colis livré</p>
-                        <div class="rond"></div>
-                        <div class="trait">
-                            <div class="demiTrait"></div>
-                        </div>
-                        <div class="rond"></div>
-                        <div class="trait">
-                            <div class="demiTrait"></div>
-                        </div>
-                        <div class="rond"></div>
-                        <div class="trait">
-                            <div class="demiTrait"></div>
-                        </div>
-                        <div class="rond"></div>
-                        <div class="trait">
-                            <div class="demiTrait"></div>
-                        </div>
-                        <div class="rond"></div>
                     </div>
+                <div class="stepper">
+                    <p>En cours de préparation</p>
+                    <p>Prise en charge du colis</p>
+                    <p>Arrivé à la plateforme Régional</p>
+                    <p>Arrivé à la plateforme local</p>
+                    <p>Colis livré</p>
+                    <div class="rond"></div>
+                    <div class="trait">
+                        <div class="demiTrait"></div>
+                    </div>
+                    <div class="rond"></div>
+                    <div class="trait">
+                        <div class="demiTrait"></div>
+                    </div>
+                    <div class="rond"></div>
+                    <div class="trait">
+                        <div class="demiTrait"></div>
+                    </div>
+                    <div class="rond"></div>
+                    <div class="trait">
+                        <div class="demiTrait"></div>
+                    </div>
+                    <div class="rond"></div>
                 </div>
             </div>
         </div>
