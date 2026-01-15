@@ -434,10 +434,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 <button class="payer">Payer</button>
             </section>
         </div>
-
-        <div class="payer-wrapper-mobile">
-            <button class="payer payer--mobile">Payer</button>
-        </div>
     </main>
 
     <div id="confirmationPopup" class="popup-overlay">
