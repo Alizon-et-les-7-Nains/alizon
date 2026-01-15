@@ -15,8 +15,7 @@ function getNotifications($pdo, $idClient, $est_vendeur) {
     $sql = "SELECT * FROM _notification 
             WHERE idClient = :idClient 
             AND est_vendeur = :est_vendeur 
-            ORDER BY dateNotif DESC 
-            LIMIT 1";
+            ORDER BY dateNotif DESC";
             
     $stmt = $pdo->prepare($sql);
 
