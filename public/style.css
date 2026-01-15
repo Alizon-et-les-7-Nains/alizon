@@ -358,10 +358,6 @@ body {
 }
 
 /* -------------------------------------------- FIN FOOTER -------------------------------------------- */
-.cgucgv main {
-  margin: 0 auto;
-  padding: 20px;
-}
 .cgucgv main h1 {
   color: #273469;
   font-family: "lora", serif;
@@ -369,133 +365,27 @@ body {
   font-weight: bold;
   font-style: italic;
   text-align: center;
-  margin: 50px 0 30px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid rgb(136.875, 151.5, 211.125);
-}
-.cgucgv main > h1:first-of-type {
-  margin-top: 30px;
+  margin: 50px 0px;
 }
 .cgucgv section {
-  margin: 40px 0;
-  padding: 25px;
+  margin: 0px 80px;
 }
-.cgucgv section h2 {
+.cgucgv h2 {
   font-family: "lora", serif;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
-  color: rgb(25.1875, 33.5833333333, 67.8125);
-  margin: 25px 0 15px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #eee;
 }
-.cgucgv section h2:first-child {
-  margin-top: 0;
-}
-.cgucgv section p {
-  font-family: "open-sans", sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
-  color: #444;
-  margin: 15px 0;
-}
-.cgucgv section ul,
-.cgucgv section ol {
+.cgucgv p {
   font-family: "open-sans", sans-serif;
   font-size: 14px;
-  line-height: 1.5;
-  margin: 15px 0 15px 20px;
-  color: #444;
-}
-.cgucgv section ul li,
-.cgucgv section ol li {
-  margin-bottom: 8px;
-  padding-left: 5px;
-}
-.cgucgv section span {
-  font-weight: bold;
-  color: rgb(18.28125, 24.375, 49.21875);
-}
-.cgucgv section ul {
-  list-style-type: none;
-}
-.cgucgv section ul li {
-  position: relative;
-  padding-left: 20px;
-}
-.cgucgv section ul li:before {
-  content: "•";
-  color: #273469;
-  font-size: 18px;
-  position: absolute;
-  left: 0;
-  top: -1px;
-}
-.cgucgv section ol {
-  counter-reset: item;
-}
-.cgucgv section ol li {
-  counter-increment: item;
-}
-.cgucgv section ol li:before {
-  content: counter(item) ".";
-  color: #273469;
-  font-weight: bold;
-  margin-right: 8px;
-}
-.cgucgv section p + h2,
-.cgucgv section ul + h2,
-.cgucgv section ol + h2 {
-  margin-top: 35px;
-}
-.cgucgv section:last-of-type {
-  margin-bottom: 60px;
 }
 @media (max-width: 1300px) {
-  .cgucgv main {
-    padding: 15px;
-  }
   .cgucgv main h1 {
     font-size: 32px;
-    margin: 30px 0 25px;
-    padding-bottom: 12px;
+    margin: 20px 0px;
   }
   .cgucgv section {
-    margin: 30px 0;
-    padding: 20px;
-  }
-  .cgucgv section h2 {
-    font-size: 20px;
-  }
-  .cgucgv section p {
-    font-size: 14px;
-  }
-}
-@media (max-width: 768px) {
-  .cgucgv main {
-    padding: 10px;
-  }
-  .cgucgv main h1 {
-    font-size: 28px;
-    margin: 20px 0;
-  }
-  .cgucgv section {
-    margin: 20px 0;
-    padding: 15px;
-    border-radius: 8px;
-  }
-  .cgucgv section h2 {
-    font-size: 18px;
-    margin: 20px 0 12px;
-  }
-  .cgucgv section p {
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  .cgucgv section ul,
-  .cgucgv section ol {
-    margin-left: 15px;
-    font-size: 13px;
+    margin: 0px 40px;
   }
 }
 
