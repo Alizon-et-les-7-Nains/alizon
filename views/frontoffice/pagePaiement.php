@@ -174,9 +174,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <title>Paiement - Alizon</title>
     <link rel="stylesheet" href="paiement.css">
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
-    </style>
 </head>
 
 <body class="pagePaiement">
