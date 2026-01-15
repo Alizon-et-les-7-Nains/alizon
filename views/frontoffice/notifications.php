@@ -105,23 +105,24 @@ $notifs = getNotifications($pdo, $id_client, 0)
         const dateContent = document.getElementById("date");
 
         function afficherContenu(el, t, d, c) {
-            titreContent.innerText= t ;
-            contenuContent.innerText= d ;
-            dateContent.innerText= c ;
-
-            const mobileContent = element.nextElementSibling;
+            if (titreContent) titreContent.innerText = t;
+            if (contenuContent) contenuContent.innerText = d;
+            if (dateContent) dateContent.innerText = c;
+            
+            const mobileContent = el.nextElementSibling;
 
             if (window.innerWidth <= 840) {
-                document.querySelectorAll('.contenuTel').forEach(el => {
-                    if (el !== mobileContent) el.classList.remove('active');
+                document.querySelectorAll('.contenuTel').forEach(item => {
+                    if (item !== mobileContent) item.classList.remove('active');
                 });
 
-                mobileContent.classList.toggle('active');
-                
-                if(mobileContent.classList.contains('active')) {
-                    setTimeout(() => {
-                        mobileContent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }, 100);
+                if (mobileContent) {
+                    mobileContent.classList.toggle('active'); 
+                    if(mobileContent.classList.contains('active')) {
+                        setTimeout(() => {
+                            mobileContent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }, 100);
+                    }
                 }
             }
         }
