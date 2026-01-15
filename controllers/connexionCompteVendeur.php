@@ -1,14 +1,16 @@
 <?php 
 ob_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once 'pdo.php';
     error_log("connexion");
 
     try {
         $pdo->beginTransaction();
-
+        $mdpHash = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
+        
         $isValidSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/connexion.sql'));
-        $isValidSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
+        $isValidSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $mdpHash]);
         $isValid = $isValidSTMT->fetchColumn();
 
         if ($isValid) {
@@ -27,10 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $pdo->rollback();
             header('Location: ../views/backoffice/connexion.php?error=1');
-            die();
-        }
+}
     } catch (Exception $e) {
         header('Location: ../views/backoffice/connexion.php?error=0');
         die();
     }
 }
+
+?>
