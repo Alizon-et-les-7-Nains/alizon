@@ -437,7 +437,6 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <?php if ($showPopupLivraison): ?>
         <?php
-            $idCommande = intval( $_GET['idCommande']);
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([":idCommande" => $idCommande]);
