@@ -20,13 +20,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $idClient = $_SESSION['user_id'];
 
-function encryptCardNumber($plainText, $key) {
-    $ivLength = openssl_cipher_iv_length('AES-256-CBC');
-    $iv = openssl_random_pseudo_bytes($ivLength);
-    $cipherText = openssl_encrypt($plainText, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
-    return base64_encode($iv . $cipherText);
-}
-
 function getCurrentCart($pdo, $idClient) {
     $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
     $stmt->execute([$idClient]);
@@ -49,156 +42,6 @@ function getCurrentCart($pdo, $idClient) {
     return $cart;
 }
 
-function updateStockAfterOrder($pdo, $idPanier) {
-    try {
-        $sql = "SELECT pap.idProduit, pap.quantiteProduit 
-                FROM _produitAuPanier pap 
-                WHERE pap.idPanier = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$idPanier]);
-        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        foreach ($items as $item) {
-            $updateSql = "UPDATE _produit SET stock = stock - ? WHERE idProduit = ?";
-            $updateStmt = $pdo->prepare($updateSql);
-            $updateStmt->execute([$item['quantiteProduit'], $item['idProduit']]);
-        }
-        
-        return true;
-    } catch (Exception $e) {
-        error_log("Erreur mise à jour stock: " . $e->getMessage());
-        return false;
-    }
-}
-
-function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000', $idAdresseFacturation = null) {
-    try {
-        $pdo->beginTransaction();
-        $idClient = intval($idClient);
-
-        $stmt = $pdo->prepare("SELECT * FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
-        $stmt->execute([$idClient]);
-        $panier = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if (!$panier) throw new Exception("Aucun panier trouvé pour ce client.");
-        $idPanier = intval($panier['idPanier']);
-
-        $sqlTotals = "
-            SELECT SUM(p.prix * pap.quantiteProduit) AS sousTotal, SUM(pap.quantiteProduit) AS nbArticles
-            FROM _produitAuPanier pap
-            JOIN _produit p ON pap.idProduit = p.idProduit
-            WHERE pap.idPanier = ?
-        ";
-        $stmtTotals = $pdo->prepare($sqlTotals);
-        $stmtTotals->execute([$idPanier]);
-        $totals = $stmtTotals->fetch(PDO::FETCH_ASSOC);
-        $sousTotal = floatval($totals['sousTotal'] ?? 0);
-        $nbArticles = intval($totals['nbArticles'] ?? 0);
-
-        if ($nbArticles === 0) {
-            throw new Exception("Le panier est vide.");
-        }
-
-        // Chiffrer le numéro de carte avant de le stocker
-        $numeroCarteChiffre = encryptCardNumber($numeroCarte, $_ENV['ENCRYPTION_KEY'] ?? 'default_key');
-        
-        $checkCarte = $pdo->prepare("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = ?");
-        $checkCarte->execute([$numeroCarteChiffre]);
-
-        if ($checkCarte->rowCount() === 0) {
-            $sqlInsertCarte = "
-                INSERT INTO _carteBancaire (numeroCarte, nom, dateExpiration, cvv)
-                VALUES (?, ?, ?, ?)
-            ";
-            $stmtCarte = $pdo->prepare($sqlInsertCarte);
-            if (!$stmtCarte->execute([$numeroCarteChiffre, $nomCarte, $dateExp, $cvv])) {
-                throw new Exception("Erreur lors de l'ajout de la carte bancaire.");
-            }
-        }
-
-        $sqlAdresseLivraison = "
-            INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
-            VALUES (?, ?, ?, ?)
-        ";
-        $stmtAdresse = $pdo->prepare($sqlAdresseLivraison);
-        
-        if (!$stmtAdresse->execute([$idClient, $adresseLivraison, $codePostal, $villeLivraison])) {
-            throw new Exception("Erreur lors de l'ajout de l'adresse de livraison.");
-        }
-        $idAdresseLivraison = $pdo->lastInsertId();
-
-        if ($idAdresseFacturation) {
-            $idAdresseFacturation = intval($idAdresseFacturation);
-            $checkFact = $pdo->prepare("SELECT idAdresseLivraison FROM _adresseLivraison WHERE idAdresseLivraison = ? AND idClient = ?");
-            $checkFact->execute([$idAdresseFacturation, $idClient]);
-            if ($checkFact->rowCount() === 0) {
-                throw new Exception("Adresse de facturation invalide.");
-            }
-        } else {
-            $idAdresseFacturation = $idAdresseLivraison;
-        }
-
-        $montantHT = $sousTotal;
-        $montantTTC = $sousTotal * 1.20;
-
-        $sqlCommande = "
-            INSERT INTO _commande (
-                dateCommande, etatLivraison, montantCommandeTTC, montantCommandeHt,
-                quantiteCommande, nomTransporteur, dateExpedition,
-                idAdresseLivr, idAdresseFact, numeroCarte, idPanier
-            ) VALUES (
-                NOW(), 'En préparation', ?, ?,
-                ?, 'Colissimo', NULL,
-                ?, ?, ?, ?
-            )
-        ";
-        
-        $stmtCommande = $pdo->prepare($sqlCommande);
-        if (!$stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarteChiffre, $idPanier])) {
-            throw new Exception("Erreur lors de la création de la commande.");
-        }
-
-        $idCommande = $pdo->lastInsertId();
-        
-        $sqlContient = "
-            INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
-            SELECT pap.idProduit, ?, p.prix, 
-                   CASE 
-                     WHEN p.typeTva = 'Réduit' THEN 10.0
-                     WHEN p.typeTva = 'Super réduit' THEN 5.5
-                     WHEN p.typeTva = 'Aucun' THEN 0.0
-                     ELSE 20.0 
-                   END as tauxTva,
-                   pap.quantiteProduit
-            FROM _produitAuPanier pap
-            JOIN _produit p ON pap.idProduit = p.idProduit
-            WHERE pap.idPanier = ?
-        ";
-        
-        $stmtContient = $pdo->prepare($sqlContient);
-        if (!$stmtContient->execute([$idCommande, $idPanier])) {
-            throw new Exception("Erreur lors de la copie des produits.");
-        }
-
-        if (!updateStockAfterOrder($pdo, $idPanier)) {
-            throw new Exception("Erreur lors de la mise à jour du stock.");
-        }
-
-        $stmtVider = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier = ?");
-        if (!$stmtVider->execute([$idPanier])) {
-            throw new Exception("Erreur lors du vidage du panier.");
-        }
-
-        $pdo->commit();
-        return $idCommande;
-
-    } catch (Exception $e) {
-        if ($pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
-        throw new Exception("Erreur lors de la création de la commande: " . $e->getMessage());
-    }
-}
 
 function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
     try {
@@ -321,6 +164,28 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
 }
 ?>
 
+if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
+    $header = fgetcsv($handle, 0, ';', '"', '\\');
+    while (($row = fgetcsv($handle, 0, ';', '"', '\\')) !== false) {
+        if (count($row) < 4) continue;
+        $code = str_pad(trim($row[0]), 2, '0', STR_PAD_LEFT);
+        $postal = trim($row[1]);
+        $dept = trim($row[2]);
+        $city = trim($row[3]);
+        $departments[$code] = $dept;
+        if (!isset($citiesByCode[$code])) $citiesByCode[$code] = [];
+        if ($city !== '' && !in_array($city, $citiesByCode[$code])) $citiesByCode[$code][] = $city;
+        if ($postal !== '') {
+            if (!isset($postals[$postal])) $postals[$postal] = [];
+            if (!in_array($city, $postals[$postal])) $postals[$postal][] = $city;
+        }
+    }
+    fclose($handle);
+} else {
+    $departments['22'] = "Côtes-d'Armor";
+    $citiesByCode['22'] = ['Saint-Brieuc','Lannion','Dinan'];
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -453,6 +318,7 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
     <script src="../../public/amd-shim.js"></script>
+    <script src="../../controllers/Chiffrement.js"></script>
     <script src="../scripts/frontoffice/paiement.js"></script>
 </body>
 
