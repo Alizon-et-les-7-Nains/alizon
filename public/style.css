@@ -7066,7 +7066,7 @@ dialog.reassort form input {
   border-radius: 5px;
   padding: 0 2px;
   margin: 0;
-  font-size: 10px;
+  font-size: 16px;
 }
 .pageCatalogue .nomEtPromo {
   display: flex;
@@ -7160,7 +7160,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .values {
   display: flex;
-  gap: 220px;
+  justify-content: space-between;
 }
 .pageCatalogue .slider-track {
   top: 10px;

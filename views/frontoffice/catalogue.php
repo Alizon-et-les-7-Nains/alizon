@@ -9,7 +9,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 // Reglage du decalage pour la pagination
 $offset = ($page - 1) * $produitsParPage;
 
-$idClient = $_SESSION['user_id'];
+$idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 $categoryQuery = isset($_GET['categorie']) ? trim($_GET['categorie']) : "";

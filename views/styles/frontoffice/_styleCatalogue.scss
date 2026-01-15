@@ -145,7 +145,7 @@
         border-radius: 5px;
         padding: 0 2px;
         margin: 0;
-        font-size: 10px;
+        font-size: 16px;
     }
 
     .nomEtPromo{
@@ -254,7 +254,7 @@
 
     .values {
         display: flex;
-        gap: 220px;
+        justify-content: space-between;
     }
 
     .slider-track {
