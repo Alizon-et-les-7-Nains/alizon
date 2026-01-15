@@ -15,8 +15,7 @@ function getNotifications($pdo, $idClient, $est_vendeur) {
     $sql = "SELECT * FROM _notification 
             WHERE idClient = :idClient 
             AND est_vendeur = :est_vendeur 
-            ORDER BY dateNotif DESC 
-            LIMIT 1";
+            ORDER BY dateNotif DESC";
             
     $stmt = $pdo->prepare($sql);
 
@@ -25,7 +24,7 @@ function getNotifications($pdo, $idClient, $est_vendeur) {
         'est_vendeur' => $est_vendeur
     ]);
 
-    $notif = $stmt->fetch(PDO::FETCH_ASSOC);
+    $notif = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     return $notif; 
 }
@@ -57,7 +56,8 @@ $notifs = getNotifications($pdo, $id_client, 0)
             <?php foreach($notifs as $notif) { ?>
                 <div class="apercuNotif">
                     <div>
-                        <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
+                        <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
+                        <img id="focus" src="../../public/images/bellLightBlue.svg" alt="Nouvelle notification">
                     </div>
                     <div>
                         <h3><?= $notif['titreNotif'] ?></h3>

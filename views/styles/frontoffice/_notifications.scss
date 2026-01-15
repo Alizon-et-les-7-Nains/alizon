@@ -54,6 +54,26 @@
         img {
             height: 40px;
             padding: 20px;
+            #focus {
+                display: none;
+                visibility: hidden;
+            }
+            #regular {
+                display: block;
+                visibility: visible;
+            }
+        }
+        :focus {
+            background-color: #273469;
+            color: #e3f2fe;
+            #focus {
+                display: block;
+                visibility: visible;
+            }
+            #regular {
+                display: none;
+                visibility: hidden;
+            }
         }
         cursor: pointer;
         * {

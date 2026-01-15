@@ -259,10 +259,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $dateExpiration = $_POST['dateExpiration'] ?? '12/30';
                 $idAdresseFacturation = $_POST['idAdresseFacturation'] ?? null;
 
-                if (empty($adresseLivraison) || empty($villeLivraison) || empty($numeroCarte) || empty($codePostal)) {
-                    echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
-                    break;
-                }
+                // if (empty($adresseLivraison) || empty($villeLivraison) || empty($numeroCarte) || empty($codePostal)) {
+                //     echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
+                //     break;
+                // }
 
                 $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExpiration, $cvv, $idAdresseFacturation);
                 echo json_encode(['success' => true, 'idCommande' => $idCommande]);
@@ -273,10 +273,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $codePostal = $_POST['codePostal'] ?? '';
                 $ville = $_POST['ville'] ?? '';
                 
-                if (empty($adresse) || empty($codePostal) || empty($ville)) {
-                    echo json_encode(['success' => false, 'error' => 'Tous les champs d\'adresse sont obligatoires']);
-                    break;
-                }
+                // if (empty($adresse) || empty($codePostal) || empty($ville)) {
+                //     echo json_encode(['success' => false, 'error' => 'Tous les champs d\'adresse sont obligatoires']);
+                //     break;
+                // }
                 
                 $result = saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville);
                 echo json_encode($result);
@@ -337,8 +337,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
     <script>
-    window.CLE_CHIFFREMENT = "<?php echo htmlspecialchars($_ENV['ENCRYPTION_KEY'] ?? 'default_key'); ?>";
-
     window.__PAYMENT_DATA__ = {
         departments: <?php echo json_encode($departments, JSON_UNESCAPED_UNICODE); ?>,
         citiesByCode: <?php echo json_encode($citiesByCode, JSON_UNESCAPED_UNICODE); ?>,
