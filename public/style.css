@@ -7040,7 +7040,7 @@ dialog.reassort form input {
   flex-direction: row;
   align-items: center;
 }
-.pageCatalogue .filter-sort form article div label {
+.pageCatalogue .filter-sort form label {
   font-weight: bold;
 }
 .pageCatalogue .products-section {
@@ -7374,14 +7374,42 @@ dialog.reassort form input {
   }
 }
 @media (max-width: 512px) {
+  .pageCatalogue .btnToggleFilters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: fixed;
+    top: 80px;
+    left: 10px;
+    z-index: 1000;
+    background-color: #273469;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  .pageCatalogue .btnToggleFilters img {
+    width: 20px;
+    height: 20px;
+  }
   .pageCatalogue .filter-sort {
-    width: 160px;
-    padding: 5px;
-    font-size: 12px;
+    width: 280px;
+    padding: 15px;
+    font-size: 14px;
+    left: -300px;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+  }
+  .pageCatalogue .filter-sort.active {
+    left: 0;
   }
   .pageCatalogue .products-section {
-    width: calc(100% - 170px);
-    margin-left: 170px;
+    width: 100%;
+    margin-left: 0;
   }
   .pageCatalogue .listeArticle {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -7531,9 +7559,10 @@ dialog.reassort form input {
 }
 .mesNotif .topRecherche {
   display: flex;
-  justify-content: space-between;
   align-content: center;
-  align-items: flex-end;
+  align-items: flex-start;
+  margin-top: 20px;
+  flex-direction: column;
   margin-top: 20px;
 }
 .mesNotif .topRecherche h1 {
