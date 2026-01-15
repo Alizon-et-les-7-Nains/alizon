@@ -919,12 +919,12 @@ body {
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
   position: absolute;
-  top: 70%;
+  top: 60.5%;
   left: 43%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(4) {
   position: absolute;
-  top: 60.5%;
+  top: 70%;
   left: 58%;
 }
 .pageCommandes .overlay .popup .stepper p:last-of-type {
