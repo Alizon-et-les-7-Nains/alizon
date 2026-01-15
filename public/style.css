@@ -7051,6 +7051,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .filter-sort form label {
   font-weight: bold;
+  filter: invert(0);
 }
 .pageCatalogue .products-section {
   width: calc(100% - 280px); /* Ajustement automatique */

@@ -15,13 +15,17 @@ Array.from(document.getElementsByClassName('aside-btn')).forEach(asideButton => 
         }
     });
 });
+<<<<<<< HEAD
 document.querySelectorAll('main.commandesBackoffice article').forEach((command) => {
+=======
+Array.from(document.querySelectorAll('main.backofficeCommandes article')).forEach(command => {
+>>>>>>> traitement-images
     command.addEventListener('click', () => {
         const modal = document.querySelector(`main.commandesBackoffice dialog#${command.id}`);
-        modal.showModal();
-        modal.addEventListener("click", (e) => {
+        modal?.showModal();
+        modal?.addEventListener("click", (e) => {
             if (e.target === modal) {
-                modal.close();
+                modal?.close();
             }
         });
     });
@@ -82,17 +86,12 @@ const inputsSeuil = Array.from(document.getElementsByClassName('seuil'));
 const inputsDate = Array.from(document.getElementsByClassName('dateReassort'));
 const inputsReassort = Array.from(document.getElementsByClassName('reassort'));
 const buttonsCancel = Array.from(document.getElementsByClassName('buttonCancel'));
-// const buttonConfirm: HTMLInputElement = document.getElementById('buttonConfirm') as HTMLInputElement;
-// const errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') as HTMLElement;
-// const errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
-// const errorFieldDate: HTMLElement = document.getElementById('errorFieldDate') as HTMLElement;
-// function allValid(): boolean {
-//     return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);
-// }
 function checkInt(value) {
+    console.log(value);
     if (!value)
         return true;
     let intValue = parseInt(value);
+    console.log(!isNaN(intValue) && intValue >= 0);
     return !isNaN(intValue) && intValue >= 0;
 }
 function checkDate(date) {
@@ -100,56 +99,76 @@ function checkDate(date) {
         return true;
     let now = new Date();
     now.setHours(0, 0, 0, 0);
+    console.log(now.getTime() < date.getTime());
     return now.getTime() < date.getTime();
 }
 function allValid(seuil, date, reassort) {
+    console.log(seuil.value, date.valueAsDate, reassort.value);
     return checkInt(seuil.value) && checkDate(date.valueAsDate) && checkInt(reassort.value);
 }
-// inputsSeuil.forEach((inputSeuil: HTMLInputElement) => {
-//     inputSeuil.addEventListener('input', () => {
-//         if (!checkInt(inputSeuil.value)) {
-//             inputSeuil.style.cssText = 'border-color: #f14e4e !important';
-//             (inputSeuil.parentElement?.parentElement?.children.namedItem('errorSeuil') as HTMLElement).style.display = 'block';
-//         } else {
-//             inputSeuil.style.cssText = 'border-color: #273469 !important';
-//             (inputSeuil.parentElement?.parentElement?.children.namedItem('errorSeuil') as HTMLElement).style.display = 'none';
-//         }
-//         (inputSeuil.parentElement?.parentElement?.children.namedItem('buttonConfirm') as HTMLButtonElement).disabled = !allValid(inputSeuil, inputSeuil.parentElement?.parentElement?.children.namedItem(''));
-//     })
-// })
-// inputSeuil?.addEventListener('input', () => {
-//     console.log('input');
-//     if (!checkInt(inputSeuil.value)) {
-//         inputSeuil.style.cssText = 'border-color: #f14e4e !important';
-//         errorFieldSeuil.style.display = 'block';
-//     } else {
-//         inputSeuil.style.cssText = 'border-color: #273469 !important';
-//         errorFieldSeuil.style.display = 'none';
-//     }
-//     buttonConfirm.disabled = !allValid();
-// })
-// inputDate?.addEventListener('input', () => {
-//     console.log('input');
-//     if (!checkDate(inputDate.valueAsDate)) {
-//         inputDate.style.cssText = 'border-color: #f14e4e !important';
-//         errorFieldDate.style.display = 'block';
-//     } else {
-//         inputDate.style.cssText = 'border-color: #273469 !important';
-//         errorFieldDate.style.display = 'none';
-//     }
-//     buttonConfirm.disabled = !allValid();
-// })
-// inputReassort?.addEventListener('input', () => {
-//     console.log('input');
-//     if (!checkInt(inputReassort.value)) {
-//         inputReassort.style.cssText = 'border-color: #f14e4e !important';
-//         errorFieldReassort.style.display = 'block';
-//     } else {
-//         inputReassort.style.cssText = 'border-color: #273469 !important';
-//         errorFieldReassort.style.display = 'none';
-//     }
-//     buttonConfirm.disabled = !allValid();
-// })
+inputsSeuil.forEach((inputSeuil) => {
+    const id = inputSeuil.classList[1];
+    inputSeuil.addEventListener('input', () => {
+        if (!checkInt(inputSeuil.value)) {
+            inputSeuil.style.borderColor = '#f14e4e';
+            const errorLabel = document.querySelector(`label.errorFieldSeuil.${id}`);
+            if (errorLabel)
+                errorLabel.style.display = 'block';
+        }
+        else {
+            inputSeuil.style.borderColor = '#273469';
+            const errorLabel = document.querySelector(`label.errorFieldSeuil.${id}`);
+            if (errorLabel)
+                errorLabel.style.display = 'none';
+        }
+        const button = document.querySelector(`input.buttonConfirm.${id}`);
+        if (button) {
+            button.disabled = !allValid(inputSeuil, document.querySelector(`input.dateReassort.${id}`), document.querySelector(`input.reassort.${id}`));
+        }
+    });
+});
+inputsDate.forEach((inputDate) => {
+    const id = inputDate.classList[1];
+    inputDate.addEventListener('input', () => {
+        if (!checkDate(inputDate.valueAsDate)) {
+            inputDate.style.borderColor = '#f14e4e';
+            const errorLabel = document.querySelector(`label.errorFieldDate.${id}`);
+            if (errorLabel)
+                errorLabel.style.display = 'block';
+        }
+        else {
+            inputDate.style.borderColor = '#273469';
+            const errorLabel = document.querySelector(`label.errorFieldDate.${id}`);
+            if (errorLabel)
+                errorLabel.style.display = 'none';
+        }
+        const button = document.querySelector(`input.buttonConfirm.${id}`);
+        if (button) {
+            button.disabled = !allValid(document.querySelector(`input.seuil.${id}`), inputDate, document.querySelector(`input.reassort.${id}`));
+        }
+    });
+});
+inputsReassort.forEach((inputReassort) => {
+    const id = inputReassort.classList[1];
+    inputReassort.addEventListener('input', () => {
+        if (!checkInt(inputReassort.value)) {
+            inputReassort.style.borderColor = '#f14e4e';
+            const errorLabel = document.querySelector(`label.errorFieldReassort.${id}`);
+            if (errorLabel)
+                errorLabel.style.display = 'block';
+        }
+        else {
+            inputReassort.style.borderColor = '#273469';
+            const errorLabel = document.querySelector(`label.errorFieldReassort.${id}`);
+            if (errorLabel)
+                errorLabel.style.display = 'none';
+        }
+        const button = document.querySelector(`input.buttonConfirm.${id}`);
+        if (button) {
+            button.disabled = !allValid(document.querySelector(`input.seuil.${id}`), document.querySelector(`input.dateReassort.${id}`), inputReassort);
+        }
+    });
+});
 buttonsSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
         const subDivs = Array.from(btn.children);

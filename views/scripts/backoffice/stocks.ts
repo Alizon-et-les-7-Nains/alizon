@@ -6,20 +6,12 @@ const inputsReassort: HTMLInputElement[] = Array.from(document.getElementsByClas
 
 const buttonsCancel: HTMLInputElement[] = Array.from(document.getElementsByClassName('buttonCancel') as HTMLCollectionOf<HTMLInputElement>);
 
-// const buttonConfirm: HTMLInputElement = document.getElementById('buttonConfirm') as HTMLInputElement;
-
-// const errorFieldSeuil: HTMLElement = document.getElementById('errorFieldSeuil') as HTMLElement;
-// const errorFieldReassort: HTMLElement = document.getElementById('errorFieldReassort') as HTMLElement;
-// const errorFieldDate: HTMLElement = document.getElementById('errorFieldDate') as HTMLElement;
-
-// function allValid(): boolean {
-//     return checkInt(inputSeuil.value) && checkDate(inputDate.valueAsDate) && checkInt(inputReassort.value);
-// }
-
 function checkInt(value: string): boolean {
+    console.log(value);
     if (!value) return true;
 
     let intValue = parseInt(value);
+    console.log(!isNaN(intValue) && intValue >= 0);
     return !isNaN(intValue) && intValue >= 0;
 }
 
@@ -29,64 +21,87 @@ function checkDate(date: Date | null): boolean {
     let now: Date = new Date();
     now.setHours(0, 0, 0, 0);
 
+    console.log(now.getTime() < date.getTime());
+
     return now.getTime() < date.getTime();
 }
 
 function allValid(seuil: HTMLInputElement, date: HTMLInputElement, reassort: HTMLInputElement): boolean {
+    console.log(seuil.value, date.valueAsDate, reassort.value)
     return checkInt(seuil.value) && checkDate(date.valueAsDate) && checkInt(reassort.value);
 }
 
-// inputsSeuil.forEach((inputSeuil: HTMLInputElement) => {
-//     inputSeuil.addEventListener('input', () => {
-//         if (!checkInt(inputSeuil.value)) {
-//             inputSeuil.style.cssText = 'border-color: #f14e4e !important';
-//             (inputSeuil.parentElement?.parentElement?.children.namedItem('errorSeuil') as HTMLElement).style.display = 'block';
-//         } else {
-//             inputSeuil.style.cssText = 'border-color: #273469 !important';
-//             (inputSeuil.parentElement?.parentElement?.children.namedItem('errorSeuil') as HTMLElement).style.display = 'none';
-//         }
+inputsSeuil.forEach((inputSeuil: HTMLInputElement) => {
+    const id = inputSeuil.classList[1];
+    inputSeuil.addEventListener('input', () => {
+        if (!checkInt(inputSeuil.value)) {
+            inputSeuil.style.borderColor = '#f14e4e';
+            const errorLabel = document.querySelector(`label.errorFieldSeuil.${id}`) as HTMLElement;
+            if (errorLabel) errorLabel.style.display = 'block';
+        } else {
+            inputSeuil.style.borderColor = '#273469';
+            const errorLabel = document.querySelector(`label.errorFieldSeuil.${id}`) as HTMLElement;
+            if (errorLabel) errorLabel.style.display = 'none';
+        }
 
-//         (inputSeuil.parentElement?.parentElement?.children.namedItem('buttonConfirm') as HTMLButtonElement).disabled = !allValid(inputSeuil, inputSeuil.parentElement?.parentElement?.children.namedItem(''));
-//     })
-// })
+        const button = document.querySelector(`input.buttonConfirm.${id}`) as HTMLButtonElement;
+        if (button) {
+            button.disabled = !allValid(
+                inputSeuil, 
+                document.querySelector(`input.dateReassort.${id}`) as HTMLInputElement,
+                document.querySelector(`input.reassort.${id}`) as HTMLInputElement
+            )
+        }
+    })
+})
 
-// inputSeuil?.addEventListener('input', () => {
-//     console.log('input');
-//     if (!checkInt(inputSeuil.value)) {
-//         inputSeuil.style.cssText = 'border-color: #f14e4e !important';
-//         errorFieldSeuil.style.display = 'block';
-//     } else {
-//         inputSeuil.style.cssText = 'border-color: #273469 !important';
-//         errorFieldSeuil.style.display = 'none';
-//     }
+inputsDate.forEach((inputDate: HTMLInputElement) => {
+    const id = inputDate.classList[1];
+    inputDate.addEventListener('input', () => {
+        if (!checkDate(inputDate.valueAsDate)) {
+            inputDate.style.borderColor = '#f14e4e';
+            const errorLabel = document.querySelector(`label.errorFieldDate.${id}`) as HTMLElement;
+            if (errorLabel) errorLabel.style.display = 'block';
+        } else {
+            inputDate.style.borderColor = '#273469';
+            const errorLabel = document.querySelector(`label.errorFieldDate.${id}`) as HTMLElement;
+            if (errorLabel) errorLabel.style.display = 'none';
+        }
 
-//     buttonConfirm.disabled = !allValid();
-// })
-// inputDate?.addEventListener('input', () => {
-//     console.log('input');
-//     if (!checkDate(inputDate.valueAsDate)) {
-//         inputDate.style.cssText = 'border-color: #f14e4e !important';
-//         errorFieldDate.style.display = 'block';
-        
-//     } else {
-//         inputDate.style.cssText = 'border-color: #273469 !important';
-//         errorFieldDate.style.display = 'none';
-//     }
+        const button = document.querySelector(`input.buttonConfirm.${id}`) as HTMLButtonElement;
+        if (button) {
+            button.disabled = !allValid(
+                document.querySelector(`input.seuil.${id}`) as HTMLInputElement, 
+                inputDate,
+                document.querySelector(`input.reassort.${id}`) as HTMLInputElement
+            )
+        }
+    })
+})
 
-//     buttonConfirm.disabled = !allValid();
-// })
-// inputReassort?.addEventListener('input', () => {
-//     console.log('input');
-//     if (!checkInt(inputReassort.value)) {
-//         inputReassort.style.cssText = 'border-color: #f14e4e !important';
-//         errorFieldReassort.style.display = 'block';
-//     } else {
-//         inputReassort.style.cssText = 'border-color: #273469 !important';
-//         errorFieldReassort.style.display = 'none';
-//     }
+inputsReassort.forEach((inputReassort: HTMLInputElement) => {
+    const id = inputReassort.classList[1];
+    inputReassort.addEventListener('input', () => {
+        if (!checkInt(inputReassort.value)) {
+            inputReassort.style.borderColor = '#f14e4e';
+            const errorLabel = document.querySelector(`label.errorFieldReassort.${id}`) as HTMLElement;
+            if (errorLabel) errorLabel.style.display = 'block';
+        } else {
+            inputReassort.style.borderColor = '#273469';
+            const errorLabel = document.querySelector(`label.errorFieldReassort.${id}`) as HTMLElement;
+            if (errorLabel) errorLabel.style.display = 'none';
+        }
 
-//     buttonConfirm.disabled = !allValid();
-// })
+        const button = document.querySelector(`input.buttonConfirm.${id}`) as HTMLButtonElement;
+        if (button) {
+            button.disabled = !allValid(
+                document.querySelector(`input.seuil.${id}`) as HTMLInputElement, 
+                document.querySelector(`input.dateReassort.${id}`) as HTMLInputElement,
+                inputReassort
+            )
+        }
+    })
+})
 
 buttonsSettings.forEach(btn => {
     btn.addEventListener('mouseover', () => {
