@@ -110,10 +110,6 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
 <main class="pageCatalogue">
-    <button id="toggleFilters" class="btnToggleFilters">
-        <img src="../../public/images/icone-filtre.svg" alt="Filtres">
-        Filtres
-    </button>
     <aside class="filter-sort">
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
@@ -193,6 +189,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
     
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
+        <button id="toggleFilters" class="btnToggleFilters"><img src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
         <section class="listeArticle">
             <?php 
             if (count($products) > 0) {

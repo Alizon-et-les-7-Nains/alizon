@@ -4,7 +4,7 @@
 @keyframes tilt-shaking {
   0% { transform: rotate(0deg); }
   25% { transform: rotate(5deg); }
-  50% { transform: rotate(0eg); }
+  50% { transform: rotate(0deg); }
   75% { transform: rotate(-5deg); }
   100% { transform: rotate(0deg); }
 }
@@ -72,18 +72,22 @@
                 visibility: visible;
             }
         }
-        :focus {
-            background-color: #273469;
-            color: #e3f2fe;
-            #focus {
-                display: block;
-                visibility: visible;
+        &:focus {
+                background-color: #273469;
+                color: #e3f2fe;
+                outline: none;
+                #focus {
+                    display: block;
+                    visibility: visible;
+                }
+                #regular {
+                    display: none;
+                    visibility: hidden;
+                }
+                h5 {
+                    color: #e3f2fe; 
+                }
             }
-            #regular {
-                display: none;
-                visibility: hidden;
-            }
-        }
         cursor: pointer;
         * {
             margin: 0;
@@ -96,12 +100,8 @@
             color: black;
         }
     }
-    .apercuNotif:focus {
-        color: #e3f2fe;
-        background-color: #273469;
-    }
     .apercuNotif:hover img {
-        animation: tilt-shaking 0.25s infinite;
+        animation: tilt-shaking 0.25s 1s;
     }
     .ecranNotif {
         width: 150%;

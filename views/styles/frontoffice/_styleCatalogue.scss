@@ -450,15 +450,15 @@
         width: 280px;
         padding: 15px;
         font-size: 14px;
-        left: -300px; // Caché par défaut
+        left: -320px;
         transition: left 0.3s ease;
         box-shadow: 2px 0 10px rgba(0,0,0,0.3);
     }
 
     .filter-sort.active {
-        left: 0; // Visible quand actif
+        left: 0;
     }
-    
+
     .products-section {
         width: 100%;
         margin-left: 0;
