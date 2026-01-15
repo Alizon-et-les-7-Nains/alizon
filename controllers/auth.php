@@ -6,12 +6,12 @@ require_once 'pdo.php';
 
 try {
     $pdo->beginTransaction();
-    $hashPasswordSTMT = $pdo->prepare(file_get_contents(__DIR__ . '/../queries/backoffice/auth.sql'));
-    $hashPasswordSTMT->execute([':id' => $_SESSION['id']]);
-    $hashPassword = $hashPasswordSTMT->fetch(PDO::FETCH_ASSOC);
+    $isValidSTMT = $pdo->prepare(file_get_contents(__DIR__ . '/../queries/backoffice/auth.sql'));
+    $isValidSTMT->execute([':id' => $_SESSION['id']]);
+    $isValid = $isValidSTMT->fetchColumn();
     error_log("auth");
 
-    if (!$_SESSION['session_id'] || !password_verify($_SESSION['pass'], $hashPassword['mdp'])) {
+    if (!$_SESSION['session_id'] || !$isValid) {
         header('Location: ../backoffice/connexion.php?error=3');
         die();
     }
