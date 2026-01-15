@@ -444,48 +444,52 @@ $cart = getCurrentCart($pdo, $idClient);
         ?>
         <div id="popupLivraison" class="overlay">
             <div class="popup">
-                <div class="croixFermerLaPage">
-                    <div></div>
-                    <div></div>
-                </div> 
-                <h2>Suivi de la livraison</h2>
+                <div class="popup-content">
+                    <div class="croixFermerLaPage">
+                        <div></div>
+                        <div></div>
+                    </div> 
+                    <h2>Suivi de la livraison</h2>
 
-                <?php
-                    $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute([":idCommande" => $idCommande]);
-                    $produit = $stmt->fetch(PDO::FETCH_ASSOC);
-                ?>
-                <div class="recapProduit">
-                    <img src="<?php echo htmlspecialchars($produit['URL']); ?>" alt="Image du produit">
-                    <div class="nomEtDescription">
-                        <h3><?php echo htmlspecialchars($produit['nom']); ?></h3>
-                        <p><?php echo htmlspecialchars($produit['description']); ?></p>                   
-                     </div>
-                </div> 
-                <div class="stepper">
-                    <p>En cours de préparation</p>
-                    <p>Prise en charge du colis</p>
-                    <p>Arrivé à la plateforme Régional</p>
-                    <p>Arrivé à la plateforme local</p>
-                    <p>Colis livré</p>
-                    <div class="rond"></div>
-                    <div class="trait">
-                        <div class="demiTrait"></div>
+                    <?php
+                        $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute([":idCommande" => $idCommande]);
+                        $produit = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    ?>
+                    <?php foreach ($produits as $produit): ?>
+                        <div class="recapProduit">
+                            <img src="<?= htmlspecialchars($produit['URL']) ?>" alt="Image du produit">
+                            <div class="nomEtDescription">
+                                <h3><?= htmlspecialchars($produit['nom']) ?></h3>
+                                <p><?= htmlspecialchars($produit['description']) ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                    <div class="stepper">
+                        <p>En cours de préparation</p>
+                        <p>Prise en charge du colis</p>
+                        <p>Arrivé à la plateforme Régional</p>
+                        <p>Arrivé à la plateforme local</p>
+                        <p>Colis livré</p>
+                        <div class="rond"></div>
+                        <div class="trait">
+                            <div class="demiTrait"></div>
+                        </div>
+                        <div class="rond"></div>
+                        <div class="trait">
+                            <div class="demiTrait"></div>
+                        </div>
+                        <div class="rond"></div>
+                        <div class="trait">
+                            <div class="demiTrait"></div>
+                        </div>
+                        <div class="rond"></div>
+                        <div class="trait">
+                            <div class="demiTrait"></div>
+                        </div>
+                        <div class="rond"></div>
                     </div>
-                    <div class="rond"></div>
-                    <div class="trait">
-                        <div class="demiTrait"></div>
-                    </div>
-                    <div class="rond"></div>
-                    <div class="trait">
-                        <div class="demiTrait"></div>
-                    </div>
-                    <div class="rond"></div>
-                    <div class="trait">
-                        <div class="demiTrait"></div>
-                    </div>
-                    <div class="rond"></div>
                 </div>
             </div>
         </div>
