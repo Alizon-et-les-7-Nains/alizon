@@ -444,11 +444,12 @@ $cart = getCurrentCart($pdo, $idClient);
         ?>
         <div id="popupLivraison" class="overlay">
             <div class="popup">
+                <div class="croixFermerLaPage">
+                    <div></div>
+                    <div></div>
+                </div> 
                 <div class="popup-content">
-                    <div class="croixFermerLaPage">
-                        <div></div>
-                        <div></div>
-                    </div> 
+                    
                     <h2>Suivi de la livraison</h2>
 
                     <?php
