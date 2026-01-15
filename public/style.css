@@ -909,34 +909,34 @@ body {
 }
 .pageCommandes .overlay .popup .stepper p:first-of-type {
   position: absolute;
-  top: 57%;
+  top: 59%;
   left: 19%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(2) {
   position: absolute;
-  top: 66%;
+  top: 68%;
   left: 28%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
   position: absolute;
-  top: 57%;
+  top: 59%;
   left: 41%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(4) {
   position: absolute;
-  top: 66%;
+  top: 68%;
   left: 56%;
 }
 .pageCommandes .overlay .popup .stepper p:last-of-type {
   position: absolute;
-  top: 57%;
+  top: 59%;
   left: 76%;
 }
 @media (min-width: 1100px) {
   .pageCommandes .overlay .popup .stepper p:last-of-type {
     position: absolute;
-    top: 57%;
-    left: 75%;
+    top: 59%;
+    left: 70%;
   }
 }
 .pageCommandes .recapProduit {
