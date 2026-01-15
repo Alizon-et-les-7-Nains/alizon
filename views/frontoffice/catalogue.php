@@ -109,6 +109,10 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 } else { 
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
+<button id="toggleFilters" class="btnToggleFilters">
+    <img src="../../public/images/icone-filtre.svg" alt="Filtres">
+    Filtres
+</button>
 <main class="pageCatalogue">
     <aside class="filter-sort">
         <form method="GET" action="">
@@ -498,6 +502,25 @@ updateSlider();
 reattacherAjouterPanier();
 
 document.querySelector('form').addEventListener('submit', e => e.preventDefault());
+
+// Toggle filtres sur mobile
+const toggleFiltersBtn = document.getElementById('toggleFilters');
+const filterSort = document.querySelector('.filter-sort');
+
+if (toggleFiltersBtn) {
+    toggleFiltersBtn.addEventListener('click', () => {
+        filterSort.classList.toggle('active');
+    });
+
+    // Fermer les filtres si on clique en dehors
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 512) {
+            if (!filterSort.contains(e.target) && !toggleFiltersBtn.contains(e.target)) {
+                filterSort.classList.remove('active');
+            }
+        }
+    });
+}
 
 </script>
 
