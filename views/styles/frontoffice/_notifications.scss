@@ -30,13 +30,17 @@
         border: 1px solid #273469;
         border-radius: 25px;
         margin: 30px 50px;
-        max-height: 500px;
-        min-height: 500px;
+        max-height: 483px;
+        min-height: 483px;
         
         .sidebarNotif {
             overflow: scroll;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            width: 1000px;
+            background-color: #e4e4e4;
         }
-        .sidebarNotif:first-child {
+        .sidebarNotif:first-child, .sidebarNotif:last-child {
             border-top-left-radius: 25px;
         }
     }
@@ -75,8 +79,14 @@
         }
         .titleNotif {
             border-bottom: 1px solid black;
-            color: black;
+            padding: 0px 30px;
             font-size: medium;
+            h1 {
+                margin-bottom: 0;
+            }
+            h3 {
+                margin-bottom: 21px;
+            }
         }
     }
 }

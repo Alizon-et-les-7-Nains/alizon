@@ -860,7 +860,7 @@ body {
   min-width: 300px;
   text-align: center;
   width: 60%;
-  height: 50%;
+  height: 55%;
   display: block;
 }
 .pageCommandes .overlay .popup .croixFermerLaPage {
@@ -910,27 +910,41 @@ body {
 .pageCommandes .overlay .popup .stepper p:first-of-type {
   position: absolute;
   top: 45%;
-  left: 20%;
+  left: 43%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(2) {
   position: absolute;
   top: 57%;
-  left: 32%;
+  left: 58%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
   position: absolute;
   top: 45%;
-  left: 43%;
+  left: 20%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(4) {
   position: absolute;
   top: 57%;
-  left: 58%;
+  left: 32%;
 }
 .pageCommandes .overlay .popup .stepper p:last-of-type {
   position: absolute;
   top: 45%;
   left: 74%;
+}
+.pageCommandes .recapProduit {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+.pageCommandes .recapProduit img {
+  width: 150px;
+  height: 150px;
+  margin-right: 20px;
+}
+.pageCommandes .recapProduit .nomEtDescription {
+  display: flex;
+  flex-direction: column;
 }
 
 /* ---- Header ---- */
@@ -7343,13 +7357,17 @@ dialog.reassort form input {
   border: 1px solid #273469;
   border-radius: 25px;
   margin: 30px 50px;
-  max-height: 500px;
-  min-height: 500px;
+  max-height: 483px;
+  min-height: 483px;
 }
 .mesNotif .ensembleNotif .sidebarNotif {
   overflow: scroll;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  width: 1000px;
+  background-color: #e4e4e4;
 }
-.mesNotif .ensembleNotif .sidebarNotif:first-child {
+.mesNotif .ensembleNotif .sidebarNotif:first-child, .mesNotif .ensembleNotif .sidebarNotif:last-child {
   border-top-left-radius: 25px;
 }
 .mesNotif .apercuNotif {
@@ -7390,8 +7408,14 @@ dialog.reassort form input {
 }
 .mesNotif .ecranNotif .titleNotif {
   border-bottom: 1px solid black;
-  color: black;
+  padding: 0px 30px;
   font-size: medium;
+}
+.mesNotif .ecranNotif .titleNotif h1 {
+  margin-bottom: 0;
+}
+.mesNotif .ecranNotif .titleNotif h3 {
+  margin-bottom: 21px;
 }
 
 main.commandesBackoffice {
