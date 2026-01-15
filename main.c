@@ -330,8 +330,14 @@ void liberer_file_colis(MYSQL *conn, long long bordereau) {
         fprintf(stderr, "Erreur libération file: %s\n", mysql_error(conn));
     } else {
         printf("Colis %lld libéré de la file (passage étape 4->5)\n", bordereau);
+        
+        // Traiter la file d'attente si on a global_config
+        if (global_config) {
+            traiter_queue(conn, global_config->capacity);
+        }
     }
 }
+
 
 // FONCTIONS AUTHENTIFICATION
 
@@ -957,28 +963,6 @@ void traiter_queue(MYSQL *conn, int capacity) {
         printf("[Queue] %d commandes traitées depuis la file d'attente\n", traites);
     }
 }
-
-
-void liberer_file_colis(MYSQL *conn, long long bordereau) {
-    char query[256];
-    
-    snprintf(query, sizeof(query),
-             "DELETE FROM _delivraptor_file_prise_en_charge WHERE numBordereau = %lld",
-             bordereau);
-    
-    if (mysql_query(conn, query)) {
-        fprintf(stderr, "Erreur libération file: %s\n", mysql_error(conn));
-    } else {
-        printf("Colis %lld libéré de la file (passage étape 4->5)\n", bordereau);
-        
-        // Traiter la file d'attente si on a global_config
-        if (global_config) {
-            traiter_queue(conn, global_config->capacity);
-        }
-    }
-}
-
-
 
 /**
  * gerer_client() - Fonction exécutée par chaque processus fils pour gérer un client
