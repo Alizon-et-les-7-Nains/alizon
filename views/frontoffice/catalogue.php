@@ -517,6 +517,7 @@ if (toggleFiltersBtn) {
             toggleFiltersBtn.style.color = '#000000';
             imgFiltre.style.filter = 'brightness(0)';
         } else {
+            toggleFiltersBtn.style.width = '20%';
             toggleFiltersBtn.style.backgroundColor = '#fffefa';
             toggleFiltersBtn.style.color = '#273469';
             imgFiltre.style.filter = 'none';

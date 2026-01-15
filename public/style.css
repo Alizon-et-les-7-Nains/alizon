@@ -7419,7 +7419,7 @@ dialog.reassort form input {
     z-index: 1000;
   }
   .pageCatalogue .filter-sort form {
-    margin-top: 200px;
+    margin-top: 50px;
   }
   .pageCatalogue .filter-sort.active {
     left: 0;
