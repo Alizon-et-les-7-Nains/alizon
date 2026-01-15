@@ -1,5 +1,6 @@
 <?php
 require_once 'pdo.php';
+require_once 'treatment.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -44,8 +45,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $dossierDestination = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $nouveauNomImage;
             // Déplacement du fichier
             error_log(print_r($_FILES['photo'], true));
-            if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
-                throw new Exception("Impossible de déplacer l'image.");
+            try {
+                treat($_FILES['photo']['tmp_name'], $dossierDestination);
+            } catch (Exception $e) {
+                error_log("impossible de compresser");
+                print_r("impossible de compresser");
+                if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
+                    throw new Exception("Impossible de traiter l'image.");
+                }
             }
 
             // Insertion dans _imageDeProduit
