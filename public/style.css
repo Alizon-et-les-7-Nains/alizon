@@ -7057,7 +7057,12 @@ dialog.reassort form input {
   background-color: #f14e4e;
   border-radius: 5px;
   padding: 0 2px;
-  width: fit-content;
+}
+.pageCatalogue .nomEtPromo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
