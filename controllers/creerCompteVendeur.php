@@ -33,13 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: ../views/backoffice/accueil.php');
                 exit;
             }
-        } else {
-            // Mot de passe incorrect
-            header('Location: ../views/backoffice/connexion.php?error=1');
-            exit;
-        }
     } else {
-        // Pseudo incorrect
+        // Mdp incorrect
         header('Location: ../views/backoffice/connexion.php?error=1');
         exit;
     }
