@@ -651,7 +651,7 @@ void create(struct ClientSession *session, char *commande_id, char *destination,
             return;
         }
         
-        snprintf(response, sizeof(response), "BORDEREAU %lld\n", new_bordereau);
+        snprintf(response, sizeof(response), "%lld", new_bordereau);
         send(session->client_socket, response, strlen(response), 0);
         
         write_log(config.log_file, session->client_ip, session->client_port,
