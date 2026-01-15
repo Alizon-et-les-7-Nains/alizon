@@ -423,6 +423,7 @@
 
     @media (max-width: 512px) {
         .filter-sort {
+            display: none;
             width: 160px;
             padding: 5px;
             font-size: 12px;

@@ -7302,6 +7302,7 @@ dialog.reassort form input {
 }
 @media (max-width: 512px) {
   .pageCatalogue .filter-sort {
+    display: none;
     width: 160px;
     padding: 5px;
     font-size: 12px;
