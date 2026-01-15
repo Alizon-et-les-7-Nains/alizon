@@ -44,7 +44,7 @@ $create_response = send_command($socket, "CREATE " . $tabIdDestination[0]["idCom
 $sql = "UPDATE _commande SET noBordereau = :noBordereau WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDestination[0]["idCommande"]]);
-//echo "Réponse: $create_response\n\n";
+echo "Réponse: $create_response\n\n";
 
 // Extraire le numéro de bordereau
 if (preg_match('/BORDEREAU (\d+)/', $create_response, $matches)) {
