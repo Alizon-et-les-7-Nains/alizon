@@ -372,12 +372,12 @@ body {
 }
 .cgucgv h2 {
   font-family: "lora", serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
 }
 .cgucgv p {
   font-family: "open-sans", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
 }
 @media (max-width: 1300px) {
   .cgucgv main h1 {
@@ -2370,11 +2370,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .pagePaiement .payer:hover {
   background: #c9bbf0;
 }
-@media (max-width: 720px) {
-  .pagePaiement .payer {
-    display: none !important;
-  }
-}
 .pagePaiement label {
   font-size: 1rem;
   font-family: "lora", serif;
@@ -3544,7 +3539,7 @@ button#haut.visible:hover {
   justify-content: center;
   align-items: center;
   align-self: last baseline;
-  padding-top: 10px;
+  margin-top: 10px;
 }
 @media screen and (max-width: 768px) {
   .pageEcrireCommentaire h1 {
@@ -6118,7 +6113,13 @@ dialog.reassort form input {
     font-size: 12px;
   }
   .pageProduit p {
-    font-size: 10px;
+    font-size: 14px;
+  }
+  .pageProduit .ligneActions {
+    visibility: hidden;
+  }
+  .pageProduit .infoPreviewProduit div h1 {
+    margin: 0;
   }
 }
 .pageProduit .modal-signalement {
