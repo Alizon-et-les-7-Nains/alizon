@@ -372,12 +372,12 @@ body {
 }
 .cgucgv h2 {
   font-family: "lora", serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
 }
 .cgucgv p {
   font-family: "open-sans", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
 }
 @media (max-width: 1300px) {
   .cgucgv main h1 {
