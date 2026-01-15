@@ -907,22 +907,22 @@ body {
   width: 50%;
   background-color: #BABABA;
 }
-.pageCommandes .overlay .popup .stepper p:first-of-type {
+.pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
   position: absolute;
   top: 45%;
   left: 20%;
 }
-.pageCommandes .overlay .popup .stepper p:nth-of-type(2) {
+.pageCommandes .overlay .popup .stepper p:nth-of-type(4) {
   position: absolute;
   top: 57%;
   left: 32%;
 }
-.pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
+.pageCommandes .overlay .popup .stepper p:nth-of-type(5) {
   position: absolute;
   top: 45%;
   left: 43%;
 }
-.pageCommandes .overlay .popup .stepper p:nth-of-type(4) {
+.pageCommandes .overlay .popup .stepper p:nth-of-type(6) {
   position: absolute;
   top: 57%;
   left: 58%;
@@ -931,6 +931,20 @@ body {
   position: absolute;
   top: 45%;
   left: 74%;
+}
+.pageCommandes .recapProduit {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+.pageCommandes .recapProduit img {
+  width: 150px;
+  height: 150px;
+  margin-right: 20px;
+}
+.pageCommandes .recapProduit .nomEtDescription {
+  display: flex;
+  flex-direction: column;
 }
 
 /* ---- Header ---- */

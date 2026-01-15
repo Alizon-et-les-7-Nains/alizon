@@ -475,25 +475,25 @@
 
                 
 
-                p:first-of-type {
+                p:nth-of-type(3) {
                     position: absolute;
                     top: 45%;
                     left: 20%;
                 }
 
-                p:nth-of-type(2) {
+                p:nth-of-type(4) {
                     position: absolute;
                     top: 57%;
                     left: 32%;
                 }
 
-                p:nth-of-type(3) {
+                p:nth-of-type(5) {
                     position: absolute;
                     top: 45%;
                     left: 43%;
                 }
 
-                p:nth-of-type(4) {
+                p:nth-of-type(6) {
                     position: absolute;
                     top: 57%;
                     left: 58%;
@@ -506,5 +506,24 @@
                 }
             }
         }
-    }    
+    }  
+    
+    
+    .recapProduit {
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+
+        img {
+            width: 150px;
+            height: 150px;
+            margin-right: 20px;
+        }
+
+        .nomEtDescription {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
 }
