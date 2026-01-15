@@ -7429,7 +7429,7 @@ dialog.reassort form input {
   }
 }
 @media (max-width: 840px) {
-  .mesNotif .ecranNotif {
+  .mesNotif .ensembleNotif {
     min-height: fit-content;
     max-height: fit-content;
     border-radius: 0;
