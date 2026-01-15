@@ -457,10 +457,12 @@ $cart = getCurrentCart($pdo, $idClient);
                     $produit = $stmt->fetch(PDO::FETCH_ASSOC);
                 ?>
                 <div class="produit">
-                    <h2><?php echo htmlspecialchars($produit['nom']); ?></h2>
                     <img src="<?php echo htmlspecialchars($produit['URL']); ?>" alt="Image du produit">
-                    <p><?php echo htmlspecialchars($produit['description']); ?></p>
-                </div>
+                    <div class="nomEtDescription">
+                        <h2><?php echo htmlspecialchars($produit['nom']); ?></h2>
+                        <p><?php echo htmlspecialchars($produit['description']); ?></p>                   
+                     </div>
+                </div> 
                 <div class="stepper">
                     <p>En cours de préparation</p>
                     <p>Prise en charge du colis</p>
