@@ -55,25 +55,25 @@ $notifs = getNotifications($pdo, $id_client, 0)
             <section class="ensembleNotif">
                 <div class="sidebarNotif">
                 <?php foreach($notifs as $notif) { ?>
-                    <div class="apercuNotif">
+                    <div class="apercuNotif" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu('<?= $notif['titreNotif'] ?>', '<?= $notif['dateNotif'] ?>', '<?= $notif['contenuNotif'] ?>')">
                         <div>
                             <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                         </div>
                         <div>
-                            <h3><?= $notif['titreNotif'] ?></h3>
-                            <h4><?= $notif['contenuNotif'] ?></h4>
-                            <h5><?= $notif['dateNotif'] ?></h5>
+                            <h3 id="titre"><?= $notif['titreNotif'] ?></h3>
+                            <h4 id="contenu"><?= $notif['contenuNotif'] ?></h4>
+                            <h5 id="date"><?= $notif['dateNotif'] ?></h5>
                         </div>
                     </div>
                 <?php } ?>
                 </div>
                 <article class="ecranNotif">
                     <div class="titleNotif">
-                        <h1>X</h1>
-                        <h3>X</h3>
+                        <h1><?= htmlspecialchars($notif['titreNotif'] ?? 'Cliquez sur une notification pour afficher son contenu') ?></h1>
+                        <h3><?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?></h3>
                     </div>
                     <div class="contenuNotif">
-                        X
+                        <?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?>
                     </div>
                 </article>
             </section>
@@ -84,5 +84,17 @@ $notifs = getNotifications($pdo, $id_client, 0)
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
         <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
     </main>
+
+    <script>
+        const titreContent = document.getElementById("titre");
+        const contenuContent = document.getElementById("contenu");
+        const dateContent = document.getElementById("date");
+
+        function afficherContenu(t, d, c) {
+            titreContent.innerText= t ;
+            contenuContent.innerText= d ;
+            dateContent.innerText= c ;
+        }
+</script>
 
 </body>
