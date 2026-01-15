@@ -61,6 +61,7 @@ body {
   display: flex;
   align-items: end;
   justify-content: space-between;
+  align-items: center;
 }
 .headerFront .headerMain div *, .headerFront .headerMain .categorie {
   margin-left: 10px;
@@ -161,6 +162,12 @@ body {
 }
 @media (min-width: 1300px) {
   .headerFront #burgerIconTel {
+    display: none;
+    visibility: hidden;
+  }
+}
+@media (min-width: 655px) {
+  .headerFront .alizonMarque {
     display: none;
     visibility: hidden;
   }
@@ -862,6 +869,7 @@ body {
   width: 60%;
   height: 60%;
   display: block;
+  position: relative;
 }
 .pageCommandes .overlay .popup .croixFermerLaPage {
   position: absolute;
@@ -7015,6 +7023,7 @@ dialog.reassort form input {
 .pageCatalogue {
   display: flex;
   flex-direction: row;
+  background-color: #fffefa;
 }
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
@@ -7302,6 +7311,9 @@ dialog.reassort form input {
   border: 2px solid black;
   text-decoration: none;
 }
+.pageCatalogue .btnToggleFilters {
+  display: none; /* Caché par défaut */
+}
 .pageCatalogue {
   /** Media Queries */
 }
@@ -7378,23 +7390,23 @@ dialog.reassort form input {
     display: flex;
     align-items: center;
     gap: 8px;
-    position: fixed;
-    top: 80px;
-    left: 10px;
-    z-index: 1000;
-    background-color: #273469;
-    color: white;
+    position: relative;
+    z-index: 1100;
+    color: #273469;
     border: none;
-    border-radius: 8px;
+    background-color: #fffefa;
     padding: 10px 15px;
-    cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin: 10px 0;
+    width: fit-content;
   }
   .pageCatalogue .btnToggleFilters img {
     width: 20px;
     height: 20px;
+  }
+  .pageCatalogue #resultat {
+    margin-bottom: 0;
   }
   .pageCatalogue .filter-sort {
     width: 280px;
@@ -7403,6 +7415,10 @@ dialog.reassort form input {
     left: -320px;
     transition: left 0.3s ease;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+  }
+  .pageCatalogue .filter-sort form {
+    margin-top: 200px;
   }
   .pageCatalogue .filter-sort.active {
     left: 0;
@@ -7623,11 +7639,11 @@ dialog.reassort form input {
   height: 40px;
   padding: 20px;
 }
-.mesNotif .apercuNotif img #focus {
+.mesNotif .apercuNotif #focus {
   display: none;
   visibility: hidden;
 }
-.mesNotif .apercuNotif img #regular {
+.mesNotif .apercuNotif #regular {
   display: block;
   visibility: visible;
 }
@@ -7661,7 +7677,7 @@ dialog.reassort form input {
   color: black;
 }
 .mesNotif .apercuNotif:hover img {
-  animation: tilt-shaking 0.25s 1s;
+  animation: tilt-shaking 0.25s 4;
 }
 .mesNotif .ecranNotif {
   width: 150%;
@@ -7703,9 +7719,9 @@ dialog.reassort form input {
     max-height: fit-content;
     border-radius: 0;
   }
-}
-.mesNotif .sidebarNotif:first-child, .mesNotif .sidebarNotif:last-child {
-  border-top-left-radius: 0;
+  .mesNotif .sidebarNotif:first-child, .mesNotif .sidebarNotif:last-child {
+    border-top-left-radius: 0;
+  }
 }
 
 main.commandesBackoffice {

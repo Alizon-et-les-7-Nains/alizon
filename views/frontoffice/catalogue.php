@@ -189,7 +189,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
     
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
-        <button id="toggleFilters" class="btnToggleFilters"><img src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
+        <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
         <section class="listeArticle">
             <?php 
             if (count($products) > 0) {
@@ -500,16 +500,17 @@ reattacherAjouterPanier();
 
 document.querySelector('form').addEventListener('submit', e => e.preventDefault());
 
-// Toggle filtres sur mobile
 const toggleFiltersBtn = document.getElementById('toggleFilters');
+const imgFiltre = document.getElementById('img-filtre');
 const filterSort = document.querySelector('.filter-sort');
 
 if (toggleFiltersBtn) {
     toggleFiltersBtn.addEventListener('click', () => {
         filterSort.classList.toggle('active');
+        toggleFiltersBtn.style.color = '#000000';
+        imgFiltre.style.filter = 'invert(0)';
     });
 
-    // Fermer les filtres si on clique en dehors
     document.addEventListener('click', (e) => {
         if (window.innerWidth <= 512) {
             if (!filterSort.contains(e.target) && !toggleFiltersBtn.contains(e.target)) {
