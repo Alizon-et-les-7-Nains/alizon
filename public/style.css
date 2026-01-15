@@ -7382,16 +7382,12 @@ dialog.reassort form input {
     align-items: center;
     gap: 8px;
     position: relative;
-    z-index: 900;
-    background-color: #273469;
-    color: white;
+    z-index: 1100;
+    color: #273469;
     border: none;
-    border-radius: 8px;
     padding: 10px 15px;
-    cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     margin: 10px 0;
     width: fit-content;
   }
