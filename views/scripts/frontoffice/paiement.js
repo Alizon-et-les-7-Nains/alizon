@@ -1,41 +1,47 @@
+// Classe principal pour gérer la page de paiement avec le nouveau design
 class PaymentPage {
   constructor() {
     this.idAdresseFacturation = null;
+    this.savedBillingAddress = null;
     this.init();
   }
 
+  // Initialise les références DOM et les écouteurs d'événements
   init() {
     this.setupReferences();
     this.setupEventListeners();
     this.setupAutoFormatting();
   }
 
+  // Récupère les éléments DOM nécessaires
   setupReferences() {
     this.factAddrCheckbox = document.getElementById("checkboxFactAddr");
     this.billingSection = document.getElementById("billingSection");
     this.confirmationPopup = document.getElementById("confirmationPopup");
     this.popupContent = document.getElementById("popupContent");
-    this.payerButtons = document.querySelectorAll(".payer");
+    this.payerButtons = document.querySelectorAll(".cta-button");
     this.cgvCheckbox = document.getElementById("cgvCheckbox");
   }
 
+  // Configure les écouteurs d'événements pour les interactions utilisateur
   setupEventListeners() {
+    // Affiche/masque la section facturation si case cochée
     if (this.factAddrCheckbox && this.billingSection) {
       this.factAddrCheckbox.addEventListener("change", () => {
         this.billingSection.classList.toggle(
           "active",
           this.factAddrCheckbox.checked
         );
-        if (!this.factAddrCheckbox.checked) {
-          this.idAdresseFacturation = null;
-        }
+        if (!this.factAddrCheckbox.checked) this.idAdresseFacturation = null;
       });
     }
 
+    // Ajoute l'événement paiement sur tous les boutons de paiement
     this.payerButtons.forEach((btn) => {
       btn.addEventListener("click", (e) => this.handlePayment(e));
     });
 
+    // Ferme la popup si clic en dehors
     if (this.confirmationPopup) {
       this.confirmationPopup.addEventListener("click", (e) => {
         if (e.target === this.confirmationPopup) this.hidePopup();
@@ -43,147 +49,458 @@ class PaymentPage {
     }
   }
 
+  // Configure le formatage automatique des champs
   setupAutoFormatting() {
+    // Formatage automatique du numéro de carte
     const cardNumberInput = document.querySelector(".num-carte");
     if (cardNumberInput) {
-      cardNumberInput.addEventListener("input", (e) =>
-        this.formatCardNumber(e.target)
-      );
+      cardNumberInput.addEventListener("input", (e) => {
+        this.formatCardNumber(e.target);
+      });
     }
 
+    // Formatage automatique de la date d'expiration
     const cardDateInput = document.querySelector(".carte-date");
     if (cardDateInput) {
-      cardDateInput.addEventListener("input", (e) =>
-        this.formatCardDate(e.target)
-      );
+      cardDateInput.addEventListener("input", (e) => {
+        this.formatCardDate(e.target);
+      });
     }
 
-    const postalInputs = document.querySelectorAll(
-      ".code-postal-input, .code-postal-fact-input"
-    );
-    postalInputs.forEach((input) => {
-      input.addEventListener("input", (e) =>
-        this.updateCitySuggestions(e.target)
-      );
-    });
+    // Validation en temps réel
+    this.setupRealTimeValidation();
   }
 
+  // Formate le numéro de carte en groupes de 4 chiffres
   formatCardNumber(input) {
-    let value = input.value.replace(/\D/g, "").slice(0, 16);
-    input.value = value.replace(/(.{4})/g, "$1 ").trim();
+    let value = input.value.replace(/\D/g, "");
+    let formatted = "";
+
+    for (let i = 0; i < value.length && i < 16; i++) {
+      if (i > 0 && i % 4 === 0) {
+        formatted += " ";
+      }
+      formatted += value[i];
+    }
+
+    input.value = formatted;
+
+    // Validation en temps réel
+    this.validateCardNumber(input);
   }
 
+  // Formate la date au format MM/AA
   formatCardDate(input) {
-    let value = input.value.replace(/\D/g, "").slice(0, 4);
-    if (value.length >= 3) {
-      input.value = value.slice(0, 2) + "/" + value.slice(2);
+    let value = input.value.replace(/\D/g, "");
+
+    if (value.length >= 2) {
+      input.value = value.substring(0, 2) + "/" + value.substring(2, 4);
     } else {
       input.value = value;
     }
+
+    // Validation en temps réel
+    this.validateCardDate(input);
   }
 
-  updateCitySuggestions(postalInput) {
-    const postalCode = postalInput.value.trim();
-    if (!/^\d{5}$/.test(postalCode)) return;
-
-    let cityInput = postalInput.classList.contains("code-postal-input")
-      ? document.querySelector(".ville-input")
-      : document.querySelector(".ville-fact-input");
-
-    if (!cityInput || cityInput.value) return;
-
-    const cities = window.__PAYMENT_DATA__?.postals?.[postalCode];
-    if (cities && cities.length > 0) {
-      cityInput.value = cities[0];
+  // Configure la validation en temps réel
+  setupRealTimeValidation() {
+    // Validation du code postal
+    const postalInput = document.querySelector(".code-postal-input");
+    if (postalInput) {
+      postalInput.addEventListener("blur", (e) => {
+        this.validatePostalCode(e.target);
+      });
     }
-  }
 
-  validateForm() {
-    let isValid = true;
-    this.clearAllErrors();
+    // Validation du CVV
+    const cvvInput = document.querySelector(".cvv-input");
+    if (cvvInput) {
+      cvvInput.addEventListener("input", (e) => {
+        this.validateCVV(e.target);
+      });
+    }
 
-    const fields = [
-      { sel: ".adresse-input", key: "adresse" },
-      { sel: ".code-postal-input", key: "code-postal", regex: /^\d{5}$/ },
-      { sel: ".ville-input", key: "ville" },
-      {
-        sel: ".num-carte",
-        key: "num-carte",
-        regex: /^(?:\d{4} ){3}\d{4}$/,
-      },
-      { sel: ".nom-carte", key: "nom-carte" },
-      { sel: ".carte-date", key: "carte-date", regex: /^\d{2}\/\d{2}$/ },
-      { sel: ".cvv-input", key: "cvv-input", regex: /^\d{3}$/ },
-    ];
-
-    fields.forEach((f) => {
-      const el = document.querySelector(f.sel);
-      if (!el || !el.value.trim()) {
-        this.showError(`${this.getFieldName(f.key)} requis`, f.key);
-        isValid = false;
-      } else if (f.regex && !f.regex.test(el.value.trim())) {
-        this.showError(this.getPatternMessage(f.key), f.key);
-        isValid = false;
-      }
+    // Validation de tous les champs lors de la saisie
+    const inputs = document.querySelectorAll(".form-section input");
+    inputs.forEach((input) => {
+      input.addEventListener("blur", () => {
+        this.validateField(input);
+      });
     });
-
-    if (!this.cgvCheckbox?.checked) {
-      this.showError("Veuillez accepter les conditions générales", "cgv");
-      isValid = false;
-    }
-
-    if (this.factAddrCheckbox?.checked) {
-      isValid =
-        this.validateBillingFields(
-          document.querySelector(".adresse-fact-input"),
-          document.querySelector(".code-postal-fact-input"),
-          document.querySelector(".ville-fact-input")
-        ) && isValid;
-    }
-
-    return isValid;
   }
 
-  validateBillingFields(adresse, codePostal, ville) {
+  // Valide un champ individuel
+  validateField(input) {
+    const value = input.value.trim();
+
+    if (!value && input.required) {
+      this.showFieldError(input, "Ce champ est obligatoire");
+      return false;
+    }
+
+    // Validation spécifique par type de champ
+    if (input.classList.contains("code-postal-input")) {
+      return this.validatePostalCode(input);
+    } else if (input.classList.contains("num-carte")) {
+      return this.validateCardNumber(input);
+    } else if (input.classList.contains("carte-date")) {
+      return this.validateCardDate(input);
+    } else if (input.classList.contains("cvv-input")) {
+      return this.validateCVV(input);
+    }
+
+    this.clearFieldError(input);
+    return true;
+  }
+
+  // Valide le code postal
+  validatePostalCode(input) {
+    const value = input.value.trim();
+
+    if (!/^\d{5}$/.test(value)) {
+      this.showFieldError(input, "Le code postal doit contenir 5 chiffres");
+      return false;
+    }
+
+    this.clearFieldError(input);
+    return true;
+  }
+
+  // Valide le numéro de carte
+  validateCardNumber(input) {
+    const cleanNumber = input.value.replace(/\s/g, "");
+
+    if (cleanNumber.length !== 16) {
+      this.showFieldError(
+        input,
+        "Le numéro de carte doit contenir 16 chiffres"
+      );
+      return false;
+    }
+
+    if (!/^\d+$/.test(cleanNumber)) {
+      this.showFieldError(
+        input,
+        "Le numéro de carte ne doit contenir que des chiffres"
+      );
+      return false;
+    }
+
+    // Vérification Luhn
+    if (!this.luhnCheck(cleanNumber)) {
+      this.showFieldError(input, "Numéro de carte invalide");
+      return false;
+    }
+
+    this.clearFieldError(input);
+    return true;
+  }
+
+  // Vérification Luhn pour les cartes bancaires
+  luhnCheck(cardNumber) {
+    let sum = 0;
+    let isEven = false;
+
+    for (let i = cardNumber.length - 1; i >= 0; i--) {
+      let digit = parseInt(cardNumber.charAt(i), 10);
+
+      if (isEven) {
+        digit *= 2;
+        if (digit > 9) {
+          digit -= 9;
+        }
+      }
+
+      sum += digit;
+      isEven = !isEven;
+    }
+
+    return sum % 10 === 0;
+  }
+
+  // Valide la date d'expiration
+  validateCardDate(input) {
+    const value = input.value.trim();
+
+    if (!/^\d{2}\/\d{2}$/.test(value)) {
+      this.showFieldError(input, "Format de date invalide (MM/AA)");
+      return false;
+    }
+
+    const [month, year] = value.split("/").map(Number);
+    const currentYear = new Date().getFullYear() % 100;
+    const currentMonth = new Date().getMonth() + 1;
+
+    if (month < 1 || month > 12) {
+      this.showFieldError(input, "Mois invalide (01-12)");
+      return false;
+    }
+
+    if (year < currentYear || (year === currentYear && month < currentMonth)) {
+      this.showFieldError(input, "Carte expirée");
+      return false;
+    }
+
+    this.clearFieldError(input);
+    return true;
+  }
+
+  // Valide le CVV
+  validateCVV(input) {
+    const value = input.value.trim();
+
+    if (!/^\d{3}$/.test(value)) {
+      this.showFieldError(input, "Le CVV doit contenir 3 chiffres");
+      return false;
+    }
+
+    this.clearFieldError(input);
+    return true;
+  }
+
+  // Affiche une erreur pour un champ spécifique
+  showFieldError(input, message) {
+    const errorKey = this.getErrorKeyForInput(input);
+    this.showError(message, errorKey);
+    input.classList.add("error");
+  }
+
+  // Efface l'erreur d'un champ spécifique
+  clearFieldError(input) {
+    const errorKey = this.getErrorKeyForInput(input);
+    this.clearError(errorKey);
+    input.classList.remove("error");
+  }
+
+  // Obtient la clé d'erreur pour un input
+  getErrorKeyForInput(input) {
+    if (input.classList.contains("adresse-input")) return "adresse";
+    if (input.classList.contains("code-postal-input")) return "code-postal";
+    if (input.classList.contains("ville-input")) return "ville";
+    if (input.classList.contains("num-carte")) return "num-carte";
+    if (input.classList.contains("nom-carte")) return "nom-carte";
+    if (input.classList.contains("carte-date")) return "carte-date";
+    if (input.classList.contains("cvv-input")) return "cvv-input";
+    return "";
+  }
+
+  // Valide les champs de l'adresse de facturation
+  validateBillingFields() {
     let valid = true;
 
-    this.clearError("adresse-fact");
-    this.clearError("code-postal-fact");
-    this.clearError("ville-fact");
+    const adresse = document.querySelector(".adresse-fact-input");
+    const codePostal = document.querySelector(".code-postal-fact-input");
+    const ville = document.querySelector(".ville-fact-input");
 
-    if (!adresse.value.trim()) {
-      this.showError("Adresse de facturation requise", "adresse-fact");
+    if (adresse && !adresse.value.trim()) {
+      this.showFieldError(adresse, "Adresse de facturation requise");
       valid = false;
     }
 
-    if (!/^\d{5}$/.test(codePostal.value.trim())) {
-      this.showError("Code postal invalide", "code-postal-fact");
+    if (codePostal && !codePostal.value.trim()) {
+      this.showFieldError(codePostal, "Code postal requis");
+      valid = false;
+    } else if (codePostal && !/^\d{5}$/.test(codePostal.value.trim())) {
+      this.showFieldError(
+        codePostal,
+        "Le code postal doit contenir 5 chiffres"
+      );
       valid = false;
     }
 
-    if (!ville.value.trim()) {
-      this.showError("Ville requise", "ville-fact");
+    if (ville && !ville.value.trim()) {
+      this.showFieldError(ville, "Ville requise");
       valid = false;
     }
 
     return valid;
   }
 
+  // Gère le processus de paiement principal
   async handlePayment(e) {
     e.preventDefault();
-    if (!this.validateForm()) return;
 
-    const formDataJs = this.getFormData();
-    const cart = window.__PAYMENT_DATA__?.cart || [];
-
-    if (cart.length === 0) {
-      alert("Votre panier est vide");
+    if (!this.validateForm()) {
       return;
     }
 
-    this.showConfirmationPopup(formDataJs, cart);
+    const formData = this.getFormData();
+    const cart = window.__PAYMENT_DATA__?.cart || [];
+
+    if (cart.length === 0) {
+      this.showMessage("Votre panier est vide", "error");
+      return;
+    }
+
+    // Vérifie que le stock est suffisant
+    const stockIssues = cart.filter((item) => item.qty > item.stock);
+    if (stockIssues.length > 0) {
+      let errorMsg = "Stock insuffisant pour:\n";
+      stockIssues.forEach((item) => {
+        errorMsg += `- ${item.nom} (stock: ${item.stock}, demandé: ${item.qty})\n`;
+      });
+      alert(errorMsg);
+      return;
+    }
+
+    this.showConfirmationPopup(formData, cart);
   }
 
+  // Valide l'ensemble du formulaire de paiement
+  validateForm() {
+    let isValid = true;
+    this.clearAllErrors();
+
+    // Définit les règles de validation pour chaque champ
+    const fields = [
+      { selector: ".adresse-input", errorKey: "adresse", required: true },
+      {
+        selector: ".code-postal-input",
+        errorKey: "code-postal",
+        required: true,
+        pattern: /^\d{5}$/,
+      },
+      { selector: ".ville-input", errorKey: "ville", required: true },
+      {
+        selector: ".num-carte",
+        errorKey: "num-carte",
+        required: true,
+        pattern: /^(?:\d{4}\s?){3}\d{4}$/,
+        validator: (value) => this.validateCardNumberValue(value),
+      },
+      { selector: ".nom-carte", errorKey: "nom-carte", required: true },
+      {
+        selector: ".carte-date",
+        errorKey: "carte-date",
+        required: true,
+        pattern: /^\d{2}\/\d{2}$/,
+        validator: (value) => this.validateCardDateValue(value),
+      },
+      {
+        selector: ".cvv-input",
+        errorKey: "cvv-input",
+        required: true,
+        pattern: /^\d{3}$/,
+      },
+    ];
+
+    // Applique les validations à chaque champ
+    fields.forEach((field) => {
+      const element = document.querySelector(field.selector);
+      if (!element) return;
+
+      const value = element.value.trim();
+
+      if (field.required && !value) {
+        this.showError(
+          `${this.getFieldName(field.errorKey)} requis`,
+          field.errorKey
+        );
+        element.classList.add("error");
+        isValid = false;
+      } else if (field.pattern && !field.pattern.test(value)) {
+        this.showError(this.getPatternMessage(field.errorKey), field.errorKey);
+        element.classList.add("error");
+        isValid = false;
+      } else if (field.validator) {
+        const validationResult = field.validator(value);
+        if (!validationResult.isValid) {
+          this.showError(validationResult.message, field.errorKey);
+          element.classList.add("error");
+          isValid = false;
+        } else {
+          element.classList.remove("error");
+        }
+      }
+    });
+
+    // Vérifie l'acceptation des CGV
+    if (!this.cgvCheckbox || !this.cgvCheckbox.checked) {
+      this.showError("Veuillez accepter les conditions générales", "cgv");
+      isValid = false;
+    }
+
+    // Valide l'adresse de facturation si elle est activée
+    if (this.factAddrCheckbox && this.factAddrCheckbox.checked) {
+      isValid = this.validateBillingFields() && isValid;
+    }
+
+    return isValid;
+  }
+
+  // Valide le numéro de carte bancaire (version pour validator)
+  validateCardNumberValue(cardNumber) {
+    const cleanNumber = cardNumber.replace(/\s/g, "");
+
+    if (cleanNumber.length !== 16) {
+      return {
+        isValid: false,
+        message: "Le numéro de carte doit contenir 16 chiffres",
+      };
+    }
+
+    if (!/^\d+$/.test(cleanNumber)) {
+      return {
+        isValid: false,
+        message: "Le numéro de carte ne doit contenir que des chiffres",
+      };
+    }
+
+    if (!this.luhnCheck(cleanNumber)) {
+      return {
+        isValid: false,
+        message: "Numéro de carte invalide",
+      };
+    }
+
+    return { isValid: true };
+  }
+
+  // Valide la date d'expiration (version pour validator)
+  validateCardDateValue(date) {
+    if (!/^\d{2}\/\d{2}$/.test(date)) {
+      return { isValid: false, message: "Format de date invalide (MM/AA)" };
+    }
+
+    const [month, year] = date.split("/").map(Number);
+    const currentYear = new Date().getFullYear() % 100;
+    const currentMonth = new Date().getMonth() + 1;
+
+    if (month < 1 || month > 12) {
+      return { isValid: false, message: "Mois invalide (01-12)" };
+    }
+
+    if (year < currentYear || (year === currentYear && month < currentMonth)) {
+      return { isValid: false, message: "Carte expirée" };
+    }
+
+    return { isValid: true };
+  }
+
+  // Chiffre les données sensibles de la carte bancaire
+  encryptCardData(formData) {
+    const encryptionKey = window.CLE_CHIFFREMENT || "default_key";
+
+    if (typeof window.vignere !== "function") {
+      console.error("Fonction de chiffrement non disponible");
+      throw new Error("Erreur de sécurité: chiffrement non disponible");
+    }
+
+    // Chiffre les données sensibles
+    return {
+      ...formData,
+      numeroCarte: window.vignere(
+        formData.numCarte.replace(/\s+/g, ""),
+        encryptionKey,
+        1
+      ),
+      cvv: window.vignere(formData.cvv, encryptionKey, 1),
+      nomCarte: window.vignere(formData.nomCarte, encryptionKey, 1),
+    };
+  }
+
+  // Récupère les données du formulaire
   getFormData() {
     return {
       adresseLivraison: document.querySelector(".adresse-input").value.trim(),
@@ -196,114 +513,263 @@ class PaymentPage {
     };
   }
 
-  showConfirmationPopup(formData, cart) {
-    let total = 0;
-    const itemsHtml = cart
-      .map((item) => {
-        const t = item.prix * item.qty;
-        total += t;
-        return `
-          <div>
-            ${item.nom} × ${item.qty} = ${t.toFixed(2)}€
-          </div>`;
-      })
-      .join("");
+  // Affiche la popup de confirmation avec résumé de commande
+  async showConfirmationPopup(formData, cart) {
+    try {
+      const encryptedData = this.encryptCardData(formData);
 
-    this.popupContent.innerHTML = `
-      <h2>Confirmation de commande</h2>
-      <p>${formData.adresseLivraison}, ${formData.codePostal} ${
-      formData.villeLivraison
-    }</p>
-      <p>Carte se terminant par ${formData.numCarte.slice(-4)}</p>
-      ${itemsHtml}
-      <h3>Total : ${total.toFixed(2)}€</h3>
-      <button class="btn-cancel">Annuler</button>
-      <button class="btn-confirm">Confirmer</button>
-    `;
+      // Construit le HTML du panier avec articles et totaux
+      let cartHtml = '<div class="cart-summary">';
+      let total = window.__PAYMENT_DATA__?.totals?.montantTTC || 0;
 
-    this.confirmationPopup.style.display = "flex";
+      cart.forEach((item) => {
+        const itemTotal = item.prix * item.qty;
 
-    this.popupContent
-      .querySelector(".btn-cancel")
-      .addEventListener("click", () => this.hidePopup());
+        cartHtml += `
+          <div class="cart-item-summary">
+            <img src="${item.img}" alt="${item.nom}" class="cart-item-image">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.nom}</div>
+              <div class="cart-item-details">
+                Quantité: ${item.qty} × ${item.prix.toFixed(
+          2
+        )}€ = ${itemTotal.toFixed(2)}€
+              </div>
+            </div>
+          </div>
+        `;
+      });
 
-    this.popupContent
-      .querySelector(".btn-confirm")
-      .addEventListener("click", () => this.submitOrder(formData));
+      cartHtml += "</div>";
+
+      // Construit le contenu de la popup de confirmation
+      const popupHtml = `
+        <h2>Confirmation de commande</h2>
+        <div class="order-info">
+          <p><strong>Adresse de livraison :</strong><br>
+          ${formData.adresseLivraison}<br>
+          ${formData.codePostal} ${formData.villeLivraison}</p>
+          
+          <p><strong>Paiement :</strong> Carte Visa se terminant par ${formData.numCarte.slice(
+            -4
+          )}</p>
+        </div>
+        
+        <h3>Récapitulatif du panier</h3>
+        ${cartHtml}
+        
+        <div class="total-section">
+          <h3>Total : ${total.toFixed(2)}€</h3>
+        </div>
+        
+        <div class="popup-buttons">
+          <button type="button" class="btn-cancel">Annuler</button>
+          <button type="button" class="btn-confirm">Confirmer la commande</button>
+        </div>
+      `;
+
+      this.popupContent.innerHTML = popupHtml;
+      this.confirmationPopup.classList.add("show");
+
+      this.setupPopupButtons(encryptedData, cart, total);
+    } catch (error) {
+      console.error("Erreur lors du chiffrement:", error);
+      this.showMessage(
+        "Erreur de sécurité lors du traitement du paiement",
+        "error"
+      );
+    }
   }
 
-  async submitOrder(data) {
-    const form = new FormData();
-    form.append("action", "createOrder");
-    Object.entries(data).forEach(([k, v]) => form.append(k, v));
+  // Configure les boutons d'action de la popup
+  setupPopupButtons(encryptedData, cart, total) {
+    const cancelBtn = this.popupContent.querySelector(".btn-cancel");
+    const confirmBtn = this.popupContent.querySelector(".btn-confirm");
 
-    const res = await fetch("pagePaiement.php", {
+    if (cancelBtn) {
+      cancelBtn.addEventListener("click", () => this.hidePopup());
+    }
+
+    if (confirmBtn) {
+      confirmBtn.addEventListener("click", async () => {
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = "Traitement en cours...";
+
+        try {
+          await this.submitOrder(encryptedData, cart, total);
+        } catch (error) {
+          console.error("Erreur lors de la soumission:", error);
+          this.showMessage(
+            "Erreur lors de la création de la commande: " + error.message,
+            "error"
+          );
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = "Confirmer la commande";
+        }
+      });
+    }
+  }
+
+  // Soumet la commande au serveur
+  async submitOrder(encryptedData, cart, total) {
+    try {
+      // Vérifier si l'adresse de facturation est différente
+      if (this.factAddrCheckbox && this.factAddrCheckbox.checked) {
+        const billingData = {
+          adresse: document.querySelector(".adresse-fact-input").value.trim(),
+          codePostal: document
+            .querySelector(".code-postal-fact-input")
+            .value.trim(),
+          ville: document.querySelector(".ville-fact-input").value.trim(),
+        };
+
+        // Sauvegarder l'adresse de facturation
+        const billingResponse = await this.saveBillingAddress(billingData);
+        if (billingResponse.success) {
+          this.idAdresseFacturation = billingResponse.idAdresseFacturation;
+        }
+      }
+
+      // Prépare les données chiffrées pour l'envoi
+      const formData = new FormData();
+      formData.append("action", "createOrder");
+      formData.append("adresseLivraison", encryptedData.adresseLivraison);
+      formData.append("villeLivraison", encryptedData.villeLivraison);
+      formData.append("codePostal", encryptedData.codePostal);
+      formData.append("numeroCarte", encryptedData.numeroCarte);
+      formData.append("nomCarte", encryptedData.nomCarte);
+      formData.append("dateExpiration", encryptedData.dateExpiration);
+      formData.append("cvv", encryptedData.cvv);
+
+      if (this.idAdresseFacturation) {
+        formData.append("idAdresseFacturation", this.idAdresseFacturation);
+      }
+
+      // Envoie la requête au serveur
+      const response = await fetch("pagePaiement.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        this.showThankYouMessage(result.idCommande);
+      } else {
+        throw new Error(result.error || "Erreur inconnue");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Sauvegarde l'adresse de facturation
+  async saveBillingAddress(billingData) {
+    const formData = new FormData();
+    formData.append("action", "saveBillingAddress");
+    formData.append("adresse", billingData.adresse);
+    formData.append("codePostal", billingData.codePostal);
+    formData.append("ville", billingData.ville);
+
+    const response = await fetch("pagePaiement.php", {
       method: "POST",
-      body: form,
+      body: formData,
     });
 
-    const json = await res.json();
-    if (!json.success) {
-      alert(json.error);
-      return;
-    }
-
-    this.showThankYouMessage(json.idCommande);
+    return await response.json();
   }
 
-  showThankYouMessage(id) {
-    this.popupContent.innerHTML = `
-      <h2>Commande validée</h2>
-      <p>Numéro : ${id}</p>
-      <button onclick="location.href='../../views/frontoffice/accueilConnecte.php'">
-        Retour accueil
-      </button>
+  // Affiche le message de remerciement après commande réussie
+  showThankYouMessage(orderId) {
+    const thankYouHtml = `
+      <div class="thank-you-popup">
+        <div class="success-icon">✓</div>
+        <h2 class="popup-title">Paiement réussi !</h2>
+        <p class="popup-text">Merci pour votre commande.</p>
+        <p class="popup-text">Un email de confirmation vous a été envoyé.</p>
+        <div class="order-number">#${orderId}</div>
+        <button class="popup-button" onclick="window.location.href='../../views/frontoffice/accueilConnecte.php'">Retour à l'accueil</button>
+      </div>
     `;
+
+    this.popupContent.innerHTML = thankYouHtml;
   }
 
-  hidePopup() {
-    this.confirmationPopup.style.display = "none";
-  }
-
-  showError(msg, key) {
-    const el = document.querySelector(`[data-for="${key}"]`);
-    if (el) {
-      el.textContent = msg;
-      el.style.display = "block";
+  // Affiche un message d'erreur associé à un champ
+  showError(message, field) {
+    const errorEl = document.querySelector(`[data-for="${field}"]`);
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.classList.add("show");
+    } else {
+      console.error(`Élément d'erreur non trouvé pour: ${field}`);
     }
   }
 
-  clearError(key) {
-    const el = document.querySelector(`[data-for="${key}"]`);
-    if (el) el.style.display = "none";
+  // Efface un message d'erreur spécifique
+  clearError(field) {
+    const errorEl = document.querySelector(`[data-for="${field}"]`);
+    if (errorEl) {
+      errorEl.textContent = "";
+      errorEl.classList.remove("show");
+    }
   }
 
+  // Efface tous les messages d'erreur
   clearAllErrors() {
-    document
-      .querySelectorAll(".error-message")
-      .forEach((e) => (e.style.display = "none"));
+    document.querySelectorAll(".error-message").forEach((el) => {
+      el.textContent = "";
+      el.classList.remove("show");
+    });
+
+    // Supprime aussi la classe error des inputs
+    document.querySelectorAll("input.error").forEach((input) => {
+      input.classList.remove("error");
+    });
   }
 
-  getFieldName(k) {
-    return {
-      adresse: "Adresse",
+  // Affiche un message générique à l'utilisateur
+  showMessage(message, type = "info") {
+    if (type === "error") {
+      alert("Erreur: " + message);
+    } else {
+      alert(message);
+    }
+  }
+
+  // Masque la popup
+  hidePopup() {
+    this.confirmationPopup.classList.remove("show");
+  }
+
+  // Retourne le libellé lisible du champ pour l'affichage
+  getFieldName(errorKey) {
+    const names = {
+      adresse: "Adresse de livraison",
       "code-postal": "Code postal",
       ville: "Ville",
       "num-carte": "Numéro de carte",
       "nom-carte": "Nom sur la carte",
       "carte-date": "Date d'expiration",
       "cvv-input": "CVV",
-    }[k];
+    };
+    return names[errorKey] || errorKey;
   }
 
-  getPatternMessage(k) {
-    return {
-      "code-postal": "Code postal invalide",
-      "num-carte": "Numéro de carte invalide",
-      "carte-date": "Date invalide",
-      "cvv-input": "CVV invalide",
-    }[k];
+  // Retourne les messages d'erreur de validation spécifiques
+  getPatternMessage(errorKey) {
+    const messages = {
+      "code-postal": "Le code postal doit contenir 5 chiffres",
+      "num-carte":
+        "Le numéro de carte doit contenir 16 chiffres (espaces autorisés)",
+      "carte-date": "Format de date invalide (MM/AA)",
+      "cvv-input": "Le CVV doit contenir 3 chiffres",
+    };
+    return messages[errorKey] || "Format invalide";
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => new PaymentPage());
+// Initialise la page de paiement au chargement du DOM
+document.addEventListener("DOMContentLoaded", () => {
+  new PaymentPage();
+});
