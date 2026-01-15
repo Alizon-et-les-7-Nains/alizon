@@ -1,8 +1,6 @@
-Page paiement qui marche
-
 <?php
-require_once "../../controllers/pdo.php";
 session_start();
+require_once "../../controllers/pdo.php";
 $envPath = __DIR__ . '/../../.env';
 
 
