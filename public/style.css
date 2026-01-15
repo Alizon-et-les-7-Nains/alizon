@@ -932,7 +932,7 @@ body {
   top: 45%;
   left: 74%;
 }
-.pageCommandes .produit {
+.pageCommandes .recapProduit {
   display: flex;
   align-items: center;
   margin-left: 20px img;
@@ -940,7 +940,7 @@ body {
   margin-left-height: 150px;
   margin-left-margin-right: 20px;
 }
-.pageCommandes .produit .nomEtDescription {
+.pageCommandes .recapProduit .nomEtDescription {
   display: flex;
   flex-direction: column;
 }

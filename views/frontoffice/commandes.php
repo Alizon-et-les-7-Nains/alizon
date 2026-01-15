@@ -456,7 +456,7 @@ $cart = getCurrentCart($pdo, $idClient);
                     $stmt->execute([":idCommande" => $idCommande]);
                     $produit = $stmt->fetch(PDO::FETCH_ASSOC);
                 ?>
-                <div class="produit">
+                <div class="recapProduit">
                     <img src="<?php echo htmlspecialchars($produit['URL']); ?>" alt="Image du produit">
                     <div class="nomEtDescription">
                         <h2><?php echo htmlspecialchars($produit['nom']); ?></h2>
