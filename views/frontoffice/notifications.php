@@ -104,7 +104,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
         const contenuContent = document.getElementById("contenu");
         const dateContent = document.getElementById("date");
 
-        function afficherContenu(t, d, c) {
+        function afficherContenu(el, t, d, c) {
             titreContent.innerText= t ;
             contenuContent.innerText= d ;
             dateContent.innerText= c ;
