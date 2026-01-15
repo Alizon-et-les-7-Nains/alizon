@@ -914,7 +914,7 @@ body {
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(2) {
   position: absolute;
-  top: 70%;
+  top: 70.5%;
   left: 30%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
@@ -924,7 +924,7 @@ body {
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(4) {
   position: absolute;
-  top: 70%;
+  top: 70.5%;
   left: 58%;
 }
 .pageCommandes .overlay .popup .stepper p:last-of-type {
