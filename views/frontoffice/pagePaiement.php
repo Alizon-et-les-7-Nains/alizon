@@ -378,11 +378,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
                 </div>
 
                 <button class="cta-button">Finaliser le paiement</button>
-
-                <div class="security-badge">
-                    <span class="security-icon">🔒</span>
-                    <span>Paiement 100% sécurisé</span>
-                </div>
             </aside>
         </div>
     </main>
