@@ -58,21 +58,10 @@
                 display: none;
                 visibility: hidden;
             }
-            #focus {
+            #regular {
                 display: block;
                 visibility: visible;
             }
-        }
-        cursor: pointer;
-        * {
-            margin: 0;
-        }
-        h4, h5 {
-            font-weight: 400;
-            padding: 4px 0px;;
-        }
-        h5 {
-            color: black;
         }
         :focus {
             background-color: #273469;
@@ -85,6 +74,17 @@
                 display: none;
                 visibility: hidden;
             }
+        }
+        cursor: pointer;
+        * {
+            margin: 0;
+        }
+        h4, h5 {
+            font-weight: 400;
+            padding: 4px 0px;;
+        }
+        h5 {
+            color: black;
         }
     }
     .ecranNotif {
