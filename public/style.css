@@ -166,7 +166,7 @@ body {
     visibility: hidden;
   }
 }
-@media (min-width: 655px) {
+@media (max-width: 655px) {
   .headerFront .alizonMarque {
     display: none;
     visibility: hidden;
