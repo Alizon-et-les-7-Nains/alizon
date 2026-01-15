@@ -4,6 +4,7 @@
 .pageCatalogue{
     display:flex;
     flex-direction: row;
+    background-color: $color-white;
     
 
     .filter-sort{
@@ -434,6 +435,7 @@
         z-index: 1100;
         color: #273469;
         border: none;
+        background-color: $color-white;
         padding: 10px 15px;
         font-size: 14px;
         font-weight: bold;
@@ -444,25 +446,29 @@
     .btnToggleFilters img {
         width: 20px;
         height: 20px;
-        filter: brightness(0) invert(1); // Rend l'image blanche si elle est sombre
+        filter: brightness(0) invert(1);
     }
 
     #resultat {
-        margin-bottom: 0; // Réduit l'espace sous le résultat
+        margin-bottom: 0;
     }
 
     .filter-sort {
         width: 280px;
         padding: 15px;
         font-size: 14px;
-        left: -300px; // Caché par défaut
+        left: -320px;
         transition: left 0.3s ease;
         box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-        z-index: 1000; // Au-dessus de tout
+        z-index: 1000;
+    }
+
+    .triNote{
+        margin-top: 200px;
     }
 
     .filter-sort.active {
-        left: 0; // Visible quand actif
+        left: 0;
     }
     
     .products-section {
