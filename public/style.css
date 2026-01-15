@@ -6967,6 +6967,9 @@ dialog.reassort form input {
   flex-direction: row;
   align-items: center;
 }
+.pageCatalogue .filter-sort form article div label {
+  font-weight: bold;
+}
 .pageCatalogue .products-section {
   width: calc(100% - 280px); /* Ajustement automatique */
   display: flex;
@@ -7053,7 +7056,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .tempsRestant {
   position: absolute;
-  top: -9px;
+  top: -9.5px;
   right: -5px;
   background-color: #fffefa;
   color: #273469;
@@ -7226,23 +7229,8 @@ dialog.reassort form input {
   border: 2px solid black;
   text-decoration: none;
 }
-@media (max-width: 1300px) {
-  .pageCatalogue .filter-sort {
-    width: 220px;
-    padding: 15px;
-  }
-  .pageCatalogue .products-section {
-    width: calc(100% - 250px);
-    margin-left: 250px;
-  }
-  .pageCatalogue .star {
-    width: 35px;
-    height: 35px;
-  }
-  .pageCatalogue .notation {
-    gap: 4px;
-    margin: 4px 0;
-  }
+.pageCatalogue {
+  /** Media Queries */
 }
 @media (max-width: 1024px) {
   .pageCatalogue .filter-sort {
@@ -7261,6 +7249,38 @@ dialog.reassort form input {
     gap: 3px;
     margin: 3px 0;
   }
+  .pageCatalogue .listeArticle {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  .pageCatalogue .listeArticle article {
+    min-width: 180px;
+    max-width: 180px;
+    min-height: 220px;
+    max-height: 220px;
+  }
+  .pageCatalogue .listeArticle article .imgProduit {
+    max-width: 180px;
+    max-height: 100px;
+  }
+  .pageCatalogue .listeArticle article h2 {
+    font-size: 14px;
+  }
+  .pageCatalogue .prix h2 {
+    font-size: 28px;
+  }
+  .pageCatalogue .prix h3 {
+    font-size: 11px;
+  }
+  .pageCatalogue .prix h4 {
+    font-size: 12px;
+  }
+  .pageCatalogue .notation span {
+    font-size: 16px;
+  }
+  .pageCatalogue .notation .etoile {
+    width: 18px;
+    height: 18px;
+  }
 }
 @media (max-width: 768px) {
   .pageCatalogue .filter-sort {
@@ -7278,6 +7298,76 @@ dialog.reassort form input {
   .pageCatalogue .notation {
     gap: 1px;
     margin: 1px 0;
+  }
+}
+@media (max-width: 512px) {
+  .pageCatalogue .filter-sort {
+    width: 160px;
+    padding: 5px;
+    font-size: 12px;
+  }
+  .pageCatalogue .products-section {
+    width: calc(100% - 170px);
+    margin-left: 170px;
+  }
+  .pageCatalogue .listeArticle {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 5px;
+  }
+  .pageCatalogue .listeArticle article {
+    min-width: 140px;
+    max-width: 140px;
+    min-height: 180px;
+    max-height: 180px;
+    margin: 5px;
+    padding: 8px;
+  }
+  .pageCatalogue .listeArticle article .imgProduit {
+    max-width: 140px;
+    max-height: 80px;
+  }
+  .pageCatalogue .listeArticle article h2 {
+    font-size: 12px;
+  }
+  .pageCatalogue .prix h2 {
+    font-size: 22px;
+  }
+  .pageCatalogue .prix h3 {
+    font-size: 9px;
+  }
+  .pageCatalogue .prix h4 {
+    font-size: 10px;
+  }
+  .pageCatalogue .notation span {
+    font-size: 14px;
+  }
+  .pageCatalogue .notation .etoile {
+    width: 14px;
+    height: 14px;
+  }
+  .pageCatalogue #promoTexte {
+    font-size: 11px;
+    padding: 0 1px;
+  }
+  .pageCatalogue .bannierePromo h1 {
+    font-size: 13px;
+    top: 22px;
+    left: 6px;
+  }
+  .pageCatalogue .imgBanniere {
+    height: 60px;
+  }
+  .pageCatalogue .tempsRestant {
+    font-size: 9px;
+    padding: 2px;
+  }
+  .pageCatalogue .infoProd button img {
+    width: 35px;
+    height: 35px;
+  }
+  .pageCatalogue .star {
+    width: 25px;
+    height: 25px;
   }
 }
 
