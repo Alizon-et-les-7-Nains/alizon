@@ -2,171 +2,38 @@
 @use "../fonts" as *;
 
 .cgucgv {
-  main {
-    margin: 0 auto;
-    padding: 20px;
-
-    h1 {
-      color: $color-blue;
-      font-family: $font-lora;
-      font-size: 38px;
-      font-weight: bold;
-      font-style: italic;
-      text-align: center;
-      margin: 50px 0 30px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid lighten($color-blue, 40%);
-    }
-
-    > h1:first-of-type {
-      margin-top: 30px;
-    }
+  main h1 {
+    color: $color-blue;
+    font-family: $font-lora;
+    font-size: 38px;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    margin: 50px 0px;
   }
 
   section {
-    margin: 40px 0;
-    padding: 25px;
-
-    h2 {
-      font-family: $font-lora;
-      font-size: 22px;
-      font-weight: bold;
-      color: darken($color-blue, 10%);
-      margin: 25px 0 15px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #eee;
-
-      &:first-child {
-        margin-top: 0;
-      }
-    }
-
-    p {
-      font-family: $font-open-sans;
-      font-size: 15px;
-      line-height: 1.6;
-      color: #444;
-      margin: 15px 0;
-    }
-
-    ul,
-    ol {
-      font-family: $font-open-sans;
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 15px 0 15px 20px;
-      color: #444;
-
-      li {
-        margin-bottom: 8px;
-        padding-left: 5px;
-      }
-    }
-
-    span {
-      font-weight: bold;
-      color: darken($color-blue, 15%);
-    }
-
-    ul {
-      list-style-type: none;
-
-      li {
-        position: relative;
-        padding-left: 20px;
-
-        &:before {
-          content: "•";
-          color: $color-blue;
-          font-size: 18px;
-          position: absolute;
-          left: 0;
-          top: -1px;
-        }
-      }
-    }
-
-    ol {
-      counter-reset: item;
-
-      li {
-        counter-increment: item;
-
-        &:before {
-          content: counter(item) ".";
-          color: $color-blue;
-          font-weight: bold;
-          margin-right: 8px;
-        }
-      }
-    }
-
-    p + h2,
-    ul + h2,
-    ol + h2 {
-      margin-top: 35px;
-    }
+    margin: 0px 80px;
   }
 
-  section:last-of-type {
-    margin-bottom: 60px;
+  h2 {
+    font-family: $font-lora;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  p {
+    font-family: $font-open-sans;
+    font-size: 14px;
   }
 
   @media (max-width: 1300px) {
-    main {
-      padding: 15px;
-
-      h1 {
-        font-size: 32px;
-        margin: 30px 0 25px;
-        padding-bottom: 12px;
-      }
+    main h1 {
+      font-size: 32px;
+      margin: 20px 0px;
     }
-
     section {
-      margin: 30px 0;
-      padding: 20px;
-
-      h2 {
-        font-size: 20px;
-      }
-
-      p {
-        font-size: 14px;
-      }
-    }
-  }
-
-  @media (max-width: 768px) {
-    main {
-      padding: 10px;
-
-      h1 {
-        font-size: 28px;
-        margin: 20px 0;
-      }
-    }
-
-    section {
-      margin: 20px 0;
-      padding: 15px;
-      border-radius: 8px;
-
-      h2 {
-        font-size: 18px;
-        margin: 20px 0 12px;
-      }
-
-      p {
-        font-size: 14px;
-        line-height: 1.5;
-      }
-
-      ul,
-      ol {
-        margin-left: 15px;
-        font-size: 13px;
-      }
+      margin: 0px 40px;
     }
   }
 }
