@@ -7396,7 +7396,6 @@ dialog.reassort form input {
   .pageCatalogue .btnToggleFilters img {
     width: 20px;
     height: 20px;
-    filter: brightness(0) invert(1);
   }
   .pageCatalogue #resultat {
     margin-bottom: 0;
@@ -7410,7 +7409,7 @@ dialog.reassort form input {
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
   }
-  .pageCatalogue .triNote {
+  .pageCatalogue .filter-sort form {
     margin-top: 200px;
   }
   .pageCatalogue .filter-sort.active {
@@ -7632,11 +7631,11 @@ dialog.reassort form input {
   height: 40px;
   padding: 20px;
 }
-.mesNotif .apercuNotif img #focus {
+.mesNotif .apercuNotif #focus {
   display: none;
   visibility: hidden;
 }
-.mesNotif .apercuNotif img #regular {
+.mesNotif .apercuNotif #regular {
   display: block;
   visibility: visible;
 }
