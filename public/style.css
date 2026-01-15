@@ -7066,6 +7066,7 @@ dialog.reassort form input {
   border-radius: 5px;
   padding: 0 2px;
   margin: 0;
+  font-size: 10px;
 }
 .pageCatalogue .nomEtPromo {
   display: flex;
