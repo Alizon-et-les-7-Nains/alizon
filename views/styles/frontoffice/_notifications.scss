@@ -54,6 +54,26 @@
         img {
             height: 40px;
             padding: 20px;
+            #focus {
+                display: none;
+                visibility: hidden;
+            }
+            #regular {
+                display: block;
+                visibility: visible;
+            }
+        }
+        :focus {
+            background-color: #273469;
+            color: #e3f2fe;
+            #focus {
+                display: block;
+                visibility: visible;
+            }
+            #regular {
+                display: none;
+                visibility: hidden;
+            }
         }
         cursor: pointer;
         * {
@@ -93,23 +113,23 @@
         .ensembleNotif {
             max-height: 680px;
             min-height: 680px;
+        }
     }
-  }
     @media (max-width: 840px) {
         .ecranNotif {
             display: none;
             visibility: hidden;
+        }
     }
-  }
     @media (max-width: 840px) {
         .ensembleNotif {
             min-height: fit-content;
             max-height: fit-content;
             border-radius: 0;
+        }
     }
-  }
-.sidebarNotif:first-child, .sidebarNotif:last-child {
-    border-top-left-radius: 0;
-}
-  
+    .sidebarNotif:first-child, .sidebarNotif:last-child {
+        border-top-left-radius: 0;
+    }
+    
 }

@@ -9,7 +9,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 // Reglage du decalage pour la pagination
 $offset = ($page - 1) * $produitsParPage;
 
-$idClient = $_SESSION['user_id'];
+$idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 $categoryQuery = isset($_GET['categorie']) ? trim($_GET['categorie']) : "";
@@ -112,7 +112,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 <main class="pageCatalogue">
     <aside class="filter-sort">
         <form method="GET" action="">
-            <label for="tri">Trier par :</label>
+            <label for="tri">Trier par note minimale :</label>
             <article class="triNote">
                 <div>
                     <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
@@ -147,7 +147,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 </div>
             </div>
 
-            <label for="minNote" id="minNoteLabel">Trier par note :</label>
+            <label for="minNote" id="minNoteLabel">Trier par note minimale:</label>
             <div>
                 <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
                 <img src="../../public/images/etoileVide.svg" data-index="2" class="star" alt="2 étoiles">
