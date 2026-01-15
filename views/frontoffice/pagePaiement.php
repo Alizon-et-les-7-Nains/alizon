@@ -163,29 +163,6 @@ if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
     $citiesByCode['22'] = ['Saint-Brieuc','Lannion','Dinan'];
 }
 ?>
-
-if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
-    $header = fgetcsv($handle, 0, ';', '"', '\\');
-    while (($row = fgetcsv($handle, 0, ';', '"', '\\')) !== false) {
-        if (count($row) < 4) continue;
-        $code = str_pad(trim($row[0]), 2, '0', STR_PAD_LEFT);
-        $postal = trim($row[1]);
-        $dept = trim($row[2]);
-        $city = trim($row[3]);
-        $departments[$code] = $dept;
-        if (!isset($citiesByCode[$code])) $citiesByCode[$code] = [];
-        if ($city !== '' && !in_array($city, $citiesByCode[$code])) $citiesByCode[$code][] = $city;
-        if ($postal !== '') {
-            if (!isset($postals[$postal])) $postals[$postal] = [];
-            if (!in_array($city, $postals[$postal])) $postals[$postal][] = $city;
-        }
-    }
-    fclose($handle);
-} else {
-    $departments['22'] = "Côtes-d'Armor";
-    $citiesByCode['22'] = ['Saint-Brieuc','Lannion','Dinan'];
-}
-?>
 <!DOCTYPE html>
 <html lang="fr">
 
