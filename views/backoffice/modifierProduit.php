@@ -49,6 +49,7 @@ if (!$produit) {
                 <div class="ajouterPhoto">
                     <input type="file" id="photoUpload" name="url" accept="image/*" style="display: none;">
                     <div class="placeholder-photo">
+                    <img src="<?= htmlspecialchars($imageUrl) ?>" id="imagePreview">
 
                     <p id="placeholderText" style="<?= $hasImage ? 'display:none;' : '' ?>">
                         Cliquer pour ajouter une image

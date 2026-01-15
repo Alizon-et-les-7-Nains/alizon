@@ -417,6 +417,7 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <?php if ($showPopup): ?>
         <?php
+            $idCommande = intval($_GET['idCommande']);
             $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);

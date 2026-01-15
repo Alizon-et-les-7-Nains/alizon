@@ -1,93 +1,106 @@
 <?php
-    $sqlPath = __DIR__ . '/../../../queries/backoffice/stockFaible.sql';
-    $sqlContent = file_get_contents($sqlPath);
+// ===============================
+//  Affichage des notifs
+// ===============================
+$hideNotif = false;
+
+if (isset($_GET['reassort_id'])) {
+    $hideNotif = true;
+}
+
+if (!empty($_SESSION['hide_notif'])) {
+    unset($_SESSION['hide_notif']);
+    $hideNotif = true;
+}
+
+if ($hideNotif) {
+    return;
+}
+
+$idVendeur = $_SESSION['id'] ?? 0;
+
+$sql = "
+    SELECT idNotif, titreNotif, contenuNotif 
+    FROM _notification 
+    WHERE idClient = :idVendeur 
+    AND est_vendeur = 1 
+    ORDER BY dateNotif DESC
+";
+
+$notifSTMT = $pdo->prepare($sql);
+$notifSTMT->execute([':idVendeur' => $idVendeur]);
+$notifications = $notifSTMT->fetchAll(PDO::FETCH_ASSOC);
+
+if (!empty($notifications)):
 ?>
+<div id="stock-notifications-container">
+    <?php foreach ($notifications as $notif): 
+        preg_match('/ID:(\d+)/', $notif['contenuNotif'], $matches);
+        $idProduit = $matches[1] ?? 0;
+    ?>
+        <a href="/views/backoffice/stocks.php?reassort_id=<?= (int)$idProduit ?>&idNotif=<?= (int)$notif['idNotif'] ?>"
+           class="stock-notif">
+            <img src="/public/images/infoDark.svg" alt="Alerte">
+            <div>
+                <p><strong><?= htmlspecialchars($notif['titreNotif']) ?></strong></p>
+                <p><?= htmlspecialchars($notif['contenuNotif']) ?></p>
+            </div>
+        </a>
+    <?php endforeach; ?>
+</div>
 
-<?php
-    if (isset($_GET['reassort_id'])) {
-        return;
-    }
+<style>
+#stock-notifications-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 320px;
+    pointer-events: none;
+}
 
-    if (!empty($_SESSION['hide_notif'])) {
-        unset($_SESSION['hide_notif']);
-        return;
-    }
+.stock-notif {
+    pointer-events: auto;
+    background: #fff;
+    border-left: 5px solid #d9534f;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    padding: 12px;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 4px;
+    animation: slideIn 0.4s ease-out;
+    transition: transform 0.2s, background 0.2s;
+}
 
-    $idVendeur = $_SESSION['id'] ?? 0;
+.stock-notif:hover {
+    background: #fcfcfc;
+    transform: translateX(5px);
+}
 
-    $sql = "SELECT idNotif, titreNotif, contenuNotif 
-            FROM _notification 
-            WHERE idClient = :idVendeur 
-            AND est_vendeur = 1 
-            ORDER BY dateNotif DESC";
+.stock-notif img {
+    width: 24px;
+    flex-shrink: 0;
+}
 
-    $notifSTMT = $pdo->prepare($sql);
-    $notifSTMT->execute([':idVendeur' => $idVendeur]);
-    $notifications = $notifSTMT->fetchAll(PDO::FETCH_ASSOC);
+.stock-notif p {
+    margin: 0;
+    font-size: 0.85em;
+    line-height: 1.3;
+}
 
-    if (!empty($notifications)): ?>
-        <div id="stock-notifications-container">
-            <?php foreach ($notifications as $notif): 
-                preg_match('/ID:(\d+)/', $notif['contenuNotif'], $matches);
-                $idProduit = $matches[1] ?? 0;
-            ?>
-                <a href="/views/backoffice/stocks.php?reassort_id=<?php echo $idProduit; ?>&idNotif=<?php echo $notif['idNotif']; ?>"
-                class="stock-notif"
-                onclick="sessionStorage.setItem('fromNotif', '1')">
-                    <img src="/public/images/infoDark.svg" alt="Alerte">
-                    <div>
-                        <p><strong><?php echo htmlspecialchars($notif['titreNotif']); ?></strong></p>
-                        <p><?php echo htmlspecialchars($notif['contenuNotif']); ?></p>
-                    </div>
-                </a>
-            <?php endforeach; ?>
-    </div>
-    <style>
-        #stock-notifications-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-width: 320px;
-            pointer-events: none;
-        }
-        .stock-notif {
-            pointer-events: auto;
-            background: #fff;
-            border-left: 5px solid #d9534f;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            padding: 12px;
-            text-decoration: none;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-radius: 4px;
-            animation: slideIn 0.4s ease-out;
-            transition: transform 0.2s, background 0.2s;
-        }
-        .stock-notif:hover { 
-            background: #fcfcfc; 
-            transform: translateX(5px); 
-        }
-        .stock-notif img { 
-            width: 24px; 
-            flex-shrink: 0;
-        }
-        .stock-notif p { 
-            margin: 0; 
-            font-size: 0.85em; 
-            line-height: 1.3;
-        }
-        .stock-notif strong {
-            color: #d9534f;
-        }
-        @keyframes slideIn { 
-            from { opacity: 0; transform: translateX(-100%); } 
-            to { opacity: 1; transform: translateX(0); } 
-        }
-    </style>
+.stock-notif strong {
+    color: #d9534f;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+</style>
 <?php endif; ?>
