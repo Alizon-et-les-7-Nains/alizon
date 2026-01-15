@@ -45,6 +45,7 @@ body {
     display: flex;
     align-items: end;
     justify-content: space-between;
+    align-items: center;
 
     div *, .categorie {
       margin-left: 10px;
@@ -160,6 +161,13 @@ body {
 
    @media (min-width: 1300px) {
     #burgerIconTel {
+      display: none;
+      visibility: hidden;
+    }
+   }
+
+  @media (min-width: 655px) {
+    .alizonMarque {
       display: none;
       visibility: hidden;
     }
