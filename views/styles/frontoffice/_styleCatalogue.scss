@@ -12,13 +12,14 @@
         height: 100vh;
         position: fixed;
         left: 0;
-        z-index: 1000;
+        z-index: 800;
         padding: 20px;
     }
 
     .filter-sort form{
         display: flex;
         flex-direction: column;
+        gap: 15px;
     } 
 
     .filter-sort form article{
@@ -84,6 +85,7 @@
         top: -4px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
+        z-index: 5;
     }
 
     .bannierePromo h1 {
@@ -94,7 +96,7 @@
         position: absolute;
         height: 75px;
         width: auto;
-        z-index: 1;
+        z-index: 5;
     }
 
     .bannierePromo h1 {
@@ -103,7 +105,7 @@
         top: 25px;
         left: 8px;
         color: $color-white;
-        z-index: 10000;
+        z-index: 100;
         margin: 0;
         padding: 0;
     }
@@ -114,7 +116,7 @@
         left: 6px;
         width: 40px;
         transform: scaleY(2);
-        z-index: 1000000;
+        z-index: 1000;
     }
 
     .poly2 {
@@ -123,7 +125,7 @@
         left: 6px;
         width: 40px;
         transform: scaleY(2);
-        z-index: 1000000;
+        z-index: 100;
     }
 
     .tempsRestant {
@@ -133,16 +135,33 @@
         background-color: $color-white;
         color: $color-blue;
         padding: 3px 3px;
-        z-index: 10000;
+        z-index: 2;
         font-size: 12px;
     }  
+
+    #promoTexte{
+        color: white;
+        font-weight: bold;
+        background-color: #f14e4e;
+        border-radius: 5px;
+        padding: 0 2px;
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .nomEtPromo{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+    }
 
     .listeArticle article h2 {
         color: #273469;
         font-size: 16px;
         font-family: "Open-sans", serif;
         font-weight: 500;
-        margin-top: 10px;
+        margin-top: 0;
         margin-bottom: 0;
     }
 
@@ -151,6 +170,7 @@
         max-height: 120px;
         object-fit: contain;
         border-radius: 20px;
+        z-index: 3;
     }
 
     .notation {
@@ -193,6 +213,14 @@
         margin: 0;
     }
 
+    .nomProduit h2{
+        color: #273469;
+        font-size: 32px;
+        font-family: "Lora", serif;
+        font-weight: bold;
+        margin: 0;
+    }
+
     .prix h3 {
         color: #000000;
         font-size: 12px;
@@ -227,7 +255,7 @@
 
     .values {
         display: flex;
-        gap: 220px;
+        justify-content: space-between;
     }
 
     .slider-track {

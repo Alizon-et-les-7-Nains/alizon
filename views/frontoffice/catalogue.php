@@ -9,7 +9,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 // Reglage du decalage pour la pagination
 $offset = ($page - 1) * $produitsParPage;
 
-$idClient = $_SESSION['user_id'];
+$idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 $categoryQuery = isset($_GET['categorie']) ? trim($_GET['categorie']) : "";
@@ -112,7 +112,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 <main class="pageCatalogue">
     <aside class="filter-sort">
         <form method="GET" action="">
-            <label for="tri">Trier par :</label>
+            <label for="tri">Trier par note minimale :</label>
             <article class="triNote">
                 <div>
                     <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
@@ -147,7 +147,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 </div>
             </div>
 
-            <label for="minNote" id="minNoteLabel">Trier par note :</label>
+            <label for="minNote" id="minNoteLabel">Trier par note minimale:</label>
             <div>
                 <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
                 <img src="../../public/images/etoileVide.svg" data-index="2" class="star" alt="2 étoiles">
@@ -234,9 +234,11 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
                     onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'"
                     alt="Image du produit">
-                <h2 class="nomProduit"
-                    onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
-                    <?php if ($enRemise){echo "<h2 style='color: white; font-weight: bold; background-color: #f14e4e; border-radius: 5px; padding: 2px 0;'>Promo</h2>";}echo htmlspecialchars($value['nom']); ?></h2>
+                <div class="nomEtPromo">
+                    <h2 class="nomProduit"
+                        onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
+                        <?php if ($enRemise){echo "<span id='promoTexte'>Promo</span>";} echo htmlspecialchars($value['nom']); ?></h2>
+                </div>
                 <div class="notation">
                     <?php if(number_format($value['note'], 1) == 0) { ?>
                         <span>Pas de note</span>

@@ -12,7 +12,7 @@ if (!empty($_SESSION['commandePayee'])) {
     unset($_SESSION['commandePayee']);
 }
 
-$tabIdDestination = $_SESSION['tabIdDestination'];
+$tabIdDestination = $_SESSION['tabIdDestination'] ?? [];
 
 // ============================================================================
 // VÉRIFICATION DE LA CONNEXION
@@ -413,14 +413,15 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="/public/script.js"></script>
     <script src="../scripts/frontoffice/detailsCommande.js"></script>
 
-    <?php
-        $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    ?>
+    
 
     <?php if ($showPopup): ?>
+        <?php
+            $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        ?>
         <div class="overlay">
             <div class="popup">
                 <p>idCommande</p>
@@ -449,20 +450,24 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div></div>
                 </div> 
                 <h2>Suivi de la livraison</h2>
+                <div class="popup-content">
 
-                <?php
-                    $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute([":idCommande" => $idCommande]);
-                    $produit = $stmt->fetch(PDO::FETCH_ASSOC);
-                ?>
-                <div class="recapProduit">
-                    <img src="<?php echo htmlspecialchars($produit['URL']); ?>" alt="Image du produit">
-                    <div class="nomEtDescription">
-                        <h3><?php echo htmlspecialchars($produit['nom']); ?></h3>
-                        <p><?php echo htmlspecialchars($produit['description']); ?></p>                   
-                     </div>
-                </div> 
+                    <?php
+                        $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute([":idCommande" => $idCommande]);
+                        $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    ?>
+                    <?php foreach ($produits as $produit): ?>
+                        <div class="recapProduit">
+                            <img src="<?= htmlspecialchars($produit['URL']) ?>" alt="Image du produit">
+                            <div class="nomEtDescription">
+                                <h3><?= htmlspecialchars($produit['nom']) ?></h3>
+                                <p><?= htmlspecialchars($produit['description']) ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                    </div>
                 <div class="stepper">
                     <p>En cours de préparation</p>
                     <p>Prise en charge du colis</p>

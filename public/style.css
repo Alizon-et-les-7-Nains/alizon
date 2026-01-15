@@ -361,7 +361,7 @@ body {
 .cgucgv main h1 {
   color: #273469;
   font-family: "lora", serif;
-  font-size: 48px;
+  font-size: 38px;
   font-weight: bold;
   font-style: italic;
   text-align: center;
@@ -370,14 +370,14 @@ body {
 .cgucgv section {
   margin: 0px 80px;
 }
-.cgucgv .titreSection {
+.cgucgv h2 {
   font-family: "lora", serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
 }
-.cgucgv .texteSection {
+.cgucgv p {
   font-family: "open-sans", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
 }
 @media (max-width: 1300px) {
   .cgucgv main h1 {
@@ -860,13 +860,13 @@ body {
   min-width: 300px;
   text-align: center;
   width: 60%;
-  height: 55%;
+  height: 60%;
   display: block;
 }
 .pageCommandes .overlay .popup .croixFermerLaPage {
   position: absolute;
-  top: 30px;
-  right: 30px;
+  top: 140px;
+  right: 310px;
   cursor: pointer;
 }
 .pageCommandes .overlay .popup .croixFermerLaPage div {
@@ -882,6 +882,26 @@ body {
 }
 .pageCommandes .overlay .popup .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+.pageCommandes .overlay .popup .popup-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  max-height: 130px;
+}
+.pageCommandes .overlay .popup .popup-content .recapProduit {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+.pageCommandes .overlay .popup .popup-content .recapProduit img {
+  width: 150px;
+  height: 150px;
+  margin-right: 20px;
+}
+.pageCommandes .overlay .popup .popup-content .recapProduit .nomEtDescription {
+  display: flex;
+  flex-direction: column;
 }
 .pageCommandes .overlay .popup .stepper {
   display: flex;
@@ -909,42 +929,28 @@ body {
 }
 .pageCommandes .overlay .popup .stepper p:first-of-type {
   position: absolute;
-  top: 45%;
-  left: 43%;
+  top: 65%;
+  left: 19%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(2) {
   position: absolute;
-  top: 57%;
-  left: 58%;
+  top: 74.5%;
+  left: 30%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
   position: absolute;
-  top: 45%;
-  left: 20%;
+  top: 65%;
+  left: 43%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(4) {
   position: absolute;
-  top: 57%;
-  left: 32%;
+  top: 74.5%;
+  left: 58%;
 }
 .pageCommandes .overlay .popup .stepper p:last-of-type {
   position: absolute;
-  top: 45%;
-  left: 74%;
-}
-.pageCommandes .recapProduit {
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-}
-.pageCommandes .recapProduit img {
-  width: 150px;
-  height: 150px;
-  margin-right: 20px;
-}
-.pageCommandes .recapProduit .nomEtDescription {
-  display: flex;
-  flex-direction: column;
+  top: 65%;
+  left: 76%;
 }
 
 /* ---- Header ---- */
@@ -2364,11 +2370,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .pagePaiement .payer:hover {
   background: #c9bbf0;
 }
-@media (max-width: 720px) {
-  .pagePaiement .payer {
-    display: none !important;
-  }
-}
 .pagePaiement label {
   font-size: 1rem;
   font-family: "lora", serif;
@@ -3538,7 +3539,7 @@ button#haut.visible:hover {
   justify-content: center;
   align-items: center;
   align-self: last baseline;
-  padding-top: 10px;
+  margin-top: 10px;
 }
 @media screen and (max-width: 768px) {
   .pageEcrireCommentaire h1 {
@@ -6112,7 +6113,13 @@ dialog.reassort form input {
     font-size: 12px;
   }
   .pageProduit p {
-    font-size: 10px;
+    font-size: 14px;
+  }
+  .pageProduit .ligneActions {
+    visibility: hidden;
+  }
+  .pageProduit .infoPreviewProduit div h1 {
+    margin: 0;
   }
 }
 .pageProduit .modal-signalement {
@@ -6942,12 +6949,13 @@ dialog.reassort form input {
   height: 100vh;
   position: fixed;
   left: 0;
-  z-index: 1000;
+  z-index: 800;
   padding: 20px;
 }
 .pageCatalogue .filter-sort form {
   display: flex;
   flex-direction: column;
+  gap: 15px;
 }
 .pageCatalogue .filter-sort form article {
   display: flex;
@@ -7005,6 +7013,7 @@ dialog.reassort form input {
   top: -4px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+  z-index: 5;
 }
 .pageCatalogue .bannierePromo h1 {
   font-size: 30px;
@@ -7013,7 +7022,7 @@ dialog.reassort form input {
   position: absolute;
   height: 75px;
   width: auto;
-  z-index: 1;
+  z-index: 5;
 }
 .pageCatalogue .bannierePromo h1 {
   position: absolute;
@@ -7021,7 +7030,7 @@ dialog.reassort form input {
   top: 25px;
   left: 8px;
   color: #fffefa;
-  z-index: 10000;
+  z-index: 100;
   margin: 0;
   padding: 0;
 }
@@ -7031,7 +7040,7 @@ dialog.reassort form input {
   left: 6px;
   width: 40px;
   transform: scaleY(2);
-  z-index: 1000000;
+  z-index: 1000;
 }
 .pageCatalogue .poly2 {
   position: absolute;
@@ -7039,7 +7048,7 @@ dialog.reassort form input {
   left: 6px;
   width: 40px;
   transform: scaleY(2);
-  z-index: 1000000;
+  z-index: 100;
 }
 .pageCatalogue .tempsRestant {
   position: absolute;
@@ -7048,15 +7057,30 @@ dialog.reassort form input {
   background-color: #fffefa;
   color: #273469;
   padding: 3px 3px;
-  z-index: 10000;
+  z-index: 2;
   font-size: 12px;
+}
+.pageCatalogue #promoTexte {
+  color: white;
+  font-weight: bold;
+  background-color: #f14e4e;
+  border-radius: 5px;
+  padding: 0 2px;
+  margin: 0;
+  font-size: 14px;
+}
+.pageCatalogue .nomEtPromo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
   font-size: 16px;
   font-family: "Open-sans", serif;
   font-weight: 500;
-  margin-top: 10px;
+  margin-top: 0;
   margin-bottom: 0;
 }
 .pageCatalogue .listeArticle article .imgProduit {
@@ -7064,6 +7088,7 @@ dialog.reassort form input {
   max-height: 120px;
   object-fit: contain;
   border-radius: 20px;
+  z-index: 3;
 }
 .pageCatalogue .notation {
   display: flex;
@@ -7093,6 +7118,13 @@ dialog.reassort form input {
   align-items: center;
 }
 .pageCatalogue .prix h2 {
+  color: #273469;
+  font-size: 32px;
+  font-family: "Lora", serif;
+  font-weight: bold;
+  margin: 0;
+}
+.pageCatalogue .nomProduit h2 {
   color: #273469;
   font-size: 32px;
   font-family: "Lora", serif;
@@ -7129,7 +7161,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .values {
   display: flex;
-  gap: 220px;
+  justify-content: space-between;
 }
 .pageCatalogue .slider-track {
   top: 10px;

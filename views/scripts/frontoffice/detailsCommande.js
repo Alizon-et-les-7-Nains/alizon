@@ -21,12 +21,21 @@ function clearError(element) {
   if (err) err.textContent = "";
 }
 
-function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adresseLivr = "N/A", statut = "N/A", transporteur="N/A", HT = "N/A", TTC = "N/A", nom = "N/A") {
+function popUpDetailsCommande(
+  id,
+  dateCommande = "N/A",
+  adresseFact = "N/A",
+  adresseLivr = "N/A",
+  statut = "N/A",
+  transporteur = "N/A",
+  HT = "N/A",
+  TTC = "N/A",
+  nom = "N/A"
+) {
+  const overlay = document.createElement("div");
+  overlay.className = "overlayPopUpDetails";
 
-    const overlay = document.createElement("div");
-    overlay.className = "overlayPopUpDetails";
-    
-    overlay.innerHTML = `
+  overlay.innerHTML = `
         <main class="popUpDetails">
               <div class="croixFermerLaPage">
                   <div></div>
@@ -61,34 +70,34 @@ function popUpDetailsCommande(id, dateCommande = "N/A", adresseFact = "N/A", adr
               </div>
         </main>`;
 
-    document.body.appendChild(overlay);
+  document.body.appendChild(overlay);
 
-    const croixFermer = overlay.querySelector(".croixFermerLaPage");
-    const btnFermer = overlay.querySelector(".btnFermer");
+  const croixFermer = overlay.querySelector(".croixFermerLaPage");
+  const btnFermer = overlay.querySelector(".btnFermer");
 
-    croixFermer.addEventListener("click", fermerPopUpDetailsCommande);
-    if (btnFermer) btnFermer.addEventListener("click", fermerPopUpDetailsCommande);
-    
-    overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-            fermerPopUpDetailsCommande();
-        }
-    });
+  croixFermer.addEventListener("click", fermerPopUpDetailsCommande);
+  if (btnFermer)
+    btnFermer.addEventListener("click", fermerPopUpDetailsCommande);
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      fermerPopUpDetailsCommande();
+    }
+  });
 }
 
 function fermerPopUpDetailsCommande() {
-    const overlay = document.querySelector(".overlayPopUpDetails");
-    if (overlay) overlay.remove();
+  const overlay = document.querySelector(".overlayPopUpDetails");
+  if (overlay) overlay.remove();
 }
 
-// Suivi de commande 
+// Suivi de commande
 
 function popUpSuiviCommande(id) {
+  const overlay = document.createElement("div");
+  overlay.className = "overlayPopUpSuiviCommande";
 
-    const overlay = document.createElement("div");
-    overlay.className = "overlayPopUpSuiviCommande";
-    
-    overlay.innerHTML = `
+  overlay.innerHTML = `
         <main class="popUpSuivi">
               <div class="croixFermerLaPage">
                   <div></div>
@@ -97,34 +106,33 @@ function popUpSuiviCommande(id) {
               <h1>Suivi de la commande # ${id}</h1>
         </main>`;
 
-    document.body.appendChild(overlay);
+  document.body.appendChild(overlay);
 
-    const croixFermer = overlay.querySelector(".croixFermerLaPage");
-    const btnFermer = overlay.querySelector(".btnFermer");
+  const croixFermer = overlay.querySelector(".croixFermerLaPage");
+  const btnFermer = overlay.querySelector(".btnFermer");
 
-    croixFermer.addEventListener("click", fermerPopUpSuiviCommande);
-    if (btnFermer) btnFermer.addEventListener("click", fermerPopUpSuiviCommande);
-    
-    overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-            fermerPopUpDetailsCommande();
-        }
-    });
+  croixFermer.addEventListener("click", fermerPopUpSuiviCommande);
+  if (btnFermer) btnFermer.addEventListener("click", fermerPopUpSuiviCommande);
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      fermerPopUpDetailsCommande();
+    }
+  });
 }
 
 function fermerPopUpSuiviCommande() {
-    const overlay = document.querySelector(".overlayPopUpSuiviCommande");
-    if (overlay) overlay.remove();
+  const overlay = document.querySelector(".overlayPopUpSuiviCommande");
+  if (overlay) overlay.remove();
 }
 
-// Confirmer annulation commande 
+// Confirmer annulation commande
 
 function popUpAnnulerCommande(id) {
+  const overlay = document.createElement("div");
+  overlay.className = "overlayPopUpAnnulerCommande";
 
-    const overlay = document.createElement("div");
-    overlay.className = "overlayPopUpAnnulerCommande";
-    
-    overlay.innerHTML = `
+  overlay.innerHTML = `
         <main class="popUpAnnulerCommande">
             <div class="croixFermerLaPage">
                 <div></div>
@@ -135,22 +143,23 @@ function popUpAnnulerCommande(id) {
             <button type="submit" style="color: #ffffff; background-color: #f14e4e;">Confirmer</button>
          </main>`;
 
-    document.body.appendChild(overlay);
+  document.body.appendChild(overlay);
 
-    const croixFermer = overlay.querySelector(".croixFermerLaPage");
-    const btnFermer = overlay.querySelector(".btnFermer");
+  const croixFermer = overlay.querySelector(".croixFermerLaPage");
+  const btnFermer = overlay.querySelector(".btnFermer");
 
-    croixFermer.addEventListener("click", fermerPopUpAnnulerCommande);
-    if (btnFermer) btnFermer.addEventListener("click", fermerPopUpAnnulerCommande);
-    
-    overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-            fermerPopUpDetailsCommande();
-        }
-    });
+  croixFermer.addEventListener("click", fermerPopUpAnnulerCommande);
+  if (btnFermer)
+    btnFermer.addEventListener("click", fermerPopUpAnnulerCommande);
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      fermerPopUpDetailsCommande();
+    }
+  });
 }
 
 function fermerPopUpAnnulerCommande() {
-    const overlay = document.querySelector(".overlayPopUpAnnulerCommande");
-    if (overlay) overlay.remove();
+  const overlay = document.querySelector(".overlayPopUpAnnulerCommande");
+  if (overlay) overlay.remove();
 }
