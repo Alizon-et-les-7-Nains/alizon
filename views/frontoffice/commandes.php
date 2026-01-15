@@ -455,7 +455,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
                         $stmt = $pdo->prepare($sql);
                         $stmt->execute([":idCommande" => $idCommande]);
-                        $produit = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     ?>
                     <?php foreach ($produits as $produit): ?>
                         <div class="recapProduit">
