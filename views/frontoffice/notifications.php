@@ -25,7 +25,7 @@ function getNotifications($pdo, $idClient, $est_vendeur) {
         'est_vendeur' => $est_vendeur
     ]);
 
-    $notif = $stmt->fetch(PDO::FETCH_ASSOC);
+    $notif = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     return $notif; 
 }
