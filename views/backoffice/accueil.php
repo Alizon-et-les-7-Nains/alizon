@@ -24,6 +24,27 @@
     <?php require_once './partials/notifications_stock.php' ?>
 
     <?php
+        $idVendeur = $_SESSION['id'];
+
+        $sqlCheckStock = file_get_contents('../../queries/backoffice/stockFaible.sql');
+        $stmtStock = $pdo->prepare($sqlCheckStock);
+        $stmtStock->execute([':idVendeur' => $idVendeur]);
+        $produitsEnAlerte = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($produitsEnAlerte as $p) {
+            $checkNotif = $pdo->prepare("SELECT COUNT(*) FROM _notification WHERE idClient = ? AND est_vendeur = 1 AND contenuNotif LIKE ?");
+            $checkNotif->execute([$idVendeur, "%" . $p['nom'] . "%"]);
+            
+            if ($checkNotif->fetchColumn() == 0) {
+                $ins = $pdo->prepare("INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), 1)");
+                $titre = "Alerte Stock : " . $p['nom'];
+                $contenu = "Le produit " . $p['nom'] . " est à " . $p['stock'] . " unités. (ID:" . $p['idProduit'] . ")";
+                $ins->execute([$idVendeur, $titre, $contenu]);
+            }
+        }
+    ?>
+
+    <?php
         $currentPage = basename(__FILE__);
         require_once './partials/aside.php';
     ?>

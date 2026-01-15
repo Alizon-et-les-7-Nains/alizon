@@ -20,6 +20,12 @@
 <body class="backoffice">
     <?php require_once './partials/header.php' ?>
     <?php
+        if (isset($_GET['idNotif'])) {
+            $del = $pdo->prepare("DELETE FROM _notification WHERE idNotif = ? AND idClient = ?");
+            $del->execute([$_GET['idNotif'], $_SESSION['id']]);
+        }
+    ?>
+    <?php
         if (isset($_GET['reassort_id'])) {
             $_SESSION['hide_notif'] = true;
         }
