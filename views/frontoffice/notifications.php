@@ -57,7 +57,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
                 <?php foreach($notifs as $notif) { 
                     $contenuNotif = $notif['contenuNotif'];
                     $contenuNotif = substr($contenuNotif, 0, 50) . "...";?>
-                    <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu('<?= htmlspecialchars($notif['titreNotif'], ENT_QUOTES) ?>',
+                    <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu(this, '<?= htmlspecialchars($notif['titreNotif'], ENT_QUOTES) ?>',
                         '<?= htmlspecialchars($notif['dateNotif'], ENT_QUOTES) ?>',
                         '<?= htmlspecialchars($notif['contenuNotif'], ENT_QUOTES) ?>')">
                         <div>
