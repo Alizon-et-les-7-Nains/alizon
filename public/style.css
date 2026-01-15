@@ -7532,9 +7532,10 @@ dialog.reassort form input {
 }
 .mesNotif .topRecherche {
   display: flex;
-  justify-content: space-between;
   align-content: center;
-  align-items: flex-end;
+  align-items: flex-start;
+  margin-top: 20px;
+  flex-direction: column;
   margin-top: 20px;
 }
 .mesNotif .topRecherche h1 {
