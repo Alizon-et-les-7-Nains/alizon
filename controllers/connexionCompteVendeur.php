@@ -19,9 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($vendeur) {
         // Vérifier le mot de passe avec password_verify
         if (password_verify($mdp_clair, $vendeur['mdp'])) {
-            // Vérifier si le compte est validé
-            if ($vendeur['valide'] == 1) {
-                // Connexion réussie
                 $_SESSION['vendeur_id'] = $vendeur['idVendeur'];
                 $_SESSION['vendeur_pseudo'] = $vendeur['pseudo'];
                 $_SESSION['vendeur_nom'] = $vendeur['nom'];
@@ -34,11 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 
                 header('Location: ../views/backoffice/accueilVendeur.php');
                 exit;
-            } else {
-                // Compte non validé
-                header('Location: ../views/backoffice/connexion.php?error=2');
-                exit;
-            }
+
         } else {
             // Mot de passe incorrect
             header('Location: ../views/backoffice/connexion.php?error=1');
