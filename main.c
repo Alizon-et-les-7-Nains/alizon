@@ -303,6 +303,106 @@ int get_capacite_actuelle(MYSQL *conn) {
     return current_load;
 }
 
+
+/**
+ * traiter_queue() - Traite les commandes en attente quand de la capacité se libère
+ * 
+ * Appelée quand un colis passe de l'étape 4 à 5 (livraison)
+ * Prend les commandes en attente dans l'ordre FIFO et les transforme en bordereaux
+ */
+void traiter_queue(MYSQL *conn, int capacity) {
+    // Vérifier la capacité actuelle
+    int current_load = get_capacite_actuelle(conn);
+    if (current_load < 0 || current_load >= capacity) {
+        return; // Pas de capacité disponible
+    }
+    
+    // Combien de places libres ?
+    int places_libres = capacity - current_load;
+    
+    char query[512];
+    
+    // Prendre les N premières commandes en attente (FIFO)
+    snprintf(query, sizeof(query),
+             "SELECT id, noCommande, destination, username "
+             "FROM _delivraptor_queue "
+             "WHERE traite = 0 "
+             "ORDER BY date_creation ASC "
+             "LIMIT %d",
+             places_libres);
+    
+    if (mysql_query(conn, query)) {
+        return;
+    }
+    
+    MYSQL_RES *result = mysql_store_result(conn);
+    if (!result) {
+        return;
+    }
+    
+    int traites = 0;
+    MYSQL_ROW row;
+    
+    while ((row = mysql_fetch_row(result))) {
+        int queue_id = atoi(row[0]);
+        char *commande_id = row[1];
+        char *destination = row[2];
+        char *username = row[3];
+        
+        // Créer le bordereau
+        long long new_bordereau = num_bordereau_unique();
+        
+        // Échapper les chaînes (à nouveau pour sécurité)
+        char escaped_commande_id[256];
+        char escaped_destination[256];
+        mysql_real_escape_string(conn, escaped_commande_id, commande_id, strlen(commande_id));
+        mysql_real_escape_string(conn, escaped_destination, destination, strlen(destination));
+        
+        // Insérer le colis
+        snprintf(query, sizeof(query),
+                 "INSERT INTO _delivraptor_colis(numBordereau, noCommande, destination, localisation, etape, date_etape) "
+                 "VALUES (%lld, '%s', '%s', 'Entrepôt Alizon', 1, NOW())",
+                 new_bordereau, escaped_commande_id, escaped_destination);
+        
+        if (mysql_query(conn, query)) {
+            continue; // Passer à la suivante en cas d'erreur
+        }
+        
+        // Insérer dans la file de prise en charge
+        snprintf(query, sizeof(query),
+                 "INSERT INTO _delivraptor_file_prise_en_charge (numBordereau, date_entree) VALUES (%lld, NOW())",
+                 new_bordereau);
+        
+        if (mysql_query(conn, query)) {
+            // Rollback
+            snprintf(query, sizeof(query), "DELETE FROM _delivraptor_colis WHERE numBordereau = %lld", new_bordereau);
+            mysql_query(conn, query);
+            continue;
+        }
+        
+        // Marquer comme traité dans la queue
+        snprintf(query, sizeof(query),
+                 "UPDATE _delivraptor_queue SET traite = 1 WHERE id = %d",
+                 queue_id);
+        mysql_query(conn, query);
+        
+        // Log
+        char log_msg[256];
+        snprintf(log_msg, sizeof(log_msg), 
+                 "Commande %s traitée depuis queue -> bordereau %lld", 
+                 commande_id, new_bordereau);
+        write_log(global_log_file, "0.0.0.0", 0, username, "QUEUE", log_msg);
+        
+        traites++;
+    }
+    
+    mysql_free_result(result);
+    
+    if (traites > 0) {
+        printf("[Queue] %d commandes traitées depuis la file d'attente\n", traites);
+    }
+}
+
 /**
  * liberer_file_colis() - Retire un colis de la file de prise en charge
  * 
@@ -865,104 +965,6 @@ void gerer_sigchld(int sig) {
     errno = saved_errno;
 }
 
-/**
- * traiter_queue() - Traite les commandes en attente quand de la capacité se libère
- * 
- * Appelée quand un colis passe de l'étape 4 à 5 (livraison)
- * Prend les commandes en attente dans l'ordre FIFO et les transforme en bordereaux
- */
-void traiter_queue(MYSQL *conn, int capacity) {
-    // Vérifier la capacité actuelle
-    int current_load = get_capacite_actuelle(conn);
-    if (current_load < 0 || current_load >= capacity) {
-        return; // Pas de capacité disponible
-    }
-    
-    // Combien de places libres ?
-    int places_libres = capacity - current_load;
-    
-    char query[512];
-    
-    // Prendre les N premières commandes en attente (FIFO)
-    snprintf(query, sizeof(query),
-             "SELECT id, noCommande, destination, username "
-             "FROM _delivraptor_queue "
-             "WHERE traite = 0 "
-             "ORDER BY date_creation ASC "
-             "LIMIT %d",
-             places_libres);
-    
-    if (mysql_query(conn, query)) {
-        return;
-    }
-    
-    MYSQL_RES *result = mysql_store_result(conn);
-    if (!result) {
-        return;
-    }
-    
-    int traites = 0;
-    MYSQL_ROW row;
-    
-    while ((row = mysql_fetch_row(result))) {
-        int queue_id = atoi(row[0]);
-        char *commande_id = row[1];
-        char *destination = row[2];
-        char *username = row[3];
-        
-        // Créer le bordereau
-        long long new_bordereau = num_bordereau_unique();
-        
-        // Échapper les chaînes (à nouveau pour sécurité)
-        char escaped_commande_id[256];
-        char escaped_destination[256];
-        mysql_real_escape_string(conn, escaped_commande_id, commande_id, strlen(commande_id));
-        mysql_real_escape_string(conn, escaped_destination, destination, strlen(destination));
-        
-        // Insérer le colis
-        snprintf(query, sizeof(query),
-                 "INSERT INTO _delivraptor_colis(numBordereau, noCommande, destination, localisation, etape, date_etape) "
-                 "VALUES (%lld, '%s', '%s', 'Entrepôt Alizon', 1, NOW())",
-                 new_bordereau, escaped_commande_id, escaped_destination);
-        
-        if (mysql_query(conn, query)) {
-            continue; // Passer à la suivante en cas d'erreur
-        }
-        
-        // Insérer dans la file de prise en charge
-        snprintf(query, sizeof(query),
-                 "INSERT INTO _delivraptor_file_prise_en_charge (numBordereau, date_entree) VALUES (%lld, NOW())",
-                 new_bordereau);
-        
-        if (mysql_query(conn, query)) {
-            // Rollback
-            snprintf(query, sizeof(query), "DELETE FROM _delivraptor_colis WHERE numBordereau = %lld", new_bordereau);
-            mysql_query(conn, query);
-            continue;
-        }
-        
-        // Marquer comme traité dans la queue
-        snprintf(query, sizeof(query),
-                 "UPDATE _delivraptor_queue SET traite = 1 WHERE id = %d",
-                 queue_id);
-        mysql_query(conn, query);
-        
-        // Log
-        char log_msg[256];
-        snprintf(log_msg, sizeof(log_msg), 
-                 "Commande %s traitée depuis queue -> bordereau %lld", 
-                 commande_id, new_bordereau);
-        write_log(global_log_file, "0.0.0.0", 0, username, "QUEUE", log_msg);
-        
-        traites++;
-    }
-    
-    mysql_free_result(result);
-    
-    if (traites > 0) {
-        printf("[Queue] %d commandes traitées depuis la file d'attente\n", traites);
-    }
-}
 
 /**
  * gerer_client() - Fonction exécutée par chaque processus fils pour gérer un client
