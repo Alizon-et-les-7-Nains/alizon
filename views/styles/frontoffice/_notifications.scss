@@ -1,6 +1,14 @@
 @use "../colors" as *;
 @use "../fonts" as fonts;
 
+@keyframes tilt-shaking {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  50% { transform: rotate(0eg); }
+  75% { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
+}
+
 .mesNotif {
     font-family: "Lora", serif;
     color: #273469;
@@ -87,6 +95,13 @@
         h5 {
             color: black;
         }
+    }
+    .apercuNotif:focus {
+        color: #e3f2fe;
+        background-color: #273469;
+    }
+    .apercuNotif:hover img {
+        animation: tilt-shaking 0.25s infinite;
     }
     .ecranNotif {
         width: 150%;
