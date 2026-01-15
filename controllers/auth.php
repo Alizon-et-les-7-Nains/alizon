@@ -11,7 +11,7 @@ try {
     $isValid = $isValidSTMT->fetchColumn();
     error_log("auth");
 
-    if (!$_SESSION['session_id'] || password_verify($_SESSION['pass'], $isValid['mdp'])) {
+    if (!$_SESSION['session_id'] || !$isValid) {
         header('Location: ../backoffice/connexion.php?error=3');
         die();
     }
