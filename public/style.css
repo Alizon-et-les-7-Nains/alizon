@@ -7056,6 +7056,8 @@ dialog.reassort form input {
   font-weight: bold;
   background-color: #f14e4e;
   border-radius: 5px;
+  padding: 2px 0;
+  width: fit-content;
 }
 .pageCatalogue .listeArticle article h2 {
   color: #273469;
