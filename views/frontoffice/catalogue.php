@@ -505,16 +505,29 @@ const imgFiltre = document.getElementById('img-filtre');
 const filterSort = document.querySelector('.filter-sort');
 
 if (toggleFiltersBtn) {
-    toggleFiltersBtn.addEventListener('click', () => {
+    toggleFiltersBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         filterSort.classList.toggle('active');
-        toggleFiltersBtn.style.color = '#000000';
-        imgFiltre.style.filter = 'invert(0)';
+        
+        // Toggle le style du bouton
+        if (filterSort.classList.contains('active')) {
+            toggleFiltersBtn.style.backgroundColor = '#e4d9ff';
+            toggleFiltersBtn.style.color = '#000000';
+            imgFiltre.style.filter = 'brightness(0)';
+        } else {
+            toggleFiltersBtn.style.backgroundColor = '#fffefa';
+            toggleFiltersBtn.style.color = '#273469';
+            imgFiltre.style.filter = 'none';
+        }
     });
 
     document.addEventListener('click', (e) => {
         if (window.innerWidth <= 512) {
             if (!filterSort.contains(e.target) && !toggleFiltersBtn.contains(e.target)) {
                 filterSort.classList.remove('active');
+                toggleFiltersBtn.style.backgroundColor = '#fffefa';
+                toggleFiltersBtn.style.color = '#273469';
+                imgFiltre.style.filter = 'none';
             }
         }
     });
