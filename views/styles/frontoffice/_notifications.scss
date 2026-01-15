@@ -54,6 +54,14 @@
         img {
             height: 40px;
             padding: 20px;
+            #focus {
+                display: none;
+                visibility: hidden;
+            }
+            #focus {
+                display: block;
+                visibility: visible;
+            }
         }
         cursor: pointer;
         * {
@@ -65,6 +73,18 @@
         }
         h5 {
             color: black;
+        }
+        :focus {
+            background-color: #273469;
+            color: #e3f2fe;
+            #focus {
+                display: block;
+                visibility: visible;
+            }
+            #regular {
+                display: none;
+                visibility: hidden;
+            }
         }
     }
     .ecranNotif {

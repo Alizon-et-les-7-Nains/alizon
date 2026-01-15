@@ -7414,6 +7414,14 @@ dialog.reassort form input {
   height: 40px;
   padding: 20px;
 }
+.mesNotif .apercuNotif img #focus {
+  display: none;
+  visibility: hidden;
+}
+.mesNotif .apercuNotif img #focus {
+  display: block;
+  visibility: visible;
+}
 .mesNotif .apercuNotif {
   cursor: pointer;
 }
@@ -7426,6 +7434,18 @@ dialog.reassort form input {
 }
 .mesNotif .apercuNotif h5 {
   color: black;
+}
+.mesNotif .apercuNotif :focus {
+  background-color: #273469;
+  color: #e3f2fe;
+}
+.mesNotif .apercuNotif :focus #focus {
+  display: block;
+  visibility: visible;
+}
+.mesNotif .apercuNotif :focus #regular {
+  display: none;
+  visibility: hidden;
 }
 .mesNotif .ecranNotif {
   width: 150%;

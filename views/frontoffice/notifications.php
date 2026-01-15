@@ -56,7 +56,8 @@ $notifs = getNotifications($pdo, $id_client, 0)
             <?php foreach($notifs as $notif) { ?>
                 <div class="apercuNotif">
                     <div>
-                        <img src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
+                        <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
+                        <img id="focus" src="../../public/images/bellLightBlue.svg" alt="Nouvelle notification">
                     </div>
                     <div>
                         <h3><?= $notif['titreNotif'] ?></h3>
