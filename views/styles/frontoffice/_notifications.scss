@@ -50,9 +50,6 @@
             width: 1000px;
             background-color: #e4e4e4;
         }
-        .sidebarNotif:first-child {
-            border-top-left-radius: 25px;
-        }
     }
     .apercuNotif {
         display: flex;
@@ -153,9 +150,6 @@
         }
         .sidebarNotif {
             width: 100% !important;
-        }
-        .sidebarNotif:first-child {
-            border-top-left-radius: 0;
         }
         .contenuTel.active {
             display: block;

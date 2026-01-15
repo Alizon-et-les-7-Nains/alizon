@@ -7628,9 +7628,6 @@ dialog.reassort form input {
   width: 1000px;
   background-color: #e4e4e4;
 }
-.mesNotif .ensembleNotif .sidebarNotif:first-child {
-  border-top-left-radius: 25px;
-}
 .mesNotif .apercuNotif {
   display: flex;
   align-items: center;
@@ -7727,9 +7724,6 @@ dialog.reassort form input {
   }
   .mesNotif .sidebarNotif {
     width: 100% !important;
-  }
-  .mesNotif .sidebarNotif:first-child {
-    border-top-left-radius: 0;
   }
   .mesNotif .contenuTel.active {
     display: block;
