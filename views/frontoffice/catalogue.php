@@ -235,10 +235,9 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                     onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'"
                     alt="Image du produit">
                 <div class="nomEtPromo">
-                    <?php if ($enRemise){echo "<h4 id='promoTexte'>Promo</h4>";} ?>
                     <h2 class="nomProduit"
                         onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
-                        <?php echo htmlspecialchars($value['nom']); ?></h2>
+                        <?php if ($enRemise){echo "<h4 id='promoTexte'>Promo</h4>";} echo htmlspecialchars($value['nom']); ?></h2>
                 </div>
                 <div class="notation">
                     <?php if(number_format($value['note'], 1) == 0) { ?>
