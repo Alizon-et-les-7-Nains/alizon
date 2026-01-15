@@ -370,7 +370,7 @@ void create(struct ClientSession *session, int commande_id, char *destination,
     MYSQL_RES *result = mysql_store_result(conn);
     if (result && mysql_num_rows(result) > 0) {
         MYSQL_ROW row = mysql_fetch_row(result);
-        snprintf(response, sizeof(response), "BORDEREAU %s\n", row[0]);
+        snprintf(response, sizeof(response), "%s\n", row[0]);
         send(session->client_socket, response, strlen(response), 0);
         mysql_free_result(result);
         
