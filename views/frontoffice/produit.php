@@ -418,19 +418,6 @@ if (isset($_SESSION['message_panier'])) {
         <h2>Description de l'article :</h2>
         <p class="resume"><?php echo htmlspecialchars($produit['description']);?></p>
         <a href="#conteneurTexte">Voir plus sur le produit</a>
-        <div class="version">
-            <h3>Version :</h3>
-            <!-- <p>50cl</p>
-            <p>1L</p>
-            <p>1.5L</p> -->
-        </div>
-        <h3>Choisir un type de produit :</h3>
-        <!-- <div>
-            <img src="../../public/images/Image_bouteille.svg" alt="">
-            <img src="../../public/images/Image_bouteille.svg" alt="">
-            <img src="../../public/images/Image_bouteille.svg" alt="">
-            <img src="../../public/images/Image_bouteille.svg" alt="">
-        </div> -->
     </article>
     <article class="actionsProduit">
         <h2>Vendu par <?php echo htmlspecialchars($produit['raisonSocial']); ?></h2>

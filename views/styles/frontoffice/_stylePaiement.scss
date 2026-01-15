@@ -240,10 +240,6 @@ $breakpoint-xs: 480px;
     &:hover {
       background: #c9bbf0;
     }
-    
-    @media (max-width: $breakpoint-sm) {
-      display: none !important;
-    }
   }
   
   label {
