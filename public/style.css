@@ -370,12 +370,12 @@ body {
 .cgucgv section {
   margin: 0px 80px;
 }
-.cgucgv .titreSection {
+.cgucgv h2 {
   font-family: "lora", serif;
   font-size: 20px;
   font-weight: bold;
 }
-.cgucgv .texteSection {
+.cgucgv p {
   font-family: "open-sans", sans-serif;
   font-size: 14px;
 }
