@@ -103,7 +103,7 @@
         top: 25px;
         left: 8px;
         color: $color-white;
-        z-index: 10000;
+        z-index: 100;
         margin: 0;
         padding: 0;
     }
@@ -114,7 +114,7 @@
         left: 6px;
         width: 40px;
         transform: scaleY(2);
-        z-index: 1000000;
+        z-index: 1000;
     }
 
     .poly2 {
@@ -123,20 +123,34 @@
         left: 6px;
         width: 40px;
         transform: scaleY(2);
-        z-index: 1000000;
+        z-index: 100;
     }
 
     .tempsRestant {
         position: absolute;
-        top: -8px;
+        top: -9px;
         right: -5px;
         background-color: $color-white;
         color: $color-blue;
         padding: 3px 3px;
-        z-index: 10000;
+        z-index: 2;
         font-size: 12px;
-        font-weight: bolder;
     }  
+
+    #promoTexte{
+        color: white;
+        font-weight: bold;
+        background-color: #f14e4e;
+        border-radius: 5px;
+        padding: 0 2px;
+    }
+
+    .nomEtPromo{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+    }
 
     .listeArticle article h2 {
         color: #273469;
@@ -152,6 +166,7 @@
         max-height: 120px;
         object-fit: contain;
         border-radius: 20px;
+        z-index: 1;
     }
 
     .notation {

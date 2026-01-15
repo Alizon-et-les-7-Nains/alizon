@@ -30,12 +30,15 @@
         border: 1px solid #273469;
         border-radius: 25px;
         margin: 30px 50px;
-        max-height: 500px;
-        min-height: 500px;
+        max-height: 483px;
+        min-height: 483px;
         
         .sidebarNotif {
             overflow: scroll;
+            overflow-x: auto;
             scrollbar-width: thin;
+            width: 1000px;
+            background-color: #e4e4e4;
         }
         .sidebarNotif:first-child, .sidebarNotif:last-child {
             border-top-left-radius: 25px;
@@ -86,4 +89,27 @@
             }
         }
     }
+    @media (max-width: 1100px) {
+        .ensembleNotif {
+            max-height: 680px;
+            min-height: 680px;
+    }
+  }
+    @media (max-width: 840px) {
+        .ecranNotif {
+            display: none;
+            visibility: hidden;
+    }
+  }
+    @media (max-width: 840px) {
+        .ensembleNotif {
+            min-height: fit-content;
+            max-height: fit-content;
+            border-radius: 0;
+    }
+  }
+.sidebarNotif:first-child, .sidebarNotif:last-child {
+    border-top-left-radius: 0;
+}
+  
 }
