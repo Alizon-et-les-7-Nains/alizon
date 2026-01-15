@@ -12,6 +12,7 @@ if (!empty($_SESSION['commandePayee'])) {
     unset($_SESSION['commandePayee']);
 }
 
+$tabIdDestination = [];
 $tabIdDestination = $_SESSION['tabIdDestination'];
 
 // ============================================================================
@@ -413,14 +414,15 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="/public/script.js"></script>
     <script src="../scripts/frontoffice/detailsCommande.js"></script>
 
-    <?php
-        $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    ?>
+    
 
     <?php if ($showPopup): ?>
+        <?php
+            $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        ?>
         <div class="overlay">
             <div class="popup">
                 <p>idCommande</p>
