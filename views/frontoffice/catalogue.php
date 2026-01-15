@@ -9,7 +9,7 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 // Reglage du decalage pour la pagination
 $offset = ($page - 1) * $produitsParPage;
 
-$idClient = $_SESSION['user_id'];
+$idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 $categoryQuery = isset($_GET['categorie']) ? trim($_GET['categorie']) : "";
@@ -110,21 +110,33 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
 <main class="pageCatalogue">
+    <button id="toggleFilters" class="btnToggleFilters">
+        <img src="../../public/images/icone-filtre.svg" alt="Filtres">
+        Filtres
+    </button>
     <aside class="filter-sort">
         <form method="GET" action="">
-            <label for="tri">Trier par :</label>
-            <div class="triNote">
-                <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
-                <label for="triNoteCroissant">Note croissante</label>
-                <input type="radio" id="triNoteDecroissant" name="tri" value="noteDesc">
-                <label for="triNoteDecroissant">Note décroissante</label>
-            </div>
-            <div class="triPrix">
-                <input type="radio" id="triPrixCroissant" name="tri" value="prixAsc">
-                <label for="triPrixCroissant">Prix croissant</label>
-                <input type="radio" id="triPrixDecroissant" name="tri" value="prixDesc">
-                <label for="triPrixDecroissant">Prix décroissant</label>
-            </div>
+            <label for="tri">Trier par note minimale :</label>
+            <article class="triNote">
+                <div>
+                    <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
+                    <label for="triNoteCroissant">Note croissante</label>
+                </div>
+                <div>
+                    <input type="radio" id="triNoteDecroissant" name="tri" value="noteDesc">
+                    <label for="triNoteDecroissant">Note décroissante</label>
+                </div>
+            </article>
+            <article class="triPrix">
+                <div>
+                    <input type="radio" id="triPrixCroissant" name="tri" value="prixAsc">
+                    <label for="triPrixCroissant">Prix croissant</label>
+                </div>
+                <div>
+                    <input type="radio" id="triPrixDecroissant" name="tri" value="prixDesc">
+                    <label for="triPrixDecroissant">Prix décroissant</label>
+                </div>
+            </article>
             <label for="prix">Filtrer par prix :</label>
             <div class="slider-container">
                 <div class="values">
@@ -139,7 +151,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 </div>
             </div>
 
-            <label for="minNote" id="minNoteLabel">Trier par note :</label>
+            <label for="minNote" id="minNoteLabel">Trier par note minimale:</label>
             <div>
                 <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
                 <img src="../../public/images/etoileVide.svg" data-index="2" class="star" alt="2 étoiles">
@@ -203,12 +215,34 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                     }
                     ?>
             <article data-price="<?= $prixAffichage ?>">
+            <?php if ($enRemise) { ?>
+                <div class="bannierePromo">
+                    <h1>-<?php echo number_format($tauxRemise); ?>%</h1>
+                    <img class="poly1" src="../../public/images/poly1.svg" alt="">
+                    <img class="imgBanniere" src="../../public/images/laBanniere.png" alt="">
+                    <img class="poly2" src="../../public/images/poly2.svg" alt="">
+                </div>
+                <div class="tempsRestant">
+                    <?php 
+                        $finRemise = new DateTime($value['finRemise']);
+                        $mtn = new DateTime();
+                        $intervale = $mtn->diff($finRemise);
+                        if ($intervale->days > 0 && $intervale->days < 8) {
+                            echo "<span style=font-weight:bolder>Remise valable encore " . $intervale->days . " jour" . ($intervale->days > 1 ? "s" : "") . "!</span>";
+                        } else {
+                            echo "<span style=font-weight:900>Dernier jour de remise !</span>";
+                        }
+                    ?>       
+                </div>
+            <?php } ?>
                 <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit"
                     onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'"
                     alt="Image du produit">
-                <h2 class="nomProduit"
-                    onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
-                    <?php echo htmlspecialchars($value['nom']); ?></h2>
+                <div class="nomEtPromo">
+                    <h2 class="nomProduit"
+                        onclick="window.location.href='produit.php?id=<?php echo $idProduit; ?>'">
+                        <?php if ($enRemise){echo "<span id='promoTexte'>Promo</span>";} echo htmlspecialchars($value['nom']); ?></h2>
+                </div>
                 <div class="notation">
                     <?php if(number_format($value['note'], 1) == 0) { ?>
                         <span>Pas de note</span>
@@ -468,6 +502,25 @@ updateSlider();
 reattacherAjouterPanier();
 
 document.querySelector('form').addEventListener('submit', e => e.preventDefault());
+
+// Toggle filtres sur mobile
+const toggleFiltersBtn = document.getElementById('toggleFilters');
+const filterSort = document.querySelector('.filter-sort');
+
+if (toggleFiltersBtn) {
+    toggleFiltersBtn.addEventListener('click', () => {
+        filterSort.classList.toggle('active');
+    });
+
+    // Fermer les filtres si on clique en dehors
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 512) {
+            if (!filterSort.contains(e.target) && !toggleFiltersBtn.contains(e.target)) {
+                filterSort.classList.remove('active');
+            }
+        }
+    });
+}
 
 </script>
 

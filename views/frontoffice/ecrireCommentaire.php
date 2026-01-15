@@ -165,8 +165,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h2>Message <span style="color: red;">*</span> :</h2>
             <textarea name="message" id="message" placeholder="Partagez votre expérience avec ce produit..." rows="6" required><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>            
             <button type="submit" class="bouton boutonBleu">Publier mon avis</button>
+            </form>
             <a href="produit.php?id=<?php echo $productId; ?>" class="bouton boutonRose" style="display: inline-block; text-align: center; text-decoration: none; margin-left: 10px;">Annuler</a>
-        </form>
+        
     </section>
     <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
 </main>

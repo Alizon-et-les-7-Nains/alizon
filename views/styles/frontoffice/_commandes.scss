@@ -92,7 +92,7 @@
         }
     }
     
-    .topRecherche {
+    @mixin topRechercheMX {
         display: flex;
         justify-content: space-between;
         align-content: center;
@@ -109,6 +109,10 @@
             margin-left: 80px;
             margin-right: 80px;
         }
+    }
+
+    .topRecherche {
+        @include topRechercheMX;
     }
     
     .filtreRecherche {
@@ -385,6 +389,23 @@
         cursor: pointer;
     }
 
+    .btnCom {
+        display: flex;
+        align-items: center;
+        font-family: "Lora", serif;
+        justify-content: space-between;
+        width: 260px;
+        font-size: 14px;
+        text-decoration: none;
+        color: #273469;
+        background-color: #fff;
+        border: 2px solid #fff;
+        border-radius: 20px;
+        padding: 8px 15px;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+
     .overlay {
         position: fixed;
         inset: 0;
@@ -393,21 +414,124 @@
         justify-content: center;
         align-items: center;
         z-index: 999;
-    }
-    
-    .popup {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        min-width: 300px;
-        text-align: center;
-    }
-    
-    .close {
-        display: inline-block;
-        margin-top: 10px;
-        text-decoration: none;
-        color: red;
-    }
-    
+
+        .popup {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 300px;
+            text-align: center;
+            width: 60%;
+            height: 60%;
+            display: block;
+
+            
+            
+            .croixFermerLaPage {
+                position: absolute; 
+                top: 140px;
+                right: 310px;
+                cursor: pointer;
+            }
+            .croixFermerLaPage div {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 30px; 
+                height: 3px;
+                background-color: #BABABA;
+            }
+            .croixFermerLaPage div:first-of-type {
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+            .croixFermerLaPage div:last-of-type {
+                transform: translate(-50%, -50%) rotate(-45deg);
+            }
+
+            .popup-content {
+                flex: 1;
+                overflow-y: auto;
+                padding-right: 10px;
+                max-height: 130px;
+
+                .recapProduit {
+                    display: flex;
+                    align-items: center;
+                    margin-left: 20px;
+
+                    img {
+                        width: 150px;
+                        height: 150px;
+                        margin-right: 20px;
+                    }
+
+                    .nomEtDescription {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
+            }
+
+            .stepper{
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                margin-top: 100px;
+
+                .rond{
+                    width: 10px;
+                    height: 10px;
+                    background-color: #BABABA;
+                    border: #BABABA 5px solid;
+                    border-radius: 50%;
+                    z-index: 1;
+                }
+
+                .trait{
+                    height: 2px;
+                    flex : 1;
+                    background-color: #BABABA;
+
+                    .demiTrait{
+                        height: 2px;
+                        width: 50%;
+                        background-color: #BABABA;
+                    }
+                }
+
+                p:first-of-type {
+                    position: absolute;
+                    top: 65%;
+                    left: 19%;
+                }
+
+                p:nth-of-type(2) {
+                    position: absolute;
+                    top: 74.5%;
+                    left: 30%;
+                }
+
+                p:nth-of-type(3) {
+                    position: absolute;
+                    top: 65%;
+                    left: 43%;
+                }
+
+                p:nth-of-type(4) {
+                    position: absolute;
+                    top: 74.5%;
+                    left: 58%;
+                }
+
+                p:last-of-type {
+                    position: absolute;
+                    top: 65%;
+                    left: 76%;
+                }
+                
+
+            }
+        }
+    }  
+
 }
