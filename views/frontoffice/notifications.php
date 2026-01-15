@@ -58,7 +58,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
                     <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu('<?= $notif['titreNotif'] ?>', '<?= $notif['dateNotif'] ?>', '<?= $notif['contenuNotif'] ?>')">
                         <div>
                             <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
-                            <img id="regular" src="../../public/images/bellRingLight.svg" alt="Nouvelle notification">
+                            <img id="focus" src="../../public/images/bellRingLight.svg" alt="Nouvelle notification">
                         </div>
                         <div>
                             <h3><?= $notif['titreNotif'] ?></h3>
