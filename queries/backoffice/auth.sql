@@ -1,5 +1,3 @@
-select exists (
-    select *
-    from _vendeur 
-    where codeVendeur = :id and mdp = :pass
-);
+select *
+from _vendeur 
+where codeVendeur = :id 
