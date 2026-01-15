@@ -7,7 +7,7 @@ require_once 'pdo.php';
 try {
     $pdo->beginTransaction();
     $isValidSTMT = $pdo->prepare(file_get_contents(__DIR__ . '/../queries/backoffice/auth.sql'));
-    $isValidSTMT->execute([':id' => $_SESSION['id'], ':pass' => $_SESSION['pass']]);
+    $isValidSTMT->execute([':id' => $_SESSION['id']]);
     $isValid = $isValidSTMT->fetchColumn();
     error_log("auth");
 

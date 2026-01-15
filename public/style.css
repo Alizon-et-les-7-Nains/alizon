@@ -166,7 +166,7 @@ body {
     visibility: hidden;
   }
 }
-@media (min-width: 655px) {
+@media (max-width: 655px) {
   .headerFront .alizonMarque {
     display: none;
     visibility: hidden;
@@ -7051,6 +7051,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .filter-sort form label {
   font-weight: bold;
+  filter: invert(0);
 }
 .pageCatalogue .products-section {
   width: calc(100% - 280px); /* Ajustement automatique */
@@ -7390,7 +7391,7 @@ dialog.reassort form input {
     display: flex;
     align-items: center;
     gap: 8px;
-    position: relative;
+    position: fixed;
     z-index: 1100;
     color: #273469;
     border: none;
@@ -7399,7 +7400,7 @@ dialog.reassort form input {
     font-size: 14px;
     font-weight: bold;
     margin: 10px 0;
-    width: fit-content;
+    width: 20%;
   }
   .pageCatalogue .btnToggleFilters img {
     width: 20px;
@@ -7409,16 +7410,16 @@ dialog.reassort form input {
     margin-bottom: 0;
   }
   .pageCatalogue .filter-sort {
-    width: 280px;
+    width: 100%;
     padding: 15px;
     font-size: 14px;
-    left: -320px;
+    left: -530px;
     transition: left 0.3s ease;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
   }
   .pageCatalogue .filter-sort form {
-    margin-top: 200px;
+    margin-top: 50px;
   }
   .pageCatalogue .filter-sort.active {
     left: 0;
