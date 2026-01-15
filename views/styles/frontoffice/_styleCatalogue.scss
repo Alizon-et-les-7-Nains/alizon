@@ -426,10 +426,8 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        position: fixed;
-        top: 80px; // Ajuste selon la hauteur de ton header
-        left: 10px;
-        z-index: 1000;
+        position: relative; // Pas fixed, juste relative
+        z-index: 900;
         background-color: #273469;
         color: white;
         border: none;
@@ -439,11 +437,18 @@
         font-size: 14px;
         font-weight: bold;
         box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        margin: 10px 0; // Espacement
+        width: fit-content;
     }
 
     .btnToggleFilters img {
         width: 20px;
         height: 20px;
+        filter: brightness(0) invert(1); // Rend l'image blanche si elle est sombre
+    }
+
+    #resultat {
+        margin-bottom: 0; // Réduit l'espace sous le résultat
     }
 
     .filter-sort {
@@ -453,6 +458,7 @@
         left: -300px; // Caché par défaut
         transition: left 0.3s ease;
         box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        z-index: 1000; // Au-dessus de tout
     }
 
     .filter-sort.active {
@@ -464,7 +470,7 @@
         margin-left: 0;
     }
 
-    // Le reste de tes styles pour 512px...
+    // ... le reste de tes styles pour 512px
     .listeArticle {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 5px;

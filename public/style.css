@@ -7378,10 +7378,8 @@ dialog.reassort form input {
     display: flex;
     align-items: center;
     gap: 8px;
-    position: fixed;
-    top: 80px;
-    left: 10px;
-    z-index: 1000;
+    position: relative;
+    z-index: 900;
     background-color: #273469;
     color: white;
     border: none;
@@ -7391,10 +7389,16 @@ dialog.reassort form input {
     font-size: 14px;
     font-weight: bold;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin: 10px 0;
+    width: fit-content;
   }
   .pageCatalogue .btnToggleFilters img {
     width: 20px;
     height: 20px;
+    filter: brightness(0) invert(1);
+  }
+  .pageCatalogue #resultat {
+    margin-bottom: 0;
   }
   .pageCatalogue .filter-sort {
     width: 280px;
@@ -7403,6 +7407,7 @@ dialog.reassort form input {
     left: -300px;
     transition: left 0.3s ease;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
   }
   .pageCatalogue .filter-sort.active {
     left: 0;
@@ -7553,6 +7558,23 @@ dialog.reassort form input {
   opacity: 0.9;
 }
 
+@keyframes tilt-shaking {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
 .mesNotif {
   font-family: "Lora", serif;
   color: #273469;
@@ -7614,17 +7636,21 @@ dialog.reassort form input {
   display: block;
   visibility: visible;
 }
-.mesNotif .apercuNotif :focus {
+.mesNotif .apercuNotif:focus {
   background-color: #273469;
   color: #e3f2fe;
+  outline: none;
 }
-.mesNotif .apercuNotif :focus #focus {
+.mesNotif .apercuNotif:focus #focus {
   display: block;
   visibility: visible;
 }
-.mesNotif .apercuNotif :focus #regular {
+.mesNotif .apercuNotif:focus #regular {
   display: none;
   visibility: hidden;
+}
+.mesNotif .apercuNotif:focus h5 {
+  color: #e3f2fe;
 }
 .mesNotif .apercuNotif {
   cursor: pointer;
@@ -7638,6 +7664,9 @@ dialog.reassort form input {
 }
 .mesNotif .apercuNotif h5 {
   color: black;
+}
+.mesNotif .apercuNotif:hover img {
+  animation: tilt-shaking 0.25s 1s;
 }
 .mesNotif .ecranNotif {
   width: 150%;
