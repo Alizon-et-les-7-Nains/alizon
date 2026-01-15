@@ -415,6 +415,12 @@
         align-items: center;
         z-index: 999;
 
+        .popup-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
         .popup {
             background: white;
             padding: 20px;

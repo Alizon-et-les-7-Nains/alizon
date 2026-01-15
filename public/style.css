@@ -963,6 +963,11 @@ body {
   align-items: center;
   z-index: 999;
 }
+.pageCommandes .overlay .popup-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
 .pageCommandes .overlay .popup {
   background: white;
   padding: 20px;
