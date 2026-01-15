@@ -6,9 +6,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     error_log("connexion");
 
     try {
+        var_dump($_POST['mdp']);
         $pdo->beginTransaction();
         $mdpHash = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
-        
+        var_dump($mdpHash);
         $isValidSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/connexion.sql'));
         $isValidSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $mdpHash]);
         $isValid = $isValidSTMT->fetchColumn();
