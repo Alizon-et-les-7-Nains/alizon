@@ -7410,7 +7410,7 @@ dialog.reassort form input {
     margin-bottom: 0;
   }
   .pageCatalogue .filter-sort {
-    width: 280px;
+    width: 100%;
     padding: 15px;
     font-size: 14px;
     left: -320px;
