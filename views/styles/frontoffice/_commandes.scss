@@ -422,7 +422,7 @@
             min-width: 300px;
             text-align: center;
             width: 60%;
-            height: 50%;
+            height: 55%;
             display: block;
             
             .croixFermerLaPage {
@@ -473,7 +473,17 @@
                     }
                 }
 
-                
+                p:first-of-type {
+                    position: absolute;
+                    top: 45%;
+                    left: 43%;
+                }
+
+                p:nth-of-type(2) {
+                    position: absolute;
+                    top: 57%;
+                    left: 58%;
+                }
 
                 p:nth-of-type(3) {
                     position: absolute;
@@ -485,18 +495,6 @@
                     position: absolute;
                     top: 57%;
                     left: 32%;
-                }
-
-                p:nth-of-type(5) {
-                    position: absolute;
-                    top: 45%;
-                    left: 43%;
-                }
-
-                p:nth-of-type(6) {
-                    position: absolute;
-                    top: 57%;
-                    left: 58%;
                 }
 
                 p:last-of-type {
