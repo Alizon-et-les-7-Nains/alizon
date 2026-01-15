@@ -12,8 +12,7 @@ if (!empty($_SESSION['commandePayee'])) {
     unset($_SESSION['commandePayee']);
 }
 
-$tabIdDestination = [];
-$tabIdDestination = $_SESSION['tabIdDestination'];
+$tabIdDestination = $_SESSION['tabIdDestination'] ?? [];
 
 // ============================================================================
 // VÉRIFICATION DE LA CONNEXION
