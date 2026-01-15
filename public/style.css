@@ -7302,6 +7302,9 @@ dialog.reassort form input {
   border: 2px solid black;
   text-decoration: none;
 }
+.pageCatalogue .btnToggleFilters {
+  display: none; /* Caché par défaut */
+}
 .pageCatalogue {
   /** Media Queries */
 }

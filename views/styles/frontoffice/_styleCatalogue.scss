@@ -333,6 +333,10 @@
         text-decoration: none;
     }
 
+    .btnToggleFilters {
+        display: none; /* Caché par défaut */
+    }
+
     /** Media Queries */
 
     @media (max-width: 1024px) {
