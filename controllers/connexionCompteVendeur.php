@@ -9,14 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->beginTransaction();
 
         $isValidSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/connexion.sql'));
-        $isValidSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
+        $isValidSTMT->execute([':pseudo' => $_POST['pseudo']]);
         $isValid = $isValidSTMT->fetchColumn();
-        var_dump($_POST['mdp']);
         var_dump($isValid);
-
-
-
-        if ($isValid) {
+        if(password_verify($_POST['mdp'], $isValid)){
             $vendeurSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/vendeur.sql'));
             $vendeurSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
             $vendeur = $vendeurSTMT->fetch(PDO::FETCH_ASSOC);
