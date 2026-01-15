@@ -1,5 +1,5 @@
 select exists (
-    select *
+    select mdp
     from _vendeur 
-    where pseudo = :pseudo and mdp = :mdp
+    where pseudo = :pseudo
 );

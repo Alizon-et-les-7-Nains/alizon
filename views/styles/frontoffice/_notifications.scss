@@ -1,6 +1,14 @@
 @use "../colors" as *;
 @use "../fonts" as fonts;
 
+@keyframes tilt-shaking {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
+}
+
 .mesNotif {
     font-family: "Lora", serif;
     color: #273469;
@@ -52,30 +60,37 @@
         color: #273469;
         border: 1px solid #273469;
         padding: 10px 5px;
+        
         img {
             height: 40px;
             padding: 20px;
-            #focus {
-                display: none;
-                visibility: hidden;
-            }
-            #regular {
-                display: block;
-                visibility: visible;
-            }
         }
-        :focus {
-            background-color: #273469;
-            color: #e3f2fe;
-            #focus {
-                display: block;
-                visibility: visible;
-            }
-            #regular {
-                display: none;
-                visibility: hidden;
-            }
+            
+        #focus {
+            display: none;
+            visibility: hidden;
         }
+        #regular {
+            display: block;
+            visibility: visible;
+        }
+        
+        &:focus {
+                background-color: #273469;
+                color: #e3f2fe;
+                outline: none;
+                #focus {
+                    display: block;
+                    visibility: visible;
+                }
+                #regular {
+                    display: none;
+                    visibility: hidden;
+                }
+                h5 {
+                    color: #e3f2fe; 
+                }
+            }
         cursor: pointer;
         * {
             margin: 0;
@@ -87,6 +102,9 @@
         h5 {
             color: black;
         }
+    }
+    .apercuNotif:hover img {
+        animation: tilt-shaking 0.25s 4;
     }
     .ecranNotif {
         width: 150%;
