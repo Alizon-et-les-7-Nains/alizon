@@ -11,10 +11,10 @@ if (!isset($_SESSION['user_id'])) {
 
 $id_client = $_SESSION['user_id'];
 
-function getNotifications($pdo, $idClient, $is_vendeur) {
+function getNotifications($pdo, $idClient, $est_vendeur) {
     $sql = "SELECT * FROM _notification 
             WHERE idClient = :idClient 
-            AND is_vendeur = :is_vendeur 
+            AND est_vendeur = :est_vendeur 
             ORDER BY dateNotif DESC 
             LIMIT 1";
             
@@ -22,7 +22,7 @@ function getNotifications($pdo, $idClient, $is_vendeur) {
 
     $stmt->execute([
         'idClient'   => $idClient,
-        'is_vendeur' => $is_vendeur
+        'est_vendeur' => $est_vendeur
     ]);
 
     $notif = $stmt->fetch(PDO::FETCH_ASSOC);
