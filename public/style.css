@@ -7561,7 +7561,7 @@ dialog.reassort form input {
     transform: rotate(5deg);
   }
   50% {
-    transform: rotate(0eg);
+    transform: rotate(0deg);
   }
   75% {
     transform: rotate(-5deg);
@@ -7631,17 +7631,21 @@ dialog.reassort form input {
   display: block;
   visibility: visible;
 }
-.mesNotif .apercuNotif :focus {
+.mesNotif .apercuNotif:focus {
   background-color: #273469;
   color: #e3f2fe;
+  outline: none;
 }
-.mesNotif .apercuNotif :focus #focus {
+.mesNotif .apercuNotif:focus #focus {
   display: block;
   visibility: visible;
 }
-.mesNotif .apercuNotif :focus #regular {
+.mesNotif .apercuNotif:focus #regular {
   display: none;
   visibility: hidden;
+}
+.mesNotif .apercuNotif:focus h5 {
+  color: #e3f2fe;
 }
 .mesNotif .apercuNotif {
   cursor: pointer;
@@ -7656,12 +7660,8 @@ dialog.reassort form input {
 .mesNotif .apercuNotif h5 {
   color: black;
 }
-.mesNotif .apercuNotif:focus {
-  color: #e3f2fe;
-  background-color: #273469;
-}
 .mesNotif .apercuNotif:hover img {
-  animation: tilt-shaking 0.25s infinite;
+  animation: tilt-shaking 0.25s 1s;
 }
 .mesNotif .ecranNotif {
   width: 150%;
