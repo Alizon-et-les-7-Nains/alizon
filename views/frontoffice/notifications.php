@@ -57,7 +57,9 @@ $notifs = getNotifications($pdo, $id_client, 0)
                 <?php foreach($notifs as $notif) { 
                     $contenuNotif = $notif['contenuNotif'];
                     $contenuNotif = substr($contenuNotif, 0, 50) . "...";?>
-                    <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu('<?= $notif['titreNotif'] ?>', '<?= $notif['dateNotif'] ?>', '<?= $notif['contenuNotif'] ?>')">
+                    <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu('<?= htmlspecialchars($notif['titreNotif'], ENT_QUOTES) ?>',
+                        '<?= htmlspecialchars($notif['dateNotif'], ENT_QUOTES) ?>',
+                        '<?= htmlspecialchars($notif['contenuNotif'], ENT_QUOTES) ?>')">
                         <div>
                             <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                             <img id="focus" src="../../public/images/bellRingLight.svg" alt="Nouvelle notification">
@@ -68,15 +70,24 @@ $notifs = getNotifications($pdo, $id_client, 0)
                             <h5><?= $notif['dateNotif'] ?></h5>
                         </div>
                     </div>
+                    <article class="contenuTel">
+                        <div class="titleNotifResponsive">
+                            <h2 style="color: #273469;"><?= htmlspecialchars($notif['titreNotif']) ?></h2>
+                            <small><?= htmlspecialchars($notif['dateNotif']) ?></small>
+                        </div>
+                        <div class="corpsNotif" style="margin-top: 15px;">
+                            <p><?= nl2br(htmlspecialchars($notif['contenuNotif'])) ?></p>
+                        </div>
+                    </article>
                 <?php } ?>
                 </div>
                 <article class="ecranNotif">
                     <div class="titleNotif">
                         <h1 id="titre"><?= 'Cliquez sur une notification pour afficher son contenu' ?></h1>
-                        <h3 id="contenu"><?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?></h3>
+                        <h3 id="contenu"><?= htmlspecialchars($notif['dateNotif'] ?? ' ') ?></h3>
                     </div>
                     <div class="contenuNotif">
-                        <p id="date"><?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?></p>
+                        <p id="date"><?= htmlspecialchars($notif['dateNotif'] ?? ' ') ?></p>
                     </div>
                 </article>
             </section>
@@ -97,6 +108,22 @@ $notifs = getNotifications($pdo, $id_client, 0)
             titreContent.innerText= t ;
             contenuContent.innerText= d ;
             dateContent.innerText= c ;
+
+            const mobileContent = element.nextElementSibling;
+
+            if (window.innerWidth <= 840) {
+                document.querySelectorAll('.contenuTel').forEach(el => {
+                    if (el !== mobileContent) el.classList.remove('active');
+                });
+
+                mobileContent.classList.toggle('active');
+                
+                if(mobileContent.classList.contains('active')) {
+                    setTimeout(() => {
+                        mobileContent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 100);
+                }
+            }
         }
 </script>
 

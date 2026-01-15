@@ -41,6 +41,7 @@
         margin: 30px 50px;
         max-height: 483px;
         min-height: 483px;
+        overflow: hidden;
         
         .sidebarNotif {
             overflow: scroll;
@@ -49,7 +50,7 @@
             width: 1000px;
             background-color: #e4e4e4;
         }
-        .sidebarNotif:first-child, .sidebarNotif:last-child {
+        .sidebarNotif:first-child {
             border-top-left-radius: 25px;
         }
     }
@@ -128,6 +129,12 @@
             }
         }
     }
+
+    .contenuTel {
+        display: none;
+        visibility: hidden;
+    }
+
     @media (max-width: 1100px) {
         .ensembleNotif {
             max-height: 680px;
@@ -139,15 +146,24 @@
             display: none;
             visibility: hidden;
         }
-    }
-    @media (max-width: 840px) {
         .ensembleNotif {
             min-height: fit-content;
             max-height: fit-content;
             border-radius: 0;
         }
-        .sidebarNotif:first-child, .sidebarNotif:last-child {
+        .sidebarNotif {
+            width: 100% !important;
+        }
+        .sidebarNotif:first-child {
             border-top-left-radius: 0;
+        }
+        .contenuTel.active {
+            display: block;
+            visibility: visible;
+            background-color: white;
+            padding: 20px;
+            border-bottom: 2px solid #273469;
+            animation: fadeIn 0.3s ease-in;
         }
     }
     
