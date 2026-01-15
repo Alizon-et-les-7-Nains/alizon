@@ -1,48 +1,39 @@
-<?php
-session_start();
-require_once "pdo.php";
+<?php 
+ob_start();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $pseudo = trim($_POST['pseudo'] ?? '');
-    $mdp_clair = $_POST['mdp'] ?? '';
-    
-    // Rechercher le vendeur par pseudo
-    $sql = "SELECT codeVendeur, pseudo, mdp, nom, prenom, email, noTelephone, dateNaissance, 
-                   noSiren, idAdresse, raisonSocial
-            FROM _vendeur 
-            WHERE pseudo = ?";
-    
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$pseudo]);
-    $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if ($vendeur) {
-        // Vérifier le mot de passe avec password_verify
-        if (password_verify($mdp_clair, $vendeur['mdp'])) {
-                $_SESSION['vendeur_id'] = $vendeur['codeVendeur'];
-                $_SESSION['vendeur_pseudo'] = $vendeur['pseudo'];
-                $_SESSION['vendeur_nom'] = $vendeur['nom'];
-                $_SESSION['vendeur_prenom'] = $vendeur['prenom'];
-                $_SESSION['vendeur_email'] = $vendeur['email'];
-                $_SESSION['vendeur_telephone'] = $vendeur['noTelephone'];
-                $_SESSION['vendeur_raison_social'] = $vendeur['raisonSocial'];
-                $_SESSION['vendeur_siren'] = $vendeur['noSiren'];
-                $_SESSION['vendeur_adresse'] = $vendeur['idAdresse'];
-                
-                header('Location: ../views/backoffice/accueil.php');
-                exit;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once 'pdo.php';
+    error_log("connexion");
 
+    try {
+        $pdo->beginTransaction();
+        $mdpHash = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
+        
+        $isValidSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/connexion.sql'));
+        $isValidSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $mdpHash]);
+        $isValid = $isValidSTMT->fetchColumn();
+
+        if ($isValid) {
+            $vendeurSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/vendeur.sql'));
+            $vendeurSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
+            $vendeur = $vendeurSTMT->fetch(PDO::FETCH_ASSOC);
+            $pdo->commit();
+
+            session_start();
+            $id_session = session_id();
+            $_SESSION['session_id'] = $id_session;
+            $_SESSION['id'] = $vendeur['codeVendeur'];
+            $_SESSION['pass'] = $_POST['mdp'];
+
+            header('Location: ../views/backoffice/accueil.php');
         } else {
-            // Mot de passe incorrect
+            $pdo->rollback();
             header('Location: ../views/backoffice/connexion.php?error=1');
-            exit;
-        }
-    } else {
-        // Pseudo incorrect
-        header('Location: ../views/backoffice/connexion.php?error=1');
-        exit;
+}
+    } catch (Exception $e) {
+        header('Location: ../views/backoffice/connexion.php?error=0');
+        die();
     }
-} else {
-    header('Location: ../views/backoffice/connexion.php');
-    exit;
-}?>
+}
+
+?>

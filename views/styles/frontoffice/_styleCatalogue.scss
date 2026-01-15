@@ -34,7 +34,7 @@
         align-items: center;
     }
 
-    .filter-sort form article div label{
+    .filter-sort form label{
         font-weight: bold;
     }
 
@@ -421,91 +421,122 @@
         }
     }
 
-    @media (max-width: 512px) {
-        .filter-sort {
-            width: 160px;
-            padding: 5px;
-            font-size: 12px;
-        }
-        
-        .products-section {
-            width: calc(100% - 170px);
-            margin-left: 170px;
-        }
-
-        // Réduction supplémentaire des cartes
-        .listeArticle {
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 5px;
-        }
-
-        .listeArticle article {
-            min-width: 140px;
-            max-width: 140px;
-            min-height: 180px;
-            max-height: 180px;
-            margin: 5px;
-            padding: 8px;
-        }
-
-        .listeArticle article .imgProduit {
-            max-width: 140px;
-            max-height: 80px;
-        }
-
-        .listeArticle article h2 {
-            font-size: 12px;
-        }
-
-        .prix h2 {
-            font-size: 22px;
-        }
-
-        .prix h3 {
-            font-size: 9px;
-        }
-
-        .prix h4 {
-            font-size: 10px;
-        }
-
-        .notation span {
-            font-size: 14px;
-        }
-
-        .notation .etoile {
-            width: 14px;
-            height: 14px;
-        }
-
-        #promoTexte {
-            font-size: 11px;
-            padding: 0 1px;
-        }
-
-        .bannierePromo h1 {
-            font-size: 13px;
-            top: 22px;
-            left: 6px;
-        }
-
-        .imgBanniere {
-            height: 60px;
-        }
-
-        .tempsRestant {
-            font-size: 9px;
-            padding: 2px;
-        }
-
-        .infoProd button img {
-            width: 35px;
-            height: 35px;
-        }
-
-        .star {
-            width: 25px;
-            height: 25px;
-        }
+@media (max-width: 512px) {
+    .btnToggleFilters {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: fixed;
+        top: 80px; // Ajuste selon la hauteur de ton header
+        left: 10px;
+        z-index: 1000;
+        background-color: #273469;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
+
+    .btnToggleFilters img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .filter-sort {
+        width: 280px;
+        padding: 15px;
+        font-size: 14px;
+        left: -300px; // Caché par défaut
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    }
+
+    .filter-sort.active {
+        left: 0; // Visible quand actif
+    }
+    
+    .products-section {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    // Le reste de tes styles pour 512px...
+    .listeArticle {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 5px;
+    }
+
+    .listeArticle article {
+        min-width: 140px;
+        max-width: 140px;
+        min-height: 180px;
+        max-height: 180px;
+        margin: 5px;
+        padding: 8px;
+    }
+
+    .listeArticle article .imgProduit {
+        max-width: 140px;
+        max-height: 80px;
+    }
+
+    .listeArticle article h2 {
+        font-size: 12px;
+    }
+
+    .prix h2 {
+        font-size: 22px;
+    }
+
+    .prix h3 {
+        font-size: 9px;
+    }
+
+    .prix h4 {
+        font-size: 10px;
+    }
+
+    .notation span {
+        font-size: 14px;
+    }
+
+    .notation .etoile {
+        width: 14px;
+        height: 14px;
+    }
+
+    #promoTexte {
+        font-size: 11px;
+        padding: 0 1px;
+    }
+
+    .bannierePromo h1 {
+        font-size: 13px;
+        top: 22px;
+        left: 6px;
+    }
+
+    .imgBanniere {
+        height: 60px;
+    }
+
+    .tempsRestant {
+        font-size: 9px;
+        padding: 2px;
+    }
+
+    .infoProd button img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .star {
+        width: 25px;
+        height: 25px;
+    }
+}
 }

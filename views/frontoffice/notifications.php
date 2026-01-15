@@ -51,31 +51,35 @@ $notifs = getNotifications($pdo, $id_client, 0)
             <h1>Mes notifications</h1>
         </section>
 
-        <section class="ensembleNotif">
-            <div class="sidebarNotif">
-            <?php foreach($notifs as $notif) { ?>
-                <div class="apercuNotif">
-                    <div>
-                        <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
+        <?php if(!empty($notifs)) { ?>
+            <section class="ensembleNotif">
+                <div class="sidebarNotif">
+                <?php foreach($notifs as $notif) { ?>
+                    <div class="apercuNotif">
+                        <div>
+                            <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
+                        </div>
+                        <div>
+                            <h3><?= $notif['titreNotif'] ?></h3>
+                            <h4><?= $notif['contenuNotif'] ?></h4>
+                            <h5><?= $notif['dateNotif'] ?></h5>
+                        </div>
                     </div>
-                    <div>
-                        <h3><?= $notif['titreNotif'] ?></h3>
-                        <h4><?= $notif['contenuNotif'] ?></h4>
-                        <h5><?= $notif['dateNotif'] ?></h5>
+                <?php } ?>
+                </div>
+                <article class="ecranNotif">
+                    <div class="titleNotif">
+                        <h1>X</h1>
+                        <h3>X</h3>
                     </div>
-                </div>
-            <?php } ?>
-            </div>
-            <article class="ecranNotif">
-                <div class="titleNotif">
-                    <h1>X</h1>
-                    <h3>X</h3>
-                </div>
-                <div class="contenuNotif">
-                    X
-                </div>
-            </article>
-        </section>
+                    <div class="contenuNotif">
+                        X
+                    </div>
+                </article>
+            </section>
+        <?php } else { ?>
+            <h2>Aucune notification</h2>
+        <?php } ?>
 
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
         <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
