@@ -7627,11 +7627,11 @@ dialog.reassort form input {
   height: 40px;
   padding: 20px;
 }
-.mesNotif .apercuNotif img #focus {
+.mesNotif .apercuNotif #focus {
   display: none;
   visibility: hidden;
 }
-.mesNotif .apercuNotif img #regular {
+.mesNotif .apercuNotif #regular {
   display: block;
   visibility: visible;
 }
