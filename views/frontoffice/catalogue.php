@@ -112,7 +112,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 <main class="pageCatalogue">
     <aside class="filter-sort">
         <form method="GET" action="">
-            <label for="tri">Trier par :</label>
+            <label for="tri">Trier par note minimale :</label>
             <article class="triNote">
                 <div>
                     <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
