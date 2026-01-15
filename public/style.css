@@ -7016,6 +7016,7 @@ dialog.reassort form input {
 .pageCatalogue {
   display: flex;
   flex-direction: row;
+  background-color: #fffefa;
 }
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
@@ -7303,6 +7304,9 @@ dialog.reassort form input {
   border: 2px solid black;
   text-decoration: none;
 }
+.pageCatalogue .btnToggleFilters {
+  display: none; /* Caché par défaut */
+}
 .pageCatalogue {
   /** Media Queries */
 }
@@ -7379,23 +7383,23 @@ dialog.reassort form input {
     display: flex;
     align-items: center;
     gap: 8px;
-    position: fixed;
-    top: 80px;
-    left: 10px;
-    z-index: 1000;
-    background-color: #273469;
-    color: white;
+    position: relative;
+    z-index: 1100;
+    color: #273469;
     border: none;
-    border-radius: 8px;
+    background-color: #fffefa;
     padding: 10px 15px;
-    cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin: 10px 0;
+    width: fit-content;
   }
   .pageCatalogue .btnToggleFilters img {
     width: 20px;
     height: 20px;
+  }
+  .pageCatalogue #resultat {
+    margin-bottom: 0;
   }
   .pageCatalogue .filter-sort {
     width: 280px;
@@ -7404,6 +7408,10 @@ dialog.reassort form input {
     left: -320px;
     transition: left 0.3s ease;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+  }
+  .pageCatalogue .filter-sort form {
+    margin-top: 200px;
   }
   .pageCatalogue .filter-sort.active {
     left: 0;
@@ -7562,7 +7570,7 @@ dialog.reassort form input {
     transform: rotate(5deg);
   }
   50% {
-    transform: rotate(0eg);
+    transform: rotate(0deg);
   }
   75% {
     transform: rotate(-5deg);
@@ -7624,25 +7632,29 @@ dialog.reassort form input {
   height: 40px;
   padding: 20px;
 }
-.mesNotif .apercuNotif img #focus {
+.mesNotif .apercuNotif #focus {
   display: none;
   visibility: hidden;
 }
-.mesNotif .apercuNotif img #regular {
+.mesNotif .apercuNotif #regular {
   display: block;
   visibility: visible;
 }
-.mesNotif .apercuNotif :focus {
+.mesNotif .apercuNotif:focus {
   background-color: #273469;
   color: #e3f2fe;
+  outline: none;
 }
-.mesNotif .apercuNotif :focus #focus {
+.mesNotif .apercuNotif:focus #focus {
   display: block;
   visibility: visible;
 }
-.mesNotif .apercuNotif :focus #regular {
+.mesNotif .apercuNotif:focus #regular {
   display: none;
   visibility: hidden;
+}
+.mesNotif .apercuNotif:focus h5 {
+  color: #e3f2fe;
 }
 .mesNotif .apercuNotif {
   cursor: pointer;
@@ -7657,12 +7669,8 @@ dialog.reassort form input {
 .mesNotif .apercuNotif h5 {
   color: black;
 }
-.mesNotif .apercuNotif:focus {
-  color: #e3f2fe;
-  background-color: #273469;
-}
 .mesNotif .apercuNotif:hover img {
-  animation: tilt-shaking 0.25s infinite;
+  animation: tilt-shaking 0.25s 4;
 }
 .mesNotif .ecranNotif {
   width: 150%;

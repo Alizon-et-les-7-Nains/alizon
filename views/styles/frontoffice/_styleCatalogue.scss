@@ -4,6 +4,7 @@
 .pageCatalogue{
     display:flex;
     flex-direction: row;
+    background-color: $color-white;
     
 
     .filter-sort{
@@ -333,6 +334,10 @@
         text-decoration: none;
     }
 
+    .btnToggleFilters {
+        display: none; /* Caché par défaut */
+    }
+
     /** Media Queries */
 
     @media (max-width: 1024px) {
@@ -426,24 +431,25 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        position: fixed;
-        top: 80px; // Ajuste selon la hauteur de ton header
-        left: 10px;
-        z-index: 1000;
-        background-color: #273469;
-        color: white;
+        position: relative;
+        z-index: 1100;
+        color: #273469;
         border: none;
-        border-radius: 8px;
+        background-color: $color-white;
         padding: 10px 15px;
-        cursor: pointer;
         font-size: 14px;
         font-weight: bold;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        margin: 10px 0;
+        width: fit-content;
     }
 
     .btnToggleFilters img {
         width: 20px;
         height: 20px;
+    }
+
+    #resultat {
+        margin-bottom: 0;
     }
 
     .filter-sort {
@@ -453,18 +459,23 @@
         left: -320px;
         transition: left 0.3s ease;
         box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        z-index: 1000;
+    }
+
+    .filter-sort form{
+        margin-top: 200px;
     }
 
     .filter-sort.active {
         left: 0;
     }
-
+    
     .products-section {
         width: 100%;
         margin-left: 0;
     }
 
-    // Le reste de tes styles pour 512px...
+    // ... le reste de tes styles pour 512px
     .listeArticle {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 5px;
