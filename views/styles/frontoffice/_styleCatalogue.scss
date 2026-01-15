@@ -446,7 +446,6 @@
     .btnToggleFilters img {
         width: 20px;
         height: 20px;
-        filter: brightness(0) invert(1);
     }
 
     #resultat {
@@ -463,7 +462,7 @@
         z-index: 1000;
     }
 
-    .triNote{
+    .filter-sort form{
         margin-top: 200px;
     }
 
