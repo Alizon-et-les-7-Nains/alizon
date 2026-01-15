@@ -91,8 +91,6 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             }
         }
 
-        var_dump([$idClient, $adresseLivraison, $codePostal, $villeLivraison]);
-
         $sqlAdresseLivraison = "
                 INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
                 VALUES (?, ?, ?, ?)

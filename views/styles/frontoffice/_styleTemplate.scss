@@ -166,7 +166,7 @@ body {
     }
    }
 
-  @media (min-width: 655px) {
+  @media (max-width: 655px) {
     .alizonMarque {
       display: none;
       visibility: hidden;
