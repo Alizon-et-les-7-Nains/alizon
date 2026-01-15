@@ -7729,6 +7729,9 @@ dialog.reassort form input {
     display: flex;
     align-items: center;
   }
+  .mesNotif .topRecherche h1 {
+    margin: 0;
+  }
   .mesNotif .ensembleNotif {
     min-height: fit-content;
     max-height: fit-content;
