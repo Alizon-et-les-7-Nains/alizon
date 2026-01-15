@@ -60,20 +60,20 @@ $notifs = getNotifications($pdo, $id_client, 0)
                             <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                         </div>
                         <div>
-                            <h3 id="titre"><?= $notif['titreNotif'] ?></h3>
-                            <h4 id="contenu"><?= $notif['contenuNotif'] ?></h4>
-                            <h5 id="date"><?= $notif['dateNotif'] ?></h5>
+                            <h3><?= $notif['titreNotif'] ?></h3>
+                            <h4><?= $notif['contenuNotif'] ?></h4>
+                            <h5><?= $notif['dateNotif'] ?></h5>
                         </div>
                     </div>
                 <?php } ?>
                 </div>
                 <article class="ecranNotif">
                     <div class="titleNotif">
-                        <h1><?= htmlspecialchars($notif['titreNotif'] ?? 'Cliquez sur une notification pour afficher son contenu') ?></h1>
-                        <h3><?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?></h3>
+                        <h1 id="titre"><?= htmlspecialchars($notif['titreNotif'] ?? 'Cliquez sur une notification pour afficher son contenu') ?></h1>
+                        <h3 id="contenu"><?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?></h3>
                     </div>
                     <div class="contenuNotif">
-                        <?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?>
+                        <p id="date"><?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?></p>
                     </div>
                 </article>
             </section>
