@@ -359,7 +359,6 @@ body {
 
 /* -------------------------------------------- FIN FOOTER -------------------------------------------- */
 .cgucgv main {
-  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -380,9 +379,6 @@ body {
 .cgucgv section {
   margin: 40px 0;
   padding: 25px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 .cgucgv section h2 {
   font-family: "lora", serif;
