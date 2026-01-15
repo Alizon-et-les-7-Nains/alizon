@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mdp_clair = $_POST['mdp'] ?? '';
     
     // Rechercher le vendeur par pseudo
-    $sql = "SELECT idVendeur, pseudo, mdp, nom, prenom, email, noTelephone, dateNaissance, 
+    $sql = "SELECT codeVendeur, pseudo, mdp, nom, prenom, email, noTelephone, dateNaissance, 
                    noSiren, idAdresse, raisonSocial, dateCreation, valide 
             FROM _vendeur 
             WHERE pseudo = ?";

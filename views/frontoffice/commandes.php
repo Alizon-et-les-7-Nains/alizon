@@ -448,9 +448,8 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div></div>
                     <div></div>
                 </div> 
+                <h2>Suivi de la livraison</h2>
                 <div class="popup-content">
-                    
-                    <h2>Suivi de la livraison</h2>
 
                     <?php
                         $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
