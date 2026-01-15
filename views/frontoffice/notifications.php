@@ -69,7 +69,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
                 </div>
                 <article class="ecranNotif">
                     <div class="titleNotif">
-                        <h1 id="titre"><?= htmlspecialchars($notif['titreNotif'] ?? 'Cliquez sur une notification pour afficher son contenu') ?></h1>
+                        <h1 id="titre"><?= 'Cliquez sur une notification pour afficher son contenu' ?></h1>
                         <h3 id="contenu"><?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?></h3>
                     </div>
                     <div class="contenuNotif">
