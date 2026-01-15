@@ -51,7 +51,10 @@ $notifs = getNotifications($pdo, $id_client, 0)
             <h1>Mes notifications</h1>
         </section>
 
-        <?php if(!empty($notifs)) { ?>
+        <?php if(!empty($notifs)) { 
+            $contenuNotif = $notif['contenuNotif'];
+            $contenuNotif = substr($contenuNotif, 0, 50) . "...";
+            ?>
             <section class="ensembleNotif">
                 <div class="sidebarNotif">
                 <?php foreach($notifs as $notif) { ?>
@@ -62,7 +65,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
                         </div>
                         <div>
                             <h3><?= $notif['titreNotif'] ?></h3>
-                            <h4><?= $notif['contenuNotif'] ?></h4>
+                            <h4><?= $contenuNotif ?></h4>
                             <h5><?= $notif['dateNotif'] ?></h5>
                         </div>
                     </div>

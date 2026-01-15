@@ -61,6 +61,7 @@ body {
   display: flex;
   align-items: end;
   justify-content: space-between;
+  align-items: center;
 }
 .headerFront .headerMain div *, .headerFront .headerMain .categorie {
   margin-left: 10px;
@@ -161,6 +162,12 @@ body {
 }
 @media (min-width: 1300px) {
   .headerFront #burgerIconTel {
+    display: none;
+    visibility: hidden;
+  }
+}
+@media (min-width: 655px) {
+  .headerFront .alizonMarque {
     display: none;
     visibility: hidden;
   }
@@ -7044,6 +7051,7 @@ dialog.reassort form input {
 }
 .pageCatalogue .filter-sort form label {
   font-weight: bold;
+  filter: invert(0);
 }
 .pageCatalogue .products-section {
   width: calc(100% - 280px); /* Ajustement automatique */
@@ -7712,9 +7720,9 @@ dialog.reassort form input {
     max-height: fit-content;
     border-radius: 0;
   }
-}
-.mesNotif .sidebarNotif:first-child, .mesNotif .sidebarNotif:last-child {
-  border-top-left-radius: 0;
+  .mesNotif .sidebarNotif:first-child, .mesNotif .sidebarNotif:last-child {
+    border-top-left-radius: 0;
+  }
 }
 
 main.commandesBackoffice {
