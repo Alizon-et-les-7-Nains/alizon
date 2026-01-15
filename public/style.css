@@ -6955,10 +6955,12 @@ dialog.reassort form input {
 .pageCatalogue .filter-sort form {
   display: flex;
   flex-direction: column;
+  gap: 15px;
 }
 .pageCatalogue .filter-sort form article {
   display: flex;
   flex-direction: column;
+  gap: 15px;
 }
 .pageCatalogue .filter-sort form article div {
   display: flex;
@@ -7066,7 +7068,7 @@ dialog.reassort form input {
   border-radius: 5px;
   padding: 0 2px;
   margin: 0;
-  font-size: 16px;
+  font-size: 14px;
 }
 .pageCatalogue .nomEtPromo {
   display: flex;
@@ -7079,7 +7081,7 @@ dialog.reassort form input {
   font-size: 16px;
   font-family: "Open-sans", serif;
   font-weight: 500;
-  margin-top: 10px;
+  margin-top: 0;
   margin-bottom: 0;
 }
 .pageCatalogue .listeArticle article .imgProduit {

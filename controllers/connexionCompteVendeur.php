@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['vendeur_siren'] = $vendeur['noSiren'];
                 $_SESSION['vendeur_adresse'] = $vendeur['idAdresse'];
                 
-                header('Location: ../views/backoffice/accueilVendeur.php');
+                header('Location: ../views/backoffice/accueil.php');
                 exit;
 
         } else {
