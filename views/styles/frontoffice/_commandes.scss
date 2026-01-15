@@ -424,6 +424,8 @@
             width: 60%;
             height: 55%;
             display: block;
+
+            
             
             .croixFermerLaPage {
                 position: absolute; 
@@ -444,6 +446,29 @@
             }
             .croixFermerLaPage div:last-of-type {
                 transform: translate(-50%, -50%) rotate(-45deg);
+            }
+
+            .popup-content {
+                flex: 1;
+                overflow-y: auto;
+                padding-right: 10px;
+
+                .recapProduit {
+                    display: flex;
+                    align-items: center;
+                    margin-left: 20px;
+
+                    img {
+                        width: 150px;
+                        height: 150px;
+                        margin-right: 20px;
+                    }
+
+                    .nomEtDescription {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
             }
 
             .stepper{
@@ -507,23 +532,5 @@
             }
         }
     }  
-    
-    
-    .recapProduit {
-        display: flex;
-        align-items: center;
-        margin-left: 20px;
-
-        img {
-            width: 150px;
-            height: 150px;
-            margin-right: 20px;
-        }
-
-        .nomEtDescription {
-            display: flex;
-            flex-direction: column;
-        }
-    }
 
 }
