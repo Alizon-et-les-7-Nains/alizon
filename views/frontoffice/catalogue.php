@@ -147,7 +147,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 </div>
             </div>
 
-            <label for="minNote" id="minNoteLabel">Trier par note :</label>
+            <label for="minNote" id="minNoteLabel">Trier par note minimale:</label>
             <div>
                 <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
                 <img src="../../public/images/etoileVide.svg" data-index="2" class="star" alt="2 étoiles">
