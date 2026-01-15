@@ -10,10 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $hashPasswordSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/connexion.sql'));
         $hashPasswordSTMT->execute([':pseudo' => $_POST['pseudo']]);
-        $hashPassword = $hashPasswordSTMT->fetchColumn();
-        if(password_verify($_POST['mdp'], $hashPassword)){
+        $hashPassword = $hashPasswordSTMT->fetchAll(PDO::FETCH_ASSOC);;
+        var_dump($hashPassword);
+        if(password_verify($_POST['mdp'], $hashPassword['mdp'])){
             $vendeurSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/vendeur.sql'));
-            $vendeurSTMT->execute([':pseudo' => $_POST['pseudo'], ':mdp' => $_POST['mdp']]);
+            $vendeurSTMT->execute([':pseudo' => $_POST['pseudo']]);
             $vendeur = $vendeurSTMT->fetch(PDO::FETCH_ASSOC);
             $pdo->commit();
 
@@ -26,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: ../views/backoffice/accueil.php');
         } else {
             $pdo->rollback();
-            header('Location: ../views/backoffice/connexion.php?error=1');
+            //header('Location: ../views/backoffice/connexion.php?error=1');
 }
     } catch (Exception $e) {
         header('Location: ../views/backoffice/connexion.php?error=0');
