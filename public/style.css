@@ -7302,6 +7302,9 @@ dialog.reassort form input {
   border: 2px solid black;
   text-decoration: none;
 }
+.pageCatalogue .btnToggleFilters {
+  display: none; /* Caché par défaut */
+}
 .pageCatalogue {
   /** Media Queries */
 }
@@ -7378,10 +7381,8 @@ dialog.reassort form input {
     display: flex;
     align-items: center;
     gap: 8px;
-    position: fixed;
-    top: 80px;
-    left: 10px;
-    z-index: 1000;
+    position: relative;
+    z-index: 900;
     background-color: #273469;
     color: white;
     border: none;
@@ -7391,18 +7392,25 @@ dialog.reassort form input {
     font-size: 14px;
     font-weight: bold;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin: 10px 0;
+    width: fit-content;
   }
   .pageCatalogue .btnToggleFilters img {
     width: 20px;
     height: 20px;
+    filter: brightness(0) invert(1);
+  }
+  .pageCatalogue #resultat {
+    margin-bottom: 0;
   }
   .pageCatalogue .filter-sort {
     width: 280px;
     padding: 15px;
     font-size: 14px;
-    left: -320px;
+    left: -300px;
     transition: left 0.3s ease;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
   }
   .pageCatalogue .filter-sort.active {
     left: 0;
