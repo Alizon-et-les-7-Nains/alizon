@@ -865,7 +865,7 @@ body {
 }
 .pageCommandes .overlay .popup .croixFermerLaPage {
   position: absolute;
-  top: 155px;
+  top: 140px;
   right: 310px;
   cursor: pointer;
 }
@@ -887,7 +887,7 @@ body {
   flex: 1;
   overflow-y: auto;
   padding-right: 10px;
-  max-height: 100px;
+  max-height: 130px;
 }
 .pageCommandes .overlay .popup .popup-content .recapProduit {
   display: flex;
@@ -929,27 +929,27 @@ body {
 }
 .pageCommandes .overlay .popup .stepper p:first-of-type {
   position: absolute;
-  top: 60.5%;
+  top: 65%;
   left: 19%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(2) {
   position: absolute;
-  top: 71%;
+  top: 74.5%;
   left: 30%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(3) {
   position: absolute;
-  top: 60.5%;
+  top: 65%;
   left: 43%;
 }
 .pageCommandes .overlay .popup .stepper p:nth-of-type(4) {
   position: absolute;
-  top: 71%;
+  top: 74.5%;
   left: 58%;
 }
 .pageCommandes .overlay .popup .stepper p:last-of-type {
   position: absolute;
-  top: 60.5%;
+  top: 65%;
   left: 76%;
 }
 
