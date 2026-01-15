@@ -109,11 +109,11 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
 } else { 
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
-<button id="toggleFilters" class="btnToggleFilters">
-    <img src="../../public/images/icone-filtre.svg" alt="Filtres">
-    Filtres
-</button>
 <main class="pageCatalogue">
+    <button id="toggleFilters" class="btnToggleFilters">
+        <img src="../../public/images/icone-filtre.svg" alt="Filtres">
+        Filtres
+    </button>
     <aside class="filter-sort">
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
