@@ -7591,12 +7591,6 @@ dialog.reassort form input {
   font-family: "Lora", serif;
   color: #273469;
 }
-.mesNotif #focus {
-  -moz-transform: scaleX(-1);
-  -o-transform: scaleX(-1);
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
-}
 .mesNotif .topRecherche {
   display: flex;
   align-content: center;
