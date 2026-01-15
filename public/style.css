@@ -7388,6 +7388,8 @@ dialog.reassort form input {
 }
 @media (max-width: 512px) {
   .pageCatalogue .btnToggleFilters {
+    margin-top: 10px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 8px;
