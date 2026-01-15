@@ -20,6 +20,26 @@
 <body class="backoffice">
     <?php require_once './partials/header.php' ?>
     <?php
+        // ===============================
+        // Suppression notif après clic
+        // ===============================
+        if (isset($_GET['idNotif'], $_GET['reassort_id'])) {
+            $del = $pdo->prepare("
+                DELETE FROM _notification 
+                WHERE idNotif = :idNotif 
+                AND idClient = :idClient
+                AND est_vendeur = 1
+            ");
+            $del->execute([
+                ':idNotif' => (int)$_GET['idNotif'],
+                ':idClient' => $_SESSION['id']
+            ]);
+
+            $_SESSION['hide_notif'] = true;
+        }
+    ?>
+
+    <?php
         if (isset($_GET['idNotif'])) {
             $del = $pdo->prepare("DELETE FROM _notification WHERE idNotif = ? AND idClient = ?");
             $del->execute([$_GET['idNotif'], $_SESSION['id']]);
