@@ -887,6 +887,7 @@ body {
   flex: 1;
   overflow-y: auto;
   padding-right: 10px;
+  max-height: 100px;
 }
 .pageCommandes .overlay .popup .popup-content .recapProduit {
   display: flex;
@@ -6948,7 +6949,7 @@ dialog.reassort form input {
   height: 100vh;
   position: fixed;
   left: 0;
-  z-index: 1000;
+  z-index: 800;
   padding: 20px;
 }
 .pageCatalogue .filter-sort form {
@@ -7011,6 +7012,7 @@ dialog.reassort form input {
   top: -4px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+  z-index: 5;
 }
 .pageCatalogue .bannierePromo h1 {
   font-size: 30px;
@@ -7019,7 +7021,7 @@ dialog.reassort form input {
   position: absolute;
   height: 75px;
   width: auto;
-  z-index: 1;
+  z-index: 5;
 }
 .pageCatalogue .bannierePromo h1 {
   position: absolute;
@@ -7063,6 +7065,7 @@ dialog.reassort form input {
   background-color: #f14e4e;
   border-radius: 5px;
   padding: 0 2px;
+  margin: 0;
 }
 .pageCatalogue .nomEtPromo {
   display: flex;
@@ -7083,7 +7086,7 @@ dialog.reassort form input {
   max-height: 120px;
   object-fit: contain;
   border-radius: 20px;
-  z-index: 1;
+  z-index: 3;
 }
 .pageCatalogue .notation {
   display: flex;
