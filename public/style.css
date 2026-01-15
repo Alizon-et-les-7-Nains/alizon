@@ -7015,6 +7015,7 @@ dialog.reassort form input {
 .pageCatalogue {
   display: flex;
   flex-direction: row;
+  background-color: #fffefa;
 }
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
@@ -7302,6 +7303,9 @@ dialog.reassort form input {
   border: 2px solid black;
   text-decoration: none;
 }
+.pageCatalogue .btnToggleFilters {
+  display: none; /* Caché par défaut */
+}
 .pageCatalogue {
   /** Media Queries */
 }
@@ -7379,16 +7383,13 @@ dialog.reassort form input {
     align-items: center;
     gap: 8px;
     position: relative;
-    z-index: 900;
-    background-color: #273469;
-    color: white;
+    z-index: 1100;
+    color: #273469;
     border: none;
-    border-radius: 8px;
+    background-color: #fffefa;
     padding: 10px 15px;
-    cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     margin: 10px 0;
     width: fit-content;
   }
@@ -7404,10 +7405,13 @@ dialog.reassort form input {
     width: 280px;
     padding: 15px;
     font-size: 14px;
-    left: -300px;
+    left: -320px;
     transition: left 0.3s ease;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
+  }
+  .pageCatalogue .triNote {
+    margin-top: 200px;
   }
   .pageCatalogue .filter-sort.active {
     left: 0;
@@ -7666,7 +7670,7 @@ dialog.reassort form input {
   color: black;
 }
 .mesNotif .apercuNotif:hover img {
-  animation: tilt-shaking 0.25s 1s;
+  animation: tilt-shaking 0.25s 4;
 }
 .mesNotif .ecranNotif {
   width: 150%;
