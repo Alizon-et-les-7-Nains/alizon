@@ -7306,7 +7306,7 @@ dialog.reassort form input {
     padding: 10px 15px;
     font-size: 14px;
     font-weight: bold;
-    top: 50px;
+    top: 250px;
     width: 20%;
   }
   .pageCatalogue .btnToggleFilters img {
@@ -7327,6 +7327,9 @@ dialog.reassort form input {
   }
   .pageCatalogue .filter-sort form {
     margin-top: 50px;
+  }
+  .pageCatalogue .filter-sort form label {
+    margin-top: 0;
   }
   .pageCatalogue .filter-sort.active {
     left: 0;
