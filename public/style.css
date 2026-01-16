@@ -2428,7 +2428,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   padding: 24px;
   background: rgba(220, 209, 250, 0.15);
   border-radius: 8px;
-  border: 2px dashed #252b56;
+  border: 2px solid #252b56;
   animation: slideDown 0.3s ease;
 }
 .pagePaiement .billing-section.active {
