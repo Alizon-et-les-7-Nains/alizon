@@ -5,7 +5,6 @@ session_start();
 ob_start();
 
 $showPopup = false;
-$showPopupLivraison = isset($_GET['idCommande']);
 
 if (!empty($_SESSION['commandePayee'])) {
     $showPopup = true;
