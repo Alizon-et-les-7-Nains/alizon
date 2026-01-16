@@ -308,8 +308,7 @@ $montantTTC = $sousTotal + $livraison;
                     </div>
 
                     <div class="payment-icons">
-                        <img class="payment-icon"
-                            src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
+                        <img class="payment-icon" src="../../public/images/visaLogo.png" alt="Visa">
                     </div>
                 </div>
 
