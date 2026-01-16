@@ -7054,10 +7054,10 @@ dialog.reassort form input {
   filter: invert(0);
 }
 .pageCatalogue .products-section {
-  width: calc(100% - 280px); /* Ajustement automatique */
+  width: calc(100% - 280px);
   display: flex;
   flex-direction: column;
-  margin-left: 280px; /* Au lieu de padding-left: 22% */
+  margin-left: 280px;
   overflow-x: hidden;
 }
 .pageCatalogue .product-list {
@@ -7388,8 +7388,6 @@ dialog.reassort form input {
 }
 @media (max-width: 512px) {
   .pageCatalogue .btnToggleFilters {
-    margin-top: 10px;
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -7401,7 +7399,7 @@ dialog.reassort form input {
     padding: 10px 15px;
     font-size: 14px;
     font-weight: bold;
-    margin: 10px 0;
+    top: 50px;
     width: 20%;
   }
   .pageCatalogue .btnToggleFilters img {
@@ -7433,6 +7431,8 @@ dialog.reassort form input {
   .pageCatalogue .listeArticle {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 5px;
+    position: relative;
+    top: 100px;
   }
   .pageCatalogue .listeArticle article {
     min-width: 140px;
