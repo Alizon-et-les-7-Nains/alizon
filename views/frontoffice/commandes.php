@@ -415,9 +415,10 @@ $cart = getCurrentCart($pdo, $idClient);
 
     
 
-    <?php if ($showPopup): ?>
-        <?php
-            $idCommande = intval($_GET['idCommande']);
+    <?php 
+        $idCommande = intval($_GET['idCommande']);
+        if ($showPopup): ?>
+        <?php            
             $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
@@ -438,6 +439,7 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <?php if ($showPopupLivraison): ?>
         <?php
+            include "../../controllers/clientSocketSuivieEtape.php";
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([":idCommande" => $idCommande]);
