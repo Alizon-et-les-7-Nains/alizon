@@ -47,7 +47,7 @@ $notifs = getNotifications($pdo, $idVendeur, 1)
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
-<body>
+<body class="backoffice">
         
     <?php require_once './partials/header.php' ?>
 
