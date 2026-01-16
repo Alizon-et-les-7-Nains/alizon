@@ -137,7 +137,7 @@ class PaymentPage {
     const cart = window.__PAYMENT_DATA__?.cart || [];
 
     if (cart.length === 0) {
-      this.showMessage("Votre panier est vide", "error");
+      alert("Votre panier est vide");
       return;
     }
 
@@ -147,7 +147,7 @@ class PaymentPage {
       stockIssues.forEach((item) => {
         errorMsg += `- ${item.nom} (stock: ${item.stock}, demandé: ${item.qty})\n`;
       });
-      this.showMessage(errorMsg, "error");
+      alert(errorMsg);
       return;
     }
 
@@ -156,10 +156,7 @@ class PaymentPage {
       const billingData = this.getBillingFormData();
       const saved = await this.saveBillingAddress(billingData);
       if (!saved.success) {
-        this.showMessage(
-          "Erreur lors de la sauvegarde de l'adresse de facturation",
-          "error"
-        );
+        alert("Erreur lors de la sauvegarde de l'adresse de facturation");
         return;
       }
       this.idAdresseFacturation = saved.idAdresseFacturation;
@@ -421,14 +418,11 @@ class PaymentPage {
       if (result.success) {
         this.showThankYouMessage(result.idCommande);
       } else {
-        this.showMessage(
-          result.error || "Erreur lors de la création de la commande",
-          "error"
-        );
+        alert(result.error || "Erreur lors de la création de la commande");
       }
     } catch (error) {
       console.error("Erreur:", error);
-      this.showMessage("Erreur de connexion au serveur", "error");
+      alert("Erreur de connexion au serveur");
     }
   }
 
@@ -484,31 +478,6 @@ class PaymentPage {
     });
   }
 
-  showMessage(message, type = "info") {
-    // Pour le nouveau design, on peut utiliser un toast notification
-    const toast = document.createElement("div");
-    toast.className = `toast-message ${type}`;
-    toast.textContent = message;
-    toast.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 20px;
-        background: ${type === "error" ? "#ff6b6b" : "#4CAF50"};
-        color: white;
-        border-radius: 8px;
-        z-index: 1000;
-        animation: slideIn 0.3s ease;
-    `;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-      toast.style.animation = "slideOut 0.3s ease";
-      setTimeout(() => toast.remove(), 300);
-    }, 3000);
-  }
-
   hidePopup() {
     this.confirmationPopup.classList.remove("show");
   }
@@ -540,112 +509,3 @@ class PaymentPage {
 document.addEventListener("DOMContentLoaded", () => {
   new PaymentPage();
 });
-
-// Ajouter les styles pour les animations
-const style = document.createElement("style");
-style.textContent = `
-    @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    
-    @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-    }
-    
-    .error-message {
-        display: none;
-        color: #ff6b6b;
-        font-size: 14px;
-        margin-top: 5px;
-    }
-    
-    .error-message.show {
-        display: block;
-    }
-    
-    .popup-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .popup-overlay.show {
-        display: flex;
-    }
-    
-    .popup-content {
-        background: white;
-        border-radius: 12px;
-        padding: 30px;
-        max-width: 600px;
-        width: 90%;
-        max-height: 80vh;
-        overflow-y: auto;
-    }
-    
-    .popup-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-    
-    .close-popup {
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        color: #666;
-    }
-    
-    .popup-buttons {
-        display: flex;
-        gap: 15px;
-        margin-top: 30px;
-    }
-    
-    .btn-primary {
-        background: var(--accent);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
-        cursor: pointer;
-        flex: 1;
-    }
-    
-    .btn-secondary {
-        background: #f5f5f5;
-        color: #333;
-        border: 1px solid #ddd;
-        padding: 12px 24px;
-        border-radius: 8px;
-        cursor: pointer;
-        flex: 1;
-    }
-    
-    .cart-item-summary {
-        display: flex;
-        align-items: center;
-        padding: 10px 0;
-        border-bottom: 1px solid #eee;
-    }
-    
-    .cart-item-image {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-right: 15px;
-    }
-`;
-document.head.appendChild(style);
