@@ -49,11 +49,10 @@ $bordereau = $result['noBordereau'];
 // Test 3: Consultation
 //echo "Test STATUS:\n";
 $status_response = send_command($socket, "STATUS $bordereau");
-var_dump($status_response);
+$status_response = explode("|", $status_response);
 $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
-$stmt->execute([":etape" => $status_response, ":idCommande" => $idCommande]);
-var_dump($status_response);
+$stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 //echo "Réponse: $status_response\n\n";
 
 
