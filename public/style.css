@@ -7755,6 +7755,16 @@ dialog.reassort form input {
   }
 }
 
+.backoffice .mesNotif {
+  padding: 0;
+}
+
+.backoffice .aucuneNotif {
+  margin-left: 150px;
+  margin-top: 30px;
+  margin-bottom: 594px;
+}
+
 main.commandesBackoffice {
   display: flex;
   flex-direction: column;

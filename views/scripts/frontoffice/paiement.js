@@ -393,61 +393,6 @@ class PaymentPage {
     if (cancelBtn) {
       cancelBtn.addEventListener("click", () => this.hidePopup());
     }
-
-    // Gérer la soumission du formulaire de commande
-    const orderForm = this.popupContent.querySelector(".order-form");
-    if (orderForm) {
-      orderForm.addEventListener("submit", (e) => this.handleOrderSubmit(e));
-    }
-  }
-
-  async handleOrderSubmit(e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const formData = new FormData(form);
-
-    try {
-      const response = await fetch(form.action, {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        this.showThankYouMessage(result.idCommande);
-      } else {
-        alert(result.error || "Erreur lors de la création de la commande");
-      }
-    } catch (error) {
-      console.error("Erreur:", error);
-      alert("Erreur de connexion au serveur");
-    }
-  }
-
-  showThankYouMessage(orderId) {
-    const thankYouHtml = `
-            <div class="thank-you-popup">
-                <div class="success-icon">✓</div>
-                <h2>Merci pour votre commande !</h2>
-                <p>Votre commande a été enregistrée avec succès.</p>
-                <div class="order-number">
-                    <strong>Numéro de commande :</strong> ${orderId}
-                </div>
-                <p class="confirmation-text">Vous recevrez un email de confirmation sous peu.</p>
-                <button class="btn-home btn-primary">Retour à l'accueil</button>
-            </div>
-        `;
-
-    this.popupContent.innerHTML = thankYouHtml;
-
-    const homeBtn = this.popupContent.querySelector(".btn-home");
-    if (homeBtn) {
-      homeBtn.addEventListener("click", () => {
-        window.location.href = "../../views/frontoffice/accueilConnecte.php";
-      });
-    }
   }
 
   showError(message, field) {
