@@ -5,7 +5,6 @@ session_start();
 ob_start();
 
 $showPopup = false;
-$showPopupLivraison = isset($_GET['idCommande']);
 
 if (!empty($_SESSION['commandePayee'])) {
     $showPopup = true;
@@ -437,9 +436,8 @@ $cart = getCurrentCart($pdo, $idClient);
         </div>
     <?php endif; ?>
 
-    <?php if ($showPopupLivraison): ?>
+    <?php if (isset($_GET['idCommande'])): ?>
         <?php
-            include "../../../clientSocketSuivieEtape.php";
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([":idCommande" => $idCommande]);
