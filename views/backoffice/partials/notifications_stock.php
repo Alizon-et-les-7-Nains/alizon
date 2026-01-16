@@ -1,4 +1,45 @@
 <?php
+// =========================================================
+// GÉNÉRATION DES NOTIFICATIONS
+// =========================================================
+$idVendeur = $_SESSION['id'] ?? 0;
+
+if ($idVendeur > 0) {
+    // Récupére les produits en stock faible
+    $sqlLowStock = file_get_contents(__DIR__ . '/../../../queries/backoffice/stockFaible.sql');
+    $stmtLow = $pdo->prepare($sqlLowStock);
+    $stmtLow->execute([':idVendeur' => $idVendeur]);
+    $produitsAlerte = $stmtLow->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($produitsAlerte as $prod) {
+        $idProd = $prod['idProduit'];
+        $nomProd = $prod['nomProduit'];
+        $stockActuel = $prod['stock'];
+        
+        // Vérifie si une notification existe déjà
+        $checkSql = "SELECT COUNT(*) FROM _notification 
+                     WHERE idClient = :idVendeur 
+                     AND est_vendeur = 1 
+                     AND contenuNotif LIKE :pattern";
+        $checkStmt = $pdo->prepare($checkSql);
+        $checkStmt->execute([
+            ':idVendeur' => $idVendeur,
+            ':pattern' => "%ID:$idProd%"
+        ]);
+
+        // Si elle n'existe pas, on l'insère
+        if ($checkStmt->fetchColumn() == 0) {
+            $insertSql = "INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) 
+                          VALUES (:idVendeur, 'Alerte Stock Faible', :contenu, NOW(), 1)";
+            $insStmt = $pdo->prepare($insertSql);
+            $insStmt->execute([
+                ':idVendeur' => $idVendeur,
+                ':contenu' => "Le stock de '$nomProd' est faible ($stockActuel restant). ID:$idProd"
+            ]);
+        }
+    }
+}
+
 // ===============================
 //  Affichage des notifs
 // ===============================
