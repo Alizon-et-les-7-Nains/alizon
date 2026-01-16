@@ -7306,7 +7306,7 @@ dialog.reassort form input {
     padding: 10px 15px;
     font-size: 14px;
     font-weight: bold;
-    top: 200px;
+    top: 215px;
     width: 20%;
   }
   .pageCatalogue .btnToggleFilters img {
@@ -7351,7 +7351,7 @@ dialog.reassort form input {
     max-height: 130px;
     margin: 5px;
     padding: 8px;
-    border-radius: 4px;
+    border-radius: 8px;
   }
   .pageCatalogue .listeArticle article .imgProduit {
     max-width: 100px;
@@ -7407,7 +7407,7 @@ dialog.reassort form input {
   .pageCatalogue .imgProduit {
     border-radius: 4px;
   }
-  .pageCatalogue .plus {
+  .pageCatalogue .infoProd button img {
     width: 10px;
     height: 10px;
   }
