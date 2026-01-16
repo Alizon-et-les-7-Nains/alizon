@@ -2542,6 +2542,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: #4caf50;
   margin-bottom: 20px;
 }
+.pagePaiement .popup-header {
+  display: flex;
+}
 .pagePaiement .popup-title {
   font-size: 28px;
   font-weight: 600;
