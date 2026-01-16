@@ -2426,7 +2426,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: none;
   margin-top: 20px;
   padding: 24px;
-  background: rgba(220, 209, 250, 0.15);
+  background: rgba(220, 209, 250, 0.16);
   border-radius: 8px;
   border: 2px solid #252b56;
   animation: slideDown 0.3s ease;

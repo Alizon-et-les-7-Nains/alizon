@@ -255,7 +255,7 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
     MYSQL_ROW row = mysql_fetch_row(result);
     if (row) {
         snprintf(response, sizeof(response),
-                 "STATUS Bordereau: %s, Commande: %s, Destination: %s, Localisation: %s, Étape: %s, Date: %s\n",
+                 "%s|%s|%s|%s|%s|%s\n",
                  bordereau, row[0], row[1], row[2], row[3], row[4]);
         
         write_log(config.log_file, session->client_ip, session->client_port,
