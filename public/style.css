@@ -6576,7 +6576,8 @@ dialog.reassort form input {
   font-weight: bold;
   color: #273469;
 }
-.avis-vendeur .avi {
+
+.avi {
   border-collapse: separate;
   width: 100%;
   color: #273469;
@@ -6587,28 +6588,49 @@ dialog.reassort form input {
   font-size: 18px;
   font-family: "Lora", serif;
 }
-.avis-vendeur .avi .col-gauche {
+.avi .col-gauche {
   width: 150px;
   padding: 0px;
   text-align: center;
 }
-.avis-vendeur .avi .col-gauche .profil-client {
+.avi .col-gauche .profil-client {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   height: 100%;
 }
-.avis-vendeur .avi .col-gauche .profil-client img {
+.avi .col-gauche .profil-client img {
   width: 70px;
   height: 70px;
   border-radius: 50%;
   margin-bottom: 10px;
 }
-.avis-vendeur .avi .col-gauche .profil-client figcaption {
+.avi .col-gauche .profil-client figcaption {
   margin-top: 0;
 }
-.avis-vendeur .avi .etoiles {
+.avi button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+}
+.avi .btnRepAvis {
+  background-color: #273469;
+  color: #fffefa;
+  width: 200px;
+}
+.avi .btnRepAvis:hover {
+  background-color: rgb(25.1875, 33.5833333333, 67.8125);
+}
+.avi .repondreAvis {
+  border-radius: 12px;
+  display: flex;
+  position: relative;
+  left: 1280px;
+  padding: 0;
+}
+.avi .etoiles {
   margin-top: 0;
   margin-bottom: 0;
   margin-left: 0;
@@ -6617,13 +6639,13 @@ dialog.reassort form input {
   gap: 5px;
   display: flex;
 }
-.avis-vendeur .avi .ligne {
+.avi .ligne {
   border-radius: 12px;
   display: flex;
   align-items: center;
   padding: 0;
 }
-.avis-vendeur .avi .date-avis {
+.avi .date-avis {
   font-size: 12px;
   font-family: "Lora", sans-serif;
 }
@@ -7939,6 +7961,37 @@ dialog ul li table tr:last-child {
 }
 dialog:focus {
   outline: none;
+}
+
+.repondreAvis .avi {
+  margin-top: 30px;
+}
+.repondreAvis form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.repondreAvis form label {
+  margin: 30px;
+}
+.repondreAvis form textarea {
+  width: 100%;
+}
+.repondreAvis form button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  margin-top: 30px;
+  align-self: flex-end;
+}
+.repondreAvis form .buttonValider {
+  background-color: #273469;
+  color: #fffefa;
+  width: 200px;
+}
+.repondreAvis form .buttonValider:hover {
+  background-color: rgb(25.1875, 33.5833333333, 67.8125);
 }
 
 /*# sourceMappingURL=style.css.map */

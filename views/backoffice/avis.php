@@ -61,7 +61,6 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endif; ?>
 
                 <?php foreach ($avis as $avi): ?>
-
                 <?php
                         $imagesAvis = (
                             $pdo->query(
@@ -109,6 +108,34 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <?php foreach ($imagesAvis as $imageAvi): ?>
                             <img src="<?= $imageAvi['URL'] ?>" class="imageAvis">
                             <?php endforeach; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                            <!--- Bouton pour modifier l'avis séléctionné --->
+                        <td class="repondreAvis" colspan="2">
+                            <form action="./repondreAvis.php?idCli=<?php echo $avi['idClient']?>&idProd=<?php echo $avi['idProduit']?>" method="POST">
+                                <?php 
+                                
+                                    $sql = "SELECT EXISTS(
+                                        SELECT *
+                                        FROM _reponseAvis 
+                                        WHERE idProduit = :idProduit AND idClient = :idClient
+                                    );";
+
+                                    $stmt = $pdo->prepare($sql);
+                                    $stmt->bindValue(':idProduit', $avi['idProduit'], PDO::PARAM_INT); 
+                                    $stmt->bindValue(':idClient', $avi['idClient'], PDO::PARAM_INT); 
+                                    $stmt->execute();
+                                    $isAvis = $stmt->fetchColumn();
+                                    if($isAvis==0){
+                                ?>
+                                <!-- Fonctionnement afin de modifier le bouton 
+                                en fonction de s'il y a déjà une réponse ou non -->
+                                <button class="btnRepAvis" type="submit">Répondre à cet avis</button>
+                                <?php } else{ ?>
+                                <button class="btnRepAvis" type="submit">Modifier votre réponse à cet avis</button>
+                                <?php } ?>
+                            </form>
                         </td>
                     </tr>
                 </table>
