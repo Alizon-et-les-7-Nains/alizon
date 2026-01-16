@@ -32,10 +32,6 @@
             margin-right: 80px;
         }
     }
-
-    .backoffice .mesNotif {
-        padding: 0;
-    }
     
     .ensembleNotif {
         display: flex;
@@ -142,12 +138,6 @@
         margin-bottom: 510px;
     }
 
-    .backoffice .aucuneNotif {
-        margin-left: 150px;
-        margin-top: 30px;
-        margin-bottom: 594px;
-    }
-
     @media (max-width: 1100px) {
         .ensembleNotif {
             max-height: 680px;
@@ -191,4 +181,14 @@
         }
     }
     
+}
+
+.backoffice .mesNotif {
+    padding: 0;
+}
+
+.backoffice .aucuneNotif {
+    margin-left: 150px;
+    margin-top: 30px;
+    margin-bottom: 594px;
 }
