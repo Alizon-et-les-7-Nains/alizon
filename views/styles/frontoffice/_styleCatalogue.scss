@@ -41,10 +41,10 @@
     }
 
     .products-section{
-        width: calc(100% - 280px); /* Ajustement automatique */
+        width: calc(100% - 280px);
         display: flex;
         flex-direction: column;
-        margin-left: 280px; /* Au lieu de padding-left: 22% */
+        margin-left: 280px;
         overflow-x: hidden;
     }
 
@@ -429,8 +429,6 @@
 
 @media (max-width: 512px) {
     .btnToggleFilters {
-        margin-top: 10px;
-        margin-bottom: 10px;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -442,7 +440,7 @@
         padding: 10px 15px;
         font-size: 14px;
         font-weight: bold;
-        margin: 10px 0;
+        top: 50px;
         width: 20%;
     }
 
@@ -478,10 +476,11 @@
         margin-left: 0;
     }
 
-    // ... le reste de tes styles pour 512px
     .listeArticle {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 5px;
+        position: relative;
+        top: 100px;
     }
 
     .listeArticle article {
