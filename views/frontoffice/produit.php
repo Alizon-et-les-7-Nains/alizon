@@ -37,12 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     try {
         $pdo->beginTransaction();
         
-        // Clé unique pour identifier le vote dans la session
         $keyVote = "vote_{$idProduit}_{$idClientAvis}";
         $votePrecedent = $_SESSION[$keyVote] ?? null;
         
         if ($votePrecedent === $typeVote) {
-            // Retirer le vote
             if ($typeVote === 'like') {
                 $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
             } else {
@@ -55,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             
         } else {
             if ($votePrecedent !== null) {
-                // Retirer l'ancien vote
                 if ($votePrecedent === 'like') {
                     $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
                 } else {

@@ -48,7 +48,7 @@ function treat($path, $dest) {
             $newHeight = round($height * $ratio);
             exec("convert $path -resize {$newWidth}x{$newHeight} -quality 85 jpg:$dest.jpg"); // compression et cast en jpg
             
-            $newSize = filesize("$dest.jpg") / 1000;
+            $newSize = filesize("$dest") / 1000;
             
             if ($newSize > AIM_IMAGES) {
                 $ratio *= 0.9;
