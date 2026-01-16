@@ -4690,20 +4690,21 @@ main.backoffice-stocks section img:not(figure img) {
 main.backoffice-stocks section div.remise {
   border: none !important;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) *:not(img) {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) *:not(img) {
   user-select: text;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) {
   padding: 1em;
   padding-bottom: 0;
   background-color: #e4d9ff;
   border-radius: 16px;
   font-family: "open-sans";
+  width: 800px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table:not(table table) {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table:not(table table) {
   border-spacing: 2em 0;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) button.settings {
   border: none;
   background: none;
   display: flex;
@@ -4712,13 +4713,13 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) button.s
   height: 23px;
   justify-self: right;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) button.settings div {
   background-color: #273469;
   border-radius: 8px;
   width: 25px;
   height: 3px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div div {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) button.settings div div {
   transition: all 0.2s ease;
   background-color: #273469;
   width: 7px;
@@ -4728,30 +4729,30 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) button.s
   top: -2px;
   left: 4px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div div.right {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) button.settings div div.right {
   left: 14px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings:hover {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) button.settings:hover {
   cursor: pointer;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) figure {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) figure {
   display: flex;
   gap: 0.25em;
   align-items: center;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) ul {
   list-style: none;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) .type {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) .type {
   text-transform: capitalize;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table {
   width: 100%;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table th {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table th {
   text-align: left;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table tr th {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table tr th {
   text-align: left;
   font-weight: bold;
   font-size: 20px;
@@ -4760,54 +4761,54 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) table tr
   justify-self: center;
   padding: 0;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table figure {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table figure {
   color: #FFD000;
   justify-content: flex-start;
   margin: 0;
   padding: 0;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table table, main.backoffice-stocks section div:not(button.settings div, div.remise) table ul:not(ul ul) {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table table, main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul:not(ul ul) {
   background-color: #fffefa;
   border-style: solid;
   border-width: 2px;
   border-color: #000000;
   border-radius: 16px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table table {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table table {
   padding-right: 1em;
   width: 100%;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table table tr:nth-child(2) th {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table table tr:nth-child(2) th {
   text-transform: capitalize;
   padding-top: 1.5em;
   padding-bottom: 0;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table table tr:nth-child(3) th {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table table tr:nth-child(3) th {
   padding: 0;
   vertical-align: bottom;
   height: 60px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table ul h3 {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul h3 {
   margin: 0.5em;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul {
   padding-left: 0;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul ul {
   display: flex;
   justify-content: space-between;
   padding: 1em;
   align-items: center;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul li:first-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul ul li:first-child {
   font-size: 30px;
   font-weight: bold;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul li:last-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul ul li:last-child {
   font-style: italic;
   color: #6e6e6e;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) > ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) > ul {
   margin-top: -0.5em;
   display: flex;
   align-items: center;
@@ -4816,13 +4817,13 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) > ul {
   margin-left: -2em;
   font-weight: bold;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) > ul figure img {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) > ul figure img {
   height: 20px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) > ul figure {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) > ul figure {
   gap: 0.25em;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) > ul li:last-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) > ul li:last-child {
   color: #f14e4e;
 }
 main.backoffice-stocks section:first-child div:not(button.settings div) {
@@ -7785,7 +7786,7 @@ main.commandesBackoffice section.livre article {
   border-left-color: #259525;
 }
 
-dialog {
+main.commandesBackoffice dialog {
   padding-top: 0;
   transition: all 0.2s ease;
   border-radius: 16px;
@@ -7795,28 +7796,28 @@ dialog {
   align-items: center;
   max-width: fit-content;
 }
-dialog::backdrop {
+main.commandesBackoffice dialog::backdrop {
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(1px);
 }
-dialog h2 {
+main.commandesBackoffice dialog h2 {
   justify-self: center;
 }
-dialog table:not(ul li table) {
+main.commandesBackoffice dialog table:not(ul li table) {
   max-width: min(75vw, 500px);
   width: auto;
   padding-top: 1em;
 }
-dialog table:not(ul li table) td {
+main.commandesBackoffice dialog table:not(ul li table) td {
   text-align: left;
   font-weight: bold;
   font-size: 20px;
 }
-dialog table:not(ul li table) td:last-child {
+main.commandesBackoffice dialog table:not(ul li table) td:last-child {
   width: 1%;
   white-space: nowrap;
 }
-dialog ul {
+main.commandesBackoffice dialog ul {
   display: flex;
   max-width: 100%;
   white-space: nowrap;
@@ -7827,7 +7828,7 @@ dialog ul {
   margin: 0;
   padding: 0;
 }
-dialog ul li table {
+main.commandesBackoffice dialog ul li table {
   width: 250px;
   table-layout: fixed;
   border-spacing: 0;
@@ -7836,16 +7837,16 @@ dialog ul li table {
   margin: 0;
   border-radius: 16px;
 }
-dialog ul li table tr {
+main.commandesBackoffice dialog ul li table tr {
   padding: 0;
   margin: 0;
 }
-dialog ul li table td {
+main.commandesBackoffice dialog ul li table td {
   padding: 0;
   margin: 0;
   text-wrap: wrap;
 }
-dialog ul li table img {
+main.commandesBackoffice dialog ul li table img {
   margin: 0;
   padding: 0;
   height: 200px;
@@ -7854,25 +7855,25 @@ dialog ul li table img {
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
-dialog ul li table {
+main.commandesBackoffice dialog ul li table {
   font-weight: bold;
   font-size: 15px;
 }
-dialog ul li table tr:nth-child(2) td, dialog ul li table tr:nth-child(3) td {
+main.commandesBackoffice dialog ul li table tr:nth-child(2) td, main.commandesBackoffice dialog ul li table tr:nth-child(3) td {
   padding-left: 0.5em;
   padding-right: 0.5em;
   padding-bottom: 0.5em;
   word-wrap: break-word;
 }
-dialog ul li table tr:nth-child(2) td:last-child, dialog ul li table tr:nth-child(3) td:last-child {
+main.commandesBackoffice dialog ul li table tr:nth-child(2) td:last-child, main.commandesBackoffice dialog ul li table tr:nth-child(3) td:last-child {
   text-align: right;
   font-size: 25px;
   font-weight: bold;
 }
-dialog ul li table tr:last-child {
+main.commandesBackoffice dialog ul li table tr:last-child {
   font-size: 25px;
 }
-dialog:focus {
+main.commandesBackoffice dialog:focus {
   outline: none;
 }
 
