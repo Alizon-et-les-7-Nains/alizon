@@ -1,16 +1,21 @@
-<?php 
-require_once "../../controllers/pdo.php";
-require_once "../../controllers/date.php";
-require_once '../../controllers/auth.php';
-
+<?php
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../frontoffice/connexionClient.php");
-    exit();
-}
+    require_once '../../controllers/pdo.php';
+    require_once '../../controllers/auth.php';
 
-$idVendeur = $_SESSION['id'];
+    if(isset($_GET['error']) && isset($_GET['idProduit'])) {
+        $idProduit = $_GET['idProduit'];
+        $codeErreur = $_GET['error'];
+        echo "<script>window.addEventListener('load', () => popUpErreur('$idProduit', $codeErreur));</script>";
+    }
+
+    if (!isset($_SESSION['id'])) {
+        header("Location: ../frontoffice/connexionClient.php");
+        exit();
+    }
+
+    $idVendeur = $_SESSION['id'];
 
 function getNotifications($pdo, $idClient, $est_vendeur) {
     $sql = "SELECT * FROM _notification 
