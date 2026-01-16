@@ -95,9 +95,10 @@ $notifs = getNotifications($pdo, $id_client, 0)
             <h2 class="aucuneNotif">Aucune notification</h2>
         <?php } ?>
 
-        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-        <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
     </main>
+
+    <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
+    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
     <script>
         const titreContent = document.getElementById("titre");
