@@ -217,23 +217,6 @@ $montantTTC = $sousTotal + $livraison;
     </script>
 
     <main class="container">
-        <div class="progress-steps">
-            <div class="step active">
-                <div class="step-circle">1</div>
-                <span class="step-text">Livraison</span>
-            </div>
-            <div class="step-divider"></div>
-            <div class="step">
-                <div class="step-circle">2</div>
-                <span class="step-text">Paiement</span>
-            </div>
-            <div class="step-divider"></div>
-            <div class="step">
-                <div class="step-circle">3</div>
-                <span class="step-text">Confirmation</span>
-            </div>
-        </div>
-
         <div class="payment-layout">
             <div class="forms-container">
                 <div class="form-section">

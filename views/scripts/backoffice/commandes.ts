@@ -1,4 +1,4 @@
-Array.from(document.querySelectorAll('main.backofficeCommandes article')).forEach(command => {
+document.querySelectorAll<HTMLElement>('main.commandesBackoffice article').forEach((command) => {
     command.addEventListener('click', () => {
         const modal = document.querySelector(`main.commandesBackoffice dialog#${command.id}`) as HTMLDialogElement;
 

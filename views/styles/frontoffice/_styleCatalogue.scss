@@ -484,37 +484,37 @@
     }
 
     .listeArticle article {
-        min-width: 140px;
-        max-width: 140px;
-        min-height: 180px;
-        max-height: 180px;
+        min-width: 100px;
+        max-width: 100px;
+        min-height: 130px;
+        max-height: 130px;
         margin: 5px;
         padding: 8px;
     }
 
     .listeArticle article .imgProduit {
-        max-width: 140px;
-        max-height: 80px;
+        max-width: 100px;
+        max-height: 60px;
     }
 
     .listeArticle article h2 {
-        font-size: 12px;
-    }
-
-    .prix h2 {
-        font-size: 22px;
-    }
-
-    .prix h3 {
-        font-size: 9px;
-    }
-
-    .prix h4 {
         font-size: 10px;
     }
 
+    .prix h2 {
+        font-size: 18px;
+    }
+
+    .prix h3 {
+        font-size: 8px;
+    }
+
+    .prix h4 {
+        font-size: 8px;
+    }
+
     .notation span {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .notation .etoile {
@@ -523,22 +523,23 @@
     }
 
     #promoTexte {
-        font-size: 11px;
+        font-size: 9px;
         padding: 0 1px;
+        border-radius: 4px;
     }
 
     .bannierePromo h1 {
-        font-size: 13px;
+        font-size: 10px;
         top: 22px;
         left: 6px;
     }
 
     .imgBanniere {
-        height: 60px;
+        height: 56px;
     }
 
     .tempsRestant {
-        font-size: 9px;
+        font-size: 7px;
         padding: 2px;
     }
 
