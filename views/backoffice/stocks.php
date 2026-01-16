@@ -23,7 +23,7 @@
         // ===============================
         // Suppression notif après clic
         // ===============================
-        if (isset($_GET['idNotif'], $_GET['reassort_id'])) {
+        /* if (isset($_GET['idNotif'], $_GET['reassort_id'])) {
             $del = $pdo->prepare("
                 DELETE FROM _notification 
                 WHERE idNotif = :idNotif 
@@ -49,8 +49,8 @@
         if (isset($_GET['reassort_id'])) {
             $_SESSION['hide_notif'] = true;
         }
-    ?>
-    <?php require_once './partials/notifications_stock.php' ?>
+    */?>
+    <?php // require_once './partials/notifications_stock.php' ?>
 
     <?php
         $currentPage = basename(__FILE__);
@@ -443,7 +443,7 @@ echo "
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
-    <script src="../../public/scriptNotif.js"></script>
+    <!-- <script src="../../public/scriptNotif.js"></script> -->
 </body>
 
 </html>
