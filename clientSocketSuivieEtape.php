@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . "/controllers/pdo.php";
 
-$tabIdDestination = $_SESSION['tabIdDestination'];
-// auto_test.php
+$idCommande = intval($_GET['idCommande']);
+
 function send_command($socket, $command)
 {
     // Envoi de la commande
@@ -38,23 +38,23 @@ if (!$socket) {
 $auth_response = send_command($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e");
 //echo "Réponse: $auth_response\n\n";
 
-// Test 2: Création
-//echo "Test CREATE:\n";
-$create_response = send_command($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"] . " " . $tabIdDestination[0]["destination"]);
-$sql = "UPDATE _commande SET noBordereau = :noBordereau WHERE idCommande = :idCommande";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDestination[0]["idCommande"]]);
-//echo "Réponse: $create_response\n\n";
+$sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([":idCommande" => $idCommande]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$bordereau = $result['noBordereau'];
 
 // Extraire le numéro de bordereau
-if (preg_match('/BORDEREAU (\d+)/', $create_response, $matches)) {
-    $bordereau = $matches[1];
-    
-    // Test 3: Consultation
-    //echo "Test STATUS:\n";
-    $status_response = send_command($socket, "STATUS $bordereau");
-    //echo "Réponse: $status_response\n\n";
-}
+// Test 3: Consultation
+//echo "Test STATUS:\n";
+$status_response = send_command($socket, "STATUS $bordereau");
+$status_response = explode("|", $status_response);
+$sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
+//echo "Réponse: $status_response\n\n";
+
 
 // Test 4: HELP
 //echo "Test HELP:\n";
@@ -64,6 +64,6 @@ $help_response = send_command($socket, "HELP");
 // Fermeture de la connexion
 fclose($socket);
 
-header('Location: views/frontoffice/commandes.php');
+header('Location: views/frontoffice/commandes.php?idCommande=' . $idCommande);
 exit;
 ?>

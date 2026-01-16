@@ -1,49 +1,62 @@
 <?php 
+// Inclure le fichier de connexion à la base de données
 require_once "../../controllers/pdo.php";
+// Démarrer la session pour gérer l'authentification
 session_start();
 
+// Initialiser les variables
 $error = '';
 $email_tel = '';
 $password = '';
 
+// Vérifier si la requête est en POST (formulaire soumis)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Récupérer et nettoyer les données du formulaire
     $email_tel = trim($_POST['email_tel']);
     $password_clair = trim($_POST['password_clair']); 
     
-    // Debug simple
+    // Log de debug pour tracer les tentatives de connexion
     error_log("Tentative connexion: " . $email_tel);
     
-    // Email ou téléphone
+    // Déterminer si l'entrée est un email ou un téléphone
     if (filter_var($email_tel, FILTER_VALIDATE_EMAIL)) {
+        // C'est un email : requête avec email
         $sql = "SELECT idClient, email, mdp, noTelephone, prenom, nom FROM _client WHERE email = ?";
     } else {
+        // C'est un téléphone : nettoyer et requête avec numéro
         $tel_clean = preg_replace('/[^0-9]/', '', $email_tel);
         $sql = "SELECT idClient, email, mdp, noTelephone, prenom, nom FROM _client WHERE REPLACE(noTelephone, ' ', '') = ?";
         $email_tel = $tel_clean;
     }
     
+    // Préparer et exécuter la requête
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$email_tel]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
+    // Vérifier si un utilisateur a été trouvé
     if ($user) {
+        // Log du hash du mot de passe pour debug
         error_log("MDP en BD (hash): " . $user['mdp']);
         
-        // Vérification avec password_verify
+        // Vérifier le mot de passe avec password_verify (hachage sécurisé)
         if (password_verify($password_clair, $user['mdp'])) {
-            // Connexion réussie
+            // Connexion réussie : créer la session utilisateur
             $_SESSION['user_id'] = $user['idClient'];
             $_SESSION['user_email'] = $user['email'];
             $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
             $_SESSION['user_prenom'] = $user['prenom'];
             $_SESSION['user_nom'] = $user['nom'];
             
+            // Rediriger vers la page d'accueil connecté
             header('Location: ../../views/frontoffice/accueilConnecte.php');
             exit;
         } else {
+            // Mot de passe incorrect
             $error = "Mot de passe incorrect";
         }
     } else {
+        // Aucun compte correspondant trouvé
         $error = "Aucun compte trouvé avec ces identifiants";
     }
 }
