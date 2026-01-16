@@ -60,6 +60,17 @@ require_once '../../controllers/auth.php';
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="typeProd">Catégorie du produit</label>
+                <select name="typeProd" id="typeProd" required>
+                    <option value="">-- Choisir une catégorie --</option>
+                    <option value="Charcuteries">Charcuteries</option>
+                    <option value="Alcools">Alcools</option>
+                    <option value="Vêtements">Vêtements</option>
+                    <option value="Aliments">Aliments</option>
+                </select>
+            </div>
+
             <div class="right-section">
                 <div class="product-desc-box">
                     <label for="product-description">Description du produit</label>

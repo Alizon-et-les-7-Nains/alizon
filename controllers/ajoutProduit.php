@@ -5,75 +5,77 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // Récupére les données du formulaire
     $nom = $_POST['nom']; 
     $prix = $_POST['prix'];
     $poids = $_POST['poids'];
     $description = $_POST['description'];
     $mots_cles = $_POST['mots_cles'];
+    $typeProd = $_POST['typeProd'];
+
+    // Génére les données automatiques
+    $dateActuelle = date('Y-m-d H:i:s');
+    $versionInitiale = "1.0";
 
     try {
-
         $pdo->beginTransaction();
 
-        // Insertion dans _produit
+        // Insertion dans la table _produit
         $sql = "INSERT INTO _produit 
-            (nom, prix, poids, description, mots_cles, idVendeur, stock, versionProd, note, seuilAlerte, enVente) 
-            VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur, :stock, :versionProd, :note, :seuilAlerte, :enVente)";
+                (nom, prix, poids, description, mots_cles, idVendeur, stock, versionProd, note, seuilAlerte, enVente, typeProd, dateAjout, dateDerniereModif) 
+                VALUES 
+                (:nom, :prix, :poids, :description, :mots_cles, :idVendeur, :stock, :versionProd, :note, :seuilAlerte, :enVente, :typeProd, :dateAjout, :dateModif)";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
-            ':nom' => $nom,
-            ':prix' => $prix,
-            ':poids' => $poids,
-            ':description' => $description,
-            ':mots_cles' => $mots_cles,
-            ':idVendeur' => $_SESSION['id'],
-            ':stock' => 0,
-            ':versionProd' => 1.0,
-            ':note' => 0.0,
-            ':seuilAlerte' => 0,
-            ':enVente' => 0
+            ':nom'          => $nom,
+            ':prix'         => $prix,
+            ':poids'        => $poids,
+            ':description'  => $description,
+            ':mots_cles'    => $mots_cles,
+            ':idVendeur'    => $_SESSION['id'],
+            ':stock'        => 0,
+            ':versionProd'  => $versionInitiale,
+            ':note'         => 0.0,
+            ':seuilAlerte'  => 0,
+            ':enVente'      => 0,
+            ':typeProd'     => $typeProd,
+            ':dateAjout'    => $dateActuelle,
+            ':dateModif'    => $dateActuelle
         ]);
 
-        // On récupère l'ID généré
+        // On récupère l'ID généré pour l'associer à l'image
         $idNewProduit = $pdo->lastInsertId();
 
-        // Gestion des images
+        // Gestion de la photo
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
             $extension = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
             $nouveauNomImage = 'produit_' . $idNewProduit . '_' . time() . '.' . $extension;
-            $dossierDestination = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $nouveauNomImage;
-            // Déplacement du fichier
-            error_log(print_r($_FILES['photo'], true));
+            
+            $dossierDestination = $_SERVER['DOCUMENT_ROOT'] . '/public/images/upload/' . $nouveauNomImage;
+
             try {
                 treat($_FILES['photo']['tmp_name'], $dossierDestination);
             } catch (Exception $e) {
-                error_log("impossible de compresser");
-                print_r("impossible de compresser");
-                if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
-                    throw new Exception("Impossible de traiter l'image.");
-                }
+                move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination);
             }
 
-            // Insertion dans _imageDeProduit
-            $sql = "INSERT INTO _imageDeProduit (idProduit, URL) VALUES (:idProduit, :URL)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([
+            $sqlImg = "INSERT INTO _imageDeProduit (idProduit, URL) VALUES (:idProduit, :URL)";
+            $stmtImg = $pdo->prepare($sqlImg);
+            $stmtImg->execute([
                 ':idProduit' => $idNewProduit,
-                ':URL' => "/images/$nouveauNomImage"
+                ':URL' => "/public/images/upload/$nouveauNomImage"
             ]);
         }
 
         $pdo->commit();
 
-        $id_session = session_id();
-        $_SESSION['id_session'] = $id_session;
         header('Location: ../views/backoffice/accueil.php');
         exit();
 
     } catch (Exception $e) {
         $pdo->rollBack();
-        die("Erreur lors de l'ajout : " . $e->getMessage());
+        die("Erreur lors de l'ajout du produit : " . $e->getMessage());
     }
 }
 ?>
