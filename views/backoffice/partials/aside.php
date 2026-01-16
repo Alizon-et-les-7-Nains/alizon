@@ -35,5 +35,12 @@
                 <figcaption>Avis</figcaption>
             </figure>
         </li>
+        <?php $class = $currentPage == 'notifications.php' ? 'here' : ''; ?>
+        <li class="aside-btn <?php echo $class; ?>">
+            <figure>
+                <img src="/public/images/chatDark.svg">
+                <figcaption>Notifications</figcaption>
+            </figure>
+        </li>
     </ul>
 </aside>

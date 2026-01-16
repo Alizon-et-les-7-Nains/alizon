@@ -429,10 +429,12 @@
 
 @media (max-width: 512px) {
     .btnToggleFilters {
+        margin-top: 10px;
+        margin-bottom: 10px;
         display: flex;
         align-items: center;
         gap: 8px;
-        position: relative;
+        position: fixed;
         z-index: 1100;
         color: #273469;
         border: none;
