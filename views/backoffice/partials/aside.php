@@ -38,7 +38,7 @@
         <?php $class = $currentPage == 'notifications.php' ? 'here' : ''; ?>
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
-                <img src="/public/images/chatDark.svg">
+                <img id="focus" src="../../public/images/bellRingLight.svg" alt="Nouvelle notification">
                 <figcaption>Notifications</figcaption>
             </figure>
         </li>
