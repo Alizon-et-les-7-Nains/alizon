@@ -464,6 +464,10 @@ $breakpoint-xs: 480px;
     margin-bottom: 20px;
   }
 
+  .popup-header {
+    display: flex;
+  }
+
   .popup-title {
     font-size: 28px;
     font-weight: 600;
