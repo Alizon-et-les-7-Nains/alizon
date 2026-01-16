@@ -7612,6 +7612,9 @@ dialog.reassort form input {
   margin-left: 80px;
   margin-right: 80px;
 }
+.mesNotif .backoffice .mesNotif {
+  padding: 0;
+}
 .mesNotif .ensembleNotif {
   display: flex;
   flex-direction: row;
@@ -7711,6 +7714,11 @@ dialog.reassort form input {
   margin-left: 150px;
   margin-top: 30px;
   margin-bottom: 510px;
+}
+.mesNotif .backoffice .aucuneNotif {
+  margin-left: 150px;
+  margin-top: 30px;
+  margin-bottom: 594px;
 }
 @media (max-width: 1100px) {
   .mesNotif .ensembleNotif {
