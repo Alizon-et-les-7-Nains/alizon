@@ -7309,7 +7309,7 @@ dialog.reassort form input {
     padding: 10px 15px;
     font-size: 14px;
     font-weight: bold;
-    top: 250px;
+    top: 200px;
     width: 20%;
   }
   .pageCatalogue .btnToggleFilters img {
@@ -7332,7 +7332,7 @@ dialog.reassort form input {
     margin-top: 50px;
   }
   .pageCatalogue .filter-sort form label {
-    margin-top: 0;
+    margin-top: 0.3em;
   }
   .pageCatalogue .filter-sort.active {
     left: 0;
@@ -7345,7 +7345,7 @@ dialog.reassort form input {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 5px;
     position: relative;
-    top: 100px;
+    top: 50px;
   }
   .pageCatalogue .listeArticle article {
     min-width: 100px;
@@ -7354,6 +7354,7 @@ dialog.reassort form input {
     max-height: 130px;
     margin: 5px;
     padding: 8px;
+    border-radius: 4px;
   }
   .pageCatalogue .listeArticle article .imgProduit {
     max-width: 100px;
@@ -7399,9 +7400,19 @@ dialog.reassort form input {
     width: 35px;
     height: 35px;
   }
+  .pageCatalogue .notation span {
+    font-size: 10px;
+  }
   .pageCatalogue .star {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
+  }
+  .pageCatalogue .imgProduit {
+    border-radius: 4px;
+  }
+  .pageCatalogue .plus {
+    width: 10px;
+    height: 10px;
   }
 }
 
