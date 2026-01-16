@@ -8,6 +8,7 @@ class PaymentPage {
   init() {
     this.setupReferences();
     this.setupEventListeners();
+    this.setupProgressSteps();
   }
 
   setupReferences() {
@@ -15,9 +16,9 @@ class PaymentPage {
     this.billingSection = document.getElementById("billingSection");
     this.confirmationPopup = document.getElementById("confirmationPopup");
     this.popupContent = document.getElementById("popupContent");
-    this.closePopupBtn = document.querySelector(".close-popup");
-    this.payerButtons = document.querySelectorAll(".payer");
+    this.payerButtons = document.querySelectorAll(".cta-button, .payer");
     this.cgvCheckbox = document.getElementById("cgvCheckbox");
+    this.progressSteps = document.querySelectorAll(".step");
   }
 
   setupEventListeners() {
@@ -35,13 +36,63 @@ class PaymentPage {
       btn.addEventListener("click", (e) => this.handlePayment(e));
     });
 
-    if (this.closePopupBtn) {
-      this.closePopupBtn.addEventListener("click", () => this.hidePopup());
-    }
-
+    // Gestion de la fermeture du popup
     this.confirmationPopup.addEventListener("click", (e) => {
       if (e.target === this.confirmationPopup) this.hidePopup();
     });
+
+    // Ajout des écouteurs pour les champs de carte
+    this.setupCardInputListeners();
+  }
+
+  setupProgressSteps() {
+    // Mettre à jour l'étape active
+    const updateActiveStep = () => {
+      this.progressSteps.forEach((step) => step.classList.remove("active"));
+      this.progressSteps[0]?.classList.add("active"); // Première étape active par défaut
+    };
+
+    updateActiveStep();
+  }
+
+  setupCardInputListeners() {
+    // Formatage du numéro de carte
+    const cardNumberInput = document.querySelector(".num-carte");
+    if (cardNumberInput) {
+      cardNumberInput.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\s+/g, "");
+        value = value.replace(/\D/g, "");
+
+        // Ajouter des espaces tous les 4 chiffres
+        let formatted = "";
+        for (let i = 0; i < value.length; i++) {
+          if (i > 0 && i % 4 === 0) formatted += " ";
+          formatted += value[i];
+        }
+
+        e.target.value = formatted.substring(0, 19); // 16 chiffres + 3 espaces
+      });
+    }
+
+    // Formatage de la date d'expiration
+    const expDateInput = document.querySelector(".carte-date");
+    if (expDateInput) {
+      expDateInput.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length >= 2) {
+          value = value.substring(0, 2) + "/" + value.substring(2, 4);
+        }
+        e.target.value = value.substring(0, 5);
+      });
+    }
+
+    // Limiter le CVV à 3 chiffres
+    const cvvInput = document.querySelector(".cvv-input");
+    if (cvvInput) {
+      cvvInput.addEventListener("input", (e) => {
+        e.target.value = e.target.value.replace(/\D/g, "").substring(0, 3);
+      });
+    }
   }
 
   validateBillingFields(adresse, codePostal, ville) {
@@ -96,11 +147,45 @@ class PaymentPage {
       stockIssues.forEach((item) => {
         errorMsg += `- ${item.nom} (stock: ${item.stock}, demandé: ${item.qty})\n`;
       });
-      alert(errorMsg);
+      this.showMessage(errorMsg, "error");
       return;
     }
 
+    // Si adresse de facturation différente, sauvegarder d'abord
+    if (this.factAddrCheckbox && this.factAddrCheckbox.checked) {
+      const billingData = this.getBillingFormData();
+      const saved = await this.saveBillingAddress(billingData);
+      if (!saved.success) {
+        this.showMessage(
+          "Erreur lors de la sauvegarde de l'adresse de facturation",
+          "error"
+        );
+        return;
+      }
+      this.idAdresseFacturation = saved.idAdresseFacturation;
+    }
+
     this.showConfirmationPopup(formData, cart);
+  }
+
+  async saveBillingAddress(billingData) {
+    try {
+      const response = await fetch("pagePaiement.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          action: "saveBillingAddress",
+          ...billingData,
+        }),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error("Erreur:", error);
+      return { success: false, error: error.message };
+    }
   }
 
   validateForm() {
@@ -184,13 +269,22 @@ class PaymentPage {
     };
   }
 
+  getBillingFormData() {
+    return {
+      adresse: document.querySelector(".adresse-fact-input").value.trim(),
+      codePostal: document
+        .querySelector(".code-postal-fact-input")
+        .value.trim(),
+      ville: document.querySelector(".ville-fact-input").value.trim(),
+    };
+  }
+
   showConfirmationPopup(formData, cart) {
     let cartHtml = '<div class="cart-summary">';
-    let total = 0;
+    let total = window.__PAYMENT_DATA__?.totals?.montantTTC || 0;
 
     cart.forEach((item) => {
       const itemTotal = item.prix * item.qty;
-      total += itemTotal;
 
       cartHtml += `
                 <div class="cart-item-summary">
@@ -212,62 +306,143 @@ class PaymentPage {
     cartHtml += "</div>";
 
     const popupHtml = `
-            <h2>Confirmation de commande</h2>
+            <div class="popup-header">
+                <h2>Confirmation de commande</h2>
+                <button class="close-popup">&times;</button>
+            </div>
             <div class="order-info">
-                <p><strong>Adresse de livraison :</strong><br>
-                ${formData.adresseLivraison}<br>
-                ${formData.codePostal} ${formData.villeLivraison}</p>
+                <div class="info-section">
+                    <h4>Adresse de livraison</h4>
+                    <p>${formData.adresseLivraison}<br>
+                    ${formData.codePostal} ${formData.villeLivraison}</p>
+                </div>
                 
-                <p><strong>Paiement :</strong> Carte Visa se terminant par ${formData.numCarte.slice(
-                  -4
-                )}</p>
+                <div class="info-section">
+                    <h4>Paiement</h4>
+                    <p>Carte Visa se terminant par ${formData.numCarte.slice(
+                      -4
+                    )}</p>
+                </div>
             </div>
             
-            <h3>Récapitulatif du panier</h3>
-            ${cartHtml}
+            <div class="popup-cart">
+                <h3>Récapitulatif du panier</h3>
+                ${cartHtml}
+            </div>
             
             <div class="total-section">
-                <h3>Total : ${total.toFixed(2)}€</h3>
+                <div class="total-row">
+                    <span>Sous-total</span>
+                    <span>${
+                      window.__PAYMENT_DATA__?.totals?.sousTotal?.toFixed(2) ||
+                      "0.00"
+                    } €</span>
+                </div>
+                <div class="total-row">
+                    <span>Livraison</span>
+                    <span>${
+                      window.__PAYMENT_DATA__?.totals?.livraison?.toFixed(2) ||
+                      "0.00"
+                    } €</span>
+                </div>
+                <div class="total-row final">
+                    <span>Total TTC</span>
+                    <span><strong>${total.toFixed(2)} €</strong></span>
+                </div>
             </div>
-            <form method="POST" action="../../../alizon.php">
-              <div class="popup-buttons">
-                  <button type = "button" class="btn-cancel">Annuler</button>
-                  <button type = "submit" class="btn-confirm">Confirmer la commande</button>
-              </div>
-              <input type="hidden" name="adresseLivraison" value="${formData.adresseLivraison}">
-              <input type="hidden" name="villeLivraison" value="${formData.villeLivraison}">
-              <input type="hidden" name="codePostal" value="${formData.codePostal}">
-              <input type="hidden" name="numeroCarte" value="${formData.numCarte}">
-              <input type="hidden" name="nomCarte" value="${formData.nomCarte}">
-              <input type="hidden" name="dateExpiration" value="${formData.dateExpiration}">
-              <input type="hidden" name="cvv" value="${formData.cvv}">
-              <input type="hidden" name="idAdresseFacturation" value="${this.idAdresseFacturation}">
-            </form>
+            
+            <div class="popup-buttons">
+                <button type="button" class="btn-cancel btn-secondary">Modifier</button>
+                <form method="POST" action="pagePaiement.php" class="order-form">
+                    <input type="hidden" name="action" value="createOrder">
+                    <input type="hidden" name="adresseLivraison" value="${
+                      formData.adresseLivraison
+                    }">
+                    <input type="hidden" name="villeLivraison" value="${
+                      formData.villeLivraison
+                    }">
+                    <input type="hidden" name="codePostal" value="${
+                      formData.codePostal
+                    }">
+                    <input type="hidden" name="numeroCarte" value="${
+                      formData.numCarte
+                    }">
+                    <input type="hidden" name="nomCarte" value="${
+                      formData.nomCarte
+                    }">
+                    <input type="hidden" name="dateExpiration" value="${
+                      formData.dateExpiration
+                    }">
+                    <input type="hidden" name="cvv" value="${formData.cvv}">
+                    <input type="hidden" name="idAdresseFacturation" value="${
+                      this.idAdresseFacturation || ""
+                    }">
+                    <button type="submit" class="btn-confirm btn-primary">Confirmer et payer</button>
+                </form>
+            </div>
         `;
 
     this.popupContent.innerHTML = popupHtml;
-    this.confirmationPopup.style.display = "flex";
+    this.confirmationPopup.classList.add("show");
 
-    this.setupPopupButtons(formData, cart);
-  }
+    // Ajouter écouteur pour le bouton de fermeture
+    const closeBtn = this.popupContent.querySelector(".close-popup");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => this.hidePopup());
+    }
 
-  setupPopupButtons(formData, cart) {
+    // Ajouter écouteur pour le bouton Annuler/Modifier
     const cancelBtn = this.popupContent.querySelector(".btn-cancel");
-
     if (cancelBtn) {
       cancelBtn.addEventListener("click", () => this.hidePopup());
     }
 
+    // Gérer la soumission du formulaire de commande
+    const orderForm = this.popupContent.querySelector(".order-form");
+    if (orderForm) {
+      orderForm.addEventListener("submit", (e) => this.handleOrderSubmit(e));
+    }
+  }
+
+  async handleOrderSubmit(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        this.showThankYouMessage(result.idCommande);
+      } else {
+        this.showMessage(
+          result.error || "Erreur lors de la création de la commande",
+          "error"
+        );
+      }
+    } catch (error) {
+      console.error("Erreur:", error);
+      this.showMessage("Erreur de connexion au serveur", "error");
+    }
   }
 
   showThankYouMessage(orderId) {
     const thankYouHtml = `
             <div class="thank-you-popup">
+                <div class="success-icon">✓</div>
                 <h2>Merci pour votre commande !</h2>
                 <p>Votre commande a été enregistrée avec succès.</p>
-                <div class="order-number">Numéro de commande : ${orderId}</div>
-                <p>Vous recevrez un email de confirmation sous peu.</p>
-                <button class="btn-home">Retour à l'accueil</button>
+                <div class="order-number">
+                    <strong>Numéro de commande :</strong> ${orderId}
+                </div>
+                <p class="confirmation-text">Vous recevrez un email de confirmation sous peu.</p>
+                <button class="btn-home btn-primary">Retour à l'accueil</button>
             </div>
         `;
 
@@ -286,8 +461,9 @@ class PaymentPage {
     if (errorEl) {
       errorEl.textContent = message;
       errorEl.style.display = "block";
+      errorEl.classList.add("show");
     } else {
-      alert(message);
+      console.error(`Champ d'erreur non trouvé: ${field}`, message);
     }
   }
 
@@ -296,6 +472,7 @@ class PaymentPage {
     if (errorEl) {
       errorEl.textContent = "";
       errorEl.style.display = "none";
+      errorEl.classList.remove("show");
     }
   }
 
@@ -303,19 +480,37 @@ class PaymentPage {
     document.querySelectorAll(".error-message").forEach((el) => {
       el.textContent = "";
       el.style.display = "none";
+      el.classList.remove("show");
     });
   }
 
   showMessage(message, type = "info") {
-    if (type === "error") {
-      alert(message);
-    } else {
-      alert(message);
-    }
+    // Pour le nouveau design, on peut utiliser un toast notification
+    const toast = document.createElement("div");
+    toast.className = `toast-message ${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        background: ${type === "error" ? "#ff6b6b" : "#4CAF50"};
+        color: white;
+        border-radius: 8px;
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.animation = "slideOut 0.3s ease";
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
   }
 
   hidePopup() {
-    this.confirmationPopup.style.display = "none";
+    this.confirmationPopup.classList.remove("show");
   }
 
   getFieldName(errorKey) {
@@ -334,8 +529,7 @@ class PaymentPage {
   getPatternMessage(errorKey) {
     const messages = {
       "code-postal": "Le code postal doit contenir 5 chiffres",
-      "num-carte":
-        "Le numéro de carte doit contenir 16 chiffres (espaces autorisés)",
+      "num-carte": "Le numéro de carte doit contenir 16 chiffres",
       "carte-date": "Format de date invalide (MM/AA)",
       "cvv-input": "Le CVV doit contenir 3 chiffres",
     };
@@ -346,3 +540,112 @@ class PaymentPage {
 document.addEventListener("DOMContentLoaded", () => {
   new PaymentPage();
 });
+
+// Ajouter les styles pour les animations
+const style = document.createElement("style");
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+    
+    .error-message {
+        display: none;
+        color: #ff6b6b;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    
+    .error-message.show {
+        display: block;
+    }
+    
+    .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .popup-overlay.show {
+        display: flex;
+    }
+    
+    .popup-content {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .close-popup {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #666;
+    }
+    
+    .popup-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .btn-primary {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        flex: 1;
+    }
+    
+    .btn-secondary {
+        background: #f5f5f5;
+        color: #333;
+        border: 1px solid #ddd;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        flex: 1;
+    }
+    
+    .cart-item-summary {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .cart-item-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-right: 15px;
+    }
+`;
+document.head.appendChild(style);
