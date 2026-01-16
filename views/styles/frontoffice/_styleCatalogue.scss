@@ -41,10 +41,10 @@
     }
 
     .products-section{
-        width: calc(100% - 280px); /* Ajustement automatique */
+        width: calc(100% - 280px);
         display: flex;
         flex-direction: column;
-        margin-left: 280px; /* Au lieu de padding-left: 22% */
+        margin-left: 280px;
         overflow-x: hidden;
     }
 
@@ -429,8 +429,6 @@
 
 @media (max-width: 512px) {
     .btnToggleFilters {
-        margin-top: 10px;
-        margin-bottom: 10px;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -442,7 +440,7 @@
         padding: 10px 15px;
         font-size: 14px;
         font-weight: bold;
-        margin: 10px 0;
+        top: 215px;
         width: 20%;
     }
 
@@ -469,6 +467,10 @@
         margin-top: 50px;
     }
 
+    .filter-sort form label{
+        margin-top: 0.3em;
+    }
+
     .filter-sort.active {
         left: 0;
     }
@@ -478,44 +480,46 @@
         margin-left: 0;
     }
 
-    // ... le reste de tes styles pour 512px
     .listeArticle {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 5px;
+        position: relative;
+        top: 50px;
     }
 
     .listeArticle article {
-        min-width: 140px;
-        max-width: 140px;
-        min-height: 180px;
-        max-height: 180px;
+        min-width: 100px;
+        max-width: 100px;
+        min-height: 130px;
+        max-height: 130px;
         margin: 5px;
         padding: 8px;
+        border-radius: 16px;
     }
 
     .listeArticle article .imgProduit {
-        max-width: 140px;
-        max-height: 80px;
+        max-width: 100px;
+        max-height: 60px;
     }
 
     .listeArticle article h2 {
-        font-size: 12px;
-    }
-
-    .prix h2 {
-        font-size: 22px;
-    }
-
-    .prix h3 {
-        font-size: 9px;
-    }
-
-    .prix h4 {
         font-size: 10px;
     }
 
+    .prix h2 {
+        font-size: 18px;
+    }
+
+    .prix h3 {
+        font-size: 8px;
+    }
+
+    .prix h4 {
+        font-size: 8px;
+    }
+
     .notation span {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .notation .etoile {
@@ -524,22 +528,23 @@
     }
 
     #promoTexte {
-        font-size: 11px;
+        font-size: 9px;
         padding: 0 1px;
+        border-radius: 4px;
     }
 
     .bannierePromo h1 {
-        font-size: 13px;
+        font-size: 10px;
         top: 22px;
         left: 6px;
     }
 
     .imgBanniere {
-        height: 60px;
+        height: 56px;
     }
 
     .tempsRestant {
-        font-size: 9px;
+        font-size: 7px;
         padding: 2px;
     }
 
@@ -548,9 +553,22 @@
         height: 35px;
     }
 
+    .notation span{
+        font-size: 10px;
+    }
+
     .star {
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .imgProduit {
+        border-radius: 4px;  
+    }  
+
+    .infoProd button img {
+        width: 10px;
+        height: 10px;
     }
 }
 }

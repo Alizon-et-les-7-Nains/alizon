@@ -2193,81 +2193,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     padding: 30px 12px 50px;
   }
 }
-.pagePaiement .progress-steps {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 50px;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-@media (max-width: 720px) {
-  .pagePaiement .progress-steps {
-    margin-bottom: 30px;
-    gap: 12px;
-  }
-}
-.pagePaiement .step {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-@media (max-width: 720px) {
-  .pagePaiement .step .step-text {
-    display: none;
-  }
-}
-.pagePaiement .step-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: white;
-  border: 2px solid #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #999;
-  transition: all 0.3s ease;
-  font-size: 16px;
-}
-@media (max-width: 720px) {
-  .pagePaiement .step-circle {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
-  }
-}
-.pagePaiement .step.active .step-circle {
-  background: #252b56;
-  color: white;
-  border-color: #252b56;
-  transform: scale(1.1);
-}
-.pagePaiement .step.completed .step-circle {
-  background: #4caf50;
-  border-color: #4caf50;
-  color: white;
-}
-.pagePaiement .step-text {
-  font-size: 14px;
-  color: #666;
-  font-weight: 500;
-}
-.pagePaiement .step.active .step-text {
-  color: #252b56;
-  font-weight: 600;
-}
-.pagePaiement .step-divider {
-  width: 40px;
-  height: 2px;
-  background: #ddd;
-}
-@media (max-width: 720px) {
-  .pagePaiement .step-divider {
-    width: 20px;
-  }
-}
 .pagePaiement .payment-layout {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -2292,9 +2217,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(37, 43, 86, 0.08);
   transition: all 0.3s ease;
-}
-.pagePaiement .form-section:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 @media (max-width: 720px) {
   .pagePaiement .form-section {
@@ -2408,9 +2330,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   cursor: pointer;
   transition: background 0.2s ease;
 }
-.pagePaiement .checkbox-group:hover {
-  background: rgba(220, 209, 250, 0.3);
-}
 .pagePaiement input[type=checkbox] {
   width: 20px;
   height: 20px;
@@ -2426,9 +2345,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: none;
   margin-top: 20px;
   padding: 24px;
-  background: rgba(220, 209, 250, 0.15);
+  background: rgba(220, 209, 250, 0.16);
   border-radius: 8px;
-  border: 2px dashed #252b56;
+  border: 2px solid #252b56;
   animation: slideDown 0.3s ease;
 }
 .pagePaiement .billing-section.active {
@@ -2453,11 +2372,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .pagePaiement .payment-icon {
   height: 32px;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-.pagePaiement .payment-icon:hover {
   opacity: 1;
+  transition: opacity 0.2s;
 }
 .pagePaiement .order-summary {
   position: sticky;
@@ -2554,11 +2470,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin-top: 20px;
   box-shadow: 0 4px 12px rgba(220, 209, 250, 0.4);
 }
-.pagePaiement .cta-button:hover {
-  background: #c9bbf0;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(220, 209, 250, 0.6);
-}
 .pagePaiement .cta-button:active {
   transform: translateY(0);
 }
@@ -2631,6 +2542,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: #4caf50;
   margin-bottom: 20px;
 }
+.pagePaiement .popup-header {
+  display: flex;
+}
 .pagePaiement .popup-title {
   font-size: 28px;
   font-weight: 600;
@@ -2660,10 +2574,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-}
-.pagePaiement .popup-button:hover {
-  background: #1a1f3a;
-  transform: translateY(-2px);
 }
 .pagePaiement .cart-summary {
   max-height: 300px;
@@ -4780,20 +4690,21 @@ main.backoffice-stocks section img:not(figure img) {
 main.backoffice-stocks section div.remise {
   border: none !important;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) *:not(img) {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) *:not(img) {
   user-select: text;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) {
   padding: 1em;
   padding-bottom: 0;
   background-color: #e4d9ff;
   border-radius: 16px;
   font-family: "open-sans";
+  width: 800px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table:not(table table) {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table:not(table table) {
   border-spacing: 2em 0;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) button.settings {
   border: none;
   background: none;
   display: flex;
@@ -4802,13 +4713,13 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) button.s
   height: 23px;
   justify-self: right;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) button.settings div {
   background-color: #273469;
   border-radius: 8px;
   width: 25px;
   height: 3px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div div {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) button.settings div div {
   transition: all 0.2s ease;
   background-color: #273469;
   width: 7px;
@@ -4818,30 +4729,30 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) button.s
   top: -2px;
   left: 4px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings div div.right {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) button.settings div div.right {
   left: 14px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) button.settings:hover {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) button.settings:hover {
   cursor: pointer;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) figure {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) figure {
   display: flex;
   gap: 0.25em;
   align-items: center;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) ul {
   list-style: none;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) .type {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) .type {
   text-transform: capitalize;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table {
   width: 100%;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table th {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table th {
   text-align: left;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table tr th {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table tr th {
   text-align: left;
   font-weight: bold;
   font-size: 20px;
@@ -4850,54 +4761,54 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) table tr
   justify-self: center;
   padding: 0;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table figure {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table figure {
   color: #FFD000;
   justify-content: flex-start;
   margin: 0;
   padding: 0;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table table, main.backoffice-stocks section div:not(button.settings div, div.remise) table ul:not(ul ul) {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table table, main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul:not(ul ul) {
   background-color: #fffefa;
   border-style: solid;
   border-width: 2px;
   border-color: #000000;
   border-radius: 16px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table table {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table table {
   padding-right: 1em;
   width: 100%;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table table tr:nth-child(2) th {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table table tr:nth-child(2) th {
   text-transform: capitalize;
   padding-top: 1.5em;
   padding-bottom: 0;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table table tr:nth-child(3) th {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table table tr:nth-child(3) th {
   padding: 0;
   vertical-align: bottom;
   height: 60px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table ul h3 {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul h3 {
   margin: 0.5em;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul {
   padding-left: 0;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul ul {
   display: flex;
   justify-content: space-between;
   padding: 1em;
   align-items: center;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul li:first-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul ul li:first-child {
   font-size: 30px;
   font-weight: bold;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) table ul ul li:last-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) table ul ul li:last-child {
   font-style: italic;
   color: #6e6e6e;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) > ul {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) > ul {
   margin-top: -0.5em;
   display: flex;
   align-items: center;
@@ -4906,13 +4817,13 @@ main.backoffice-stocks section div:not(button.settings div, div.remise) > ul {
   margin-left: -2em;
   font-weight: bold;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) > ul figure img {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) > ul figure img {
   height: 20px;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) > ul figure {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) > ul figure {
   gap: 0.25em;
 }
-main.backoffice-stocks section div:not(button.settings div, div.remise) > ul li:last-child {
+main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) > ul li:last-child {
   color: #f14e4e;
 }
 main.backoffice-stocks section:first-child div:not(button.settings div) {
@@ -7076,10 +6987,10 @@ dialog.reassort form input {
   filter: invert(0);
 }
 .pageCatalogue .products-section {
-  width: calc(100% - 280px); /* Ajustement automatique */
+  width: calc(100% - 280px);
   display: flex;
   flex-direction: column;
-  margin-left: 280px; /* Au lieu de padding-left: 22% */
+  margin-left: 280px;
   overflow-x: hidden;
 }
 .pageCatalogue .product-list {
@@ -7410,8 +7321,6 @@ dialog.reassort form input {
 }
 @media (max-width: 512px) {
   .pageCatalogue .btnToggleFilters {
-    margin-top: 10px;
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -7423,7 +7332,7 @@ dialog.reassort form input {
     padding: 10px 15px;
     font-size: 14px;
     font-weight: bold;
-    margin: 10px 0;
+    top: 215px;
     width: 20%;
   }
   .pageCatalogue .btnToggleFilters img {
@@ -7445,6 +7354,9 @@ dialog.reassort form input {
   .pageCatalogue .filter-sort form {
     margin-top: 50px;
   }
+  .pageCatalogue .filter-sort form label {
+    margin-top: 0.3em;
+  }
   .pageCatalogue .filter-sort.active {
     left: 0;
   }
@@ -7455,61 +7367,75 @@ dialog.reassort form input {
   .pageCatalogue .listeArticle {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 5px;
+    position: relative;
+    top: 50px;
   }
   .pageCatalogue .listeArticle article {
-    min-width: 140px;
-    max-width: 140px;
-    min-height: 180px;
-    max-height: 180px;
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 130px;
+    max-height: 130px;
     margin: 5px;
     padding: 8px;
+    border-radius: 16px;
   }
   .pageCatalogue .listeArticle article .imgProduit {
-    max-width: 140px;
-    max-height: 80px;
+    max-width: 100px;
+    max-height: 60px;
   }
   .pageCatalogue .listeArticle article h2 {
-    font-size: 12px;
-  }
-  .pageCatalogue .prix h2 {
-    font-size: 22px;
-  }
-  .pageCatalogue .prix h3 {
-    font-size: 9px;
-  }
-  .pageCatalogue .prix h4 {
     font-size: 10px;
   }
+  .pageCatalogue .prix h2 {
+    font-size: 18px;
+  }
+  .pageCatalogue .prix h3 {
+    font-size: 8px;
+  }
+  .pageCatalogue .prix h4 {
+    font-size: 8px;
+  }
   .pageCatalogue .notation span {
-    font-size: 14px;
+    font-size: 12px;
   }
   .pageCatalogue .notation .etoile {
     width: 14px;
     height: 14px;
   }
   .pageCatalogue #promoTexte {
-    font-size: 11px;
+    font-size: 9px;
     padding: 0 1px;
+    border-radius: 4px;
   }
   .pageCatalogue .bannierePromo h1 {
-    font-size: 13px;
+    font-size: 10px;
     top: 22px;
     left: 6px;
   }
   .pageCatalogue .imgBanniere {
-    height: 60px;
+    height: 56px;
   }
   .pageCatalogue .tempsRestant {
-    font-size: 9px;
+    font-size: 7px;
     padding: 2px;
   }
   .pageCatalogue .infoProd button img {
     width: 35px;
     height: 35px;
   }
+  .pageCatalogue .notation span {
+    font-size: 10px;
+  }
   .pageCatalogue .star {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
+  }
+  .pageCatalogue .imgProduit {
+    border-radius: 4px;
+  }
+  .pageCatalogue .infoProd button img {
+    width: 10px;
+    height: 10px;
   }
 }
 
@@ -7772,8 +7698,18 @@ dialog.reassort form input {
   }
   .mesNotif .aucuneNotif {
     margin-left: 30px;
-    margin-bottom: 420px;
+    margin-bottom: 490px;
   }
+}
+
+.backoffice .mesNotif {
+  padding: 0;
+}
+
+.backoffice .aucuneNotif {
+  margin-left: 150px;
+  margin-top: 30px;
+  margin-bottom: 594px;
 }
 
 main.commandesBackoffice {
@@ -7872,7 +7808,7 @@ main.commandesBackoffice section.livre article {
   border-left-color: #259525;
 }
 
-dialog {
+main.commandesBackoffice dialog {
   padding-top: 0;
   transition: all 0.2s ease;
   border-radius: 16px;
@@ -7882,28 +7818,28 @@ dialog {
   align-items: center;
   max-width: fit-content;
 }
-dialog::backdrop {
+main.commandesBackoffice dialog::backdrop {
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(1px);
 }
-dialog h2 {
+main.commandesBackoffice dialog h2 {
   justify-self: center;
 }
-dialog table:not(ul li table) {
+main.commandesBackoffice dialog table:not(ul li table) {
   max-width: min(75vw, 500px);
   width: auto;
   padding-top: 1em;
 }
-dialog table:not(ul li table) td {
+main.commandesBackoffice dialog table:not(ul li table) td {
   text-align: left;
   font-weight: bold;
   font-size: 20px;
 }
-dialog table:not(ul li table) td:last-child {
+main.commandesBackoffice dialog table:not(ul li table) td:last-child {
   width: 1%;
   white-space: nowrap;
 }
-dialog ul {
+main.commandesBackoffice dialog ul {
   display: flex;
   max-width: 100%;
   white-space: nowrap;
@@ -7914,7 +7850,7 @@ dialog ul {
   margin: 0;
   padding: 0;
 }
-dialog ul li table {
+main.commandesBackoffice dialog ul li table {
   width: 250px;
   table-layout: fixed;
   border-spacing: 0;
@@ -7923,16 +7859,16 @@ dialog ul li table {
   margin: 0;
   border-radius: 16px;
 }
-dialog ul li table tr {
+main.commandesBackoffice dialog ul li table tr {
   padding: 0;
   margin: 0;
 }
-dialog ul li table td {
+main.commandesBackoffice dialog ul li table td {
   padding: 0;
   margin: 0;
   text-wrap: wrap;
 }
-dialog ul li table img {
+main.commandesBackoffice dialog ul li table img {
   margin: 0;
   padding: 0;
   height: 200px;
@@ -7941,25 +7877,25 @@ dialog ul li table img {
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
-dialog ul li table {
+main.commandesBackoffice dialog ul li table {
   font-weight: bold;
   font-size: 15px;
 }
-dialog ul li table tr:nth-child(2) td, dialog ul li table tr:nth-child(3) td {
+main.commandesBackoffice dialog ul li table tr:nth-child(2) td, main.commandesBackoffice dialog ul li table tr:nth-child(3) td {
   padding-left: 0.5em;
   padding-right: 0.5em;
   padding-bottom: 0.5em;
   word-wrap: break-word;
 }
-dialog ul li table tr:nth-child(2) td:last-child, dialog ul li table tr:nth-child(3) td:last-child {
+main.commandesBackoffice dialog ul li table tr:nth-child(2) td:last-child, main.commandesBackoffice dialog ul li table tr:nth-child(3) td:last-child {
   text-align: right;
   font-size: 25px;
   font-weight: bold;
 }
-dialog ul li table tr:last-child {
+main.commandesBackoffice dialog ul li table tr:last-child {
   font-size: 25px;
 }
-dialog:focus {
+main.commandesBackoffice dialog:focus {
   outline: none;
 }
 

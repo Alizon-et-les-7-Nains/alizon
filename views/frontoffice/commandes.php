@@ -5,7 +5,6 @@ session_start();
 ob_start();
 
 $showPopup = false;
-$showPopupLivraison = isset($_GET['idCommande']);
 
 if (!empty($_SESSION['commandePayee'])) {
     $showPopup = true;
@@ -249,7 +248,7 @@ $cart = getCurrentCart($pdo, $idClient);
         <title>Alizon - Mes Commandes</title>
     </head>
 <body class="pageCommandes">
-    <?php if (!$showPopupLivraison): ?>
+    <?php if (!isset($_GET['idCommande'])): ?>
         <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
     <?php endif; ?>
 
@@ -304,7 +303,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                             <p>Livrée le <?php echo $commande['dateLivraison']; ?></p>
                                         <?php else: ?>
                                             <p><?php echo htmlspecialchars($commande['statut']); ?></p>
-                                            <a href="commandes.php?idCommande=<?= $commande['id'] ?>">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
+                                            <a href="../../../clientSocketSuivieEtape.php?idCommande=<?= $commande['id'] ?>">Suivre (<?php echo htmlspecialchars($commande['transporteur']); ?>) <img src="../../public/images/truckWhite.svg" alt="Icône"></a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -418,7 +417,8 @@ $cart = getCurrentCart($pdo, $idClient);
     <?php 
         $idCommande = intval($_GET['idCommande']);
         if ($showPopup): ?>
-        <?php            $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
+        <?php            
+            $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -436,7 +436,7 @@ $cart = getCurrentCart($pdo, $idClient);
         </div>
     <?php endif; ?>
 
-    <?php if ($showPopupLivraison): ?>
+    <?php if (isset($_GET['idCommande'])): ?>
         <?php
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);

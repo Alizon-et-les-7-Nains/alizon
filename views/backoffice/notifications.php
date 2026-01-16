@@ -1,15 +1,20 @@
-<?php 
-require_once "../../controllers/pdo.php";
-require_once "../../controllers/date.php";
+<?php
 
-session_start();
+    require_once '../../controllers/pdo.php';
+    require_once '../../controllers/auth.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../frontoffice/connexionClient.php");
-    exit();
-}
+    if(isset($_GET['error']) && isset($_GET['idProduit'])) {
+        $idProduit = $_GET['idProduit'];
+        $codeErreur = $_GET['error'];
+        echo "<script>window.addEventListener('load', () => popUpErreur('$idProduit', $codeErreur));</script>";
+    }
 
-$id_client = $_SESSION['user_id'];
+    if (!isset($_SESSION['id'])) {
+        header("Location: ../frontoffice/connexionClient.php");
+        exit();
+    }
+
+    $idVendeur = $_SESSION['id'];
 
 function getNotifications($pdo, $idClient, $est_vendeur) {
     $sql = "SELECT * FROM _notification 
@@ -29,7 +34,7 @@ function getNotifications($pdo, $idClient, $est_vendeur) {
     return $notif; 
 }
 
-$notifs = getNotifications($pdo, $id_client, 0)
+$notifs = getNotifications($pdo, $idVendeur, 1)
 
 ?>
 
@@ -39,15 +44,17 @@ $notifs = getNotifications($pdo, $id_client, 0)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes notifications</title>
-
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
-<body>
-    <?php include './partials/headerConnecte.php'; ?>
+<body class="backoffice">
+        
+    <?php require_once './partials/header.php' ?>
+
+    <?php $currentPage = basename(__FILE__); require_once './partials/aside.php' ?>
 
     <main class="mesNotif">
-        <section class="topRecherche" >
+        <section class="topRecherche">
             <h1>Mes notifications</h1>
         </section>
 
@@ -98,7 +105,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
     </main>
 
     <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
+    <?php include '../../views/backoffice/partials/footer.php'; ?>
 
     <script>
         const titreContent = document.getElementById("titre");

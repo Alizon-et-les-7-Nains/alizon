@@ -29,6 +29,7 @@ const AIM_IMAGES = 150; // KB
 // print_r("--------------------------------\nDone in {$elapsed}s\n");
 
 function treat($path, $dest) {
+    $name = explode('.', $path)[0];
     $size = filesize($path) / 1000; // conversion en KB
 
     print_r(" : {$size}kB\n");
@@ -46,9 +47,9 @@ function treat($path, $dest) {
         do { // compression par tatons
             $newWidth = round($width * $ratio);
             $newHeight = round($height * $ratio);
-            exec("convert $path -resize {$newWidth}x{$newHeight} -quality 85 jpg:$dest.jpg"); // compression et cast en jpg
+            exec("convert $path -resize {$newWidth}x{$newHeight} -quality 85 jpg:temp/$name.jpg"); // compression et cast en jpg
             
-            $newSize = filesize("$dest.jpg") / 1000;
+            $newSize = filesize("$dest") / 1000;
             
             if ($newSize > AIM_IMAGES) {
                 $ratio *= 0.9;

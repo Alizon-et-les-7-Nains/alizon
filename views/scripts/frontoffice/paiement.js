@@ -8,6 +8,7 @@ class PaymentPage {
   init() {
     this.setupReferences();
     this.setupEventListeners();
+    this.setupProgressSteps();
   }
 
   setupReferences() {
@@ -15,9 +16,9 @@ class PaymentPage {
     this.billingSection = document.getElementById("billingSection");
     this.confirmationPopup = document.getElementById("confirmationPopup");
     this.popupContent = document.getElementById("popupContent");
-    this.closePopupBtn = document.querySelector(".close-popup");
-    this.payerButtons = document.querySelectorAll(".payer");
+    this.payerButtons = document.querySelectorAll(".cta-button, .payer");
     this.cgvCheckbox = document.getElementById("cgvCheckbox");
+    this.progressSteps = document.querySelectorAll(".step");
   }
 
   setupEventListeners() {
@@ -35,15 +36,147 @@ class PaymentPage {
       btn.addEventListener("click", (e) => this.handlePayment(e));
     });
 
-    if (this.closePopupBtn) {
-      this.closePopupBtn.addEventListener("click", () => this.hidePopup());
-    }
-
+    // Gestion de la fermeture du popup
     this.confirmationPopup.addEventListener("click", (e) => {
       if (e.target === this.confirmationPopup) this.hidePopup();
     });
+
+    // Ajout des écouteurs pour les champs de carte
+    this.setupCardInputListeners();
   }
 
+  setupProgressSteps() {
+    // Mettre à jour l'étape active
+    const updateActiveStep = () => {
+      this.progressSteps.forEach((step) => step.classList.remove("active"));
+      this.progressSteps[0]?.classList.add("active"); // Première étape active par défaut
+    };
+
+    updateActiveStep();
+  }
+
+  setupCardInputListeners() {
+    // Formatage du numéro de carte
+    const cardNumberInput = document.querySelector(".num-carte");
+    if (cardNumberInput) {
+      cardNumberInput.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\s+/g, "");
+        value = value.replace(/\D/g, "");
+
+        // Ajouter des espaces tous les 4 chiffres
+        let formatted = "";
+        for (let i = 0; i < value.length; i++) {
+          if (i > 0 && i % 4 === 0) formatted += " ";
+          formatted += value[i];
+        }
+
+        e.target.value = formatted.substring(0, 19); // 16 chiffres + 3 espaces
+
+        // Vérification en temps réel de la carte Visa
+        const cleanedValue = value.substring(0, 16);
+        if (cleanedValue.length >= 13) {
+          if (!this.isVisaCard(cleanedValue)) {
+            this.showError("Numéro de carte Visa invalide", "num-carte");
+          } else {
+            this.clearError("num-carte");
+          }
+        }
+      });
+    }
+
+    // Formatage de la date d'expiration
+    const expDateInput = document.querySelector(".carte-date");
+    if (expDateInput) {
+      expDateInput.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length >= 2) {
+          value = value.substring(0, 2) + "/" + value.substring(2, 4);
+        }
+        e.target.value = value.substring(0, 5);
+      });
+    }
+
+    // Limiter le CVV à 3 chiffres
+    const cvvInput = document.querySelector(".cvv-input");
+    if (cvvInput) {
+      cvvInput.addEventListener("input", (e) => {
+        e.target.value = e.target.value.replace(/\D/g, "").substring(0, 3);
+      });
+    }
+  }
+
+  // === ALGORITHME DE LUHN POUR LA VALIDATION DES CARTES ===
+
+  /**
+   * Vérifie la validité d'un numéro de carte avec l'algorithme de Luhn
+   *
+   * Parametres :
+   * cardNumber - Numéro de carte (sans espaces)
+   * Retourne
+   *  - true si valide, false sinon
+   */
+  cardVerification(cardNumber) {
+    const cleaned = cardNumber.replace(/\s+/g, "");
+    if (cleaned.length === 0 || !/^\d+$/.test(cleaned)) return false;
+
+    const digits = cleaned
+      .split("")
+      .reverse()
+      .map((d) => Number(d));
+
+    for (let i = 1; i < digits.length; i += 2) {
+      let n = digits[i] * 2;
+      if (n > 9) n -= 9;
+      digits[i] = n;
+    }
+
+    const sum = digits.reduce((a, b) => a + b, 0);
+    return sum % 10 === 0;
+  }
+
+  /**
+   * Vérifie si c'est une carte Visa valide
+   * - Doit commencer par 4
+   * - Doit être valide via l'algorithme de Luhn
+   * - Doit avoir 13, 16 ou 19 chiffres (standards Visa)
+   *
+   * Parametres :
+   * cardNumber - Numéro de carte (sans espaces)
+   *
+   * Retourne :
+   * boolean - true si c'est une Visa valide, false sinon
+   */
+  isVisaCard(cardNumber) {
+    const clean = cardNumber.replace(/\s+/g, "");
+
+    // Vérifie que c'est une carte Visa (commence par 4)
+    if (!clean.startsWith("4")) {
+      return false;
+    }
+
+    // Vérifie la longueur standard Visa
+    const isValidLength = [13, 16, 19].includes(clean.length);
+    if (!isValidLength) {
+      return false;
+    }
+
+    // Applique l'algorithme de Luhn
+    return this.cardVerification(clean);
+  }
+
+  // =======================================================
+
+  /**
+   * Valide les champs de l'adresse de facturation
+   *
+   * Parametres :
+   * adresse - Élément input de l'adresse
+   * codePostal - Élément input du code postal
+   * ville - Élément input de la ville
+   *
+   * Retourne :
+   * boolean - true si tous les champs sont valides, false sinon
+   */
   validateBillingFields(adresse, codePostal, ville) {
     let valid = true;
 
@@ -75,6 +208,16 @@ class PaymentPage {
     return valid;
   }
 
+  /**
+   * Gère le processus de paiement
+   * Valide le formulaire, vérifie le stock et affiche le popup de confirmation
+   *
+   * Parametres :
+   * e - Événement du clic
+   *
+   * Retourne :
+   * void
+   */
   async handlePayment(e) {
     e.preventDefault();
 
@@ -86,7 +229,7 @@ class PaymentPage {
     const cart = window.__PAYMENT_DATA__?.cart || [];
 
     if (cart.length === 0) {
-      this.showMessage("Votre panier est vide", "error");
+      alert("Votre panier est vide");
       return;
     }
 
@@ -100,9 +243,56 @@ class PaymentPage {
       return;
     }
 
+    // Si adresse de facturation différente, sauvegarder d'abord
+    if (this.factAddrCheckbox && this.factAddrCheckbox.checked) {
+      const billingData = this.getBillingFormData();
+      const saved = await this.saveBillingAddress(billingData);
+      if (!saved.success) {
+        alert("Erreur lors de la sauvegarde de l'adresse de facturation");
+        return;
+      }
+      this.idAdresseFacturation = saved.idAdresseFacturation;
+    }
+
     this.showConfirmationPopup(formData, cart);
   }
 
+  /**
+   * Sauvegarde l'adresse de facturation différente via une requête AJAX
+   *
+   * Parametres :
+   * billingData - Objet contenant l'adresse, code postal et ville
+   *
+   * Retourne :
+   * Promise<Object> - Réponse JSON contenant {success, idAdresseFacturation}
+   */
+  async saveBillingAddress(billingData) {
+    try {
+      const response = await fetch("pagePaiement.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          action: "saveBillingAddress",
+          ...billingData,
+        }),
+      });
+
+      return await response.json();
+    } catch (error) {
+      console.error("Erreur:", error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Valide tous les champs du formulaire de paiement
+   * Vérifie les adresses, les données de carte et les conditions générales
+   *
+   * Retourne :
+   * boolean - true si le formulaire est valide, false sinon
+   */
   validateForm() {
     let isValid = true;
     this.clearAllErrors();
@@ -155,6 +345,39 @@ class PaymentPage {
       }
     });
 
+    // === VALIDATION SPÉCIFIQUE POUR LA CARTE ===
+    const numCarteInput = document.querySelector(".num-carte");
+    if (numCarteInput && numCarteInput.value.trim()) {
+      const cardNumber = numCarteInput.value.replace(/\s+/g, "");
+
+      // Vérifie que c'est une Visa
+      if (!cardNumber.startsWith("4")) {
+        this.showError(
+          "Ceci n'est pas une carte Visa (les cartes Visa commencent par 4)",
+          "num-carte"
+        );
+        isValid = false;
+      }
+
+      // Vérifie la longueur
+      if (![13, 16, 19].includes(cardNumber.length)) {
+        this.showError(
+          "Numéro de carte invalide (13, 16 ou 19 chiffres attendus)",
+          "num-carte"
+        );
+        isValid = false;
+      }
+
+      // Vérifie l'algorithme de Luhn
+      if (!this.cardVerification(cardNumber)) {
+        this.showError(
+          "Numéro de carte invalide selon l'algorithme de vérification",
+          "num-carte"
+        );
+        isValid = false;
+      }
+    }
+
     if (!this.cgvCheckbox || !this.cgvCheckbox.checked) {
       this.showError("Veuillez accepter les conditions générales", "cgv");
       isValid = false;
@@ -172,6 +395,12 @@ class PaymentPage {
     return isValid;
   }
 
+  /**
+   * Récupère les données du formulaire de livraison et de paiement
+   *
+   * Retourne :
+   * Object - Objet contenant tous les champs du formulaire nettoyés
+   */
   getFormData() {
     return {
       adresseLivraison: document.querySelector(".adresse-input").value.trim(),
@@ -184,13 +413,39 @@ class PaymentPage {
     };
   }
 
+  /**
+   * Récupère les données de l'adresse de facturation
+   *
+   * Retourne :
+   * Object - Objet contenant l'adresse, code postal et ville de facturation
+   */
+  getBillingFormData() {
+    return {
+      adresse: document.querySelector(".adresse-fact-input").value.trim(),
+      codePostal: document
+        .querySelector(".code-postal-fact-input")
+        .value.trim(),
+      ville: document.querySelector(".ville-fact-input").value.trim(),
+    };
+  }
+
+  /**
+   * Affiche le popup de confirmation de commande avec récapitulatif
+   * Construit le HTML du panier et affiche les détails de la commande
+   *
+   * Parametres :
+   * formData - Données du formulaire de paiement
+   * cart - Array des articles du panier
+   *
+   * Retourne :
+   * void
+   */
   showConfirmationPopup(formData, cart) {
     let cartHtml = '<div class="cart-summary">';
-    let total = 0;
+    let total = window.__PAYMENT_DATA__?.totals?.montantTTC || 0;
 
     cart.forEach((item) => {
       const itemTotal = item.prix * item.qty;
-      total += itemTotal;
 
       cartHtml += `
                 <div class="cart-item-summary">
@@ -212,112 +467,170 @@ class PaymentPage {
     cartHtml += "</div>";
 
     const popupHtml = `
-            <h2>Confirmation de commande</h2>
+            <div class="popup-header">
+                <h2>Confirmation de commande</h2>
+                <button class="close-popup">&times;</button>
+            </div>
             <div class="order-info">
-                <p><strong>Adresse de livraison :</strong><br>
-                ${formData.adresseLivraison}<br>
-                ${formData.codePostal} ${formData.villeLivraison}</p>
+                <div class="info-section">
+                    <h4>Adresse de livraison</h4>
+                    <p>${formData.adresseLivraison}<br>
+                    ${formData.codePostal} ${formData.villeLivraison}</p>
+                </div>
                 
-                <p><strong>Paiement :</strong> Carte Visa se terminant par ${formData.numCarte.slice(
-                  -4
-                )}</p>
+                <div class="info-section">
+                    <h4>Paiement</h4>
+                    <p>Carte Visa se terminant par ${formData.numCarte.slice(
+                      -4
+                    )} ✓ Validée par algorithme de Luhn</p>
+                </div>
             </div>
             
-            <h3>Récapitulatif du panier</h3>
-            ${cartHtml}
+            <div class="popup-cart">
+                <h3>Récapitulatif du panier</h3>
+                ${cartHtml}
+            </div>
             
             <div class="total-section">
-                <h3>Total : ${total.toFixed(2)}€</h3>
+                <div class="total-row">
+                    <span>Sous-total</span>
+                    <span>${
+                      window.__PAYMENT_DATA__?.totals?.sousTotal?.toFixed(2) ||
+                      "0.00"
+                    } €</span>
+                </div>
+                <div class="total-row">
+                    <span>Livraison</span>
+                    <span>${
+                      window.__PAYMENT_DATA__?.totals?.livraison?.toFixed(2) ||
+                      "0.00"
+                    } €</span>
+                </div>
+                <div class="total-row final">
+                    <span>Total TTC</span>
+                    <span><strong>${total.toFixed(2)} €</strong></span>
+                </div>
             </div>
-            <form method="POST" action="../../../alizon.php">
-              <div class="popup-buttons">
-                  <button type = "button" class="btn-cancel">Annuler</button>
-                  <button type = "submit" class="btn-confirm">Confirmer la commande</button>
-              </div>
-              <input type="hidden" name="adresseLivraison" value="${formData.adresseLivraison}">
-              <input type="hidden" name="villeLivraison" value="${formData.villeLivraison}">
-              <input type="hidden" name="codePostal" value="${formData.codePostal}">
-              <input type="hidden" name="numeroCarte" value="${formData.numCarte}">
-              <input type="hidden" name="nomCarte" value="${formData.nomCarte}">
-              <input type="hidden" name="dateExpiration" value="${formData.dateExpiration}">
-              <input type="hidden" name="cvv" value="${formData.cvv}">
-              <input type="hidden" name="idAdresseFacturation" value="${this.idAdresseFacturation}">
-            </form>
+            
+            <div class="popup-buttons">
+                <button type="button" class="btn-cancel btn-secondary">Modifier</button>
+                <form method="POST" action="../../../alizon.php" class="order-form">
+                    <input type="hidden" name="action" value="createOrder">
+                    <input type="hidden" name="adresseLivraison" value="${
+                      formData.adresseLivraison
+                    }">
+                    <input type="hidden" name="villeLivraison" value="${
+                      formData.villeLivraison
+                    }">
+                    <input type="hidden" name="codePostal" value="${
+                      formData.codePostal
+                    }">
+                    <input type="hidden" name="numeroCarte" value="${
+                      formData.numCarte
+                    }">
+                    <input type="hidden" name="nomCarte" value="${
+                      formData.nomCarte
+                    }">
+                    <input type="hidden" name="dateExpiration" value="${
+                      formData.dateExpiration
+                    }">
+                    <input type="hidden" name="cvv" value="${formData.cvv}">
+                    <input type="hidden" name="idAdresseFacturation" value="${
+                      this.idAdresseFacturation || ""
+                    }">
+                    <button type="submit" class="btn-confirm btn-primary">Confirmer et payer</button>
+                </form>
+            </div>
         `;
 
     this.popupContent.innerHTML = popupHtml;
-    this.confirmationPopup.style.display = "flex";
+    this.confirmationPopup.classList.add("show");
 
-    this.setupPopupButtons(formData, cart);
-  }
+    // Ajouter écouteur pour le bouton de fermeture
+    const closeBtn = this.popupContent.querySelector(".close-popup");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => this.hidePopup());
+    }
 
-  setupPopupButtons(formData, cart) {
+    // Ajouter écouteur pour le bouton Annuler/Modifier
     const cancelBtn = this.popupContent.querySelector(".btn-cancel");
-
     if (cancelBtn) {
       cancelBtn.addEventListener("click", () => this.hidePopup());
     }
-
   }
 
-  showThankYouMessage(orderId) {
-    const thankYouHtml = `
-            <div class="thank-you-popup">
-                <h2>Merci pour votre commande !</h2>
-                <p>Votre commande a été enregistrée avec succès.</p>
-                <div class="order-number">Numéro de commande : ${orderId}</div>
-                <p>Vous recevrez un email de confirmation sous peu.</p>
-                <button class="btn-home">Retour à l'accueil</button>
-            </div>
-        `;
-
-    this.popupContent.innerHTML = thankYouHtml;
-
-    const homeBtn = this.popupContent.querySelector(".btn-home");
-    if (homeBtn) {
-      homeBtn.addEventListener("click", () => {
-        window.location.href = "../../views/frontoffice/accueilConnecte.php";
-      });
-    }
-  }
-
+  /**
+   * Affiche un message d'erreur pour un champ spécifique
+   *
+   * Parametres :
+   * message - Message d'erreur à afficher
+   * field - Clé du champ (attribut data-for)
+   *
+   * Retourne :
+   * void
+   */
   showError(message, field) {
     const errorEl = document.querySelector(`[data-for="${field}"]`);
     if (errorEl) {
       errorEl.textContent = message;
       errorEl.style.display = "block";
+      errorEl.classList.add("show");
     } else {
-      alert(message);
+      console.error(`Champ d'erreur non trouvé: ${field}`, message);
     }
   }
 
+  /**
+   * Efface le message d'erreur pour un champ spécifique
+   *
+   * Parametres :
+   * field - Clé du champ (attribut data-for)
+   *
+   * Retourne :
+   * void
+   */
   clearError(field) {
     const errorEl = document.querySelector(`[data-for="${field}"]`);
     if (errorEl) {
       errorEl.textContent = "";
       errorEl.style.display = "none";
+      errorEl.classList.remove("show");
     }
   }
 
+  /**
+   * Efface tous les messages d'erreur de la page
+   *
+   * Retourne :
+   * void
+   */
   clearAllErrors() {
     document.querySelectorAll(".error-message").forEach((el) => {
       el.textContent = "";
       el.style.display = "none";
+      el.classList.remove("show");
     });
   }
 
-  showMessage(message, type = "info") {
-    if (type === "error") {
-      alert(message);
-    } else {
-      alert(message);
-    }
-  }
-
+  /**
+   * Masque le popup de confirmation
+   *
+   * Retourne :
+   * void
+   */
   hidePopup() {
-    this.confirmationPopup.style.display = "none";
+    this.confirmationPopup.classList.remove("show");
   }
 
+  /**
+   * Retourne le nom lisible d'un champ pour les messages d'erreur
+   *
+   * Parametres :
+   * errorKey - Clé du champ
+   *
+   * Retourne :
+   * string - Nom du champ lisible
+   */
   getFieldName(errorKey) {
     const names = {
       adresse: "Adresse de livraison",
@@ -331,11 +644,19 @@ class PaymentPage {
     return names[errorKey] || errorKey;
   }
 
+  /**
+   * Retourne le message d'erreur de format pour un champ spécifique
+   *
+   * Parametres :
+   * errorKey - Clé du champ
+   *
+   * Retourne :
+   * string - Message d'erreur de format
+   */
   getPatternMessage(errorKey) {
     const messages = {
       "code-postal": "Le code postal doit contenir 5 chiffres",
-      "num-carte":
-        "Le numéro de carte doit contenir 16 chiffres (espaces autorisés)",
+      "num-carte": "Le numéro de carte doit contenir 16 chiffres",
       "carte-date": "Format de date invalide (MM/AA)",
       "cvv-input": "Le CVV doit contenir 3 chiffres",
     };
@@ -343,6 +664,9 @@ class PaymentPage {
   }
 }
 
+// ============================================================================
+// Initialisation de la page
+// ============================================================================
 document.addEventListener("DOMContentLoaded", () => {
   new PaymentPage();
 });
