@@ -29,6 +29,10 @@ const AIM_IMAGES = 150; // KB
 // print_r("--------------------------------\nDone in {$elapsed}s\n");
 
 function treat($path, $dest) {
+    error_log($path);
+    print_r($path);
+    error_log($dest);
+    print_r($dest);
     $size = filesize($path) / 1000; // conversion en KB
 
     print_r(" : {$size}kB\n");

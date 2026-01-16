@@ -184,9 +184,6 @@ $montantTTC = $sousTotal + $livraison;
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <title>Paiement - Alizon</title>
     <link rel="stylesheet" href="paiement.css">
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
-    </style>
 </head>
 
 <body class="pagePaiement">
@@ -311,8 +308,7 @@ $montantTTC = $sousTotal + $livraison;
                     </div>
 
                     <div class="payment-icons">
-                        <img class="payment-icon"
-                            src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
+                        <img class="payment-icon" src="../../public/images/visaLogo.png" alt="Visa">
                     </div>
                 </div>
 

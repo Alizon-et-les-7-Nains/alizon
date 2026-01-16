@@ -440,7 +440,7 @@
         padding: 10px 15px;
         font-size: 14px;
         font-weight: bold;
-        top: 50px;
+        top: 250px;
         width: 20%;
     }
 
@@ -465,6 +465,10 @@
 
     .filter-sort form{
         margin-top: 50px;
+    }
+
+    .filter-sort form label{
+        margin-top: 0;
     }
 
     .filter-sort.active {
