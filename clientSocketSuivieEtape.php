@@ -46,6 +46,7 @@ $status_response = send_command($socket, "STATUS $bordereau");
 $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response, ":idCommande" => $idCommande]);
+var_dump($status_response);
 //echo "Réponse: $status_response\n\n";
 
 
