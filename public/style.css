@@ -7354,7 +7354,7 @@ dialog.reassort form input {
     max-height: 130px;
     margin: 5px;
     padding: 8px;
-    border-radius: 8px;
+    border-radius: 16px;
   }
   .pageCatalogue .listeArticle article .imgProduit {
     max-width: 100px;
