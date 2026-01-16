@@ -62,88 +62,6 @@ $breakpoint-xs: 480px;
     }
   }
 
-  // Progress Steps
-  .progress-steps {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 50px;
-    gap: 20px;
-    flex-wrap: wrap;
-
-    @media (max-width: $breakpoint-sm) {
-      margin-bottom: 30px;
-      gap: 12px;
-    }
-  }
-
-  .step {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    @media (max-width: $breakpoint-sm) {
-      .step-text {
-        display: none;
-      }
-    }
-  }
-
-  .step-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: white;
-    border: 2px solid #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    color: #999;
-    transition: all 0.3s ease;
-    font-size: 16px;
-
-    @media (max-width: $breakpoint-sm) {
-      width: 32px;
-      height: 32px;
-      font-size: 14px;
-    }
-  }
-
-  .step.active .step-circle {
-    background: $accent;
-    color: white;
-    border-color: $accent;
-    transform: scale(1.1);
-  }
-
-  .step.completed .step-circle {
-    background: $success;
-    border-color: $success;
-    color: white;
-  }
-
-  .step-text {
-    font-size: 14px;
-    color: #666;
-    font-weight: 500;
-  }
-
-  .step.active .step-text {
-    color: $accent;
-    font-weight: 600;
-  }
-
-  .step-divider {
-    width: 40px;
-    height: 2px;
-    background: #ddd;
-
-    @media (max-width: $breakpoint-sm) {
-      width: 20px;
-    }
-  }
-
   // Main Layout
   .payment-layout {
     display: grid;
@@ -171,10 +89,6 @@ $breakpoint-xs: 480px;
     box-shadow: $shadow-sm;
     border: 1px solid rgba(37, 43, 86, 0.08);
     transition: all 0.3s ease;
-
-    &:hover {
-      box-shadow: $shadow-md;
-    }
 
     @media (max-width: $breakpoint-sm) {
       padding: 20px;
@@ -300,10 +214,6 @@ $breakpoint-xs: 480px;
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.2s ease;
-
-    &:hover {
-      background: rgba(220, 209, 250, 0.3);
-    }
   }
 
   input[type="checkbox"] {
@@ -356,12 +266,8 @@ $breakpoint-xs: 480px;
 
   .payment-icon {
     height: 32px;
-    opacity: 0.7;
+    opacity: 1;
     transition: opacity 0.2s;
-
-    &:hover {
-      opacity: 1;
-    }
   }
 
   // Order Summary
@@ -472,12 +378,6 @@ $breakpoint-xs: 480px;
     transition: all 0.3s ease;
     margin-top: 20px;
     box-shadow: 0 4px 12px rgba(220, 209, 250, 0.4);
-
-    &:hover {
-      background: $purple-hover;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(220, 209, 250, 0.6);
-    }
 
     &:active {
       transform: translateY(0);
@@ -596,11 +496,6 @@ $breakpoint-xs: 480px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-
-    &:hover {
-      background: #1a1f3a;
-      transform: translateY(-2px);
-    }
   }
 
   // Cart summary in popup

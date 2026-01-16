@@ -29,6 +29,10 @@ const AIM_IMAGES = 150; // KB
 // print_r("--------------------------------\nDone in {$elapsed}s\n");
 
 function treat($path, $dest) {
+    error_log($path);
+    print_r($path);
+    error_log($dest);
+    print_r($dest);
     $size = filesize($path) / 1000; // conversion en KB
 
     print_r(" : {$size}kB\n");
@@ -48,7 +52,7 @@ function treat($path, $dest) {
             $newHeight = round($height * $ratio);
             exec("convert $path -resize {$newWidth}x{$newHeight} -quality 85 jpg:$dest.jpg"); // compression et cast en jpg
             
-            $newSize = filesize("$dest.jpg") / 1000;
+            $newSize = filesize("$dest") / 1000;
             
             if ($newSize > AIM_IMAGES) {
                 $ratio *= 0.9;
