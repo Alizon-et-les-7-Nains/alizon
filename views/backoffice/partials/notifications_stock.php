@@ -13,7 +13,7 @@ if ($idVendeur > 0) {
 
     foreach ($produitsAlerte as $prod) {
         $idProd = $prod['idProduit'];
-        $nomProd = $prod['nomProduit'];
+        $nomProd = $prod['nom'];
         $stockActuel = $prod['stock'];
         
         // Vérifie si une notification existe déjà
