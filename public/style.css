@@ -2193,81 +2193,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     padding: 30px 12px 50px;
   }
 }
-.pagePaiement .progress-steps {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 50px;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-@media (max-width: 720px) {
-  .pagePaiement .progress-steps {
-    margin-bottom: 30px;
-    gap: 12px;
-  }
-}
-.pagePaiement .step {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-@media (max-width: 720px) {
-  .pagePaiement .step .step-text {
-    display: none;
-  }
-}
-.pagePaiement .step-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: white;
-  border: 2px solid #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #999;
-  transition: all 0.3s ease;
-  font-size: 16px;
-}
-@media (max-width: 720px) {
-  .pagePaiement .step-circle {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
-  }
-}
-.pagePaiement .step.active .step-circle {
-  background: #252b56;
-  color: white;
-  border-color: #252b56;
-  transform: scale(1.1);
-}
-.pagePaiement .step.completed .step-circle {
-  background: #4caf50;
-  border-color: #4caf50;
-  color: white;
-}
-.pagePaiement .step-text {
-  font-size: 14px;
-  color: #666;
-  font-weight: 500;
-}
-.pagePaiement .step.active .step-text {
-  color: #252b56;
-  font-weight: 600;
-}
-.pagePaiement .step-divider {
-  width: 40px;
-  height: 2px;
-  background: #ddd;
-}
-@media (max-width: 720px) {
-  .pagePaiement .step-divider {
-    width: 20px;
-  }
-}
 .pagePaiement .payment-layout {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -2292,9 +2217,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(37, 43, 86, 0.08);
   transition: all 0.3s ease;
-}
-.pagePaiement .form-section:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 @media (max-width: 720px) {
   .pagePaiement .form-section {
@@ -2408,9 +2330,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   cursor: pointer;
   transition: background 0.2s ease;
 }
-.pagePaiement .checkbox-group:hover {
-  background: rgba(220, 209, 250, 0.3);
-}
 .pagePaiement input[type=checkbox] {
   width: 20px;
   height: 20px;
@@ -2453,11 +2372,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .pagePaiement .payment-icon {
   height: 32px;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-.pagePaiement .payment-icon:hover {
   opacity: 1;
+  transition: opacity 0.2s;
 }
 .pagePaiement .order-summary {
   position: sticky;
@@ -2554,11 +2470,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin-top: 20px;
   box-shadow: 0 4px 12px rgba(220, 209, 250, 0.4);
 }
-.pagePaiement .cta-button:hover {
-  background: #c9bbf0;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(220, 209, 250, 0.6);
-}
 .pagePaiement .cta-button:active {
   transform: translateY(0);
 }
@@ -2631,6 +2542,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: #4caf50;
   margin-bottom: 20px;
 }
+.pagePaiement .popup-header {
+  display: flex;
+}
 .pagePaiement .popup-title {
   font-size: 28px;
   font-weight: 600;
@@ -2660,10 +2574,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-}
-.pagePaiement .popup-button:hover {
-  background: #1a1f3a;
-  transform: translateY(-2px);
 }
 .pagePaiement .cart-summary {
   max-height: 300px;
@@ -7399,7 +7309,7 @@ dialog.reassort form input {
     padding: 10px 15px;
     font-size: 14px;
     font-weight: bold;
-    top: 50px;
+    top: 215px;
     width: 20%;
   }
   .pageCatalogue .btnToggleFilters img {
@@ -7421,6 +7331,9 @@ dialog.reassort form input {
   .pageCatalogue .filter-sort form {
     margin-top: 50px;
   }
+  .pageCatalogue .filter-sort form label {
+    margin-top: 0.3em;
+  }
   .pageCatalogue .filter-sort.active {
     left: 0;
   }
@@ -7432,7 +7345,7 @@ dialog.reassort form input {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 5px;
     position: relative;
-    top: 100px;
+    top: 50px;
   }
   .pageCatalogue .listeArticle article {
     min-width: 100px;
@@ -7441,6 +7354,7 @@ dialog.reassort form input {
     max-height: 130px;
     margin: 5px;
     padding: 8px;
+    border-radius: 8px;
   }
   .pageCatalogue .listeArticle article .imgProduit {
     max-width: 100px;
@@ -7486,9 +7400,19 @@ dialog.reassort form input {
     width: 35px;
     height: 35px;
   }
+  .pageCatalogue .notation span {
+    font-size: 10px;
+  }
   .pageCatalogue .star {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
+  }
+  .pageCatalogue .imgProduit {
+    border-radius: 4px;
+  }
+  .pageCatalogue .infoProd button img {
+    width: 10px;
+    height: 10px;
   }
 }
 

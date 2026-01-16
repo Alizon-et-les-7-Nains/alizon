@@ -440,7 +440,7 @@
         padding: 10px 15px;
         font-size: 14px;
         font-weight: bold;
-        top: 50px;
+        top: 215px;
         width: 20%;
     }
 
@@ -467,6 +467,10 @@
         margin-top: 50px;
     }
 
+    .filter-sort form label{
+        margin-top: 0.3em;
+    }
+
     .filter-sort.active {
         left: 0;
     }
@@ -480,7 +484,7 @@
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 5px;
         position: relative;
-        top: 100px;
+        top: 50px;
     }
 
     .listeArticle article {
@@ -490,6 +494,7 @@
         max-height: 130px;
         margin: 5px;
         padding: 8px;
+        border-radius: 8px;
     }
 
     .listeArticle article .imgProduit {
@@ -548,9 +553,22 @@
         height: 35px;
     }
 
+    .notation span{
+        font-size: 10px;
+    }
+
     .star {
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .imgProduit {
+        border-radius: 4px;  
+    }  
+
+    .infoProd button img {
+        width: 10px;
+        height: 10px;
     }
 }
 }
