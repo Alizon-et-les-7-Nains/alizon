@@ -54,7 +54,7 @@ $notifs = getNotifications($pdo, $idVendeur, 1)
     <?php $currentPage = basename(__FILE__); require_once './partials/aside.php' ?>
 
     <main class="mesNotif">
-        <section class="topRecherche" >
+        <section class="topRecherche">
             <h1>Mes notifications</h1>
         </section>
 
@@ -102,9 +102,10 @@ $notifs = getNotifications($pdo, $idVendeur, 1)
             <h2 class="aucuneNotif">Aucune notification</h2>
         <?php } ?>
 
-        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-        <?php include '../../views/backoffice/partials/footer.php'; ?>
     </main>
+
+    <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
+    <?php include '../../views/backoffice/partials/footer.php'; ?>
 
     <script>
         const titreContent = document.getElementById("titre");
