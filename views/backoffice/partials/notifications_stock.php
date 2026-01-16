@@ -34,7 +34,7 @@ if ($idVendeur > 0) {
             $insStmt = $pdo->prepare($insertSql);
             $insStmt->execute([
                 ':idVendeur' => $idVendeur,
-                ':contenu' => "Le stock de '$nomProd' est faible ($stockActuel restant). ID:$idProd"
+                ':contenu' => "Le stock de '$nomProd' est faible ($stockActuel restant). Réassort nécessaire ! "
             ]);
         }
     }
