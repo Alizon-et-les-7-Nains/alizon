@@ -102,11 +102,11 @@ $maxPrice = $stmt->fetchColumn() ?? 100;
             <label for="tri">Trier par note minimale :</label>
             <article class="triNote">
                 <div>
-                    <input type="radio" id="triPertinenceCroissante" name="tri" value="pertinenceAsc">
+                    <input type="radio" id="triPertinenceCroissant" name="tri" value="pertinenceAsc">
                     <label for="triPertinenceCroissante">Pertinence croissante</label>
                 </div>
                 <div>
-                    <input type="radio" id="triPertinenceDecroissante" name="tri" value="pertinenceDesc">
+                    <input type="radio" id="triPertinenceDecroissant" name="tri" value="pertinenceDesc">
                     <label for="triPertinencDecroissante">Pertinence decroissante</label>
                 </div>
                 <div>
