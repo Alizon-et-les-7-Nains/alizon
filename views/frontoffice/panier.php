@@ -1,4 +1,5 @@
 <?php
+// Initialisation de la connexion avec le serveur / BDD
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
 session_start();
@@ -7,6 +8,8 @@ session_start();
 // CONFIGURATION INITIALE
 // ============================================================================
 
+// Vérification de l'authentification de l'utilisateur
+// Si l'utilisateur n'est pas connecté, redirection vers la page de connexion
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../../views/frontoffice/connexionClient.php');
     exit;
@@ -18,8 +21,9 @@ $idClient = $_SESSION['user_id'];
 // FONCTIONS DE GESTION DU PANIER
 // ============================================================================
 
-
+// Fonction pour calculer le prix d'un produit en tenant compte des remises actives
 function getPrixProduitAvecRemise($pdo, $idProduit) {
+    // Récupération du prix du produit et de son taux de remise si applicable
     $sql = "SELECT 
             p.prix,
             remise.tauxRemise
@@ -32,6 +36,7 @@ function getPrixProduitAvecRemise($pdo, $idProduit) {
     $stmt->execute([$idProduit]);
     $produit = $stmt->fetch(PDO::FETCH_ASSOC);
     
+    // Calcul du prix avec remise si une remise est active
     if ($produit && !empty($produit['tauxRemise'])) {
         return $produit['prix'] * (1 - $produit['tauxRemise']/100);
     }
@@ -39,7 +44,9 @@ function getPrixProduitAvecRemise($pdo, $idProduit) {
     return $produit['prix'];
 }
 
+// Fonction pour récupérer le contenu du panier actuel d'un client
 function getCurrentCart($pdo, $idClient) {
+    // Récupération du dernier panier de l'utilisateur
     $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
     $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
@@ -48,6 +55,7 @@ function getCurrentCart($pdo, $idClient) {
     if ($panier) {
         $idPanier = intval($panier['idPanier']); 
 
+        // Récupération de tous les produits du panier avec leurs informations (stock, prix, image)
         $sql = "SELECT p.idProduit, p.stock, p.dateReassort, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
                 FROM _produitAuPanier pa
                 JOIN _produit p ON pa.idProduit = p.idProduit
@@ -60,11 +68,12 @@ function getCurrentCart($pdo, $idClient) {
     return $cart;
 }
 
+// Fonction pour modifier la quantité d'un produit dans le panier (avec vérification du stock)
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
 
-    // MODIFICATION: On récupère le stock en même temps pour vérifier
+    // Récupération de la quantité actuelle dans le panier et du stock disponible
     $sql = "SELECT pap.quantiteProduit, p.stock 
             FROM _produitAuPanier pap
             JOIN _produit p ON pap.idProduit = p.idProduit
@@ -78,11 +87,12 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
         $stockDisponible = intval($current['stock']);
         
-        // MODIFICATION: Blocage si on tente d'ajouter plus que le stock
+        // Vérification : empêche d'ajouter plus de produits que le stock disponible
         if ($delta > 0 && $newQty > $stockDisponible) {
             return false;
         }
 
+        // Mise à jour de la quantité si elle est supérieure à 0
         if ($newQty > 0) {
             $sql = "UPDATE _produitAuPanier SET quantiteProduit = $newQty 
                     WHERE idProduit = $idProduit AND idPanier IN (
@@ -91,6 +101,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
             $res = $pdo->query($sql);
             $success = $res !== false;
         } else {
+            // Suppression du produit si la quantité est 0
             $success = removeFromCartInDatabase($pdo, $idClient, $idProduit);
         }
         
@@ -99,6 +110,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     return false;
 }
 
+// Fonction pour supprimer complètement un produit du panier
 function removeFromCartInDatabase($pdo, $idClient, $idProduit) {
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
@@ -111,20 +123,22 @@ function removeFromCartInDatabase($pdo, $idClient, $idProduit) {
     return $res !== false;
 }
 
+// Fonction pour créer une commande complète à partir du panier actuel
 function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $regionLivraison, $numeroCarte, $codePostal = '', $nomCarte = 'Client inconnu', $dateExp = '12/30', $cvv = '000') {
     try {
+        // Début de la transaction pour garantir la cohérence des données
         $pdo->beginTransaction();
 
         $idClient = intval($idClient);
 
-        // Recupération du panier actuel
+        // Récupération du panier actuel du client
         $stmt = $pdo->query("SELECT * FROM _panier WHERE idClient = $idClient ORDER BY idPanier DESC LIMIT 1");
         $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
         if (!$panier) throw new Exception("Aucun panier trouvé pour ce client.");
 
         $idPanier = intval($panier['idPanier']);
 
-        // Calcul total AVEC REMISES
+        // Calcul du montant total de la commande en tenant compte des remises actives
         $sousTotal = 0;
         $nbArticles = 0;
         
@@ -134,6 +148,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $stmtItems = $pdo->query($sqlItems);
         $items = $stmtItems ? $stmtItems->fetchAll(PDO::FETCH_ASSOC) : [];
         
+        // Calcul du sous-total et du nombre d'articles en parcourant tous les produits
         foreach ($items as $item) {
             $prixProduit = getPrixProduitAvecRemise($pdo, $item['idProduit']);
             $quantite = $item['quantiteProduit'];
@@ -141,13 +156,14 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             $nbArticles += $quantite;
         }
 
-        // LES DONNÉES SONT DÉJÀ CHIFFRÉES DEPUIS LE FRONT - on les stocke directement
+        // Les données de carte bancaire sont déjà chiffrées côté client, on les stocke telles quelles
         $carteQ = $pdo->quote($numeroCarte); // Déjà chiffré
         $cvvQ = $pdo->quote($cvv); // Déjà chiffré
 
-        // Verification existante carte (avec données chiffrées)
+        // Vérification si la carte bancaire existe déjà en base de données
         $checkCarte = $pdo->query("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = $carteQ");
 
+        // Si la carte n'existe pas, on l'ajoute à la base de données
         if ($checkCarte->rowCount() === 0) {
             $nomCarteQ = $pdo->quote($nomCarte);
             $dateExpQ = $pdo->quote($dateExp);
@@ -160,7 +176,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             }
         }
 
-        // Création de l'adresse
+        // Création de l'adresse de livraison dans la base de données
         $adresseQ = $pdo->quote($adresseLivraison);
         $villeQ = $pdo->quote($villeLivraison);
         $regionQ = $pdo->quote($regionLivraison);
@@ -175,9 +191,11 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
         $idAdresse = $pdo->lastInsertId();
 
+        // Calcul des montants HT et TTC (TVA à 20%)
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
 
+        // Création de l'enregistrement de commande avec toutes les informations
         $sqlCommande = "
             INSERT INTO _commande (
                 dateCommande, etatLivraison, montantCommandeTTC, montantCommandeHt,
@@ -195,7 +213,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         $idCommande = $pdo->lastInsertId();
 
-        // produits vers _contient AVEC PRIX REMISE
+        // Copie des produits du panier vers la table _contient avec les prix remisés
         $sqlContient = "
             INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
             SELECT pap.idProduit, $idCommande, 
@@ -211,15 +229,17 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             throw new Exception("Erreur lors de la copie des produits : " . implode(', ', $pdo->errorInfo()));
         }
 
-        // Vider le panier
+        // Vidage du panier après création de la commande
         if ($pdo->query("DELETE FROM _produitAuPanier WHERE idPanier = $idPanier") === false) {
             throw new Exception("Erreur lors du vidage du panier : " . implode(', ', $pdo->errorInfo()));
         }
 
+        // Validation de la transaction
         $pdo->commit();
         return $idCommande;
 
     } catch (Exception $e) {
+        // Annulation de la transaction en cas d'erreur
         $pdo->rollBack();
         throw new Exception("Erreur lors de la création de la commande : " . $e->getMessage());
     }
@@ -235,6 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
     try {
         switch ($_POST['action']) {
+            // Mise à jour de la quantité d'un produit dans le panier
             case 'updateQty':
                 $idProduit = $_POST['idProduit'] ?? '';
                 $delta = intval($_POST['delta'] ?? 0);
@@ -246,6 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 }
                 break;
 
+            // Suppression complète d'un produit du panier
             case 'removeItem':
                 $idProduit = $_POST['idProduit'] ?? '';
                 if ($idProduit) {
@@ -256,6 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 }
                 break;
 
+            // Récupération du contenu actuel du panier
             case 'getCart':
                 $cart = getCurrentCart($pdo, $idClient);
                 echo json_encode($cart);
@@ -297,13 +320,16 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <main>
         <section class="listeProduit">
-            <?php foreach ($cart as $item) { 
+            <?php // Affichage de chaque produit du panier
+            foreach ($cart as $item) { 
+                // Calcul du prix avec remise et vérification si le produit est en promotion
                 $prixAvecRemise = getPrixProduitAvecRemise($pdo, $item['idProduit']);
                 $estEnRemise = $prixAvecRemise != $item['prix'];
             ?>
             <article>
                 <div class="imgProduit">
                     <?php 
+                            // Récupération de l'image du produit ou utilisation de l'image par défaut
                             $idProduit = $item['idProduit'] ?? 0;
                             $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                             $stmtImg->execute([':idProduit' => $idProduit]);
@@ -316,9 +342,11 @@ $cart = getCurrentCart($pdo, $idClient);
                     <div>
                         <h2><a style="text-decoration: none;" href="./produit.php?id=<?php echo $idProduit ?>"><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></a></h2>
                         <?php 
+                        // Vérification du stock disponible et affichage du statut
                         if ($item['stock'] > 0) {
                             echo '<h4 class="stockDisponible">En stock</h4>';
                         } else {
+                            // Gestion de la rupture de stock : affichage de la date de réapprovisionnement ou suppression
                             if ($item['dateReassort'] !== null) {
                                 echo '<h4 style="color: #ff4444;">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($item['dateReassort']) . '</h4>';
                             } else {
@@ -369,7 +397,7 @@ $cart = getCurrentCart($pdo, $idClient);
             <h1>Votre panier</h1>
             <div class="cardRecap">
                 <article>
-                    <?php  
+                    <?php // Calcul du récapitulatif du panier : nombre d'articles, prix HT, TVA et total TTC  
                         $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = $idClient ORDER BY idPanier DESC LIMIT 1");
                         $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
                         
@@ -387,6 +415,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             $prixTotalTvaPanier = 0;
                             $sousTotal = 0;
                             
+                            // Parcours de tous les articles pour calculer le total
                             foreach ($items as $item) {
                                 $prixProduit = getPrixProduitAvecRemise($pdo, $item['idProduit']);
                                 $quantite = $item['qty'];
@@ -446,7 +475,7 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
     
-    <!-- MODIFICATION: Script ajouté ici pour gérer le blocage stock sans toucher au fichier JS externe -->
+    <!-- Script pour bloquer l'ajout au panier si le stock maximum est atteint -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.plus').forEach(button => {

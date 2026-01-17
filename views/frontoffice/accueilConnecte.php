@@ -1,4 +1,6 @@
 <?php
+// Initialisation de la connexion avec le serveur / BDD 
+
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
 session_start();
@@ -11,6 +13,8 @@ if (!isset($_SESSION['user_id'])) {
 
 $idClient = $_SESSION['user_id'];
 
+// Récupération du panier actuel. Meme si on se trouve sur la page d'accueil, on doit récupérer toutes les informations relatives 
+// au panier car il est possible d'intéragir avec le panier directement depuis cette page.
 function getCurrentCart($pdo, $idClient) {
     $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
     $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
@@ -32,6 +36,7 @@ function getCurrentCart($pdo, $idClient) {
     return $cart;
 }
 
+// Fonction permettant de modifier la quantité d'un article dans le panier
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
@@ -134,7 +139,7 @@ $cart = getCurrentCart($pdo, $idClient);
 ?>
 
 <?php 
-    const PRODUIT_CONSULTE_MAX_SIZE = 4;
+    const PRODUIT_CONSULTE_MAX_SIZE = 4; // Taille du tableau comportant les produits récemment consultés stockés dans les cookies
 
     // Récupération du cookie existant ou création d'un tableau vide
     if (isset($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitConsulte'])) {
@@ -186,8 +191,6 @@ $cart = getCurrentCart($pdo, $idClient);
         $choixAleatoirePromo = $arrayProduit[array_rand($arrayProduit)]['idProduit'];
     }
 
-    // Récupérer les promotions
-
     $stmt = $pdo->prepare("SELECT * FROM _promotion");
     $stmt->execute();
     $arrayProduit = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -226,6 +229,9 @@ $cart = getCurrentCart($pdo, $idClient);
             <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
         <?php } else { 
                      
+            // Récupération de la bannière d'un produit en promotion
+            // Si aucune bannière personnalisé j'est trouvé alors on affiche l'image par défaut du produit     
+
             $cheminSysteme = "/var/www/html/images/baniere/" . $choixAleatoirePromo . ".jpg";
 
             if (file_exists($cheminSysteme)) {
@@ -257,6 +263,8 @@ $cart = getCurrentCart($pdo, $idClient);
             </div>
             <div class="listeArticle">
                 <?php 
+
+                // Récupération des produits ajoutés récemment
                 $stmt = $pdo->prepare("SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
                                       FROM _produit p 
                                       LEFT JOIN _remise r ON p.idProduit = r.idProduit 
@@ -265,7 +273,6 @@ $cart = getCurrentCart($pdo, $idClient);
                 $stmt->execute();
                 $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                
                 if (count($produitNouveaute) > 0) {
                     foreach ($produitNouveaute as $value) {
                         $idProduit = $value['idProduit'];
@@ -321,7 +328,8 @@ $cart = getCurrentCart($pdo, $idClient);
                         </div>
                         
                         <div>
-                            <?php if(number_format($value['stock'], 1) == 0) { ?>
+                            <?php // Si le produit à une quantité = 0 (= est hors stock) 
+                            if(number_format($value['stock'], 1) == 0) { ?>
                                 <b style="color: red; margin-right: 5px;">Aucun stock</b>
                             <?php } else { ?>
                                 <button class="plus" 
@@ -347,7 +355,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <hr>
             </div>
             <div class="listeArticle">
-                <?php 
+                <?php // Récupération des produits dans la catégorie charcuterie
                 $stmt = $pdo->prepare("SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
                                       FROM _produit p 
                                       LEFT JOIN _remise r ON p.idProduit = r.idProduit 
@@ -356,10 +364,12 @@ $cart = getCurrentCart($pdo, $idClient);
                 $stmt->execute([':typeProd' => 'charcuterie']);
                 $produitCharcuterie = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
+                // Affichage de chaque produit de charcuterie avec ses informations
                 if (count($produitCharcuterie) > 0) {
                     foreach ($produitCharcuterie as $value) {
                         $idProduit = $value['idProduit'];
                         $prixOriginal = $value['prix'];
+                        // Calcul du prix avec remise si une remise est active
                         $tauxRemise = $value['tauxRemise'] ?? 0;
                         $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
                         $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
@@ -396,6 +406,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <h2><?php echo formatPrice($prixOriginal); ?></h2>
                             <?php endif; ?>
                             <?php 
+                                // Calcul du prix au kg pour les charcuteries
                                 $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                                 $poids = $value['poids'];
                                 $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
@@ -424,7 +435,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <hr>
             </div>
             <div class="listeArticle">
-                <?php 
+                <?php // Récupération des produits dans la catégorie alcools
                 $stmt = $pdo->prepare("SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
                                       FROM _produit p 
                                       LEFT JOIN _remise r ON p.idProduit = r.idProduit 
@@ -433,10 +444,12 @@ $cart = getCurrentCart($pdo, $idClient);
                 $stmt->execute([':typeProd' => 'alcools']);
                 $produitAlcool = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
+                // Affichage de chaque produit alcool avec ses informations
                 if (count($produitAlcool) > 0) {
                     foreach ($produitAlcool as $value) {
                         $idProduit = $value['idProduit'];
                         $prixOriginal = $value['prix'];
+                        // Calcul du prix avec remise si une remise est active sur cet alcool
                         $tauxRemise = $value['tauxRemise'] ?? 0;
                         $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
                         $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
@@ -473,6 +486,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <h2><?php echo formatPrice($prixOriginal); ?></h2>
                             <?php endif; ?>
                             <?php 
+                                // Calcul du prix au kg pour les alcools
                                 $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                                 $poids = $value['poids'];
                                 $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
@@ -521,6 +535,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             $enRemise = !empty($produitRecent['tauxRemise']) && $produitRecent['tauxRemise'] > 0;
                             $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
                             
+                            // Récupération de l'image du produit récemment consulté
                             $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                             $stmtImg->execute([':idProduit' => $idProduit]);
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
@@ -531,18 +546,21 @@ $cart = getCurrentCart($pdo, $idClient);
                     <img src="<?php echo htmlspecialchars($image); ?>" class="imgProduit" alt="Image du produit">
                     <h2 class="nomProduit"><?php echo htmlspecialchars($produitRecent['nom']); ?></h2>
                     <div class="notation">
-                        <?php if(number_format($produitRecent['note'], 1) == 0) { ?>
+                        <?php // Affichage de la note avec étoiles pour les produits consultés récemment
+                        if(number_format($produitRecent['note'], 1) == 0) { ?>
                             <span>Pas de note</span>
                         <?php } else { ?>
                             <span><?php echo number_format($produitRecent['note'], 1); ?></span>
-                            <?php for ($i=0; $i < number_format($produitRecent['note'], 0); $i++) { ?>
+                            <?php // Génération des étoiles en fonction de la note du produit récent
+                            for ($i=0; $i < number_format($produitRecent['note'], 0); $i++) { ?>
                                 <img src="../../public/images/etoile.svg" alt="Note" class="etoile">
                             <?php } ?>
                         <?php } ?>
                     </div>
                     <div class="infoProd">
                         <div class="prix">
-                            <?php if ($enRemise): ?>
+                            <?php // Affichage du prix avec ou sans remise pour les produits consultés récemment
+                            if ($enRemise): ?>
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <h2><?php echo formatPrice($prixRemise); ?></h2>
                                     <h3 style="text-decoration: line-through; color: #999; margin: 0; font-size: 0.9em;">
@@ -553,6 +571,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <h2><?php echo formatPrice($prixOriginal); ?></h2>
                             <?php endif; ?>
                             <?php 
+                                // Calcul du prix au kg pour les produits consultés récemment
                                 $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
                                 $poids = $produitRecent['poids'];
                                 $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;

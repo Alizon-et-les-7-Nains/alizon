@@ -1,14 +1,17 @@
 <?php
+// Initialisation de la connexion avec le serveur / BDD
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
 
+    // Constante définissant le nombre maximum de produits différents dans le panier pour les utilisateurs déconnectés
     const PRODUIT_DANS_PANIER_MAX_SIZE = 10;
 
-    // Récupération du cookie existant ou création d'un tableau vide
+    // Récupération du cookie du panier ou création d'un tableau vide
+    // Pour les utilisateurs déconnectés, le panier est stocké uniquement dans les cookies
     if (!isset($_COOKIE["produitPanier"]) || empty($_COOKIE["produitPanier"])) {
         $tabIDProduitPanier = [];
     } else {
-        // On désérialise le cookie pour récupérer le tableau
+        // Désérialisation du cookie pour récupérer le tableau des produits
         $tabIDProduitPanier = @unserialize($_COOKIE["produitPanier"]);
         
         // Sécurisation : si la désérialisation échoue, on remet un tableau vide
@@ -17,16 +20,19 @@ require_once "../../controllers/prix.php";
         }
     }
 
+    // Calcul du nombre total de produits dans le panier (somme des quantités)
     $nbProduit = 0;
     foreach ($tabIDProduitPanier as $key => $value) {
         $nbProduit = $nbProduit + $value;
     }
 
-    // Fonction pour ajouterx un produit consulte
+    // Fonction pour ajouter un produit au panier via cookie (utilisateurs déconnectés)
     function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
+        // Si le produit existe déjà dans le panier, on augmente sa quantité
         if (isset($tabIDProduitPanier[$idProduit])) {
             $tabIDProduitPanier[$idProduit] += $quantite;
         } else {
+            // Vérification de la limite de produits différents dans le panier
             if (count($tabIDProduitPanier) >= PRODUIT_DANS_PANIER_MAX_SIZE) {
                 $message = "Impossible d'ajouter plus de ".PRODUIT_DANS_PANIER_MAX_SIZE." produits différents. Connectez-vous pour en ajouter plus.";
                 echo "<script>alert(".json_encode($message).");</script>";
@@ -35,12 +41,15 @@ require_once "../../controllers/prix.php";
             $tabIDProduitPanier[$idProduit] = $quantite;
         }
         
+        // Mise à jour du cookie avec le nouveau contenu du panier (durée : 90 jours)
         setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
         return true;
     }
 
+    // Fonction pour modifier la quantité d'un produit dans le panier (augmenter, diminuer ou supprimer)
     function modifierQuantitePanier(&$tabIDProduitPanier, $idProduit, $quantite) {
         if (isset($tabIDProduitPanier[$idProduit])) {
+            // Si la quantité est 0 ou devient négative, on supprime le produit du panier
             if ($quantite == 0 || ($tabIDProduitPanier[$idProduit] + $quantite) <= 0) {
                 unset($tabIDProduitPanier[$idProduit]);
             } else {
@@ -50,10 +59,12 @@ require_once "../../controllers/prix.php";
         
         setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
         
+        // Redirection vers la page du panier pour rafraîchir l'affichage
         header("Location: panierDeconnecte.php");
         return true;
     }
 
+    // Gestion de l'ajout ou de la modification de quantité via paramètres GET
     if (isset($_GET['addPanier']) && !empty($_GET['addPanier'])) {
         $idProduitAjoute = intval($_GET['addPanier']);
         $quantite = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
@@ -84,7 +95,9 @@ require_once "../../controllers/prix.php";
 
     <main>
         <section class="listeProduit">
-            <?php foreach ($tabIDProduitPanier as $idProduit => $quantite) { 
+            <?php // Affichage de chaque produit présent dans le panier
+            foreach ($tabIDProduitPanier as $idProduit => $quantite) { 
+                // Récupération des informations du produit depuis la base de données
                 $stmt = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
                 $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
@@ -92,7 +105,7 @@ require_once "../../controllers/prix.php";
                 <article>
                     <div class="imgProduit">
                         <?php 
-                            
+                            // Récupération de l'image du produit ou utilisation de l'image par défaut
                             $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                             $stmtImg->execute([':idProduit' => $idProduit]);
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
@@ -106,23 +119,27 @@ require_once "../../controllers/prix.php";
                             <h4>En stock</h4>
                         </div>
                         <div class="quantiteProduit">
+                            <!-- Bouton pour diminuer la quantité -->
                             <button class="minus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
                             <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
                             </button>                            
-                            <p class="quantite"><?= htmlspecialchars($quantite ?? 'N/A') ?></p> 
+                            <p class="quantite"><?= htmlspecialchars($quantite ?? 'N/A') ?></p>
+                            <!-- Bouton pour augmenter la quantité -->
                             <button class="plus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 1; ?>'">
                                 <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
                             </button> 
                         </div>
                     </div>
                     <div class="prixOpt">
-                        <p><?= number_format($panier['prix'] ?? 0, 2) ?> €</p>       
+                        <p><?= number_format($panier['prix'] ?? 0, 2) ?> €</p>
+                        <!-- Bouton pour supprimer complètement le produit du panier -->
                         <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
                         </button>
                     </div>
                 </article> 
-            <?php } if ($nbProduit<=0) { ?>
+            <?php // Affichage d'un message si le panier est vide
+            } if ($nbProduit<=0) { ?>
                 <h1 class="aucunProduit">Aucun produit</h1>
             <?php } else { ?>
         </section>
@@ -135,8 +152,10 @@ require_once "../../controllers/prix.php";
 
                     <?php
                     
+                        // Calcul du prix total du panier (somme des prix × quantités)
                         $prixTotal = 0;
                         
+                        // Parcours de tous les produits pour calculer le total
                         foreach($tabIDProduitPanier as $idProduit => $quantite) {
                             $stmt = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
                             $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
@@ -163,8 +182,10 @@ require_once "../../controllers/prix.php";
                         </section>
                     </div>
                 </article>
+                <!-- Redirection vers la page de connexion pour finaliser la commande -->
                 <a href="../../views/frontoffice/connexionClient.php"><p>Passer la commande</p></a>
             </div>
+            <!-- Formulaire pour vider complètement le panier -->
             <form method="GET" action="../../controllers/viderPanier.php">
                 <button class="viderPanierCookie viderPanier" name="idUtilisateur">Vider le panier</button>
             </form>
