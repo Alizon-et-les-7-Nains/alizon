@@ -47,7 +47,8 @@ function getPrixProduitAvecRemise($pdo, $idProduit) {
 // Fonction pour récupérer le contenu du panier actuel d'un client
 function getCurrentCart($pdo, $idClient) {
     // Récupération du dernier panier de l'utilisateur
-    $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
+    $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmt->execute([intval($idClient)]);
     $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
     $cart = [];
@@ -60,8 +61,9 @@ function getCurrentCart($pdo, $idClient) {
                 FROM _produitAuPanier pa
                 JOIN _produit p ON pa.idProduit = p.idProduit
                 LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-                WHERE pa.idPanier = " . intval($idPanier);
-        $stmt = $pdo->query($sql);
+                WHERE pa.idPanier = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([intval($idPanier)]);
         $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     }
     
@@ -77,10 +79,11 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     $sql = "SELECT pap.quantiteProduit, p.stock 
             FROM _produitAuPanier pap
             JOIN _produit p ON pap.idProduit = p.idProduit
-            WHERE pap.idProduit = $idProduit AND pap.idPanier IN (
-                SELECT idPanier FROM _panier WHERE idClient = $idClient
+            WHERE pap.idProduit = ? AND pap.idPanier IN (
+                SELECT idPanier FROM _panier WHERE idClient = ?
             )";
-    $stmt = $pdo->query($sql);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idProduit, $idClient]);
     $current = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
     if ($current) {
@@ -94,12 +97,12 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 
         // Mise à jour de la quantité si elle est supérieure à 0
         if ($newQty > 0) {
-            $sql = "UPDATE _produitAuPanier SET quantiteProduit = $newQty 
-                    WHERE idProduit = $idProduit AND idPanier IN (
-                        SELECT idPanier FROM _panier WHERE idClient = $idClient
+            $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
+                    WHERE idProduit = ? AND idPanier IN (
+                        SELECT idPanier FROM _panier WHERE idClient = ?
                     )";
-            $res = $pdo->query($sql);
-            $success = $res !== false;
+            $res = $pdo->prepare($sql);
+            $success = $res->execute([$newQty, $idProduit, $idClient]);
         } else {
             // Suppression du produit si la quantité est 0
             $success = removeFromCartInDatabase($pdo, $idClient, $idProduit);
@@ -116,11 +119,11 @@ function removeFromCartInDatabase($pdo, $idClient, $idProduit) {
     $idClient = intval($idClient);
 
     $sql = "DELETE FROM _produitAuPanier 
-            WHERE idProduit = $idProduit AND idPanier IN (
-                SELECT idPanier FROM _panier WHERE idClient = $idClient
+            WHERE idProduit = ? AND idPanier IN (
+                SELECT idPanier FROM _panier WHERE idClient = ?
             )";
-    $res = $pdo->query($sql);
-    return $res !== false;
+    $res = $pdo->prepare($sql);
+    return $res->execute([$idProduit, $idClient]);
 }
 
 // Fonction pour créer une commande complète à partir du panier actuel
@@ -132,7 +135,8 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $idClient = intval($idClient);
 
         // Récupération du panier actuel du client
-        $stmt = $pdo->query("SELECT * FROM _panier WHERE idClient = $idClient ORDER BY idPanier DESC LIMIT 1");
+        $stmt = $pdo->prepare("SELECT * FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+        $stmt->execute([$idClient]);
         $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
         if (!$panier) throw new Exception("Aucun panier trouvé pour ce client.");
 
@@ -144,8 +148,9 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         
         $sqlItems = "SELECT pap.idProduit, pap.quantiteProduit 
                      FROM _produitAuPanier pap 
-                     WHERE pap.idPanier = $idPanier";
-        $stmtItems = $pdo->query($sqlItems);
+                     WHERE pap.idPanier = ?";
+        $stmtItems = $pdo->prepare($sqlItems);
+        $stmtItems->execute([$idPanier]);
         $items = $stmtItems ? $stmtItems->fetchAll(PDO::FETCH_ASSOC) : [];
         
         // Calcul du sous-total et du nombre d'articles en parcourant tous les produits
@@ -157,36 +162,32 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
 
         // Les données de carte bancaire sont déjà chiffrées côté client, on les stocke telles quelles
-        $carteQ = $pdo->quote($numeroCarte); // Déjà chiffré
-        $cvvQ = $pdo->quote($cvv); // Déjà chiffré
+        $numeroCarte = strval($numeroCarte); // Déjà chiffré
+        $cvv = strval($cvv); // Déjà chiffré
 
         // Vérification si la carte bancaire existe déjà en base de données
-        $checkCarte = $pdo->query("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = $carteQ");
+        $checkCarte = $pdo->prepare("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = ?");
+        $checkCarte->execute([$numeroCarte]);
 
         // Si la carte n'existe pas, on l'ajoute à la base de données
         if ($checkCarte->rowCount() === 0) {
-            $nomCarteQ = $pdo->quote($nomCarte);
-            $dateExpQ = $pdo->quote($dateExp);
             $sqlInsertCarte = "
                 INSERT INTO _carteBancaire (numeroCarte, nom, dateExpiration, cvv)
-                VALUES ($carteQ, $nomCarteQ, $dateExpQ, $cvvQ)
+                VALUES (?, ?, ?, ?)
             ";
-            if ($pdo->query($sqlInsertCarte) === false) {
+            $stmtInsertCarte = $pdo->prepare($sqlInsertCarte);
+            if ($stmtInsertCarte->execute([$numeroCarte, $nomCarte, $dateExp, $cvv]) === false) {
                 throw new Exception("Erreur lors de l'ajout de la carte bancaire : " . implode(', ', $pdo->errorInfo()));
             }
         }
 
         // Création de l'adresse de livraison dans la base de données
-        $adresseQ = $pdo->quote($adresseLivraison);
-        $villeQ = $pdo->quote($villeLivraison);
-        $regionQ = $pdo->quote($regionLivraison);
-        $codePostalQ = $pdo->quote($codePostal);
-
         $sqlAdresse = "
             INSERT INTO _adresse (adresse, region, codePostal, ville, pays)
-            VALUES ($adresseQ, $regionQ, $codePostalQ, $villeQ, 'France')
+            VALUES (?, ?, ?, ?, 'France')
         ";
-        if ($pdo->query($sqlAdresse) === false) {
+        $stmtAdresse = $pdo->prepare($sqlAdresse);
+        if ($stmtAdresse->execute([$adresseLivraison, $regionLivraison, $codePostal, $villeLivraison]) === false) {
             throw new Exception("Erreur lors de l'ajout de l'adresse : " . implode(', ', $pdo->errorInfo()));
         }
         $idAdresse = $pdo->lastInsertId();
@@ -202,12 +203,13 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
                 quantiteCommande, nomTransporteur, dateExpedition,
                 idAdresseLivr, idAdresseFact, numeroCarte, idPanier
             ) VALUES (
-                NOW(), 'En préparation', $montantTTC, $montantHT,
-                $nbArticles, 'Colissimo', NULL,
-                $idAdresse, $idAdresse, $carteQ, $idPanier
+                NOW(), 'En préparation', ?, ?,
+                ?, 'Colissimo', NULL,
+                ?, ?, ?, ?
             )
         ";
-        if ($pdo->query($sqlCommande) === false) {
+        $stmtCommande = $pdo->prepare($sqlCommande);
+        if ($stmtCommande->execute([$montantTTC, $montantHT, $nbArticles, $idAdresse, $idAdresse, $numeroCarte, $idPanier]) === false) {
             throw new Exception("Erreur lors de la création de la commande : " . implode(', ', $pdo->errorInfo()));
         }
 
@@ -216,21 +218,23 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         // Copie des produits du panier vers la table _contient avec les prix remisés
         $sqlContient = "
             INSERT INTO _contient (idProduit, idCommande, prixProduitHt, tauxTva, quantite)
-            SELECT pap.idProduit, $idCommande, 
+            SELECT pap.idProduit, ?, 
                    " . getPrixProduitAvecRemise($pdo, 'p.idProduit') . ", 
                    COALESCE(t.pourcentageTva, 20.0), 
                    pap.quantiteProduit
             FROM _produitAuPanier pap
             JOIN _produit p ON pap.idProduit = p.idProduit
             LEFT JOIN _tva t ON p.typeTva = t.typeTva
-            WHERE pap.idPanier = $idPanier
+            WHERE pap.idPanier = ?
         ";
-        if ($pdo->query($sqlContient) === false) {
+        $stmtContient = $pdo->prepare($sqlContient);
+        if ($stmtContient->execute([$idCommande, $idPanier]) === false) {
             throw new Exception("Erreur lors de la copie des produits : " . implode(', ', $pdo->errorInfo()));
         }
 
         // Vidage du panier après création de la commande
-        if ($pdo->query("DELETE FROM _produitAuPanier WHERE idPanier = $idPanier") === false) {
+        $stmtDelete = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier = ?");
+        if ($stmtDelete->execute([$idPanier]) === false) {
             throw new Exception("Erreur lors du vidage du panier : " . implode(', ', $pdo->errorInfo()));
         }
 
@@ -398,7 +402,8 @@ $cart = getCurrentCart($pdo, $idClient);
             <div class="cardRecap">
                 <article>
                     <?php // Calcul du récapitulatif du panier : nombre d'articles, prix HT, TVA et total TTC  
-                        $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = $idClient ORDER BY idPanier DESC LIMIT 1");
+                        $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+                        $stmt->execute([$idClient]);
                         $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
                         
                         if ($panier) {
@@ -406,8 +411,9 @@ $cart = getCurrentCart($pdo, $idClient);
                             
                             $sqlItems = "SELECT pap.idProduit, pap.quantiteProduit as qty 
                                          FROM _produitAuPanier pap 
-                                         WHERE pap.idPanier = $idPanier";
-                            $stmtItems = $pdo->query($sqlItems);
+                                         WHERE pap.idPanier = ?";
+                            $stmtItems = $pdo->prepare($sqlItems);
+                            $stmtItems->execute([$idPanier]);
                             $items = $stmtItems ? $stmtItems->fetchAll(PDO::FETCH_ASSOC) : [];
                             
                             $nbArticles = 0;
@@ -423,8 +429,9 @@ $cart = getCurrentCart($pdo, $idClient);
                                 $sqlTva = "SELECT COALESCE(t.pourcentageTva, 20.0) as tva 
                                            FROM _produit p 
                                            LEFT JOIN _tva t ON p.typeTva = t.typeTva 
-                                           WHERE p.idProduit = " . intval($item['idProduit']);
-                                $stmtTva = $pdo->query($sqlTva);
+                                           WHERE p.idProduit = ?";
+                                $stmtTva = $pdo->prepare($sqlTva);
+                                $stmtTva->execute([intval($item['idProduit'])]);
                                 $tvaResult = $stmtTva ? $stmtTva->fetch(PDO::FETCH_ASSOC) : [];
                                 $tauxTva = $tvaResult['tva'] ?? 20.0;
                                 

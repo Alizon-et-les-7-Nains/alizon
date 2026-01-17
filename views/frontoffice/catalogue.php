@@ -59,7 +59,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Catégories
 $catSql = "SELECT DISTINCT typeProd FROM _produit WHERE typeProd IS NOT NULL;";
-$listeCategories = $pdo->query($catSql)->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $pdo->prepare($catSql);
+$stmt->execute();
+$listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Vendeurs
 $vendeurSql = "SELECT v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbProduits
@@ -67,10 +69,14 @@ $vendeurSql = "SELECT v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbPro
                JOIN _produit p ON p.idVendeur = v.codeVendeur
                GROUP BY v.codeVendeur, v.raisonSocial
                ORDER BY nbProduits DESC LIMIT 10";
-$vendeurs = $pdo->query($vendeurSql)->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $pdo->prepare($vendeurSql);
+$stmt->execute();
+$vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Prix Max
-$maxPrice = $pdo->query("SELECT MAX(prix) FROM _produit")->fetchColumn() ?? 100;
+$stmt = $pdo->prepare("SELECT MAX(prix) FROM _produit");
+$stmt->execute();
+$maxPrice = $stmt->fetchColumn() ?? 100;
 ?>
 
 <!DOCTYPE html>

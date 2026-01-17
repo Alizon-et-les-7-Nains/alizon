@@ -98,7 +98,8 @@ require_once "../../controllers/prix.php";
             <?php // Affichage de chaque produit présent dans le panier
             foreach ($tabIDProduitPanier as $idProduit => $quantite) { 
                 // Récupération des informations du produit depuis la base de données
-                $stmt = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
+                $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = ?");
+                $stmt->execute([intval($idProduit)]);
                 $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
                 ?>
@@ -157,7 +158,8 @@ require_once "../../controllers/prix.php";
                         
                         // Parcours de tous les produits pour calculer le total
                         foreach($tabIDProduitPanier as $idProduit => $quantite) {
-                            $stmt = $pdo->query("SELECT * FROM _produit WHERE idProduit = " . intval($idProduit));
+                            $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = ?");
+                            $stmt->execute([intval($idProduit)]);
                             $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
                             $prixTotal += $panier['prix'] * $quantite;
                         }

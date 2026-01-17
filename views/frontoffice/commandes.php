@@ -133,7 +133,8 @@ if ($filtre === '2026') {
 function getCurrentCart($pdo, $idClient)
 {
     // Récupération du dernier panier de l'utilisateur
-    $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
+    $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmt->execute([intval($idClient)]);
     $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
     $cart = [];
@@ -146,8 +147,9 @@ function getCurrentCart($pdo, $idClient)
                 FROM _produitAuPanier pa
                 JOIN _produit p ON pa.idProduit = p.idProduit
                 LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-                WHERE pa.idPanier = " . intval($idPanier);
-        $stmt = $pdo->query($sql);
+                WHERE pa.idPanier = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([intval($idPanier)]);
         $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     }
 
