@@ -13,6 +13,8 @@ $sortOrder = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : '';
 $noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
 $categorie = isset($_GET['categorie']) ? $_GET['categorie'] : "";
 $noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
+$pertinenceCroissant = isset($_GET['pertinenceCroissant']) ? $_GET['pertinenceCroissant'] : false;
+$pertinenceDecroissant = isset($_GET['pertinenceDecroissant']) ? $_GET['pertinenceDecroissant'] : false;
 $vendeur = $_GET['vendeur'] ?? null;
 $sqlVendeur="";
 $recherche = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -27,7 +29,7 @@ if (!empty($categorie)) {
     $catCondition = " AND p.typeProd = :categorie";
 }
 
-// 1. Compter les produits
+//Compter les produits
 $countSql = "SELECT COUNT(*) FROM _produit p
              LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur  AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
              WHERE p.note >= :noteMin ". $sqlVendeur ."
@@ -50,13 +52,35 @@ $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
+if ($recherche !== '') {
+    $sql .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
+}
+
+if (!$pertinenceCroissant && !$pertinenceDecroissant) {
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         FROM _produit p
         LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
         WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
-
-if ($recherche !== '') {
-    $sql .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
+}
+else if ($pertinenceCroissant) {
+$sql = "SELECT SUM('totalOccurencesOfSearchQuery') AS pertinence, p.*, r.tauxRemise, r.debutRemise, r.finRemise
+        FROM _produit p
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+        CROSS JOIN (
+            SELECT :search AS searchQuery
+        ) AS sq
+        WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice ". $catCondition ." 
+        ORDER BY pertinence ASC";
+}
+else if ($pertinenceDecroissant) {
+    $sql = "SELECT SUM('totalOccurencesOfSearchQuery') AS pertinence, p.*, r.tauxRemise, r.debutRemise, r.finRemise
+        FROM _produit p
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+        CROSS JOIN (
+            SELECT :search AS searchQuery
+        ) AS sq
+        WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice ". $catCondition ." 
+        ORDER BY pertinence DESC";
 }
 
 if ($sortOrder === 'noteAsc') {
