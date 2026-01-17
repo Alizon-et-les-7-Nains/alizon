@@ -16,22 +16,16 @@ $id_client = $_SESSION['user_id'];
 // Fonction pour récupérer les notifications en fonction de l'utilisateur et de son rôle
 function getNotifications($pdo, $idClient, $est_vendeur) {
     $sql = "SELECT * FROM _notification 
-            WHERE idClient = ? OR idClient = 34 
-            AND est_vendeur = :est_vendeur
-            ORDER BY dateCreation DESC";
+            WHERE (idClient = ? OR idClient = 34) 
+            AND est_vendeur = ?
+            ORDER BY dateNotif DESC";
     $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
-        'idClient'   => $idClient,
-        'est_vendeur' => $est_vendeur
-    ]);
-
-    $notif = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute([$idClient, $est_vendeur]);
     
-    return $notif; 
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
 }
 
-$notifs = getNotifications($pdo, $id_client, 0)
+$notifs = getNotifications($pdo, $id_client, 0);
 
 ?>
 
