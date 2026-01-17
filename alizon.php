@@ -235,7 +235,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tab = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $_SESSION['tabIdDestination'] = $tab;
-
-    include "clientSocketCreation.php";
 }   
+
+include "clientSocketCreation.php";
+
 ?>
