@@ -39,7 +39,7 @@ main.backoffice-stocks {
             border: none !important;
         }
         
-        div:not(button.settings div, div.remise) {
+        div:not(button.settings div, div.remise, dialog div) {
             *:not(img) {
                 user-select: text;
             }
@@ -48,6 +48,7 @@ main.backoffice-stocks {
             background-color: $color-pastel-purple;
             border-radius: 16px;
             font-family: 'open-sans';
+            width: 800px;
             
             table:not(table table) {
                 border-spacing: 2em 0;

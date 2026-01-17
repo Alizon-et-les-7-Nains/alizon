@@ -1,16 +1,6 @@
 <?php
-require_once "../../controllers/pdo.php";
 session_start();
-$envPath = __DIR__ . '/../../.env';
-
-if (file_exists($envPath)) {
-    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        if (strpos(trim($line), '#') === 0) continue;
-        list($name, $value) = explode('=', $line, 2);
-        $_ENV[trim($name)] = trim($value);
-    }
-}
+require_once "../../controllers/pdo.php";
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../../views/frontoffice/connexionClient.php');
@@ -19,13 +9,28 @@ if (!isset($_SESSION['user_id'])) {
 
 $idClient = $_SESSION['user_id'];
 
-function encryptCardNumber($plainText, $key) {
-    $ivLength = openssl_cipher_iv_length('AES-256-CBC');
-    $iv = openssl_random_pseudo_bytes($ivLength);
-    $cipherText = openssl_encrypt($plainText, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
-    return base64_encode($iv . $cipherText);
-}
-
+/**
+ * Récupère le panier actuel d'un client
+ *
+ * Cette fonction récupère le panier le plus récent associé à un ID client,
+ * puis récupère tous les produits dans ce panier ainsi que leurs détails.
+ *
+ * Parametres :
+ *     $pdo L'instance de connexion à la base de données PDO
+ *     $idClient L'ID du client pour lequel récupérer le panier
+ *
+ * Retourne :
+ * 
+ *  Un tableau associatif des articles du panier, chacun contenant :
+ *        - idProduit : ID du produit
+ *        - nom : Nom du produit
+ *        - prix : Prix du produit
+ *        - stock : Quantité en stock disponible
+ *        - qty : Quantité de ce produit dans le panier
+ *        - img : URL de l'image du produit (nullable)
+ * 
+ * Retourne un tableau vide si aucun panier n'existe pour le client
+ */
 function getCurrentCart($pdo, $idClient) {
     $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
     $stmt->execute([$idClient]);
@@ -48,8 +53,25 @@ function getCurrentCart($pdo, $idClient) {
     return $cart;
 }
 
+
+
+/**
+ * Met à jour le stock des produits après la création d'une commande
+ *
+ * Cette fonction récupère tous les produits du panier et diminue leur stock
+ * en fonction de la quantité commandée.
+ *
+ * Parametres :
+ *     $pdo L'instance de connexion à la base de données PDO
+ *     $idPanier L'ID du panier dont les produits ont été commandés
+ *
+ * Retourne :
+ *     true si la mise à jour s'est déroulée avec succès
+ *     false en cas d'erreur
+ */
 function updateStockAfterOrder($pdo, $idPanier) {
     try {
+        // Récupère tous les produits du panier avec leurs quantités
         $sql = "SELECT pap.idProduit, pap.quantiteProduit 
                 FROM _produitAuPanier pap 
                 WHERE pap.idPanier = ?";
@@ -57,6 +79,7 @@ function updateStockAfterOrder($pdo, $idPanier) {
         $stmt->execute([$idPanier]);
         $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
+        // Pour chaque produit, diminue le stock de la quantité commandée
         foreach ($items as $item) {
             $updateSql = "UPDATE _produit SET stock = stock - ? WHERE idProduit = ?";
             $updateStmt = $pdo->prepare($updateSql);
@@ -65,11 +88,29 @@ function updateStockAfterOrder($pdo, $idPanier) {
         
         return true;
     } catch (Exception $e) {
+        // Enregistre l'erreur dans les logs du serveur
         error_log("Erreur mise à jour stock: " . $e->getMessage());
         return false;
     }
 }
 
+/**
+ * Enregistre l'adresse de facturation d'un client dans la base de données.
+ *
+ * Cette fonction vérifie d'abord si l'adresse de livraison existe déjà pour le client donné.
+ * Si l'adresse existe, elle retourne l'identifiant de l'adresse existante.
+ * Sinon, elle insère la nouvelle adresse de livraison dans la base de données et retourne son identifiant.
+ *
+ * Paramtres :
+ *    $pdo L'objet PDO pour la connexion à la base de données.
+ *    $idClient L'identifiant du client.
+ *    $adresse L'adresse de livraison.
+ *    $codePostal Le code postal de l'adresse.
+ *    $ville La ville de l'adresse.
+ *
+ * Retoune : un tableau contenant le statut de l'opération et l'identifiant de l'adresse de facturation
+ * ou un message d'erreur en cas d'échec.
+ */
 function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
     try {
         $sqlCheck = "SELECT idAdresseLivraison FROM _adresseLivraison 
@@ -114,6 +155,19 @@ function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
     }
 }
 
+/**
+ * Traitement des requêtes POST pour les actions liées aux commandes et aux adresses de facturation.
+ *
+ * Vérifie si la méthode de la requête est POST et si l'action est définie dans les données POST.
+ * 
+ * Les actions prises en charge incluent :
+ * - 'createOrder' : Crée une nouvelle commande dans la base de données avec les informations fournies.
+ * - 'saveBillingAddress' : Enregistre une nouvelle adresse de facturation pour le client.
+ *
+ * En cas d'erreur, renvoie un message d'erreur au format JSON.
+ *
+ * Exception Si une erreur se produit lors du traitement des actions.
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     header('Content-Type: application/json');
     
@@ -129,11 +183,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $dateExpiration = $_POST['dateExpiration'] ?? '12/30';
                 $idAdresseFacturation = $_POST['idAdresseFacturation'] ?? null;
 
-                // if (empty($adresseLivraison) || empty($villeLivraison) || empty($numeroCarte) || empty($codePostal)) {
-                //     echo json_encode(['success' => false, 'error' => 'Tous les champs sont obligatoires']);
-                //     break;
-                // }
-
                 $idCommande = createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExpiration, $cvv, $idAdresseFacturation);
                 echo json_encode(['success' => true, 'idCommande' => $idCommande]);
                 break;
@@ -142,11 +191,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $adresse = $_POST['adresse'] ?? '';
                 $codePostal = $_POST['codePostal'] ?? '';
                 $ville = $_POST['ville'] ?? '';
-                
-                // if (empty($adresse) || empty($codePostal) || empty($ville)) {
-                //     echo json_encode(['success' => false, 'error' => 'Tous les champs d\'adresse sont obligatoires']);
-                //     break;
-                // }
                 
                 $result = saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville);
                 echo json_encode($result);
@@ -163,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
 $cart = getCurrentCart($pdo, $idClient);
 
-// Calculate totals
+// Calculer totals
 $sousTotal = 0;
 $quantiteTotal = 0;
 foreach ($cart as $item) {
@@ -183,7 +227,6 @@ $montantTTC = $sousTotal + $livraison;
     <link rel="stylesheet" href="../../public/style.css">
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <title>Paiement - Alizon</title>
-    <link rel="stylesheet" href="paiement.css">
 </head>
 
 <body class="pagePaiement">
@@ -251,7 +294,7 @@ $montantTTC = $sousTotal + $livraison;
                     </div>
 
                     <div class="billing-section" id="billingSection">
-                        <h4 style="margin-bottom: 20px; color: var(--accent); font-size: 18px;">Adresse de facturation
+                        <h4>Adresse de facturation
                         </h4>
                         <div class="form-row">
                             <div class="input-group">
@@ -321,10 +364,8 @@ $montantTTC = $sousTotal + $livraison;
                     <div class="checkbox-group">
                         <input type="checkbox" id="cgvCheckbox">
                         <label for="cgvCheckbox" class="checkbox-label">
-                            J'ai lu et j'accepte les <a href="#"
-                                style="color: var(--accent); text-decoration: underline;">Conditions Générales de
-                                Vente</a> et les <a href="#"
-                                style="color: var(--accent); text-decoration: underline;">Mentions Légales</a> d'Alizon.
+                            J'ai lu et j'accepte les <a href="#">Conditions Générales de
+                                Vente</a> et les <a href="#">Mentions Légales</a> d'Alizon.
                         </label>
                     </div>
                     <span class="error-message" data-for="cgv">Vous devez accepter les CGV</span>
@@ -336,7 +377,7 @@ $montantTTC = $sousTotal + $livraison;
 
                 <div class="cart-items">
                     <?php if (empty($cart)): ?>
-                    <p style="text-align: center; color: #666; padding: 20px;">Votre panier est vide</p>
+                    <p>Votre panier est vide</p>
                     <?php else: ?>
                     <?php foreach ($cart as $item): ?>
                     <div class="cart-item">
@@ -382,87 +423,6 @@ $montantTTC = $sousTotal + $livraison;
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../scripts/frontoffice/paiement.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const checkboxFactAddr = document.getElementById('checkboxFactAddr');
-        const billingSection = document.getElementById('billingSection');
-
-        if (checkboxFactAddr && billingSection) {
-            checkboxFactAddr.addEventListener('change', function() {
-                billingSection.classList.toggle('active', this.checked);
-            });
-        }
-
-        const ctaButton = document.querySelector('.cta-button');
-        if (ctaButton) {
-            ctaButton.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                const formData = {
-                    adresseLivraison: document.querySelector('.adresse-input')?.value || '',
-                    codePostal: document.querySelector('.code-postal-input')?.value || '',
-                    villeLivraison: document.querySelector('.ville-input')?.value || '',
-                    numCarte: document.querySelector('.num-carte')?.value.replace(/\s+/g, '') || '',
-                    nomCarte: document.querySelector('.nom-carte')?.value || '',
-                    dateExpiration: document.querySelector('.carte-date')?.value || '',
-                    cvv: document.querySelector('.cvv-input')?.value || ''
-                };
-
-                let isValid = true;
-
-                document.querySelectorAll('.error-message').forEach(error => {
-                    error.classList.remove('show');
-                });
-
-                if (!formData.adresseLivraison) {
-                    document.querySelector('[data-for="adresse"]').classList.add('show');
-                    isValid = false;
-                }
-                if (!formData.codePostal) {
-                    document.querySelector('[data-for="code-postal"]').classList.add('show');
-                    isValid = false;
-                }
-                if (!formData.villeLivraison) {
-                    document.querySelector('[data-for="ville"]').classList.add('show');
-                    isValid = false;
-                }
-                if (!formData.numCarte || formData.numCarte.length < 16) {
-                    document.querySelector('[data-for="num-carte"]').classList.add('show');
-                    isValid = false;
-                }
-                if (!formData.nomCarte) {
-                    document.querySelector('[data-for="nom-carte"]').classList.add('show');
-                    isValid = false;
-                }
-                if (!formData.dateExpiration) {
-                    document.querySelector('[data-for="carte-date"]').classList.add('show');
-                    isValid = false;
-                }
-                if (!formData.cvv || formData.cvv.length !== 3) {
-                    document.querySelector('[data-for="cvv-input"]').classList.add('show');
-                    isValid = false;
-                }
-
-                const cgvCheckbox = document.getElementById('cgvCheckbox');
-                if (!cgvCheckbox || !cgvCheckbox.checked) {
-                    document.querySelector('[data-for="cgv"]').classList.add('show');
-                    isValid = false;
-                }
-
-                if (!isValid) {
-                    return;
-                }
-
-                const popup = document.getElementById('confirmationPopup');
-                if (popup) {
-                    popup.classList.add('show');
-
-                    console.log('Form data ready for submission:', formData);
-                }
-            });
-        }
-    });
-    </script>
 </body>
 
 </html>
