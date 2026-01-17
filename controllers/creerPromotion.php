@@ -46,6 +46,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $dateSql = $d->format('Y-m-d');
 
+        // Récupération du nom du produit pour la notification
+        $stmtProduit = $pdo->prepare("SELECT nom FROM _produit WHERE idProduit = ?");
+        $stmtProduit->execute([$idProd]);
+        $produit = $stmtProduit->fetch(PDO::FETCH_ASSOC);
+        $nomProduit = $produit['nom'] ?? 'Un produit';
+
+        // Création de la notification globale
+        $stmt = $pdo->prepare("
+            INSERT INTO _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur) 
+            VALUES (34, ?, ?, ?, 0)
+        ");
+        $stmt->execute([
+            "Découvrez {$nomProduit}, notre nouveau produit mis en avant. Ne manquez pas cette sélection !",
+            "🌟 Nouveau produit vedette !",
+            date('Y-m-d H:i:s'),
+        ]);
+
         if(count($res) >= 1) {
             $stmt = $pdo->prepare("UPDATE _promotion SET finPromotion = :finPromotion WHERE idProduit = :idProd");
             $stmt->execute([':finPromotion' => $dateSql,':idProd' => $idProd]);

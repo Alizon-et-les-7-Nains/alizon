@@ -71,6 +71,16 @@ class PaymentPage {
         }
 
         e.target.value = formatted.substring(0, 19); // 16 chiffres + 3 espaces
+
+        // Vérification en temps réel de la carte Visa
+        const cleanedValue = value.substring(0, 16);
+        if (cleanedValue.length >= 13) {
+          if (!this.isVisaCard(cleanedValue)) {
+            this.showError("Numéro de carte Visa invalide", "num-carte");
+          } else {
+            this.clearError("num-carte");
+          }
+        }
       });
     }
 
@@ -95,6 +105,78 @@ class PaymentPage {
     }
   }
 
+  // === ALGORITHME DE LUHN POUR LA VALIDATION DES CARTES ===
+
+  /**
+   * Vérifie la validité d'un numéro de carte avec l'algorithme de Luhn
+   *
+   * Parametres :
+   * cardNumber - Numéro de carte (sans espaces)
+   * Retourne
+   *  - true si valide, false sinon
+   */
+  cardVerification(cardNumber) {
+    const cleaned = cardNumber.replace(/\s+/g, "");
+    if (cleaned.length === 0 || !/^\d+$/.test(cleaned)) return false;
+
+    const digits = cleaned
+      .split("")
+      .reverse()
+      .map((d) => Number(d));
+
+    for (let i = 1; i < digits.length; i += 2) {
+      let n = digits[i] * 2;
+      if (n > 9) n -= 9;
+      digits[i] = n;
+    }
+
+    const sum = digits.reduce((a, b) => a + b, 0);
+    return sum % 10 === 0;
+  }
+
+  /**
+   * Vérifie si c'est une carte Visa valide
+   * - Doit commencer par 4
+   * - Doit être valide via l'algorithme de Luhn
+   * - Doit avoir 13, 16 ou 19 chiffres (standards Visa)
+   *
+   * Parametres :
+   * cardNumber - Numéro de carte (sans espaces)
+   *
+   * Retourne :
+   * boolean - true si c'est une Visa valide, false sinon
+   */
+  isVisaCard(cardNumber) {
+    const clean = cardNumber.replace(/\s+/g, "");
+
+    // Vérifie que c'est une carte Visa (commence par 4)
+    if (!clean.startsWith("4")) {
+      return false;
+    }
+
+    // Vérifie la longueur standard Visa
+    const isValidLength = [13, 16, 19].includes(clean.length);
+    if (!isValidLength) {
+      return false;
+    }
+
+    // Applique l'algorithme de Luhn
+    return this.cardVerification(clean);
+  }
+
+  // =======================================================
+
+  /**
+   * Valide les champs de l'adresse de facturation
+   *
+   * Parametres :
+   * adresse - Élément input de l'adresse
+   * codePostal - Élément input du code postal
+   * ville - Élément input de la ville
+   *
+   * Retourne :
+   * boolean - true si tous les champs sont valides, false sinon
+   */
   validateBillingFields(adresse, codePostal, ville) {
     let valid = true;
 
@@ -126,6 +208,16 @@ class PaymentPage {
     return valid;
   }
 
+  /**
+   * Gère le processus de paiement
+   * Valide le formulaire, vérifie le stock et affiche le popup de confirmation
+   *
+   * Parametres :
+   * e - Événement du clic
+   *
+   * Retourne :
+   * void
+   */
   async handlePayment(e) {
     e.preventDefault();
 
@@ -165,6 +257,15 @@ class PaymentPage {
     this.showConfirmationPopup(formData, cart);
   }
 
+  /**
+   * Sauvegarde l'adresse de facturation différente via une requête AJAX
+   *
+   * Parametres :
+   * billingData - Objet contenant l'adresse, code postal et ville
+   *
+   * Retourne :
+   * Promise<Object> - Réponse JSON contenant {success, idAdresseFacturation}
+   */
   async saveBillingAddress(billingData) {
     try {
       const response = await fetch("pagePaiement.php", {
@@ -185,6 +286,13 @@ class PaymentPage {
     }
   }
 
+  /**
+   * Valide tous les champs du formulaire de paiement
+   * Vérifie les adresses, les données de carte et les conditions générales
+   *
+   * Retourne :
+   * boolean - true si le formulaire est valide, false sinon
+   */
   validateForm() {
     let isValid = true;
     this.clearAllErrors();
@@ -237,6 +345,39 @@ class PaymentPage {
       }
     });
 
+    // === VALIDATION SPÉCIFIQUE POUR LA CARTE ===
+    const numCarteInput = document.querySelector(".num-carte");
+    if (numCarteInput && numCarteInput.value.trim()) {
+      const cardNumber = numCarteInput.value.replace(/\s+/g, "");
+
+      // Vérifie que c'est une Visa
+      if (!cardNumber.startsWith("4")) {
+        this.showError(
+          "Ceci n'est pas une carte Visa (les cartes Visa commencent par 4)",
+          "num-carte"
+        );
+        isValid = false;
+      }
+
+      // Vérifie la longueur
+      if (![13, 16, 19].includes(cardNumber.length)) {
+        this.showError(
+          "Numéro de carte invalide (13, 16 ou 19 chiffres attendus)",
+          "num-carte"
+        );
+        isValid = false;
+      }
+
+      // Vérifie l'algorithme de Luhn
+      if (!this.cardVerification(cardNumber)) {
+        this.showError(
+          "Numéro de carte invalide selon l'algorithme de vérification",
+          "num-carte"
+        );
+        isValid = false;
+      }
+    }
+
     if (!this.cgvCheckbox || !this.cgvCheckbox.checked) {
       this.showError("Veuillez accepter les conditions générales", "cgv");
       isValid = false;
@@ -254,6 +395,12 @@ class PaymentPage {
     return isValid;
   }
 
+  /**
+   * Récupère les données du formulaire de livraison et de paiement
+   *
+   * Retourne :
+   * Object - Objet contenant tous les champs du formulaire nettoyés
+   */
   getFormData() {
     return {
       adresseLivraison: document.querySelector(".adresse-input").value.trim(),
@@ -266,6 +413,12 @@ class PaymentPage {
     };
   }
 
+  /**
+   * Récupère les données de l'adresse de facturation
+   *
+   * Retourne :
+   * Object - Objet contenant l'adresse, code postal et ville de facturation
+   */
   getBillingFormData() {
     return {
       adresse: document.querySelector(".adresse-fact-input").value.trim(),
@@ -276,6 +429,17 @@ class PaymentPage {
     };
   }
 
+  /**
+   * Affiche le popup de confirmation de commande avec récapitulatif
+   * Construit le HTML du panier et affiche les détails de la commande
+   *
+   * Parametres :
+   * formData - Données du formulaire de paiement
+   * cart - Array des articles du panier
+   *
+   * Retourne :
+   * void
+   */
   showConfirmationPopup(formData, cart) {
     let cartHtml = '<div class="cart-summary">';
     let total = window.__PAYMENT_DATA__?.totals?.montantTTC || 0;
@@ -318,7 +482,7 @@ class PaymentPage {
                     <h4>Paiement</h4>
                     <p>Carte Visa se terminant par ${formData.numCarte.slice(
                       -4
-                    )}</p>
+                    )} ✓ Validée par algorithme de Luhn</p>
                 </div>
             </div>
             
@@ -395,6 +559,16 @@ class PaymentPage {
     }
   }
 
+  /**
+   * Affiche un message d'erreur pour un champ spécifique
+   *
+   * Parametres :
+   * message - Message d'erreur à afficher
+   * field - Clé du champ (attribut data-for)
+   *
+   * Retourne :
+   * void
+   */
   showError(message, field) {
     const errorEl = document.querySelector(`[data-for="${field}"]`);
     if (errorEl) {
@@ -406,6 +580,15 @@ class PaymentPage {
     }
   }
 
+  /**
+   * Efface le message d'erreur pour un champ spécifique
+   *
+   * Parametres :
+   * field - Clé du champ (attribut data-for)
+   *
+   * Retourne :
+   * void
+   */
   clearError(field) {
     const errorEl = document.querySelector(`[data-for="${field}"]`);
     if (errorEl) {
@@ -415,6 +598,12 @@ class PaymentPage {
     }
   }
 
+  /**
+   * Efface tous les messages d'erreur de la page
+   *
+   * Retourne :
+   * void
+   */
   clearAllErrors() {
     document.querySelectorAll(".error-message").forEach((el) => {
       el.textContent = "";
@@ -423,10 +612,25 @@ class PaymentPage {
     });
   }
 
+  /**
+   * Masque le popup de confirmation
+   *
+   * Retourne :
+   * void
+   */
   hidePopup() {
     this.confirmationPopup.classList.remove("show");
   }
 
+  /**
+   * Retourne le nom lisible d'un champ pour les messages d'erreur
+   *
+   * Parametres :
+   * errorKey - Clé du champ
+   *
+   * Retourne :
+   * string - Nom du champ lisible
+   */
   getFieldName(errorKey) {
     const names = {
       adresse: "Adresse de livraison",
@@ -440,6 +644,15 @@ class PaymentPage {
     return names[errorKey] || errorKey;
   }
 
+  /**
+   * Retourne le message d'erreur de format pour un champ spécifique
+   *
+   * Parametres :
+   * errorKey - Clé du champ
+   *
+   * Retourne :
+   * string - Message d'erreur de format
+   */
   getPatternMessage(errorKey) {
     const messages = {
       "code-postal": "Le code postal doit contenir 5 chiffres",
@@ -451,6 +664,9 @@ class PaymentPage {
   }
 }
 
+// ============================================================================
+// Initialisation de la page
+// ============================================================================
 document.addEventListener("DOMContentLoaded", () => {
   new PaymentPage();
 });

@@ -11,7 +11,8 @@ if (!isset($_SESSION['user_id'])) {
 
 $id_client = $_SESSION['user_id'];
 
-$stmt = $pdo->query("SELECT * FROM _avis WHERE idClient = $id_client");
+$stmt = $pdo->prepare("SELECT * FROM _avis WHERE idClient = ?");
+$stmt->execute([$id_client]);
 $mesAvis = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 function afficherEtoiles($note) {
@@ -53,9 +54,11 @@ function afficherEtoiles($note) {
                 // Pour tous les avis, on récupère les produits associés ainsi que leurs images
                 foreach ($mesAvis as $avis) {
                 $p = $avis['idProduit'];
-                $stmt2 = $pdo->query("SELECT * FROM _produit WHERE idProduit = $p");
+                $stmt2 = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = ?");
+                $stmt2->execute([$p]);
                 $monProduit = $stmt2->fetch(PDO::FETCH_ASSOC);
-                $stmt3 = $pdo->query("SELECT * FROM _imageDeProduit WHERE idProduit = $p");
+                $stmt3 = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = ?");
+                $stmt3->execute([$p]);
                 $imageProduit = $stmt3->fetch(PDO::FETCH_ASSOC); 
                 ?> 
                 <article>

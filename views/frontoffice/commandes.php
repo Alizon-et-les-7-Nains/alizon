@@ -1,16 +1,20 @@
 <?php
+// Initialisation de la connexion avec le serveur / BDD
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
 session_start();
 ob_start();
 
+// Variable pour afficher le popup de confirmation de commande
 $showPopup = false;
 
+// Vérification si une commande vient d'être payée pour afficher le popup de confirmation
 if (!empty($_SESSION['commandePayee'])) {
     $showPopup = true;
     unset($_SESSION['commandePayee']);
 }
 
+// Récupération des informations de destination pour le suivi de commande
 $tabIdDestination = $_SESSION['tabIdDestination'] ?? [];
 
 // ============================================================================
@@ -28,15 +32,18 @@ $idClient = $_SESSION['user_id'];
 // FONCTION DE RÉCUPÉRATION DES COMMANDES
 // ============================================================================
 
+// Fonction pour récupérer les commandes d'un client avec filtre (par année ou en cours)
 function getCommandes($pdo, $idClient, $filtre){
     $commandes = [];
 
+    // Requête pour récupérer toutes les informations des commandes du client
     $sql = "SELECT c.idCommande, c.dateCommande, c.etatLivraison, c.montantCommandeTTC, 
                    c.montantCommandeHT, c.dateExpedition, c.nomTransporteur, c.idAdresseLivr, c.idAdresseFact, c.numeroCarte
             FROM _commande c
             JOIN _panier p ON c.idPanier = p.idPanier
             WHERE p.idClient = :idClient";
 
+    // Application des filtres selon le paramètre demandé
     if ($filtre === 'cours') {
         $sql .= " AND c.etatLivraison NOT IN ('Livrée', 'Annulé')";
     } elseif ($filtre === '2026') {
@@ -56,6 +63,7 @@ function getCommandes($pdo, $idClient, $filtre){
     foreach ($resultatsCommandes as $row) {
         $idCommande = $row['idCommande'];
 
+        // Récupération de tous les produits contenus dans cette commande
         $sqlProduits = "SELECT v.raisonSocial, p.idProduit, p.nom, co.quantite, i.URL as image
                         FROM _contient co
                         JOIN _produit p ON co.idProduit = p.idProduit
@@ -68,15 +76,18 @@ function getCommandes($pdo, $idClient, $filtre){
         $stmtProd->execute([':idCommande' => $idCommande]);
         $produits = $stmtProd->fetchAll(PDO::FETCH_ASSOC);
 
+        // Formatage de la date de commande au format français (jj/mm/aaaa)
         $dateCommandeObj = new DateTime($row['dateCommande']);
         $dateCommandeFormatee = $dateCommandeObj->format('d/m/Y');
 
+        // Formatage de la date de livraison si disponible
         $dateLivraisonFormatee = "En attente";
         if (!empty($row['dateExpedition'])) {
             $dateExpObj = new DateTime($row['dateExpedition']);
             $dateLivraisonFormatee = $dateExpObj->format('d/m/Y');
         }
 
+        // Construction du tableau de données pour chaque commande
         $commandes[] = [
             'id' => $row['idCommande'],
             'date' => $dateCommandeFormatee,
@@ -103,6 +114,7 @@ $filtre = isset($_GET['filtre']) ? $_GET['filtre'] : 'cours';
 $commandesAffichees = getCommandes($pdo, $idClient, $filtre);
 $nombreCommandes = count($commandesAffichees);
 
+// Définition des titres et messages selon le filtre sélectionné
 $titreFiltre = "Commandes en cours";
 $messageVide = "Aucune commande en cours actuellement.";
 
@@ -117,9 +129,12 @@ if ($filtre === '2026') {
     $messageVide = "Aucune commande passée en 2024.";
 }
 
+// Fonction pour récupérer le panier actuel du client
 function getCurrentCart($pdo, $idClient)
 {
-    $stmt = $pdo->query("SELECT idPanier FROM _panier WHERE idClient = " . intval($idClient) . " ORDER BY idPanier DESC LIMIT 1");
+    // Récupération du dernier panier de l'utilisateur
+    $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmt->execute([intval($idClient)]);
     $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
     $cart = [];
@@ -127,18 +142,21 @@ function getCurrentCart($pdo, $idClient)
     if ($panier) {
         $idPanier = intval($panier['idPanier']);
 
+        // Récupération de tous les produits présents dans le panier
         $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
                 FROM _produitAuPanier pa
                 JOIN _produit p ON pa.idProduit = p.idProduit
                 LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
-                WHERE pa.idPanier = " . intval($idPanier);
-        $stmt = $pdo->query($sql);
+                WHERE pa.idPanier = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([intval($idPanier)]);
         $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     }
 
     return $cart;
 }
 
+// Fonction pour modifier la quantité d'un produit dans le panier (ajouter ou retirer)
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta)
 {
     $idProduit = intval($idProduit);
@@ -233,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 // RÉCUPÉRATION DES DONNÉES POUR LA PAGE
 // ============================================================================
 
-// recuperation panier courent
+// Récupération du panier courant pour l'affichage
 $cart = getCurrentCart($pdo, $idClient);
 
 ?>
@@ -276,13 +294,16 @@ $cart = getCurrentCart($pdo, $idClient);
                 <p><?php echo $messageVide; ?></p>
             </section>
         <?php else: ?>
-            <?php foreach ($commandesAffichees as $commande): ?>
+            <?php // Boucle d'affichage de toutes les commandes avec leurs produits
+            foreach ($commandesAffichees as $commande): ?>
                 <section class="commande">
                     <?php
                     $nombreProduits = count($commande['produits']);
                     echo "<script>console.log(" . json_encode($commande) . ");</script>";
                     echo "<script>console.log(" . json_encode($commandesAffichees) . ");</script>";
+                    // Affichage de chaque produit de la commande
                     foreach ($commande['produits'] as $index => $produit):
+                        // Utilisation de l'image du produit ou image par défaut si non disponible
                         $imgSrc = !empty($produit['image']) ? htmlspecialchars($produit['image']) : '../../public/images/defaultImageProduit.png';
                         ?>
                         <section class="produit <?php echo ($index === $nombreProduits - 1) ? 'dernierProduit' : ''; ?>">
@@ -338,6 +359,7 @@ $cart = getCurrentCart($pdo, $idClient);
 
                             <?php 
                                 
+                                // Récupération de l'adresse de facturation
                                 $sql = "SELECT *
                                 FROM _adresseClient a
                                 WHERE a.idAdresse = :idAdresse";
@@ -346,6 +368,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                 $stmt->execute([':idAdresse' => $commande['idAdresseFact']]);
                                 $resultatAdresseFacturation = $stmt->fetch(PDO::FETCH_ASSOC);
 
+                                // Construction de l'adresse complète avec ou sans complément
                                 if(!$resultatAdresseFacturation['complementAdresse']) {
                                     $complement = "";
                                 } else {
@@ -354,6 +377,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             
                                 $adresseFacturation = $resultatAdresseFacturation['adresse'] . ", " . $resultatAdresseFacturation['codePostal'] . " " . $resultatAdresseFacturation['ville'] . $complement;
 
+                                // Récupération de l'adresse de livraison
                                 $sql = "SELECT *
                                         FROM _adresseLivraison a
                                         WHERE a.idAdresseLivraison = :idAdresse";
@@ -364,6 +388,7 @@ $cart = getCurrentCart($pdo, $idClient);
 
                                 $adresseLivraison = $resultatAdresseLivraison['adresse'] . ", " . $resultatAdresseLivraison['codePostal'] . " " . $resultatAdresseLivraison['ville'];
 
+                                // Récupération du nom de la carte bancaire utilisée
                                 $sqlCarte = "SELECT nom FROM _carteBancaire WHERE numeroCarte = :numeroCarte";
                                 $stmtCarte = $pdo->prepare($sqlCarte);
                                 $stmtCarte->execute([':numeroCarte' => $commande['numeroCarte']]);
@@ -380,6 +405,7 @@ $cart = getCurrentCart($pdo, $idClient);
             <?php endforeach; ?>
         <?php endif; ?>
 
+        <!-- Popup de confirmation d'ajout au panier -->
         <section class="confirmationAjout">
             <h4>Produit ajouté au panier !</h4>
         </section>
@@ -390,6 +416,7 @@ $cart = getCurrentCart($pdo, $idClient);
     </main>
 
     <script>
+        // Gestion de l'affichage du popup de confirmation d'ajout au panier
         const popupConfirmation = document.querySelector(".confirmationAjout");
         const boutonsAjout = document.querySelectorAll(".plus");
 
@@ -416,8 +443,10 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <?php 
         $idCommande = intval($_GET['idCommande']);
+        // Affichage du popup de confirmation après paiement réussi
         if ($showPopup): ?>
         <?php            
+            // Récupération du numéro de bordereau de la commande
             $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
@@ -436,8 +465,10 @@ $cart = getCurrentCart($pdo, $idClient);
         </div>
     <?php endif; ?>
 
-    <?php if (isset($_GET['idCommande'])): ?>
+    <?php // Affichage du popup de suivi de livraison si un ID de commande est fourni
+    if (isset($_GET['idCommande'])): ?>
         <?php
+            // Récupération de l'étape actuelle de la livraison
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([":idCommande" => $idCommande]);
@@ -453,6 +484,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <div class="popup-content">
 
                     <?php
+                        // Récupération des produits de la commande pour le récapitulatif
                         $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
                         $stmt = $pdo->prepare($sql);
                         $stmt->execute([":idCommande" => $idCommande]);
