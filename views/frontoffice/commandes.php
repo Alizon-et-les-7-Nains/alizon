@@ -266,7 +266,7 @@ $cart = getCurrentCart($pdo, $idClient);
         <title>Alizon - Mes Commandes</title>
     </head>
 <body class="pageCommandes">
-    <?php if (!isset($_GET['idCommande']) || !$showPopup){
+    <?php if (!isset($_GET['idCommande']) && !$showPopup){
          include '../../views/frontoffice/partials/headerConnecte.php';
         }
     ?>
