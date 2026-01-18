@@ -41,6 +41,29 @@ modalSupprProduit?.addEventListener("click", (e) => {
         modalSupprProduit.close();
     }
 });
+const buttonExtract = document.getElementById('button-extract');
+const inputsExtractwo = document.querySelectorAll('form#extraire input:not(#tout):not([type="submit"])');
+const inputToutExtract = document.getElementById('tout');
+function updateButtonState() {
+    buttonExtract.disabled = !Array.from(inputsExtractwo).some(input => input.checked);
+}
+function updateToutCheckbox() {
+    const allChecked = Array.from(inputsExtractwo).every(input => input.checked);
+    const someChecked = Array.from(inputsExtractwo).some(input => input.checked);
+    inputToutExtract.checked = allChecked && someChecked;
+}
+inputsExtractwo.forEach((input) => {
+    input.addEventListener('input', () => {
+        updateToutCheckbox();
+        updateButtonState();
+    });
+});
+inputToutExtract.addEventListener('input', () => {
+    inputsExtractwo.forEach((input) => {
+        input.checked = inputToutExtract.checked;
+    });
+    updateButtonState();
+});
 const boutonHaut = document.getElementById('haut');
 boutonHaut?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

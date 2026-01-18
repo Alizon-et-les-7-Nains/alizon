@@ -23,7 +23,7 @@
         // ===============================
         // Suppression notif après clic
         // ===============================
-        if (isset($_GET['idNotif'], $_GET['reassort_id'])) {
+        /* if (isset($_GET['idNotif'], $_GET['reassort_id'])) {
             $del = $pdo->prepare("
                 DELETE FROM _notification 
                 WHERE idNotif = :idNotif 
@@ -50,7 +50,7 @@
             $_SESSION['hide_notif'] = true;
         }
     ?>
-    <?php require_once './partials/notifications_stock.php' ?>
+    <?php require_once './partials/notifications_stock.php' */ ?>
 
     <?php
         $currentPage = basename(__FILE__);
@@ -58,6 +58,17 @@
     ?>
 
     <main class="backoffice-stocks">
+        <section>
+            <h1>Extraire le stock</h1>
+            <form action="../../controllers/extract.php?id=<?php echo $_SESSION['id']?>" method="post" id="extraire">
+                <input type="checkbox" name="epuise" id="epuise"> <label for="epuise">Épuisés</label>
+                <input type="checkbox" name="faible" id="faible"> <label for="faible">En alerte</label>
+                <input type="checkbox" name="stock" id="stock"> <label for="stock">En Stock</label>
+                <input type="checkbox" name="tout" id="tout"> <label for="tout">Tous</label>
+                <input type="submit" value="Extraire 0 produits" id="button-extract" disabled>
+            </form>
+        </section>
+
         <section>
             <h1>Produits Épuisés</h1>
             <article>
@@ -443,7 +454,7 @@ echo "
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
-    <script src="../../public/scriptNotif.js"></script>
+    <!-- <script src="../../public/scriptNotif.js"></script> -->
 </body>
 
 </html>
