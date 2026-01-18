@@ -60,7 +60,8 @@
     <main class="backoffice-stocks">
         <section>
             <h1>Extraire le stock</h1>
-            <form action="../../controllers/extract.php?id=<?php echo $_SESSION['id']?>" method="post" id="extraire">
+            <form action="../../controllers/extract.php" method="post" id="extraire">
+                <input type='hidden' name='id' value="<?php echo $_SESSION['id']?>">
                 <input type="checkbox" name="epuise" id="epuise"> <label for="epuise">Épuisés</label>
                 <input type="checkbox" name="faible" id="faible"> <label for="faible">En alerte</label>
                 <input type="checkbox" name="stock" id="stock"> <label for="stock">En Stock</label>
