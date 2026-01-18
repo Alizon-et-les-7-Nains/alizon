@@ -72,7 +72,7 @@
 
         <section>
             <h1>Produits Épuisés</h1>
-            <article>
+            <article class='epuises'>
 <?php
 $epuisesSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/produitsEpuises.sql'));
 $epuisesSTMT->execute([':idVendeur' => $_SESSION['id']]);
@@ -95,7 +95,7 @@ if (count($epuises) == 0) echo "<h2>Aucun produit épuisé</h2>";
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
         $commandes->execute(['idProduit' => $epuise['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
-        $html = "<div>
+        $html = "<div class='produit'>
                     <button class='settings' id='" . $epuise['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>
@@ -198,7 +198,7 @@ echo "
 
         <section>
             <h1>Produits en Alerte</h1>
-            <article>
+            <article class="faibles">
 <?php
 $faiblesSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/stockFaible.sql'));
 $faiblesSTMT->execute([':idVendeur' => $_SESSION['id']]);
@@ -221,7 +221,7 @@ if (count($faibles) == 0) echo "<h2>Aucun produit en alerte</h2>";
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
         $commandes->execute(['idProduit' => $faible['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
-        $html = "<div>
+        $html = "<div class='produit'>
                     <button class='settings' id='" . $faible['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>
@@ -324,7 +324,7 @@ echo "
 
         <section>
             <h1>Produits en Stock</h1>
-            <article>
+            <article class="stocks">
 <?php
 $stocksSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/produitsStock.sql'));
 $stocksSTMT->execute([':idVendeur' => $_SESSION['id']]);
@@ -347,7 +347,7 @@ $stocks = $stocksSTMT->fetchAll(PDO::FETCH_ASSOC);
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
         $commandes->execute(['idProduit' => $stock['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
-        $html = "<div>
+        $html = "<div class='produit'>
                     <button class='settings' id='" . $stock['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>
