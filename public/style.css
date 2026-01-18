@@ -4924,29 +4924,70 @@ main.backoffice-stocks section div:not(button.settings div, div.remise, dialog d
 main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) > ul li:last-child {
   color: #f14e4e;
 }
-main.backoffice-stocks section:first-child div:not(button.settings div) {
+main.backoffice-stocks section:nth-child(2) div:not(button.settings div) {
   border-left-style: solid;
   border-left-width: 5px;
   border-left-color: #f14e4e;
 }
-main.backoffice-stocks section:first-child div:not(button.settings div) > ul li:last-child {
-  color: #f14e4e;
-}
-main.backoffice-stocks section:nth-child(2) div:not(button.settings div) {
-  border-left-style: solid;
-  border-left-width: 5px;
-  border-left-color: #ffc25a;
-}
 main.backoffice-stocks section:nth-child(2) div:not(button.settings div) > ul li:last-child {
-  color: #ffc25a;
+  color: #f14e4e;
 }
 main.backoffice-stocks section:nth-child(3) div:not(button.settings div) {
   border-left-style: solid;
   border-left-width: 5px;
-  border-left-color: #259525;
+  border-left-color: #ffc25a;
 }
 main.backoffice-stocks section:nth-child(3) div:not(button.settings div) > ul li:last-child {
+  color: #ffc25a;
+}
+main.backoffice-stocks section:nth-child(4) div:not(button.settings div) {
+  border-left-style: solid;
+  border-left-width: 5px;
+  border-left-color: #259525;
+}
+main.backoffice-stocks section:nth-child(4) div:not(button.settings div) > ul li:last-child {
   color: #259525;
+}
+main.backoffice-stocks section:first-child form {
+  display: flex;
+  align-items: center;
+  font-family: "open-sans";
+  font-weight: bold;
+}
+main.backoffice-stocks section:first-child form label {
+  margin-left: 0.25em;
+  margin-right: 1em;
+}
+main.backoffice-stocks section:first-child form input[type=checkbox]:hover, main.backoffice-stocks section:first-child form label:hover {
+  cursor: pointer;
+}
+main.backoffice-stocks section:first-child form input[type=submit] {
+  transition: all 0.2s ease;
+  margin-left: 1em;
+  padding: 1em;
+  border-radius: 16px;
+  border: none;
+  background-color: #273469;
+  color: #fffefa;
+  font-size: 15px;
+}
+main.backoffice-stocks section:first-child form input[type=submit]:hover {
+  cursor: pointer;
+  background-color: #e3f2fe;
+  color: #273469;
+  outline-style: solid;
+  outline-color: #273469;
+  outline-width: 3px;
+  outline-offset: -3px;
+}
+main.backoffice-stocks section:first-child form input[type=submit]:disabled {
+  background-color: #bababa;
+}
+main.backoffice-stocks section:first-child form input[type=submit]:disabled:hover {
+  cursor: not-allowed;
+  color: #fffefa;
+  outline: none;
+  background-color: #bababa;
 }
 main.backoffice-stocks {
   margin-bottom: 2em;
