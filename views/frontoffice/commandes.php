@@ -266,10 +266,10 @@ $cart = getCurrentCart($pdo, $idClient);
         <title>Alizon - Mes Commandes</title>
     </head>
 <body class="pageCommandes">
-    <?php if (!isset($_GET['idCommande'])): ?>
-        <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
-    <?php endif; ?>
-
+    <?php if (!isset($_GET['idCommande']) || !$showPopup){
+         include '../../views/frontoffice/partials/headerConnecte.php';
+        }
+    ?>
     <main>
         <section class="topRecherche">
             <h1>Vos commandes</h1>
@@ -482,50 +482,70 @@ $cart = getCurrentCart($pdo, $idClient);
                 </div> 
                 <h2>Suivi de la livraison</h2>
                 <div class="popup-content">
-
-                    <?php
-                        // Récupération des produits de la commande pour le récapitulatif
-                        $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
-                        $stmt = $pdo->prepare($sql);
-                        $stmt->execute([":idCommande" => $idCommande]);
-                        $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    ?>
-                    <?php foreach ($produits as $produit): ?>
-                        <div class="recapProduit">
-                            <img src="<?= htmlspecialchars($produit['URL']) ?>" alt="Image du produit">
-                            <div class="nomEtDescription">
-                                <h3><?= htmlspecialchars($produit['nom']) ?></h3>
-                                <p><?= htmlspecialchars($produit['description']) ?></p>
-                            </div>
+                    <div class="recapProduit">
+                        <img src="chouchenArtisanal.jpg" alt="Image du produit">
+                        <div class="nomEtDescription">
+                            <h3>Chouchen Artisanal</h3>
+                            <p>délicieux chouchen</p>
                         </div>
-                    <?php endforeach; ?>
                     </div>
+                    <div class="recapProduit">
+                        <img src="chouchenArtisanal.jpg" alt="Image du produit">
+                        <div class="nomEtDescription">
+                            <h3>Chouchen Artisanal</h3>
+                            <p>délicieux chouchen</p>
+                        </div>
+                    </div>
+                    <div class="recapProduit">
+                        <img src="chouchenArtisanal.jpg" alt="Image du produit">
+                        <div class="nomEtDescription">
+                            <h3>Chouchen Artisanal</h3>
+                            <p>délicieux chouchen</p>
+                        </div>
+                    </div>
+                    <div class="recapProduit">
+                        <img src="chouchenArtisanal.jpg" alt="Image du produit">
+                        <div class="nomEtDescription">
+                            <h3>Chouchen Artisanal</h3>
+                            <p>délicieux chouchen</p>
+                        </div>
+                    </div>
+                    <div class="recapProduit">
+                        <img src="chouchenArtisanal.jpg" alt="Image du produit">
+                        <div class="nomEtDescription">
+                            <h3>Chouchen Artisanal</h3>
+                            <p>délicieux chouchen</p>
+                        </div>
+                    </div>  
+                </div>
                 <div class="stepper">
-                    <p>En cours de préparation</p>
-                    <p>Prise en charge du colis</p>
-                    <p>Arrivé à la plateforme Régional</p>
-                    <p>Arrivé à la plateforme local</p>
-                    <p>Colis livré</p>
-                    <div class="rond"></div>
-                    <div class="trait">
-                        <div class="demiTrait"></div>
+                    <div class="stepperEtTexte">
+                        <p>En cours de préparation</p>
+                        <p>Prise en charge du colis</p>
+                        <p>Arrivé à la plateforme Régional</p>
+                        <p>Arrivé à la plateforme local</p>
+                        <p>Colis livré</p>
+                        <div class="rond"></div>
+                        <div class="trait">
+                            <div class="demiTrait"></div>
+                        </div>
+                        <div class="rond"></div>
+                        <div class="trait">
+                            <div class="demiTrait"></div>
+                        </div>
+                        <div class="rond"></div>
+                        <div class="trait">
+                            <div class="demiTrait"></div>
+                        </div>
+                        <div class="rond"></div>
+                        <div class="trait">
+                            <div class="demiTrait"></div>
+                        </div>
+                        <div class="rond"></div>
                     </div>
-                    <div class="rond"></div>
-                    <div class="trait">
-                        <div class="demiTrait"></div>
-                    </div>
-                    <div class="rond"></div>
-                    <div class="trait">
-                        <div class="demiTrait"></div>
-                    </div>
-                    <div class="rond"></div>
-                    <div class="trait">
-                        <div class="demiTrait"></div>
-                    </div>
-                    <div class="rond"></div>
                 </div>
             </div>
-        </div>
+        </div> 
     <?php endif; ?>
     <script>const etape = <?php echo json_encode($etape['etape']); ?>;</script>
     <script src="../scripts/frontoffice/popupSuivieCommande.js"></script>
