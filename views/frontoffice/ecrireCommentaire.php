@@ -8,7 +8,7 @@ if ($productId === 0) {
     die("Produit non spécifié.");
 }
 
-$sqlProduit = "SELECT p.nom AS nom_produit FROM _produit p WHERE p.idProduit = ?";
+$sqlProduit = "SELECT p.nom, p.idVendeur FROM _produit p WHERE p.idProduit = ?";
 $stmtProduit = $pdo->prepare($sqlProduit);
 $stmtProduit->execute([$productId]);
 $produit = $stmtProduit->fetch(PDO::FETCH_ASSOC);
@@ -76,6 +76,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':note' => $note
                 ]);
 
+                $stmt = $pdo->prepare("
+                    INSERT INTO _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur) 
+                    VALUES (?, ?, ?, ?, 1)
+                ");
+                
+                $nomProduit = htmlspecialchars($produit['nom']);
+
+                $stmt->execute([
+                    $produit['idVendeur'],
+                    "Vous avez un nouvel avis pour {$nomProduit} : \"{$sujet}\" avec une note de {$note}/5.",
+                    "✉️ Nouvel avis sur {$nomProduit} !",
+                    date('Y-m-d H:i:s'),
+                ]);
+
                 // 2. Insertion de l'image si présente
                 if ($fileName) {
                     $sqlImageAvis = "INSERT INTO _imageAvis (idProduit, idClient, URL) 
@@ -103,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Écrire un avis - <?php echo htmlspecialchars($produit['nom_produit']); ?></title>
+    <title>Écrire un avis - <?php echo htmlspecialchars($produit['nom']); ?></title>
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
@@ -141,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
             
-            <h1>Évaluer : <b><?php echo htmlspecialchars($produit['nom_produit']); ?></b></h1>
+            <h1>Évaluer : <b><?php echo htmlspecialchars($produit['nom']); ?></b></h1>
             
             <h2>Laisser une note <span style="color: red;">*</span> :</h2>
             <article class="etoiles">
