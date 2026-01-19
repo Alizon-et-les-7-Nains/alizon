@@ -60,11 +60,11 @@ $typeLivraison = $status_response[6];
 $etape = $status_response[4];
 $_SESSION['typeLivraison'] = $typeLivraison;
 
-var_dump($status_response);
-var_dump($_SESSION['typeLivraison']);
-var_dump($etape);
-var_dump($photo);
-var_dump(intval($photo));
+// var_dump($status_response);
+// var_dump($_SESSION['typeLivraison']);
+// var_dump($etape);
+// var_dump($photo);
+// var_dump(intval($photo));
 
 header("Content-Type: image/jpeg");
 header("Content-Length: " . intval($photo));
