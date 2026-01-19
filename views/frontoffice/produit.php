@@ -573,8 +573,8 @@ if ($produit['stock'] > 0) {
             <div>
                 
                 <?php
-                    $stmt = $pdo->prepare("SELECT DISTINCT titre FROM _signalement WHERE idProduitSignale = ?");
-                    $stmt->execute([$produit['idProduit']]);
+                    $stmt = $pdo->prepare("SELECT DISTINCT titre FROM _signalement WHERE idProduitSignale = ? AND idClientAvis = ?");
+                    $stmt->execute([$produit['idProduit'], $avis['idClient']]);
                     $signalement = $stmt->fetch(PDO::FETCH_ASSOC);
                 ?>
                 
