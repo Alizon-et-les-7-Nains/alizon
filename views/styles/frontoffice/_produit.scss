@@ -43,7 +43,7 @@
   .rectangleProduit {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin: 3em 2em;
     padding: 0 1em;
@@ -53,7 +53,7 @@
     border-radius: 16px;
     position: relative;
   }
-
+  
   .banniere {
     display: block;
     position: absolute;
@@ -78,7 +78,7 @@
     top: 25px;
     left: 13px;
     color: $color-white;
-    z-index: 10000;
+    z-index: 999;
   }
 
   .poly1 {
@@ -94,7 +94,7 @@
     top: 90px;
     left: 10px;
     width: auto;
-    z-index: 1000000;
+    z-index: 999;
   }
 
   #imageBouteille {
@@ -195,7 +195,7 @@
     top: 10em;
     right: 1em;
     position: fixed;
-    width: 24%;
+    width: 30%;
     max-width: 300px;
     z-index: 10;
     height: fit-content;
@@ -1043,5 +1043,9 @@
       padding: 5px;
       font-family: 'lora';
       border-radius: 10px;
+  }
+  .signalement-info {
+    color: $color-red;
+    font-weight: bold;
   }
 }

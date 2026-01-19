@@ -523,15 +523,28 @@ if ($produit['stock'] > 0) {
         </div>
         <span class="review-count"><?php echo $nombreAvis; ?> évaluations</span>
     </div>
+    <?php 
+        $stmt = $pdo->prepare("SELECT * FROM _commande c NATURAL JOIN _panier p WHERE p.idClient = ?");
+        $stmt->execute([$userId]);
+        $commande = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    ?>
     <?php if (isset($_SESSION['user_id'])) {
+        if($commande){
     echo 
     '<a href="ecrireCommentaire.php?id=' . $productId . '" class="boutonCommentaire">
         Écrire un commentaire
     </a>';
+    } else{
+        echo 
+        '<label>
+            Achetez ce produit avant de pouvoir écrire un avis
+        </label>';
+    }
     } else {
     echo     
     '<a href="connexionClient.php" class="boutonCommentaire">
-        Écrire un commentaire
+        Connectez-vous pour écrire un commentaire
     </a>';
     }
 
@@ -571,6 +584,13 @@ if ($produit['stock'] > 0) {
             ?>
             <img src="<?php echo htmlspecialchars($photoProfilUrl); ?>" id="pp" alt="Photo de profil de <?php echo htmlspecialchars($client['pseudo']); ?>">
             <div>
+                
+                <?php
+                    $stmt = $pdo->prepare("SELECT DISTINCT titre FROM _signalement WHERE idProduitSignale = ? AND idClientSignale = ?");
+                    $stmt->execute([$produit['idProduit'], $avis['idClient']]);
+                    $signalement = $stmt->fetch(PDO::FETCH_ASSOC);
+                ?>
+                
                 <div class="vertical">
                     <div class="horizontal">
                         <div class="star-rating">
@@ -626,6 +646,15 @@ if ($produit['stock'] > 0) {
                             data-id-client-avis="<?php echo $avis['idClient']; ?>">
                             Signaler
                         </button>
+                        <?php if(!empty($signalement)) { 
+                            $raison = '';
+                            foreach($signalement as $value) {
+                                $raison = $value . ', ';
+                            } 
+                            $raison = rtrim($raison, ', ');
+                            ?>
+                            <span class="signalement-info">Avis signalé : <?php echo htmlspecialchars($raison); ?></span>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -670,11 +699,11 @@ if ($produit['stock'] > 0) {
                 <select name="titre" id="signal_titre" class="raison" required>
                     <option value="" disabled selected>-- Sélectionnez une raison --</option>
 
-                    <option value="injures">Injures ou propos insultants</option>
-                    <option value="mensonger">Commentaire mensonger</option>
-                    <option value="spam">Spam ou publicité</option>
-                    <option value="donnees">Divulgation de données personnelles</option>
-                    <option value="autre">Autre</option>
+                    <option value="Injures">Injures ou propos insultants</option>
+                    <option value="Mensonger">Commentaire mensonger</option>
+                    <option value="Spam">Spam ou publicité</option>
+                    <option value="Donnees">Divulgation de données personnelles</option>
+                    <option value="Autre">Autre</option>
                 </select>
             </div>
             
@@ -690,13 +719,11 @@ if ($produit['stock'] > 0) {
 </div>
 <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
 </main>
-<footer>
 <?php if (isset($_SESSION['user_id'])) {
     include '../../views/frontoffice/partials/footerConnecte.php';
-} else { 
+} else {
     include '../../views/frontoffice/partials/footerDeconnecte.php';
 } ?>
-</footer> 
 </body>
 <script>
 class ProductCarousel {

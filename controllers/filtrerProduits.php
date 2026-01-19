@@ -1,49 +1,50 @@
 <?php
-require_once "pdo.php";
-require_once "prix.php";
+include "pdo.php";
+include "prix.php";
 session_start();
 
 $produitsParPage = 15;
-$page = max(1, (int)($_GET['page'] ?? 1));
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $produitsParPage;
 
-// Récupération des paramètres
-$minPrice = (float)($_GET['minPrice'] ?? 0);
-$maxPrice = (float)($_GET['maxPrice'] ?? 1000000);
-$noteMin  = (float)($_GET['minNote'] ?? 0);
-$categorie = $_GET['categorie'] ?? '';
-$recherche = trim($_GET['search'] ?? '');
-$vendeur   = $_GET['vendeur'] ?? '';
-$zone      = $_GET['zone'] ?? '';
-$sortOrder = $_GET['sortOrder'] ?? '';
+$minPrice = isset($_GET['minPrice']) ? (float)$_GET['minPrice'] : 0;
+$maxPrice = isset($_GET['maxPrice']) ? (float)$_GET['maxPrice'] : 1000000;
+$sortOrder = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : '';
+$noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
+$categorie = isset($_GET['categorie']) ? $_GET['categorie'] : "";
+$noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
+$vendeur = $_GET['vendeur'] ?? null;
+$sqlVendeur="";
+$recherche = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Initialisation des paramètres pour PDO
-$params = [
-    ':noteMin'  => $noteMin,
-    ':minPrice' => $minPrice,
-    ':maxPrice' => $maxPrice
-];
-
-// 1. Construction dynamique de la clause WHERE
-// Note : COALESCE(p.note, 0) permet d'inclure les produits sans note quand on filtre sur 0
-$sqlWhere = "
-WHERE COALESCE(p.note, 0) >= :noteMin
-AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice
-";
-
-if ($categorie !== '') {
-    $sqlWhere .= " AND p.typeProd = :categorie"; // On utilise le nom de la catégorie envoyé par le catalogue
-    $params[':categorie'] = $categorie;
+if(!empty($vendeur)){
+    $sqlVendeur = "AND p.idVendeur = :idVendeur";
 }
+
+// Construction de la condition de catégorie dynamique
+$catCondition = "";
+if (!empty($categorie)) {
+    $catCondition = " AND p.typeProd = :categorie";
+}
+
+// 1. Compter les produits
+$countSql = "SELECT COUNT(*) FROM _produit p
+             LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur  AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+             WHERE p.note >= :noteMin ". $sqlVendeur ."
+             AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
 
 if ($recherche !== '') {
-    $sqlWhere .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
-    $params[':search'] = '%' . $recherche . '%';
+    $countSql .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
 }
 
-if ($vendeur !== '') {
-    $sqlWhere .= " AND p.idVendeur = :vendeur";
-    $params[':vendeur'] = $vendeur;
+$countStmt = $pdo->prepare($countSql);
+if (!empty($recherche)) $countStmt->bindValue(':search', '%' . $recherche . '%');
+$countStmt->bindValue(':minPrice', $minPrice);
+$countStmt->bindValue(':maxPrice', $maxPrice);
+$countStmt->bindValue(':noteMin', $noteMin);
+if (!empty($categorie)) $countStmt->bindValue(':categorie', $categorie);
+if(!empty($vendeur)){
+    $countStmt->bindValue(':idVendeur',$vendeur);
 }
 
 if (!empty($zone) !== '') {
@@ -68,62 +69,95 @@ $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
-// 4. Gestion du Tri
-$orderClause = " ORDER BY p.idProduit DESC";
-if ($sortOrder === 'noteAsc')  $orderClause = " ORDER BY p.note ASC";
-if ($sortOrder === 'noteDesc') $orderClause = " ORDER BY p.note DESC";
-if ($sortOrder === 'prixAsc')  $orderClause = " ORDER BY (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) ASC";
-if ($sortOrder === 'prixDesc') $orderClause = " ORDER BY (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) DESC";
+$sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
+        FROM _produit p
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+        WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
 
-// 5. Requête finale pour les produits
-$sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise " . $baseSqlFrom . $orderClause . " LIMIT :limit OFFSET :offset";
+if ($recherche !== '') {
+    $sql .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
+}
+
+if ($sortOrder === 'noteAsc') {
+    $sql .= " ORDER BY p.note ASC";
+} elseif ($sortOrder === 'noteDesc') {
+    $sql .= " ORDER BY p.note DESC";
+} elseif ($sortOrder === 'prixAsc') {
+    $sql .= " ORDER BY (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) ASC";
+} elseif ($sortOrder === 'prixDesc') {
+    $sql .= " ORDER BY (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) DESC";
+}
+// Rien
+$sql .= " LIMIT :limit OFFSET :offset";
+
 $stmt = $pdo->prepare($sql);
-
-foreach ($params as $k => $v) { $stmt->bindValue($k, $v); }
-$stmt->bindValue(':limit', $produitsParPage, PDO::PARAM_INT);
-$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->bindValue(':minPrice', $minPrice);
+$stmt->bindValue(':maxPrice', $maxPrice);
+$stmt->bindValue(':noteMin', $noteMin);
+$stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
+$stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+if ($recherche !== '') $stmt->bindValue(':search', '%' . $recherche . '%');
+if (!empty($categorie)) $stmt->bindValue(':categorie', $categorie);
+if(!empty($vendeur)) $stmt->bindValue(':idVendeur',$vendeur);
 $stmt->execute();
-$produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// 6. Génération du HTML (Doit être complet pour garder le design)
-$html = "";
-if (count($produits) > 0) {
-    foreach ($produits as $p) {
-        $idProduit = $p['idProduit'];
-        $prixOriginal = $p['prix'];
-        $tauxRemise = $p['tauxRemise'] ?? 0;
-        $prixFinal = ($tauxRemise > 0) ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
+// Objet JSON encodé JSON afin de manipuler les données en AJAX
+$data = ['html' => '', 'nbPages' => $nbPages, 'totalProduits' => $totalProduits];
 
-        // Récupération de l'image
-        $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = ? LIMIT 1");
-        $stmtImg->execute([$idProduit]);
-        $img = $stmtImg->fetchColumn() ?: 'public/images/defaultImageProduit.png';
+// Restructruration du code HTML selon la page et les filtres
+if (count($products) > 0) {
+    foreach ($products as $value) {
+        $idProduit = $value['idProduit'];
+        $prixOriginal = $value['prix'];
+        $tauxRemise = $value['tauxRemise'] ?? 0;
+        $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
+        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
+        $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
+        $poids = $value['poids'];
+        $prixAuKg = $poids > 0 ? $prixAffichage/$poids : 0;
+        $prixAuKg = round($prixAuKg,2);
 
-        $html .= "<article>";
-        if ($tauxRemise > 0) {
-            $html .= "<div class='bannierePromo'><h1>-".round($tauxRemise)."%</h1><img class='imgBanniere' src='../../public/images/laBanniere.png'></div>";
+        $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+        $stmtImg->execute([':idProduit' => $idProduit]);
+        $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+        $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
+
+        $data['html'] .= 
+        '<article data-price="'.$prixAffichage.'">'.
+            '<img src="'.htmlspecialchars($image).'" class="imgProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'" alt="Image du produit">'.
+            '<h2 class="nomProduit" onclick="window.location.href=\'produit.php?id='.$idProduit.'\'">'.htmlspecialchars($value['nom']).'</h2>'.
+            '<div class="notation">'.(number_format($value['note'],1)==0?'<span>Pas de note</span>':'<span>'.number_format($value['note'],1).'</span>');
+        for ($i = 0; $i < number_format($value['note'],0); $i++){
+            $data['html'] .= '<img src="../../public/images/etoile.svg" alt="Note" class="etoile">';
         }
-        $html .= "<img src='../../$img' class='imgProduit' onclick=\"window.location.href='produit.php?id=$idProduit'\">";
-        $html .= "<h2>" . htmlspecialchars($p['nom']) . "</h2>";
-        $html .= "<div class='prix'><h2>" . formatPrice($prixFinal) . "</h2>";
-        if ($tauxRemise > 0) {
-            $html .= "<h3 style='text-decoration:line-through; color:#999;'>" . formatPrice($prixOriginal) . "</h3>";
-        }
-        $html .= "</div>";
-        if ($p['stock'] > 0) {
-            $html .= "<button class='plus' data-id='$idProduit'><img src='../../public/images/btnAjoutPanier.svg'></button>";
+        $data['html'] .=
+        '</div>'.
+        '<div class="infoProd"><div class="prix">';
+        if($enRemise){
+            $data['html'] .=
+            '<div style="display:flex;align-items:center;gap:8px;">'.
+                '<h2>'.formatPrice($prixRemise).'</h2>'.
+                '<h3 style="text-decoration: line-through; color:#999;">'.formatPrice($prixOriginal).'</h3>'.
+            '</div>';
         } else {
-            $html .= "<b style='color:red'>Aucun stock</b>";
+            $data['html'] .= '<h2>'.formatPrice($prixOriginal).'</h2>';
         }
-        $html .= "</article>";
+        if ($poids > 0) {
+            $data['html'] .= '<h4>'.htmlspecialchars($prixAuKg).'€/kg</h4>';
+        }
+        $data['html'] .= '</div>';
+        if (number_format($value['stock'], 1) == 0){
+            $data['html'] .= '<b style="color: red; margin-right: 5px;">Aucun stock</b>';
+        }
+        else{
+            $data['html'] .= '<button class="plus" data-id="'.htmlspecialchars($value["idProduit"]).'"><img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier"></button>';
+        }
+        $data['html'] .= '</div></article>';
     }
 } else {
-    $html = "<h1>Aucun produit disponible</h1>";
+    $data['html'] = '<h1>Aucun produit disponible</h1>';
 }
 
 header('Content-Type: application/json');
-echo json_encode([
-    'html' => $html,
-    'nbPages' => $nbPages,
-    'totalProduits' => $totalProduits
-]);
+echo json_encode($data);

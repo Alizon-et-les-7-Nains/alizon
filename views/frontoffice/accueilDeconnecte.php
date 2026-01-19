@@ -12,15 +12,23 @@ require_once "../../controllers/prix.php";
 
     // Récupération des cookies existants (produits consultés et panier) ou création de tableaux vides
     // Pour les utilisateurs déconnectés, le panier est stocké uniquement dans les cookies
-    if (((isset($_COOKIE['produitConsulte'])) && (isset($_COOKIE['produitPanier']))) && (!empty($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitPanier']))) {
+    // Récupération indépendante du cookie "Produits Consultés"
+    if (isset($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitConsulte'])) {
         $tabIDProduitConsulte = unserialize($_COOKIE['produitConsulte']);
-        $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
         if (!is_array($tabIDProduitConsulte)) {
             $tabIDProduitConsulte = [];
-            $tabIDProduitPanier = [];
         }
     } else {
         $tabIDProduitConsulte = [];
+    }
+
+    // Récupération indépendante du cookie "Panier"
+    if (isset($_COOKIE['produitPanier']) && !empty($_COOKIE['produitPanier'])) {
+        $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
+        if (!is_array($tabIDProduitPanier)) {
+            $tabIDProduitPanier = [];
+        }
+    } else {
         $tabIDProduitPanier = [];
     }
 

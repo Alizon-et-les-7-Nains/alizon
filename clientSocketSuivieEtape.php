@@ -53,6 +53,24 @@ $status_response = explode("|", $status_response);
 $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
+
+if ($status_response[4] == 9 && $status_response[5] === 'ABSENT') {
+    $photo = $status_response[6];
+    if ($photo != null) {
+        $imageData = '';
+        while (!feof($socket)) {
+            $chunk = fread($socket, 8192);
+            if ($chunk === false || $chunk === '') break;
+            $imageData .= $chunk;
+        }
+
+        $filename = "photos/imgBoiteAuxLettres.jpg";
+        file_put_contents($filename, $imageData);
+
+        $_SESSION['photo'] = $imageData;
+    }
+}
+
 //echo "Réponse: $status_response\n\n";
 
 

@@ -69,7 +69,7 @@
       border-radius: 12px;
       display: flex;
       position:relative;
-      left:1180px;
+      left:400%;
       padding: 0;
     }
 
@@ -98,12 +98,20 @@
         family: "Lora", sans-serif;
       }
     }
+    form{
+      display: flex;
+      justify-content: end;
+    }
+
+    label{
+      color:$color-red;
+    }
   }
 
   .reponseAvis{
     display: flex;
     flex-direction: row;
-
+    
     a{
       color: $color-red;
       position:relative;
