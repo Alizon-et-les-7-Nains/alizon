@@ -2,13 +2,13 @@
 // simulateur.php
 
 // 1. Connexion BDD
-$host = 'localhost';
-$dbname = 'delivraptor';
-$user = 'pperche';
+$host = 'mariadb';
+$dbname = 'saedb';
+$user = 'sae';
 $pass = 'grognasseEtCompagnie';
 
 try {
-    $db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+    $db = new PDO("mysql:host=$host;port=3306;dbname=$dbname;charset=utf8", $user, $pass);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erreur BDD : " . $e->getMessage());
