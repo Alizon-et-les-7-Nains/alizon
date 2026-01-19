@@ -71,8 +71,8 @@
         </article>";
         echo $html;
         
-        $dateExp = formatDate($encour['dateExpedition']); $dateExp = ($dateExp === '01/01/1970') ? 'Non expédiée' : $dateExp;
-        $dateLiv = formatDate($encour['dateLivraison']); $dateLiv = ($dateLiv === '01/01/1970') ? 'Non livrée' : $dateLiv;
+        $dateExp = $encour['dateExpedition'] == '' ? 'Non expédiée' : formatDate($encour['dateExpedition']);
+        $dateLiv = $encour['dateLivraison'] == '' ? 'Non livrée' : formatDate($encour['dateLivraison']);
 
         echo "<dialog id='c-" . $encour['idCommande'] . "' class='popup-commande'>
             <h2>Commande du " . formatDate($encour['dateCommande']) . "</h2>
