@@ -43,7 +43,7 @@ if (isset($_FILES['url']) && $_FILES['url']['error'] === UPLOAD_ERR_OK) {
     }
 
     try {
-        treat($_FILES['photo']['tmp_name'], $photoPath . $extension);
+        treat($_FILES['url']['tmp_name'], $photoPath . $extension);
     } catch (Exception $e) {
         if (!move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension)) {
             throw new Exception("Impossible de traiter l'image.");
