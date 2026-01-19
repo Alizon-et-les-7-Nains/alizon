@@ -6724,6 +6724,11 @@ dialog.reassort form input {
   font-family: "Lora", sans-serif;
 }
 
+form {
+  display: flex;
+  justify-content: end;
+}
+
 .reponseAvis {
   display: flex;
   flex-direction: row;
