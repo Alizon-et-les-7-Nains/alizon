@@ -112,7 +112,7 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </tr>
                     <tr>
                             <!--- Bouton pour modifier l'avis séléctionné --->
-                        <td class="repondreAvis" colspan="2">
+                        <td class="formRepondreAvis" colspan="2">
                             <form action="./repondreAvis.php?idCli=<?php echo $avi['idClient']?>&idProd=<?php echo $avi['idProduit']?>" method="POST">
                                 <?php 
                                 
