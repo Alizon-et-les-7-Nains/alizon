@@ -57,8 +57,17 @@ $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
 $photo = $status_response[7];
 
-$base64 = base64_encode($photo);
-echo '<img src="data:image/jpeg;base64,' . $base64 . '">';
+$base64 = base64_encode($photo); ?>
+<!DOCTYPE html>
+<html>
+<body>
+    echo '<img src="data:image/jpeg;base64,' . $base64 . '">';
+</body>
+</html>
+
+<?php
+var_dump(strlen($photo));
+
 
 
 $typeLivraison = $status_response[6];
