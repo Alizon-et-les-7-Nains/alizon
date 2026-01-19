@@ -439,14 +439,13 @@ $cart = getCurrentCart($pdo, $idClient);
     
 
     <?php 
-        $idCommande = intval($_GET['idCommande']);
         // Affichage du popup de confirmation après paiement réussi
         if ($showPopup): ?>
         <?php            
             // Récupération du numéro de bordereau de la commande
             $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([":idCommande" => $idCommande]);
+            $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
         ?>
         <div class="overlay">
@@ -465,6 +464,7 @@ $cart = getCurrentCart($pdo, $idClient);
     <?php // Affichage du popup de suivi de livraison si un ID de commande est fourni
     if (isset($_GET['idCommande'])): ?>
         <?php
+            $idCommande = intval($_GET['idCommande']);
             // Récupération de l'étape actuelle de la livraison
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
