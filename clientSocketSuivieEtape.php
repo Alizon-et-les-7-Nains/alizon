@@ -55,6 +55,7 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
 $photo = $status_response[6];
+$_SESSION['typeLivraison'] = $status_response[5];
 if ($photo != null) {
     $imageData = '';
     while (!feof($socket)) {
