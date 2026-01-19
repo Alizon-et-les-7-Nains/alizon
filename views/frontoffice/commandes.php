@@ -330,7 +330,7 @@ $cart = getCurrentCart($pdo, $idClient);
 
                             <div class="listeBtn">
                                 <a href="<?php echo "../../views/frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
-                                <button class="plus" data-id="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
+                                <button class="plus" data-id="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">AJouter le produit au panier <img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
                                     <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
                                     <?php else: ?>
@@ -441,7 +441,6 @@ $cart = getCurrentCart($pdo, $idClient);
     <?php 
         // Affichage du popup de confirmation après paiement réussi
         if ($showPopup): ?>
-        $idCommande = intval($_GET['idCommande']);
         <?php            
             // Récupération du numéro de bordereau de la commande
             $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
@@ -464,7 +463,8 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <?php // Affichage du popup de suivi de livraison si un ID de commande est fourni
     if (isset($_GET['idCommande'])): ?>
-        <?php
+            <?php
+            $idCommande = intval($_GET['idCommande']);
             // Récupération de l'étape actuelle de la livraison
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
@@ -493,8 +493,17 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <p><?= htmlspecialchars($produit['description']) ?></p>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                        
+                    <?php endforeach; ?> 
                 </div>
+                <?php if ($etape['etape'] == 9 && $_SESSION['typeLivraison'] === 'ABSENT'): ?>
+                    <img class="boiteAuxLettres" src="data:image/jpeg;base64,<?= base64_encode($_SESSION['photo']) ?>" alt="Image boite aux lettres">
+                <?php endif; ?> 
+                <?php
+                    var_dump($etape);
+                    var_dump($_SESSION['typeLivraison']);
+                    var_dump(isset($_SESSION['photo']), strlen($_SESSION['photo'] ?? ''));
+                ?>
                 <div class="stepper">
                     <div class="stepperEtTexte">
                         <p>En cours de préparation</p>

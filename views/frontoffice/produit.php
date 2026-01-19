@@ -524,9 +524,10 @@ if ($produit['stock'] > 0) {
         <span class="review-count"><?php echo $nombreAvis; ?> évaluations</span>
     </div>
     <?php 
-        $stmt = $pdo->prepare("SELECT * FROM _commandes c NATURAL JOIN _panier p WHERE p.idClient = ?");
-        $stmt->execute($_SESSION['user_id']);
+        $stmt = $pdo->prepare("SELECT * FROM _commande c NATURAL JOIN _panier p WHERE p.idClient = ?");
+        $stmt->execute([$userId]);
         $commande = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     ?>
     <?php if (isset($_SESSION['user_id'])) {
         if($commande){
@@ -536,9 +537,9 @@ if ($produit['stock'] > 0) {
     </a>';
     } else{
         echo 
-        '<a href="produit.php?id=' . $productId . '" class="boutonCommentaire">
+        '<label>
             Achetez ce produit avant de pouvoir écrire un avis
-        </a>';
+        </label>';
     }
     } else {
     echo     
@@ -718,13 +719,11 @@ if ($produit['stock'] > 0) {
 </div>
 <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
 </main>
-<footer>
 <?php if (isset($_SESSION['user_id'])) {
     include '../../views/frontoffice/partials/footerConnecte.php';
-} else { 
+} else {
     include '../../views/frontoffice/partials/footerDeconnecte.php';
 } ?>
-</footer> 
 </body>
 <script>
 class ProductCarousel {

@@ -928,11 +928,16 @@ body {
   display: flex;
   flex-direction: column;
 }
+.pageCommandes .popupSuiviLivraison .boiteAuxLettres {
+  width: 150px;
+  height: auto;
+  margin-top: 20px;
+}
 .pageCommandes .popupSuiviLivraison .stepper {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-top: 100px;
+  margin: 50px;
   position: relative;
 }
 .pageCommandes .popupSuiviLivraison .stepper .stepperEtTexte {
@@ -5624,10 +5629,10 @@ dialog.reassort form input {
   float: right;
 }
 .pageProduit .actionsProduit {
-  top: 10em;
+  top: 14em;
   right: 1em;
   position: fixed;
-  width: 24%;
+  width: 30%;
   max-width: 300px;
   z-index: 10;
   height: fit-content;

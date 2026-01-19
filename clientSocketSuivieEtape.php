@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . "/controllers/pdo.php";
 
 $idCommande = intval($_GET['idCommande']);
@@ -50,16 +51,34 @@ $bordereau = $result['noBordereau'];
 //echo "Test STATUS:\n";
 $status_response = send_command($socket, "STATUS $bordereau");
 $status_response = explode("|", $status_response);
-print_r($status_response);
 $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
+$photo = $status_response[6];
+$typeLivraison = $status_response[5];
+$etape = $status_response[4];
+echo $photo;
+echo $typeLivraison;
+echo $etape;
+$_SESSION['typeLivraison'] = $typeLivraison;
 
 
-// if ($status_response[4] == 9) {
-//     $photo = $status_response[6];
-// }
+if ($etape == 9 && $typeLivraison === 'ABSENT') {
+
+    if ($photo != null) {
+        $imageData = '';
+        while (!feof($socket)) {
+            $chunk = fread($socket, 8192);
+            if ($chunk === false || $chunk === '') break;
+            $imageData .= $chunk;
+        }
+        $_SESSION['photo'] = $imageData;
+    }
+} else {
+    // Supprimer la session photo si autre chose que ABSENT
+    unset($_SESSION['photo']);
+}
 
 //echo "Réponse: $status_response\n\n";
 
