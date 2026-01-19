@@ -16,6 +16,7 @@ $noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
 $vendeur = $_GET['vendeur'] ?? null;
 $sqlVendeur="";
 $recherche = isset($_GET['search']) ? trim($_GET['search']) : '';
+$zone = $_GET['zone'] ?? '';
 
 if(!empty($vendeur)){
     $sqlVendeur = "AND p.idVendeur = :idVendeur";
@@ -46,13 +47,35 @@ if (!empty($categorie)) $countStmt->bindValue(':categorie', $categorie);
 if(!empty($vendeur)){
     $countStmt->bindValue(':idVendeur',$vendeur);
 }
+
+if (!empty($zone) !== '') {
+    $sqlWhere .= " AND a.codePostal LIKE :zone";
+    $params[':zone'] = $zone . '%';
+}
+
+// 2. Base de la requête (Jointures)
+// On utilise LEFT JOIN pour l'adresse et la remise pour ne pas cacher les produits qui n'en ont pas
+$baseSqlFrom = "
+FROM _produit p
+LEFT JOIN _vendeur v ON p.idVendeur = v.codeVendeur
+LEFT JOIN _adresseVendeur a ON v.idAdresse = a.idAdresse
+LEFT JOIN _remise r ON p.idProduit = r.idProduit 
+    AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+" . $sqlWhere;
+
+// 3. Compter le total (pour la pagination)
+$countStmt = $pdo->prepare("SELECT COUNT(*) " . $baseSqlFrom);
+foreach ($params as $k => $v) { $countStmt->bindValue($k, $v); }
 $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         FROM _produit p
-        LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit 
+        LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur
+        LEFT JOIN _adresseVendeur a ON v.idAdresse = a.idAdresse 
+        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
         WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
 
 if ($recherche !== '') {
