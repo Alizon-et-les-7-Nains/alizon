@@ -497,7 +497,7 @@ $cart = getCurrentCart($pdo, $idClient);
                     <?php endforeach; ?> 
                 </div>
                 <?php if ($etape['etape'] == 9 && $_SESSION['typeLivraison'] === 'ABSENT'): ?>
-                    <img class="boiteAuxLettres" src="data:image/jpeg;base64,<?= base64_encode($_SESSION['photo']) ?>" alt="Image boite aux lettres">
+                    <img class="boiteAuxLettres" src="../../controllers/getImage.php" alt="Image boite aux lettres">
                 <?php endif; ?> 
                 <?php
                     var_dump($_SESSION['photo']);
