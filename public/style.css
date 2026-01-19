@@ -6727,6 +6727,9 @@ dialog.reassort form input {
   display: flex;
   justify-content: end;
 }
+.avi label {
+  color: #f14e4e;
+}
 
 .reponseAvis {
   display: flex;
@@ -7524,7 +7527,7 @@ dialog.reassort form input {
     width: 100%;
     padding: 15px;
     font-size: 14px;
-    left: -530px;
+    left: -620px;
     transition: left 0.3s ease;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;

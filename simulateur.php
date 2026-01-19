@@ -140,7 +140,7 @@ foreach ($tous_colis as $col) {
         $refus_raison = null;
         $photo_path = null;
 
-        $choix = rand(1, 3); // 1 = mains propres, 2 = absent, 3 = refusé
+        $choix = random_int(1, 3); // 1 = mains propres, 2 = absent, 3 = refusé
 
         switch ($choix) {
             case 1:
@@ -148,7 +148,7 @@ foreach ($tous_colis as $col) {
                 break;
             case 2:
                 $type_livraison = 'ABSENT';
-                $photo_path = ''; // Mettre image boite aux lettres
+                $photo_path = './img.jpg'; // Mettre image boite aux lettres
                 break;
             case 3:
                 $type_livraison = 'REFUSE';

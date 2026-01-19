@@ -50,9 +50,17 @@ $bordereau = $result['noBordereau'];
 //echo "Test STATUS:\n";
 $status_response = send_command($socket, "STATUS $bordereau");
 $status_response = explode("|", $status_response);
+print_r($status_response);
 $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
+
+
+
+// if ($status_response[4] == 9) {
+//     $photo = $status_response[6];
+// }
+
 //echo "Réponse: $status_response\n\n";
 
 
