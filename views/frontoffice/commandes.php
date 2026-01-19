@@ -446,7 +446,7 @@ $cart = getCurrentCart($pdo, $idClient);
             // Récupération du numéro de bordereau de la commande
             $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
+            $stmt->execute([":idCommande" => $idCommande]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
         ?>
         <div class="overlay">
