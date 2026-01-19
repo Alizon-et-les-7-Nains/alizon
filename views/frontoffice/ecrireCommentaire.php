@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute([
                     $produit['idVendeur'],
                     "Vous avez un nouvel avis pour {$nomProduit} : \"{$sujet}\" avec une note de {$note}/5.",
-                    "✉️ Nouvel avis sur {$nomProduit} !",
+                    "📫 Nouvel avis sur {$nomProduit} !",
                     date('Y-m-d H:i:s'),
                 ]);
 
