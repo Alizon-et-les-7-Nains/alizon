@@ -26,18 +26,18 @@ function fetchstocks(PDO $pdo) {
 }
 
 // Insertion des données nécessaires dans une variable
-if ($_POST['tout'] == 'on') {
+if (isset($_POST['tout']) && $_POST['tout'] == 'on') {
     fetchEpuises($pdo);
     fetchFaibles($pdo);
     fetchstocks($pdo);
 } else {
-    if ($_POST['epuise'] == 'on') {
+    if (isset($_POST['epuise']) && $_POST['epuise'] == 'on') {
         fetchEpuises($pdo);
     }
-    if ($_POST['faible'] == 'on') {
+    if (isset($_POST['faible']) && $_POST['faible'] == 'on') {
         fetchFaibles($pdo);
     }
-    if ($_POST['stock'] == 'on') {
+    if (isset($_POST['stock']) && $_POST['stock'] == 'on') {
         fetchstocks($pdo);
     }
 }

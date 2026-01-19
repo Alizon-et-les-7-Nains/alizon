@@ -273,8 +273,6 @@ $cart = getCurrentCart($pdo, $idClient);
     <main>
         <section class="topRecherche">
             <h1>Vos commandes</h1>
-            <input class="supprElem" type="search" name="rechercheCommande" id="rechercheCommande"
-                placeholder="Rechercher une commande">
         </section>
 
         <section class="filtreRecherche">
@@ -409,11 +407,10 @@ $cart = getCurrentCart($pdo, $idClient);
         <section class="confirmationAjout">
             <h4>Produit ajouté au panier !</h4>
         </section>
-
-        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-        <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
-
     </main>
+
+    <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
+    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
     <script>
         // Gestion de l'affichage du popup de confirmation d'ajout au panier
@@ -475,48 +472,28 @@ $cart = getCurrentCart($pdo, $idClient);
             $etape = $stmt->fetch(PDO::FETCH_ASSOC);
         ?>
         <div id="popupLivraison" class="overlay">
-            <div class="popup">
+            <div class="popupSuiviLivraison">
                 <div class="croixFermerLaPage">
                     <div></div>
                     <div></div>
                 </div> 
                 <h2>Suivi de la livraison</h2>
                 <div class="popup-content">
-                    <div class="recapProduit">
-                        <img src="chouchenArtisanal.jpg" alt="Image du produit">
-                        <div class="nomEtDescription">
-                            <h3>Chouchen Artisanal</h3>
-                            <p>délicieux chouchen</p>
+                    <?php
+                        $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute([":idCommande" => $idCommande]);
+                        $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    ?>
+                    <?php foreach ($produits as $produit): ?>
+                        <div class="recapProduit">
+                            <img src="<?= htmlspecialchars($produit['URL']) ?>" alt="Image du produit">
+                            <div class="nomEtDescription">
+                                <h3><?= htmlspecialchars($produit['nom']) ?></h3>
+                                <p><?= htmlspecialchars($produit['description']) ?></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="recapProduit">
-                        <img src="chouchenArtisanal.jpg" alt="Image du produit">
-                        <div class="nomEtDescription">
-                            <h3>Chouchen Artisanal</h3>
-                            <p>délicieux chouchen</p>
-                        </div>
-                    </div>
-                    <div class="recapProduit">
-                        <img src="chouchenArtisanal.jpg" alt="Image du produit">
-                        <div class="nomEtDescription">
-                            <h3>Chouchen Artisanal</h3>
-                            <p>délicieux chouchen</p>
-                        </div>
-                    </div>
-                    <div class="recapProduit">
-                        <img src="chouchenArtisanal.jpg" alt="Image du produit">
-                        <div class="nomEtDescription">
-                            <h3>Chouchen Artisanal</h3>
-                            <p>délicieux chouchen</p>
-                        </div>
-                    </div>
-                    <div class="recapProduit">
-                        <img src="chouchenArtisanal.jpg" alt="Image du produit">
-                        <div class="nomEtDescription">
-                            <h3>Chouchen Artisanal</h3>
-                            <p>délicieux chouchen</p>
-                        </div>
-                    </div>  
+                    <?php endforeach; ?>
                 </div>
                 <div class="stepper">
                     <div class="stepperEtTexte">
