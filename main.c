@@ -288,12 +288,11 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
         send(session->client_socket, response, strlen(response), 0);
         
         // 2. CONDITION : Si étape 9 + ABSENT + image existe
-        if (etape == 9 && 
-            livraison_type && strcmp(livraison_type, "ABSENT") == 0 && 
-            photo_path && strlen(photo_path) > 0) {
-            
+        // Vérifie si on doit envoyer une image
+        if (etape == 9 && livraison_type && strcmp(livraison_type, "ABSENT") == 0 && photo_path && strlen(photo_path) > 0) {
+
             FILE *img_file = fopen(photo_path, "rb");
-            long img_size = 0; // déclarée en dehors
+            long img_size = 0; // <- Déclaré ici pour être visible partout dans ce bloc
 
             if (!img_file) {
                 fprintf(stderr, "Impossible d'ouvrir le fichier: %s\n", photo_path);
@@ -304,18 +303,16 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
                 img_size = ftell(img_file);
                 if (img_size < 0) {
                     perror("ftell failed");
-                } else {
-                    printf("Fichier %s taille: %ld octets\n", photo_path, img_size);
                 }
                 rewind(img_file);
 
-                // Envoyer la taille
+                // Envoyer la taille de l'image
                 char size_str[32];
                 sprintf(size_str, "%ld", img_size);
                 send(session->client_socket, size_str, strlen(size_str), 0);
                 send(session->client_socket, "|", 1, 0);
 
-                // Lire le fichier et envoyer
+                // Lire et envoyer l'image
                 char *img_buffer = malloc(img_size);
                 if (img_buffer) {
                     size_t read_bytes = fread(img_buffer, 1, img_size, img_file);
@@ -338,13 +335,12 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
                 }
             }
 
-            }
-        }
-        else {
-            // 3. SANS IMAGE : envoyer "null"
+        } else {
+            // Pas d'image
             char null_text[] = "null";
             send(session->client_socket, null_text, strlen(null_text), 0);
         }
+
         
         // 4. ENVOYER LE RETOUR À LA LIGNE FINAL
         char newline[] = "\n";
