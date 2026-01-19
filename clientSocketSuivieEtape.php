@@ -62,7 +62,7 @@ $_SESSION['typeLivraison'] = $typeLivraison;
 
 
 if ($etape == 9 && $typeLivraison === 'ABSENT') {
-   header("Content-Type: image/jpeg"); // ou png
+   header("Content-Type: image/jpg"); // ou png
    header("Content-Length: " . strlen($photo));
    echo $photo;
 
