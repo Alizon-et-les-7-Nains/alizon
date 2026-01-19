@@ -667,7 +667,7 @@ if ($produit['stock'] > 0) {
             <?php if ($reponseAvis): ?>
                 <div class="reponseAvis">
                     <h4>Réponse du vendeur :</h4>
-                    <p><?php echo htmlspecialchars($reponseAvis['contenuReponse']); ?></p>
+                    <p><?php echo htmlspecialchars($reponseAvis['contenuAvis']); ?></p>
                 </div>
             <?php endif; ?>
         </div>
