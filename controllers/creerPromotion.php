@@ -1,6 +1,8 @@
 <?php
 
 require_once 'pdo.php';
+require_once 'treatment.php';
+
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
@@ -88,7 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_FILES['baniere']) && $_FILES['baniere']['tmp_name'] != '') {
             $extension = pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
             $extension = '.'.$extension;
-            move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension);
+
+            try {
+                treat($_FILES['baniere']['tmp_name'], $dossierDestination);
+            } catch (Exception $e) {
+                if (!move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension)) {
+                    throw new Exception("Impossible de traiter l'image.");
+                }
+            }
         }
 
     }
