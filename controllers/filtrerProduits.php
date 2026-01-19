@@ -46,7 +46,7 @@ if ($vendeur !== '') {
     $params[':vendeur'] = $vendeur;
 }
 
-if ($zone !== '') {
+if (!empty($zone) !== '') {
     $sqlWhere .= " AND a.codePostal LIKE :zone";
     $params[':zone'] = $zone . '%';
 }
