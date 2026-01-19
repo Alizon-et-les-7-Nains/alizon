@@ -166,7 +166,7 @@ function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
  * Retourne : un tableau associatif contenant l'adresse, le code postal et la ville du client.
  */
 function clientInformations($pdo, $idClient) {
-    $stmt = $pdo->prepare("SELECT adresse, codePostal, ville FROM _adresseLivraison WHERE idClient = ? LIMIT 1");
+    $stmt = $pdo->prepare("SELECT adresse, codePostal, ville FROM _client as c INNER JOIN _adresseClient as ac ON c.idAdresse = ac.idAdresse WHERE c.idAdresse = ? LIMIT 1");
     $stmt->execute([$idClient]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -233,6 +233,7 @@ foreach ($cart as $item) {
 $livraison = 5.99;
 $montantTTC = $sousTotal + $livraison;
 
+echo $idClient;
 
 $clientInfo = clientInformations($pdo, $idClient);
 ?>
