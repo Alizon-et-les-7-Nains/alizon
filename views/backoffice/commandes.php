@@ -83,8 +83,7 @@
                     $imageSTMT->execute([$prod['idProduit']]);
                     $image = $imageSTMT->fetchColumn();
 
-                    $total += floatval($prod['prix']) * intval($prod['quantite']);
-                    $total = formatPrice($total);
+                    $total += floatval($prod['prix']) * floatval($prod['quantite']);
 
                     echo "<li>
                         <table>
@@ -102,6 +101,7 @@
                         </table>
                     </li>";
                 }
+                $total = formatPrice($total);
             echo "</ul>
             <table>
                 <tr>
