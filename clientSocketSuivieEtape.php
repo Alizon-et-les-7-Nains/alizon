@@ -62,17 +62,7 @@ $_SESSION['typeLivraison'] = $typeLivraison;
 
 
 if ($etape == 9 && $typeLivraison === 'ABSENT') {
-
-    if ($photo != null) {
-        $imageData = '';
-        while (!feof($socket)) {
-            $chunk = fread($socket, 8192);
-            if ($chunk === false || $chunk === '') break;
-            $imageData .= $chunk;
-        }
-        $_SESSION['photo'] = $imageData;
-        file_put_contents('test_image.jpg', $_SESSION['photo']);
-    }
+        $_SESSION['photo'] = base64_decode($photo); 
 } else {
     // Supprimer la session photo si autre chose que ABSENT
     unset($_SESSION['photo']);
