@@ -77,18 +77,13 @@ $photo = '';
 if ($photo_size > 0) {
     $photo = read_binary($socket, $photo_size);
 }
-$base64 = base64_encode($photo);
 ?>
-<!DOCTYPE html>
-<html>
-<body>
-   <?php echo '<img src="data:image/jpeg;base64,' . $base64 . '">'; ?>
-</body>
-</html>
+
 <?php
 //if ($etape == 9 && $typeLivraison === 'ABSENT') {
-//    header("Content-Type: image/jpg"); // ou png
-//    header("Content-Length: " . strlen($photo));
+   header("Content-Type: image/jpg"); // ou png
+   header("Content-Length: " . strlen($photo));
+   echo $photo;
 //    echo $photo;
 
 // } else {
