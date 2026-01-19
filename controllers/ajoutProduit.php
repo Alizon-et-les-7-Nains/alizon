@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mots_cles = $_POST['mots_cles'];
 
     try {
-
         $pdo->beginTransaction();
 
         // Insertion dans _produit
