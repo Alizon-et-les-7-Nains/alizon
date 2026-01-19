@@ -8,7 +8,7 @@ if ($productId === 0) {
     die("Produit non spécifié.");
 }
 
-$sqlProduit = "SELECT p.nom AS nom_produit FROM _produit p WHERE p.idProduit = ?";
+$sqlProduit = "SELECT p.nom, p.idVendeur AS nom_produit , id_vendeur FROM _produit p WHERE p.idProduit = ?";
 $stmtProduit = $pdo->prepare($sqlProduit);
 $stmtProduit->execute([$productId]);
 $produit = $stmtProduit->fetch(PDO::FETCH_ASSOC);
@@ -74,6 +74,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':titre' => $sujet,
                     ':contenu' => $message,
                     ':note' => $note
+                ]);
+
+                $stmt = $pdo->prepare("
+                    INSERT INTO _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur) 
+                    VALUES (?, ?, ?, ?, 1)
+                ");
+                
+                $nomProduit = htmlspecialchars($produit['nom_produit']);
+
+                $stmt->execute([
+                    $produit['id_vendeur'],
+                    "Vous avez un nouvel avis pour {$nomProduit} : \"{$sujet}\" avec une note de {$note}/5.",
+                    "✉️ Nouvel avis sur {$nomProduit} !",
+                    date('Y-m-d H:i:s'),
                 ]);
 
                 // 2. Insertion de l'image si présente
