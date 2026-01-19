@@ -11,6 +11,7 @@ $minPrice = (float)($_GET['minPrice'] ?? 0);
 $maxPrice = (float)($_GET['maxPrice'] ?? 999999);
 $noteMin = (float)($_GET['minNote'] ?? 0);
 $categorie = $_GET['categorie'] ?? '';
+$zone = $_GET['zone'] ?? '';
 
 $params = [
     ':noteMin'  => $noteMin,
@@ -29,9 +30,15 @@ if ($categorie !== '') {
     $params[':categorie'] = $categorie;
 }
 
+if ($zone !== '') {
+    $sqlWhere .= " AND v.cp LIKE :zone"; 
+    $params[':zone'] = $zone . '%';
+}
+
 $baseSql = "
 FROM _produit p
 JOIN _categorie c ON p.idCategorie = c.idCategorie
+JOIN _vendeur v ON p.idVendeur = v.codeVendeur
 LEFT JOIN _remise r 
     ON p.idProduit = r.idProduit
     AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
