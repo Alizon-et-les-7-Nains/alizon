@@ -928,6 +928,10 @@ body {
   display: flex;
   flex-direction: column;
 }
+.pageCommandes .popupSuiviLivraison .boiteAuxLettres {
+  width: 150px;
+  height: auto;
+}
 .pageCommandes .popupSuiviLivraison .stepper {
   display: flex;
   justify-content: space-around;

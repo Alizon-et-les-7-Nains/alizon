@@ -64,9 +64,6 @@ if ($status_response[4] == 9 && $status_response[5] === 'ABSENT') {
             $imageData .= $chunk;
         }
 
-        $filename = "photos/imgBoiteAuxLettres.jpg";
-        file_put_contents($filename, $imageData);
-
         $_SESSION['photo'] = $imageData;
     }
 }
