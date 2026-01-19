@@ -52,15 +52,12 @@ while (!feof($socket)) {
     }
 }
 
-var_dump("Ligne texte reçue: $text_line");
-
 // Parser les données texte
 $status_parts = explode("|", rtrim($text_line, '|'));
 
 // Vérifier qu'on a bien toutes les parties
 if (count($status_parts) < 7) {
     echo "ERREUR: Réponse incomplète du serveur\n";
-    var_dump($status_parts);
     fclose($socket);
     exit(1);
 }
@@ -73,13 +70,10 @@ $etape = $status_parts[4];
 $date_etape = $status_parts[5];
 $typeLivraison = $status_parts[6];
 
-var_dump("Étape: $etape, Type: $typeLivraison");
-
 // 2. LIRE LA PARTIE IMAGE/NULL
 $image_data = '';
 
 if ($etape == '9' && $typeLivraison === 'ABSENT') {
-    var_dump("Attente de l'image...");
     
     // Lire jusqu'au \n final
     while (!feof($socket)) {
