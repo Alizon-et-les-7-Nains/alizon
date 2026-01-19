@@ -505,6 +505,9 @@ body {
     visibility: hidden;
   }
 }
+.pageCommandes main {
+  height: 63vh;
+}
 .pageCommandes input[type=search] {
   padding: 10px 20px;
   width: 100%;
@@ -6356,6 +6359,10 @@ dialog.reassort form input {
   font-family: "lora";
   border-radius: 10px;
 }
+.pageProduit .signalement-info {
+  color: #f14e4e;
+  font-weight: bold;
+}
 
 .connexionVendeur {
   position: relative;
@@ -6694,7 +6701,7 @@ dialog.reassort form input {
   border-radius: 12px;
   display: flex;
   position: relative;
-  left: 1180px;
+  left: 400%;
   padding: 0;
 }
 .avi .etoiles {
