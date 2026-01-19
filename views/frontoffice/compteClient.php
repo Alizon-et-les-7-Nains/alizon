@@ -116,7 +116,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //on recupère les infos du user pour les afficher
-    $stmt = $pdo->query("SELECT * FROM saedb._client WHERE idClient = '$id_client'");
+    $stmt = $pdo->prepare("SELECT * FROM saedb._client WHERE idClient = ?");
+    $stmt->execute([$id_client]);
     $client = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $pseudo = $client['pseudo'] ?? '';
@@ -126,7 +127,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $client['email'] ?? '';
     $noTelephone = $client['noTelephone'] ?? '';
 
-    $stmt = $pdo->query("SELECT * FROM saedb._adresseClient WHERE idAdresse = '$idAdresse'");
+    $stmt = $pdo->prepare("SELECT * FROM saedb._adresseClient WHERE idAdresse = ?");
+    $stmt->execute([$idAdresse]);
     $adresse = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $adresse1 = $adresse['adresse'] ?? '';
@@ -234,7 +236,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <?php 
         //On récupère le mot de passe de la BDD
-        $stmt = $pdo->query("SELECT mdp FROM saedb._client WHERE idClient = '$id_client'");
+        $stmt = $pdo->prepare("SELECT mdp FROM saedb._client WHERE idClient = ?");
+        $stmt->execute([$id_client]);
         $tabMdp = $stmt->fetch(PDO::FETCH_ASSOC);
         $mdp = $tabMdp['mdp'] ?? '';
     ?>

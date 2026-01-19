@@ -60,6 +60,22 @@ require_once '../../controllers/auth.php';
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="typeProd">Catégorie du produit</label>
+                <select name="idCategorie" id="typeProd" required>
+                    <option value="">-- Choisir une catégorie --</option>
+                    <?php
+                    $stmt = $pdo->query("SELECT idCategorie, nomCategorie FROM _categorie");
+                    while ($cat = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        echo "<option value='{$cat['idCategorie']}'>
+                                {$cat['nomCategorie']}
+                            </option>";
+                    }
+                    ?>
+                </select>
+
+            </div>
+
             <div class="right-section">
                 <div class="product-desc-box">
                     <label for="product-description">Description du produit</label>

@@ -109,9 +109,10 @@ $sqlProduit = "SELECT
                     AND CURDATE() BETWEEN promo.debutPromotion AND promo.finPromotion
                LEFT JOIN _remise remise ON p.idProduit = remise.idProduit 
                     AND CURDATE() BETWEEN remise.debutRemise AND remise.finRemise
-               WHERE p.idProduit = $productId";
+               WHERE p.idProduit = ?";
 
-$result = $pdo->query($sqlProduit);
+$result = $pdo->prepare($sqlProduit);
+$result->execute([$productId]);
 $produit = $result->fetch(PDO::FETCH_ASSOC);
 
 $idClient = $_SESSION['user_id'] ?? 0;
@@ -128,9 +129,10 @@ if (!$produit) {
 }
 $sqlImages = "SELECT * 
               FROM _imageDeProduit 
-              WHERE idProduit = $productId";
+              WHERE idProduit = ?";
 
-$resultImages = $pdo->query($sqlImages);
+$resultImages = $pdo->prepare($sqlImages);
+$resultImages->execute([$productId]);
 $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 
 
@@ -183,9 +185,10 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 
 $sqlAvis = "SELECT a.*
             FROM _avis a
-            WHERE a.idProduit = $productId";
+            WHERE a.idProduit = ?";
 
-$resultAvis = $pdo->query($sqlAvis);
+$resultAvis = $pdo->prepare($sqlAvis);
+$resultAvis->execute([$productId]);
 $lesAvis = $resultAvis->fetchAll(PDO::FETCH_ASSOC);
 
 $sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";

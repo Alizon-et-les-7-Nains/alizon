@@ -1,4 +1,6 @@
 <?php 
+// Initialisation de la connexion avec le serveur / BDD
+
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/date.php";
 
@@ -11,25 +13,19 @@ if (!isset($_SESSION['user_id'])) {
 
 $id_client = $_SESSION['user_id'];
 
+// Fonction pour récupérer les notifications en fonction de l'utilisateur et de son rôle
 function getNotifications($pdo, $idClient, $est_vendeur) {
     $sql = "SELECT * FROM _notification 
-            WHERE idClient = :idClient 
-            AND est_vendeur = :est_vendeur 
+            WHERE (idClient = ? OR idClient = 34) 
+            AND est_vendeur = ?
             ORDER BY dateNotif DESC";
-            
     $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
-        'idClient'   => $idClient,
-        'est_vendeur' => $est_vendeur
-    ]);
-
-    $notif = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute([$idClient, $est_vendeur]);
     
-    return $notif; 
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
 }
 
-$notifs = getNotifications($pdo, $id_client, 0)
+$notifs = getNotifications($pdo, $id_client, 0);
 
 ?>
 
@@ -51,6 +47,8 @@ $notifs = getNotifications($pdo, $id_client, 0)
             <h1>Mes notifications</h1>
         </section>
 
+        <!-- Affichage de la totalité des notifications par ordre croissant  -->
+        <!-- Sont affichés le titre de la notification, le contenu ainsi que la date -->
         <?php if(!empty($notifs)) { ?>
             <section class="ensembleNotif">
                 <div class="sidebarNotif">
@@ -65,11 +63,14 @@ $notifs = getNotifications($pdo, $id_client, 0)
                             <img id="focus" src="../../public/images/bellRingLight.svg" alt="Nouvelle notification">
                         </div>
                         <div>
+                            <!-- Récupération des données souhaitées dans le tableau notif -->
                             <h3><?= $notif['titreNotif'] ?></h3>
                             <h4><?= $contenuNotif ?></h4>
                             <h5><?= $notif['dateNotif'] ?></h5>
                         </div>
                     </div>
+                    
+                    <!-- Affichage du contenu de la notification en format téléphone -->
                     <article class="contenuTel">
                         <div class="titleNotifResponsive">
                             <h2 style="color: #273469;"><?= htmlspecialchars($notif['titreNotif']) ?></h2>
@@ -91,6 +92,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
                     </div>
                 </article>
             </section>
+            <!-- Message d'erreur dnas le cas où aucune notification n'a été trouvées -->
         <?php } else { ?>
             <h2 class="aucuneNotif">Aucune notification</h2>
         <?php } ?>
@@ -105,6 +107,7 @@ $notifs = getNotifications($pdo, $id_client, 0)
         const contenuContent = document.getElementById("contenu");
         const dateContent = document.getElementById("date");
 
+        // Fonction mettant en jour les informations dans la fenetre d'affichage du contenu de la notification
         function afficherContenu(el, t, d, c) {
             if (titreContent) titreContent.innerText = t;
             if (contenuContent) contenuContent.innerText = d;

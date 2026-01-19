@@ -1,14 +1,17 @@
 <?php
+// Initialisation de la connexion avec le serveur / BDD
 ob_start();
 
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/prix.php";
 
+    // Constantes définissant les limites de produits dans les cookies
     const PRODUIT_CONSULTE_MAX_SIZE = 4;
 
     const PRODUIT_DANS_PANIER_MAX_SIZE = 10;
 
-    // Récupération du cookie existant ou création d'un tableau vide
+    // Récupération des cookies existants (produits consultés et panier) ou création de tableaux vides
+    // Pour les utilisateurs déconnectés, le panier est stocké uniquement dans les cookies
     if (((isset($_COOKIE['produitConsulte'])) && (isset($_COOKIE['produitPanier']))) && (!empty($_COOKIE['produitConsulte']) && !empty($_COOKIE['produitPanier']))) {
         $tabIDProduitConsulte = unserialize($_COOKIE['produitConsulte']);
         $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
@@ -38,10 +41,13 @@ require_once "../../controllers/prix.php";
         setcookie("produitConsulte", serialize($tabIDProduit), time() + (60*60*24*90), "/");
     }
 
+    // Fonction pour ajouter un produit au panier via cookie (utilisateurs déconnectés)
     function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
+        // Si le produit existe déjà, on augmente la quantité
         if (isset($tabIDProduitPanier[$idProduit])) {
             $tabIDProduitPanier[$idProduit] += $quantite;
         } else {
+            // Vérification de la limite de produits différents dans le panier
             if (count($tabIDProduitPanier) >= PRODUIT_DANS_PANIER_MAX_SIZE) {
                 $message = "Impossible d'ajouter plus de ".PRODUIT_DANS_PANIER_MAX_SIZE." produits différents. Connectez-vous pour en ajouter plus.";
                 echo "<script>alert(".json_encode($message).");</script>";
@@ -65,18 +71,20 @@ require_once "../../controllers/prix.php";
         }
     }
 
+    // Gestion de l'ajout d'un produit au panier via paramètre GET
     if (isset($_GET['addPanier']) && !empty($_GET['addPanier'])) {
         $idProduitAjoute = intval($_GET['addPanier']);
         $quantite = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
         ajouterProduitPanier($tabIDProduitPanier, $idProduitAjoute);
     }
 
-    // Récupérer les promotions
+    // Récupération des promotions actives pour afficher un produit aléatoire en bannière
 
     $stmt = $pdo->prepare("SELECT * FROM _promotion");
     $stmt->execute();
     $arrayProduit = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Mise à jour des notes moyennes de tous les produits basées sur les avis
     $stmtNoteProduit = $pdo->prepare(
         "UPDATE _produit p
         LEFT JOIN (
@@ -91,6 +99,7 @@ require_once "../../controllers/prix.php";
     $noteProduit = $stmtNoteProduit->fetchAll(PDO::FETCH_ASSOC);
 
 
+    // Sélection aléatoire d'un produit en promotion pour l'afficher en bannière
     if (count($arrayProduit) === 0) {
         $choixAleatoirePromo = "N/A";
     } else {
@@ -115,11 +124,14 @@ require_once "../../controllers/prix.php";
     <?php include '../../views/frontoffice/partials/headerDeconnecte.php'; ?>
 
     <section class="banniere">
-        <?php if($choixAleatoirePromo == "N/A") { ?>
+        <?php // Affichage de la bannière de promotion
+        if($choixAleatoirePromo == "N/A") { ?>
             <h1>Plus de promotion à venir !</h1>
             <img src="../../public/images/defaultImageProduit.png" alt="Image de produit par défaut">
         <?php } else { 
                      
+            // Récupération de la bannière d'un produit en promotion
+            // Si aucune bannière personnalisée n'est trouvée alors on affiche l'image par défaut du produit
             $cheminSysteme = "/var/www/html/images/baniere/" . $choixAleatoirePromo . ".jpg";
 
             if (file_exists($cheminSysteme)) {
@@ -131,6 +143,7 @@ require_once "../../controllers/prix.php";
                 $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';
             }
 
+            // Récupération des informations complètes du produit en promotion
             $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = :idProduit");
             $stmt->execute([':idProduit' => $choixAleatoirePromo]);
             $produitEnPromo = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -159,10 +172,12 @@ require_once "../../controllers/prix.php";
                 $stmt->execute();
                 $produitNouveaute = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
+                // Affichage de chaque produit nouveauté avec ses informations
                 if (count($produitNouveaute) > 0) {
                     foreach ($produitNouveaute as $value) {
                         $idProduit = $value['idProduit'];
                         $prixOriginal = $value['prix'];
+                        // Calcul du prix avec remise si applicable
                         $tauxRemise = $value['tauxRemise'] ?? 0;
                         $enRemise = !empty($value['tauxRemise']) && $value['tauxRemise'] > 0;
                         $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
@@ -225,6 +240,7 @@ require_once "../../controllers/prix.php";
             </div>
             <div class="listeArticle">
                 <?php 
+                // Récupération des produits dans la catégorie charcuterie
                 $stmt = $pdo->prepare("SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
                                       FROM _produit p 
                                       LEFT JOIN _remise r ON p.idProduit = r.idProduit 
@@ -233,6 +249,7 @@ require_once "../../controllers/prix.php";
                 $stmt->execute([':typeProd' => 'charcuterie']);
                 $produitCharcuterie = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
+                // Affichage de chaque produit de charcuterie
                 if (count($produitCharcuterie) > 0) {
                     foreach ($produitCharcuterie as $value) {
                         $idProduit = $value['idProduit'];
@@ -299,6 +316,7 @@ require_once "../../controllers/prix.php";
             </div>
             <div class="listeArticle">
                 <?php 
+                // Récupération des produits dans la catégorie alcools
                 $stmt = $pdo->prepare("SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
                                       FROM _produit p 
                                       LEFT JOIN _remise r ON p.idProduit = r.idProduit 
@@ -307,6 +325,7 @@ require_once "../../controllers/prix.php";
                 $stmt->execute([':typeProd' => 'alcools']);
                 $produitAlcool = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 
+                // Affichage de chaque produit alcool
                 if (count($produitAlcool) > 0) {
                     foreach ($produitAlcool as $value) {
                         $idProduit = $value['idProduit'];
@@ -373,6 +392,7 @@ require_once "../../controllers/prix.php";
             </div>
             <div class="listeArticle">
                 <?php
+                // Affichage des produits consultés récemment (dans l'ordre inverse pour afficher les plus récents en premier)
                 if (!empty($tabIDProduitConsulte) && count($tabIDProduitConsulte) > 0) {
                     $produitsRecents = array_reverse($tabIDProduitConsulte);
                     
@@ -385,6 +405,7 @@ require_once "../../controllers/prix.php";
                         $stmtRecent->execute([':idProduit' => $idProduitRecent]);
                         $produitRecent = $stmtRecent->fetch(PDO::FETCH_ASSOC);
                         
+                        // Affichage du produit seulement s'il existe toujours en base de données
                         if ($produitRecent) {
                             $idProduit = $produitRecent['idProduit'];
                             $prixOriginal = $produitRecent['prix'];
@@ -392,6 +413,7 @@ require_once "../../controllers/prix.php";
                             $enRemise = !empty($produitRecent['tauxRemise']) && $produitRecent['tauxRemise'] > 0;
                             $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
                             
+                            // Récupération de l'image du produit récemment consulté
                             $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                             $stmtImg->execute([':idProduit' => $idProduit]);
                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
@@ -446,11 +468,13 @@ require_once "../../controllers/prix.php";
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
 
+    <!-- Popup de confirmation d'ajout au panier -->
     <section class="confirmationAjout">
         <h4>Produit ajouté au panier !</h4>
     </section>
 
     <script>
+        // Gestion de l'affichage du popup de confirmation d'ajout au panier
         const popupConfirmation = document.querySelector(".confirmationAjout");
         const boutonsAjout = document.querySelectorAll(".plus");
 

@@ -5,91 +5,78 @@ session_start();
 
 $produitsParPage = 15;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-
-// Reglage du decalage pour la pagination
 $offset = ($page - 1) * $produitsParPage;
 
 $idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 $categoryQuery = isset($_GET['categorie']) ? trim($_GET['categorie']) : "";
 
-// Récupérer les produits avec pagination
+$conditions = [];
+$params = [];
+
+if (!empty($searchQuery)) {
+    $conditions[] = "(p.nom LIKE :searchQuery OR p.description LIKE :searchQuery)";
+    $params[':searchQuery'] = '%' . $searchQuery . '%';
+}
+
+if (!empty($categoryQuery)) {
+    $conditions[] = "p.typeProd = :categoryQuery";
+    $params[':categoryQuery'] = $categoryQuery;
+}
+
+$whereClause = "";
+if (count($conditions) > 0) {
+    $whereClause = " WHERE " . implode(" AND ", $conditions);
+}
+
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
         FROM _produit p 
         LEFT JOIN _remise r ON p.idProduit = r.idProduit 
-        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
+        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise" . $whereClause;
 
-// Compter tous les produits
 $countSql = "SELECT COUNT(*) FROM _produit p 
              LEFT JOIN _remise r ON p.idProduit = r.idProduit 
-             AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
-
-if (!empty($searchQuery)) {
-    $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
-    $countSql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
-}
-
-if (!empty($categoryQuery)) {
-    $sql .= " WHERE p.typeProd = :categoryQuery";
-    $countSql .= " WHERE p.typeProd = :categoryQuery";
-}
-
-// Récuperer la totalité des catégories
-$catSql = "SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;";
-$stmt = $pdo->prepare($catSql);
-$stmt->execute();
-$listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$vendeur = "SELECT 
-            v.codeVendeur,
-            v.raisonSocial,
-            COUNT(p.idProduit) AS nbProduits
-            FROM _vendeur v
-            JOIN _produit p ON p.idVendeur = v.codeVendeur
-            GROUP BY p.idVendeur
-            ORDER BY nbProduits DESC
-            LIMIT 10";
+             AND CURDATE() BETWEEN r.debutRemise AND r.finRemise" . $whereClause;
 
 $countStmt = $pdo->prepare($countSql);
-if (!empty($searchQuery)) {
-    $countStmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
-}
-if (!empty($categoryQuery)) {
-    $countStmt->bindValue(':categoryQuery', '%' . $categoryQuery . '%', PDO::PARAM_STR);
+foreach ($params as $key => $val) {
+    $countStmt->bindValue($key, $val, PDO::PARAM_STR);
 }
 $countStmt->execute();
-$totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
-
+$totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
-
-$sql .= " LIMIT :limit OFFSET :offset"; // LIMIT : nommbre de produits par page (15), OFFSET : decalage sur l'ensemble des résultats
+$sql .= " LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($sql);
 
-// Liaison des paramètres pour la pagination
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-if (!empty($searchQuery)) {
-    $stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
-}
-if (!empty($categoryQuery)) {
-    $stmt->bindValue(':categoryQuery', '%' . $categoryQuery . '%', PDO::PARAM_STR);
+foreach ($params as $key => $val) {
+    $stmt->bindValue($key, $val, PDO::PARAM_STR);
 }
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt = $pdo->prepare($vendeur);
+// Catégories
+$catSql = "SELECT DISTINCT typeProd FROM _produit WHERE typeProd IS NOT NULL;";
+$stmt = $pdo->prepare($catSql);
+$stmt->execute();
+$listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Vendeurs
+$vendeurSql = "SELECT v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbProduits
+               FROM _vendeur v
+               JOIN _produit p ON p.idVendeur = v.codeVendeur
+               GROUP BY v.codeVendeur, v.raisonSocial
+               ORDER BY nbProduits DESC LIMIT 10";
+$stmt = $pdo->prepare($vendeurSql);
 $stmt->execute();
 $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Récupérer le prix maximum pour le slider
-$maxPriceStmt = $pdo->query("SELECT MAX(prix) as maxPrix FROM _produit");
-$maxPriceRow = $maxPriceStmt->fetch(PDO::FETCH_ASSOC);
-$maxPrice = $maxPriceRow['maxPrix'] ?? 100;
-
-
-
+// Prix Max
+$stmt = $pdo->prepare("SELECT MAX(prix) FROM _produit");
+$stmt->execute();
+$maxPrice = $stmt->fetchColumn() ?? 100;
 ?>
 
 <!DOCTYPE html>
@@ -114,6 +101,14 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
             <article class="triNote">
+                <div>
+                    <input type="radio" id="triPertinenceCroissant" name="tri" value="pertinenceAsc">
+                    <label for="triPertinenceCroissante">Pertinence croissante</label>
+                </div>
+                <div>
+                    <input type="radio" id="triPertinenceDecroissant" name="tri" value="pertinenceDesc">
+                    <label for="triPertinencDecroissante">Pertinence decroissante</label>
+                </div>
                 <div>
                     <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
                     <label for="triNoteCroissant">Note croissante</label>
@@ -146,7 +141,6 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                     <input type="range" id="sliderMax" min="0" max="<?php echo $maxPrice; ?>" value="<?php echo $maxPrice; ?>">
                 </div>
             </div>
-
             <label for="minNote" id="minNoteLabel">Trier par note minimale:</label>
             <div>
                 <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
@@ -156,10 +150,8 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 <img src="../../public/images/etoileVide.svg" data-index="5" class="star" alt="5 étoiles">
                 <input type="hidden" name="note" id="note" value="0"> 
             </div>
-
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
-                
                 <?php if (isset($_GET['categorie'])) {
                     $nomCategorie = $_GET['categorie'];
                     $nomCategorie = str_replace("_", " ", $nomCategorie); ?>
@@ -171,9 +163,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 <?php foreach ($listeCategories as $categorie) { ?>
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
-
             </select>
-
             <label for="zone">Zone géographique :</label>
             <label for="vendeur">Vendeur :</label>
             <select id="vendeur" name="vendeur">
@@ -296,7 +286,6 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
                     <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
                 <?php endfor; ?>
-
                 <?php if ($page < $nbPages): ?>
                     <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
                 <?php endif; ?>
@@ -304,7 +293,6 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
         </div>
     </div>
 </main>
-
 <section class="confirmationAjout">
     <h4>Produit ajouté au panier !</h4>
 </section>
@@ -320,6 +308,8 @@ const range = document.getElementById('range');
 // Tri notes
 const triNoteCroissant = document.getElementById('triNoteCroissant');
 const triNoteDecroissant = document.getElementById('triNoteDecroissant');
+const triPertinenceCroissant = document.getElementById('triPertinenceCroissant');
+const triPertinenceDecroissant = document.getElementById('triPertinenceDecroissant');
 let sortOrder = '';
 
 // Variables globales
@@ -411,7 +401,7 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}&pertinenceCroissant=${triPertinenceCroissant}&pertinenceDeroissant=${triPertinenceDecroissant}`)
         .then(res => {
             // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {
@@ -456,6 +446,20 @@ sliderMin.addEventListener('input', () => {
 sliderMax.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
+});
+
+triPertinenceCroissant.addEventListener('change', () =>{
+    if (triPertinenceCroissant.checked){
+        sortOrder = true;
+        loadProduits(1);
+    }
+});
+
+triPertinenceDecroissant.addEventListener('change', () =>{
+    if (triPertinenceDecroissant.checked){
+        sortOrder = true;
+        loadProduits(1);
+    }
 });
 
 triNoteCroissant.addEventListener('change', () => {
