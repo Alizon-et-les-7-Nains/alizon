@@ -495,16 +495,8 @@ $cart = getCurrentCart($pdo, $idClient);
                         </div>
                         
                     <?php endforeach; ?> 
-                    <?php 
-                        echo "<!-- DEBUG: ";
-                        echo "Photo existe: " . (isset($_SESSION['photo']) ? 'OUI' : 'NON') . ", ";
-                        echo "Taille: " . (isset($_SESSION['photo']) ? strlen($_SESSION['photo']) : 0) . " octets, ";
-                        echo "Type livraison: " . ($_SESSION['typeLivraison'] ?? 'non défini') . ", ";
-                        echo "Etape: " . ($etape['etape'] ?? 'non défini');
-                        echo " -->";    
-                    ?>
                 </div>
-                <?php if ($etape == 9 && $_SESSION['typeLivraison'] === 'ABSENT'): ?>
+                <?php if ($etape['etape'] == 9 && $_SESSION['typeLivraison'] === 'ABSENT'): ?>
                     <img class="boiteAuxLettres" src="data:image/jpeg;base64,<?= base64_encode($_SESSION['photo']) ?>" alt="Image boite aux lettres">
                 <?php endif; ?> 
                 <div class="stepper">
