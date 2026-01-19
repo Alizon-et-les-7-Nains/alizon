@@ -6664,6 +6664,7 @@ dialog.reassort form input {
   align-items: center;
   justify-content: flex-start;
   height: 100%;
+  width: 240px;
 }
 .avi .col-gauche .profil-client img {
   width: 70px;
@@ -6679,6 +6680,7 @@ dialog.reassort form input {
   border: none;
   border-radius: 32px;
   cursor: pointer;
+  margin-right: 30px;
 }
 .avi .btnRepAvis {
   background-color: #273469;
@@ -6692,7 +6694,7 @@ dialog.reassort form input {
   border-radius: 12px;
   display: flex;
   position: relative;
-  left: 1280px;
+  left: 1180px;
   padding: 0;
 }
 .avi .etoiles {
@@ -6713,6 +6715,17 @@ dialog.reassort form input {
 .avi .date-avis {
   font-size: 12px;
   font-family: "Lora", sans-serif;
+}
+
+.reponseAvis {
+  display: flex;
+  flex-direction: row;
+}
+.reponseAvis a {
+  color: #f14e4e;
+  position: relative;
+  right: 10px;
+  margin-top: 30px;
 }
 
 @media (max-width: 2000px) {
@@ -7390,7 +7403,7 @@ dialog.reassort form input {
   margin-top: 1.5em;
 }
 .pageCatalogue .pagination {
-  margin: 20px 0;
+  margin: 80px 0;
   display: flex;
   justify-content: center;
   gap: 10px;

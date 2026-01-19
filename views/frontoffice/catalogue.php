@@ -1,6 +1,15 @@
 <?php
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
+// Chargement des départements
+$listeDepts = [];
+if (($handle = fopen("../../public/data/departements.csv", "r")) !== FALSE) {
+    fgetcsv($handle, 1000, ";");
+    while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+        $listeDepts[$data[0]] = $data[2];
+    }
+    fclose($handle);
+}
 session_start();
 
 $produitsParPage = 15;
@@ -164,7 +173,15 @@ $maxPrice = $stmt->fetchColumn() ?? 100;
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
             </select>
+
             <label for="zone">Zone géographique :</label>
+            <select name="zone" id="zoneSelect" class="filter-select">
+                <option value="">Tous les départements</option>
+                <?php foreach ($listeDepts as $code => $nom) : ?>
+                    <option value="<?= $code ?>"><?= $code ?> - <?= htmlspecialchars($nom) ?></option>
+                <?php endforeach; ?>
+            </select>
+
             <label for="vendeur">Vendeur :</label>
             <select id="vendeur" name="vendeur">
                 <option value="">-- Tous les vendeurs --</option>
@@ -393,7 +410,9 @@ function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
-    const catValue = categorieSelect.value; 
+    const catValue = categorieSelect.value;
+    const zoneValue = document.getElementById('zoneSelect').value;
+
     let idVendeur;
     if(vendeur.value!=""){
         idVendeur = parseInt(vendeur.value);
@@ -401,7 +420,7 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}&pertinenceCroissant=${triPertinenceCroissant}&pertinenceDeroissant=${triPertinenceDecroissant}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&zone=${zoneValue}&search=${encodeURIComponent(searchQuery)}&pertinenceCroissant=${triPertinenceCroissant}&pertinenceDeroissant=${triPertinenceDecroissant}`)
         .then(res => {
             // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {
@@ -409,6 +428,9 @@ function loadProduits(page = 1) {
             }
             return res.json(); // Conversion en JSON
         })
+        
+        document.getElementById('zoneSelect').addEventListener('change', () => loadProduits(1));
+
         .then(data => {
             listeArticle.innerHTML = data.html; // Recuperation des nouvelles données et mise à jour des produits
             currentPage = page; // Mise à jour de la page cournante

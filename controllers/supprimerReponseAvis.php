@@ -1,10 +1,11 @@
 <?php 
 require_once 'pdo.php';
 session_start();
+//Récupération des identifiants de la commande
 $idProd = $_GET['idProd'];  
 $idClient = $_GET['idCli'];  
 
-// Suppression du commentaire
+// Suppression de la réponse à un avis
 $stmt = $pdo->prepare("DELETE FROM _reponseAvis WHERE idClient = :idClient AND idProduit = :idProduit");
 
 try{
