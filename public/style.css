@@ -505,6 +505,9 @@ body {
     visibility: hidden;
   }
 }
+.pageCommandes main {
+  height: 63vh;
+}
 .pageCommandes input[type=search] {
   padding: 10px 20px;
   width: 100%;
@@ -2767,8 +2770,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-style: italic;
 }
 .mainCompteClient label {
-  height: 30px !important;
-  margin-bottom: 115px !important;
+  margin-bottom: 95px;
+  width: 0px;
+  white-space: pre;
 }
 .mainCompteClient h1 {
   font-family: "lora";
@@ -2824,7 +2828,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   height: 100%;
   display: flex;
   align-items: center;
-  margin-top: 20px;
 }
 .mainCompteClient #buttonsCompte {
   padding-top: 32px;
@@ -5526,7 +5529,7 @@ dialog.reassort form input {
   top: 25px;
   left: 13px;
   color: #fffefa;
-  z-index: 10000;
+  z-index: 999;
 }
 .pageProduit .poly1 {
   position: absolute;
@@ -5540,7 +5543,7 @@ dialog.reassort form input {
   top: 90px;
   left: 10px;
   width: auto;
-  z-index: 1000000;
+  z-index: 999;
 }
 .pageProduit #imageBouteille {
   width: 220px;
@@ -6356,6 +6359,10 @@ dialog.reassort form input {
   font-family: "lora";
   border-radius: 10px;
 }
+.pageProduit .signalement-info {
+  color: #f14e4e;
+  font-weight: bold;
+}
 
 .connexionVendeur {
   position: relative;
@@ -6694,7 +6701,7 @@ dialog.reassort form input {
   border-radius: 12px;
   display: flex;
   position: relative;
-  left: 1180px;
+  left: 400%;
   padding: 0;
 }
 .avi .etoiles {
@@ -6715,6 +6722,10 @@ dialog.reassort form input {
 .avi .date-avis {
   font-size: 12px;
   font-family: "Lora", sans-serif;
+}
+.avi form {
+  display: flex;
+  justify-content: end;
 }
 
 .reponseAvis {

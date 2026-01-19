@@ -98,12 +98,16 @@
         family: "Lora", sans-serif;
       }
     }
+    form{
+      display: flex;
+      justify-content: end;
+    }
   }
-
+  
   .reponseAvis{
     display: flex;
     flex-direction: row;
-
+    
     a{
       color: $color-red;
       position:relative;

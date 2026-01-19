@@ -29,27 +29,27 @@ const AIM_IMAGES = 150; // KB
 // print_r("--------------------------------\nDone in {$elapsed}s\n");
 
 function treat($path, $dest) {
-    $name = explode('.', $path)[0];
     $size = filesize($path) / 1000; // conversion en KB
 
-    print_r(" : {$size}kB\n");
+    error_log("Traitement image : {$size}kB");
 
-    $newSize = 0;
-    
     if ($size > AIM_IMAGES) { // si l'image est trop volumineuse
-        print_r("| Compressing\n");
+        error_log("Compression nécessaire");
         
         $width = 0; $height = 0;
         list($width, $height) = getimagesize($path);
         $ratio = sqrt(AIM_IMAGES / $size);
+        $tempFile = sys_get_temp_dir() . '/' . uniqid('img_') . '.jpg';
         
         $attempts = 0;
         do { // compression par tatons
             $newWidth = round($width * $ratio);
             $newHeight = round($height * $ratio);
-            exec("convert $path -resize {$newWidth}x{$newHeight} -quality 85 jpg:temp/$name.jpg"); // compression et cast en jpg
             
-            $newSize = filesize("$dest") / 1000;
+            $cmd = "/usr/bin/convert " . escapeshellarg($path) . " -resize {$newWidth}x{$newHeight} -quality 85 " . escapeshellarg($tempFile) . " 2>&1";
+            exec($cmd, $output, $returnCode); // compression et cast en jpg
+            
+            $newSize = filesize($tempFile) / 1000;
             
             if ($newSize > AIM_IMAGES) {
                 $ratio *= 0.9;
@@ -61,8 +61,10 @@ function treat($path, $dest) {
 
             $attempts++;
         } while ($attempts < 5); // limité à 5 éssais pour que ce soit plus rapide
+        
+        rename($tempFile, $dest);
     } else {
-        print_r("| Skipping\n");
+        copy($path, $dest);
     }
 }
 
