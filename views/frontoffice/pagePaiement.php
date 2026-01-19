@@ -382,8 +382,8 @@ $clientInfo = clientInformations($pdo, $idClient);
                     <div class="checkbox-group">
                         <input type="checkbox" id="cgvCheckbox">
                         <label for="cgvCheckbox" class="checkbox-label">
-                            J'ai lu et j'accepte les <a href="#">Conditions Générales de
-                                Vente</a> et les <a href="#">Mentions Légales</a> d'Alizon.
+                            J'ai lu et j'accepte les <a href="./legalesConnecte.php">Conditions Générales de
+                                Vente</a> et les <a href="./legalesConnecte.php">Mentions Légales</a> d'Alizon.
                         </label>
                     </div>
                     <span class="error-message" data-for="cgv">Vous devez accepter les CGV</span>

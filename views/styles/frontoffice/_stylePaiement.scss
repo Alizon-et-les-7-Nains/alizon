@@ -62,7 +62,6 @@ $breakpoint-xs: 480px;
     }
   }
 
-  // Main Layout
   .payment-layout {
     display: grid;
     grid-template-columns: 1fr 380px;
@@ -75,7 +74,6 @@ $breakpoint-xs: 480px;
     }
   }
 
-  // Forms Container
   .forms-container {
     display: flex;
     flex-direction: column;
@@ -127,7 +125,6 @@ $breakpoint-xs: 480px;
     }
   }
 
-  // Form Fields
   .form-row {
     display: grid;
     gap: 16px;
@@ -255,7 +252,6 @@ $breakpoint-xs: 480px;
     }
   }
 
-  // Payment Icons
   .payment-icons {
     display: flex;
     gap: 12px;
@@ -269,8 +265,6 @@ $breakpoint-xs: 480px;
     opacity: 1;
     transition: opacity 0.2s;
   }
-
-  // Order Summary
   .order-summary {
     position: sticky;
     top: 20px;
@@ -362,8 +356,6 @@ $breakpoint-xs: 480px;
       margin-top: 12px;
     }
   }
-
-  // CTA Button
   .cta-button {
     width: 100%;
     padding: 16px;
@@ -390,24 +382,6 @@ $breakpoint-xs: 480px;
     }
   }
 
-  // Security Badge
-  .security-badge {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 16px;
-    padding: 12px;
-    background: rgba(76, 175, 80, 0.1);
-    border-radius: 8px;
-    font-size: 13px;
-    color: $success;
-  }
-
-  .security-icon {
-    font-size: 18px;
-  }
-
-  // Popup Styles
   .popup-overlay {
     position: fixed;
     top: 0;
@@ -466,6 +440,15 @@ $breakpoint-xs: 480px;
 
   .popup-header {
     display: flex;
+    justify-content: space-between;
+
+    .close-popup {
+      font-size: 24px;
+      color: #999;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
   }
 
   .popup-title {
@@ -502,7 +485,6 @@ $breakpoint-xs: 480px;
     transition: all 0.2s ease;
   }
 
-  // Cart summary in popup
   .cart-summary {
     max-height: 300px;
     overflow-y: auto;
@@ -565,10 +547,10 @@ $breakpoint-xs: 480px;
     margin-top: 20px;
 
     .btn-cancel {
-      background: #f44336;
-      color: white;
+      background: $purple-light;
+      color: $accent;
       border: none;
-      border-radius: 4px;
+      border-radius: 24px;
       padding: 12px 30px;
       cursor: pointer;
       font-family: "lora", serif;
@@ -576,10 +558,10 @@ $breakpoint-xs: 480px;
     }
 
     .btn-confirm {
-      background: $success;
-      color: white;
+      background: $purple-light;
+      color: $accent;
       border: none;
-      border-radius: 4px;
+      border-radius: 24px;
       padding: 12px 30px;
       cursor: pointer;
       font-family: "lora", serif;
