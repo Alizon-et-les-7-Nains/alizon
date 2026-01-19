@@ -61,7 +61,7 @@ $base64 = base64_encode($photo); ?>
 <!DOCTYPE html>
 <html>
 <body>
-    echo '<img src="data:image/jpeg;base64,' . $base64 . '">';
+   <?php echo '<img src="data:image/jpeg;base64,' . $base64 . '">'; ?>
 </body>
 </html>
 
