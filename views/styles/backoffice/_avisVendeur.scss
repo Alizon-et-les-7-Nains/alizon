@@ -98,12 +98,13 @@
         family: "Lora", sans-serif;
       }
     }
+    form{
+      display: flex;
+      justify-content: end;
+    }
   }
 
-  form{
-    display: flex;
-    justify-content: end;
-  }
+
 
   .reponseAvis{
     display: flex;
