@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Traitement de l'image
             if (!empty($_FILES['photo']['name'])) {
                 // Utilisation d'un chemin relatif au dossier public pour plus de fiabilité
-                $targetDir = __DIR__ . "/../../public/images/imagesAvis/";
+                $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/images/';
                 
                 if (!is_dir($targetDir)) {
                     mkdir($targetDir, 0755, true);
