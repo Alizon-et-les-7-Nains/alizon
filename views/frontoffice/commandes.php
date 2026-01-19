@@ -330,7 +330,7 @@ $cart = getCurrentCart($pdo, $idClient);
 
                             <div class="listeBtn">
                                 <a href="<?php echo "../../views/frontoffice/ecrireCommentaire.php?id=".$produit['idProduit'] ?>">Écrire un commentaire <img src="../../public/images/penDarkBlue.svg" alt="Edit"></a>
-                                <button class="plus" data-id="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">Acheter à nouveau <img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
+                                <button class="plus" data-id="<?= htmlspecialchars($produit['idProduit'] ?? '') ?>">AJouter le produit au panier <img src="../../public/images/redoWhite.svg" alt="Image redo"></button>
                                 <?php if ($commande['statut'] === 'Livrée'): ?>
                                     <a href="">Retourner<img src="../../public/images/redoDarkBlue.svg" alt="Retour"></a>
                                     <?php else: ?>
