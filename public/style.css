@@ -2596,20 +2596,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   cursor: not-allowed;
   transform: none;
 }
-.pagePaiement .security-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 16px;
-  padding: 12px;
-  background: rgba(76, 175, 80, 0.1);
-  border-radius: 8px;
-  font-size: 13px;
-  color: #4caf50;
-}
-.pagePaiement .security-icon {
-  font-size: 18px;
-}
 .pagePaiement .popup-overlay {
   position: fixed;
   top: 0;
@@ -2662,6 +2648,16 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .pagePaiement .popup-header {
   display: flex;
+}
+.pagePaiement .popup-header .close-popup {
+  margin-left: auto;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  background-color: transparent;
+}
+.pagePaiement .popup-header .close-popup:hover {
+  color: #252b56;
 }
 .pagePaiement .popup-title {
   font-size: 28px;
