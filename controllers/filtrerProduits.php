@@ -16,6 +16,7 @@ $noteMin = isset($_GET['minNote']) ? (float)$_GET['minNote'] : 1;
 $vendeur = $_GET['vendeur'] ?? null;
 $sqlVendeur="";
 $recherche = isset($_GET['search']) ? trim($_GET['search']) : '';
+$zone = $_GET['zone'] ?? '';
 
 if(!empty($vendeur)){
     $sqlVendeur = "AND p.idVendeur = :idVendeur";
@@ -71,7 +72,10 @@ $nbPages = ceil($totalProduits / $produitsParPage);
 
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise
         FROM _produit p
-        LEFT JOIN _remise r ON p.idProduit = r.idProduit LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit 
+        LEFT JOIN _vendeur v ON v.codeVendeur = p.idVendeur
+        LEFT JOIN _adresseVendeur a ON v.idAdresse = a.idAdresse 
+        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise
         WHERE p.note >= :noteMin ". $sqlVendeur ." AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice" . $catCondition;
 
 if ($recherche !== '') {
