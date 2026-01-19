@@ -5529,7 +5529,7 @@ dialog.reassort form input {
   top: 25px;
   left: 13px;
   color: #fffefa;
-  z-index: 10000;
+  z-index: 999;
 }
 .pageProduit .poly1 {
   position: absolute;
@@ -5543,7 +5543,7 @@ dialog.reassort form input {
   top: 90px;
   left: 10px;
   width: auto;
-  z-index: 1000000;
+  z-index: 999;
 }
 .pageProduit #imageBouteille {
   width: 220px;
