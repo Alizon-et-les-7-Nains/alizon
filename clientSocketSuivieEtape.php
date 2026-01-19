@@ -56,14 +56,20 @@ $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
 $photo = $status_response[6];
 $_SESSION['typeLivraison'] = $status_response[5];
-if ($photo != null) {
-    $imageData = '';
-    while (!feof($socket)) {
-        $chunk = fread($socket, 8192);
-        if ($chunk === false || $chunk === '') break;
-        $imageData .= $chunk;
+if ($etape === 9 && $typeLivraison === 'ABSENT' && $photoPresent != null) {
+
+    if ($photo != null) {
+        $imageData = '';
+        while (!feof($socket)) {
+            $chunk = fread($socket, 8192);
+            if ($chunk === false || $chunk === '') break;
+            $imageData .= $chunk;
+        }
+        $_SESSION['photo'] = $imageData;
     }
-    $_SESSION['photo'] = $imageData;
+} else {
+    // Supprimer la session photo si autre chose que ABSENT
+    unset($_SESSION['photo']);
 }
 
 //echo "Réponse: $status_response\n\n";
