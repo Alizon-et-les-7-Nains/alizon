@@ -54,13 +54,15 @@ inputsExtractwo.forEach((input: HTMLInputElement) => {
     })
 })
 
-inputToutExtract?.addEventListener('input', () => {
-    // Mise à jour des checkboxs
-    inputsExtractwo.forEach((input: HTMLInputElement) => {
-        input.checked = inputToutExtract.checked;
-    })
+if (inputToutExtract) {
+    inputToutExtract?.addEventListener('input', () => {
+        // Mise à jour des checkboxs
+        inputsExtractwo.forEach((input: HTMLInputElement) => {
+            input.checked = inputToutExtract.checked;
+        })
     
-    // Mise à joue du bouton
-    updateButtonState();
-    updateButton();
-});
+        // Mise à joue du bouton
+        updateButtonState();
+        updateButton();
+    });
+}
