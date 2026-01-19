@@ -56,6 +56,8 @@ $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
 $photo = $status_response[6];
 $_SESSION['typeLivraison'] = $status_response[5];
+$etape = $status_response[4];
+
 if ($etape === 9 && $typeLivraison === 'ABSENT' && $photoPresent != null) {
 
     if ($photo != null) {
