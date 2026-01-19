@@ -517,9 +517,12 @@ else{
     searchbar.value = searchQuery;
 }
 
-KeyboardEvent.addEventListener('Enter', () => {
-    searchQuery = searchbar.value.trim();
-    loadProduits(1);
+window.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" && document.activeElement === searchbar) {
+        event.preventDefault();
+        searchQuery = searchbar.value.trim();
+        loadProduits(1);
+    }
 });
 
 
