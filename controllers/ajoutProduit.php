@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nouveauNomImage = 'produit_' . $idNewProduit . '_' . time() . '.' . $extension;
             $dossierDestination = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $nouveauNomImage;
             // Déplacement du fichier
-            error_log($_FILES['photo']);
             print_r($_FILES['photo']);
             try {
                 treat($_FILES['photo']['tmp_name'], $dossierDestination);
