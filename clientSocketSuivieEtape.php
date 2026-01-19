@@ -21,6 +21,20 @@ function send_command($socket, $command)
     return trim($response);
 }
 
+function read_binary($socket, int $size)
+{
+    $data = '';
+    while (strlen($data) < $size) {
+        $chunk = fread($socket, $size - strlen($data));
+        if ($chunk === false) {
+            break;
+        }
+        $data .= $chunk;
+    }
+    return $data;
+}
+
+
 // Utilisation
 $host = 'web';
 $port = 8080;
@@ -55,26 +69,23 @@ $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
-$photo = $status_response[7];
-
-$base64 = base64_encode($photo); ?>
+$photo_size = intval($status_response[7]);
+$typeLivraison = $status_response[6];
+$etape = $status_response[4];
+$_SESSION['typeLivraison'] = $typeLivraison;
+$photo = '';
+if ($photo_size > 0) {
+    $photo = read_binary($socket, $photo_size);
+}
+$base64 = base64_encode($photo);
+?>
 <!DOCTYPE html>
 <html>
 <body>
    <?php echo '<img src="data:image/jpeg;base64,' . $base64 . '">'; ?>
 </body>
 </html>
-
 <?php
-var_dump(strlen($photo));
-
-
-
-$typeLivraison = $status_response[6];
-$etape = $status_response[4];
-$_SESSION['typeLivraison'] = $typeLivraison;
-
-
 if ($etape == 9 && $typeLivraison === 'ABSENT') {
 //    header("Content-Type: image/jpg"); // ou png
 //    header("Content-Length: " . strlen($photo));
