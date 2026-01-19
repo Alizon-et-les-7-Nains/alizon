@@ -62,7 +62,7 @@ $_SESSION['typeLivraison'] = $typeLivraison;
 
 
 if ($etape == 9 && $typeLivraison === 'ABSENT') {
-        $_SESSION['photo'] = base64_decode($photo); 
+    $_SESSION['photo'] = $photo;
 } else {
     // Supprimer la session photo si autre chose que ABSENT
     unset($_SESSION['photo']);
