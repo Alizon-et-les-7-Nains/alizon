@@ -524,14 +524,10 @@ if ($produit['stock'] > 0) {
         <span class="review-count"><?php echo $nombreAvis; ?> évaluations</span>
     </div>
     <?php 
-
-        var_dump($userId);
-
-        $stmt = $pdo->prepare("SELECT * FROM _commandes c NATURAL JOIN _panier p WHERE p.idClient = ?");
-        $stmt->execute($userId);
+        $stmt = $pdo->prepare("SELECT * FROM _commande c NATURAL JOIN _panier p WHERE p.idClient = ?");
+        $stmt->execute([$userId]);
         $commande = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        var_dump($commande);
     ?>
     <?php if (isset($_SESSION['user_id'])) {
         if($commande){
