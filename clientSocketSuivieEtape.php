@@ -63,7 +63,6 @@ if ($status_response[4] == 9 && $status_response[5] === 'ABSENT') {
             if ($chunk === false || $chunk === '') break;
             $imageData .= $chunk;
         }
-
         $_SESSION['photo'] = $imageData;
     }
 }

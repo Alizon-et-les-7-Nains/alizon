@@ -498,13 +498,14 @@
         .boiteAuxLettres{
             width: 150px;
             height: auto;
+            margin-top: 20px;
         }
 
         .stepper {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin-top: 100px;
+            margin: 50px;
             position: relative;
 
             .stepperEtTexte {
