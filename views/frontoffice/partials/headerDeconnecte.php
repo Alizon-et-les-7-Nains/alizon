@@ -30,7 +30,7 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- Icônes d'accès rapide : panier et menu burger -->
         <div class="icons">
-            <a href="../frontoffice/panier.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
+            <a href="../frontoffice/panierDeconnecte.php"><img src="../../../public/images/cartLightBlue.svg" alt=""></a>
             <a href="javascript:void(0);" onclick="menuBurger();"><img src="../../../public/images/burgerLightBlue.svg" alt=""></a>
         </div>
     </div>

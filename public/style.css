@@ -5498,7 +5498,7 @@ dialog.reassort form input {
 .pageProduit .rectangleProduit {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin: 3em 2em;
   padding: 0 1em;
