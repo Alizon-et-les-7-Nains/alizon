@@ -293,7 +293,6 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
             photo_path && strlen(photo_path) > 0) {
             
             FILE *img_file = fopen(photo_path, "rb");
-            FILE *img_file = fopen(photo_path, "rb");
             if (!img_file) {
                 fprintf(stderr, "Impossible d'ouvrir le fichier: %s\n", photo_path);
             } else {
