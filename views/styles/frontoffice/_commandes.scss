@@ -417,6 +417,21 @@
         }
 
         .popup {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .close {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: red;
+        }
+
+        .popupSuiviLivraison {
         background: white;
         padding: 20px;
         border-radius: 8px;
@@ -546,7 +561,7 @@
         RESPONSIVE
         ========================= */
         @media screen and (max-width: 1200px) {
-        .popup {
+        .popupSuiviLivraison {
             height: 90%;
 
             .popup-content {
@@ -642,7 +657,6 @@
 
                 .demiTrait {
                     height: 50%;
-                    width: 2px;
                     background-color: #BABABA;
                 }
                 }

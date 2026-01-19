@@ -91,11 +91,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($errors)) {
         $_SESSION['inscription_errors'] = $errors;
         $_SESSION['inscription_data'] = $_POST;
-        header('Location: ../views/frontoffice/inscription.php');
+        var_dump($errors);
+        var_dump($_POST);
+        //header('Location: ../views/frontoffice/inscription.php');
         exit;
     }
 } else {
     // Si accès direct au fichier, rediriger vers la page d'inscription
-    header('Location: ../views/frontoffice/inscription.php');
+    //header('Location: ../views/frontoffice/inscription.php');
     exit;
 }?>
