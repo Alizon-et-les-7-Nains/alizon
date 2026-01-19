@@ -2,32 +2,6 @@
 
 const AIM_IMAGES = 150; // KB
 
-// $dir = $argv[1];
-
-// $images = scandir($dir);
-
-// print_r("Found " . count($images) - 3 . " images to treat in $dir/ - Treshold : " . AIM_IMAGES . "kB\n--------------------------------\n");
-
-// $checkpoint = time();
-
-// foreach ($images as $image) {
-//     if ($image != '.' && $image != '..') {
-//         $ext = explode('.', basename($image))[1];
-//         switch ($ext) {
-//             case 'svg':
-//                 break;
-//             default:
-//                 print_r("Treating $image");
-//                 treat($image);
-//                 break;
-//         }
-//     }
-// }
-
-// $elapsed = time() - $checkpoint;
-
-// print_r("--------------------------------\nDone in {$elapsed}s\n");
-
 function treat($path, $dest) {
     $size = filesize($path) / 1000; // conversion en KB
 
