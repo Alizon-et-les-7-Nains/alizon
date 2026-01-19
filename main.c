@@ -159,7 +159,7 @@ MYSQL* config_BD() {
     }
 
     
-    if (!mysql_real_connect(local_conn, "localhost", "pperche", "grognasseEtCompagnie", "delivraptor", 3306, NULL, 0)) {
+    if (!mysql_real_connect(local_conn, "mariadb", "sae", "grognasseEtCompagnie", "saedb", 3306, NULL, 0)) {
         fprintf(stderr, "Connexion échouée : %s\n", mysql_error(local_conn));
         mysql_close(local_conn);
         exit(EXIT_FAILURE);
@@ -252,12 +252,12 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
 
     char response[BUFFER_SIZE];
     char query[512];
-    
+
     snprintf(query, sizeof(query),
-             "SELECT noCommande, destination, localisation, etape, date_etape "
-             "FROM _delivraptor_colis "
-             "WHERE numBordereau = %s",
-             bordereau);
+         "SELECT noCommande, destination, localisation, etape, date_etape, livraison_type, photo_path "
+         "FROM _delivraptor_colis "
+         "WHERE numBordereau = %s",
+         bordereau);
     
     if (mysql_query(conn, query)) {
         snprintf(response, sizeof(response), "ERROR DB_QUERY\n");
@@ -273,13 +273,52 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
     }
     
     MYSQL_ROW row = mysql_fetch_row(result);
+    // Dans status() de main.c
     if (row) {
-        snprintf(response, sizeof(response),
-                 "%s|%s|%s|%s|%s|%s\n",
-                 bordereau, row[0], row[1], row[2], row[3], row[4]);
+        char *livraison_type = row[5];
+        char *photo_path = row[6];
+        int etape = atoi(row[3]);
         
-        write_log(config.log_file, session->client_ip, session->client_port,
-                  session->username, "STATUS", response);
+        // 1. Envoyer les données texte avec le dernier pipe
+        snprintf(response, sizeof(response),
+                "%s|%s|%s|%s|%s|%s|%s|",
+                bordereau, row[0], row[1], row[2], row[3], row[4], 
+                livraison_type ? livraison_type : "");
+        
+        send(session->client_socket, response, strlen(response), 0);
+        
+        // 2. CONDITION : Si étape 9 + ABSENT + image existe
+        if (etape == 9 && 
+            livraison_type && strcmp(livraison_type, "ABSENT") == 0 && 
+            photo_path && strlen(photo_path) > 0) {
+            
+            FILE *img_file = fopen(photo_path, "rb");
+            if (img_file) {
+                fseek(img_file, 0, SEEK_END);
+                long img_size = ftell(img_file);
+                fseek(img_file, 0, SEEK_SET);
+                
+                char *img_buffer = malloc(img_size);
+                if (img_buffer) {
+                    fread(img_buffer, 1, img_size, img_file);
+                    fclose(img_file);
+                    
+                    // ENVOYER L'IMAGE BINAIRE
+                    send(session->client_socket, img_buffer, img_size, 0);
+                    
+                    free(img_buffer);
+                }
+            }
+        }
+        else {
+            // 3. SANS IMAGE : envoyer "null"
+            char null_text[] = "null";
+            send(session->client_socket, null_text, strlen(null_text), 0);
+        }
+        
+        // 4. ENVOYER LE RETOUR À LA LIGNE FINAL
+        char newline[] = "\n";
+        send(session->client_socket, newline, strlen(newline), 0);
     } else {
         snprintf(response, sizeof(response), "ERROR BORDEREAU_NOT_FOUND\n");
         
