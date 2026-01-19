@@ -67,8 +67,7 @@ $photo = $status_response[8];
 // header("Content-Length: " . intval($photo));
 // echo $photo;
 
-header("Content-Type: image/jpeg");
-header("Content-Length: " . strlen($photo));
+
 file_put_contents("testBoiteAuxLettres.jpg", $photo);
 
 
