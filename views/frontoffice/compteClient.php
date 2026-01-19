@@ -105,8 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if (file_exists($photoPath)) {
-        unlink($photoPath); // supprime l'ancien fichier
+    if (file_exists($photoPath . $extension)) {
+        unlink($photoPath . $extension); // supprime l'ancien fichier
     }
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
