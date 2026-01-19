@@ -564,11 +564,6 @@ if ($produit['stock'] > 0) {
         $stmtNomClient = $pdo->prepare($sqlNomClient);
         $stmtNomClient->execute([intval($avis['idClient'])]);
         $client = $stmtNomClient->fetch(PDO::FETCH_ASSOC);
-
-        $sqlReponseAvis = "SELECT * FROM _reponseAvis WHERE idProduit = ? AND idClientAvis = ?";
-        $stmtReponseAvis = $pdo->prepare($sqlReponseAvis);
-        $stmtReponseAvis->execute([intval($productId), intval($avis['idClient'])]);
-        $reponseAvis = $stmtReponseAvis->fetch(PDO::FETCH_ASSOC);
         
         $voteUtilisateur = getVoteUtilisateur($productId, $avis['idClient']);
         $isOwnReview = isset($_SESSION['user_id']) && $_SESSION['user_id'] == $avis['idClient'];
@@ -663,14 +658,6 @@ if ($produit['stock'] > 0) {
                 </div>
             </div>
         </article>
-        <div>
-            <?php if ($reponseAvis): ?>
-                <div class="reponseAvis">
-                    <h4>Réponse du vendeur :</h4>
-                    <p><?php echo htmlspecialchars($reponseAvis['contenuAvis']); ?></p>
-                </div>
-            <?php endif; ?>
-        </div>
     <?php endforeach; ?>
 <?php else: ?>
     <p>Aucun avis pour ce produit.</p>
