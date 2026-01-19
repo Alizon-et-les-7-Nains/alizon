@@ -46,6 +46,7 @@ $baseSql = "
 FROM _produit p
 JOIN _categorie c ON p.idCategorie = c.idCategorie
 JOIN _vendeur v ON p.idVendeur = v.codeVendeur
+LEFT JOIN _adresseVendeur a ON v.idAdresse = a.idAdresse
 LEFT JOIN _remise r 
     ON p.idProduit = r.idProduit
     AND CURDATE() BETWEEN r.debutRemise AND r.finRemise

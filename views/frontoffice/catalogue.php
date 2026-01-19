@@ -1,12 +1,12 @@
 <?php
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
-// Chargement des départements pour le filtre
-$departements = [];
+// Chargement des départements
+$listeDepts = [];
 if (($handle = fopen("../../public/data/departements.csv", "r")) !== FALSE) {
     fgetcsv($handle, 1000, ";");
     while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-        $departements[$data[0]] = $data[2];
+        $listeDepts[$data[0]] = $data[2];
     }
     fclose($handle);
 }
@@ -173,11 +173,12 @@ $maxPrice = $stmt->fetchColumn() ?? 100;
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
             </select>
+
             <label for="zone">Zone géographique :</label>
             <select name="zone" id="zoneSelect" class="filter-select">
                 <option value="">Tous les départements</option>
-                <?php foreach ($departements as $code => $nom) : ?>
-                    <option value="<?= $code ?>"><?= $code ?> - <?= $nom ?></option>
+                <?php foreach ($listeDepts as $code => $nom) : ?>
+                    <option value="<?= $code ?>"><?= $code ?> - <?= htmlspecialchars($nom) ?></option>
                 <?php endforeach; ?>
             </select>
 
