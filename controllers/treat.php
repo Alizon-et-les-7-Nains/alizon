@@ -13,7 +13,7 @@ $checkpoint = time();
 foreach ($images as $image) {
     if ($image != '.' && $image != '..') {
         $parts = explode('.', $image);
-        $ext = end($parts); // plus sûr que [1]
+        $ext = end($parts);
         
         switch ($ext) {
             case 'svg':
@@ -50,9 +50,9 @@ function treat($path) {
         do { // compression par tatons
             $newWidth = round($width * $ratio);
             $newHeight = round($height * $ratio);
-            exec("convert $path -resize {$newWidth}x{$newHeight} -quality 85 jpg:$path.jpg"); // compression et cast en jpg
+            exec("convert $path -resize {$newWidth}x{$newHeight} -quality 85 jpg:$path"); // compression et cast en jpg
             
-            $newSize = filesize("$path.jpg") / 1000;
+            $newSize = filesize("$path") / 1000;
             
             if ($newSize > AIM_IMAGES) {
                 $ratio *= 0.9;
@@ -65,7 +65,7 @@ function treat($path) {
             $attempts++;
         } while ($attempts < 5); // limité à 5 éssais pour que ce soit plus rapide
 
-        $finalSize = filesize("$path.jpg") / 1000;
+        $finalSize = filesize("$path") / 1000;
         print_r("| {$finalSize}kB\n");
     } else {
         print_r("| Skipping\n");
