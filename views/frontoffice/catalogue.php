@@ -517,7 +517,7 @@ else{
     searchbar.value = searchQuery;
 }
 
-KeyboardEvent.bind('Enter', () => {
+KeyboardEvent.addEventListener('Enter', () => {
     searchQuery = searchbar.value.trim();
     loadProduits(1);
 });
