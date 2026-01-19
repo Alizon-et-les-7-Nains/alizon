@@ -114,6 +114,8 @@ $notifs = getNotifications($pdo, $idVendeur, 1)
     <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     <?php include '../../views/backoffice/partials/footer.php'; ?>
 
+    <script src="../../public/amd-shim.js"></script>
+    <script src="../../public/script.js"></script>
     <script>
         const titreContent = document.getElementById("titre");
         const contenuContent = document.getElementById("contenu");
