@@ -49,17 +49,38 @@ $bordereau = $result['noBordereau'];
 // Extraire le numéro de bordereau
 // Test 3: Consultation
 //echo "Test STATUS:\n";
-$status_response = send_command($socket, "STATUS $bordereau");
-$status_response = explode("|", $status_response);
+fwrite($socket, "STATUS $bordereau\n");
+$size_str = '';
+while (true) {
+    $char = fgetc($socket);
+    if ($char === false || $char === "|") break;
+    $size_str .= $char;
+}
+
+$img_size = intval($size_str);
+
+// Lire exactement $img_size octets
+$photo = '';
+$remaining = $img_size;
+while ($remaining > 0) {
+    $chunk = fread($socket, $remaining);
+    if ($chunk === false || strlen($chunk) === 0) break;
+    $photo .= $chunk;
+    $remaining -= strlen($chunk);
+}
+
+// Sauvegarder l'image
+file_put_contents("testBoiteAuxLettres.jpg", $photo);
+
 $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
-$taillePhoto = $status_response[7];
-$typeLivraison = $status_response[6];
-$etape = $status_response[4];
-$_SESSION['typeLivraison'] = $typeLivraison;
-$photo = $status_response[8];
+// $taillePhoto = $status_response[7];
+// $typeLivraison = $status_response[6];
+// $etape = $status_response[4];
+// $_SESSION['typeLivraison'] = $typeLivraison;
+// $photo = $status_response[8];
 
 //var_dump($status_response);
 
@@ -68,7 +89,7 @@ $photo = $status_response[8];
 // echo $photo;
 
 
-file_put_contents("testBoiteAuxLettres.jpg", $photo);
+// file_put_contents("testBoiteAuxLettres.jpg", $photo);
 
 
 // if ($etape == 9 && $typeLivraison === 'ABSENT') {
