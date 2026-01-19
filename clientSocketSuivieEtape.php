@@ -60,11 +60,25 @@ $typeLivraison = $status_response[6];
 $etape = $status_response[4];
 $_SESSION['typeLivraison'] = $typeLivraison;
 
-var_dump($status_response);
+//var_dump($status_response);
 
 // header("Content-Type: image/jpeg");
 // header("Content-Length: " . intval($photo));
 // echo $photo;
+
+$photo = '';
+if ($taillePhoto > 0) {
+    $read = 0;
+    while ($read < $taillePhoto) {
+        $chunk = fread($socket, $taillePhoto - $read);
+        if ($chunk === false || $chunk === '') break;
+        $photo .= $chunk;
+        $read += strlen($chunk);
+    }
+}
+
+header("Content-Type: image/jpeg");
+header("Content-Length: " . strlen($photo));
 
 
 // if ($etape == 9 && $typeLivraison === 'ABSENT') {
