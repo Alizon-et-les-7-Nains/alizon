@@ -102,6 +102,6 @@ $help_response = send_command($socket, "HELP");
 // Fermeture de la connexion
 fclose($socket);
 
-header('Location: views/frontoffice/commandes.php?idCommande=' . $idCommande);
-exit;
+// header('Location: views/frontoffice/commandes.php?idCommande=' . $idCommande);
+// exit;
 ?>
