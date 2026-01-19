@@ -6723,8 +6723,7 @@ dialog.reassort form input {
   font-size: 12px;
   font-family: "Lora", sans-serif;
 }
-
-form {
+.avi form {
   display: flex;
   justify-content: end;
 }
@@ -6732,7 +6731,6 @@ form {
 .reponseAvis {
   display: flex;
   flex-direction: row;
-  justify-content: end;
 }
 .reponseAvis a {
   color: #f14e4e;
