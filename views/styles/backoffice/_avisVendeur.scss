@@ -35,7 +35,7 @@
         align-items: center;
         justify-content: flex-start;
         height: 100%;
-
+        width: 240px;
         img {
           width: 70px;
           height: 70px;
@@ -53,6 +53,7 @@
             border: none;
             border-radius: 32px;
             cursor: pointer;
+            margin-right: 30px;
         }
 
     .btnRepAvis{
@@ -68,7 +69,7 @@
       border-radius: 12px;
       display: flex;
       position:relative;
-      left:1280px;
+      left:1180px;
       padding: 0;
     }
 
@@ -96,5 +97,17 @@
         size: 12px;
         family: "Lora", sans-serif;
       }
+    }
+  }
+
+  .reponseAvis{
+    display: flex;
+    flex-direction: row;
+
+    a{
+      color: $color-red;
+      position:relative;
+      right:10px;
+      margin-top:30px;  
     }
   }
