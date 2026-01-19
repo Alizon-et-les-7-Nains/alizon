@@ -63,9 +63,9 @@ $_SESSION['typeLivraison'] = $typeLivraison;
 
 
 if ($etape == 9 && $typeLivraison === 'ABSENT') {
-   header("Content-Type: image/jpg"); // ou png
-   header("Content-Length: " . strlen($photo));
-   echo $photo;
+//    header("Content-Type: image/jpg"); // ou png
+//    header("Content-Length: " . strlen($photo));
+//    echo $photo;
 
 } else {
     // Supprimer la session photo si autre chose que ABSENT
