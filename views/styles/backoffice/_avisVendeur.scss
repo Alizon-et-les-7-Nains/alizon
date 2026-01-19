@@ -102,9 +102,11 @@
       display: flex;
       justify-content: end;
     }
+
+    label{
+      color:$color-red;
+    }
   }
-
-
 
   .reponseAvis{
     display: flex;
