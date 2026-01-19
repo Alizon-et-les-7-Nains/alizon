@@ -293,37 +293,38 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
             photo_path && strlen(photo_path) > 0) {
             
             FILE *img_file = fopen(photo_path, "rb");
+            long img_size = 0; // déclarée en dehors
+
             if (!img_file) {
                 fprintf(stderr, "Impossible d'ouvrir le fichier: %s\n", photo_path);
             } else {
                 if (fseek(img_file, 0, SEEK_END) != 0) {
                     perror("fseek failed");
                 }
-                long img_size = ftell(img_file);
+                img_size = ftell(img_file);
                 if (img_size < 0) {
                     perror("ftell failed");
                 } else {
                     printf("Fichier %s taille: %ld octets\n", photo_path, img_size);
                 }
                 rewind(img_file);
-            }
 
-                // Envoyer la taille en string (optionnel : séparer avec '|')
+                // Envoyer la taille
                 char size_str[32];
                 sprintf(size_str, "%ld", img_size);
                 send(session->client_socket, size_str, strlen(size_str), 0);
                 send(session->client_socket, "|", 1, 0);
 
+                // Lire le fichier et envoyer
                 char *img_buffer = malloc(img_size);
                 if (img_buffer) {
                     size_t read_bytes = fread(img_buffer, 1, img_size, img_file);
                     fclose(img_file);
 
                     if (read_bytes != img_size) {
-                        fprintf(stderr, "Erreur lecture fichier\n");
+                        fprintf(stderr, "Erreur lecture fichier: %zu/%ld octets\n", read_bytes, img_size);
                     }
 
-                    // Envoyer tout le fichier en boucle
                     long total_sent = 0;
                     while (total_sent < img_size) {
                         ssize_t sent = send(session->client_socket, img_buffer + total_sent, img_size - total_sent, 0);
@@ -332,7 +333,11 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
                     }
 
                     free(img_buffer);
+                } else {
+                    fclose(img_file);
                 }
+            }
+
             }
         }
         else {
