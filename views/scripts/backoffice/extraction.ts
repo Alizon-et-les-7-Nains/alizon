@@ -54,7 +54,7 @@ inputsExtractwo.forEach((input: HTMLInputElement) => {
     })
 })
 
-if (inputToutExtract) {
+if (inputToutExtract != null) {
     inputToutExtract?.addEventListener('input', () => {
         // Mise à jour des checkboxs
         inputsExtractwo.forEach((input: HTMLInputElement) => {
