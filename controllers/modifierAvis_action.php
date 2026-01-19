@@ -1,5 +1,7 @@
 <?php
 require_once "pdo.php";
+require_once 'treatment.php';
+
 session_start();
 
 /* ==========================
@@ -93,7 +95,7 @@ if (!empty($_FILES['url']['name'])) {
         die("Format d'image non autorisé.");
     }
 
-    $uploadDir = "../public/uploads/avis/";
+    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/images/imagesAvis/';
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }
@@ -102,12 +104,16 @@ if (!empty($_FILES['url']['name'])) {
     $fileName = uniqid("avis_", true) . "." . $extension;
     $filePath = $uploadDir . $fileName;
 
-    if (!move_uploaded_file($_FILES['url']['tmp_name'], $filePath)) {
-        die("Impossible d'enregistrer l'image.");
+    try {
+        treat($_FILES['url']['tmp_name'], $filePath);
+    } catch (Exception $e) {
+        if (!move_uploaded_file($_FILES['url']['tmp_name'], $filePath)) {
+            throw new Exception("Impossible de traiter l'image.");
+        }
     }
 
     // URL stockée en base
-    $imageUrl = "/public/uploads/avis/" . $fileName;
+    $imageUrl = "/images/imagesAvis/" . $fileName;
 
     // Vérifier si une image existe déjà
     $stmtImg = $pdo->prepare("

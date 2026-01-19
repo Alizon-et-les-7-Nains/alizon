@@ -587,6 +587,13 @@
     filter: none;
   }
 
+  .reponseAvis {
+    display: flex;
+    flex-direction: row;
+    background-color: $color-pastel-purple;
+    border-radius: 16px;
+  }
+
   .carousel-container {
     position: relative;
     width: 300px;

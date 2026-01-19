@@ -663,14 +663,12 @@ if ($produit['stock'] > 0) {
                 </div>
             </div>
         </article>
-        <div>
-            <?php if ($reponseAvis): ?>
-                <div class="reponseAvis">
-                    <h4>Réponse du vendeur :</h4>
-                    <p><?php echo htmlspecialchars($reponseAvis['contenuAvis']); ?></p>
-                </div>
-            <?php endif; ?>
-        </div>
+        <?php if ($reponseAvis): ?>
+            <div class="reponseAvis">
+                <h4><?php echo htmlspecialchars($produit['raisonSocial']); ?></h4>
+                <p><?php echo htmlspecialchars($reponseAvis['contenuAvis']); ?></p>
+            </div>
+        <?php endif; ?>
     <?php endforeach; ?>
 <?php else: ?>
     <p>Aucun avis pour ce produit.</p>
