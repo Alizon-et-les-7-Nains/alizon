@@ -56,7 +56,11 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
 $photo = $status_response[7];
-echo $photo;
+
+$base64 = base64_encode($photo);
+echo '<img src="data:image/jpeg;base64,' . $base64 . '">';
+
+
 $typeLivraison = $status_response[6];
 $etape = $status_response[4];
 $_SESSION['typeLivraison'] = $typeLivraison;
