@@ -98,16 +98,13 @@ if ($etape == '9' && $typeLivraison === 'ABSENT') {
     // Vérifier que ce n'est pas juste "null"
     if ($image_data !== 'null' && strlen($image_data) > 10) {
         $_SESSION['photo'] = base64_encode($image_data);
-        var_dump("Image reçue: " . strlen($image_data) . " octets");
     } else {
         unset($_SESSION['photo']);
-        var_dump("Pas d'image (reçu: $image_data)");
     }
 } else {
     // Lire "null\n"
     $null_response = fgets($socket, 10);
     unset($_SESSION['photo']);
-    var_dump("Pas d'image attendue: $null_response");
 }
 
 // Mettre à jour la base
@@ -116,8 +113,6 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $etape, ":idCommande" => $idCommande]);
 
 $_SESSION['typeLivraison'] = $typeLivraison;
-
-var_dump("Mise à jour réussie");
 
 fclose($socket);
 
