@@ -31,7 +31,6 @@ print_r("--------------------------------\nDone in {$elapsed}s\n");
 function treat($path) {
     global $dir;
     $path = "$dir/$path";
-    $name = explode('.', basename($path))[0]; // récupérer le nom du fichier (sans extension)
     $size = filesize($path) / 1000; // conversion en KB
 
     print_r(" : {$size}kB\n");
@@ -49,9 +48,9 @@ function treat($path) {
         do { // compression par tatons
             $newWidth = round($width * $ratio);
             $newHeight = round($height * $ratio);
-            exec("convert $path -resize {$newWidth}x{$newHeight} -quality 85 jpg:$path/{$name}.jpg"); // compression et cast en jpg
+            exec("convert $path -resize {$newWidth}x{$newHeight} -quality 85 jpg:$path.jpg"); // compression et cast en jpg
             
-            $newSize = filesize("$path/{$name}.jpg") / 1000;
+            $newSize = filesize("$path.jpg") / 1000;
             
             if ($newSize > AIM_IMAGES) {
                 $ratio *= 0.9;
@@ -64,7 +63,7 @@ function treat($path) {
             $attempts++;
         } while ($attempts < 5); // limité à 5 éssais pour que ce soit plus rapide
 
-        $finalSize = filesize("$path/{$name}.jpg") / 1000;
+        $finalSize = filesize("$path.jpg") / 1000;
         print_r("| {$finalSize}kB\n");
     } else {
         print_r("| Skipping\n");
