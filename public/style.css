@@ -505,6 +505,9 @@ body {
     visibility: hidden;
   }
 }
+.pageCommandes main {
+  height: 63vh;
+}
 .pageCommandes input[type=search] {
   padding: 10px 20px;
   width: 100%;
@@ -6355,6 +6358,10 @@ dialog.reassort form input {
   padding: 5px;
   font-family: "lora";
   border-radius: 10px;
+}
+.pageProduit .signalement-info {
+  color: #f14e4e;
+  font-weight: bold;
 }
 
 .connexionVendeur {
