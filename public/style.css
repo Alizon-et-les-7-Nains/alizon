@@ -6701,7 +6701,7 @@ dialog.reassort form input {
   border-radius: 12px;
   display: flex;
   position: relative;
-  left: 1180px;
+  left: 400%;
   padding: 0;
 }
 .avi .etoiles {
