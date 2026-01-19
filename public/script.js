@@ -93,15 +93,17 @@ inputsExtractwo.forEach((input) => {
         updateButton();
     });
 });
-inputToutExtract.addEventListener('input', () => {
-    // Mise à jour des checkboxs
-    inputsExtractwo.forEach((input) => {
-        input.checked = inputToutExtract.checked;
+if (inputToutExtract != null) {
+    inputToutExtract?.addEventListener('input', () => {
+        // Mise à jour des checkboxs
+        inputsExtractwo.forEach((input) => {
+            input.checked = inputToutExtract.checked;
+        });
+        // Mise à joue du bouton
+        updateButtonState();
+        updateButton();
     });
-    // Mise à joue du bouton
-    updateButtonState();
-    updateButton();
-});
+}
 const boutonHaut = document.getElementById('haut');
 boutonHaut?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

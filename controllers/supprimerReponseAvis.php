@@ -4,7 +4,7 @@ session_start();
 $idProd = $_GET['idProd'];  
 $idClient = $_GET['idCli'];  
 
-// Suppression du commentaire
+// Suppression de la réponse à un avis
 $stmt = $pdo->prepare("DELETE FROM _reponseAvis WHERE idClient = :idClient AND idProduit = :idProduit");
 
 try{
