@@ -8,8 +8,9 @@
     font-weight: bold;
     color: $color-blue;
   }
+}
 
-  .avi {
+.avi {
     border-collapse: separate;
     width: 100%;
     color: $color-blue;
@@ -47,6 +48,29 @@
         }
       }
     }
+    button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 32px;
+            cursor: pointer;
+        }
+
+    .btnRepAvis{
+            background-color: $color-blue;
+            color: $color-white;
+            width: 200px;
+
+            &:hover {
+                background-color: darken($color-blue, 10%);
+            }
+        }
+    .repondreAvis{
+      border-radius: 12px;
+      display: flex;
+      position:relative;
+      left:1280px;
+      padding: 0;
+    }
 
     .etoiles {
       margin: {
@@ -74,4 +98,3 @@
       }
     }
   }
-}

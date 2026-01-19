@@ -200,7 +200,7 @@ main.backoffice-stocks {
             }
         }
         
-        &:first-child div:not(button.settings div) {
+        &:nth-child(2) div:not(button.settings div) {
             border-left: {
                 style: solid;
                 width: 5px;
@@ -213,7 +213,7 @@ main.backoffice-stocks {
                 }
             }
         }
-        &:nth-child(2) div:not(button.settings div) {
+        &:nth-child(3) div:not(button.settings div) {
             border-left: {
                 style: solid;
                 width: 5px;
@@ -226,7 +226,7 @@ main.backoffice-stocks {
                 }
             }
         }
-        &:nth-child(3) div:not(button.settings div) {
+        &:nth-child(4) div:not(button.settings div) {
             border-left: {
                 style: solid;
                 width: 5px;
@@ -236,6 +236,63 @@ main.backoffice-stocks {
             > ul {
                 li:last-child {
                     color: $color-green;
+                }
+            }
+        }
+
+        &:first-child {
+            form {
+                display: flex;
+                align-items: center;
+
+                font: {
+                    family: 'open-sans';
+                    weight: bold;
+                }
+                
+                label {
+                    margin-left: 0.25em;
+                    margin-right: 1em;
+                }
+
+                input[type = checkbox], label {
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                input[type = submit] {
+                    transition: all 0.2s ease;
+                    margin-left: 1em;
+                    padding: 1em;
+                    border-radius: 16px;
+                    border: none;
+                    background-color: $color-blue;
+                    color: $color-white;
+                    font-size: 15px;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: $color-pastel-blue;
+                        color: $color-blue;
+                        outline: {
+                            style: solid;
+                            color: $color-blue;
+                            width: 3px;
+                        }
+                        outline-offset: -3px;
+                    }
+
+                    &:disabled {
+                        background-color: $color-gray;
+
+                        &:hover {
+                            cursor: not-allowed;
+                            color: $color-white;
+                            outline: none;
+                            background-color: $color-gray;
+                        }
+                    }
                 }
             }
         }
