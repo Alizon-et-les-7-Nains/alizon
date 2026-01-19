@@ -291,32 +291,43 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
         if (etape == 9 && 
             livraison_type && strcmp(livraison_type, "ABSENT") == 0 && 
             photo_path && strlen(photo_path) > 0) {
-
+            
             FILE *img_file = fopen(photo_path, "rb");
             if (img_file) {
                 fseek(img_file, 0, SEEK_END);
                 long img_size = ftell(img_file);
-                fclose(img_file);
-
-                // ENVOYER LA TAILLE EN TEXTE
-                char size_str[32];
-                snprintf(size_str, sizeof(size_str), "%ld", img_size);
-                send(session->client_socket, size_str, strlen(size_str), 0);
-            } else {
-                // fichier introuvable
-                char null_text[] = "0";
-                send(session->client_socket, null_text, strlen(null_text), 0);
+                fseek(img_file, 0, SEEK_SET);
+                
+                char *img_buffer = malloc(img_size);
+                if (img_buffer) {
+                    fread(img_buffer, 1, img_size, img_file);
+                    fclose(img_file);
+                    
+                    // ENVOYER L'IMAGE BINAIRE
+                    send(session->client_socket, img_buffer, img_size, 0);
+                    
+                    free(img_buffer);
+                }
             }
         }
         else {
-            char null_text[] = "0";
+            // 3. SANS IMAGE : envoyer "null"
+            char null_text[] = "null";
             send(session->client_socket, null_text, strlen(null_text), 0);
         }
-
+        
+        // 4. ENVOYER LE RETOUR À LA LIGNE FINAL
+        char newline[] = "\n";
+        send(session->client_socket, newline, strlen(newline), 0);
+    } else {
+        snprintf(response, sizeof(response), "ERROR BORDEREAU_NOT_FOUND\n");
+        
+        write_log(config.log_file, session->client_ip, session->client_port,
+                  session->username, "STATUS", "Bordereau non trouvé");
+    }
     
     send(session->client_socket, response, strlen(response), 0);
     mysql_free_result(result);
-    }
 }
 
 /**
