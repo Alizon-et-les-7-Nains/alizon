@@ -233,6 +233,7 @@ foreach ($cart as $item) {
 $livraison = 5.99;
 $montantTTC = $sousTotal + $livraison;
 
+echo $idClient;
 
 $clientInfo = clientInformations($pdo, $idClient);
 ?>
