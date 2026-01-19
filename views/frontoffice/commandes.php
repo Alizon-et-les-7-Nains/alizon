@@ -493,8 +493,9 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <p><?= htmlspecialchars($produit['description']) ?></p>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php endforeach; ?>     
                 </div>
+                <img src="../../images/imgBoiteAuxLettres.jpg" alt="Image boite aux lettres">
                 <div class="stepper">
                     <div class="stepperEtTexte">
                         <p>En cours de préparation</p>
