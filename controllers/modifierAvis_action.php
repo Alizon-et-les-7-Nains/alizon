@@ -80,7 +80,7 @@ $stmt->execute([$titre, $note, $contenu, $idProduit, $idClient]);
 updateNoteProduit($pdo, $idProduit);
 
 /* ==========================
-   Gestion de l'image (optionnelle)
+      Gestion de l'image
 ========================== */
 if (!empty($_FILES['url']['name'])) {
 
