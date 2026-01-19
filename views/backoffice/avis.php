@@ -95,6 +95,7 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </figure>
                             <?= $avi['titreAvis'] ?> - <?= $avi['nomProduit'] ?>
                             <?php 
+                                var_dump($signalement);
                                 if($signalement){?>
                                     <label> Cet avis à été signalé pour la raison suivante : <?php echo($signalement['titre'])?></label> 
                                 <?php } 
