@@ -48,10 +48,6 @@ if(!empty($vendeur)){
     $countStmt->bindValue(':idVendeur',$vendeur);
 }
 
-if (!empty($zone) !== '') {
-    $sqlWhere .= " AND a.codePostal LIKE :zone";
-    $params[':zone'] = $zone . '%';
-}
 
 // 2. Base de la requête (Jointures)
 // On utilise LEFT JOIN pour l'adresse et la remise pour ne pas cacher les produits qui n'en ont pas
@@ -82,6 +78,10 @@ if ($recherche !== '') {
     $sql .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
 }
 
+if (!empty($zone)) {
+    $sql .= " AND a.codePostal LIKE :zone";
+}
+
 if ($sortOrder === 'noteAsc') {
     $sql .= " ORDER BY p.note ASC";
 } elseif ($sortOrder === 'noteDesc') {
@@ -103,6 +103,10 @@ $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 if ($recherche !== '') $stmt->bindValue(':search', '%' . $recherche . '%');
 if (!empty($categorie)) $stmt->bindValue(':categorie', $categorie);
 if(!empty($vendeur)) $stmt->bindValue(':idVendeur',$vendeur);
+if (!empty($zone)) {
+    $stmt->bindValue(':zone', $zone . '%');
+}
+
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
