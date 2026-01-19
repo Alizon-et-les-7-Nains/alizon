@@ -495,7 +495,9 @@ $cart = getCurrentCart($pdo, $idClient);
                         </div>
                     <?php endforeach; ?>     
                 </div>
-                <img class="boiteAuxLettres" src="../../images/imgBoiteAuxLettres.jpg" alt="Image boite aux lettres">
+                <?php if ($status_response[4] == 9 && $status_response[5] === 'ABSENT') { ?>
+                    <img class="boiteAuxLettres" src="../../images/imgBoiteAuxLettres.jpg" alt="Image boite aux lettres">
+                <?php } ?>
                 <div class="stepper">
                     <div class="stepperEtTexte">
                         <p>En cours de préparation</p>
