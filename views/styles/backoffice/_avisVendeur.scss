@@ -100,11 +100,15 @@
     }
   }
 
+  form{
+    display: flex;
+    justify-content: end;
+  }
+
   .reponseAvis{
     display: flex;
     flex-direction: row;
-    justify-content: end;
-
+    
     a{
       color: $color-red;
       position:relative;
