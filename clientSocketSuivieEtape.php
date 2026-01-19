@@ -65,6 +65,12 @@ var_dump($_SESSION['typeLivraison']);
 var_dump($etape);
 var_dump($photo);
 var_dump(intval($photo));
+
+header("Content-Type: image/jpeg");
+header("Content-Length: " . intval($photo));
+echo $photo;
+
+
 // if ($etape == 9 && $typeLivraison === 'ABSENT') {
     
 // } else {
