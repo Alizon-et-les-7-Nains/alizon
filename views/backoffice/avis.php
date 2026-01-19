@@ -96,7 +96,7 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <?= $avi['titreAvis'] ?> - <?= $avi['nomProduit'] ?>
                             <?php 
                                 if($signalement){?>
-                                    <label> Cet avis à été signalé pour la raison suivante : <?php echo($signalement['titre'])?></label> 
+                                    <label> - Cet avis à été signalé pour la raison suivante : <?php echo($signalement['titre'])?></label> 
                                 <?php } 
                             ?>
                         </td>
@@ -120,7 +120,7 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </td>
                     </tr>
                     <tr>
-                            <!--- Bouton pour modifier l'avis séléctionné --->
+                        <!-- Bouton pour modifier l'avis séléctionné -->
                         <td class="formRepondreAvis" colspan="2">
                             <form action="./repondreAvis.php?idCli=<?php echo $avi['idClient']?>&idProd=<?php echo $avi['idProduit']?>" method="POST">
                                 <?php 
