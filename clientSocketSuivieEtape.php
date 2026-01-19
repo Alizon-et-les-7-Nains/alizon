@@ -79,6 +79,7 @@ if ($taillePhoto > 0) {
 
 header("Content-Type: image/jpeg");
 header("Content-Length: " . strlen($photo));
+echo $photo;
 
 
 // if ($etape == 9 && $typeLivraison === 'ABSENT') {
