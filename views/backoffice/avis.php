@@ -134,6 +134,7 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <button class="btnRepAvis" type="submit">Répondre à cet avis</button>
                                 <?php } else{ ?>
                                 <button class="btnRepAvis" type="submit">Modifier votre réponse à cet avis</button>
+                                <a href="../../controllers/supprimerReponseAvis.php?idCli=<?php echo $avi['idClient']?>&idProd=<?php echo $avi['idProduit']?>"> Supprimer votre réponse </a>
                                 <?php } ?>
                             </form>
                         </td>
