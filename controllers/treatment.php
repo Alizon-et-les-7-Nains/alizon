@@ -49,11 +49,6 @@ function treat($path, $dest) {
             $cmd = "/usr/bin/convert " . escapeshellarg($path) . " -resize {$newWidth}x{$newHeight} -quality 85 " . escapeshellarg($tempFile) . " 2>&1";
             exec($cmd, $output, $returnCode); // compression et cast en jpg
             
-            if ($returnCode !== 0 || !file_exists($tempFile)) {
-                error_log("Échec convert: " . implode("\n", $output));
-                throw new Exception("Compression impossible");
-            }
-            
             $newSize = filesize($tempFile) / 1000;
             
             if ($newSize > AIM_IMAGES) {
