@@ -55,10 +55,12 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
 $photo = $status_response[6];
-$_SESSION['typeLivraison'] = $status_response[5];
+$typeLivraison = $status_response[5];
 $etape = $status_response[4];
+$_SESSION['typeLivraison'] = $typeLivraison;
 
-if ($etape === 9 && $typeLivraison === 'ABSENT' && $photoPresent != null) {
+
+if ($etape == 9 && $typeLivraison === 'ABSENT') {
 
     if ($photo != null) {
         $imageData = '';
