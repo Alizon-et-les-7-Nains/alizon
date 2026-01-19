@@ -147,8 +147,7 @@ if (count($products) > 0) {
 } else {
     // Message d'erreur personnalisé quand aucun produit n'est trouvé
     $data['html'] = '<div style="text-align:center; width:100%; padding:40px;">'.
-                    '<h1>Désolé, aucun produit ne correspond à vos critères de recherche ou à cette zone géographique.</h1>'.
-                    '<p>Essayez de modifier vos filtres ou de choisir un autre département.</p>'.
+                    '<h1>Désolé, aucun produit correspondant.</h1>'.
                     '</div>';
 }
 
