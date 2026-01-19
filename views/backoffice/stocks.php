@@ -59,8 +59,20 @@
 
     <main class="backoffice-stocks">
         <section>
+            <h1>Extraire le stock</h1>
+            <form action="../../controllers/extract.php" method="post" id="extraire">
+                <input type='hidden' name='id' value="<?php echo $_SESSION['id']?>">
+                <input type="checkbox" name="epuise" id="epuise"> <label for="epuise">Épuisés</label>
+                <input type="checkbox" name="faible" id="faible"> <label for="faible">En alerte</label>
+                <input type="checkbox" name="stock" id="stock"> <label for="stock">En Stock</label>
+                <input type="checkbox" name="tout" id="tout"> <label for="tout">Tous</label>
+                <input type="submit" value="Extraire 0 produits" id="button-extract" disabled>
+            </form>
+        </section>
+
+        <section>
             <h1>Produits Épuisés</h1>
-            <article>
+            <article class='epuises'>
 <?php
 $epuisesSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/produitsEpuises.sql'));
 $epuisesSTMT->execute([':idVendeur' => $_SESSION['id']]);
@@ -83,7 +95,7 @@ if (count($epuises) == 0) echo "<h2>Aucun produit épuisé</h2>";
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
         $commandes->execute(['idProduit' => $epuise['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
-        $html = "<div>
+        $html = "<div class='produit'>
                     <button class='settings' id='" . $epuise['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>
@@ -186,7 +198,7 @@ echo "
 
         <section>
             <h1>Produits en Alerte</h1>
-            <article>
+            <article class="faibles">
 <?php
 $faiblesSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/stockFaible.sql'));
 $faiblesSTMT->execute([':idVendeur' => $_SESSION['id']]);
@@ -209,7 +221,7 @@ if (count($faibles) == 0) echo "<h2>Aucun produit en alerte</h2>";
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
         $commandes->execute(['idProduit' => $faible['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
-        $html = "<div>
+        $html = "<div class='produit'>
                     <button class='settings' id='" . $faible['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>
@@ -312,7 +324,7 @@ echo "
 
         <section>
             <h1>Produits en Stock</h1>
-            <article>
+            <article class="stocks">
 <?php
 $stocksSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/produitsStock.sql'));
 $stocksSTMT->execute([':idVendeur' => $_SESSION['id']]);
@@ -335,7 +347,7 @@ $stocks = $stocksSTMT->fetchAll(PDO::FETCH_ASSOC);
         $commandes = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandesProduit.sql'));
         $commandes->execute(['idProduit' => $stock['idProduit']]);
         $commandes = $commandes->fetchAll(PDO::FETCH_ASSOC);
-        $html = "<div>
+        $html = "<div class='produit'>
                     <button class='settings' id='" . $stock['idProduit'] . "'>
                         <div><div></div></div>
                         <div><div class='right'></div></div>

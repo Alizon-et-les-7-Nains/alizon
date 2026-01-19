@@ -4924,29 +4924,70 @@ main.backoffice-stocks section div:not(button.settings div, div.remise, dialog d
 main.backoffice-stocks section div:not(button.settings div, div.remise, dialog div) > ul li:last-child {
   color: #f14e4e;
 }
-main.backoffice-stocks section:first-child div:not(button.settings div) {
+main.backoffice-stocks section:nth-child(2) div:not(button.settings div) {
   border-left-style: solid;
   border-left-width: 5px;
   border-left-color: #f14e4e;
 }
-main.backoffice-stocks section:first-child div:not(button.settings div) > ul li:last-child {
-  color: #f14e4e;
-}
-main.backoffice-stocks section:nth-child(2) div:not(button.settings div) {
-  border-left-style: solid;
-  border-left-width: 5px;
-  border-left-color: #ffc25a;
-}
 main.backoffice-stocks section:nth-child(2) div:not(button.settings div) > ul li:last-child {
-  color: #ffc25a;
+  color: #f14e4e;
 }
 main.backoffice-stocks section:nth-child(3) div:not(button.settings div) {
   border-left-style: solid;
   border-left-width: 5px;
-  border-left-color: #259525;
+  border-left-color: #ffc25a;
 }
 main.backoffice-stocks section:nth-child(3) div:not(button.settings div) > ul li:last-child {
+  color: #ffc25a;
+}
+main.backoffice-stocks section:nth-child(4) div:not(button.settings div) {
+  border-left-style: solid;
+  border-left-width: 5px;
+  border-left-color: #259525;
+}
+main.backoffice-stocks section:nth-child(4) div:not(button.settings div) > ul li:last-child {
   color: #259525;
+}
+main.backoffice-stocks section:first-child form {
+  display: flex;
+  align-items: center;
+  font-family: "open-sans";
+  font-weight: bold;
+}
+main.backoffice-stocks section:first-child form label {
+  margin-left: 0.25em;
+  margin-right: 1em;
+}
+main.backoffice-stocks section:first-child form input[type=checkbox]:hover, main.backoffice-stocks section:first-child form label:hover {
+  cursor: pointer;
+}
+main.backoffice-stocks section:first-child form input[type=submit] {
+  transition: all 0.2s ease;
+  margin-left: 1em;
+  padding: 1em;
+  border-radius: 16px;
+  border: none;
+  background-color: #273469;
+  color: #fffefa;
+  font-size: 15px;
+}
+main.backoffice-stocks section:first-child form input[type=submit]:hover {
+  cursor: pointer;
+  background-color: #e3f2fe;
+  color: #273469;
+  outline-style: solid;
+  outline-color: #273469;
+  outline-width: 3px;
+  outline-offset: -3px;
+}
+main.backoffice-stocks section:first-child form input[type=submit]:disabled {
+  background-color: #bababa;
+}
+main.backoffice-stocks section:first-child form input[type=submit]:disabled:hover {
+  cursor: not-allowed;
+  color: #fffefa;
+  outline: none;
+  background-color: #bababa;
 }
 main.backoffice-stocks {
   margin-bottom: 2em;
@@ -6585,7 +6626,8 @@ dialog.reassort form input {
   font-weight: bold;
   color: #273469;
 }
-.avis-vendeur .avi {
+
+.avi {
   border-collapse: separate;
   width: 100%;
   color: #273469;
@@ -6596,28 +6638,49 @@ dialog.reassort form input {
   font-size: 18px;
   font-family: "Lora", serif;
 }
-.avis-vendeur .avi .col-gauche {
+.avi .col-gauche {
   width: 150px;
   padding: 0px;
   text-align: center;
 }
-.avis-vendeur .avi .col-gauche .profil-client {
+.avi .col-gauche .profil-client {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   height: 100%;
 }
-.avis-vendeur .avi .col-gauche .profil-client img {
+.avi .col-gauche .profil-client img {
   width: 70px;
   height: 70px;
   border-radius: 50%;
   margin-bottom: 10px;
 }
-.avis-vendeur .avi .col-gauche .profil-client figcaption {
+.avi .col-gauche .profil-client figcaption {
   margin-top: 0;
 }
-.avis-vendeur .avi .etoiles {
+.avi button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+}
+.avi .btnRepAvis {
+  background-color: #273469;
+  color: #fffefa;
+  width: 200px;
+}
+.avi .btnRepAvis:hover {
+  background-color: rgb(25.1875, 33.5833333333, 67.8125);
+}
+.avi .repondreAvis {
+  border-radius: 12px;
+  display: flex;
+  position: relative;
+  left: 1280px;
+  padding: 0;
+}
+.avi .etoiles {
   margin-top: 0;
   margin-bottom: 0;
   margin-left: 0;
@@ -6626,13 +6689,13 @@ dialog.reassort form input {
   gap: 5px;
   display: flex;
 }
-.avis-vendeur .avi .ligne {
+.avi .ligne {
   border-radius: 12px;
   display: flex;
   align-items: center;
   padding: 0;
 }
-.avis-vendeur .avi .date-avis {
+.avi .date-avis {
   font-size: 12px;
   font-family: "Lora", sans-serif;
 }
@@ -7975,6 +8038,37 @@ main.commandesBackoffice dialog ul li table tr:last-child {
 }
 main.commandesBackoffice dialog:focus {
   outline: none;
+}
+
+.repondreAvis .avi {
+  margin-top: 30px;
+}
+.repondreAvis form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.repondreAvis form label {
+  margin: 30px;
+}
+.repondreAvis form textarea {
+  width: 100%;
+}
+.repondreAvis form button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  margin-top: 30px;
+  align-self: flex-end;
+}
+.repondreAvis form .buttonValider {
+  background-color: #273469;
+  color: #fffefa;
+  width: 200px;
+}
+.repondreAvis form .buttonValider:hover {
+  background-color: rgb(25.1875, 33.5833333333, 67.8125);
 }
 
 /*# sourceMappingURL=style.css.map */
