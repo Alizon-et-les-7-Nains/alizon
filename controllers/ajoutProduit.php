@@ -43,11 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nouveauNomImage = 'produit_' . $idNewProduit . '_' . time() . '.' . $extension;
             $dossierDestination = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $nouveauNomImage;
             // Déplacement du fichier
-            print_r($_FILES['photo']);
             try {
                 treat($_FILES['photo']['tmp_name'], $dossierDestination);
             } catch (Exception $e) {
-                print_r("\nimpossible de compresser : $e\n");
                 if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
                     throw new Exception("Impossible de traiter l'image.");
                 }
