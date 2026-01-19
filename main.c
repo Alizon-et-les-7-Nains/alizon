@@ -298,7 +298,12 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
                 long img_size = ftell(img_file);
                 fclose(img_file);
 
-                send(session->client_socket,  &img_size, sizeof(img_size), 0);
+                // Convertir en chaîne de caractères
+                char size_str[32];
+                sprintf(size_str, "%ld", img_size);
+
+                // Envoyer la taille comme string
+                send(session->client_socket, size_str, strlen(size_str), 0);
                 
                 // char *img_buffer = malloc(img_size);
                 // if (img_buffer) {
