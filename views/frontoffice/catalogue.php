@@ -68,7 +68,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Catégories
 $catSql = "SELECT DISTINCT typeProd FROM _produit WHERE typeProd IS NOT NULL;";
-$listeCategories = $pdo->query($catSql)->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $pdo->prepare($catSql);
+$stmt->execute();
+$listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Vendeurs
 $vendeurSql = "SELECT v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbProduits
@@ -76,10 +78,14 @@ $vendeurSql = "SELECT v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbPro
                JOIN _produit p ON p.idVendeur = v.codeVendeur
                GROUP BY v.codeVendeur, v.raisonSocial
                ORDER BY nbProduits DESC LIMIT 10";
-$vendeurs = $pdo->query($vendeurSql)->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $pdo->prepare($vendeurSql);
+$stmt->execute();
+$vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Prix Max
-$maxPrice = $pdo->query("SELECT MAX(prix) FROM _produit")->fetchColumn() ?? 100;
+$stmt = $pdo->prepare("SELECT MAX(prix) FROM _produit");
+$stmt->execute();
+$maxPrice = $stmt->fetchColumn() ?? 100;
 ?>
 
 <!DOCTYPE html>
@@ -104,6 +110,14 @@ $maxPrice = $pdo->query("SELECT MAX(prix) FROM _produit")->fetchColumn() ?? 100;
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
             <article class="triNote">
+                <div>
+                    <input type="radio" id="triPertinenceCroissant" name="tri" value="pertinenceAsc">
+                    <label for="triPertinenceCroissante">Pertinence croissante</label>
+                </div>
+                <div>
+                    <input type="radio" id="triPertinenceDecroissant" name="tri" value="pertinenceDesc">
+                    <label for="triPertinencDecroissante">Pertinence decroissante</label>
+                </div>
                 <div>
                     <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
                     <label for="triNoteCroissant">Note croissante</label>
@@ -136,7 +150,6 @@ $maxPrice = $pdo->query("SELECT MAX(prix) FROM _produit")->fetchColumn() ?? 100;
                     <input type="range" id="sliderMax" min="0" max="<?php echo $maxPrice; ?>" value="<?php echo $maxPrice; ?>">
                 </div>
             </div>
-
             <label for="minNote" id="minNoteLabel">Trier par note minimale:</label>
             <div>
                 <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
@@ -146,10 +159,8 @@ $maxPrice = $pdo->query("SELECT MAX(prix) FROM _produit")->fetchColumn() ?? 100;
                 <img src="../../public/images/etoileVide.svg" data-index="5" class="star" alt="5 étoiles">
                 <input type="hidden" name="note" id="note" value="0"> 
             </div>
-
             <label for="categorie">Catégorie :</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
-                
                 <?php if (isset($_GET['categorie'])) {
                     $nomCategorie = $_GET['categorie'];
                     $nomCategorie = str_replace("_", " ", $nomCategorie); ?>
@@ -161,9 +172,7 @@ $maxPrice = $pdo->query("SELECT MAX(prix) FROM _produit")->fetchColumn() ?? 100;
                 <?php foreach ($listeCategories as $categorie) { ?>
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
-
             </select>
-
             <label for="zone">Zone géographique :</label>
             <select name="zone" id="zoneSelect" class="filter-select">
                 <option value="">Tous les départements</option>
@@ -293,7 +302,6 @@ $maxPrice = $pdo->query("SELECT MAX(prix) FROM _produit")->fetchColumn() ?? 100;
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
                     <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
                 <?php endfor; ?>
-
                 <?php if ($page < $nbPages): ?>
                     <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
                 <?php endif; ?>
@@ -301,7 +309,6 @@ $maxPrice = $pdo->query("SELECT MAX(prix) FROM _produit")->fetchColumn() ?? 100;
         </div>
     </div>
 </main>
-
 <section class="confirmationAjout">
     <h4>Produit ajouté au panier !</h4>
 </section>
@@ -317,6 +324,8 @@ const range = document.getElementById('range');
 // Tri notes
 const triNoteCroissant = document.getElementById('triNoteCroissant');
 const triNoteDecroissant = document.getElementById('triNoteDecroissant');
+const triPertinenceCroissant = document.getElementById('triPertinenceCroissant');
+const triPertinenceDecroissant = document.getElementById('triPertinenceDecroissant');
 let sortOrder = '';
 
 // Variables globales
@@ -410,7 +419,7 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&zone=${zoneValue}&search=${encodeURIComponent(searchQuery)}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&zone=${zoneValue}&search=${encodeURIComponent(searchQuery)}&pertinenceCroissant=${triPertinenceCroissant}&pertinenceDeroissant=${triPertinenceDecroissant}`)
         .then(res => {
             // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {
@@ -458,6 +467,20 @@ sliderMin.addEventListener('input', () => {
 sliderMax.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
+});
+
+triPertinenceCroissant.addEventListener('change', () =>{
+    if (triPertinenceCroissant.checked){
+        sortOrder = true;
+        loadProduits(1);
+    }
+});
+
+triPertinenceDecroissant.addEventListener('change', () =>{
+    if (triPertinenceDecroissant.checked){
+        sortOrder = true;
+        loadProduits(1);
+    }
 });
 
 triNoteCroissant.addEventListener('change', () => {

@@ -53,6 +53,7 @@ void create(struct ClientSession *session, int commande_id, char *destination,
             struct ServerConfig config, MYSQL *conn);
 void traiter_queue(MYSQL *conn, int capacity);
 void liberer_file_colis(MYSQL *conn, long long bordereau);
+void nettoyer_file_invalide(MYSQL *conn);  // NOUVELLE FONCTION
 void status(struct ClientSession *session, char *bordereau, struct ServerConfig config, MYSQL *conn);
 void status_queue(struct ClientSession *session, struct ServerConfig config, MYSQL *conn);
 void help(struct ClientSession *session);
@@ -158,7 +159,7 @@ MYSQL* config_BD() {
     }
 
     
-    if (!mysql_real_connect(local_conn, "mariadb", "sae", "grognasseEtCompagnie", "saedb", 3306, NULL, 0)) {
+    if (!mysql_real_connect(local_conn, "localhost", "pperche", "grognasseEtCompagnie", "delivraptor", 3306, NULL, 0)) {
         fprintf(stderr, "Connexion échouée : %s\n", mysql_error(local_conn));
         mysql_close(local_conn);
         exit(EXIT_FAILURE);
@@ -204,6 +205,25 @@ int get_capacite_actuelle(MYSQL *conn) {
     mysql_free_result(result);
     
     return current_load;
+}
+
+/**
+ * nettoyer_file_invalide() - Nettoie les colis qui ne devraient pas être dans la file
+ * (colis aux étapes >= 5 ne devraient pas être dans la file de prise en charge)
+ */
+void nettoyer_file_invalide(MYSQL *conn) {
+    char query[512];
+    
+    snprintf(query, sizeof(query),
+             "DELETE f FROM _delivraptor_file_prise_en_charge f "
+             "JOIN _delivraptor_colis c ON c.numBordereau = f.numBordereau "
+             "WHERE c.etape >= 5");
+    
+    if (mysql_query(conn, query)) {
+        fprintf(stderr, "Erreur nettoyage file: %s\n", mysql_error(conn));
+    } else {
+        printf("[Nettoyage] Colis aux étapes >= 5 retirés de la file de prise en charge\n");
+    }
 }
 
 /**
@@ -389,11 +409,8 @@ void create(struct ClientSession *session, int commande_id, char *destination,
         send(session->client_socket, response, strlen(response), 0);
         return;
     }
-    
-    // 3. Si capacité disponible, créer immédiatement
-    if (current_load < config.capacity) {
-        long long new_bordereau = num_bordereau_unique();
-        
+
+    long long new_bordereau = num_bordereau_unique();
         // Insérer le colis
         snprintf(query, sizeof(query),
                  "INSERT INTO _delivraptor_colis(numBordereau, noCommande, destination, localisation, etape, date_etape) "
@@ -405,6 +422,9 @@ void create(struct ClientSession *session, int commande_id, char *destination,
             send(session->client_socket, response, strlen(response), 0);
             return;
         }
+    
+    // 3. Si capacité disponible, créer immédiatement
+    if (current_load < config.capacity) {
         
         // Insérer dans la file de prise en charge
         snprintf(query, sizeof(query),
@@ -433,9 +453,9 @@ void create(struct ClientSession *session, int commande_id, char *destination,
     else {
         // Insérer dans la queue d'attente
         snprintf(query, sizeof(query),
-                 "INSERT INTO _delivraptor_queue (noCommande, destination, username) "
-                 "VALUES (%d, '%s', '%s')",
-                 commande_id, escaped_destination, session->username);
+                 "INSERT INTO _delivraptor_queue (noCommande, destination) "
+                 "VALUES (%d, '%s')",
+                 commande_id, escaped_destination);
         
         if (mysql_query(conn, query)) {
             snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT\n");
@@ -541,6 +561,7 @@ void traiter_queue(MYSQL *conn, int capacity) {
 
 /**
  * liberer_file_colis() - Retire un colis de la file de prise en charge
+ * Doit être appelé quand un colis passe de l'étape 4 à 5
  */
 void liberer_file_colis(MYSQL *conn, long long bordereau) {
     char query[256];
@@ -801,6 +822,7 @@ int main(int argc, char *argv[]) {
     config.log_file = "server.log";
     
     global_log_file = config.log_file;
+    global_config = &config;
     
     // Options en ligne de commande
     int opt;
@@ -854,6 +876,9 @@ int main(int argc, char *argv[]) {
     if (!conn) {
         exit(EXIT_FAILURE);
     }
+    
+    // Nettoyer les colis qui ne devraient pas être dans la file au démarrage
+    nettoyer_file_invalide(conn);
     
     // Créer le socket serveur
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);

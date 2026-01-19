@@ -41,6 +41,69 @@ modalSupprProduit?.addEventListener("click", (e) => {
         modalSupprProduit.close();
     }
 });
+const buttonExtract = document.getElementById('button-extract');
+const inputsExtractwo = document.querySelectorAll('form#extraire input:not(#tout):not([type="submit"])');
+const inputEpuises = document.getElementById('epuise');
+const inputFaibles = document.getElementById('faible');
+const inputStocks = document.getElementById('stock');
+const inputToutExtract = document.getElementById('tout');
+function updateButtonState() {
+    buttonExtract.disabled = !Array.from(inputsExtractwo).some(input => input.checked);
+}
+function updateToutCheckbox() {
+    const allChecked = Array.from(inputsExtractwo).every(input => input.checked);
+    const someChecked = Array.from(inputsExtractwo).some(input => input.checked);
+    inputToutExtract.checked = allChecked && someChecked;
+}
+function countEpuises() {
+    let products = 0;
+    document.querySelectorAll('main.backoffice-stocks article.epuises div.produit').forEach((product) => {
+        products++;
+    });
+    return products;
+}
+function countFaibles() {
+    let products = 0;
+    document.querySelectorAll('main.backoffice-stocks article.faibles div.produit').forEach((product) => {
+        products++;
+    });
+    return products;
+}
+function countStocks() {
+    let products = 0;
+    document.querySelectorAll('main.backoffice-stocks article.stocks div.produit').forEach((product) => {
+        products++;
+    });
+    return products;
+}
+function updateButton() {
+    let products = 0;
+    if (inputEpuises.checked)
+        products += countEpuises();
+    if (inputFaibles.checked)
+        products += countFaibles();
+    if (inputStocks.checked)
+        products += countStocks();
+    buttonExtract.value = `Extraire ${products.toString()} produits`;
+}
+inputsExtractwo.forEach((input) => {
+    input.addEventListener('input', () => {
+        updateToutCheckbox();
+        updateButtonState();
+        updateButton();
+    });
+});
+if (inputToutExtract != null) {
+    inputToutExtract?.addEventListener('input', () => {
+        // Mise à jour des checkboxs
+        inputsExtractwo.forEach((input) => {
+            input.checked = inputToutExtract.checked;
+        });
+        // Mise à joue du bouton
+        updateButtonState();
+        updateButton();
+    });
+}
 const boutonHaut = document.getElementById('haut');
 boutonHaut?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
