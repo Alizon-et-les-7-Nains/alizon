@@ -12,7 +12,9 @@ $checkpoint = time();
 
 foreach ($images as $image) {
     if ($image != '.' && $image != '..') {
-        $ext = explode('.', basename($image))[1];
+        $parts = explode('.', $image);
+        $ext = end($parts); // plus sûr que [1]
+        
         switch ($ext) {
             case 'svg':
                 break;
