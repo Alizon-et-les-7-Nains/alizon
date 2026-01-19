@@ -166,7 +166,7 @@ function saveBillingAddress($pdo, $idClient, $adresse, $codePostal, $ville) {
  * Retourne : un tableau associatif contenant l'adresse, le code postal et la ville du client.
  */
 function clientInformations($pdo, $idClient) {
-    $stmt = $pdo->prepare("SELECT adresse, codePostal, ville FROM _client as c INNER JOIN _adresseClient as ac ON c.idAdresse = ac.idAdresse WHERE c.idAdresse = ? LIMIT 1");
+    $stmt = $pdo->prepare("SELECT adresse, codePostal, ville FROM _client as c INNER JOIN _adresseClient as ac ON c.idAdresse = ac.idAdresse WHERE c.idClient = ? LIMIT 1");
     $stmt->execute([$idClient]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -233,8 +233,6 @@ foreach ($cart as $item) {
 $livraison = 5.99;
 $montantTTC = $sousTotal + $livraison;
 
-echo $idClient;
-
 $clientInfo = clientInformations($pdo, $idClient);
 ?>
 
@@ -288,7 +286,7 @@ $clientInfo = clientInformations($pdo, $idClient);
                     <div class="form-row">
                         <div class="input-group">
                             <label>Adresse de livraison</label>
-                            <input type="text" class="adresse-input" placeholder="123 Rue de la Paix" value="<?= htmlspecialchars($clientInfo['adresse']); ?>" required>
+                            <input type="text" class="adresse-input" placeholder="123 Rue de la Paix" value="<?= htmlspecialchars($clientInfo['adresse'] ?? ''); ?>" required>
                             <span class="error-message" data-for="adresse">Adresse requise</span>
                         </div>
                     </div>
@@ -296,12 +294,12 @@ $clientInfo = clientInformations($pdo, $idClient);
                     <div class="form-row two-cols">
                         <div class="input-group">
                             <label>Code postal</label>
-                            <input type="text" class="code-postal-input" placeholder="75001" value="<?= htmlspecialchars($clientInfo['codePostal']) ?>" required>
+                            <input type="text" class="code-postal-input" placeholder="75001" value="<?= htmlspecialchars($clientInfo['codePostal'] ?? '') ?>" required>
                             <span class="error-message" data-for="code-postal">Code postal invalide</span>
                         </div>
                         <div class="input-group">
                             <label>Ville</label>
-                            <input type="text" class="ville-input" placeholder="Paris" value="<?= htmlspecialchars($clientInfo['ville'])?>" required>
+                            <input type="text" class="ville-input" placeholder="Paris" value="<?= htmlspecialchars($clientInfo['ville'] ?? '')?>" required>
                             <span class="error-message" data-for="ville">Ville requise</span>
                         </div>
                     </div>
