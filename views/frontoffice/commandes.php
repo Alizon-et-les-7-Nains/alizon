@@ -442,9 +442,9 @@ $cart = getCurrentCart($pdo, $idClient);
     
 
     <?php 
-        $idCommande = intval($_GET['idCommande']);
         // Affichage du popup de confirmation après paiement réussi
         if ($showPopup): ?>
+        $idCommande = intval($_GET['idCommande']);
         <?php            
             // Récupération du numéro de bordereau de la commande
             $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
