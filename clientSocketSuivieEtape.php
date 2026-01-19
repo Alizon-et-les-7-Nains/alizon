@@ -24,23 +24,6 @@ $photo_size = intval($status_response[7]);
 var_dump($status_response);
 var_dump($photo_size);
 
-$photo = '';
-if ($photo_size > 0) {
-    $read = 0;
-    while ($read < $photo_size) {
-        $chunk = fread($socket, min(8192, $photo_size - $read));
-        if ($chunk === false || $chunk === '') break;
-        $photo .= $chunk;
-        $read += strlen($chunk);
-    }
-}
-
-if ($photo_size > 0) {
-    header("Content-Type: image/jpeg");
-    header("Content-Length: " . strlen($photo));
-    echo $photo;
-}
-
 fclose($socket);
 exit;
 ?>
