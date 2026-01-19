@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . "/controllers/pdo.php";
 
 $idCommande = intval($_GET['idCommande']);
@@ -54,8 +55,14 @@ $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
-if ($status_response[4] == 9 && $status_response[5] === 'ABSENT') {
-    $photo = $status_response[6];
+$photo = $status_response[7];
+$typeLivraison = $status_response[6];
+$etape = $status_response[4];
+$_SESSION['typeLivraison'] = $typeLivraison;
+
+
+if ($etape == 9 && $typeLivraison === 'ABSENT') {
+
     if ($photo != null) {
         $imageData = '';
         while (!feof($socket)) {
@@ -63,12 +70,11 @@ if ($status_response[4] == 9 && $status_response[5] === 'ABSENT') {
             if ($chunk === false || $chunk === '') break;
             $imageData .= $chunk;
         }
-
-        $filename = "photos/imgBoiteAuxLettres.jpg";
-        file_put_contents($filename, $imageData);
-
         $_SESSION['photo'] = $imageData;
     }
+} else {
+    // Supprimer la session photo si autre chose que ABSENT
+    unset($_SESSION['photo']);
 }
 
 //echo "Réponse: $status_response\n\n";
