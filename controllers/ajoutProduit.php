@@ -47,8 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 treat($_FILES['photo']['tmp_name'], $dossierDestination);
             } catch (Exception $e) {
-                error_log("impossible de compresser : $e");
-                print_r("impossible de compresser");
+                print_r("\nimpossible de compresser : $e\n");
                 if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
                     throw new Exception("Impossible de traiter l'image.");
                 }
