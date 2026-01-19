@@ -87,7 +87,6 @@ if ($photo_size > 0) {
 //    echo $photo;
 
 // } else {
-//     // Supprimer la session photo si autre chose que ABSENT
 //     unset($_SESSION['photo']);
 // }
 
@@ -96,12 +95,12 @@ if ($photo_size > 0) {
 
 // Test 4: HELP
 //echo "Test HELP:\n";
-$help_response = send_command($socket, "HELP");
+//$help_response = send_command($socket, "HELP");
 //echo $help_response;
 
 // Fermeture de la connexion
 fclose($socket);
 
 // header('Location: views/frontoffice/commandes.php?idCommande=' . $idCommande);
-// exit;
+exit;
 ?>
