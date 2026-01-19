@@ -71,8 +71,8 @@
         </article>";
         echo $html;
         
-        $dateExp = formatDate($encour['dateExpedition']); $dateExp = ($dateExp === '01/01/1970') ? 'Non expédiée' : $dateExp;
-        $dateLiv = formatDate($encour['dateLivraison']); $dateLiv = ($dateLiv === '01/01/1970') ? 'Non livrée' : $dateLiv;
+        $dateExp = $encour['dateExpedition'] == '' ? 'Non expédiée' : formatDate($encour['dateExpedition']);
+        $dateLiv = $encour['dateLivraison'] == '' ? 'Non livrée' : formatDate($encour['dateLivraison']);
 
         echo "<dialog id='c-" . $encour['idCommande'] . "' class='popup-commande'>
             <h2>Commande du " . formatDate($encour['dateCommande']) . "</h2>
@@ -83,13 +83,13 @@
                     $imageSTMT->execute([$prod['idProduit']]);
                     $image = $imageSTMT->fetchColumn();
 
-                    $total += $prod['prix'] * $prod['quantite'];
+                    $total += intval($prod['prix']) * intval($prod['quantite']);
                     $total = formatPrice($total);
 
                     echo "<li>
                         <table>
                             <tr>
-                                <td colspan=2><img src='../../public/images/caramels.png'></td>
+                                <td colspan=2><img src='$image'></td>
                             </tr>
                             <tr>
                                 <td>" . $prod['nom'] . "</td>
