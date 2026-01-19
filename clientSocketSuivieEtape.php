@@ -58,6 +58,9 @@ $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 $photo = $status_response[6];
 $typeLivraison = $status_response[5];
 $etape = $status_response[4];
+echo $photo;
+echo $typeLivraison;
+echo $etape;
 $_SESSION['typeLivraison'] = $typeLivraison;
 
 
