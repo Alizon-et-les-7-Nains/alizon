@@ -1,5 +1,7 @@
 <?php 
 require_once 'pdo.php';
+require_once 'treatment.php';
+
 session_start();
 
 $idProd = $_GET['id']; 
