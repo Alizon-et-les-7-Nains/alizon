@@ -55,20 +55,16 @@ $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
-$photo = $status_response[7];
+$taillePhoto = $status_response[7];
 $typeLivraison = $status_response[6];
 $etape = $status_response[4];
 $_SESSION['typeLivraison'] = $typeLivraison;
 
-// var_dump($status_response);
-// var_dump($_SESSION['typeLivraison']);
-// var_dump($etape);
-// var_dump($photo);
-// var_dump(intval($photo));
+var_dump($status_response);
 
-header("Content-Type: image/jpeg");
-header("Content-Length: " . intval($photo));
-echo $photo;
+// header("Content-Type: image/jpeg");
+// header("Content-Length: " . intval($photo));
+// echo $photo;
 
 
 // if ($etape == 9 && $typeLivraison === 'ABSENT') {

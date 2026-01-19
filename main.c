@@ -305,16 +305,16 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
                 // Envoyer la taille comme string
                 send(session->client_socket, size_str, strlen(size_str), 0);
                 
-                // char *img_buffer = malloc(img_size);
-                // if (img_buffer) {
-                //     fread(img_buffer, 1, img_size, img_file);
-                //     fclose(img_file);
+                char *img_buffer = malloc(img_size);
+                if (img_buffer) {
+                    fread(img_buffer, 1, img_size, img_file);
+                    fclose(img_file);
                     
-                //     // ENVOYER L'IMAGE BINAIRE
-                //     send(session->client_socket, img_buffer, img_size, 0);
+                    // ENVOYER L'IMAGE BINAIRE
+                    send(session->client_socket, img_buffer, img_size, 0);
                     
-                //     free(img_buffer);
-                // }
+                    free(img_buffer);
+                }
             }
         }
         else {
