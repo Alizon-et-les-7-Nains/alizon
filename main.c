@@ -293,10 +293,21 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
             photo_path && strlen(photo_path) > 0) {
             
             FILE *img_file = fopen(photo_path, "rb");
-            if (img_file) {
-                fseek(img_file, 0, SEEK_END);
+            FILE *img_file = fopen(photo_path, "rb");
+            if (!img_file) {
+                fprintf(stderr, "Impossible d'ouvrir le fichier: %s\n", photo_path);
+            } else {
+                if (fseek(img_file, 0, SEEK_END) != 0) {
+                    perror("fseek failed");
+                }
                 long img_size = ftell(img_file);
-                rewind(img_file); // <- corrigé
+                if (img_size < 0) {
+                    perror("ftell failed");
+                } else {
+                    printf("Fichier %s taille: %ld octets\n", photo_path, img_size);
+                }
+                rewind(img_file);
+            }
 
                 // Envoyer la taille en string (optionnel : séparer avec '|')
                 char size_str[32];
