@@ -528,7 +528,7 @@ if ($produit['stock'] > 0) {
         var_dump($userId);
 
         $stmt = $pdo->prepare("SELECT * FROM _commandes c NATURAL JOIN _panier p WHERE p.idClient = ?");
-        $stmt->execute($userId);
+        $stmt->execute([$userId]);
         $commande = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         var_dump($commande);
