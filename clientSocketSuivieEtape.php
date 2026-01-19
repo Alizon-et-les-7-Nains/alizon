@@ -49,6 +49,7 @@ $bordereau = $result['noBordereau'];
 // Test 3: Consultation
 //echo "Test STATUS:\n";
 $status_response = send_command($socket, "STATUS $bordereau");
+echo $status_response;
 $status_response = explode("|", $status_response);
 $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
