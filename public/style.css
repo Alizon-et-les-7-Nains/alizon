@@ -2767,8 +2767,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-style: italic;
 }
 .mainCompteClient label {
-  height: 30px !important;
-  margin-bottom: 115px !important;
+  margin-bottom: 95px;
+  width: 0px;
+  white-space: pre;
 }
 .mainCompteClient h1 {
   font-family: "lora";
@@ -2824,7 +2825,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   height: 100%;
   display: flex;
   align-items: center;
-  margin-top: 20px;
 }
 .mainCompteClient #buttonsCompte {
   padding-top: 32px;
