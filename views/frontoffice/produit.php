@@ -565,7 +565,7 @@ if ($produit['stock'] > 0) {
         $stmtNomClient->execute([intval($avis['idClient'])]);
         $client = $stmtNomClient->fetch(PDO::FETCH_ASSOC);
         
-        $sqlReponseAvis = "SELECT * FROM _reponseAvis WHERE idProduit = ? AND idClientAvis = ?";
+        $sqlReponseAvis = "SELECT * FROM _reponseAvis WHERE idProduit = ? AND idClient = ?";
         $stmtReponseAvis = $pdo->prepare($sqlReponseAvis);
         $stmtReponseAvis->execute([intval($productId), intval($avis['idClient'])]);
         $reponseAvis = $stmtReponseAvis->fetch(PDO::FETCH_ASSOC);
