@@ -1,7 +1,5 @@
 <?php
 session_start();
-var_dump(isset($_SESSION['photo']));
-
 
 // Vérifie si une photo est stockée dans la session
 if (!empty($_SESSION['photo'])) {
@@ -14,8 +12,5 @@ if (!empty($_SESSION['photo'])) {
     exit;
 }
 
-// Si aucune photo, renvoyer une image par défaut
-header('Content-Type: image/png');
-readfile('../../public/images/defaultImageProduit.png');
 exit;
 ?>

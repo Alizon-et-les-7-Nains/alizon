@@ -71,6 +71,7 @@ if ($etape == 9 && $typeLivraison === 'ABSENT') {
             $imageData .= $chunk;
         }
         $_SESSION['photo'] = $imageData;
+        file_put_contents('test_image.jpg', $_SESSION['photo']);
     }
 } else {
     // Supprimer la session photo si autre chose que ABSENT
