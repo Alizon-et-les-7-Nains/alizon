@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $extension = '.'.$extension;
 
             try {
-                treat($_FILES['baniere']['tmp_name'], $dossierDestination);
+                treat($_FILES['baniere']['tmp_name'], $photoPath.$extension);
             } catch (Exception $e) {
                 if (!move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension)) {
                     throw new Exception("Impossible de traiter l'image.");
