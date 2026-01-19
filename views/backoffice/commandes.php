@@ -89,7 +89,7 @@
                     echo "<li>
                         <table>
                             <tr>
-                                <td colspan=2><img src='../../public/images/caramels.png'></td>
+                                <td colspan=2><img src='$image'></td>
                             </tr>
                             <tr>
                                 <td>" . $prod['nom'] . "</td>
