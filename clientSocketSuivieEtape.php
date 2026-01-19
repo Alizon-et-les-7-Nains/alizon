@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . "/controllers/pdo.php";
 
 $idCommande = intval($_GET['idCommande']);
