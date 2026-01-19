@@ -525,7 +525,7 @@ if ($produit['stock'] > 0) {
     </div>
     <?php 
         $stmt = $pdo->prepare("SELECT * FROM _commandes c NATURAL JOIN _panier p WHERE p.idClient = ?");
-        $stmt->execute($_SESSION['user_id']);
+        $stmt->execute($userId);
         $commande = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
     <?php if (isset($_SESSION['user_id'])) {
@@ -536,9 +536,9 @@ if ($produit['stock'] > 0) {
     </a>';
     } else{
         echo 
-        '<a href="produit.php?id=' . $productId . '" class="boutonCommentaire">
+        '<label>
             Achetez ce produit avant de pouvoir écrire un avis
-        </a>';
+        </label>';
     }
     } else {
     echo     
