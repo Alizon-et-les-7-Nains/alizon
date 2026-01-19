@@ -62,7 +62,7 @@ $_SESSION['typeLivraison'] = $typeLivraison;
 
 
 if ($etape == 9 && $typeLivraison === 'ABSENT') {
-    $tmpFile = __DIR__ . "public/tmp/boite_{$idCommande}.jpg";
+    $tmpFile = __DIR__ . "/public/tmp/boite_{$idCommande}.jpg";
     file_put_contents($tmpFile, $photo); // écrire le binaire dans le fichier
     $_SESSION['photo'] = "public/tmp/boite_{$idCommande}.jpg"; // chemin relatif pour le HTML
 } else {
