@@ -723,13 +723,11 @@ if ($produit['stock'] > 0) {
 </div>
 <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
 </main>
-<footer>
 <?php if (isset($_SESSION['user_id'])) {
     include '../../views/frontoffice/partials/footerConnecte.php';
-} else { 
+} else {
     include '../../views/frontoffice/partials/footerDeconnecte.php';
 } ?>
-</footer> 
 </body>
 <script>
 class ProductCarousel {
