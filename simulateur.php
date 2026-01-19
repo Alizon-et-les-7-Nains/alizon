@@ -2,9 +2,9 @@
 // simulateur.php
 
 // 1. Connexion BDD
-$host = 'localhost';
-$dbname = 'delivraptor';
-$user = 'pperche';
+$host = 'mariadb';
+$dbname = 'saedb';
+$user = 'sae';
 $pass = 'grognasseEtCompagnie';
 
 try {
