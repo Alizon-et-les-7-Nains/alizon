@@ -5961,6 +5961,12 @@ dialog.reassort form input {
 .pageProduit .pouce-inactif {
   filter: none;
 }
+.pageProduit .reponseAvis {
+  display: flex;
+  flex-direction: row;
+  background-color: #e4d9ff;
+  border-radius: 16px;
+}
 .pageProduit .carousel-container {
   position: relative;
   width: 300px;
