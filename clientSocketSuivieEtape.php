@@ -64,6 +64,7 @@ var_dump($status_response);
 var_dump($_SESSION['typeLivraison']);
 var_dump($etape);
 $photo = base64_decode($photo);
+var_dump($photo);
 var_dump(strlen($photo));
 // if ($etape == 9 && $typeLivraison === 'ABSENT') {
     
