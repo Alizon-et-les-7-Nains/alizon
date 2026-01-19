@@ -1,5 +1,7 @@
 <?php
 session_start();
+var_dump(isset($_SESSION['photo']));
+
 
 // Vérifie si une photo est stockée dans la session
 if (!empty($_SESSION['photo'])) {
