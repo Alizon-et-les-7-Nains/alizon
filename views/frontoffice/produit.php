@@ -523,11 +523,28 @@ if ($produit['stock'] > 0) {
         </div>
         <span class="review-count"><?php echo $nombreAvis; ?> évaluations</span>
     </div>
+    <?php 
+
+        var_dump($userId);
+
+        $stmt = $pdo->prepare("SELECT * FROM _commandes c NATURAL JOIN _panier p WHERE p.idClient = ?");
+        $stmt->execute($userId);
+        $commande = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        var_dump($commande);
+    ?>
     <?php if (isset($_SESSION['user_id'])) {
+        if($commande){
     echo 
     '<a href="ecrireCommentaire.php?id=' . $productId . '" class="boutonCommentaire">
         Écrire un commentaire
     </a>';
+    } else{
+        echo 
+        '<label>
+            Achetez ce produit avant de pouvoir écrire un avis
+        </label>';
+    }
     } else {
     echo     
     '<a href="connexionClient.php" class="boutonCommentaire">

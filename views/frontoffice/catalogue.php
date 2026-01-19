@@ -517,6 +517,11 @@ else{
     searchbar.value = searchQuery;
 }
 
+KeyboardEvent.addEventListener('Enter', () => {
+    searchQuery = searchbar.value.trim();
+    loadProduits(1);
+});
+
 
 updateSlider();
 
