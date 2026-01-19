@@ -296,24 +296,31 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
             if (img_file) {
                 fseek(img_file, 0, SEEK_END);
                 long img_size = ftell(img_file);
-                
+                rewind(img_file); // <- corrigé
 
-                // Convertir en chaîne de caractères
+                // Envoyer la taille en string (optionnel : séparer avec '|')
                 char size_str[32];
                 sprintf(size_str, "%ld", img_size);
-
-                // Envoyer la taille comme string
                 send(session->client_socket, size_str, strlen(size_str), 0);
-                send(session->client_socket, "|", 1, 0); // séparateur
-                
+                send(session->client_socket, "|", 1, 0);
+
                 char *img_buffer = malloc(img_size);
                 if (img_buffer) {
-                    fread(img_buffer, 1, img_size, img_file);
+                    size_t read_bytes = fread(img_buffer, 1, img_size, img_file);
                     fclose(img_file);
-                    
-                    // ENVOYER L'IMAGE BINAIRE
-                    send(session->client_socket, img_buffer, img_size, 0);
-                    
+
+                    if (read_bytes != img_size) {
+                        fprintf(stderr, "Erreur lecture fichier\n");
+                    }
+
+                    // Envoyer tout le fichier en boucle
+                    long total_sent = 0;
+                    while (total_sent < img_size) {
+                        ssize_t sent = send(session->client_socket, img_buffer + total_sent, img_size - total_sent, 0);
+                        if (sent <= 0) { perror("Erreur send"); break; }
+                        total_sent += sent;
+                    }
+
                     free(img_buffer);
                 }
             }
