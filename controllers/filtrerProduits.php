@@ -78,6 +78,10 @@ if ($recherche !== '') {
     $sql .= " AND (p.nom LIKE :search OR p.description LIKE :search)";
 }
 
+if (!empty($zone)) {
+    $sql .= " AND a.codePostal LIKE :zone";
+}
+
 if ($sortOrder === 'noteAsc') {
     $sql .= " ORDER BY p.note ASC";
 } elseif ($sortOrder === 'noteDesc') {
