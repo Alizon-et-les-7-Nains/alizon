@@ -634,9 +634,12 @@ if ($produit['stock'] > 0) {
                             Signaler
                         </button>
                         <?php if(!empty($signalement)) { 
+                            $raison = '';
                             foreach($signalement as $value) {
-                                $raison = $raison . ' ' . $value . ',';
-                            } ?>
+                                $raison = $value . ', ';
+                            } 
+                            $raison = rtrim($raison, ', ');
+                            ?>
                             <span class="signalement-info">Avis signalé : <?php echo htmlspecialchars($raison); ?></span>
                         <?php } ?>
                     </div>
