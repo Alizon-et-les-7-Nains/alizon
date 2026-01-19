@@ -6727,6 +6727,7 @@ dialog.reassort form input {
 .reponseAvis {
   display: flex;
   flex-direction: row;
+  justify-content: end;
 }
 .reponseAvis a {
   color: #f14e4e;

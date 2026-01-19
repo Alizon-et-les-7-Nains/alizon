@@ -103,6 +103,7 @@
   .reponseAvis{
     display: flex;
     flex-direction: row;
+    justify-content: end;
 
     a{
       color: $color-red;
