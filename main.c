@@ -288,87 +288,33 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
         send(session->client_socket, response, strlen(response), 0);
         
         // 2. CONDITION : Si étape 9 + ABSENT + image existe
-        // Vérifie si on doit envoyer une image
         if (etape == 9 && 
             livraison_type && strcmp(livraison_type, "ABSENT") == 0 && 
             photo_path && strlen(photo_path) > 0) {
-
+            
             FILE *img_file = fopen(photo_path, "rb");
-            if (!img_file) {
-                char msg[128];
-                snprintf(msg, sizeof(msg), "Impossible d'ouvrir le fichier image: %s", photo_path);
-                write_log(config.log_file, session->client_ip, session->client_port,
-                        session->username, "STATUS_IMAGE", msg);
-            } else {
-                if (fseek(img_file, 0, SEEK_END) != 0) {
-                    char msg[128];
-                    snprintf(msg, sizeof(msg), "fseek échoué pour le fichier: %s", photo_path);
-                    write_log(config.log_file, session->client_ip, session->client_port,
-                            session->username, "STATUS_IMAGE", msg);
-                }
+            if (img_file) {
+                fseek(img_file, 0, SEEK_END);
                 long img_size = ftell(img_file);
-                if (img_size < 0) {
-                    char msg[128];
-                    snprintf(msg, sizeof(msg), "ftell échoué pour le fichier: %s", photo_path);
-                    write_log(config.log_file, session->client_ip, session->client_port,
-                            session->username, "STATUS_IMAGE", msg);
-                } else {
-                    char msg[128];
-                    snprintf(msg, sizeof(msg), "Fichier %s taille: %ld octets", photo_path, img_size);
-                    write_log(config.log_file, session->client_ip, session->client_port,
-                            session->username, "STATUS_IMAGE", msg);
-                }
-                rewind(img_file);
-
-                // Envoyer la taille
-                char size_str[32];
-                sprintf(size_str, "%ld", img_size);
-                send(session->client_socket, size_str, strlen(size_str), 0);
-                send(session->client_socket, "|", 1, 0);
-
+                fseek(img_file, 0, SEEK_SET);
+                
                 char *img_buffer = malloc(img_size);
                 if (img_buffer) {
-                    size_t read_bytes = fread(img_buffer, 1, img_size, img_file);
+                    fread(img_buffer, 1, img_size, img_file);
                     fclose(img_file);
-
-                    if (read_bytes != img_size) {
-                        char msg[128];
-                        snprintf(msg, sizeof(msg), "Erreur lecture fichier %s: lu %zu au lieu de %ld", photo_path, read_bytes, img_size);
-                        write_log(config.log_file, session->client_ip, session->client_port,
-                                session->username, "STATUS_IMAGE", msg);
-                    }
-
-                    // Envoyer tout le fichier en boucle
-                    long total_sent = 0;
-                    while (total_sent < img_size) {
-                        ssize_t sent = send(session->client_socket, img_buffer + total_sent, img_size - total_sent, 0);
-                        if (sent <= 0) {
-                            char msg[128];
-                            snprintf(msg, sizeof(msg), "Erreur send sur fichier %s: sent %zd", photo_path, sent);
-                            write_log(config.log_file, session->client_ip, session->client_port,
-                                    session->username, "STATUS_IMAGE", msg);
-                            break;
-                        }
-                        total_sent += sent;
-                    }
-
-                    char msg[128];
-                    snprintf(msg, sizeof(msg), "Image envoyée: %ld octets", total_sent);
-                    write_log(config.log_file, session->client_ip, session->client_port,
-                            session->username, "STATUS_IMAGE", msg);
-
+                    
+                    // ENVOYER L'IMAGE BINAIRE
+                    send(session->client_socket, img_buffer, img_size, 0);
+                    
                     free(img_buffer);
                 }
             }
-        } else {
-            // SANS IMAGE
+        }
+        else {
+            // 3. SANS IMAGE : envoyer "null"
             char null_text[] = "null";
             send(session->client_socket, null_text, strlen(null_text), 0);
-            write_log(config.log_file, session->client_ip, session->client_port,
-                    session->username, "STATUS_IMAGE", "Pas d'image à envoyer");
         }
-
-
         
         // 4. ENVOYER LE RETOUR À LA LIGNE FINAL
         char newline[] = "\n";
