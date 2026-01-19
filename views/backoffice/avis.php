@@ -73,6 +73,10 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         )->fetchAll(PDO::FETCH_ASSOC);
 
                         $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
+
+                        $stmt = $pdo->prepare("SELECT DISTINCT titre FROM _signalement WHERE idProduitSignale = ? AND idClientSignale = ?");
+                        $stmt->execute([$avi['idProduit'], $avi['idClient']]);
+                        $signalement = $stmt->fetch(PDO::FETCH_ASSOC);
                     ?>
 
                 <table class="avi">
@@ -90,6 +94,11 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <img src=" /public/images/etoile.svg">
                             </figure>
                             <?= $avi['titreAvis'] ?> - <?= $avi['nomProduit'] ?>
+                            <?php 
+                                if($signalement){?>
+                                    <label> Cet avis à été signalé pour la raison suivante : <?php echo($signalement['titre'])?></label> 
+                                <?php } 
+                            ?>
                         </td>
                         <td class="ligne">
                             <p class=" date-avis">Avis déposé le <?= formatDate($avi['dateAvis']) ?></p>
@@ -112,7 +121,7 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </tr>
                     <tr>
                             <!--- Bouton pour modifier l'avis séléctionné --->
-                        <td class="repondreAvis" colspan="2">
+                        <td class="formRepondreAvis" colspan="2">
                             <form action="./repondreAvis.php?idCli=<?php echo $avi['idClient']?>&idProd=<?php echo $avi['idProduit']?>" method="POST">
                                 <?php 
                                 

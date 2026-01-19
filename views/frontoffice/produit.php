@@ -531,7 +531,7 @@ if ($produit['stock'] > 0) {
     } else {
     echo     
     '<a href="connexionClient.php" class="boutonCommentaire">
-        Écrire un commentaire
+        Connectez-vous pour écrire un commentaire
     </a>';
     }
 
@@ -571,6 +571,13 @@ if ($produit['stock'] > 0) {
             ?>
             <img src="<?php echo htmlspecialchars($photoProfilUrl); ?>" id="pp" alt="Photo de profil de <?php echo htmlspecialchars($client['pseudo']); ?>">
             <div>
+                
+                <?php
+                    $stmt = $pdo->prepare("SELECT DISTINCT titre FROM _signalement WHERE idProduitSignale = ? AND idClientSignale = ?");
+                    $stmt->execute([$produit['idProduit'], $avis['idClient']]);
+                    $signalement = $stmt->fetch(PDO::FETCH_ASSOC);
+                ?>
+                
                 <div class="vertical">
                     <div class="horizontal">
                         <div class="star-rating">
@@ -626,6 +633,15 @@ if ($produit['stock'] > 0) {
                             data-id-client-avis="<?php echo $avis['idClient']; ?>">
                             Signaler
                         </button>
+                        <?php if(!empty($signalement)) { 
+                            $raison = '';
+                            foreach($signalement as $value) {
+                                $raison = $value . ', ';
+                            } 
+                            $raison = rtrim($raison, ', ');
+                            ?>
+                            <span class="signalement-info">Avis signalé : <?php echo htmlspecialchars($raison); ?></span>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -670,11 +686,11 @@ if ($produit['stock'] > 0) {
                 <select name="titre" id="signal_titre" class="raison" required>
                     <option value="" disabled selected>-- Sélectionnez une raison --</option>
 
-                    <option value="injures">Injures ou propos insultants</option>
-                    <option value="mensonger">Commentaire mensonger</option>
-                    <option value="spam">Spam ou publicité</option>
-                    <option value="donnees">Divulgation de données personnelles</option>
-                    <option value="autre">Autre</option>
+                    <option value="Injures">Injures ou propos insultants</option>
+                    <option value="Mensonger">Commentaire mensonger</option>
+                    <option value="Spam">Spam ou publicité</option>
+                    <option value="Donnees">Divulgation de données personnelles</option>
+                    <option value="Autre">Autre</option>
                 </select>
             </div>
             

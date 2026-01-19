@@ -78,7 +78,7 @@
     top: 25px;
     left: 13px;
     color: $color-white;
-    z-index: 10000;
+    z-index: 999;
   }
 
   .poly1 {
@@ -94,7 +94,7 @@
     top: 90px;
     left: 10px;
     width: auto;
-    z-index: 1000000;
+    z-index: 999;
   }
 
   #imageBouteille {
@@ -1043,5 +1043,9 @@
       padding: 5px;
       font-family: 'lora';
       border-radius: 10px;
+  }
+  .signalement-info {
+    color: $color-red;
+    font-weight: bold;
   }
 }

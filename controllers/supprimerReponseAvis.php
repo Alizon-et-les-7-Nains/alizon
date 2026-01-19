@@ -1,6 +1,7 @@
 <?php 
 require_once 'pdo.php';
 session_start();
+//Récupération des identifiants de la commande
 $idProd = $_GET['idProd'];  
 $idClient = $_GET['idCli'];  
 

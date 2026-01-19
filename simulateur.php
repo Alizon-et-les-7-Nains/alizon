@@ -2,7 +2,11 @@
 // simulateur.php
 
 // 1. Connexion BDD
+<<<<<<< HEAD
 $host = 'maraidb';
+=======
+$host = 'mariadb';
+>>>>>>> 0fe5a307d7c911984ecfdfea49b5b0b98dce3837
 $dbname = 'saedb';
 $user = 'sae';
 $pass = 'grognasseEtCompagnie';

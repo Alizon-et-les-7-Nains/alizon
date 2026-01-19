@@ -11,8 +11,8 @@ $idClient = $_GET['idCli'];
 
 
 
-$sqlAvis = "INSERT INTO _reponseAvis (idProduit, idClient, contenuAvis, dateAvis) 
-VALUES (:idProduit, :idClient, :contenu
+$sqlAvis = "INSERT INTO _reponseAvis (idProduit, idClient, contenuAvis) 
+VALUES (:idProduit, :idClient, :contenu)
 ON DUPLICATE KEY UPDATE idProduit = VALUES(idProduit), idClient = VALUES(idClient), contenuAvis = VALUES(contenuAvis)";
 
 $stmt = $pdo->prepare($sqlAvis);
