@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . "/controllers/pdo.php";
 
 $idCommande = intval($_GET['idCommande']);
@@ -54,11 +55,16 @@ $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
 
-$photo = $status_response[6];
-$_SESSION['typeLivraison'] = $status_response[5];
+$photo = $status_response[7];
+$typeLivraison = $status_response[6];
 $etape = $status_response[4];
+echo $photo;
+echo $typeLivraison;
+echo $etape;
+$_SESSION['typeLivraison'] = $typeLivraison;
 
-if ($etape === 9 && $typeLivraison === 'ABSENT' && $photoPresent != null) {
+
+if ($etape == 9 && $typeLivraison === 'ABSENT') {
 
     if ($photo != null) {
         $imageData = '';

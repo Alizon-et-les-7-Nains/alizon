@@ -1,6 +1,7 @@
 <?php 
 session_start();
 require_once "../../controllers/pdo.php";
+require_once '../../controllers/treatment.php';
 
 $productId = intval($_GET['id'] ?? 0);
 
@@ -38,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Traitement de l'image
             if (!empty($_FILES['photo']['name'])) {
                 // Utilisation d'un chemin relatif au dossier public pour plus de fiabilité
-                $targetDir = __DIR__ . "/../../public/images/imagesAvis/";
+                $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/images/';
                 
                 if (!is_dir($targetDir)) {
                     mkdir($targetDir, 0755, true);
@@ -51,11 +52,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $dbFileName = uniqid('avis_') . '.' . $fileExtension;
                     $targetFile = $targetDir . $dbFileName;
 
-                    if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
-                        // Chemin stocké en base de données pour l'affichage web
-                        $fileName = $dbFileName;
+                    if (!treat($_FILES["photo"]["tmp_name"], $targetFile)) {
+                        if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
+                            // Chemin stocké en base de données pour l'affichage web
+                            $fileName = $dbFileName;
+                        } else {
+                            $errors[] = "Erreur lors de l'upload de l'image.";
+                        }
                     } else {
-                        $errors[] = "Erreur lors de l'upload de l'image.";
+                        $fileName = $dbFileName;
                     }
                 } else {
                     $errors[] = "Format d'image non autorisé.";
