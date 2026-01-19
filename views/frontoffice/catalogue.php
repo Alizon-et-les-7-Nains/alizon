@@ -422,21 +422,16 @@ function loadProduits(page = 1) {
     }
     fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&zone=${zoneValue}&search=${encodeURIComponent(searchQuery)}&pertinenceCroissant=${triPertinenceCroissant}&pertinenceDeroissant=${triPertinenceDecroissant}`)
         .then(res => {
-            // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {
                 throw new Error(`Erreur HTTP: ${res.status}`);
             }
-            return res.json(); // Conversion en JSON
+            return res.json();
         })
-        
-        document.getElementById('zoneSelect').addEventListener('change', () => loadProduits(1));
-
         .then(data => {
-            listeArticle.innerHTML = data.html; // Recuperation des nouvelles données et mise à jour des produits
-            currentPage = page; // Mise à jour de la page cournante
-            resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`; // Mise à jour du nombre de résultats
+            listeArticle.innerHTML = data.html;
+            currentPage = page;
+            resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
             
-            // Mise à jour de la pagination
             let pagHTML = '';
             if (data.nbPages > 1) {
                 if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
@@ -445,7 +440,7 @@ function loadProduits(page = 1) {
                 }
                 if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
             }
-            paginationDiv.innerHTML = pagHTML;  // Recuperation des nouvelles données et mise à jour des produits
+            paginationDiv.innerHTML = pagHTML;
 
             pagination();
             reattacherAjouterPanier();
@@ -457,6 +452,9 @@ function loadProduits(page = 1) {
             listeArticle.innerHTML = '<h1>Erreur lors du chargement des produits</h1>';
         });
 }
+
+// Déplacer cet event listener en dehors de la fonction, avec les autres
+document.getElementById('zoneSelect').addEventListener('change', () => loadProduits(1));
 
 // Events listeners sur les sliders
 sliderMin.addEventListener('input', () => { 
