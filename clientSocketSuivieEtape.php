@@ -86,15 +86,15 @@ $base64 = base64_encode($photo);
 </body>
 </html>
 <?php
-if ($etape == 9 && $typeLivraison === 'ABSENT') {
+//if ($etape == 9 && $typeLivraison === 'ABSENT') {
 //    header("Content-Type: image/jpg"); // ou png
 //    header("Content-Length: " . strlen($photo));
 //    echo $photo;
 
-} else {
-    // Supprimer la session photo si autre chose que ABSENT
-    unset($_SESSION['photo']);
-}
+// } else {
+//     // Supprimer la session photo si autre chose que ABSENT
+//     unset($_SESSION['photo']);
+// }
 
 //echo "Réponse: $status_response\n\n";
 
