@@ -35,6 +35,25 @@ function afficherEtoiles($note) {
     return $html;
 
 }
+
+// Image par défaut
+$imageDefaut = "../../public/images/far_breton.jpg";
+
+// Récupération de l'image liée à l'avis
+$stmtImg = $pdo->prepare("
+    SELECT url 
+    FROM _imageAvis 
+    WHERE idClient = ? AND idProduit = ?");
+$stmtImg->execute([$idClient, $idProduit]);
+$imageAvis = $stmtImg->fetch(PDO::FETCH_ASSOC);
+
+// Déterminer si une image existe
+$hasImage = ($imageAvis && !empty($imageAvis['url']));
+
+// URL finale à afficher
+$imageUrl = $hasImage ? $imageAvis['url'] : $imageDefaut;
+
+
 ?>
 
 <!DOCTYPE html>
@@ -51,10 +70,28 @@ function afficherEtoiles($note) {
 
     <h2>Modifier mon avis</h2>
     
-    <!-- Formulaire de modification de l'avis -->
-    <form action="../../controllers/modifierAvis_action.php" method="POST">
-        
-        <input type="hidden" name="idProduit" value="<?php echo $idProduit; ?>">
+    <form action="../../controllers/modifierAvis_action.php" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="idProduit" value="<?= $idProduit ?>">
+    
+        <input type="file" id="photoUpload" name="url" style="display:none">
+
+
+        <label for="photoUpload" class="placeholder-photo">
+
+            <img id="imagePreview"
+                src="<?= htmlspecialchars($imageUrl) ?>"
+                alt="Image de l'avis">
+
+            <p id="placeholderText" style="<?= $hasImage ? 'display:none;' : '' ?>">
+                Cliquer pour ajouter une image
+            </p>
+
+            <div class="overlay-text" id="overlayText" style="<?= $hasImage ? '' : 'display:none;' ?>">
+                Cliquer pour modifier
+            </div>
+
+        </label>
+
 
         <label>Titre :</label><br>
         <input type="text" name="titreAvis" value="<?php echo htmlspecialchars($avis['titreAvis']); ?>"><br><br>
@@ -76,22 +113,38 @@ function afficherEtoiles($note) {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const noteInput = document.getElementById('note');
-    const stars = document.querySelectorAll('.etoiles .star');
-    const emptyStar = "/public/images/etoileVide.svg";
-    const fullStar = "/public/images/etoile.svg";
+    const fileInput = document.getElementById('photoUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const placeholderText = document.getElementById('placeholderText');
+    const overlayText = document.getElementById('overlayText');
 
-    // Pour toutes les étoiles, si on clique desus alors on change celle-ci 
-    // Ainsi que les précédentes en étoiles pleines. Cela permet aussi de stocker
-    // L'information du nombre d'étoiles que l'on souhaite mettre.
-    stars.forEach((star, index) => {
-        star.addEventListener('click', () => {
-            const rating = index + 1;
+    if (!fileInput) {
+        console.error("input file introuvable !");
+        return;
+    }
 
-            stars.forEach((s, i) => s.src = i < rating ? fullStar : emptyStar);
+    fileInput.addEventListener('change', function () {
+        if (!this.files || this.files.length === 0) {
+            console.warn("Aucun fichier sélectionné");
+            return;
+        }
 
-            noteInput.value = rating;
-        });
+        const file = this.files[0];
+
+        if (!file.type.startsWith('image/')) {
+            alert("Veuillez sélectionner une image valide.");
+            this.value = "";
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = e => {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = "block";
+            placeholderText.style.display = 'none';
+            overlayText.style.display = 'flex';
+        };
+        reader.readAsDataURL(file);
     });
 });
 </script>
