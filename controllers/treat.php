@@ -29,7 +29,8 @@ $elapsed = time() - $checkpoint;
 print_r("--------------------------------\nDone in {$elapsed}s\n");
 
 function treat($path) {
-    $path = "images/$path";
+    global $dir;
+    $path = "$dir/$path";
     $name = explode('.', basename($path))[0]; // récupérer le nom du fichier (sans extension)
     $size = filesize($path) / 1000; // conversion en KB
 
