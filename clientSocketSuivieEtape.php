@@ -21,6 +21,9 @@ $status = fgets($socket, 4096);
 $status_response = explode("|", trim($status));
 $photo_size = intval($status_response[7]);
 
+var_dump($status_response);
+var_dump($photo_size);
+
 $photo = '';
 if ($photo_size > 0) {
     $read = 0;
