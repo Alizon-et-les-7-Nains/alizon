@@ -475,7 +475,7 @@ $cart = getCurrentCart($pdo, $idClient);
             $etape = $stmt->fetch(PDO::FETCH_ASSOC);
         ?>
         <div id="popupLivraison" class="overlay">
-            <div class="popup">
+            <div class="popupSuiviLivraison">
                 <div class="croixFermerLaPage">
                     <div></div>
                     <div></div>
