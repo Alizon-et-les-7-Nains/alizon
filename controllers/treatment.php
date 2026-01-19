@@ -29,7 +29,6 @@ const AIM_IMAGES = 150; // KB
 // print_r("--------------------------------\nDone in {$elapsed}s\n");
 
 function treat($path, $dest) {
-    $name = basename($path, '.' . pathinfo($path, PATHINFO_EXTENSION));
     $size = filesize($path) / 1000; // conversion en KB
 
     error_log("Traitement image : {$size}kB");
@@ -40,13 +39,20 @@ function treat($path, $dest) {
         $width = 0; $height = 0;
         list($width, $height) = getimagesize($path);
         $ratio = sqrt(AIM_IMAGES / $size);
-        $tempFile = sys_get_temp_dir() . "/{$name}.jpg";
+        $tempFile = sys_get_temp_dir() . '/' . uniqid('img_') . '.jpg';
         
         $attempts = 0;
         do { // compression par tatons
             $newWidth = round($width * $ratio);
             $newHeight = round($height * $ratio);
-            exec("convert " . escapeshellarg($path) . " -resize {$newWidth}x{$newHeight} -quality 85 " . escapeshellarg($tempFile)); // compression et cast en jpg
+            
+            $cmd = "/usr/bin/convert " . escapeshellarg($path) . " -resize {$newWidth}x{$newHeight} -quality 85 " . escapeshellarg($tempFile) . " 2>&1";
+            exec($cmd, $output, $returnCode); // compression et cast en jpg
+            
+            if ($returnCode !== 0 || !file_exists($tempFile)) {
+                error_log("Échec convert: " . implode("\n", $output));
+                throw new Exception("Compression impossible");
+            }
             
             $newSize = filesize($tempFile) / 1000;
             
