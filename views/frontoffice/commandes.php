@@ -273,8 +273,6 @@ $cart = getCurrentCart($pdo, $idClient);
     <main>
         <section class="topRecherche">
             <h1>Vos commandes</h1>
-            <input class="supprElem" type="search" name="rechercheCommande" id="rechercheCommande"
-                placeholder="Rechercher une commande">
         </section>
 
         <section class="filtreRecherche">
@@ -409,11 +407,10 @@ $cart = getCurrentCart($pdo, $idClient);
         <section class="confirmationAjout">
             <h4>Produit ajouté au panier !</h4>
         </section>
-
-        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-        <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
-
     </main>
+
+    <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
+    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
     <script>
         // Gestion de l'affichage du popup de confirmation d'ajout au panier

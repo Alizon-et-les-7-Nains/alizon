@@ -16,7 +16,7 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
     <div class="headerMain">
         <!-- Logo et nom de la marque Alizon -->
         <div class="logoNom">
-            <img src="../../../public/images/logoAlizonHeader.png" alt="Logo Alizon">
+            <a href="../frontoffice/accueilConnecte.php"><img src="../../../public/images/logoAlizonHeader.png" alt="Logo Alizon"></a>
             <h1><a href="../frontoffice/accueilConnecte.php" class="alizonMarque"><b>Alizon</b></a></h1>
         </div>
         <!-- Barre de recherche de produits -->
@@ -54,7 +54,7 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
         <a href="../frontoffice/commandes.php">Mes commandes</a>
         <a href="../frontoffice/notifications.php">Mes notifications</a>
         <a href="../frontoffice/mesAvis.php">Mes commentaires</a>
-        <a href="../frontoffice/panier.php">Mon panier</a>
+        <a href="../frontoffice/legalesConnecte.php" class="separation">Mentions légales</a>
         <a href="../../../controllers/deconnexion.php">Déconnexion</a>
     </section>
 
