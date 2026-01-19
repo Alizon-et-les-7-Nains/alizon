@@ -50,6 +50,7 @@ $bordereau = $result['noBordereau'];
 // Test 3: Consultation
 //echo "Test STATUS:\n";
 fwrite($socket, "STATUS $bordereau\n");
+// Lire la taille envoyée par le serveur
 $size_str = '';
 while (true) {
     $char = fgetc($socket);
@@ -59,15 +60,24 @@ while (true) {
 
 $img_size = intval($size_str);
 
-// Lire exactement $img_size octets
-$photo = '';
+// Ouvrir le fichier pour écrire l'image
+$fp = fopen("testBoiteAuxLettres.jpg", "wb");
+if (!$fp) {
+    die("Impossible de créer le fichier image");
+}
+
+// Lire exactement $img_size octets et écrire au fur et à mesure
 $remaining = $img_size;
 while ($remaining > 0) {
-    $chunk = fread($socket, $remaining);
+    $chunk_size = min(8192, $remaining); // lire par blocs de 8 Ko
+    $chunk = fread($socket, $chunk_size);
     if ($chunk === false || strlen($chunk) === 0) break;
-    $photo .= $chunk;
+    fwrite($fp, $chunk);
     $remaining -= strlen($chunk);
 }
+
+fclose($fp);
+
 
 // Sauvegarder l'image
 file_put_contents("testBoiteAuxLettres.jpg", $photo);
