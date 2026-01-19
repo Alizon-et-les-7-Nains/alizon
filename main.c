@@ -316,6 +316,7 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
     
     send(session->client_socket, response, strlen(response), 0);
     mysql_free_result(result);
+    }
 }
 
 /**
