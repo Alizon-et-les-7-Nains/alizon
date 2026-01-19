@@ -82,7 +82,8 @@
                     $imageSTMT = $pdo->prepare('select URL from _imageDeProduit where idProduit = ?');
                     $imageSTMT->execute([$prod['idProduit']]);
                     $image = $imageSTMT->fetchColumn();
-
+                    
+                    var_dump($prod['prix']);
                     $total += floatval($prod['prix']) * intval($prod['quantite']);
                     $total = formatPrice($total);
 
