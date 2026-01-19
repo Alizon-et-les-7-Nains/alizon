@@ -296,7 +296,7 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
             if (img_file) {
                 fseek(img_file, 0, SEEK_END);
                 long img_size = ftell(img_file);
-                fseek(img_file, 0, SEEK_SET);
+                fclose(img_file);
 
                 send(session->client_socket,  &img_size, sizeof(img_size), 0);
                 
