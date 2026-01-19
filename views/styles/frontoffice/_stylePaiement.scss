@@ -6,7 +6,6 @@ $bg: #fbfaf8;
 $purple-light: #dcd1fa;
 $purple-hover: #c9bbf0;
 $error: #b00020;
-$success: #4caf50;
 $border-radius: 12px;
 $shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
 $shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
@@ -440,17 +439,14 @@ $breakpoint-xs: 480px;
 
   .popup-header {
     display: flex;
+    justify-content: space-between;
 
     .close-popup {
-      margin-left: auto;
       font-size: 24px;
       color: #999;
       cursor: pointer;
-      background-color: transparent;
-
-      &:hover {
-        color: $accent;
-      }
+      border: none;
+      background: none;
     }
   }
 
@@ -550,10 +546,10 @@ $breakpoint-xs: 480px;
     margin-top: 20px;
 
     .btn-cancel {
-      background: #f44336;
-      color: white;
+      background: $purple-light;
+      color: $accent;
       border: none;
-      border-radius: 4px;
+      border-radius: 24px;
       padding: 12px 30px;
       cursor: pointer;
       font-family: "lora", serif;
@@ -561,10 +557,10 @@ $breakpoint-xs: 480px;
     }
 
     .btn-confirm {
-      background: $success;
-      color: white;
+      background: $purple-light;
+      color: $accent;
       border: none;
-      border-radius: 4px;
+      border-radius: 24px;
       padding: 12px 30px;
       cursor: pointer;
       font-family: "lora", serif;
