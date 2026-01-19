@@ -463,7 +463,7 @@ $cart = getCurrentCart($pdo, $idClient);
 
     <?php // Affichage du popup de suivi de livraison si un ID de commande est fourni
     if (isset($_GET['idCommande'])): ?>
-        <?php
+            <?php
             $idCommande = intval($_GET['idCommande']);
             // Récupération de l'étape actuelle de la livraison
             $sql = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
@@ -493,8 +493,12 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <p><?= htmlspecialchars($produit['description']) ?></p>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                        
+                    <?php endforeach; ?> 
                 </div>
+                <?php if ($etape['etape'] == 9 && $_SESSION['typeLivraison'] === 'ABSENT'): ?>
+                    <img class="boiteAuxLettres" src="data:image/jpeg;base64,<?php echo $_SESSION['photo']; ?>" alt="Image boite aux lettres">
+                <?php endif; ?> 
                 <div class="stepper">
                     <div class="stepperEtTexte">
                         <p>En cours de préparation</p>

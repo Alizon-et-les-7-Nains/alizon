@@ -565,6 +565,11 @@ if ($produit['stock'] > 0) {
         $stmtNomClient->execute([intval($avis['idClient'])]);
         $client = $stmtNomClient->fetch(PDO::FETCH_ASSOC);
         
+        $sqlReponseAvis = "SELECT * FROM _reponseAvis WHERE idProduit = ? AND idClient = ?";
+        $stmtReponseAvis = $pdo->prepare($sqlReponseAvis);
+        $stmtReponseAvis->execute([intval($productId), intval($avis['idClient'])]);
+        $reponseAvis = $stmtReponseAvis->fetch(PDO::FETCH_ASSOC);
+
         $voteUtilisateur = getVoteUtilisateur($productId, $avis['idClient']);
         $isOwnReview = isset($_SESSION['user_id']) && $_SESSION['user_id'] == $avis['idClient'];
         ?>
@@ -605,7 +610,7 @@ if ($produit['stock'] > 0) {
                     <div class="sectionImagesAvis">
                         <?php foreach ($imagesAvis as $imageAvis): ?>
                             <?php if (!empty($imageAvis['URL'])): ?>
-                                <img src="../../public/images/imagesAvis/<?php echo htmlspecialchars($imageAvis['URL']); ?>" 
+                                <img src="/images/imagesAvis/<?php echo htmlspecialchars($imageAvis['URL']); ?>" 
                                     alt="Photo avis" 
                                     style="max-width: 100px; height: auto; border-radius: 5px; margin-top: 10px; border: 1px solid #ddd;">
                             <?php endif; ?>
@@ -621,7 +626,6 @@ if ($produit['stock'] > 0) {
                                 <img src="../../public/images/<?php echo ($voteUtilisateur === 'like') ? 'pouceHautActive.png' : 'pouceHaut.png'; ?>" alt="Like">
                                 <span class="vote-count"><?php echo intval($avis['positifs']); ?></span>
                             </button>
-                            
                             <button type="button" 
                                     class="btn-vote btn-dislike <?php echo ($voteUtilisateur === 'dislike') ? 'active' : ''; ?>" 
                                     data-produit="<?php echo $productId; ?>"
@@ -659,6 +663,12 @@ if ($produit['stock'] > 0) {
                 </div>
             </div>
         </article>
+        <?php if ($reponseAvis): ?>
+            <div class="reponseAvis">
+                <h4><?php echo htmlspecialchars($produit['raisonSocial']); ?></h4>
+                <p><?php echo htmlspecialchars($reponseAvis['contenuAvis']); ?></p>
+            </div>
+        <?php endif; ?>
     <?php endforeach; ?>
 <?php else: ?>
     <p>Aucun avis pour ce produit.</p>
