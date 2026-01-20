@@ -7457,6 +7457,9 @@ dialog.reassort form input {
   display: flex;
   justify-content: center;
   gap: 10px;
+  padding: 3em;
+  border-radius: 8px;
+  font-size: 20px;
 }
 .pageCatalogue .pagination a {
   border: 2px solid black;

@@ -172,16 +172,9 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 // ============================================================================
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    if (ob_get_length()) ob_clean(); 
-    
     header('Content-Type: application/json');
     
     try {
-        if (!$idClient) {
-            echo json_encode(['success' => false, 'error' => 'Session expirée']);
-            exit;
-        }
-
         switch ($_POST['action']) {
             case 'updateQty':
                 $idProduit = $_POST['idProduit'] ?? '';
@@ -205,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
-    exit; 
+    exit;
 }
 
 // ============================================================================
@@ -411,7 +404,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         <?php if(number_format($value['stock'], 1) == 0) { ?>
                             <b style="color: red; margin-right: 5px;">Aucun stock</b>
                         <?php } else { ?>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" data-stock="<?= intval($value['stock']) ?>">
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                         <?php } ?>
@@ -477,11 +470,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const emptyStar = "../../public/images/etoileVide.svg";
     const fullStar = "../../public/images/etoile.svg";
 
-    // Gestion des étoiles
     stars.forEach((star, index) => {
         star.addEventListener('click', () => {
+            const rating = index + 1;
             if(index === noteInput.value - 1) {
-                // Si on clique sur la première étoile vide, on remet tout à zéro
                 stars.forEach((s) => {
                     s.src = emptyStar;
                 });
@@ -489,7 +481,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadProduits(1);
                 return;
             }
-            const rating = index + 1;
             stars.forEach((s, i) => {
                 s.src = i < rating ? fullStar : emptyStar;
             });
