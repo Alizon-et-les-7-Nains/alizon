@@ -130,7 +130,7 @@ if (!empty($_FILES['url']['name'])) {
         WHERE idClient = ? AND idProduit = ?
     ");
     $stmtImg->execute([$idClient, $idProduit]);
-
+    $filePath = '/images/imagesAvis/' . $fileName;
     if ($stmtImg->fetch()) {
         // UPDATE
         $stmtUpdate = $pdo->prepare("
