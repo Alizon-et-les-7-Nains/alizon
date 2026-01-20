@@ -466,7 +466,6 @@ void create(struct ClientSession *session, int commande_id, char *destination,
         send(session->client_socket, response, strlen(response), 0);
         return;
     }
-<<<<<<< HEAD
 
     long long new_bordereau = num_bordereau_unique();
         // Insérer le colis
@@ -480,8 +479,6 @@ void create(struct ClientSession *session, int commande_id, char *destination,
             send(session->client_socket, response, strlen(response), 0);
             return;
         }
-=======
->>>>>>> 91f434466bcb224cb132294f119a8eb0d5fb9e9e
     
     // 5. Si capacité disponible, ajouter à la file de prise en charge
     if (current_load < config.capacity) {
