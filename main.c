@@ -173,7 +173,7 @@ MYSQL* config_BD() {
  * num_bordereau_unique() - Génère un numéro de bordereau aléatoire à 10 chiffres
  */
 long long num_bordereau_unique() {
-//    srand(time(NULL));
+    srand(time(NULL));
     long long num = 0;
     
     for (int i = 0; i < 10; i++) {
