@@ -594,7 +594,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
     
     const reader = new FileReader();
     reader.onload = e => {
-        document.getElementById('preview-baniere').style.backgroundImage = \`url('${e.target.result}')\`
+        document.getElementById('preview-baniere').style.backgroundImage = \`url('\${e.target.result}')\`
     };
     reader.readAsDataURL(file);
 });
