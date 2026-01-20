@@ -335,6 +335,10 @@
     }
 
     .pagination a{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1em;
         min-width: 50px;
         min-height: 50px;
         background-color: $color-blue;
