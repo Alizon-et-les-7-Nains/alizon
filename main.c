@@ -508,11 +508,11 @@ void create(struct ClientSession *session, int commande_id, char *destination,
                  "VALUES (%d, '%s', %lld)",
                  commande_id, escaped_destination, new_bordereau);
         
-        if (mysql_query(conn, query)) {
-            snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT\n");
-            send(session->client_socket, response, strlen(response), 0);
-            return;
-        }
+        // if (mysql_query(conn, query)) {
+        //     snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT\n");
+        //     send(session->client_socket, response, strlen(response), 0);
+        //     return;
+        // }
         
         snprintf(response, sizeof(response), "%lld\n", new_bordereau);
         
