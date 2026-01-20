@@ -7188,7 +7188,7 @@ dialog.reassort form input {
 .pageCatalogue .filter-sort form {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
 }
 .pageCatalogue .filter-sort form article {
   display: flex;
