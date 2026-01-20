@@ -173,12 +173,12 @@ MYSQL* config_BD() {
  * num_bordereau_unique() - Génère un numéro de bordereau aléatoire à 10 chiffres
  */
 long long num_bordereau_unique() {
-    long long num = 0;
-    
-    for (int i = 0; i < 10; i++) {
-        num = num * 10 + (rand() % 10);
-    }
-    return num;
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+
+    return (long long)ts.tv_sec * 1000000
+         + (ts.tv_nsec / 1000)
+         + (getpid() % 1000);
 }
 
 /**
