@@ -7207,6 +7207,7 @@ dialog.reassort form input {
   width: calc(100% - 280px);
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin-left: 280px;
   overflow-x: hidden;
 }
@@ -7466,12 +7467,12 @@ dialog.reassort form input {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.3em;
-  min-width: 50px;
-  min-height: 50px;
+  padding: 0.2em;
+  min-width: 35px;
+  min-height: 35px;
   background-color: #273469;
   color: #fffefa;
-  border: 1px solid #6e6e6e;
+  border: 3px solid #000000;
   border-radius: 50%;
   text-decoration: none;
   font-size: 26px;
