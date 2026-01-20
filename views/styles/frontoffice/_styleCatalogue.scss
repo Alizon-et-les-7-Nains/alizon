@@ -324,7 +324,7 @@
     }
 
     .pagination {
-        margin: 80px 0;
+        margin: 20px 0;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -332,22 +332,29 @@
         gap: 10px;
         padding: 1em;
         width: fit-content;
+        margin-left: 30%;
     }
 
-    .pagination a{
+    .pagination a, .pagination span {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0.2em;
-        min-width: 35px;
-        min-height: 35px;
+        padding: 0.3em;
+        min-width: 45px;
+        min-height: 45px;
         background-color: $color-blue;
         color: $color-white;
-        border: 3px solid #000000;
+        border: 2px solid #000000;
         border-radius: 50%;
         text-decoration: none;
         font-size: 26px;
         font-family: $font-berkshire;
+    }
+
+    .pagination span.disabled {
+        background-color: #cccccc;
+        color: #666666;
+        cursor: not-allowed;
     }
 
     .btnToggleFilters {
