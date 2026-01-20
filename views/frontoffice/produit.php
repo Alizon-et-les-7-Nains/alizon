@@ -471,17 +471,20 @@ if (isset($_SESSION['message_panier'])) {
                 <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
             <?php endif; ?>
         </form>
-<?php if (isset($_SESSION['user_id'])): ?>
+<?php if (isset($_SESSION['user_id']) && $produit['stock'] > 0){ ?>
     <form action="pagePaiement.php" method="POST">
         <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
         <button class="bouton boutonBleu">Acheter maintenant</button>
     </form>
-<?php else: ?>
+<?php } else if($produit['stock'] <= 0){ ?>
+    <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+    <button class="bouton boutonGrisé">Acheter maintenant</button>
+<?php } else { ?>
     <form action="connexionClient.php" method="POST">
         <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
         <button class="bouton boutonBleu">Acheter maintenant</button>
     </form>
-<?php endif; ?>
+<?php } ?>
     </div>
 </article>
 </section>
@@ -538,8 +541,12 @@ if ($produit['stock'] > 0) {
     } else{
         echo 
         '<label>
-            Achetez ce produit avant de pouvoir écrire un avis
+            Achetez ce produit avant de pouvoir écrire un avis 
         </label>';
+        echo 
+        "<label>
+            Evan nique ta mere y'a pas de CSS la;
+        </label>";
     }
     } else {
     echo     
@@ -589,7 +596,6 @@ if ($produit['stock'] > 0) {
             ?>
             <img src="<?php echo htmlspecialchars($photoProfilUrl); ?>" id="pp" alt="Photo de profil de <?php echo htmlspecialchars($client['pseudo']); ?>">
             <div>
-                
                 <?php
                     $stmt = $pdo->prepare("SELECT DISTINCT titre FROM _signalement WHERE idProduitSignale = ? AND idClientSignale = ?");
                     $stmt->execute([$produit['idProduit'], $avis['idClient']]);
@@ -663,14 +669,12 @@ if ($produit['stock'] > 0) {
                 </div>
             </div>
         </article>
-        <div>
-            <?php if ($reponseAvis): ?>
-                <div class="reponseAvis">
-                    <h4>Réponse du vendeur :</h4>
-                    <p><?php echo htmlspecialchars($reponseAvis['contenuAvis']); ?></p>
-                </div>
-            <?php endif; ?>
-        </div>
+        <?php if ($reponseAvis): ?>
+            <div class="reponseAvis">
+                <h4><?php echo htmlspecialchars($produit['raisonSocial']); ?></h4>
+                <p><?php echo htmlspecialchars($reponseAvis['contenuAvis']); ?></p>
+            </div>
+        <?php endif; ?>
     <?php endforeach; ?>
 <?php else: ?>
     <p>Aucun avis pour ce produit.</p>

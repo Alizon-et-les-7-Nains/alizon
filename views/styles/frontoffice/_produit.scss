@@ -222,10 +222,7 @@
     margin: 0 0;
   }
 
-  .actionsProduit h1,
-  h2,
-  h3,
-  h4 {
+  .actionsProduit h1, .actionsProduit h2, .actionsProduit h3, .actionsProduit h4 {
     margin: 0 0;
   }
 
@@ -333,7 +330,7 @@
     width: 90%;
   }
 
-  #quantite form button {
+  #quantite form button, #quantite button {
     width: 90%;
   }
 
@@ -345,6 +342,11 @@
   .boutonBleu {
     background-color: $color-blue;
     color: $color-white;
+  }
+
+  .boutonGrisé {
+    background-color: grey;
+    color: white;
   }
 
   .boutonCommentaire {
@@ -585,6 +587,16 @@
 
   .pouce-inactif {
     filter: none;
+  }
+
+  .reponseAvis {
+    display: flex;
+    flex-direction: row;
+    background-color: $color-pastel-purple;
+    border-radius: 16px;
+    padding: 1em;
+    margin-top: -0.5em;
+    margin-left: 5.5em;
   }
 
   .carousel-container {

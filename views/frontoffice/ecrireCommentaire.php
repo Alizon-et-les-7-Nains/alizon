@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/images/imagesAvis/';
                 
                 if (!is_dir($targetDir)) {
-                    mkdir($targetDir, 0755, true);
+                    mkdir($targetDir, 0777, true);
                 }
                 
                 $fileExtension = strtolower(pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION));

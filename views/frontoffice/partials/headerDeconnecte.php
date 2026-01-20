@@ -55,6 +55,7 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
 
 </header>
 
+<script src="../../../public/script.js"></script>
 <!-- Script pour gérer l'affichage du menu burger -->
 <script>
 // Fonction pour afficher/masquer le menu burger

@@ -18,7 +18,7 @@ $offset = ($page - 1) * $produitsParPage;
 
 $idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
-$categoryQuery = isset($_GET['categorie']) ? trim($_GET['categorie']) : "";
+$categoryQuery = isset($_GET['categorie']) ? trim(str_replace('_', ' ', $_GET['categorie'])) : "";
 
 $conditions = [];
 $params = [];
@@ -88,6 +88,131 @@ $stmt->execute();
 $maxPrice = $stmt->fetchColumn() ?? 100;
 ?>
 
+<?php function getCurrentCart($pdo, $idClient) {
+    $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmt->execute([intval($idClient)]);
+    $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+
+    $cart = [];
+
+    if ($panier) {
+        $idPanier = intval($panier['idPanier']); 
+
+        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+                FROM _produitAuPanier pa
+                JOIN _produit p ON pa.idProduit = p.idProduit
+                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                WHERE pa.idPanier = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([intval($idPanier)]);
+        $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+    }
+    
+    return $cart;
+}
+
+// Fonction permettant de modifier la quantité d'un article dans le panier
+function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+    $idProduit = intval($idProduit);
+    $idClient = intval($idClient);
+    
+    // Récupérer le panier actuel
+    $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmtPanier->execute([$idClient]);
+    $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$panier) {
+        // Créer un nouveau panier si nécessaire
+        $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+        $stmtCreate->execute([$idClient]);
+        $idPanier = $pdo->lastInsertId();
+    } else {
+        $idPanier = $panier['idPanier'];
+    }
+
+    // Vérifier si le produit existe déjà dans le panier
+    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
+            WHERE idProduit = ? AND idPanier = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idProduit, $idPanier]);
+    $current = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($current) {
+        // Produit existe : mettre à jour la quantité
+        $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
+        
+        if ($newQty > 0) {
+            $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
+                    WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$newQty, $idProduit, $idPanier]);
+        } else {
+            // Supprimer si quantité = 0
+            $sql = "DELETE FROM _produitAuPanier WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$idProduit, $idPanier]);
+        }
+    } else {
+        // Produit n'existe pas : l'ajouter si delta > 0
+        if ($delta > 0) {
+            $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$idProduit, $idPanier, $delta]);
+        } else {
+            $success = false;
+        }
+    }
+    
+    return $success;
+
+}
+
+// ============================================================================
+// GESTION DES ACTIONS AJAX
+// ============================================================================
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    header('Content-Type: application/json');
+    
+    try {
+        switch ($_POST['action']) {
+            case 'updateQty':
+                $idProduit = $_POST['idProduit'] ?? '';
+                $delta = intval($_POST['delta'] ?? 0);
+                if ($idProduit && $delta != 0) {
+                    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
+                    echo json_encode(['success' => $success]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
+                }
+                break;
+
+            case 'getCart':
+                $cart = getCurrentCart($pdo, $idClient);
+                echo json_encode($cart);
+                break;
+                
+            default:
+                echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit;
+}
+
+// ============================================================================
+// RÉCUPÉRATION DES DONNÉES POUR LA PAGE
+// ============================================================================
+
+// recuperation panier courent
+$cart = getCurrentCart($pdo, $idClient);
+
+// ============================================================================
+// GESTION DES COOKIES
+// ============================================================================
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -110,14 +235,6 @@ $maxPrice = $stmt->fetchColumn() ?? 100;
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
             <article class="triNote">
-                <div>
-                    <input type="radio" id="triPertinenceCroissant" name="tri" value="pertinenceAsc">
-                    <label for="triPertinenceCroissante">Pertinence croissante</label>
-                </div>
-                <div>
-                    <input type="radio" id="triPertinenceDecroissant" name="tri" value="pertinenceDesc">
-                    <label for="triPertinencDecroissante">Pertinence decroissante</label>
-                </div>
                 <div>
                     <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
                     <label for="triNoteCroissant">Note croissante</label>
@@ -282,7 +399,7 @@ $maxPrice = $stmt->fetchColumn() ?? 100;
                         <?php if(number_format($value['stock'], 1) == 0) { ?>
                             <b style="color: red; margin-right: 5px;">Aucun stock</b>
                         <?php } else { ?>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" data-stock="<?= intval($value['stock']) ?>">
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                         <?php } ?>
@@ -309,10 +426,13 @@ $maxPrice = $stmt->fetchColumn() ?? 100;
             <?php endif; ?>
         </div>
     </div>
+
 </main>
-<section class="confirmationAjout">
-    <h4>Produit ajouté au panier !</h4>
 </section>
+
+    <script src="../scripts/frontoffice/paiement-ajax.js"></script>
+    <script src="../../public/amd-shim.js"></script>
+    <script src="../../public/script.js"></script>
 
 <script>
 // Filtres prix

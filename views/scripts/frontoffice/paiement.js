@@ -482,7 +482,7 @@ class PaymentPage {
                     <h4>Paiement</h4>
                     <p>Carte Visa se terminant par ${formData.numCarte.slice(
                       -4
-                    )} ✓ Validée par algorithme de Luhn</p>
+                    )}</p>
                 </div>
             </div>
             

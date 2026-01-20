@@ -281,9 +281,11 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
         
         // 1. Envoyer les données texte avec le dernier pipe
         snprintf(response, sizeof(response),
-                "%s|%s|%s|%s|%s|%s|%s|",
-                bordereau, row[0], row[1], row[2], row[3], row[4], 
-                livraison_type ? livraison_type : "");
+            "%s|%s|%s|%s|%s|%s|%s\n",
+            bordereau, row[0], row[1], row[2], row[3], row[4],
+            livraison_type ? livraison_type : ""
+        );
+
         
         send(session->client_socket, response, strlen(response), 0);
         
@@ -324,9 +326,9 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
         
         write_log(config.log_file, session->client_ip, session->client_port,
                   session->username, "STATUS", "Bordereau non trouvé");
+        send(session->client_socket, response, strlen(response), 0);
     }
     
-    send(session->client_socket, response, strlen(response), 0);
     mysql_free_result(result);
 }
 
