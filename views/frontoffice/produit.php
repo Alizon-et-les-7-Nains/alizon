@@ -477,8 +477,10 @@ if (isset($_SESSION['message_panier'])) {
         <button class="bouton boutonBleu">Acheter maintenant</button>
     </form>
 <?php } else if($produit['stock'] <= 0){ ?>
-    <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-    <button class="bouton boutonGrisé">Acheter maintenant</button>
+    <form action="" method="POST">
+        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+        <button class="bouton boutonGrisé">Acheter maintenant</button>
+    </form>
 <?php } else { ?>
     <form action="connexionClient.php" method="POST">
         <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">

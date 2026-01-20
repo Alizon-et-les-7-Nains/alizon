@@ -5513,6 +5513,7 @@ dialog.reassort form input {
   display: block;
   position: absolute;
   top: -8px;
+  left: -10em;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
