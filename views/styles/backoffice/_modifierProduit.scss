@@ -122,12 +122,13 @@
 
     textarea{
         font-family: "open-sans";
-        width: 650px;
+        width: 600px;
         height: 600px;
         padding: 8px 10px;
         border: 2px solid $color-blue;
         border-radius: 8px;
         font-size: 1em;
+        margin-right: 20px;
     }
 
     .price-weight-kg {
