@@ -103,7 +103,7 @@ if (!empty($_FILES['url']['name'])) {
     $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
     $fileName = uniqid("avis_", true) . "." . $extension;
     $filePath = $uploadDir . '/images/imagesAvis/' . $fileName;
-
+    
     // Traitement de l'image
     try {
         treat($_FILES['url']['tmp_name'], $filePath);
@@ -138,14 +138,14 @@ if (!empty($_FILES['url']['name'])) {
             SET url = ?
             WHERE idClient = ? AND idProduit = ?
         ");
-        $stmtUpdate->execute([$imageUrl, $idClient, $idProduit]);
+        $stmtUpdate->execute([$filePath, $idClient, $idProduit]);
     } else {
         // INSERT
         $stmtInsert = $pdo->prepare("
             INSERT INTO _imageAvis (idClient, idProduit, url)
             VALUES (?, ?, ?)
         ");
-        $stmtInsert->execute([$idClient, $idProduit, $imageUrl]);
+        $stmtInsert->execute([$filePath, $idProduit, $imageUrl]);
     }
 }
 
