@@ -457,7 +457,7 @@ void create(struct ClientSession *session, int commande_id, char *destination,
                  new_bordereau, commande_id, escaped_destination);
         
         if (mysql_query(conn, query)) {
-            snprintf(response, sizeof(response), "ERROR DB_INSERT\n");
+            snprintf(response, sizeof(response), "ERROR DB_INSERT", mysql_errno(conn), mysql_error(conn));
             send(session->client_socket, response, strlen(response), 0);
             return;
         }
