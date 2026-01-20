@@ -624,10 +624,8 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
         if (!e.target.files || e.target.files.length === 0) return;
         
         const file = e.target.files[0];
-
-        console.log(file.type);
         
-        if (!file.type.startsWith('image/jpg')) {
+        if (!file.type.startsWith('image/jpeg')) {
             alert("Veuillez sélectionner une image valide.");
             e.target.value = "";
             return;
@@ -782,7 +780,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinP
         
         const file = e.target.files[0];
         
-        if (!file.type.startsWith('image/jpg')) {
+        if (!file.type.startsWith('image/jpeg')) {
             alert("Veuillez sélectionner une image valide.");
             e.target.value = "";
             return;

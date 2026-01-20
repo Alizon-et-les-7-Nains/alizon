@@ -172,9 +172,16 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 // ============================================================================
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if (ob_get_length()) ob_clean(); 
+    
     header('Content-Type: application/json');
     
     try {
+        if (!$idClient) {
+            echo json_encode(['success' => false, 'error' => 'Session expirée']);
+            exit;
+        }
+
         switch ($_POST['action']) {
             case 'updateQty':
                 $idProduit = $_POST['idProduit'] ?? '';
@@ -198,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
-    exit;
+    exit; 
 }
 
 // ============================================================================
@@ -404,7 +411,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         <?php if(number_format($value['stock'], 1) == 0) { ?>
                             <b style="color: red; margin-right: 5px;">Aucun stock</b>
                         <?php } else { ?>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" data-stock="<?= intval($value['stock']) ?>">
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                         <?php } ?>

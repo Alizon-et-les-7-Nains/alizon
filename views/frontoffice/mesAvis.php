@@ -1,20 +1,16 @@
 <?php 
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/date.php";
-
+//Connexion
 session_start();
-
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../frontoffice/connexionClient.php");
     exit();
 }
-
 $id_client = $_SESSION['user_id'];
-
 $stmt = $pdo->prepare("SELECT * FROM _avis WHERE idClient = ?");
 $stmt->execute([$id_client]);
 $mesAvis = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 function afficherEtoiles($note) {
     // Fonction permettant d'afficher le nombre
     // d'étoiles d'un commentaire écrit en fonction de 
@@ -33,7 +29,6 @@ function afficherEtoiles($note) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Avis</title>
-
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
@@ -93,7 +88,6 @@ function afficherEtoiles($note) {
         }      
 ?>
             </section>
-
             <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
     <?php include './partials/footerConnecte.php'; ?>
