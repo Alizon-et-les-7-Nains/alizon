@@ -272,7 +272,7 @@ $breakpoint-xs: 480px;
     border-radius: $border-radius;
     padding: 28px;
     box-shadow: $shadow-md;
-    border: 1px solid rgba(37, 43, 86, 0.08);
+    border: 2px solid $accent;
 
     @media (max-width: $breakpoint-md) {
       position: static;
@@ -285,7 +285,7 @@ $breakpoint-xs: 480px;
     color: $accent;
     margin-bottom: 20px;
     padding-bottom: 16px;
-    border-bottom: 2px solid rgba(37, 43, 86, 0.1);
+    border-bottom: 2px solid $accent;
   }
 
   .cart-items {

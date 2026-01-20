@@ -218,7 +218,7 @@ $cart = getCurrentCart($pdo, $idClient);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogue</title>
+    <title>Alizon - Catalogue</title>
     <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
     <style>

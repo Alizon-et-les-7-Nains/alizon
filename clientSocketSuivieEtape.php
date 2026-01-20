@@ -35,13 +35,13 @@ $pipe_count = 0;
 while (!feof($socket)) {
     $char = fgetc($socket);
     if ($char === false) break;
-    
+
     $text_line .= $char;
-    
+
     if ($char === '|') {
         $pipe_count++;
     }
-    
+
     if ($pipe_count === 7) {
         break;
     }
@@ -60,22 +60,23 @@ $typeLivraison = $status_parts[6] ?? '';
 
 $image_data = '';
 if ($etape == '9' && $typeLivraison === 'ABSENT') {
+    $typeLivraison = $status_parts[6];
     
-    
+
     // Lire jusqu'au \n final
     while (!feof($socket)) {
         $chunk = fread($socket, 8192);
         if ($chunk === false) break;
-        
+
         $image_data .= $chunk;
-        
+
         // Vérifier si on a atteint le \n final
         if (substr($image_data, -1) === "\n") {
             $image_data = substr($image_data, 0, -1); // Retirer le \n
             break;
         }
     }
-    
+
     // Vérifier que ce n'est pas juste "null"
     if ($image_data !== 'null' && strlen($image_data) > 10) {
         $_SESSION['photo'] = base64_encode($image_data);
@@ -99,4 +100,3 @@ fclose($socket);
 
 header('Location: views/frontoffice/commandes.php?idCommande=' . $idCommande);
 exit;
-?>
