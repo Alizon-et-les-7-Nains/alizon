@@ -172,9 +172,15 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 // ============================================================================
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    ob_clean(); 
     header('Content-Type: application/json');
     
     try {
+        if (!$idClient) {
+            echo json_encode(['success' => false, 'error' => 'Utilisateur non connecté']);
+            exit;
+        }
+
         switch ($_POST['action']) {
             case 'updateQty':
                 $idProduit = $_POST['idProduit'] ?? '';
@@ -186,14 +192,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
                 }
                 break;
-
-            case 'getCart':
-                $cart = getCurrentCart($pdo, $idClient);
-                echo json_encode($cart);
-                break;
-                
-            default:
-                echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
         }
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
@@ -517,13 +515,14 @@ function updateSlider() {
 
 function reattacherAjouterPanier() {
     document.querySelectorAll('.plus').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.onclick = function(e) { 
             e.stopPropagation();
-            popupConfirmation.style.display = "block";
-            setTimeout(() => {
-                popupConfirmation.style.display = "none";
-            }, 3000);
-        });
+            const popup = document.querySelector(".confirmationAjout");
+            if (popup) {
+                popup.style.display = "block";
+                setTimeout(() => { popup.style.display = "none"; }, 3000);
+            }
+        };
     });
 }
 
@@ -693,6 +692,10 @@ if (toggleFiltersBtn) {
 }
 
 </script>
+
+<div class="confirmationAjout" style="display:none; position:fixed; bottom:20px; right:20px; background:green; color:white; padding:15px; border-radius:5px;">
+    Produit ajouté au panier !
+</div>
 
 </body>
 </html>
