@@ -39,9 +39,12 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
     <div class="carousel">
         <div class="group">
             <?php 
-                // Affichage dynamique de toutes les catégories (sans liens actifs pour utilisateurs non connectés) 
-                foreach ($listeCategories as $categorie) { ?>
-                    <a class="categorie" style="cursor: pointer;"><?php echo $categorie['typeProd']; ?></a>
+                // Affichage dynamique de toutes les catégories récupérées 
+                foreach ($listeCategories as $categorie) { 
+                    // Remplacement des espaces par des underscores pour l'URL
+                    $nomCat = str_replace(" ", "_", $categorie['typeProd']);
+                    ?>
+                    <a class="categorie" style="cursor: pointer;" href="http://10.253.5.104/views/frontoffice/catalogue.php?categorie=<?= $nomCat ?>"><?php echo $categorie['typeProd']; ?></a>
             <?php } ?>
         </div>
     </div>
@@ -63,4 +66,14 @@ function menuBurger() {
     var burgerIcon = document.getElementById("burgerIcon");
     burgerIcon.style.display = (burgerIcon.style.display === "flex") ? "none" : "flex";
 }
+
+// Gestion de la recherche via l'icône loupe
+const loupe = document.getElementById('recherche');
+const searchbar = document.getElementById('searchbar');
+
+// Redirection vers la page catalogue avec le terme de recherche
+loupe.addEventListener('click', () => {
+    const recherche = searchbar.value;
+    window.location.href = `catalogue.php?search=${encodeURIComponent(recherche)}`;
+});
 </script>
