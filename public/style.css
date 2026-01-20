@@ -7183,7 +7183,8 @@ dialog.reassort form input {
   left: 0;
   z-index: 800;
   padding: 20px;
-  overflow-y: auto hidden;
+  overflow-y: auto;
+  overflow: hidden;
 }
 .pageCatalogue .filter-sort form {
   display: flex;
