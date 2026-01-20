@@ -14,6 +14,7 @@
 #include <sys/wait.h>         // Gestion des processus fils (waitpid pour éviter les zombies)
 #include <signal.h>           // Gestion des signaux (SIGCHLD pour détecter fin des processus fils)
 #include <errno.h>            // Gestion des codes d'erreur (errno)
+#include <math.h>
 
 
 extern int errno;
