@@ -82,8 +82,15 @@ $stmt = $pdo->prepare($vendeurSql);
 $stmt->execute();
 $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Prix Max
-$stmt = $pdo->prepare("SELECT MAX(prix) FROM _produit");
+// Prix Max en tenant compte des remises :)
+$stmt = "SELECT MAX(CASE 
+                    WHEN r.tauxRemise > 0 AND CURDATE() BETWEEN r.debutRemise AND r.finRemise 
+                        THEN p.prix * (1 - r.tauxRemise/100)
+                        ELSE p.prix 
+                    END) as maxPrice
+                    FROM _produit p
+                    LEFT JOIN _remise r ON p.idProduit = r.idProduit";
+$stmt = $pdo->prepare($stmt);
 $stmt->execute();
 $maxPrice = $stmt->fetchColumn() ?? 100;
 ?>
