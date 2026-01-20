@@ -106,7 +106,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const imagePreview = document.getElementById('imagePreview');
     const placeholderText = document.getElementById('placeholderText');
     const overlayText = document.getElementById('overlayText');
+    const noteInput = document.getElementById('note');
+    const stars = document.querySelectorAll('.star');
+    const emptyStar = "../../public/images/etoileVide.svg";
+    const fullStar = "../../public/images/etoile.svg";
 
+    // Pour toutes les étoiles, si on clique desus alors on change celle-ci 
+    // Ainsi que les précédentes en étoiles pleines. Cela permet aussi de stocker
+    // L'information du nombre d'étoiles que l'on souhaite mettre.
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            const rating = index + 1;
+            stars.forEach((s, i) => {
+                s.src = i < rating ? fullStar : emptyStar;
+            });
+            noteInput.value = rating;
+        });
+    });
+    
     fileInput.addEventListener('change', () => {
         const file = fileInput.files[0];
         if (!file) return;
