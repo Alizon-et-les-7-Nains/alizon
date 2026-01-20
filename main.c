@@ -406,7 +406,7 @@ void create(struct ClientSession *session, int commande_id, char *destination,
             struct ServerConfig config, MYSQL *conn) {
     if(!require_auth(session)) {
         write_log(config.log_file, session->client_ip, session->client_port,
-                  session.username, "CREATE", "Tentative sans authentification");
+                  session->username, "CREATE", "Tentative sans authentification");
         return;
     }
 
@@ -485,8 +485,8 @@ void create(struct ClientSession *session, int commande_id, char *destination,
         snprintf(log_msg, sizeof(log_msg), 
                  "Nouveau bordereau %lld créé pour commande %d (ajouté à la file)", 
                  new_bordereau, commande_id);
-        write_log(config.log_file, session.client_ip, session.client_port,
-                  session.username, "CREATE", log_msg);
+        write_log(config.log_file, session->client_ip, session->client_port,
+                  session->username, "CREATE", log_msg);
     } 
     // 6. Si capacité pleine, mettre en file d'attente (sans entrer dans la file de prise en charge)
     else {
@@ -507,8 +507,8 @@ void create(struct ClientSession *session, int commande_id, char *destination,
         snprintf(log_msg, sizeof(log_msg), 
                  "Bordereau %lld créé pour commande %d (mis en file d'attente - capacité: %d/%d)", 
                  new_bordereau, commande_id, current_load, config.capacity);
-        write_log(config.log_file, session.client_ip, session.client_port,
-                  session.username, "CREATE", log_msg);
+        write_log(config.log_file, session->client_ip, session->client_port,
+                  session->username, "CREATE", log_msg);
     }
     
     send(session->client_socket, response, strlen(response), 0);
