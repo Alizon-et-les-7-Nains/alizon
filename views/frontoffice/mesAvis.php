@@ -51,10 +51,10 @@ function afficherEtoiles($note) {
                 $p = $avis['idProduit'];
                 $stmt2 = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = ?");
                 $stmt2->execute([$p]);
-                $monProduit = $stmt2->fetch(PDO::FETCH_ASSOC);
+                $monProduit = $stmt2->fetchAll(PDO::FETCH_ASSOC);
                 $stmt3 = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = ?");
                 $stmt3->execute([$p]);
-                $imageProduit = $stmt3->fetch(PDO::FETCH_ASSOC); 
+                $imageProduit = $stmt3->fetchAll(PDO::FETCH_ASSOC); 
                 ?> 
                 <article>
                 <!-- Carte du produit-->
