@@ -274,7 +274,7 @@ buttonsCancel.forEach((btnCancel) => {
     });
 });
 let lastScroll = 0;
-const header = document.getElementById("header");
+const header = document.querySelector(".headerFront");
 window.addEventListener("scroll", () => {
     const currentScroll = window.scrollY;
     if (currentScroll > lastScroll && currentScroll > 80) {
