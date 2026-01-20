@@ -236,6 +236,8 @@ $cart = getCurrentCart($pdo, $idClient);
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
 <main class="pageCatalogue">
+    <aside class="fakePanneauGris"></aside>
+    </aside>
     <aside class="filter-sort">
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
@@ -700,9 +702,10 @@ if (toggleFiltersBtn) {
 
 </script>
 
-<div class="confirmationAjout" style="display:none; position:fixed; bottom:20px; right:20px; background:green; color:white; padding:15px; border-radius:5px;">
-    Produit ajouté au panier !
-</div>
+    <!-- Popup de confirmation d'ajout au panier -->
+    <section class="confirmationAjout">
+        <h4>Produit ajouté au panier !</h4>
+    </section>
 
 </body>
 </html>
