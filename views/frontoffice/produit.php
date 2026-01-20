@@ -589,7 +589,6 @@ if ($produit['stock'] > 0) {
             ?>
             <img src="<?php echo htmlspecialchars($photoProfilUrl); ?>" id="pp" alt="Photo de profil de <?php echo htmlspecialchars($client['pseudo']); ?>">
             <div>
-                
                 <?php
                     $stmt = $pdo->prepare("SELECT DISTINCT titre FROM _signalement WHERE idProduitSignale = ? AND idClientSignale = ?");
                     $stmt->execute([$produit['idProduit'], $avis['idClient']]);

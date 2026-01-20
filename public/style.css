@@ -5960,6 +5960,8 @@ dialog.reassort form input {
   flex-direction: row;
   background-color: #e4d9ff;
   border-radius: 16px;
+  padding: 1em;
+  margin-top: -1em;
 }
 .pageProduit .carousel-container {
   position: relative;
