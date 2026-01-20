@@ -5513,6 +5513,7 @@ dialog.reassort form input {
   display: block;
   position: absolute;
   top: -8px;
+  left: -10em;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
@@ -5742,7 +5743,7 @@ dialog.reassort form input {
 .pageProduit #quantite * {
   width: 90%;
 }
-.pageProduit #quantite form button {
+.pageProduit #quantite form button, .pageProduit #quantite button {
   width: 90%;
 }
 .pageProduit .boutonRose {
