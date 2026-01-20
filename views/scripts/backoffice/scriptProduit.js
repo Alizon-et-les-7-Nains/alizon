@@ -1,24 +1,24 @@
 function setError(element, message) {
-  if (!element) return;
-  element.classList.add("invalid");
-  const container = element.parentElement;
-  if (!container) return;
-  let err = container.querySelector(".error-message");
-  if (!err) {
-    err = document.createElement("small");
-    err.className = "error-message";
-    container.appendChild(err);
-  }
-  err.textContent = message;
+    if (!element) return;
+    element.classList.add("invalid");
+    const container = element.parentElement;
+    if (!container) return;
+    let err = container.querySelector(".error-message");
+    if (!err) {
+        err = document.createElement("small");
+        err.className = "error-message";
+        container.appendChild(err);
+    }
+    err.textContent = message;
 }
 
 function clearError(element) {
-  if (!element) return;
-  element.classList.remove("invalid");
-  const container = element.parentElement;
-  if (!container) return;
-  const err = container.querySelector(".error-message");
-  if (err) err.textContent = "";
+    if (!element) return;
+    element.classList.remove("invalid");
+    const container = element.parentElement;
+    if (!container) return;
+    const err = container.querySelector(".error-message");
+    if (err) err.textContent = "";
 }
 
 function fermerPopUpPromouvoir() {
@@ -43,21 +43,21 @@ function popUpInfoCalcul() {
     overlay.className = "overlayPopUpInfoCalcul";
     overlay.innerHTML = `
         <main class="popUpInfoCalcul">
-
+    
         <div class="croixFermerLaPage">
             <div></div>
             <div></div>
         </div>
-
+    
         <h1>Comment sont calculés les prix ?</h1>
-
+    
         <h2>Prix initial de la promotion :</h2>
         <p>10% du prix du produit/jour</p>
-
+    
         <h2>Prix de la bannière :</h2>
         <p>5€/jour</p>`;
     document.body.appendChild(overlay);
-
+    
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     croixFermer.addEventListener("click", fermerPopUpInfoCalcul);
 }
@@ -69,26 +69,26 @@ function verifDate(input){
     dateDuJour = dateDuJour.toLocaleDateString();
     let tabVal = valeur.split("/");
     let tabDate = dateDuJour.split("/");
-
+    
     let jourVal = parseInt(tabVal[0]);
     let moisVal = parseInt(tabVal[1]);
     let anVal  = parseInt(tabVal[2]);
-
+    
     let jourAjd = parseInt(tabDate[0]);
     let moisAjd = parseInt(tabDate[1]);
     let anAjd   = parseInt(tabDate[2]);
-
+    
     //date au format dd/mm/aaaa
     if (!/^([0][1-9]|[12][0-9]|[3][01])\/([0][1-9]|[1][012])\/([1][9][0-9][0-9]|[2][0][0-1][0-9]|[2][0][2][0-5])$/.test(valeur)) {
         setError(input, "Format attendu : jj/mm/aaaa");
     } else {
         clearError(input);
     }
-
+    
     //il faut que la date d'expiration soit ulterieur que la date courente
     if(valeur.length == 10){
         let erreur = false;
-            
+        
         if (anVal < anAjd){
             erreur = true;
         }
@@ -98,23 +98,23 @@ function verifDate(input){
         else if (anVal === anAjd && moisVal === moisAjd && jourVal <= jourAjd){
             erreur = true;
         }
-
+        
         if (erreur) {
             setError(input, "La date limite doit dépasser la date du jour");
         } else {
             clearError(input);
         }
     }
-
+    
 }
 
 
 function popUpAnnulerRemise(id, nom) {
-
+    
     const url = new URL(window.location);
     url.searchParams.set('annulationProduit', id);
     window.history.pushState({}, '', url);
-
+    
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpErreur";
     
@@ -131,19 +131,19 @@ function popUpAnnulerRemise(id, nom) {
                 <button type="submit" style="color: #ffffff; background-color: #f14e4e;">Annuler la remise</button>
             </form>
         </main>`;
-
+    
     document.body.appendChild(overlay);
-
+    
     const fermerPopUp = () => {
         overlay.remove();
         const url = new URL(window.location);
         url.searchParams.delete('annulationProduit');
         window.history.replaceState({}, '', url);
     };
-
+    
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     const btnFermer = overlay.querySelector(".btnFermer");
-
+    
     croixFermer.addEventListener("click", fermerPopUp);
     if (btnFermer) btnFermer.addEventListener("click", fermerPopUp);
     
@@ -156,10 +156,10 @@ function popUpAnnulerRemise(id, nom) {
 
 
 function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
-        //popup de Modification de la Remise 
-        const overlay = document.createElement("div");
-        overlay.className = "overlayPopUpRemise";
-        overlay.innerHTML = `
+    //popup de Modification de la Remise 
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpRemise";
+    overlay.innerHTML = `
         <main class="popUpRemise">
             <div class="page">
                 <div class="croixFermerLaPage">
@@ -212,17 +212,17 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
             </div>
         </main>`;
     document.body.appendChild(overlay);
-
+    
     const bouton = overlay.querySelector(".bouton");
     bouton.disabled = true;
     bouton.style.cursor = "default";
-
+    
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     croixFermer.addEventListener("click", fermerPopUpRemise);
-
+    
     const dateLimite = overlay.querySelector("#dateLimite");
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
-
+    
     function updatePrixFromReduction(prixOriginal, inputNouveauPrix, inputReduction, recap) {
         const valeurReduction = parseFloat(inputReduction.value);
         //On verifie que le pourcentage n'est pas vide ou que la valeur soit inférieur à 100 ou qu'elle soit supérieur à 0
@@ -234,12 +234,12 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
         } else {
             clearError(inputReduction);
         }
-
+        
         //calcul du nouveau prix et du recap
         const calculNouveauPrix = (prixOriginal * (100 - valeurReduction) / 100).toFixed(2);
         inputNouveauPrix.value = calculNouveauPrix;
         recap.textContent = "Abaissement de " + (prixOriginal - calculNouveauPrix).toFixed(2) + "€";
-
+        
         const prixCalc = parseFloat(inputNouveauPrix.value);
         if (prixCalc < 0 || prixCalc > prixOriginal) {
             setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
@@ -247,7 +247,7 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
             clearError(inputNouveauPrix);
         }
     }
-
+    
     function updateReductionFromPrix(prixOriginal, inputNouveauPrix, inputReduction, recap) {
         const valeurNouveauPrix = parseFloat(inputNouveauPrix.value);
         
@@ -260,12 +260,12 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
         } else {
             clearError(inputNouveauPrix);
         }
-
+        
         //calcul du noiveau prix et du pourcentage
         const calculReduction = (100 - (valeurNouveauPrix * 100 / prixOriginal)).toFixed(2);
         inputReduction.value = calculReduction;
         recap.textContent = "Abaissement de " + (prixOriginal - valeurNouveauPrix).toFixed(2) + "€";
-
+        
         if (calculReduction <= 0 || calculReduction > 100) {
             setError(inputReduction, "Réduction entre 1% et 100%");
         } else {
@@ -276,14 +276,14 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
     const nouveauPrix = overlay.querySelector("#nouveauPrix");
     const reduction = overlay.querySelector("#reduction");
     const recap = overlay.querySelector(".recap");
-
+    
     nouveauPrix.addEventListener("input", () => updateReductionFromPrix(prix, nouveauPrix, reduction, recap));
     reduction.addEventListener("input", () => updatePrixFromReduction(prix, nouveauPrix, reduction, recap));
-
+    
     //modification de l'état du bouton
     function champsVide(){
         const bouton = overlay.querySelector(".bouton");
-
+        
         if(dateLimite.value == "" || nouveauPrix.value == "" || reduction.value == ""){
             bouton.disabled = true;
             bouton.style.cursor = "default";
@@ -292,7 +292,7 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
             bouton.style.cursor = "pointer";
         }
     }
-
+    
     dateLimite.addEventListener("input", champsVide);
     nouveauPrix.addEventListener("input", champsVide);
     reduction.addEventListener("input", champsVide);
@@ -300,10 +300,10 @@ function popUpModifierRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUne
 
 
 function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
-        //idem que la fonction précédente sans le bouton de supression
-        const overlay = document.createElement("div");
-        overlay.className = "overlayPopUpRemise";
-        overlay.innerHTML = `
+    //idem que la fonction précédente sans le bouton de supression
+    const overlay = document.createElement("div");
+    overlay.className = "overlayPopUpRemise";
+    overlay.innerHTML = `
         <main class="popUpRemise">
             <div class="page">
                 <div class="croixFermerLaPage">
@@ -355,20 +355,20 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
             </div>
         </main>`;
     document.body.appendChild(overlay);
-
+    
     const bouton = overlay.querySelector(".bouton");
     bouton.disabled = true;
     bouton.style.cursor = "default";
-
+    
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     croixFermer.addEventListener("click", fermerPopUpRemise);
-
+    
     const dateLimite = overlay.querySelector("#dateLimite");
     dateLimite.addEventListener("input", () => verifDate(dateLimite));
-
+    
     function updatePrixFromReduction(prixOriginal, inputNouveauPrix, inputReduction, recap) {
         const valeurReduction = parseFloat(inputReduction.value);
-
+        
         if (inputReduction.value === "" || valeurReduction <= 0 || valeurReduction > 100) {
             setError(inputReduction, "Réduction entre 1% et 100%");
             inputNouveauPrix.value = "";
@@ -377,11 +377,11 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
         } else {
             clearError(inputReduction);
         }
-
+        
         const calculNouveauPrix = (prixOriginal * (100 - valeurReduction) / 100).toFixed(2);
         inputNouveauPrix.value = calculNouveauPrix;
         recap.textContent = "Abaissement de " + (prixOriginal - calculNouveauPrix).toFixed(2) + "€";
-
+        
         const prixCalc = parseFloat(inputNouveauPrix.value);
         if (prixCalc < 0 || prixCalc > prixOriginal) {
             setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
@@ -389,10 +389,10 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
             clearError(inputNouveauPrix);
         }
     }
-
+    
     function updateReductionFromPrix(prixOriginal, inputNouveauPrix, inputReduction, recap) {
         const valeurNouveauPrix = parseFloat(inputNouveauPrix.value);
-
+        
         if (inputNouveauPrix.value === "" || valeurNouveauPrix < 0 || valeurNouveauPrix > prixOriginal) {
             setError(inputNouveauPrix, `Prix entre 0 et ${prixOriginal}€`);
             inputReduction.value = "";
@@ -401,11 +401,11 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
         } else {
             clearError(inputNouveauPrix);
         }
-
+        
         const calculReduction = (100 - (valeurNouveauPrix * 100 / prixOriginal)).toFixed(2);
         inputReduction.value = calculReduction;
         recap.textContent = "Abaissement de " + (prixOriginal - valeurNouveauPrix).toFixed(2) + "€";
-
+        
         if (calculReduction <= 0 || calculReduction > 100) {
             setError(inputReduction, "Réduction entre 1% et 100%");
         } else {
@@ -416,13 +416,13 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
     const nouveauPrix = overlay.querySelector("#nouveauPrix");
     const reduction = overlay.querySelector("#reduction");
     const recap = overlay.querySelector(".recap");
-
+    
     nouveauPrix.addEventListener("input", () => updateReductionFromPrix(prix, nouveauPrix, reduction, recap));
     reduction.addEventListener("input", () => updatePrixFromReduction(prix, nouveauPrix, reduction, recap));
-
+    
     function champsVide(){
         const bouton = overlay.querySelector(".bouton");
-
+        
         if(dateLimite.value == "" || nouveauPrix.value == "" || reduction.value == ""){
             bouton.disabled = true;
             bouton.style.cursor = "default";
@@ -431,17 +431,17 @@ function popUpRemise(id, nom, imgURL, prix, nbEval, note, prixAuKg, aUneRemise){
             bouton.style.cursor = "pointer";
         }
     }
-
+    
     dateLimite.addEventListener("input", champsVide);
     nouveauPrix.addEventListener("input", champsVide);
     reduction.addEventListener("input", champsVide);
-
-
+    
+    
 }
 
 function popUpErreur(id, code) {
     console.log("Erreur ID produit:", id, "Code erreur:", code);
-
+    
     const messages = {
         1: "Une erreur est survenue lors du traitement de la date. Respectez le format jj/mm/aaaa et réessayez.",
         2: "Le format de l'image n'est pas valide. Revérifiez les critères et réessayez.",
@@ -450,9 +450,9 @@ function popUpErreur(id, code) {
         404: "Le produit demandé est introuvable.",
         'default': "Une erreur inattendue s'est produite. Veuillez réessayer."
     };
-
+    
     const messageErreur = messages[code] || messages['default'];
-
+    
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpErreur";
     
@@ -466,17 +466,17 @@ function popUpErreur(id, code) {
             <p><strong>${messageErreur}</strong></p>
             <button class="btnFermer">Compris</button>
         </main>`;
-
+    
     document.body.appendChild(overlay);
-
+    
     const fermerPopUp = () => {
         overlay.remove();
         window.history.replaceState({}, document.title, window.location.pathname);
     };
-
+    
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     const btnFermer = overlay.querySelector(".btnFermer");
-
+    
     croixFermer.addEventListener("click", fermerPopUp);
     btnFermer.addEventListener("click", fermerPopUp);
     
@@ -488,11 +488,11 @@ function popUpErreur(id, code) {
 }
 
 function popUpAnnulerPromotion(id, nom) {
-
+    
     const url = new URL(window.location);
     url.searchParams.set('annulationProduit', id);
     window.history.pushState({}, '', url);
-
+    
     const overlay = document.createElement("div");
     overlay.className = "overlayPopUpErreur";
     
@@ -509,19 +509,19 @@ function popUpAnnulerPromotion(id, nom) {
                 <button type="submit" style="color: #ffffff; background-color: #f14e4e;">Annuler la promotion</button>
             </form>
         </main>`;
-
+    
     document.body.appendChild(overlay);
-
+    
     const fermerPopUp = () => {
         overlay.remove();
         const url = new URL(window.location);
         url.searchParams.delete('annulationProduit');
         window.history.replaceState({}, '', url);
     };
-
+    
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     const btnFermer = overlay.querySelector(".btnFermer");
-
+    
     croixFermer.addEventListener("click", fermerPopUp);
     if (btnFermer) btnFermer.addEventListener("click", fermerPopUp);
     
@@ -533,7 +533,7 @@ function popUpAnnulerPromotion(id, nom) {
 }
 
 function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo, defImg) {
-
+    
     const overlay = document.createElement("div");
     
     overlay.className = "overlaypopUpPromouvoir";
@@ -579,6 +579,26 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                         <div style="background-image: url(${defImg})"  class="ajouterBaniere" id='preview-baniere'>
                             <input type="file" id="baniere" name="baniere" accept="image/*"> 
                         </div>
+    
+                        <script>
+document.querySelector('input#baniere').addEventListener('change', (e) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    const file = e.target.files[0];
+    
+    if (!file.type.startsWith('image/')) {
+        alert("Veuillez sélectionner une image valide.");
+        e.target.value = "";
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = ev => {  // Utilise 'ev' au lieu de 'e'
+        document.getElementById('preview-baniere').style.backgroundImage = \`url('\${ev.target.result}')\`;
+    };
+    reader.readAsDataURL(file);
+});
+                        </script>
                         
                         <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
                             <input type="checkbox" id="supprimer_banniere" name="supprimer_banniere" value="1">
@@ -586,7 +606,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                                 Supprimer la bannière actuelle
                             </label>
                         </div>
-
+    
                         <h2><strong>Sous total : </strong></h2>
                         <div class="sousTotal">
                             <div class="prixRes">
@@ -619,16 +639,16 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
             </div>
         </main>`;
     document.body.appendChild(overlay);
-
+    
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     croixFermer.addEventListener("click", fermerPopUpPromouvoir);
-
+    
     function cliqueBaniere(){
         document.getElementById('baniere').click();
     }
-
+    
     document.querySelector('.ajouterBaniere').addEventListener('click', cliqueBaniere);
-
+    
     const dateLimite = overlay.querySelector("#dateLimite");
     let dateLimiteVal = dateLimite.value;
     dateLimite.addEventListener("change", () => { 
@@ -636,61 +656,50 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
         verifDate(dateLimite); 
         console.log("Date limite :", dateLimiteVal); 
     });
-
+    
     const infoCalcBtn = overlay.querySelector('.infoCalcul');
     infoCalcBtn.addEventListener('click', popUpInfoCalcul);
-
+    
     // Section calcul de prix 
     const txtPromo = document.querySelector('.dataPromo');
     const txtDuree = document.querySelector('.dataDuree');
     const txtTotal = document.querySelector('.dataTotal');
-
+    
     function parseFrDate(date) {
         const [d, m, y] = date.split("/").map(Number);
         return new Date(y, m - 1, d);
     }
-
+    
     function diffDays(d1, d2) {
         return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
     }
-
+    
     dateLimite.addEventListener('change', () => {
         const dateLimiteValue = dateLimite.value;
         const currentDate = new Date();
-
+        
         const d2 = parseFrDate(dateLimiteValue);
         const nbJourDiff = diffDays(currentDate, d2);
-
+        
         const nbJours = Math.max(0, nbJourDiff);
         const coutParJour = prix * 0.1;
         let totalPromo = (coutParJour * nbJours).toFixed(2);
-
+        
         if(totalPromo == NaN) {
             totalPromo = 0;
         }
-
+        
         txtPromo.textContent = totalPromo;
         txtDuree.textContent = nbJours;
         txtTotal.textContent = totalPromo; // Ajouter plus tard prix de la bannière
     });
 }
 
-document.querySelector('input#baniere').addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-        document.getElementById('preview-baniere').style.backgroundImage = `url(${event.target.result})`;
-    };
-    reader.readAsDataURL(file);
-  }
-})
-
 function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo = new Date().toLocaleDateString('fr-FR', { timeZone: 'UTC' })) {
-
+    
     console.log("ID reçu :", id);
     console.log("Nom reçu :", nom);
-
+    
     const overlay = document.createElement("div");
     overlay.className = "overlaypopUpPromouvoir";
     overlay.innerHTML = `
@@ -767,16 +776,16 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinP
             </div>
         </main>`;
     document.body.appendChild(overlay);
-
+    
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     croixFermer.addEventListener("click", fermerPopUpPromouvoir);
-
+    
     function cliqueBaniere(){
         document.getElementById('baniere').click();
     }
-
+    
     document.querySelector('.ajouterBaniere').addEventListener('click', cliqueBaniere);
-
+    
     const dateLimite = overlay.querySelector("#dateLimite");
     let dateLimiteVal = dateLimite.value;
     dateLimite.addEventListener("change", () => { 
@@ -784,39 +793,39 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinP
         verifDate(dateLimite); 
         console.log("Date limite :", dateLimiteVal); 
     });
-
+    
     const infoCalcBtn = overlay.querySelector('.infoCalcul');
     infoCalcBtn.addEventListener('click', popUpInfoCalcul);
-
+    
     // Section calcul de prix 
     const txtPromo = document.querySelector('.dataPromo');
     const txtDuree = document.querySelector('.dataDuree');
     const txtTotal = document.querySelector('.dataTotal');
-
+    
     function parseFrDate(date) {
         const [d, m, y] = date.split("/").map(Number);
         return new Date(y, m - 1, d);
     }
-
+    
     function diffDays(d1, d2) {
         return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
     }
-
+    
     dateLimite.addEventListener('change', () => {
         const dateLimiteValue = dateLimite.value;
         const currentDate = new Date();
-
+        
         const d2 = parseFrDate(dateLimiteValue);
         const nbJourDiff = diffDays(currentDate, d2);
-
+        
         const nbJours = Math.max(0, nbJourDiff);
         const coutParJour = prix * 0.1;
         let totalPromo = (coutParJour * nbJours).toFixed(2);
-
+        
         if(totalPromo == NaN) {
             totalPromo = 0;
         }
-
+        
         txtPromo.textContent = totalPromo;
         txtDuree.textContent = nbJours;
         txtTotal.textContent = totalPromo; // Ajouter plus tard prix de la bannière
@@ -851,13 +860,13 @@ function popUpConfirmerRetrait(id, nom) {
                 </button>
             </form>
         </main>`;
-
+    
     document.body.appendChild(overlay);
-
+    
     const fermerPopUp = () => {
         overlay.remove();
     };
-
+    
     overlay.querySelector(".croixFermerLaPage").addEventListener("click", fermerPopUp);
     
     // Fermer si on clique à l'extérieur de la modale
