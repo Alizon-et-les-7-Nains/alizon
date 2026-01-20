@@ -525,6 +525,10 @@
     .filter-sort.active {
         left: 0;
     }
+
+    .slider-wrapper, .filter-sort select{
+        width : 70%
+    }
     
     .products-section {
         width: 100%;
@@ -623,14 +627,6 @@
         height: 10px;
     }
 }
-/* ============================================================
-   AJUSTEMENTS RESPONSIVE PROGRESSIFS
-   Pagination – Filtres – Bannière promo – Bouton panier
-   ============================================================ */
-
-/* =========================
-   PALIER ≤ 1024px
-   ========================= */
 @media (max-width: 1024px) {
 
     /* Pagination */
@@ -652,9 +648,7 @@
     }
 }
 
-/* =========================
-   PALIER ≤ 768px
-   ========================= */
+
 @media (max-width: 768px) {
 
     /* Pagination */
@@ -666,10 +660,9 @@
     .pagination span {
         min-width: 36px;
         min-height: 36px;
-        font-size: 18px;
+        font-size: 16px;
     }
 
-    /* Filtres */
     .filter-sort form label {
         font-size: 14px;
     }
@@ -678,22 +671,17 @@
         font-size: 13px;
     }
 
-    /* Bannière promo */
     .bannierePromo {
         transform: scale(0.85);
         transform-origin: top left;
     }
 
-    /* Bouton ajout panier */
     .infoProd button img {
         width: 40px;
         height: 40px;
     }
 }
 
-/* =========================
-   PALIER ≤ 580px (mobile)
-   ========================= */
 @media (max-width: 580px) {
 
     /* Pagination */
@@ -704,6 +692,7 @@
 
     .pagination a,
     .pagination span {
+        margin: 10px 0;
         min-width: 30px;
         min-height: 30px;
         font-size: 14px;
@@ -740,8 +729,8 @@
     }
 
     .infoProd button img {
-        width: 32px;
-        height: 32px;
+        width: 20px;
+        height: 20px;
     }
 }
 
