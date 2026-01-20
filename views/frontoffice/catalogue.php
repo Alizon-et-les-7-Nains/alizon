@@ -172,9 +172,16 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 // ============================================================================
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if (ob_get_length()) ob_clean(); 
+    
     header('Content-Type: application/json');
     
     try {
+        if (!$idClient) {
+            echo json_encode(['success' => false, 'error' => 'Session expirée']);
+            exit;
+        }
+
         switch ($_POST['action']) {
             case 'updateQty':
                 $idProduit = $_POST['idProduit'] ?? '';
@@ -198,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
-    exit;
+    exit; 
 }
 
 // ============================================================================
@@ -237,7 +244,7 @@ $cart = getCurrentCart($pdo, $idClient);
             <article class="triNote">
                 <div>
                     <input type="radio" id="aucunTri" name="tri">
-                    <label for="aucunTri">Note croissante</label>
+                    <label for="aucunTri">Aucun tri</label>
                 </div>
                 <div>
                     <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
@@ -280,6 +287,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <img src="../../public/images/etoileVide.svg" data-index="5" class="star" alt="5 étoiles">
                 <input type="hidden" name="note" id="note" value="0"> 
             </div>
+
             <label for="categorie">-- Catégorie --</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
                 <?php if (isset($_GET['categorie'])) {
@@ -472,6 +480,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Gestion des étoiles
     stars.forEach((star, index) => {
         star.addEventListener('click', () => {
+            if(index === noteInput.value - 1) {
+                // Si on clique sur la première étoile vide, on remet tout à zéro
+                stars.forEach((s) => {
+                    s.src = emptyStar;
+                });
+                noteInput.value = 0;
+                loadProduits(1);
+                return;
+            }
             const rating = index + 1;
             stars.forEach((s, i) => {
                 s.src = i < rating ? fullStar : emptyStar;
