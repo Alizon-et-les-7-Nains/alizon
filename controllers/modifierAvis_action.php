@@ -114,7 +114,7 @@ if (!empty($_FILES['url']['name'])) {
     }
 
     // URL stockée en base
-    $imageUrl = "/$fileName";
+    $imageUrl = "$fileName";
 
     // Vérifier si une image existe déjà
     $stmtImg = $pdo->prepare("
