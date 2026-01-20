@@ -192,7 +192,7 @@ body {
   display: flex;
   align-items: center;
 }
-@media (max-width: 845px) {
+@media (max-width: 980px) {
   .headerFront .icons {
     display: none;
     visibility: hidden;
@@ -3308,6 +3308,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   max-width: 800px;
   margin-bottom: 40px;
   align-items: center;
+  justify-content: space-around;
 }
 .panier .quantiteProduit {
   display: flex;
@@ -3324,7 +3325,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .panier .listeProduit article .imgProduit {
   display: flex;
-  width: 200px;
 }
 .panier .prixOpt {
   display: flex;
@@ -3336,7 +3336,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 24px;
   font-weight: bold;
   margin-top: 15px;
-  width: 200px;
 }
 .panier .listeProduit div {
   margin: 0px 15px;
@@ -3454,6 +3453,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .panier .recapPanier {
     align-items: stretch;
+  }
+  .panier .infoProduit {
+    width: unset;
   }
 }
 @media (max-width: 767px) {
@@ -5751,6 +5753,10 @@ dialog.reassort form input {
   background-color: #273469;
   color: #fffefa;
 }
+.pageProduit .boutonGrisé {
+  background-color: grey;
+  color: white;
+}
 .pageProduit .boutonCommentaire {
   display: inline-block;
   margin: 2em 0;
@@ -5958,8 +5964,8 @@ dialog.reassort form input {
   background-color: #e4d9ff;
   border-radius: 16px;
   padding: 1em;
-  margin-top: -1em;
-  margin-left: 6em;
+  margin-top: -0.5em;
+  margin-left: 5.5em;
 }
 .pageProduit .carousel-container {
   position: relative;
