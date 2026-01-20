@@ -445,8 +445,8 @@ $clientInfo = clientInformations($pdo, $idClient);
                 <div class="item-meta">
                     Quantité: <?php echo $item['qty']; ?>
                     <?php if ($tauxRemise > 0): ?>
-                    <br><span class="discount-badge">-<?php echo $tauxRemise; ?>%</span>
-                    <?php endif; ?>
+                                <br><span class="discount-badge">-<?php echo round($tauxRemise) . '%'; ?></span>
+                                <?php endif; ?>
                 </div>
                 <?php if ($tauxRemise > 0): ?>
                 <div class="item-price-original">
