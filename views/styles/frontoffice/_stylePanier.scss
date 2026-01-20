@@ -31,7 +31,6 @@
   }
   .listeProduit article .imgProduit {
     display: flex;
-    width: 200px;
   }
   .prixOpt {
     display: flex;
@@ -164,9 +163,6 @@
         align-items: stretch;
       }
       .infoProduit {
-        width: unset;
-      }
-      .imgProduit {
         width: unset;
       }
   }
