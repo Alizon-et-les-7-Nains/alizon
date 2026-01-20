@@ -80,26 +80,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        if ($extension !== '') {
-            $oldFile = $photoPath . $extension;
-            if (file_exists($oldFile)) {
-                unlink($oldFile);
-            }
+        foreach (glob($photoPath . '.*') as $oldFile) {
+            unlink($oldFile);
         }
 
-        if (isset($_FILES['baniere']) && $_FILES['baniere']['tmp_name'] != '') {
-            $extension = pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
-            $extension = '.'.$extension;
-
+        if (isset($_FILES['baniere']) && $_FILES['baniere']['error'] === UPLOAD_ERR_OK) {
+            $extension = '.' . pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
+            $fullPath = $photoPath . $extension;
+    
             try {
-                treat($_FILES['baniere']['tmp_name'], $photoPath.$extension);
+                treat($_FILES['baniere']['tmp_name'], $fullPath);
             } catch (Exception $e) {
-                if (!move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension)) {
-                    throw new Exception("Impossible de traiter l'image.");
+                if (!move_uploaded_file($_FILES['baniere']['tmp_name'], $fullPath)) {
+                    throw new Exception("Échec upload");
                 }
             }
         }
-
     }
 
     header('Location: ../views/backoffice/produits.php');

@@ -173,7 +173,7 @@ MYSQL* config_BD() {
  * num_bordereau_unique() - Génère un numéro de bordereau aléatoire à 10 chiffres
  */
 long long num_bordereau_unique() {
-    srand(time(NULL));
+    
     long long num = 0;
     
     for (int i = 0; i < 10; i++) {
@@ -737,6 +737,9 @@ void auth(struct ClientSession *session, char *username, char *password_md5,
  * gerer_client() - Fonction exécutée par chaque processus fils pour gérer un client
  */
 void gerer_client(struct ClientSession session, struct ServerConfig config) {
+
+    srand(time(NULL) ^ getpid());
+
     MYSQL *conn_client = config_BD();
     if (!conn_client) {
         close(session.client_socket);
