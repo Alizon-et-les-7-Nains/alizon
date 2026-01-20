@@ -2502,6 +2502,25 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   border: 2px solid #252b56;
 }
+.pagePaiement .order-summary .discount-badge {
+  background-color: #4caf50;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  margin-left: 8px;
+}
+.pagePaiement .order-summary .item-price-original s {
+  color: #999;
+  font-size: 0.9em;
+}
+.pagePaiement .order-summary .discount-row {
+  color: #4caf50;
+  font-weight: bold;
+}
+.pagePaiement .order-summary .discount-row span:last-child::before {
+  content: "-";
+}
 @media (max-width: 920px) {
   .pagePaiement .order-summary {
     position: static;
@@ -3870,7 +3889,7 @@ button#haut.visible:hover {
 }
 .modifierProduit textarea {
   font-family: "open-sans";
-  width: 650px;
+  width: 100%;
   height: 600px;
   padding: 8px 10px;
   border: 2px solid #273469;
