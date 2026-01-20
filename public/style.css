@@ -7178,21 +7178,22 @@ dialog.reassort form input {
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
   width: 240px; /* Largeur fixe au lieu de 22% */
-  height: 100vh;
+  height: 65%;
   position: fixed;
   left: 0;
   z-index: 800;
   padding: 20px;
+  overflow-y: auto;
 }
 .pageCatalogue .filter-sort form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 7px;
 }
 .pageCatalogue .filter-sort form article {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 5px;
 }
 .pageCatalogue .filter-sort form article div {
   display: flex;

@@ -514,7 +514,7 @@ class PaymentPage {
             
             <div class="popup-buttons">
                 <button type="button" class="btn-cancel btn-secondary">Modifier</button>
-                <form method="POST" action="../../../alizon.php" class="order-form">
+                <form method="POST" action="../../delivraptor/php/alizon.php" class="order-form">
                     <input type="hidden" name="action" value="createOrder">
                     <input type="hidden" name="adresseLivraison" value="${
                       formData.adresseLivraison

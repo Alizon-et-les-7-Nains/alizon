@@ -10,23 +10,24 @@
     .filter-sort{
         background-color: #e4d9ff;
         width: 240px; /* Largeur fixe au lieu de 22% */
-        height: 100vh;
+        height: 65%;
         position: fixed;
         left: 0;
         z-index: 800;
         padding: 20px;
+        overflow-y: auto;
     }
 
     .filter-sort form{
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 7px;
     } 
 
     .filter-sort form article{
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 5px;
     }
 
     .filter-sort form article div{
