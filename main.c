@@ -487,11 +487,11 @@ void create(struct ClientSession *session, int commande_id, char *destination,
                  "INSERT INTO _delivraptor_file_prise_en_charge (numBordereau, date_entree) VALUES (%lld, NOW())",
                  new_bordereau);
         
-        if (mysql_query(conn, query)) {
-            snprintf(response, sizeof(response), "ERROR DB_INSERT_FILE\n");
-            send(session->client_socket, response, strlen(response), 0);
-            return;
-        }
+        // if (mysql_query(conn, query)) {
+        //     snprintf(response, sizeof(response), "ERROR DB_INSERT_FILE\n");
+        //     send(session->client_socket, response, strlen(response), 0);
+        //     return;
+        // }
         
         snprintf(response, sizeof(response), "%lld\n", new_bordereau);
         
