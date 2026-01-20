@@ -505,9 +505,9 @@ void create(struct ClientSession *session, int commande_id, char *destination,
     // 6. Si capacité pleine, mettre en file d'attente (sans entrer dans la file de prise en charge)
     else {
         snprintf(query, sizeof(query),
-                 "INSERT INTO _delivraptor_queue (noCommande, destination, numBordereau) "
-                 "VALUES (%d, '%s', %lld)",
-                 commande_id, escaped_destination, new_bordereau);
+                 "INSERT INTO _delivraptor_queue (noCommande, destination, numBordereau, username) "
+                 "VALUES (%d, '%s', %lld, '%s')",
+                 commande_id, escaped_destination, new_bordereau, session->username);
         
         if (mysql_query(conn, query)) {
             snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT\n");
