@@ -389,15 +389,14 @@ $cart = getCurrentCart($pdo, $idClient);
                                 $nomCarte = $stmtCarte->fetch(PDO::FETCH_ASSOC);
 
                             ?>
-                            <?php endforeach; ?>
+
+                            <a onclick="popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>', '<?= $commande['montantHT'] ?>', '<?= $commande['total'] ?>', '<?= $nomCarte['nom'] ?>')" href="#">Détails</a>
                             <span class="supprElem">|</span>
                             <a href="../../controllers/facture.php?id= <?php echo ($commande['id']); ?>">Facture</a>
-                            <a onclick="popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>', '<?= $commande['montantHT'] ?>', '<?= $commande['total'] ?>', '<?= $nomCarte['nom'] ?>')" href="#">Détails</a>
-
                         </div>
                     </section>
                 </section>
-            
+            <?php endforeach; ?>
         <?php endif; ?>
 
         <!-- Popup de confirmation d'ajout au panier -->
