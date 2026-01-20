@@ -222,10 +222,7 @@
     margin: 0 0;
   }
 
-  .actionsProduit h1,
-  h2,
-  h3,
-  h4 {
+  .actionsProduit h1, .actionsProduit h2, .actionsProduit h3, .actionsProduit h4 {
     margin: 0 0;
   }
 
@@ -592,6 +589,9 @@
     flex-direction: row;
     background-color: $color-pastel-purple;
     border-radius: 16px;
+    padding: 1em;
+    margin-top: -1em;
+    margin-left: 6em;
   }
 
   .carousel-container {

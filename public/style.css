@@ -5648,10 +5648,7 @@ dialog.reassort form input {
 .pageProduit #plusDarticles {
   margin: 0 0;
 }
-.pageProduit .actionsProduit h1,
-.pageProduit h2,
-.pageProduit h3,
-.pageProduit h4 {
+.pageProduit .actionsProduit h1, .pageProduit .actionsProduit h2, .pageProduit .actionsProduit h3, .pageProduit .actionsProduit h4 {
   margin: 0 0;
 }
 .pageProduit .actionsProduit p,
@@ -5960,6 +5957,9 @@ dialog.reassort form input {
   flex-direction: row;
   background-color: #e4d9ff;
   border-radius: 16px;
+  padding: 1em;
+  margin-top: -1em;
+  margin-left: 6em;
 }
 .pageProduit .carousel-container {
   position: relative;
