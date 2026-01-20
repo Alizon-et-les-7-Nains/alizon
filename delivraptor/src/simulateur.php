@@ -148,7 +148,7 @@ foreach ($tous_colis as $col) {
                 break;
             case 2:
                 $type_livraison = 'ABSENT';
-                $photo_path = './images/imgBoiteAuxLettres.jpg';
+                $photo_path = '../../images/imgBoiteAuxLettres.jpg';
                 break;
             case 3:
                 $type_livraison = 'REFUSE';

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/controllers/pdo.php";
+require_once __DIR__ . '/../../controllers/pdo.php';
 
 $tabIdDestination = $_SESSION['tabIdDestination'];
 // auto_test.php
@@ -37,7 +37,7 @@ fwrite($socket, "QUIT");
 // Fermeture de la connexion
 fclose($socket);
 
-header('Location: views/frontoffice/commandes.php');
+header('Location: ../../views/frontoffice/commandes.php');
 exit;
 
 ?>

@@ -6,27 +6,37 @@
     flex-direction: row;
     background-color: $color-white;
 
+    .fakePanneauGris{
+        width: 240px;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        background-color: #e4d9ff;
+        z-index: 700;
+        padding: 20px;
+    }
 
     .filter-sort{
         background-color: #e4d9ff;
         width: 240px; /* Largeur fixe au lieu de 22% */
-        height: 100vh;
+        height: 66%;
         position: fixed;
         left: 0;
         z-index: 800;
         padding: 20px;
+        overflow-y: auto;
     }
 
     .filter-sort form{
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 7px;
     } 
 
     .filter-sort form article{
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 5px;
     }
 
     .filter-sort form article div{
@@ -324,7 +334,7 @@
     }
 
     .pagination {
-        margin: 80px 0;
+        margin: 20px 0;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -332,22 +342,28 @@
         gap: 10px;
         padding: 1em;
         width: fit-content;
+        margin-left: 30%;
     }
 
-    .pagination a{
+    .pagination a, .pagination span {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 1em;
-        min-width: 50px;
-        min-height: 50px;
+        padding: 0.3em;
+        min-width: 45px;
+        min-height: 45px;
         background-color: $color-blue;
         color: $color-white;
-        border: 1px solid $color-dark-gray;
+        border: 2px solid #000000;
         border-radius: 50%;
         text-decoration: none;
         font-size: 26px;
         font-family: $font-berkshire;
+    }
+
+    .pagination span.disabled {
+        background-color: #cccccc;
+        color: #666666;
     }
 
     .btnToggleFilters {

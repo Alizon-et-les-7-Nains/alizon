@@ -7,6 +7,7 @@ class PaymentAPI {
   // Mise à jour de la quantité d'un produit (delta = +1 ou -1)
   static async updateQuantity(idProduit, delta) {
     try {
+
       // Requête envoyée en POST avec un encodage x-www-form-urlencoded
       const response = await fetch("", {
         method: "POST",
@@ -71,7 +72,6 @@ class PaymentAPI {
       }
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
-      alert("Erreur réseau lors de la suppression");
     }
   }
 

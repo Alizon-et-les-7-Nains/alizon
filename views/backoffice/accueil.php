@@ -132,13 +132,13 @@ $commandes = $commandesSTMT->fetchAll(PDO::FETCH_ASSOC);
                             <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
                         </div>" 
                         : formatPrice($prixOriginal)) . "</strong><br>
-                    Prix Total : <strong>" . formatPrice($prixAffichage * $commande['quantiteProduit']) . "</strong><br>
+                    Prix Total : <strong>" . formatPrice($prixAffichage * $commande['quantite']) . "</strong><br>
                     Statut : <strong>" . $commande['etatLivraison'] . "</strong>
                 </td>
             </tr>
             <tr>
                 <td>" . formatDate($commande['dateCommande']) . "</td>
-                <th>" . $commande['quantiteProduit'] . "</th>
+                <th>" . $commande['quantite'] . "</th>
             </tr>
         </table>
         ";
