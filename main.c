@@ -467,7 +467,7 @@ void create(struct ClientSession *session, int commande_id, char *destination,
         return;
     }
 
-    long long new_bordereau = num_bordereau_unique();
+    // long long new_bordereau = num_bordereau_unique();
         // Insérer le colis
         snprintf(query, sizeof(query),
                  "INSERT INTO _delivraptor_colis(numBordereau, noCommande, destination, localisation, etape, date_etape) "
