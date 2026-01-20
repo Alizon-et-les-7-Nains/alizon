@@ -23,32 +23,27 @@ $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":idCommande" => $idCommande]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-$bordereau = $result['noBordereau'];
+$bordereau = trim($result['noBordereau']);
 
 // Envoyer STATUS
 fwrite($socket, "STATUS $bordereau\n");
+// LIRE LA LIGNE DE STATUT COMPLÈTE (jusqu'au \n)
+$text_line = fgets($socket, 4096);
 
-// 1. LIRE TOUTE LA LIGNE TEXTE JUSQU'AU 7E PIPE
-$text_line = '';
-$pipe_count = 0;
-
-while (!feof($socket)) {
-    $char = fgetc($socket);
-    if ($char === false) break;
-
-    $text_line .= $char;
-
-    if ($char === '|') {
-        $pipe_count++;
-    }
-
-    if ($pipe_count === 7) {
-        break;
-    }
+if ($text_line === false) {
+    fclose($socket);
+    echo "ERREUR: Pas de réponse du serveur\n";
+    exit(1);
 }
 
-//faire un tableau avec les parties
-$status_parts = explode("|", rtrim($text_line, '|'));
+// Parser les données (enlever le \n final)
+$status_parts = explode("|", rtrim($text_line));
+
+if (count($status_parts) < 7) {
+    fclose($socket);
+    echo "ERREUR: Format de réponse invalide\n";
+    exit(1);
+}
 
 $bordereau_recu = $status_parts[0];
 $commande = $status_parts[1];
@@ -58,34 +53,37 @@ $etape = $status_parts[4];
 $date_etape = $status_parts[5];
 $typeLivraison = $status_parts[6] ?? '';
 
-$image_data = '';
+// LIRE LA PARTIE IMAGE/NULL
 if ($etape == '9' && $typeLivraison === 'ABSENT') {
-    $typeLivraison = $status_parts[6];
+    $image_data = '';
     
-
     // Lire jusqu'au \n final
     while (!feof($socket)) {
-        $chunk = fread($socket, 8192);
-        if ($chunk === false) break;
-
+        $chunk = fread($socket, 32768);
+        
+        if ($chunk === false || $chunk === '') {
+            break;
+        }
+        
         $image_data .= $chunk;
-
-        // Vérifier si on a atteint le \n final
-        if (substr($image_data, -1) === "\n") {
-            $image_data = substr($image_data, 0, -1); // Retirer le \n
+        
+        // Chercher le \n final
+        if (strpos($image_data, "\n") !== false) {
+            // Retirer le \n
+            $image_data = substr($image_data, 0, strpos($image_data, "\n"));
             break;
         }
     }
-
-    // Vérifier que ce n'est pas juste "null"
-    if ($image_data !== 'null' && strlen($image_data) > 10) {
+    
+    // Vérifier validité
+    if ($image_data !== '' && $image_data !== 'null' && strlen($image_data) > 10) {
         $_SESSION['photo'] = base64_encode($image_data);
     } else {
         unset($_SESSION['photo']);
     }
 } else {
     // Lire "null\n"
-    $null_response = fgets($socket, 10);
+    fgets($socket, 10);
     unset($_SESSION['photo']);
 }
 
@@ -96,7 +94,10 @@ $stmt->execute([":etape" => $etape, ":idCommande" => $idCommande]);
 
 $_SESSION['typeLivraison'] = $typeLivraison;
 
+// Fermer proprement
+fwrite($socket, "QUIT\n");
 fclose($socket);
 
 header('Location: views/frontoffice/commandes.php?idCommande=' . $idCommande);
 exit;
+?>
