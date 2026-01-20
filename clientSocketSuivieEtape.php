@@ -14,6 +14,9 @@ if (!$socket) {
     exit(1);
 }
 
+// Passer en mode binaire (important pour Windows, sans effet sur Linux)
+stream_set_blocking($socket, true);
+
 // Authentification
 fwrite($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e\n");
 $auth_response = fgets($socket, 1024);
@@ -27,6 +30,7 @@ $bordereau = trim($result['noBordereau']);
 
 // Envoyer STATUS
 fwrite($socket, "STATUS $bordereau\n");
+
 // LIRE LA LIGNE DE STATUT COMPLÈTE (jusqu'au \n)
 $text_line = fgets($socket, 4096);
 
@@ -36,7 +40,7 @@ if ($text_line === false) {
     exit(1);
 }
 
-// Parser les données (enlever le \n final)
+// Parser les données
 $status_parts = explode("|", rtrim($text_line));
 
 if (count($status_parts) < 7) {
@@ -56,34 +60,60 @@ $typeLivraison = $status_parts[6] ?? '';
 // LIRE LA PARTIE IMAGE/NULL
 if ($etape == '9' && $typeLivraison === 'ABSENT') {
     $image_data = '';
+    $buffer = '';
     
-    // Lire jusqu'au \n final
-    while (!feof($socket)) {
-        $chunk = fread($socket, 32768);
-        
-        if ($chunk === false || $chunk === '') {
-            break;
-        }
-        
-        $image_data .= $chunk;
-        
-        // Chercher le \n final
-        if (strpos($image_data, "\n") !== false) {
-            // Retirer le \n
-            $image_data = substr($image_data, 0, strpos($image_data, "\n"));
-            break;
-        }
-    }
+    // Stratégie: lire par blocs jusqu'à trouver le \n final
+    // L'image binaire peut contenir des \n, donc on ne peut pas utiliser fgets
     
-    // Vérifier validité
-    if ($image_data !== '' && $image_data !== 'null' && strlen($image_data) > 10) {
-        $_SESSION['photo'] = base64_encode($image_data);
-    } else {
+    // D'abord, lire jusqu'à trouver soit "null\n" soit des données binaires + \n final
+    $first_bytes = fread($socket, 4);
+    
+    if ($first_bytes === 'null') {
+        // Consommer le \n
+        fread($socket, 1);
         unset($_SESSION['photo']);
+    } else {
+        // C'est le début de l'image binaire
+        $image_data = $first_bytes;
+        
+        // Lire le reste de l'image
+        // Stratégie: lire jusqu'à timeout ou fermeture
+        stream_set_timeout($socket, 0, 100000); // 100ms timeout
+        
+        while (!feof($socket)) {
+            $chunk = fread($socket, 8192);
+            
+            if ($chunk === false || $chunk === '') {
+                break;
+            }
+            
+            $image_data .= $chunk;
+            
+            // Vérifier si on a le \n final
+            // L'image se termine par \n envoyé par le serveur
+            if (substr($image_data, -1) === "\n") {
+                // Retirer le \n final
+                $image_data = substr($image_data, 0, -1);
+                break;
+            }
+            
+            // Sécurité: si trop gros, arrêter
+            if (strlen($image_data) > 10000000) { // 10 MB max
+                break;
+            }
+        }
+        
+        // Vérifier validité
+        if (strlen($image_data) > 10) {
+            $_SESSION['photo'] = base64_encode($image_data);
+            error_log("Image reçue: " . strlen($image_data) . " octets");
+        } else {
+            unset($_SESSION['photo']);
+        }
     }
 } else {
     // Lire "null\n"
-    fgets($socket, 10);
+    fread($socket, 5); // "null\n"
     unset($_SESSION['photo']);
 }
 

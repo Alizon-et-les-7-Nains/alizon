@@ -7207,6 +7207,7 @@ dialog.reassort form input {
   width: calc(100% - 280px);
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin-left: 280px;
   overflow-x: hidden;
 }
@@ -7453,7 +7454,7 @@ dialog.reassort form input {
   margin-top: 1.5em;
 }
 .pageCatalogue .pagination {
-  margin: 80px 0;
+  margin: 20px 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -7467,11 +7468,11 @@ dialog.reassort form input {
   justify-content: center;
   align-items: center;
   padding: 0.3em;
-  min-width: 50px;
-  min-height: 50px;
+  min-width: 45px;
+  min-height: 45px;
   background-color: #273469;
   color: #fffefa;
-  border: 1px solid #6e6e6e;
+  border: 3px solid #000000;
   border-radius: 50%;
   text-decoration: none;
   font-size: 26px;
