@@ -2513,7 +2513,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: #252b56;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 2px solid rgba(37, 43, 86, 0.1);
+  border-bottom: 2px solid #252b56;
 }
 .pagePaiement .cart-items {
   max-height: 300px;
