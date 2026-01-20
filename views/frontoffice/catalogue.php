@@ -236,6 +236,8 @@ $cart = getCurrentCart($pdo, $idClient);
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
 <main class="pageCatalogue">
+    <aside class="fakePanneauGris"></aside>
+    </aside>
     <aside class="filter-sort">
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
