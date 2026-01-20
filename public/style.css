@@ -5742,7 +5742,7 @@ dialog.reassort form input {
 .pageProduit #quantite * {
   width: 90%;
 }
-.pageProduit #quantite form button {
+.pageProduit #quantite form button, .pageProduit #quantite button {
   width: 90%;
 }
 .pageProduit .boutonRose {
