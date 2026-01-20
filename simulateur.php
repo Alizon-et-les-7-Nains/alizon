@@ -1,7 +1,8 @@
 <?php
 // simulateur.php
+
 // 1. Connexion BDD
-$host = 'mariadb';
+$host = 'maraidb';
 $dbname = 'saedb';
 $user = 'sae';
 $pass = 'grognasseEtCompagnie';
@@ -147,7 +148,7 @@ foreach ($tous_colis as $col) {
                 break;
             case 2:
                 $type_livraison = 'ABSENT';
-                $photo_path = './images/imgBoiteAuxLettres.jpg'; // Mettre image boite aux lettres
+                $photo_path = './img.jpg'; // Mettre image boite aux lettres
                 break;
             case 3:
                 $type_livraison = 'REFUSE';

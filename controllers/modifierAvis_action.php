@@ -102,7 +102,7 @@ if (!empty($_FILES['url']['name'])) {
 
     $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
     $fileName = uniqid("avis_", true) . "." . $extension;
-    $filePath = $uploadDir . '/images/imageAvis/' . $fileName;
+    $filePath = $uploadDir . '/images/imagesAvis/' . $fileName;
 
     // Traitement de l'image
     try {
