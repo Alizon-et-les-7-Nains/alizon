@@ -1,5 +1,16 @@
-<?php require_once "../../controllers/prix.php" ?>
-<?php require_once "../../controllers/pdo.php" ?>
+<?php 
+// Inclusion des contrôleurs nécessaires pour la gestion des prix et de la base de données
+require_once "../../controllers/prix.php";
+require_once "../../controllers/pdo.php";
+
+// ============================================================================
+// PAGE DES MENTIONS LÉGALES, CGV ET CGU
+// ============================================================================
+// Cette page présente l'ensemble des conditions générales de vente (CGV),
+// conditions générales d'utilisation (CGU) et mentions légales du site Alizon.
+// Travail réalisé dans le cadre de la ressource R3.11 (Droit des contrats et RGPD)
+// ============================================================================
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -16,6 +27,9 @@
     <?php include "../../views/frontoffice/partials/headerConnecte.php"; ?>
 
     <main>
+        <!-- ========================================
+             SECTION 1 : CONDITIONS GÉNÉRALES DE VENTE
+             ======================================== -->
         <h1>Conditions générales de vente(CGV)</h1>
 
         <main>
@@ -41,6 +55,7 @@
                     <li>Vérification du récapitulatif et validation définitive (second clic formant le contrat)</li>
                 </ol>
 
+                <!-- Conformité avec l'article 1127-2 du Code civil -->
                 <h2>3 - Accusé de réception (Art. 1127-2)</h2>
                 <ul>
                     <li>Email immédiat de réception de commande</li>
@@ -53,6 +68,7 @@
                     Carte VISA sécurisée
                 </p>
 
+                <!-- Informations sur les zones et délais de livraison -->
                 <h2>5 - Livraison</h2>
                 <p>
                     <span>Zone</span> : France métropolitaine, Corse, Union Européenne
@@ -61,6 +77,7 @@
                     prix du produit
                 </p>
 
+                <!-- Conformité avec le Code de la consommation -->
                 <h2>6 - Droit de rétractation</h2>
                 <p>
                     Conformément au Code de la consommation, vous disposez d'un délai de 14 jours pour
@@ -87,6 +104,10 @@
                 </p>
             </section>
 
+            <!-- ========================================
+                 SECTION 2 : MENTIONS LÉGALES
+                 ======================================== -->
+            <!-- Conformité avec la Loi pour la Confiance dans l'Économie Numérique (LCEN 2004) -->
             <h1>Mentions légales (LCEN 2004)</h1>
             <section>
                 <h2>Éditeur du site</h2>
@@ -96,6 +117,7 @@
                     <li>Contact : contact@alizon.bzh — 02 96 00 00 00</li>
                 </ul>
 
+                <!-- Informations sur l'entreprise commanditaire du projet -->
                 <h2>Entreprise commanditaire</h2>
                 <ul>
                     <li><span>COBREC — SAS</span></li>
@@ -121,6 +143,11 @@
                     <li>Formulaire de contact : http://10.253.5.104/views/frontoffice/contact.php</li>
                 </ul>
             </section>
+
+            <!-- ========================================
+                 SECTION 3 : DONNÉES PERSONNELLES
+                 ======================================== -->
+            <!-- Conformité avec le Règlement Général sur la Protection des Données (RGPD 2018) -->
             <h1>Données personnelles (RGPD 2018)</h1>
             <section>
                 <h2>Données collectées</h2>
@@ -138,6 +165,7 @@
                 <h2>Réclamation</h2>
                 <p>Vous pouvez adresser une réclamation à la CNIL : www.cnil.fr</p>
 
+                <!-- Durées de conservation conformes au RGPD -->
                 <h2>Durées de conservation</h2>
                 <ul>
                     <li>Compte : 3 ans d'inactivité</li>
@@ -150,6 +178,10 @@
             </section>
 
 
+            <!-- ========================================
+                 SECTION 4 : PROPRIÉTÉ INTELLECTUELLE
+                 ======================================== -->
+            <!-- Conformité avec le Code de la Propriété Intellectuelle (CPI) -->
             <h1>Propriété intellectuelle (CPI)</h1>
             <section>
                 <p>Alizon est propriétaire et/ou dispose des autorisations nécessaires pour diffuser l'intégralité
@@ -173,7 +205,8 @@
                 </ul>
             </section>
 
-            <h1>Sécurité INFORMATIQUEinformatique (Art. 323 Code pénal)</h1>
+            <!-- Conformité avec l'article 323 du Code pénal -->
+            <h1>Sécurité informatique (Art. 323 Code pénal)</h1>
             <section>
                 <p>
                     <span>Interdictions</span> : intrusions, altération de données, perturbation du
@@ -186,6 +219,9 @@
             </section>
 
 
+            <!-- ========================================
+                 SECTION 5 : CONDITIONS GÉNÉRALES D'UTILISATION
+                 ======================================== -->
             <h1>Conditions générales d'utilisateurs (CGU)</h1>
             <section>
                 <h2>Accès</h2>
@@ -211,6 +247,7 @@
                 <h2>Avis clients</h2>
                 <p>Les avis sont modérés pour garantir respect et conformité.</p>
 
+                <!-- Limitation de responsabilité conformément au droit français -->
                 <h2>Limitation de responsabilité</h2>
                 <p>L'accès au site n'est pas garanti de manière continue. COBREC n'est responsable que des
                     dommages directs causés par un dysfonctionnement du site</p>

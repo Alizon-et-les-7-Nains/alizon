@@ -40,10 +40,22 @@ function getCurrentCart($pdo, $idClient) {
 
     if ($panier) {
         $idPanier = intval($panier['idPanier']);
-        $sql = "SELECT p.idProduit, p.nom, p.prix, p.stock, pa.quantiteProduit as qty, i.URL as img
+        $sql = "SELECT 
+                    p.idProduit, 
+                    p.nom, 
+                    p.prix, 
+                    p.stock, 
+                    pa.quantiteProduit as qty, 
+                    i.URL as img,
+                    COALESCE(r.tauxRemise, 0) as tauxRemise
                 FROM _produitAuPanier pa
                 JOIN _produit p ON pa.idProduit = p.idProduit
                 LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                LEFT JOIN (
+                    SELECT idProduit, tauxRemise 
+                    FROM _remise 
+                    WHERE CURDATE() BETWEEN debutRemise AND finRemise
+                ) r ON p.idProduit = r.idProduit
                 WHERE pa.idPanier = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$idPanier]);
@@ -223,13 +235,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
 $cart = getCurrentCart($pdo, $idClient);
 
-// Calculer totals
+// Calculer totals avec remises
 $sousTotal = 0;
+$remiseTotale = 0;
 $quantiteTotal = 0;
+
 foreach ($cart as $item) {
-    $sousTotal += $item['prix'] * $item['qty'];
+    $prixOriginal = $item['prix'] * $item['qty'];
+    $tauxRemise = floatval($item['tauxRemise'] ?? 0);
+    
+    if ($tauxRemise > 0) {
+        $montantRemise = $prixOriginal * ($tauxRemise / 100);
+        $prixApresRemise = $prixOriginal - $montantRemise;
+        $remiseTotale += $montantRemise;
+        $sousTotal += $prixApresRemise;
+    } else {
+        $sousTotal += $prixOriginal;
+    }
+    
     $quantiteTotal += $item['qty'];
 }
+
 $livraison = 5.99;
 $montantTTC = $sousTotal + $livraison;
 
@@ -250,7 +276,7 @@ $clientInfo = clientInformations($pdo, $idClient);
 <body class="pagePaiement">
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
-    <script>
+   <script>
     window.__PAYMENT_DATA__ = {
         cart: <?php 
             $formattedCart = [];
@@ -259,6 +285,11 @@ $clientInfo = clientInformations($pdo, $idClient);
                     'id' => strval($item['idProduit']),
                     'nom' => htmlspecialchars($item['nom']),
                     'prix' => floatval($item['prix']),
+                    'prixOriginal' => floatval($item['prix']),
+                    'prixApresRemise' => floatval($item['tauxRemise']) > 0 ? 
+                        floatval($item['prix']) * (1 - floatval($item['tauxRemise']) / 100) : 
+                        floatval($item['prix']),
+                    'tauxRemise' => floatval($item['tauxRemise'] ?? 0),
                     'qty' => intval($item['qty']),
                     'stock' => intval($item['stock']),
                     'img' => $item['img'] ?? '../../public/images/default.png'
@@ -268,6 +299,7 @@ $clientInfo = clientInformations($pdo, $idClient);
         ?>,
         totals: {
             sousTotal: <?php echo number_format($sousTotal, 2, '.', ''); ?>,
+            remiseTotale: <?php echo number_format($remiseTotale, 2, '.', ''); ?>,
             livraison: <?php echo number_format($livraison, 2, '.', ''); ?>,
             montantTTC: <?php echo number_format($montantTTC, 2, '.', ''); ?>
         }
@@ -391,44 +423,71 @@ $clientInfo = clientInformations($pdo, $idClient);
             </div>
 
             <aside class="order-summary">
-                <h3 class="summary-title">Récapitulatif</h3>
+    <h3 class="summary-title">Récapitulatif</h3>
 
-                <div class="cart-items">
-                    <?php if (empty($cart)): ?>
-                    <p>Votre panier est vide</p>
-                    <?php else: ?>
-                    <?php foreach ($cart as $item): ?>
-                    <div class="cart-item">
-                        <img class="item-image"
-                            src="<?php echo htmlspecialchars($item['img'] ?? '../../public/images/default.png'); ?>"
-                            alt="<?php echo htmlspecialchars($item['nom']); ?>">
-                        <div class="item-details">
-                            <div class="item-name"><?php echo htmlspecialchars($item['nom']); ?></div>
-                            <div class="item-meta">Quantité: <?php echo $item['qty']; ?></div>
-                        </div>
-                        <div class="item-price"><?php echo number_format($item['prix'] * $item['qty'], 2); ?> €</div>
-                    </div>
-                    <?php endforeach; ?>
-                    <?php endif; ?>
+    <div class="cart-items">
+        <?php if (empty($cart)): ?>
+        <p>Votre panier est vide</p>
+        <?php else: ?>
+        <?php foreach ($cart as $item): ?>
+        <?php 
+            $tauxRemise = floatval($item['tauxRemise'] ?? 0);
+            $prixOriginal = $item['prix'];
+            $prixApresRemise = $tauxRemise > 0 ? $prixOriginal * (1 - $tauxRemise / 100) : $prixOriginal;
+            $totalLigne = $prixApresRemise * $item['qty'];
+        ?>
+        <div class="cart-item">
+            <img class="item-image"
+                src="<?php echo htmlspecialchars($item['img'] ?? '../../public/images/default.png'); ?>"
+                alt="<?php echo htmlspecialchars($item['nom']); ?>">
+            <div class="item-details">
+                <div class="item-name"><?php echo htmlspecialchars($item['nom']); ?></div>
+                <div class="item-meta">
+                    Quantité: <?php echo $item['qty']; ?>
+                    <?php if ($tauxRemise > 0): ?>
+                                <br><span class="discount-badge">-<?php echo round($tauxRemise) . '%'; ?></span>
+                                <?php endif; ?>
                 </div>
-
-                <div class="summary-totals">
-                    <div class="total-row">
-                        <span>Sous-total</span>
-                        <span><?php echo number_format($sousTotal, 2); ?> €</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Livraison</span>
-                        <span><?php echo number_format($livraison, 2); ?> €</span>
-                    </div>
-                    <div class="total-row final">
-                        <span>Total</span>
-                        <span><?php echo number_format($montantTTC, 2); ?> €</span>
-                    </div>
+                <?php if ($tauxRemise > 0): ?>
+                <div class="item-price-original">
+                    <s><?php echo number_format($prixOriginal * $item['qty'], 2); ?> €</s>
                 </div>
+                <?php endif; ?>
+            </div>
+            <div class="item-price"><?php echo number_format($totalLigne, 2); ?> €</div>
+        </div>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
 
-                <button class="cta-button">Finaliser le paiement</button>
-            </aside>
+    <div class="summary-totals">
+        <?php if ($remiseTotale > 0): ?>
+        <div class="total-row">
+            <span>Total avant remise</span>
+            <span><?php echo number_format($sousTotal + $remiseTotale, 2); ?> €</span>
+        </div>
+        <div class="total-row discount-row">
+            <span>Remise</span>
+            <span>-<?php echo number_format($remiseTotale, 2); ?> €</span>
+        </div>
+        <?php endif; ?>
+        
+        <div class="total-row">
+            <span>Sous-total</span>
+            <span><?php echo number_format($sousTotal, 2); ?> €</span>
+        </div>
+        <div class="total-row">
+            <span>Livraison</span>
+            <span><?php echo number_format($livraison, 2); ?> €</span>
+        </div>
+        <div class="total-row final">
+            <span>Total</span>
+            <span><?php echo number_format($montantTTC, 2); ?> €</span>
+        </div>
+    </div>
+
+    <button class="cta-button">Finaliser le paiement</button>
+</aside>
         </div>
     </main>
 
