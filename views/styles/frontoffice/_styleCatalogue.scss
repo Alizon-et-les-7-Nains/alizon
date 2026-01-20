@@ -19,7 +19,7 @@
     .filter-sort{
         background-color: #e4d9ff;
         width: 240px; /* Largeur fixe au lieu de 22% */
-        height: 50%;
+        height: 60%;
         position: fixed;
         left: 0;
         z-index: 800;
@@ -370,45 +370,117 @@
         display: none;
     }
 
-/** ******************************************** */
-/** ******************************************** */
-/** ******************************************** */
-/** ******************************************** */
-/** ******************************************** */
-/** ******************************************** */
-/** ******************************************** */
-/** ******************************************** */
-/** ******************************************** */
-/** ******************************************** */
-/** ******************************************** */
-/** ******************************************** */
+    /** Media Queries */
+    /** Media Queries */
+    /** Media Queries */
+    /** Media Queries */
+    /** Media Queries */
+    /** Media Queries */
+    /** Media Queries */
+    /** Media Queries */
+    /** Media Queries */
+    /** Media Queries */
+
+    @media (max-width: 1024px) {
+        .filter-sort {
+            width: 200px;
+            padding: 10px;
+        }
+
+        .fakePanneauGris{
+            width: 200px;
+            padding: 10px;
+        }
+        
+        .products-section {
+            width: calc(100% - 220px);
+            margin-left: 220px;
+        }
+
+        .star{
+            width: 33px;
+            height: 33px;
+        }
+
+        .notation {
+            gap: 3px;
+            margin: 3px 0;
+        }
+
+        // Réduction des cartes
+        .listeArticle {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        .listeArticle article {
+            min-width: 180px;
+            max-width: 180px;
+            min-height: 220px;
+            max-height: 220px;
+        }
+
+        .listeArticle article .imgProduit {
+            max-width: 180px;
+            max-height: 100px;
+        }
+
+        .listeArticle article h2 {
+            font-size: 14px;
+        }
+
+        .prix h2 {
+            font-size: 28px;
+        }
+
+        .prix h3 {
+            font-size: 11px;
+        }
+
+        .prix h4 {
+            font-size: 12px;
+        }
+
+        .notation span {
+            font-size: 16px;
+        }
+
+        .notation .etoile {
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .filter-sort {
+            width: 190px;
+            padding: 5px;
+        }
+
+        .fakePanneauGris{
+            width: 195px;
+            padding: 5px;
+        }
+        
+        .products-section {
+            width: calc(100% - 200px);
+            margin-left: 200px;
+        }
+
+        .star{
+            width: 30px;
+            height: 30px;
+        }
+
+        .notation {
+            gap: 1px;
+            margin: 1px 0;
+        }
+    }
+
+/** Media Queries - Cartes produits, pagination et slider */
 
 @media (max-width: 1024px) {
-    .filter-sort {
-        width: 200px;
-        padding: 10px;
-    }
-
-    .fakePanneauGris {
-        width: 200px;
-        padding: 10px;
-    }
-    
-    .products-section {
-        width: calc(100% - 220px);
-        margin-left: 220px;
-    }
-
-    .star {
-        width: 33px;
-        height: 33px;
-    }
-
-    .notation {
-        gap: 3px;
-        margin: 3px 0;
-    }
-
+    // Cartes produits
     .listeArticle {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
@@ -450,6 +522,7 @@
         height: 18px;
     }
 
+    // Bannière promo
     .bannierePromo h1 {
         font-size: 14px;
         top: 23px;
@@ -465,6 +538,7 @@
         padding: 2px;
     }
 
+    // Pagination
     .pagination {
         margin-left: 20%;
         gap: 8px;
@@ -478,31 +552,7 @@
 }
 
 @media (max-width: 768px) {
-    .filter-sort {
-        width: 180px;
-        padding: 8px;
-    }
-
-    .fakePanneauGris {
-        width: 180px;
-        padding: 8px;
-    }
-    
-    .products-section {
-        width: calc(100% - 196px);
-        margin-left: 196px;
-    }
-
-    .star {
-        width: 30px;
-        height: 30px;
-    }
-
-    .notation {
-        gap: 2px;
-        margin: 2px 0;
-    }
-
+    // Cartes produits
     .listeArticle {
         grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     }
@@ -550,6 +600,7 @@
         font-size: 11px;
     }
 
+    // Bannière promo
     .bannierePromo h1 {
         font-size: 12px;
         top: 24px;
@@ -568,6 +619,7 @@
         height: 40px;
     }
 
+    // Pagination
     .pagination {
         margin-left: 15%;
         gap: 6px;
@@ -579,10 +631,7 @@
         font-size: 22px;
     }
 
-    .filter-sort form {
-        gap: 6px;
-    }
-
+    // Slider prix
     .slider-wrapper {
         height: 12px;
     }
@@ -609,84 +658,7 @@
 }
 
 @media (max-width: 580px) {
-    .btnToggleFilters {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        position: fixed;
-        z-index: 1100;
-        color: #273469;
-        border: 2px solid #273469;
-        border-radius: 8px;
-        background-color: $color-white;
-        padding: 10px 15px;
-        font-size: 14px;
-        font-weight: bold;
-        top: 215px;
-        left: 0;
-        width: 20%;
-        transition: all 0.3s ease;
-    }
-
-    .btnToggleFilters img {
-        width: 20px;
-        height: 20px;
-    }
-
-    #resultat {
-        margin-bottom: 0;
-        font-size: 12px;
-        position: relative;
-        top: 50px;
-    }
-
-    .filter-sort {
-        width: 100%;
-        max-width: 320px;
-        height: 100vh;
-        padding: 15px;
-        font-size: 14px;
-        left: -100%;
-        top: 0;
-        transition: left 0.3s ease;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-        z-index: 1000;
-        overflow-y: auto;
-    }
-
-    .fakePanneauGris {
-        width: 100%;
-        max-width: 320px;
-        height: 100vh;
-        padding: 15px;
-        font-size: 14px;
-        left: -100%;
-        top: 0;
-        transition: left 0.3s ease;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-        z-index: 700;
-    }
-
-    .filter-sort form {
-        margin-top: 50px;
-        gap: 8px;
-    }
-
-    .filter-sort form label {
-        margin-top: 0.5em;
-        font-size: 14px;
-    }
-
-    .filter-sort.active {
-        left: 0;
-    }
-    
-    .products-section {
-        width: 100%;
-        margin-left: 0;
-    }
-
+    // Cartes produits
     .listeArticle {
         grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
         gap: 8px;
@@ -742,6 +714,7 @@
         border-radius: 4px;
     }
 
+    // Bannière promo
     .bannierePromo h1 {
         font-size: 11px;
         top: 22px;
@@ -774,11 +747,7 @@
         height: 38px;
     }
 
-    .star {
-        width: 24px;
-        height: 24px;
-    }
-
+    // Pagination
     .pagination {
         position: relative;
         top: 50px;
@@ -794,16 +763,19 @@
         padding: 0.2em;
     }
 
+    // Slider prix
     .slider-wrapper {
         height: 10px;
     }
 
     .slider-track, .slider-range {
         height: 10px;
+        top: 10px;
     }
 
     input[type="range"] {
         height: 10px;
+        top: 10px;
     }
 
     input[type="range"]::-webkit-slider-thumb {
@@ -820,11 +792,6 @@
 
     .values {
         font-size: 13px;
-    }
-
-    .filter-sort form select {
-        font-size: 13px;
-        padding: 6px;
     }
 }
 }

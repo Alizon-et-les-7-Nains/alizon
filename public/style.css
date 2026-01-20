@@ -7206,7 +7206,7 @@ dialog.reassort form input {
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
   width: 240px; /* Largeur fixe au lieu de 22% */
-  height: 50%;
+  height: 60%;
   position: fixed;
   left: 0;
   z-index: 800;
@@ -7515,18 +7515,16 @@ dialog.reassort form input {
   display: none;
 }
 .pageCatalogue {
-  /** ******************************************** */
-  /** ******************************************** */
-  /** ******************************************** */
-  /** ******************************************** */
-  /** ******************************************** */
-  /** ******************************************** */
-  /** ******************************************** */
-  /** ******************************************** */
-  /** ******************************************** */
-  /** ******************************************** */
-  /** ******************************************** */
-  /** ******************************************** */
+  /** Media Queries */
+  /** Media Queries */
+  /** Media Queries */
+  /** Media Queries */
+  /** Media Queries */
+  /** Media Queries */
+  /** Media Queries */
+  /** Media Queries */
+  /** Media Queries */
+  /** Media Queries */
 }
 @media (max-width: 1024px) {
   .pageCatalogue .filter-sort {
@@ -7549,6 +7547,65 @@ dialog.reassort form input {
     gap: 3px;
     margin: 3px 0;
   }
+  .pageCatalogue .listeArticle {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  .pageCatalogue .listeArticle article {
+    min-width: 180px;
+    max-width: 180px;
+    min-height: 220px;
+    max-height: 220px;
+  }
+  .pageCatalogue .listeArticle article .imgProduit {
+    max-width: 180px;
+    max-height: 100px;
+  }
+  .pageCatalogue .listeArticle article h2 {
+    font-size: 14px;
+  }
+  .pageCatalogue .prix h2 {
+    font-size: 28px;
+  }
+  .pageCatalogue .prix h3 {
+    font-size: 11px;
+  }
+  .pageCatalogue .prix h4 {
+    font-size: 12px;
+  }
+  .pageCatalogue .notation span {
+    font-size: 16px;
+  }
+  .pageCatalogue .notation .etoile {
+    width: 18px;
+    height: 18px;
+  }
+}
+@media (max-width: 768px) {
+  .pageCatalogue .filter-sort {
+    width: 190px;
+    padding: 5px;
+  }
+  .pageCatalogue .fakePanneauGris {
+    width: 195px;
+    padding: 5px;
+  }
+  .pageCatalogue .products-section {
+    width: calc(100% - 200px);
+    margin-left: 200px;
+  }
+  .pageCatalogue .star {
+    width: 30px;
+    height: 30px;
+  }
+  .pageCatalogue .notation {
+    gap: 1px;
+    margin: 1px 0;
+  }
+}
+.pageCatalogue {
+  /** Media Queries - Cartes produits, pagination et slider */
+}
+@media (max-width: 1024px) {
   .pageCatalogue .listeArticle {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
@@ -7604,26 +7661,6 @@ dialog.reassort form input {
   }
 }
 @media (max-width: 768px) {
-  .pageCatalogue .filter-sort {
-    width: 180px;
-    padding: 8px;
-  }
-  .pageCatalogue .fakePanneauGris {
-    width: 180px;
-    padding: 8px;
-  }
-  .pageCatalogue .products-section {
-    width: calc(100% - 196px);
-    margin-left: 196px;
-  }
-  .pageCatalogue .star {
-    width: 30px;
-    height: 30px;
-  }
-  .pageCatalogue .notation {
-    gap: 2px;
-    margin: 2px 0;
-  }
   .pageCatalogue .listeArticle {
     grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   }
@@ -7684,9 +7721,6 @@ dialog.reassort form input {
     min-height: 38px;
     font-size: 22px;
   }
-  .pageCatalogue .filter-sort form {
-    gap: 6px;
-  }
   .pageCatalogue .slider-wrapper {
     height: 12px;
   }
@@ -7708,75 +7742,6 @@ dialog.reassort form input {
   }
 }
 @media (max-width: 580px) {
-  .pageCatalogue .btnToggleFilters {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    position: fixed;
-    z-index: 1100;
-    color: #273469;
-    border: 2px solid #273469;
-    border-radius: 8px;
-    background-color: #fffefa;
-    padding: 10px 15px;
-    font-size: 14px;
-    font-weight: bold;
-    top: 215px;
-    left: 0;
-    width: 20%;
-    transition: all 0.3s ease;
-  }
-  .pageCatalogue .btnToggleFilters img {
-    width: 20px;
-    height: 20px;
-  }
-  .pageCatalogue #resultat {
-    margin-bottom: 0;
-    font-size: 12px;
-    position: relative;
-    top: 50px;
-  }
-  .pageCatalogue .filter-sort {
-    width: 100%;
-    max-width: 320px;
-    height: 100vh;
-    padding: 15px;
-    font-size: 14px;
-    left: -100%;
-    top: 0;
-    transition: left 0.3s ease;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    overflow-y: auto;
-  }
-  .pageCatalogue .fakePanneauGris {
-    width: 100%;
-    max-width: 320px;
-    height: 100vh;
-    padding: 15px;
-    font-size: 14px;
-    left: -100%;
-    top: 0;
-    transition: left 0.3s ease;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-    z-index: 700;
-  }
-  .pageCatalogue .filter-sort form {
-    margin-top: 50px;
-    gap: 8px;
-  }
-  .pageCatalogue .filter-sort form label {
-    margin-top: 0.5em;
-    font-size: 14px;
-  }
-  .pageCatalogue .filter-sort.active {
-    left: 0;
-  }
-  .pageCatalogue .products-section {
-    width: 100%;
-    margin-left: 0;
-  }
   .pageCatalogue .listeArticle {
     grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
     gap: 8px;
@@ -7848,10 +7813,6 @@ dialog.reassort form input {
     width: 38px;
     height: 38px;
   }
-  .pageCatalogue .star {
-    width: 24px;
-    height: 24px;
-  }
   .pageCatalogue .pagination {
     position: relative;
     top: 50px;
@@ -7870,9 +7831,11 @@ dialog.reassort form input {
   }
   .pageCatalogue .slider-track, .pageCatalogue .slider-range {
     height: 10px;
+    top: 10px;
   }
   .pageCatalogue input[type=range] {
     height: 10px;
+    top: 10px;
   }
   .pageCatalogue input[type=range]::-webkit-slider-thumb {
     width: 16px;
@@ -7886,10 +7849,6 @@ dialog.reassort form input {
   }
   .pageCatalogue .values {
     font-size: 13px;
-  }
-  .pageCatalogue .filter-sort form select {
-    font-size: 13px;
-    padding: 6px;
   }
 }
 
