@@ -421,7 +421,6 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php if ($page > 1): ?>
                     <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>">« Précédent</a>
                 <?php endif; ?>
-
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
                     <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
                 <?php endfor; ?>
