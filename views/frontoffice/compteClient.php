@@ -8,14 +8,16 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// On récupère l'id du client
 $id_client = $_SESSION['user_id'];
 
+// On récupère l'id de son adresse
 $stmt = $pdo->prepare("SELECT idAdresse FROM saedb._client WHERE idClient = :idClient");
 $stmt->execute([":idClient" => $id_client]);
 $client = $stmt->fetch(PDO::FETCH_ASSOC);
 $idAdresse = $client['idAdresse'] ?? null;
 
-
+// Si il n'a pas d'adresse on lui en créer une à null 
 if (!$idAdresse) {
     $pdo->prepare("
         INSERT INTO saedb._adresseClient 
@@ -25,6 +27,7 @@ if (!$idAdresse) {
 
     $idAdresse = $pdo->lastInsertId();
 
+    // Si il en a une on fait juste un update 
     $pdo->prepare("
         UPDATE saedb._client 
         SET idAdresse = :idAdresse 
@@ -37,6 +40,7 @@ if (!$idAdresse) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // on récupère toutes les infos du formulaire
     $pseudo        = $_POST['pseudo'];
     $nom           = $_POST['nom'];
     $prenom        = $_POST['prenom'];
@@ -49,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pays          = $_POST['pays'];
     $ville         = $_POST['ville'];
 
+    // Pour modifier les anciennes infos par les nouvelles
     $stmt = $pdo->prepare("
         UPDATE saedb._client 
         SET pseudo = :pseudo,
@@ -98,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
     $AncienneExtension = '';
 
+    // On parcourt toutes les extensions possibles
     foreach ($extensionsPossibles as $ext) {
         if (file_exists($photoPath . '.' . $ext)) {
             $AncienneExtension = '.' . $ext;
@@ -105,15 +111,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-
+    // Vérifie si un fichier a été envoyé via le formulaire et qu'il n'est pas vide
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+            
+        // Si une ancienne photo existe, on la supprime pour la remplacer
         if (file_exists($photoPath . $AncienneExtension)) {
             unlink($photoPath . $AncienneExtension); 
         }
+        // Récupère l'extension du nouveau fichier
         $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
         $extension = '.'.$extension;
+
+        // Déplace le fichier temporaire téléchargé vers le dossier des photos de profil
         move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
     } else {
+        // Si aucun nouveau fichier n'est envoyé, on garde l'extension de l'ancienne photo
         $extension = $AncienneExtension;
     }   
 
@@ -159,8 +171,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="photo-container">
                     <?php 
                         if (file_exists($photoPath.$extension)) {
+                            // On affiche la photo de profil
                             echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'?v='.time().'" alt="photoProfil" id="imageProfile">';
                         } else {
+                            // Si il en a pas celle par defaut
                             echo '<img src="../../public/images/profil.png?v='.time().'" alt="photoProfil" id="imageProfile">';
                         }
                     ?>

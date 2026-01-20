@@ -17,6 +17,8 @@ function changeColor(elem){
     elem.style.backgroundColor = "green";
 }
 
+
+// On change la couleur du rond, du demi trait ou trait en vert en fonction de l'étape
 for (let i = 1; i <= etape; i++) {
     switch (i) {
         case 1:
