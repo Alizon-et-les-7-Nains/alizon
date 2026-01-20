@@ -1,14 +1,13 @@
 <?php
 require_once __DIR__ . '/../../controllers/pdo.php';
 
+//On récupère le tableau stocker dans la session avec l'id et la destination de notre commande
 $tabIdDestination = $_SESSION['tabIdDestination'];
-// auto_test.php
 
-// Utilisation
 $host = 'web';
 $port = 8080;
 
-// Connexion persistante
+// Connexion au socket
 $socket = @fsockopen($host, $port, $errno, $errstr, 5);
 
 if (!$socket) {
@@ -17,24 +16,21 @@ if (!$socket) {
     exit(1);
 }
 
-// Test 1: Authentification
-//echo "Test AUTH:\n";
+//Authentification avec le mdp hashé d'alizon
 fwrite($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e");
 $auth_response = fgets($socket, 1024);
-//echo "Réponse: $auth_response\n\n";
 
-// Test 2: Création
-//echo "Test CREATE:\n";
-
+//Création d'un numéro de bordereau avec notre numéro de commande et notre destination
 fwrite($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"]);
 $create_response = fgets($socket, 1024);
+//On reçoit une réponse du service qui nous renvoie un numéro de bordereau unique associé à notre commande 
+//On ajoute ce dernier dans notre table _commande
 $sql = "UPDATE _commande SET noBordereau = :noBordereau WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDestination[0]["idCommande"]]);
-//echo "Réponse: $create_response\n\n";
 
-fwrite($socket, "QUIT");
 // Fermeture de la connexion
+fwrite($socket, "QUIT");
 fclose($socket);
 
 header('Location: ../../views/frontoffice/commandes.php');
