@@ -7207,7 +7207,6 @@ dialog.reassort form input {
   width: calc(100% - 280px);
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin-left: 280px;
   overflow-x: hidden;
 }
@@ -7462,6 +7461,7 @@ dialog.reassort form input {
   gap: 10px;
   padding: 1em;
   width: fit-content;
+  margin-left: 30%;
 }
 .pageCatalogue .pagination a {
   display: flex;
