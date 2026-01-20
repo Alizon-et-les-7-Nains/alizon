@@ -7,6 +7,7 @@ class PaymentAPI {
   // Mise à jour de la quantité d'un produit (delta = +1 ou -1)
   static async updateQuantity(idProduit, delta) {
     try {
+
       // Requête envoyée en POST avec un encodage x-www-form-urlencoded
       const response = await fetch("", {
         method: "POST",
@@ -26,11 +27,6 @@ class PaymentAPI {
       // Convertit la réponse en JSON
       const result = await response.json();
 
-      // Debug : affiche le résultat complet dans la console
-      var debug = JSON.stringify(result);
-      console.log("Résultat de la mise à jour:", debug);
-      console.log("Produit ID:", idProduit, "Delta:", delta);
-
       // Si le backend renvoie success=true, on recharge la page pour afficher les nouvelles quantités
       if (result.success) {
         window.location.reload();
@@ -41,6 +37,11 @@ class PaymentAPI {
       console.error("Erreur lors de la mise à jour:", error);
       alert("Erreur réseau lors de la mise à jour");
     }
+
+          // Debug : affiche le résultat complet dans la console
+      var debug = JSON.stringify(result);
+      console.log("Résultat de la mise à jour:", debug);
+      console.log("Produit ID:", idProduit, "Delta:", delta);
   }
 
   // Suppression d'un produit du panier
