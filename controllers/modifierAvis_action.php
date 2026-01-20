@@ -104,6 +104,7 @@ if (!empty($_FILES['url']['name'])) {
     $fileName = uniqid("avis_", true) . "." . $extension;
     $filePath = $uploadDir . '/' . $fileName;
 
+    // Traitement de l'image
     try {
         treat($_FILES['url']['tmp_name'], $filePath);
     } catch (Exception $e) {
@@ -113,7 +114,7 @@ if (!empty($_FILES['url']['name'])) {
     }
 
     // URL stockée en base
-    $imageUrl = "/images/imagesAvis/" . $fileName;
+    $imageUrl = "/$fileName";
 
     // Vérifier si une image existe déjà
     $stmtImg = $pdo->prepare("

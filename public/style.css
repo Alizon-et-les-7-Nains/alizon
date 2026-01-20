@@ -5742,7 +5742,7 @@ dialog.reassort form input {
 .pageProduit #quantite * {
   width: 90%;
 }
-.pageProduit #quantite form button {
+.pageProduit #quantite form button, .pageProduit #quantite button {
   width: 90%;
 }
 .pageProduit .boutonRose {
@@ -5752,6 +5752,10 @@ dialog.reassort form input {
 .pageProduit .boutonBleu {
   background-color: #273469;
   color: #fffefa;
+}
+.pageProduit .boutonGrisé {
+  background-color: grey;
+  color: white;
 }
 .pageProduit .boutonCommentaire {
   display: inline-block;
@@ -5960,8 +5964,8 @@ dialog.reassort form input {
   background-color: #e4d9ff;
   border-radius: 16px;
   padding: 1em;
-  margin-top: -1em;
-  margin-left: 6em;
+  margin-top: -0.5em;
+  margin-left: 5.5em;
 }
 .pageProduit .carousel-container {
   position: relative;

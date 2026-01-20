@@ -330,7 +330,7 @@
     width: 90%;
   }
 
-  #quantite form button {
+  #quantite form button, #quantite button {
     width: 90%;
   }
 
@@ -342,6 +342,11 @@
   .boutonBleu {
     background-color: $color-blue;
     color: $color-white;
+  }
+
+  .boutonGrisé {
+    background-color: grey;
+    color: white;
   }
 
   .boutonCommentaire {
@@ -590,8 +595,8 @@
     background-color: $color-pastel-purple;
     border-radius: 16px;
     padding: 1em;
-    margin-top: -1em;
-    margin-left: 6em;
+    margin-top: -0.5em;
+    margin-left: 5.5em;
   }
 
   .carousel-container {
