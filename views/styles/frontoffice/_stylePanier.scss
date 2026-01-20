@@ -31,7 +31,6 @@
   }
   .listeProduit article .imgProduit {
     display: flex;
-    width: 200px;
   }
   .prixOpt {
     display: flex;
@@ -44,11 +43,7 @@
     font-weight: bold;
     margin-top: 15px;
   }
-  .prix-remise {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-  }
+
   .listeProduit div {
     margin: 0px 15px;
   }
@@ -62,7 +57,7 @@
       align-items: flex-start;
       justify-content: space-around;
       height: 180px;
-      width: -webkit-fill-available;
+      width: 300px;
       margin-left: 40px;
   }
   .infoProduit img {
@@ -167,8 +162,11 @@
       .recapPanier {
         align-items: stretch;
       }
+      .infoProduit {
+        width: unset;
+      }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 767px) {
     .listeProduit article {
         border: none;
         padding: none;
@@ -177,7 +175,7 @@
       display: none;
     }
     .listeProduit article img {
-      max-height: 100px;
+      max-height: 180px;
       margin: 0px 10px;
     }
     .infoProduit div h2 {
@@ -209,9 +207,6 @@
     }
     button .delete {
       margin-top: 20px;
-    }
-    .prix-remise {
-      font-size: 18px;
     }
   }
   button {
