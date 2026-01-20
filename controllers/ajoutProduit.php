@@ -12,13 +12,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description = $_POST['description'];
     $mots_cles = $_POST['mots_cles'];
     $categorie = $_POST['idCategorie'];
+
+    if($categorie){
+        $sql="SELECT nomCategorie FROM _categorie WHERE idCategorie = :categorie";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':categorie' => $categorie]);
+        $nomCategorie = $stmt->fetchColumn();
+    }
+
     try {
         $pdo->beginTransaction();
 
         // Insertion dans _produit
         $sql = "INSERT INTO _produit 
-            (nom, prix, poids, description, mots_cles, idVendeur, stock, versionProd, note, seuilAlerte, enVente, idCategorie) 
-            VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur, :stock, :versionProd, :note, :seuilAlerte, :enVente, :idCategorie)";
+            (nom, prix, poids, description, mots_cles, idVendeur, stock, versionProd, typeProd, note, seuilAlerte, enVente, idCategorie) 
+            VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur, :stock, :versionProd, :typeProd, :note, :seuilAlerte, :enVente, :idCategorie)";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -30,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':idVendeur' => $_SESSION['id'],
             ':stock' => 0,
             ':versionProd' => 1.0,
+            ':typeProd' => $nomCategorie,
             ':note' => 0.0,
             ':seuilAlerte' => 0,
             ':enVente' => 0,
