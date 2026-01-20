@@ -366,7 +366,7 @@ if (isset($_SESSION['message_panier'])) {
                          class="carousel-image <?php echo $index === 0 ? 'active' : ''; ?>">
                 <?php endforeach; ?>
             <?php else: ?>
-                <img src="../../public/images/placeholder.jpg" alt="Pas d'image trouvée" class="carousel-image active">
+                <img src="../../public/images/defaultImageProduit.png" alt="Pas d'image trouvée" class="carousel-image active">
             <?php endif; ?>
         </div>
         <div id="lesCercles" class="carousel-indicators">
@@ -421,7 +421,6 @@ if (isset($_SESSION['message_panier'])) {
     </article>
     <article class="actionsProduit">
         <h2>Vendu par <?php echo htmlspecialchars($produit['raisonSocial']); ?></h2>
-        <p class="underline" id="plusDarticles"><a href="">Plus d'article de ce vendeur</a></p>
         <br>
         <hr>
         <div class="ligneActions">

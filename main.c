@@ -174,33 +174,41 @@ MYSQL* config_BD() {
  * num_bordereau_unique() - Génère un numéro de bordereau aléatoire à 10 chiffres
  */
 long long num_bordereau_unique() {
-    long long num = 0;
-    
+    unsigned long long num = 0;
+
     // Utiliser /dev/urandom pour une vraie aléatoire
     FILE *urandom = fopen("/dev/urandom", "rb");
     if (urandom) {
         unsigned char bytes[8];
-        fread(bytes, 1, 8, urandom);
+        size_t bytes_read = fread(bytes, 1, 8, urandom);
+        (void)bytes_read;
         fclose(urandom);
-        
-        // Générer un nombre entre 1000000000 et 9999999999
+
+        // Construire un nombre positif
         for (int i = 0; i < 8; i++) {
             num = (num << 8) | bytes[i];
         }
-        num = (num % 9000000000LL) + 1000000000LL;
+
+        // Forcer à être entre 1000000000 et 9999999999 (10 chiffres)
+        num = (num % 9000000000ULL) + 1000000000ULL;
     } else {
-        // Fallback sur rand() avec microseconde + PID
+        // Fallback sur rand() avec seed amélioré
         struct timespec ts;
         clock_gettime(CLOCK_REALTIME, &ts);
         srand(ts.tv_nsec ^ getpid());
-        
-        num = 1000000000LL;
+
+        num = 0;
         for (int i = 0; i < 10; i++) {
-            num = num * 10 / 10 + (rand() % 10) * (long long)pow(10, 9 - i);
+            num = num * 10 + (rand() % 10);  // ← Ajout du *
+        }
+
+        // S'assurer qu'on a bien 10 chiffres
+        if (num < 1000000000ULL) {
+            num += 1000000000ULL;
         }
     }
-    
-    return num;
+
+    return (long long)num;
 }
 /**
  * get_capacite_actuelle() - Récupère le nombre de colis actuellement dans la file
@@ -538,14 +546,24 @@ void create(struct ClientSession *session, int commande_id, char *destination,
     } 
     // 6. Si capacité pleine, mettre en file d'attente
     else {
+        // Échapper le username aussi
+        char escaped_username[100];
+        mysql_real_escape_string(conn, escaped_username, session->username, strlen(session->username));
+        
         snprintf(query, sizeof(query),
-                 "INSERT INTO _delivraptor_queue (noCommande, destination, numBordereau) "
-                 "VALUES (%d, '%s', %lld)",
-                 commande_id, escaped_destination, new_bordereau);
+                "INSERT INTO _delivraptor_queue (noCommande, destination, numBordereau, username) "
+                "VALUES (%d, '%s', %lld, '%s')",
+                commande_id, escaped_destination, new_bordereau, escaped_username);
         
         if (mysql_query(conn, query)) {
-            snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT\n");
+            snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT %s\n", mysql_error(conn));
             send(session->client_socket, response, strlen(response), 0);
+            
+            // Log l'erreur détaillée
+            char log_msg[512];
+            snprintf(log_msg, sizeof(log_msg), "Erreur insertion queue: %s", mysql_error(conn));
+            write_log(config.log_file, session->client_ip, session->client_port,
+                    session->username, "CREATE_ERROR", log_msg);
             return;
         }
         
@@ -553,10 +571,10 @@ void create(struct ClientSession *session, int commande_id, char *destination,
         
         char log_msg[256];
         snprintf(log_msg, sizeof(log_msg), 
-                 "Bordereau %lld créé pour commande %d (mis en file d'attente - capacité: %d/%d)", 
-                 new_bordereau, commande_id, current_load, config.capacity);
+                "Bordereau %lld créé pour commande %d (mis en file d'attente - capacité: %d/%d)", 
+                new_bordereau, commande_id, current_load, config.capacity);
         write_log(config.log_file, session->client_ip, session->client_port,
-                  session->username, "CREATE", log_msg);
+                session->username, "CREATE", log_msg);
     }
     
     send(session->client_socket, response, strlen(response), 0);

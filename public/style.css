@@ -2333,7 +2333,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 12px;
   padding: 32px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(37, 43, 86, 0.08);
+  border: 2px solid #252b56;
   transition: all 0.3s ease;
 }
 @media (max-width: 720px) {
@@ -2407,7 +2407,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .pagePaiement input[type=text] {
   padding: 14px 16px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid #252b56;
   border-radius: 8px;
   font-family: "lora", serif;
   font-size: 15px;
@@ -2500,7 +2500,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 12px;
   padding: 28px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(37, 43, 86, 0.08);
+  border: 2px solid #252b56;
 }
 @media (max-width: 920px) {
   .pagePaiement .order-summary {
@@ -2513,7 +2513,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: #252b56;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 2px solid rgba(37, 43, 86, 0.1);
+  border-bottom: 2px solid #252b56;
 }
 .pagePaiement .cart-items {
   max-height: 300px;
@@ -7453,14 +7453,34 @@ dialog.reassort form input {
   margin-top: 1.5em;
 }
 .pageCatalogue .pagination {
-  margin: 80px 0;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 1em;
+  width: fit-content;
+  margin-left: 30%;
+}
+.pageCatalogue .pagination a, .pageCatalogue .pagination span {
   display: flex;
   justify-content: center;
-  gap: 10px;
-}
-.pageCatalogue .pagination a {
-  border: 2px solid black;
+  align-items: center;
+  padding: 0.3em;
+  min-width: 45px;
+  min-height: 45px;
+  background-color: #273469;
+  color: #fffefa;
+  border: 2px solid #000000;
+  border-radius: 50%;
   text-decoration: none;
+  font-size: 26px;
+  font-family: "berkshire", serif;
+}
+.pageCatalogue .pagination span.disabled {
+  background-color: #cccccc;
+  color: #666666;
 }
 .pageCatalogue .btnToggleFilters {
   display: none;

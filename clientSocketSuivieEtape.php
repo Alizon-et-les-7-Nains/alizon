@@ -14,6 +14,9 @@ if (!$socket) {
     exit(1);
 }
 
+// Passer en mode binaire (important pour Windows, sans effet sur Linux)
+stream_set_blocking($socket, true);
+
 // Authentification
 fwrite($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e\n");
 $auth_response = fgets($socket, 1024);
@@ -23,32 +26,28 @@ $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":idCommande" => $idCommande]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-$bordereau = $result['noBordereau'];
+$bordereau = trim($result['noBordereau']);
 
 // Envoyer STATUS
 fwrite($socket, "STATUS $bordereau\n");
 
-// 1. LIRE TOUTE LA LIGNE TEXTE JUSQU'AU 7E PIPE
-$text_line = '';
-$pipe_count = 0;
+// LIRE LA LIGNE DE STATUT COMPLÈTE (jusqu'au \n)
+$text_line = fgets($socket, 4096);
 
-while (!feof($socket)) {
-    $char = fgetc($socket);
-    if ($char === false) break;
-    
-    $text_line .= $char;
-    
-    if ($char === '|') {
-        $pipe_count++;
-    }
-    
-    if ($pipe_count === 7) {
-        break;
-    }
+if ($text_line === false) {
+    fclose($socket);
+    echo "ERREUR: Pas de réponse du serveur\n";
+    exit(1);
 }
 
-//faire un tableau avec les parties
-$status_parts = explode("|", rtrim($text_line, '|'));
+// Parser les données
+$status_parts = explode("|", rtrim($text_line));
+
+if (count($status_parts) < 7) {
+    fclose($socket);
+    echo "ERREUR: Format de réponse invalide\n";
+    exit(1);
+}
 
 $bordereau_recu = $status_parts[0];
 $commande = $status_parts[1];
@@ -58,33 +57,63 @@ $etape = $status_parts[4];
 $date_etape = $status_parts[5];
 $typeLivraison = $status_parts[6] ?? '';
 
-$image_data = '';
+// LIRE LA PARTIE IMAGE/NULL
 if ($etape == '9' && $typeLivraison === 'ABSENT') {
+    $image_data = '';
+    $buffer = '';
     
+    // Stratégie: lire par blocs jusqu'à trouver le \n final
+    // L'image binaire peut contenir des \n, donc on ne peut pas utiliser fgets
     
-    // Lire jusqu'au \n final
-    while (!feof($socket)) {
-        $chunk = fread($socket, 8192);
-        if ($chunk === false) break;
-        
-        $image_data .= $chunk;
-        
-        // Vérifier si on a atteint le \n final
-        if (substr($image_data, -1) === "\n") {
-            $image_data = substr($image_data, 0, -1); // Retirer le \n
-            break;
-        }
-    }
+    // D'abord, lire jusqu'à trouver soit "null\n" soit des données binaires + \n final
+    $first_bytes = fread($socket, 4);
     
-    // Vérifier que ce n'est pas juste "null"
-    if ($image_data !== 'null' && strlen($image_data) > 10) {
-        $_SESSION['photo'] = base64_encode($image_data);
-    } else {
+    if ($first_bytes === 'null') {
+        // Consommer le \n
+        fread($socket, 1);
         unset($_SESSION['photo']);
+    } else {
+        // C'est le début de l'image binaire
+        $image_data = $first_bytes;
+        
+        // Lire le reste de l'image
+        // Stratégie: lire jusqu'à timeout ou fermeture
+        stream_set_timeout($socket, 0, 100000); // 100ms timeout
+        
+        while (!feof($socket)) {
+            $chunk = fread($socket, 8192);
+            
+            if ($chunk === false || $chunk === '') {
+                break;
+            }
+            
+            $image_data .= $chunk;
+            
+            // Vérifier si on a le \n final
+            // L'image se termine par \n envoyé par le serveur
+            if (substr($image_data, -1) === "\n") {
+                // Retirer le \n final
+                $image_data = substr($image_data, 0, -1);
+                break;
+            }
+            
+            // Sécurité: si trop gros, arrêter
+            if (strlen($image_data) > 10000000) { // 10 MB max
+                break;
+            }
+        }
+        
+        // Vérifier validité
+        if (strlen($image_data) > 10) {
+            $_SESSION['photo'] = base64_encode($image_data);
+            error_log("Image reçue: " . strlen($image_data) . " octets");
+        } else {
+            unset($_SESSION['photo']);
+        }
     }
 } else {
     // Lire "null\n"
-    $null_response = fgets($socket, 10);
+    fread($socket, 5); // "null\n"
     unset($_SESSION['photo']);
 }
 
@@ -95,6 +124,8 @@ $stmt->execute([":etape" => $etape, ":idCommande" => $idCommande]);
 
 $_SESSION['typeLivraison'] = $typeLivraison;
 
+// Fermer proprement
+fwrite($socket, "QUIT\n");
 fclose($socket);
 
 header('Location: views/frontoffice/commandes.php?idCommande=' . $idCommande);
