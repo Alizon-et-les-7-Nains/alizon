@@ -26,6 +26,11 @@ class PaymentAPI {
       // Convertit la réponse en JSON
       const result = await response.json();
 
+      // Debug : affiche le résultat complet dans la console
+      var debug = JSON.stringify(result);
+      console.log("Résultat de la mise à jour:", debug);
+      console.log("Produit ID:", idProduit, "Delta:", delta);
+
       // Si le backend renvoie success=true, on recharge la page pour afficher les nouvelles quantités
       if (result.success) {
         window.location.reload();
