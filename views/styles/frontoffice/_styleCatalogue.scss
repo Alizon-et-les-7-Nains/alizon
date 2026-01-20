@@ -338,12 +338,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 1em;
-        min-width: 50px;
-        min-height: 50px;
+        padding: 0.2em;
+        min-width: 35px;
+        min-height: 35px;
         background-color: $color-blue;
         color: $color-white;
-        border: 1px solid $color-dark-gray;
+        border: 3px solid #000000;
         border-radius: 50%;
         text-decoration: none;
         font-size: 26px;

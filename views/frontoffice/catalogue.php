@@ -218,7 +218,7 @@ $cart = getCurrentCart($pdo, $idClient);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogue</title>
+    <title>Alizon - Catalogue</title>
     <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
     <style>
@@ -418,15 +418,11 @@ $cart = getCurrentCart($pdo, $idClient);
         </section>
         <div class="pagination">
             <?php if ($nbPages > 1): ?>
-                <?php if ($page > 1): ?>
-                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>">« Précédent</a>
-                <?php endif; ?>
+                <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>">« Précédent</a>
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
+                <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
                 <?php endfor; ?>
-                <?php if ($page < $nbPages): ?>
-                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
-                <?php endif; ?>
+                <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
             <?php endif; ?>
         </div>
     </div>
