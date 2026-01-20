@@ -78,4 +78,13 @@ loupe.addEventListener('click', () => {
     const recherche = searchbar.value;
     window.location.href = `catalogue.php?search=${encodeURIComponent(recherche)}`;
 });
+
+// Cliquer sur "entrée" dans la barre de recherche déclenche la recherche
+window.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" && document.activeElement === searchbar) {
+        event.preventDefault();
+        searchQuery = searchbar.value.trim();
+        loadProduits(1);
+    }
+});
 </script>

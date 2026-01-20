@@ -1,6 +1,10 @@
 <?php 
 // Initialisation de la connexion avec le serveur / BDD
+
+use function Composer\Autoload\includeFile;
+
 include "../../controllers/pdo.php";
+include "../catalogue.php";
 
 // Récupération de toutes les catégories de produits distinctes pour le menu de navigation
 $query = $pdo->prepare("SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;");
@@ -21,10 +25,11 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- Barre de recherche de produits -->
+        <!-- Barre de recherche de produits -->
         <div class="searchBar">
             <div class="search-wrapper">
-                <i id="validerRecherche" class="bi bi-search"></i>
                 <input type="search" name="recherche" id="searchbar" placeholder="Rechercher">
+                <img id ="recherche" src="../../../public/images/searchDarkBlue.svg" alt="">
             </div>
         </div>
 
@@ -63,4 +68,25 @@ function menuBurger() {
     var burgerIcon = document.getElementById("burgerIcon");
     burgerIcon.style.display = (burgerIcon.style.display === "flex") ? "none" : "flex";
 }
+
+// Gestion de la recherche via l'icône loupe
+const loupe = document.getElementById('recherche');
+const searchbar = document.getElementById('searchbar');
+
+// Redirection vers la page catalogue avec le terme de recherche
+loupe.addEventListener('click', () => {
+    event.preventDefault();
+    searchQuery = searchbar.value.trim();
+    window.location.href = `catalogue.php?search=${encodeURIComponent(searchQuery)}`;
+});
+
+// Cliquer sur "entrée" dans la barre de recherche déclenche la recherche
+window.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" && document.activeElement === searchbar) {
+        event.preventDefault();
+        searchQuery = searchbar.value.trim();
+        window.location.href = `catalogue.php?search=${encodeURIComponent(searchQuery)}`;
+    }
+});
+
 </script>
