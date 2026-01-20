@@ -236,6 +236,10 @@ $cart = getCurrentCart($pdo, $idClient);
             <label for="tri">Trier par note minimale :</label>
             <article class="triNote">
                 <div>
+                    <input type="radio" id="aucunTri" name="tri">
+                    <label for="aucunTri">Note croissante</label>
+                </div>
+                <div>
                     <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
                     <label for="triNoteCroissant">Note croissante</label>
                 </div>
@@ -399,7 +403,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         <?php if(number_format($value['stock'], 1) == 0) { ?>
                             <b style="color: red; margin-right: 5px;">Aucun stock</b>
                         <?php } else { ?>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" data-stock="<?= intval($value['stock']) ?>">
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                         <?php } ?>
@@ -442,9 +446,10 @@ const minValue = document.getElementById('minValue');
 const maxValue = document.getElementById('maxValue');
 const range = document.getElementById('range');
 
-// Tri notes
+// Tri
 const triNoteCroissant = document.getElementById('triNoteCroissant');
 const triNoteDecroissant = document.getElementById('triNoteDecroissant');
+const aucunTri = document.getElementById('aucunTri');
 let sortOrder = '';
 
 // Variables globales
@@ -586,6 +591,12 @@ sliderMax.addEventListener('input', () => {
     loadProduits(1); 
 });
 
+aucunTri.addEventListener('change', () => {
+    if (aucunTri.checked) {
+        sortOrder = '';
+        loadProduits(1);
+    }
+});
 
 triNoteCroissant.addEventListener('change', () => {
     if (triNoteCroissant.checked) {
