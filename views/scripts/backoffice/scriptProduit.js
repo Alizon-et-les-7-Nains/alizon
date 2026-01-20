@@ -581,7 +581,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                         </div>
     
                         <script>
-                            document.querySelector('input#baniere').addEventListener('change', (e) => {
+document.querySelector('input#baniere').addEventListener('change', (e) => {
     if (!e.target.files || e.target.files.length === 0) return;
     
     const file = e.target.files[0];
@@ -593,8 +593,8 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
     }
     
     const reader = new FileReader();
-    reader.onload = e => {
-        document.getElementById('preview-baniere').style.backgroundImage = \`url('\${e.target.result}')\`
+    reader.onload = ev => {  // Utilise 'ev' au lieu de 'e'
+        document.getElementById('preview-baniere').style.backgroundImage = \`url('\${ev.target.result}')\`;
     };
     reader.readAsDataURL(file);
 });
