@@ -579,26 +579,6 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                         <div style="background-image: url(${defImg})"  class="ajouterBaniere" id='preview-baniere'>
                             <input type="file" id="baniere" name="baniere" accept="image/*"> 
                         </div>
-    
-                        <script>
-document.querySelector('input#baniere').addEventListener('change', (e) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    
-    const file = e.target.files[0];
-    
-    if (!file.type.startsWith('image/')) {
-        alert("Veuillez sélectionner une image valide.");
-        e.target.value = "";
-        return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = ev => {  // Utilise 'ev' au lieu de 'e'
-        document.getElementById('preview-baniere').style.backgroundImage = \`url('\${ev.target.result}')\`;
-    };
-    reader.readAsDataURL(file);
-});
-                        </script>
                         
                         <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
                             <input type="checkbox" id="supprimer_banniere" name="supprimer_banniere" value="1">
@@ -639,6 +619,24 @@ document.querySelector('input#baniere').addEventListener('change', (e) => {
             </div>
         </main>`;
     document.body.appendChild(overlay);
+    
+    document.querySelector('input#baniere').addEventListener('change', (e) => {
+        if (!e.target.files || e.target.files.length === 0) return;
+        
+        const file = e.target.files[0];
+        
+        if (!file.type.startsWith('image/jpeg')) {
+            alert("Veuillez sélectionner une image valide.");
+            e.target.value = "";
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = ev => {
+            document.getElementById('preview-baniere').style.backgroundImage = `url('${ev.target.result}')`;
+        };
+        reader.readAsDataURL(file);
+    });
     
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     croixFermer.addEventListener("click", fermerPopUpPromouvoir);
@@ -740,7 +738,7 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinP
                             <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Jour/Mois/Année">
                         </div>
                         <h2><strong> Ajouter une bannière : </strong> (optionnel)</h2>
-                        <div class="ajouterBaniere">
+                        <div class="ajouterBaniere" id='preview-baniere'>
                             <input type="file" id="baniere" name="baniere" accept="image/*">  
                         </div>
                         <p class="supprimer">supprimer ...</p>
@@ -776,6 +774,24 @@ function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinP
             </div>
         </main>`;
     document.body.appendChild(overlay);
+
+    document.querySelector('input#baniere').addEventListener('change', (e) => {
+        if (!e.target.files || e.target.files.length === 0) return;
+        
+        const file = e.target.files[0];
+        
+        if (!file.type.startsWith('image/jpeg')) {
+            alert("Veuillez sélectionner une image valide.");
+            e.target.value = "";
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = ev => {
+            document.getElementById('preview-baniere').style.backgroundImage = `url('${ev.target.result}')`;
+        };
+        reader.readAsDataURL(file);
+    });
     
     const croixFermer = overlay.querySelector(".croixFermerLaPage");
     croixFermer.addEventListener("click", fermerPopUpPromouvoir);
