@@ -40,6 +40,7 @@ fwrite($socket, "HELP");
 $help_response = fgets($socket, 1024);
 //echo $help_response;
 
+fwrite($socket, "QUIT");
 // Fermeture de la connexion
 fclose($socket);
 
