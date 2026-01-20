@@ -28,27 +28,39 @@ $bordereau = $result['noBordereau'];
 // Envoyer STATUS
 fwrite($socket, "STATUS $bordereau\n");
 
-// 1. LIRE TOUTE LA LIGNE TEXTE JUSQU'AU 7E PIPE
+// ===== NOUVELLE MÉTHODE DE LECTURE =====
+
+// 1. LIRE TOUTE LA LIGNE TEXTE (qui se termine par le dernier |)
+// Format: bordereau|commande|dest|loc|etape|date|type|
 $text_line = '';
 $pipe_count = 0;
 
 while (!feof($socket)) {
     $char = fgetc($socket);
     if ($char === false) break;
-
+    
     $text_line .= $char;
-
+    
+    // Compter les pipes
     if ($char === '|') {
         $pipe_count++;
     }
-
+    
+    // On attend 7 pipes (bordereau|cmd|dest|loc|etape|date|type|)
     if ($pipe_count === 7) {
         break;
     }
 }
 
-//faire un tableau avec les parties
+// Parser les données texte
 $status_parts = explode("|", rtrim($text_line, '|'));
+
+// Vérifier qu'on a bien toutes les parties
+if (count($status_parts) < 7) {
+    echo "ERREUR: Réponse incomplète du serveur\n";
+    fclose($socket);
+    exit(1);
+}
 
 $bordereau_recu = $status_parts[0];
 $commande = $status_parts[1];
@@ -56,27 +68,27 @@ $destination = $status_parts[2];
 $localisation = $status_parts[3];
 $etape = $status_parts[4];
 $date_etape = $status_parts[5];
-$typeLivraison = $status_parts[6] ?? '';
+$typeLivraison = $status_parts[6];
 
+// 2. LIRE LA PARTIE IMAGE/NULL
 $image_data = '';
-if ($etape == '9' && $typeLivraison === 'ABSENT') {
-    $typeLivraison = $status_parts[6];
-    
 
+if ($etape == '9' && $typeLivraison === 'ABSENT') {
+    
     // Lire jusqu'au \n final
     while (!feof($socket)) {
         $chunk = fread($socket, 8192);
         if ($chunk === false) break;
-
+        
         $image_data .= $chunk;
-
+        
         // Vérifier si on a atteint le \n final
         if (substr($image_data, -1) === "\n") {
             $image_data = substr($image_data, 0, -1); // Retirer le \n
             break;
         }
     }
-
+    
     // Vérifier que ce n'est pas juste "null"
     if ($image_data !== 'null' && strlen($image_data) > 10) {
         $_SESSION['photo'] = base64_encode($image_data);
@@ -100,3 +112,4 @@ fclose($socket);
 
 header('Location: views/frontoffice/commandes.php?idCommande=' . $idCommande);
 exit;
+?>
