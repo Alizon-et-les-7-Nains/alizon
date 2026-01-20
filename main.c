@@ -173,6 +173,7 @@ MYSQL* config_BD() {
  * num_bordereau_unique() - Génère un numéro de bordereau aléatoire à 10 chiffres
  */
 long long num_bordereau_unique() {
+    srand(time(NULL));
     long long num = 0;
     
     for (int i = 0; i < 10; i++) {
@@ -453,11 +454,11 @@ void create(struct ClientSession *session, int commande_id, char *destination,
              "VALUES (%lld, %d, '%s', 'Entrepôt Alizon', 1, NOW())",
              new_bordereau, commande_id, escaped_destination);
     
-    // if (mysql_query(conn, query)) {
-    //     snprintf(response, sizeof(response), "ERROR DB_INSERT_COLIS\n", mysql_error(conn), mysql_errno(conn));
-    //     send(session->client_socket, response, strlen(response), 0);
-    //     return;
-    // }
+    if (mysql_query(conn, query)) {
+        snprintf(response, sizeof(response), "ERROR DB_INSERT_COLIS\n", mysql_error(conn), mysql_errno(conn));
+        send(session->client_socket, response, strlen(response), 0);
+        return;
+    }
     
     // 4. Vérifier la capacité actuelle
     int current_load = get_capacite_actuelle(conn);
@@ -474,11 +475,11 @@ void create(struct ClientSession *session, int commande_id, char *destination,
                  "VALUES (%lld, %d, '%s', 'Entrepôt Alizon', 1, NOW())",
                  new_bordereau, commande_id, escaped_destination);
         
-        // if (mysql_query(conn, query)) {
-        //     snprintf(response, sizeof(response), "ERROR DB_INSERT", mysql_errno(conn), mysql_error(conn));
-        //     send(session->client_socket, response, strlen(response), 0);
-        //     return;
-        // }
+        if (mysql_query(conn, query)) {
+            snprintf(response, sizeof(response), "ERROR DB_INSERT %d %s", mysql_errno(conn), mysql_error(conn));
+            send(session->client_socket, response, strlen(response), 0);
+            return;
+        }
     
     // 5. Si capacité disponible, ajouter à la file de prise en charge
     if (current_load < config.capacity) {
@@ -508,11 +509,11 @@ void create(struct ClientSession *session, int commande_id, char *destination,
                  "VALUES (%d, '%s', %lld)",
                  commande_id, escaped_destination, new_bordereau);
         
-        // if (mysql_query(conn, query)) {
-        //     snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT\n");
-        //     send(session->client_socket, response, strlen(response), 0);
-        //     return;
-        // }
+        if (mysql_query(conn, query)) {
+            snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT\n");
+            send(session->client_socket, response, strlen(response), 0);
+            return;
+        }
         
         snprintf(response, sizeof(response), "%lld\n", new_bordereau);
         

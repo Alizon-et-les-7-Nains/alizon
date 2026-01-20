@@ -43,9 +43,12 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
     <div class="carousel">
         <div class="group">
             <?php 
-                // Affichage dynamique de toutes les catégories (sans liens actifs pour utilisateurs non connectés) 
-                foreach ($listeCategories as $categorie) { ?>
-                    <a class="categorie" style="cursor: pointer;"><?php echo $categorie['typeProd']; ?></a>
+                // Affichage dynamique de toutes les catégories récupérées 
+                foreach ($listeCategories as $categorie) { 
+                    // Remplacement des espaces par des underscores pour l'URL
+                    $nomCat = str_replace(" ", "_", $categorie['typeProd']);
+                    ?>
+                    <a class="categorie" style="cursor: pointer;" href="http://10.253.5.104/views/frontoffice/catalogue.php?categorie=<?= $nomCat ?>"><?php echo $categorie['typeProd']; ?></a>
             <?php } ?>
         </div>
     </div>
