@@ -630,7 +630,6 @@ window.addEventListener("keydown", function(event) {
     }
 });
 
-
 updateSlider();
 
 reattacherAjouterPanier();
