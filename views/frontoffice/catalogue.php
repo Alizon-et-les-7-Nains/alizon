@@ -18,7 +18,7 @@ $offset = ($page - 1) * $produitsParPage;
 
 $idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
-$categoryQuery = isset($_GET['categorie']) ? trim($_GET['categorie']) : "";
+$categoryQuery = isset($_GET['categorie']) ? trim(str_replace('_', ' ', $_GET['categorie'])) : "";
 
 $conditions = [];
 $params = [];

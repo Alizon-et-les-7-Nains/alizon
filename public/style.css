@@ -506,7 +506,7 @@ body {
   }
 }
 .pageCommandes main {
-  height: 63vh;
+  min-height: 63vh;
 }
 .pageCommandes input[type=search] {
   padding: 10px 20px;
