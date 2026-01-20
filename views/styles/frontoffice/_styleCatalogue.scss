@@ -19,7 +19,7 @@
     .filter-sort{
         background-color: #e4d9ff;
         width: 240px; /* Largeur fixe au lieu de 22% */
-        height: 80%;
+        height: 50%;
         position: fixed;
         left: 0;
         z-index: 800;
@@ -377,6 +377,11 @@
             width: 200px;
             padding: 10px;
         }
+
+        .fakePanneauGris{
+            width: 200px;
+            padding: 10px;
+        }
         
         .products-section {
             width: calc(100% - 220px);
@@ -441,6 +446,11 @@
             width: 190px;
             padding: 5px;
         }
+
+        .fakePanneauGris{
+            width: 195px;
+            padding: 5px;
+        }
         
         .products-section {
             width: calc(100% - 200px);
@@ -458,7 +468,7 @@
         }
     }
 
-@media (max-width: 620px) {
+@media (max-width: 580px) {
     .btnToggleFilters {
         display: flex;
         align-items: center;
@@ -492,6 +502,16 @@
         transition: left 0.3s ease;
         box-shadow: 2px 0 10px rgba(0,0,0,0.3);
         z-index: 1000;
+    }
+
+    .fakePanneauGris{
+        width: 100%;
+        padding: 15px;
+        font-size: 14px;
+        left: -620px;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        z-index: 700;
     }
 
     .filter-sort form{

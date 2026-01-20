@@ -7206,7 +7206,7 @@ dialog.reassort form input {
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
   width: 240px; /* Largeur fixe au lieu de 22% */
-  height: 80%;
+  height: 50%;
   position: fixed;
   left: 0;
   z-index: 800;
@@ -7522,6 +7522,10 @@ dialog.reassort form input {
     width: 200px;
     padding: 10px;
   }
+  .pageCatalogue .fakePanneauGris {
+    width: 200px;
+    padding: 10px;
+  }
   .pageCatalogue .products-section {
     width: calc(100% - 220px);
     margin-left: 220px;
@@ -7572,6 +7576,10 @@ dialog.reassort form input {
     width: 190px;
     padding: 5px;
   }
+  .pageCatalogue .fakePanneauGris {
+    width: 195px;
+    padding: 5px;
+  }
   .pageCatalogue .products-section {
     width: calc(100% - 200px);
     margin-left: 200px;
@@ -7585,7 +7593,7 @@ dialog.reassort form input {
     margin: 1px 0;
   }
 }
-@media (max-width: 620px) {
+@media (max-width: 580px) {
   .pageCatalogue .btnToggleFilters {
     display: flex;
     align-items: center;
@@ -7616,6 +7624,15 @@ dialog.reassort form input {
     transition: left 0.3s ease;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
+  }
+  .pageCatalogue .fakePanneauGris {
+    width: 100%;
+    padding: 15px;
+    font-size: 14px;
+    left: -620px;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 700;
   }
   .pageCatalogue .filter-sort form {
     margin-top: 50px;
