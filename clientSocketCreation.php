@@ -28,6 +28,7 @@ $auth_response = fgets($socket, 1024);
 
 fwrite($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"]);
 $create_response = fgets($socket, 1024);
+var_dump($create_response);
 $sql = "UPDATE _commande SET noBordereau = :noBordereau WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDestination[0]["idCommande"]]);
