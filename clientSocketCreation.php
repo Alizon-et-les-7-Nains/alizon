@@ -40,6 +40,10 @@ $auth_response = send_command($socket, "AUTH admin e10adc3949ba59abbe56e057f20f8
 
 // Test 2: Création
 //echo "Test CREATE:\n";
+
+var_dump($tabIdDestination[0]["idCommande"]);
+var_dump($tabIdDestination[0]["destination"]);
+
 $create_response = send_command($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"]);
 $sql = "UPDATE _commande SET noBordereau = :noBordereau WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
