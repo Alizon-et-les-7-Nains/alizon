@@ -14,9 +14,6 @@ if (!$socket) {
     exit(1);
 }
 
-// Passer en mode binaire (important pour Windows, sans effet sur Linux)
-stream_set_blocking($socket, true);
-
 // Authentification
 fwrite($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e\n");
 $auth_response = fgets($socket, 1024);
@@ -78,7 +75,6 @@ if ($etape == '9' && $typeLivraison === 'ABSENT') {
         
         // Lire le reste de l'image
         // Stratégie: lire jusqu'à timeout ou fermeture
-        stream_set_timeout($socket, 0, 100000); // 100ms timeout
         
         while (!feof($socket)) {
             $chunk = fread($socket, 8192);
