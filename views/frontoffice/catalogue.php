@@ -172,9 +172,16 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 // ============================================================================
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if (ob_get_length()) ob_clean(); 
+    
     header('Content-Type: application/json');
     
     try {
+        if (!$idClient) {
+            echo json_encode(['success' => false, 'error' => 'Session expirée']);
+            exit;
+        }
+
         switch ($_POST['action']) {
             case 'updateQty':
                 $idProduit = $_POST['idProduit'] ?? '';
@@ -198,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
-    exit;
+    exit; 
 }
 
 // ============================================================================
