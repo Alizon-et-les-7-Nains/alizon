@@ -399,7 +399,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         <?php if(number_format($value['stock'], 1) == 0) { ?>
                             <b style="color: red; margin-right: 5px;">Aucun stock</b>
                         <?php } else { ?>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" data-stock="<?= intval($value['stock']) ?>">
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                         <?php } ?>
@@ -427,29 +427,8 @@ $cart = getCurrentCart($pdo, $idClient);
         </div>
     </div>
 
-    <section class="confirmationAjout">
-        <h4>Produit ajouté au panier !</h4>
-    </section>
 </main>
 </section>
-
-    <script>
-
-        boutonsAjout.forEach(btn => {
-            btn.addEventListener("click", function(e) {
-
-                // Afficher le popup
-                popupConfirmation.style.display = "block";
-                console.log("Clique bouton ajouter panier");
-
-                // Cacher après 1,5 secondes
-                setTimeout(() => {
-                    popupConfirmation.style.display = "none";
-                }, 5000);
-            });
-        });
-        
-    </script>
 
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
