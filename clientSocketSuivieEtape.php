@@ -28,7 +28,7 @@ $bordereau = trim($result['noBordereau']);
 // Envoyer STATUS
 fwrite($socket, "STATUS $bordereau\n");
 // LIRE LA LIGNE DE STATUT COMPLÈTE (jusqu'au \n)
-$text_line = fgets($socket, 4096);
+$text_line = fread($socket, 4096);
 
 if ($text_line === false) {
     fclose($socket);
