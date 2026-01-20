@@ -7462,12 +7462,13 @@ dialog.reassort form input {
   padding: 1em;
   border: 2px solid black;
   border-radius: 16px;
-  font-size: 20px;
   width: fit-content;
 }
 .pageCatalogue .pagination a {
   border: 2px solid black;
+  padding: 1em;
   text-decoration: none;
+  font-size: 32px;
 }
 .pageCatalogue .btnToggleFilters {
   display: none;

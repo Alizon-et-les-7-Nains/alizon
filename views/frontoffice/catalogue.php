@@ -430,14 +430,11 @@ $cart = getCurrentCart($pdo, $idClient);
             <?php endif; ?>
         </div>
     </div>
-
 </main>
 </section>
-
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
-
 <script>
 // Filtres prix
 const sliderMin = document.getElementById('sliderMin');
