@@ -177,10 +177,11 @@ long long num_bordereau_unique() {
     unsigned long long num = 0;
 
     // Utiliser /dev/urandom pour une vraie aléatoire
-    FILE urandom = fopen("/dev/urandom", "rb");  // ← Ajout du
+    FILE *urandom = fopen("/dev/urandom", "rb");
     if (urandom) {
         unsigned char bytes[8];
-        fread(bytes, 1, 8, urandom);
+        size_t bytes_read = fread(bytes, 1, 8, urandom);
+        (void)bytes_read;
         fclose(urandom);
 
         // Construire un nombre positif
