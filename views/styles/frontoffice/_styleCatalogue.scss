@@ -6,6 +6,14 @@
     flex-direction: row;
     background-color: $color-white;
 
+    .fakePanneauGris{
+        width: 240px;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        background-color: #e4d9ff;
+        z-index: 700;
+    }
 
     .filter-sort{
         background-color: #e4d9ff;

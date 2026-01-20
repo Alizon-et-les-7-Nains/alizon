@@ -7175,6 +7175,14 @@ dialog.reassort form input {
   flex-direction: row;
   background-color: #fffefa;
 }
+.pageCatalogue .fakePanneauGris {
+  width: 240px;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  background-color: #e4d9ff;
+  z-index: 700;
+}
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
   width: 240px; /* Largeur fixe au lieu de 22% */
