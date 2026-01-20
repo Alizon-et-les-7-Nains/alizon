@@ -3,22 +3,6 @@ require_once __DIR__ . "/controllers/pdo.php";
 
 $tabIdDestination = $_SESSION['tabIdDestination'];
 // auto_test.php
-function send_command($socket, $command)
-{
-    // Envoi de la commande
-    fwrite($socket, $command . "\n");
-
-    // Lecture de la réponse
-    $response = '';
-    while (!feof($socket)) {
-        $response .= fgets($socket, 1024);
-        if (strpos($response, "\n") !== false) {
-            break;
-        }
-    }
-
-    return trim($response);
-}
 
 // Utilisation
 $host = 'web';
@@ -35,12 +19,15 @@ if (!$socket) {
 
 // Test 1: Authentification
 //echo "Test AUTH:\n";
-$auth_response = send_command($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e");
+fwrite($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e");
+$auth_response = fgets($socket, 1024);
 //echo "Réponse: $auth_response\n\n";
 
 // Test 2: Création
 //echo "Test CREATE:\n";
-$create_response = send_command($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"]);
+
+fwrite($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"]);
+$create_response = fgets($socket, 1024);
 $sql = "UPDATE _commande SET noBordereau = :noBordereau WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDestination[0]["idCommande"]]);
@@ -49,7 +36,8 @@ $stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDesti
 
 // Test 4: HELP
 //echo "Test HELP:\n";
-$help_response = send_command($socket, "HELP");
+fwrite($socket, "HELP");
+$help_response = fgets($socket, 1024);
 //echo $help_response;
 
 // Fermeture de la connexion

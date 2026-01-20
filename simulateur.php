@@ -1,6 +1,5 @@
 <?php
 // simulateur.php
-
 // 1. Connexion BDD
 $host = 'mariadb';
 $dbname = 'saedb';
