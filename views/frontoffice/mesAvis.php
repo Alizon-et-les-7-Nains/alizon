@@ -12,9 +12,6 @@ $stmt = $pdo->prepare("SELECT * FROM _avis WHERE idClient = ?");
 $stmt->execute([$id_client]);
 $mesAvis = $stmt->fetchAll(PDO::FETCH_ASSOC);
 function afficherEtoiles($note) {
-    // Fonction permettant d'afficher le nombre
-    // d'étoiles d'un commentaire écrit en fonction de 
-    // la note ayant été attribuée
     $html = "";
     for ($i = 1; $i <= 5; $i++) {
         if ($i <= $note) $html .= "<img class='etoile' src='/public/images/etoile.svg'>";
@@ -38,16 +35,11 @@ function afficherEtoiles($note) {
     </header>
     <main class="mesAvis">
         <h1> Mes Commentaires</h1>
-
-        <?php
-            if (!$mesAvis){
-                ?> <h2> Aucun Avis </h2> <?php
-            }
-            else{
-                ?>
-                <section> <?php
-                // Pour tous les avis, on récupère les produits associés ainsi que leurs images
-                foreach ($mesAvis as $avis) {
+        <?php if (!$mesAvis): ?>
+            <h2> Aucun Avis </h2>
+        <?php else: ?>
+            <section>
+            <?php foreach ($mesAvis as $avis): 
                 $p = $avis['idProduit'];
                 $stmt2 = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = ?");
                 $stmt2->execute([$p]);
@@ -55,21 +47,18 @@ function afficherEtoiles($note) {
                 $stmt3 = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = ?");
                 $stmt3->execute([$p]);
                 $imageProduit = $stmt3->fetch(PDO::FETCH_ASSOC); 
-                ?> 
-                <article>
-                <!-- Carte du produit-->
-                    <div class="produit">
-                        <img src=<?php echo($imageProduit['URL']) ?>>
+            ?> 
+                <article id="avis-<?= $p ?>"> <div class="produit">
+                        <img src="<?= htmlspecialchars($imageProduit['URL']) ?>">
                         <div class="infos-produit">
-                            <h3><?php echo($monProduit['nom']); ?></h3>
-                            <p><?php echo($monProduit['prix'] . "€"); ?></p>
+                            <h3><?= htmlspecialchars($monProduit['nom']); ?></h3>
+                            <p><?= htmlspecialchars($monProduit['prix']); ?>€</p>
                         </div>
                     </div>
-                    <!-- Contenu de l'avis-->
                     <div class="contenu">
                         <div class="header-contenu">
-                            <h2><?php echo($avis['titreAvis']); ?></h2>
-                            <span class="date"><?php echo("Publié le " . formatDate($avis['dateAvis'])); ?></span>
+                            <h2><?= htmlspecialchars($avis['titreAvis']); ?></h2>
+                            <span class="date"><?= "Publié le " . formatDate($avis['dateAvis']); ?></span>
                         </div>
                         <div class="note">
                             <?= afficherEtoiles(round($avis['note'])); ?>
@@ -78,17 +67,16 @@ function afficherEtoiles($note) {
                             <p><?php echo($avis['contenuAvis']); ?></p>
                         </div>
                         <div class="actions">
-                            <a href="./modifierAvis.php?id=<?php echo $avis['idProduit']; ?>">Modifier</a>
-                            <a href="../../controllers/supprimerAvis.php?id=<?php echo($p);?>" class="supprimerAvis">Supprimer</a>
+                            <a href="./modifierAvis.php?id=<?= $p; ?>">Modifier</a>
+                            <a href="../../controllers/supprimerAvis.php?id=<?= $p; ?>" class="supprimerAvis">Supprimer</a>
                         </div>
                     </div>
-            </article>
-                <?php               
-            }  
-        }      
-?>
+                </article>
+            <?php endforeach; ?>
             </section>
-            <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
+        <?php endif; ?>
+        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
     <?php include './partials/footerConnecte.php'; ?>
 </body>
+</html>
