@@ -335,6 +335,8 @@
     }
 
     .pagination a{
+        min-width: 50px;
+        min-height: 50px;
         background-color: $color-blue;
         color: $color-white;
         border: 1px solid $color-dark-gray;

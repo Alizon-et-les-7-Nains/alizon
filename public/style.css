@@ -7463,6 +7463,8 @@ dialog.reassort form input {
   width: fit-content;
 }
 .pageCatalogue .pagination a {
+  min-width: 50px;
+  min-height: 50px;
   background-color: #273469;
   color: #fffefa;
   border: 1px solid #6e6e6e;
