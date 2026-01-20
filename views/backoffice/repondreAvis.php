@@ -2,7 +2,7 @@
 require_once '../../controllers/pdo.php';
 require_once '../../controllers/prix.php';
 require_once '../../controllers/auth.php';
-
+require_once '../../controllers/date.php';
 $idProduit = $_GET['idProd']; 
 $idClient = $_GET['idCli']; 
 
