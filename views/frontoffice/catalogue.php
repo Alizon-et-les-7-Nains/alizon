@@ -174,6 +174,24 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 
 }
 
+function ajouterProduitPanier(&$tabIDProduitPanier, $idProduit, $quantite = 1) {
+    // Si le produit existe déjà, on augmente la quantité
+    if (isset($tabIDProduitPanier[$idProduit])) {
+        $tabIDProduitPanier[$idProduit] += $quantite;
+    } else {
+        // Vérification de la limite de produits différents dans le panier
+        if (count($tabIDProduitPanier) >= PRODUIT_DANS_PANIER_MAX_SIZE) {
+            $message = "Impossible d'ajouter plus de ".PRODUIT_DANS_PANIER_MAX_SIZE." produits différents. Connectez-vous pour en ajouter plus.";
+            echo "<script>alert(".json_encode($message).");</script>";
+            return false;
+        }
+        $tabIDProduitPanier[$idProduit] = $quantite;
+    }
+        
+    setcookie("produitPanier", serialize($tabIDProduitPanier), time() + (60*60*24*90), "/");
+    return true;
+    }
+
 // ============================================================================
 // GESTION DES ACTIONS AJAX
 // ============================================================================
@@ -192,6 +210,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             case 'updateQty':
                 $idProduit = $_POST['idProduit'] ?? '';
                 $delta = intval($_POST['delta'] ?? 0);
+                if (isset($_COOKIE['produitPanier'])) {
+                    $tabIDProduitPanier = unserialize($_COOKIE['produitPanier']);
+                    ajouterProduitPanier($tabIDProduitPanier, $idProduit, $delta);
+                }
                 if ($idProduit && $delta != 0) {
                     $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
                     echo json_encode(['success' => $success]);
@@ -700,9 +722,10 @@ if (toggleFiltersBtn) {
 
 </script>
 
-<div class="confirmationAjout" style="display:none; position:fixed; bottom:20px; right:20px; background:green; color:white; padding:15px; border-radius:5px;">
-    Produit ajouté au panier !
-</div>
+    <!-- Popup de confirmation d'ajout au panier -->
+    <section class="confirmationAjout">
+        <h4>Produit ajouté au panier !</h4>
+    </section>
 
 </body>
 </html>

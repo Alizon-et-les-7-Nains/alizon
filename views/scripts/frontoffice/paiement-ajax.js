@@ -72,7 +72,6 @@ class PaymentAPI {
       }
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
-      alert("Erreur réseau lors de la suppression");
     }
   }
 
