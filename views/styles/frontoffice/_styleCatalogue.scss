@@ -335,7 +335,7 @@
         margin-left: 30%;
     }
 
-    .pagination a{
+    .pagination a, .pagination span {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -344,7 +344,7 @@
         min-height: 45px;
         background-color: $color-blue;
         color: $color-white;
-        border: 3px solid #000000;
+        border: 2px solid #000000;
         border-radius: 50%;
         text-decoration: none;
         font-size: 26px;
