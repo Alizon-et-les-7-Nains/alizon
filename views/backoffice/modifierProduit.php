@@ -49,6 +49,7 @@ if (!$produit) {
                 <div class="ajouterPhoto">
                     <input type="file" id="photoUpload" name="url" accept="image/*" style="display: none;">
                     <div class="placeholder-photo">
+                    <img src="<?= htmlspecialchars($imageUrl) ?>" id="imagePreview">
 
                     <p id="placeholderText" style="<?= $hasImage ? 'display:none;' : '' ?>">
                         Cliquer pour ajouter une image
@@ -91,15 +92,6 @@ if (!$produit) {
             </form>
                 <form class="supprimerProduit" id="formSupprimer" action="../../controllers/deleteProduit.php?id=<?php echo($productId)?>" method="post" enctype="multipart/form-data">            
                         <button type="submit" class="btn-supprimer">Supprimer</button>
-                         <dialog>
-                            <h1>Êtes-vous sûr de vouloir vous déconnecter ?</h1>
-                            <nav>
-                                <button>Annuler</button>
-                                <button autofocus>Oui</button>
-                            </nav>
-                        </dialog>
-                    </a>
-                   
                 </form>
             </div>
         
@@ -108,67 +100,54 @@ if (!$produit) {
 
     <script src="../../public/script.js"> </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const photoUploadInput = document.getElementById('photoUpload');
-        const ajouterPhotoDiv = document.querySelector('.ajouterPhoto'); 
-        const imagePreview = document.getElementById('imagePreview');
-        const placeholderText = document.getElementById('placeholderText');
-        const overlayText = document.getElementById('overlayText');
-        const resumeTextarea = document.getElementById('resume');
+document.addEventListener('DOMContentLoaded', () => {
 
-        const originalImageSrc = imagePreview.src;
+    const fileInput = document.getElementById('photoUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const placeholderText = document.getElementById('placeholderText');
+    const overlayText = document.getElementById('overlayText');
+    const noteInput = document.getElementById('note');
+    const stars = document.querySelectorAll('.star');
+    const emptyStar = "../../public/images/etoileVide.svg";
+    const fullStar = "../../public/images/etoile.svg";
 
-        // Gestion du clic pour upload d'image
-        ajouterPhotoDiv.addEventListener('click', function() {
-            photoUploadInput.click();
+    // Pour toutes les étoiles, si on clique desus alors on change celle-ci 
+    // Ainsi que les précédentes en étoiles pleines. Cela permet aussi de stocker
+    // L'information du nombre d'étoiles que l'on souhaite mettre.
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            const rating = index + 1;
+            stars.forEach((s, i) => {
+                s.src = i < rating ? fullStar : emptyStar;
+            });
+            noteInput.value = rating;
         });
-        
-        
-        photoUploadInput.addEventListener('change', function () {
-        const files = this.files;
+    });
+    
+    fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (!file) return;
 
-        // Vérifie qu'un fichier a bien été sélectionné
-        if (files && files.length > 0) {
-            const file = files[0];
-
-            // Vérifie que le fichier est une image via son type MIME
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-
-                // Exécuté une fois le fichier lu (lecture asynchrone)
-                reader.onload = function (e) {
-                    imagePreview.src = e.target.result; // image en base64
-                    placeholderText.style.display = 'none';
-                    overlayText.style.opacity = '1';
-                };
-
-                // Convertit le fichier en URL lisible par une balise <img>
-                reader.readAsDataURL(file);
-            } else {
-                // Réinitialisation si le fichier n'est pas une image
-                imagePreview.src = originalImageSrc;
-                placeholderText.style.display = 'block';
-                overlayText.style.opacity = '0';
-                alert("Votre fichier n'est pas une image, merci de réessayer.");
-            }
-        } else {
-            // Cas où l'utilisateur annule la sélection
-            imagePreview.src = originalImageSrc;
-            placeholderText.style.display = 'block';
-            overlayText.style.opacity = '0';
+        // Sécurité : uniquement images
+        if (!file.type.startsWith('image/')) {
+            alert("Veuillez sélectionner une image.");
+            fileInput.value = "";
+            return;
         }
+
+        const reader = new FileReader();
+        reader.onload = e => {
+            imagePreview.src = e.target.result;
+            placeholderText.style.display = 'none';
+            overlayText.style.display = 'block';
+        };
+
+        reader.readAsDataURL(file);
     });
 
-        // Ajouter un margin-bottom pour séparer les boutons du bas du footer
-        const formActions = document.querySelector('.form-actions');
-        formActions.style.marginBottom = '50px';
+});
+</script>
 
-        // Vérification au changement du résumé ou des sections
-        resumeTextarea.addEventListener('input', checkSections);
-    });
-
-
-    </script>
     <?php require_once "./partials/footer.php"?>
 </body>
 </html>

@@ -1,3 +1,5 @@
-select *
-from _vendeur 
-where codeVendeur = :id 
+select exists (
+    select *
+    from _vendeur 
+    where codeVendeur = :id
+);

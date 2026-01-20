@@ -1,4 +1,6 @@
 <?php 
+// Initialisation de la connexion avec le serveur / BDD
+
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/date.php";
 
@@ -11,25 +13,19 @@ if (!isset($_SESSION['user_id'])) {
 
 $id_client = $_SESSION['user_id'];
 
+// Fonction pour récupérer les notifications en fonction de l'utilisateur et de son rôle
 function getNotifications($pdo, $idClient, $est_vendeur) {
     $sql = "SELECT * FROM _notification 
-            WHERE idClient = :idClient 
-            AND est_vendeur = :est_vendeur 
+            WHERE (idClient = ? OR idClient = 34) 
+            AND est_vendeur = ?
             ORDER BY dateNotif DESC";
-            
     $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
-        'idClient'   => $idClient,
-        'est_vendeur' => $est_vendeur
-    ]);
-
-    $notif = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute([$idClient, $est_vendeur]);
     
-    return $notif; 
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
 }
 
-$notifs = getNotifications($pdo, $id_client, 0)
+$notifs = getNotifications($pdo, $id_client, 0);
 
 ?>
 
@@ -47,54 +43,92 @@ $notifs = getNotifications($pdo, $id_client, 0)
     <?php include './partials/headerConnecte.php'; ?>
 
     <main class="mesNotif">
-        <section class="topRecherche">
+        <section class="topRecherche" >
             <h1>Mes notifications</h1>
         </section>
 
+        <!-- Affichage de la totalité des notifications par ordre croissant  -->
+        <!-- Sont affichés le titre de la notification, le contenu ainsi que la date -->
         <?php if(!empty($notifs)) { ?>
             <section class="ensembleNotif">
                 <div class="sidebarNotif">
-                <?php foreach($notifs as $notif) { ?>
-                    <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu('<?= $notif['titreNotif'] ?>', '<?= $notif['dateNotif'] ?>', '<?= $notif['contenuNotif'] ?>')">
+                <?php foreach($notifs as $notif) { 
+                    $contenuNotif = $notif['contenuNotif'];
+                    $contenuNotif = substr($contenuNotif, 0, 50) . "...";?>
+                    <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu(this, '<?= htmlspecialchars($notif['titreNotif'], ENT_QUOTES) ?>',
+                        '<?= htmlspecialchars($notif['dateNotif'], ENT_QUOTES) ?>',
+                        '<?= htmlspecialchars($notif['contenuNotif'], ENT_QUOTES) ?>')">
                         <div>
                             <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
-                            <img id="focus" style="-moz-transform: scaleX(-1); -o-transform: scaleX(-1); -webkit-transform: scaleX(-1); transform: scaleX(-1);" src="../../public/images/bellRingLight.svg" alt="Nouvelle notification">
+                            <img id="focus" src="../../public/images/bellRingLight.svg" alt="Nouvelle notification">
                         </div>
                         <div>
+                            <!-- Récupération des données souhaitées dans le tableau notif -->
                             <h3><?= $notif['titreNotif'] ?></h3>
-                            <h4><?= $notif['contenuNotif'] ?></h4>
+                            <h4><?= $contenuNotif ?></h4>
                             <h5><?= $notif['dateNotif'] ?></h5>
                         </div>
                     </div>
+                    
+                    <!-- Affichage du contenu de la notification en format téléphone -->
+                    <article class="contenuTel">
+                        <div class="titleNotifResponsive">
+                            <h2 style="color: #273469;"><?= htmlspecialchars($notif['titreNotif']) ?></h2>
+                            <small><?= htmlspecialchars($notif['dateNotif']) ?></small>
+                        </div>
+                        <div class="corpsNotif" style="margin-top: 15px;">
+                            <p><?= nl2br(htmlspecialchars($notif['contenuNotif'])) ?></p>
+                        </div>
+                    </article>
                 <?php } ?>
                 </div>
                 <article class="ecranNotif">
                     <div class="titleNotif">
                         <h1 id="titre"><?= 'Cliquez sur une notification pour afficher son contenu' ?></h1>
-                        <h3 id="contenu"><?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?></h3>
+                        <h3 id="contenu"><?= htmlspecialchars($notif['dateNotif'] ?? ' ') ?></h3>
                     </div>
                     <div class="contenuNotif">
-                        <p id="date"><?= htmlspecialchars($notif['dateBotif'] ?? ' ') ?></p>
+                        <p id="date"><?= htmlspecialchars($notif['dateNotif'] ?? ' ') ?></p>
                     </div>
                 </article>
             </section>
+            <!-- Message d'erreur dnas le cas où aucune notification n'a été trouvées -->
         <?php } else { ?>
-            <h2>Aucune notification</h2>
+            <h2 class="aucuneNotif">Aucune notification</h2>
         <?php } ?>
 
-        <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-        <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
     </main>
+
+    <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
+    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
     <script>
         const titreContent = document.getElementById("titre");
         const contenuContent = document.getElementById("contenu");
         const dateContent = document.getElementById("date");
 
-        function afficherContenu(t, d, c) {
-            titreContent.innerText= t ;
-            contenuContent.innerText= d ;
-            dateContent.innerText= c ;
+        // Fonction mettant en jour les informations dans la fenetre d'affichage du contenu de la notification
+        function afficherContenu(el, t, d, c) {
+            if (titreContent) titreContent.innerText = t;
+            if (contenuContent) contenuContent.innerText = d;
+            if (dateContent) dateContent.innerText = c;
+
+            const mobileContent = el.nextElementSibling;
+
+            if (window.innerWidth <= 840) {
+                document.querySelectorAll('.contenuTel').forEach(item => {
+                    if (item !== mobileContent) item.classList.remove('active');
+                });
+
+                if (mobileContent) {
+                    mobileContent.classList.toggle('active'); 
+                    if(mobileContent.classList.contains('active')) {
+                        setTimeout(() => {
+                            mobileContent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }, 100);
+                    }
+                }
+            }
         }
 </script>
 

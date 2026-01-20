@@ -96,27 +96,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $photoPath = '/var/www/html/images/photoProfilClient/photo_profil'.$id_client;
 
     $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-    $extension = '';
+    $AncienneExtension = '';
 
     foreach ($extensionsPossibles as $ext) {
         if (file_exists($photoPath . '.' . $ext)) {
-            $extension = '.' . $ext;
+            $AncienneExtension = '.' . $ext;
             break;
         }
     }
 
-    if (file_exists($photoPath)) {
-        unlink($photoPath); // supprime l'ancien fichier
-    }
 
     if (isset($_FILES['photoProfil']) && $_FILES['photoProfil']['tmp_name'] != '') {
+        if (file_exists($photoPath . $AncienneExtension)) {
+            unlink($photoPath . $AncienneExtension); 
+        }
         $extension = pathinfo($_FILES['photoProfil']['name'], PATHINFO_EXTENSION);
         $extension = '.'.$extension;
         move_uploaded_file($_FILES['photoProfil']['tmp_name'], $photoPath.$extension);
-    }
+    } else {
+        $extension = $AncienneExtension;
+    }   
 
     //on recupère les infos du user pour les afficher
-    $stmt = $pdo->query("SELECT * FROM saedb._client WHERE idClient = '$id_client'");
+    $stmt = $pdo->prepare("SELECT * FROM saedb._client WHERE idClient = ?");
+    $stmt->execute([$id_client]);
     $client = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $pseudo = $client['pseudo'] ?? '';
@@ -126,7 +129,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $client['email'] ?? '';
     $noTelephone = $client['noTelephone'] ?? '';
 
-    $stmt = $pdo->query("SELECT * FROM saedb._adresseClient WHERE idAdresse = '$idAdresse'");
+    $stmt = $pdo->prepare("SELECT * FROM saedb._adresseClient WHERE idAdresse = ?");
+    $stmt->execute([$idAdresse]);
     $adresse = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $adresse1 = $adresse['adresse'] ?? '';
@@ -155,9 +159,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="photo-container">
                     <?php 
                         if (file_exists($photoPath.$extension)) {
-                            echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'" alt="photoProfil" id="imageProfile">';
+                            echo '<img src="/images/photoProfilClient/photo_profil'.$id_client.$extension.'?v='.time().'" alt="photoProfil" id="imageProfile">';
                         } else {
-                            echo '<img src="../../public/images/profil.png" alt="photoProfil" id="imageProfile">';
+                            echo '<img src="../../public/images/profil.png?v='.time().'" alt="photoProfil" id="imageProfile">';
                         }
                     ?>
                 </div>
@@ -234,7 +238,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <?php 
         //On récupère le mot de passe de la BDD
-        $stmt = $pdo->query("SELECT mdp FROM saedb._client WHERE idClient = '$id_client'");
+        $stmt = $pdo->prepare("SELECT mdp FROM saedb._client WHERE idClient = ?");
+        $stmt->execute([$id_client]);
         $tabMdp = $stmt->fetch(PDO::FETCH_ASSOC);
         $mdp = $tabMdp['mdp'] ?? '';
     ?>

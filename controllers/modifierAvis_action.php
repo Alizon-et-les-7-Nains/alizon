@@ -1,12 +1,28 @@
 <?php
 require_once "pdo.php";
+require_once 'treatment.php';
+
 session_start();
+
+/* ==========================
+   Sécurité
+========================== */
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../frontoffice/connexionClient.php");
     exit();
 }
 
-function updateNoteProduit(PDO $pdo, int $idProduit) {
+if (!isset($_POST['idProduit'])) {
+    die("ID produit manquant.");
+}
+
+$idClient  = $_SESSION['user_id'];
+$idProduit = (int)$_POST['idProduit'];
+
+/* ==========================
+   Fonction MAJ note produit
+========================== */
+function updateNoteProduit(PDO $pdo, int $idProduit): void {
     $stmt = $pdo->prepare("
         SELECT AVG(note) AS moyenne
         FROM _avis
@@ -15,7 +31,7 @@ function updateNoteProduit(PDO $pdo, int $idProduit) {
     $stmt->execute([$idProduit]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $moyenne = $result['moyenne'] !== null ? $result['moyenne'] : 0;
+    $moyenne = $result['moyenne'] ?? 0;
 
     $stmt2 = $pdo->prepare("
         UPDATE _produit
@@ -25,38 +41,114 @@ function updateNoteProduit(PDO $pdo, int $idProduit) {
     $stmt2->execute([$moyenne, $idProduit]);
 }
 
-
-$note = isset($_POST['note']) && $_POST['note'] !== "" ? floatval($_POST['note']) : null;
-
-if ($note === null) {
-    die("Veuillez sélectionner une note.");
-}
-
-$idClient = $_SESSION['user_id'];
-
-if (!isset($_POST['idProduit'], $_POST['titreAvis'], $_POST['note'], $_POST['contenuAvis'])) {
-    die("Formulaire incomplet.");
-}
-
-$idProduit = intval($_POST['idProduit']);
-$titre = trim($_POST['titreAvis']);
-$note = floatval($_POST['note']);
-$contenu = trim($_POST['contenuAvis']);
-
+/* ==========================
+   Récupérer l'avis existant
+========================== */
 $stmt = $pdo->prepare("
-    UPDATE _avis 
+    SELECT titreAvis, note, contenuAvis
+    FROM _avis
+    WHERE idProduit = ? AND idClient = ?
+");
+$stmt->execute([$idProduit, $idClient]);
+$avis = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$avis) {
+    die("Avis introuvable.");
+}
+
+/* ==========================
+   Valeurs (modification partielle)
+========================== */
+$titre = trim($_POST['titreAvis'] ?? '');
+$contenu = trim($_POST['contenuAvis'] ?? '');
+
+$titre   = $titre !== '' ? $titre : $avis['titreAvis'];
+$contenu = $contenu !== '' ? $contenu : $avis['contenuAvis'];
+
+$note = isset($_POST['note']) && $_POST['note'] !== ''
+    ? floatval($_POST['note'])
+    : $avis['note'];
+
+/* ==========================
+   Mise à jour de l'avis
+========================== */
+$stmt = $pdo->prepare("
+    UPDATE _avis
     SET titreAvis = ?, note = ?, contenuAvis = ?, dateAvis = CURRENT_DATE
     WHERE idProduit = ? AND idClient = ?
 ");
-
-$ok = $stmt->execute([$titre, $note, $contenu, $idProduit, $idClient]);
-
+$stmt->execute([$titre, $note, $contenu, $idProduit, $idClient]);
 
 updateNoteProduit($pdo, $idProduit);
 
-if ($ok) {
-    header("Location: ../views/frontoffice/mesAvis.php");
-    exit();
-} else {
-    echo "Erreur lors de la mise à jour.";
+/* ==========================
+      Gestion de l'image
+========================== */
+if (!empty($_FILES['url']['name'])) {
+
+    if ($_FILES['url']['error'] !== UPLOAD_ERR_OK) {
+        die("Erreur lors de l'envoi de l'image.");
+    }
+
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!in_array($_FILES['url']['type'], $allowedTypes)) {
+        die("Format d'image non autorisé.");
+    }
+
+    $uploadDir = $_SERVER['DOCUMENT_ROOT'];
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
+    $fileName = uniqid("avis_", true) . "." . $extension;
+    $filePath = $uploadDir . '/images/imagesAvis/' . $fileName;
+ 
+    // Traitement de l'image
+    try {
+        treat($_FILES['url']['tmp_name'], $filePath);
+    
+        // Vérifier si compression a eu lieu
+        if (filesize($_FILES['url']['tmp_name']) / 1000 > AIM_IMAGES) {
+            $imageUrl = pathinfo($fileName, PATHINFO_FILENAME) . '.jpg';
+        } else {
+            $imageUrl = $fileName;
+        }
+    } catch (Exception $e) {
+        if (!move_uploaded_file($_FILES['url']['tmp_name'], $filePath)) {
+            throw new Exception("Impossible de traiter l'image.");
+        }
+    }
+
+    // URL stockée en base
+    $imageUrl = $fileName;
+
+    // Vérifier si une image existe déjà
+    $stmtImg = $pdo->prepare("
+        SELECT idClient
+        FROM _imageAvis
+        WHERE idClient = ? AND idProduit = ?
+    ");
+    $stmtImg->execute([$idClient, $idProduit]);
+    $filePath = '/images/imagesAvis/' . $fileName;
+    if ($stmtImg->fetch()) {
+        // UPDATE
+        $stmtUpdate = $pdo->prepare("
+            UPDATE _imageAvis
+            SET url = ?
+            WHERE idClient = ? AND idProduit = ?
+        ");
+        $stmtUpdate->execute([$filePath, $idClient, $idProduit]);
+    } else {
+        // INSERT
+        $stmtInsert = $pdo->prepare("
+            INSERT INTO _imageAvis (idClient, idProduit, url)
+            VALUES (?, ?, ?)
+        ");
+        $stmtInsert->execute([$filePath, $idProduit, $imageUrl]);
+    }
 }
+
+
+header("Location: ../views/frontoffice/mesAvis.php");
+exit();

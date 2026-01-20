@@ -196,15 +196,13 @@
 
         function validateForm() {
             let allValid = true;
-            if (!validatePassword()) {
-                allValid = false;
-            }
 
-            if (!validateBirthDate()) {
-                allValid = false;
-            }
-            if (!validatePhoneNumber()) {
-                allValid = false;
+            let pwdValid = validatePassword();
+            let bdtValid = validateBirthDate();
+            let telValid = validatePhoneNumber();
+            
+            if(!pwdValid || !bdtValid || !telValid){
+                allValid=false;
             }
             submitButton.disabled = !allValid;
 

@@ -1,6 +1,7 @@
 <?php 
 session_start();
 require_once "../../controllers/pdo.php";
+require_once '../../controllers/treatment.php';
 
 $productId = intval($_GET['id'] ?? 0);
 
@@ -8,7 +9,7 @@ if ($productId === 0) {
     die("Produit non spécifié.");
 }
 
-$sqlProduit = "SELECT p.nom AS nom_produit FROM _produit p WHERE p.idProduit = ?";
+$sqlProduit = "SELECT p.nom, p.idVendeur FROM _produit p WHERE p.idProduit = ?";
 $stmtProduit = $pdo->prepare($sqlProduit);
 $stmtProduit->execute([$productId]);
 $produit = $stmtProduit->fetch(PDO::FETCH_ASSOC);
@@ -38,10 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Traitement de l'image
             if (!empty($_FILES['photo']['name'])) {
                 // Utilisation d'un chemin relatif au dossier public pour plus de fiabilité
-                $targetDir = __DIR__ . "/../../public/images/imagesAvis/";
+                $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/images/imagesAvis/';
                 
                 if (!is_dir($targetDir)) {
-                    mkdir($targetDir, 0755, true);
+                    mkdir($targetDir, 0777, true);
                 }
                 
                 $fileExtension = strtolower(pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION));
@@ -51,11 +52,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $dbFileName = uniqid('avis_') . '.' . $fileExtension;
                     $targetFile = $targetDir . $dbFileName;
 
-                    if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
-                        // Chemin stocké en base de données pour l'affichage web
-                        $fileName = $dbFileName;
+                    if (!treat($_FILES["photo"]["tmp_name"], $targetFile)) {
+                        if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
+                            // Chemin stocké en base de données pour l'affichage web
+                            $fileName = $dbFileName;
+                        } else {
+                            $errors[] = "Erreur lors de l'upload de l'image.";
+                        }
                     } else {
-                        $errors[] = "Erreur lors de l'upload de l'image.";
+                        $fileName = $dbFileName;
                     }
                 } else {
                     $errors[] = "Format d'image non autorisé.";
@@ -74,6 +79,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':titre' => $sujet,
                     ':contenu' => $message,
                     ':note' => $note
+                ]);
+
+                $stmt = $pdo->prepare("
+                    INSERT INTO _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur) 
+                    VALUES (?, ?, ?, ?, 1)
+                ");
+                
+                $nomProduit = htmlspecialchars($produit['nom']);
+
+                $stmt->execute([
+                    $produit['idVendeur'],
+                    "Vous avez un nouvel avis pour {$nomProduit} : \"{$sujet}\" avec une note de {$note}/5.",
+                    "📫 Nouvel avis sur {$nomProduit} !",
+                    date('Y-m-d H:i:s'),
                 ]);
 
                 // 2. Insertion de l'image si présente
@@ -103,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Écrire un avis - <?php echo htmlspecialchars($produit['nom_produit']); ?></title>
+    <title>Écrire un avis - <?php echo htmlspecialchars($produit['nom']); ?></title>
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
@@ -141,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form action="" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
             
-            <h1>Évaluer : <b><?php echo htmlspecialchars($produit['nom_produit']); ?></b></h1>
+            <h1>Évaluer : <b><?php echo htmlspecialchars($produit['nom']); ?></b></h1>
             
             <h2>Laisser une note <span style="color: red;">*</span> :</h2>
             <article class="etoiles">

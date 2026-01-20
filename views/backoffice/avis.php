@@ -61,7 +61,6 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endif; ?>
 
                 <?php foreach ($avis as $avi): ?>
-
                 <?php
                         $imagesAvis = (
                             $pdo->query(
@@ -74,6 +73,10 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         )->fetchAll(PDO::FETCH_ASSOC);
 
                         $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
+
+                        $stmt = $pdo->prepare("SELECT DISTINCT titre FROM _signalement WHERE idProduitSignale = ? AND idClientSignale = ?");
+                        $stmt->execute([$avi['idProduit'], $avi['idClient']]);
+                        $signalement = $stmt->fetch(PDO::FETCH_ASSOC);
                     ?>
 
                 <table class="avi">
@@ -91,6 +94,11 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <img src=" /public/images/etoile.svg">
                             </figure>
                             <?= $avi['titreAvis'] ?> - <?= $avi['nomProduit'] ?>
+                            <?php 
+                                if($signalement){?>
+                                    <label> - Cet avis à été signalé pour la raison suivante : <?php echo($signalement['titre'])?></label> 
+                                <?php } 
+                            ?>
                         </td>
                         <td class="ligne">
                             <p class=" date-avis">Avis déposé le <?= formatDate($avi['dateAvis']) ?></p>
@@ -109,6 +117,37 @@ $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <?php foreach ($imagesAvis as $imageAvi): ?>
                             <img src="<?= $imageAvi['URL'] ?>" class="imageAvis">
                             <?php endforeach; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <!-- Bouton pour modifier l'avis séléctionné -->
+                        <td class="formRepondreAvis" colspan="2">
+                            <form action="./repondreAvis.php?idCli=<?php echo $avi['idClient']?>&idProd=<?php echo $avi['idProduit']?>" method="POST">
+                                <?php 
+                                
+                                    $sql = "SELECT EXISTS(
+                                        SELECT *
+                                        FROM _reponseAvis 
+                                        WHERE idProduit = :idProduit AND idClient = :idClient
+                                    );";
+
+                                    $stmt = $pdo->prepare($sql);
+                                    $stmt->bindValue(':idProduit', $avi['idProduit'], PDO::PARAM_INT); 
+                                    $stmt->bindValue(':idClient', $avi['idClient'], PDO::PARAM_INT); 
+                                    $stmt->execute();
+                                    $isAvis = $stmt->fetchColumn();
+                                    if($isAvis==0){
+                                ?>
+                                <!-- Fonctionnement afin de modifier le bouton 
+                                en fonction de s'il y a déjà une réponse ou non -->
+                                <button class="btnRepAvis" type="submit">Répondre à cet avis</button>
+                                <?php } else{ ?>
+                                <div class="reponseAvis">
+                                    <button class="btnRepAvis" type="submit">Modifier votre réponse à cet avis</button>
+                                    <a href="../../controllers/supprimerReponseAvis.php?idCli=<?php echo $avi['idClient']?>&idProd=<?php echo $avi['idProduit']?>"> Supprimer votre réponse </a>
+                                </div>
+                                <?php } ?>
+                            </form>
                         </td>
                     </tr>
                 </table>

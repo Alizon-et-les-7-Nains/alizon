@@ -10,11 +10,11 @@
     border-radius: 20px;
     padding: 10px;
     display: flex;
-    justify-content: space-between;
     flex-wrap: nowrap;
     max-width: 800px;
     margin-bottom: 40px;
     align-items: center;
+    justify-content: space-around;
   }
   .quantiteProduit {
     display: flex;
@@ -57,6 +57,8 @@
       align-items: flex-start;
       justify-content: space-around;
       height: 180px;
+      width: 300px;
+      margin-left: 40px;
   }
   .infoProduit img {
     max-width: 16px;
@@ -159,6 +161,9 @@
       }
       .recapPanier {
         align-items: stretch;
+      }
+      .infoProduit {
+        width: unset;
       }
   }
   @media (max-width: 767px) {

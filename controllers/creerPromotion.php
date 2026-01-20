@@ -1,6 +1,8 @@
 <?php
 
 require_once 'pdo.php';
+require_once 'treatment.php';
+
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
@@ -46,6 +48,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $dateSql = $d->format('Y-m-d');
 
+        // Récupération du nom du produit pour la notification
+        $stmtProduit = $pdo->prepare("SELECT nom FROM _produit WHERE idProduit = ?");
+        $stmtProduit->execute([$idProd]);
+        $produit = $stmtProduit->fetch(PDO::FETCH_ASSOC);
+        $nomProduit = $produit['nom'] ?? 'Un produit';
+
+        // Création de la notification globale
+        $stmt = $pdo->prepare("
+            INSERT INTO _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur) 
+            VALUES (34, ?, ?, ?, 0)
+        ");
+        $stmt->execute([
+            "Découvrez {$nomProduit}, notre nouveau produit mis en avant. Ne manquez pas cette sélection !",
+            "🌟 Nouveau produit vedette !",
+            date('Y-m-d H:i:s'),
+        ]);
+
         if(count($res) >= 1) {
             $stmt = $pdo->prepare("UPDATE _promotion SET finPromotion = :finPromotion WHERE idProduit = :idProd");
             $stmt->execute([':finPromotion' => $dateSql,':idProd' => $idProd]);
@@ -61,19 +80,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        if ($extension !== '') {
-            $oldFile = $photoPath . $extension;
-            if (file_exists($oldFile)) {
-                unlink($oldFile);
+        foreach (glob($photoPath . '.*') as $oldFile) {
+            unlink($oldFile);
+        }
+
+        if (isset($_FILES['baniere']) && $_FILES['baniere']['error'] === UPLOAD_ERR_OK) {
+            $extension = '.' . pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
+            $fullPath = $photoPath . $extension;
+    
+            try {
+                treat($_FILES['baniere']['tmp_name'], $fullPath);
+            } catch (Exception $e) {
+                if (!move_uploaded_file($_FILES['baniere']['tmp_name'], $fullPath)) {
+                    throw new Exception("Échec upload");
+                }
             }
         }
-
-        if (isset($_FILES['baniere']) && $_FILES['baniere']['tmp_name'] != '') {
-            $extension = pathinfo($_FILES['baniere']['name'], PATHINFO_EXTENSION);
-            $extension = '.'.$extension;
-            move_uploaded_file($_FILES['baniere']['tmp_name'], $photoPath.$extension);
-        }
-
     }
 
     header('Location: ../views/backoffice/produits.php');

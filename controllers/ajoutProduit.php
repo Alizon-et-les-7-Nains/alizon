@@ -1,7 +1,8 @@
 <?php
 require_once 'pdo.php';
 require_once 'treatment.php';
-session_start();
+require_once 'date.php';
+session_start();    
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -10,15 +11,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $poids = $_POST['poids'];
     $description = $_POST['description'];
     $mots_cles = $_POST['mots_cles'];
-
+    $categorie = $_POST['idCategorie'];
     try {
-
         $pdo->beginTransaction();
 
         // Insertion dans _produit
         $sql = "INSERT INTO _produit 
-            (nom, prix, poids, description, mots_cles, idVendeur, stock, versionProd, note, seuilAlerte, enVente) 
-            VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur, :stock, :versionProd, :note, :seuilAlerte, :enVente)";
+            (nom, prix, poids, description, mots_cles, idVendeur, stock, versionProd, note, seuilAlerte, enVente, idCategorie) 
+            VALUES (:nom, :prix, :poids, :description, :mots_cles, :idVendeur, :stock, :versionProd, :note, :seuilAlerte, :enVente, :idCategorie)";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':versionProd' => 1.0,
             ':note' => 0.0,
             ':seuilAlerte' => 0,
-            ':enVente' => 0
+            ':enVente' => 0,
+            'idCategorie' => $categorie
         ]);
 
         // On récupère l'ID généré
@@ -44,12 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nouveauNomImage = 'produit_' . $idNewProduit . '_' . time() . '.' . $extension;
             $dossierDestination = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $nouveauNomImage;
             // Déplacement du fichier
-            error_log(print_r($_FILES['photo'], true));
             try {
                 treat($_FILES['photo']['tmp_name'], $dossierDestination);
             } catch (Exception $e) {
-                error_log("impossible de compresser");
-                print_r("impossible de compresser");
                 if (!move_uploaded_file($_FILES['photo']['tmp_name'], $dossierDestination)) {
                     throw new Exception("Impossible de traiter l'image.");
                 }

@@ -44,6 +44,9 @@ function updateStockAfterOrder($pdo, $idPanier)
     }
 }
 
+function chiffrerCodeCarte($code) {
+    return password_hash($code, PASSWORD_DEFAULT);
+}
 
 function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExp, $cvv, $idAdresseFacturation = null)
 {
@@ -77,8 +80,10 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             throw new Exception("Le panier est vide.");
         }
 
+        $numeroCarteHash = chiffrerCodeCarte($numeroCarte);
+
         $checkCarte = $pdo->prepare("SELECT numeroCarte FROM _carteBancaire WHERE numeroCarte = ?");
-        $checkCarte->execute([$numeroCarte]);
+        $checkCarte->execute([password_verify($numeroCarte, $numeroCarteHash) ? $numeroCarteHash : '']);
 
         if ($checkCarte->rowCount() === 0) {
             $sqlInsertCarte = "
@@ -86,12 +91,10 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
                     VALUES (?, ?, ?, ?)
                 ";
             $stmtCarte = $pdo->prepare($sqlInsertCarte);
-            if (!$stmtCarte->execute([$numeroCarte, $nomCarte, $dateExp, $cvv])) {
+            if (!$stmtCarte->execute([$numeroCarteHash, $nomCarte, $dateExp, $cvv])) {
                 throw new Exception("Erreur lors de l'ajout de la carte bancaire.");
             }
         }
-
-        var_dump([$idClient, $adresseLivraison, $codePostal, $villeLivraison]);
 
         $sqlAdresseLivraison = "
                 INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
@@ -154,7 +157,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             ";
 
         $stmtCommande = $pdo->prepare($sqlCommande);
-        if (!$stmtCommande->execute([$idCommande, $montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarte, $idPanier])) {
+        if (!$stmtCommande->execute([$idCommande, $montantTTC, $montantHT, $nbArticles, $idAdresseLivraison, $idAdresseFacturation, $numeroCarteHash, $idPanier])) {
             throw new Exception("Erreur lors de la création de la commande.");
         }
 
@@ -237,7 +240,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tab = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $_SESSION['tabIdDestination'] = $tab;
-
-    include "clientSocket.php";
 }   
+
+include "clientSocketCreation.php";
+
 ?>

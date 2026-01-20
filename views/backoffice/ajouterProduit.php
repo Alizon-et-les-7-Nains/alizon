@@ -9,8 +9,6 @@ require_once '../../controllers/auth.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../public/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Alizon - Nouveau produit</title>
 </head>
 <body class="backoffice nouveauProduit">
@@ -58,6 +56,22 @@ require_once '../../controllers/auth.php';
                     <label> Mots clés (séparés par des virgules) </label>
                     <input type="text" name="mots_cles" class="keywords-input">
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="typeProd">Catégorie du produit</label>
+                <select name="idCategorie" id="typeProd" required>
+                    <option value="">-- Choisir une catégorie --</option>
+                    <?php
+                    $stmt = $pdo->query("SELECT idCategorie, nomCategorie FROM _categorie");
+                    while ($cat = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        echo "<option value='{$cat['idCategorie']}'>
+                                {$cat['nomCategorie']}
+                            </option>";
+                    }
+                    ?>
+                </select>
+
             </div>
 
             <div class="right-section">

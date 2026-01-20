@@ -1,5 +1,7 @@
 
+<!-- Footer pour les utilisateurs non connectés - Version simplifiée avec accès connexion -->
 <footer class="footerFront">
+    <!-- Pied de page version PC avec liens légaux -->
     <div class="footerPC">
         <div>
             <a href="../frontoffice/legalesNonConnecte.php">Conditions générales de vente</a>
@@ -8,6 +10,7 @@
         </div>
     </div>
 
+    <!-- Barre de navigation mobile simplifiée (accueil, panier, connexion) -->
     <div class="footerTel">
         <a href="../frontoffice/accueilDeconnecte.php"><img src="../../../public/images/homeLightBlue.svg" alt=""class="homeLightBlue"></a>
         <a href="../frontoffice/panier.php"><img src="../../../public/images/cartLightBlue.svg" alt="" class="cartLightBlue"></a>

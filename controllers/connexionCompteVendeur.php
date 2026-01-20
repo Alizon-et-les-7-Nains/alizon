@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $hashPasswordSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/connexion.sql'));
         $hashPasswordSTMT->execute([':pseudo' => $_POST['pseudo']]);
-        $hashPassword = $hashPasswordSTMT->fetch(PDO::FETCH_ASSOC);;
+        $hashPassword = $hashPasswordSTMT->fetch(PDO::FETCH_ASSOC);
         if(password_verify($_POST['mdp'], $hashPassword['mdp'])){
             $vendeurSTMT = $pdo->prepare(file_get_contents('../queries/backoffice/vendeur.sql'));
             $vendeurSTMT->execute([':pseudo' => $_POST['pseudo']]);

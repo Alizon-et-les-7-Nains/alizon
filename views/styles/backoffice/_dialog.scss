@@ -1,7 +1,7 @@
 @use '../fonts';
 @use '../colors' as *;
 
-dialog {
+main.commandesBackoffice dialog {
     padding-top: 0;
     transition: all 0.2s ease;
     border-radius: 16px;

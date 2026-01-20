@@ -1,95 +1,223 @@
 <?php
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
+// Chargement des départements
+$listeDepts = [];
+if (($handle = fopen("../../public/data/departements.csv", "r")) !== FALSE) {
+    fgetcsv($handle, 1000, ";");
+    while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+        $listeDepts[$data[0]] = $data[2];
+    }
+    fclose($handle);
+}
 session_start();
 
 $produitsParPage = 15;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-
-// Reglage du decalage pour la pagination
 $offset = ($page - 1) * $produitsParPage;
 
 $idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
-$categoryQuery = isset($_GET['categorie']) ? trim($_GET['categorie']) : "";
+$categoryQuery = isset($_GET['categorie']) ? trim(str_replace('_', ' ', $_GET['categorie'])) : "";
 
-// Récupérer les produits avec pagination
+$conditions = [];
+$params = [];
+
+if (!empty($searchQuery)) {
+    $conditions[] = "(p.nom LIKE :searchQuery OR p.description LIKE :searchQuery)";
+    $params[':searchQuery'] = '%' . $searchQuery . '%';
+}
+
+if (!empty($categoryQuery)) {
+    $conditions[] = "p.typeProd = :categoryQuery";
+    $params[':categoryQuery'] = $categoryQuery;
+}
+
+$whereClause = "";
+if (count($conditions) > 0) {
+    $whereClause = " WHERE " . implode(" AND ", $conditions);
+}
+
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise 
         FROM _produit p 
         LEFT JOIN _remise r ON p.idProduit = r.idProduit 
-        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
+        AND CURDATE() BETWEEN r.debutRemise AND r.finRemise" . $whereClause;
 
-// Compter tous les produits
 $countSql = "SELECT COUNT(*) FROM _produit p 
              LEFT JOIN _remise r ON p.idProduit = r.idProduit 
-             AND CURDATE() BETWEEN r.debutRemise AND r.finRemise";
-
-if (!empty($searchQuery)) {
-    $sql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
-    $countSql .= " WHERE p.nom LIKE :searchQuery OR p.description LIKE :searchQuery";
-}
-
-if (!empty($categoryQuery)) {
-    $sql .= " WHERE p.typeProd = :categoryQuery";
-    $countSql .= " WHERE p.typeProd = :categoryQuery";
-}
-
-// Récuperer la totalité des catégories
-$catSql = "SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;";
-$stmt = $pdo->prepare($catSql);
-$stmt->execute();
-$listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$vendeur = "SELECT 
-            v.codeVendeur,
-            v.raisonSocial,
-            COUNT(p.idProduit) AS nbProduits
-            FROM _vendeur v
-            JOIN _produit p ON p.idVendeur = v.codeVendeur
-            GROUP BY p.idVendeur
-            ORDER BY nbProduits DESC
-            LIMIT 10";
+             AND CURDATE() BETWEEN r.debutRemise AND r.finRemise" . $whereClause;
 
 $countStmt = $pdo->prepare($countSql);
-if (!empty($searchQuery)) {
-    $countStmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
-}
-if (!empty($categoryQuery)) {
-    $countStmt->bindValue(':categoryQuery', '%' . $categoryQuery . '%', PDO::PARAM_STR);
+foreach ($params as $key => $val) {
+    $countStmt->bindValue($key, $val, PDO::PARAM_STR);
 }
 $countStmt->execute();
-$totalProduits = $countStmt->fetchColumn(); // fetchColumn récupère la première colonne du premier résultat
-
+$totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
-
-$sql .= " LIMIT :limit OFFSET :offset"; // LIMIT : nommbre de produits par page (15), OFFSET : decalage sur l'ensemble des résultats
+$sql .= " LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($sql);
 
-// Liaison des paramètres pour la pagination
 $stmt->bindValue(':limit', (int)$produitsParPage, PDO::PARAM_INT);
 $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-if (!empty($searchQuery)) {
-    $stmt->bindValue(':searchQuery', '%' . $searchQuery . '%', PDO::PARAM_STR);
-}
-if (!empty($categoryQuery)) {
-    $stmt->bindValue(':categoryQuery', '%' . $categoryQuery . '%', PDO::PARAM_STR);
+foreach ($params as $key => $val) {
+    $stmt->bindValue($key, $val, PDO::PARAM_STR);
 }
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt = $pdo->prepare($vendeur);
+// Catégories
+$catSql = "SELECT DISTINCT typeProd FROM _produit WHERE typeProd IS NOT NULL;";
+$stmt = $pdo->prepare($catSql);
+$stmt->execute();
+$listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Vendeurs
+$vendeurSql = "SELECT v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbProduits
+               FROM _vendeur v
+               JOIN _produit p ON p.idVendeur = v.codeVendeur
+               GROUP BY v.codeVendeur, v.raisonSocial
+               ORDER BY nbProduits DESC LIMIT 10";
+$stmt = $pdo->prepare($vendeurSql);
 $stmt->execute();
 $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Récupérer le prix maximum pour le slider
-$maxPriceStmt = $pdo->query("SELECT MAX(prix) as maxPrix FROM _produit");
-$maxPriceRow = $maxPriceStmt->fetch(PDO::FETCH_ASSOC);
-$maxPrice = $maxPriceRow['maxPrix'] ?? 100;
+// Prix Max
+$stmt = $pdo->prepare("SELECT MAX(prix) FROM _produit");
+$stmt->execute();
+$maxPrice = $stmt->fetchColumn() ?? 100;
+?>
 
+<?php function getCurrentCart($pdo, $idClient) {
+    $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmt->execute([intval($idClient)]);
+    $panier = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
 
+    $cart = [];
 
+    if ($panier) {
+        $idPanier = intval($panier['idPanier']); 
+
+        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+                FROM _produitAuPanier pa
+                JOIN _produit p ON pa.idProduit = p.idProduit
+                LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                WHERE pa.idPanier = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([intval($idPanier)]);
+        $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+    }
+    
+    return $cart;
+}
+
+// Fonction permettant de modifier la quantité d'un article dans le panier
+function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+    $idProduit = intval($idProduit);
+    $idClient = intval($idClient);
+    
+    // Récupérer le panier actuel
+    $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
+    $stmtPanier->execute([$idClient]);
+    $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$panier) {
+        // Créer un nouveau panier si nécessaire
+        $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
+        $stmtCreate->execute([$idClient]);
+        $idPanier = $pdo->lastInsertId();
+    } else {
+        $idPanier = $panier['idPanier'];
+    }
+
+    // Vérifier si le produit existe déjà dans le panier
+    $sql = "SELECT quantiteProduit FROM _produitAuPanier 
+            WHERE idProduit = ? AND idPanier = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idProduit, $idPanier]);
+    $current = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($current) {
+        // Produit existe : mettre à jour la quantité
+        $newQty = max(0, intval($current['quantiteProduit']) + intval($delta));
+        
+        if ($newQty > 0) {
+            $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
+                    WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$newQty, $idProduit, $idPanier]);
+        } else {
+            // Supprimer si quantité = 0
+            $sql = "DELETE FROM _produitAuPanier WHERE idProduit = ? AND idPanier = ?";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$idProduit, $idPanier]);
+        }
+    } else {
+        // Produit n'existe pas : l'ajouter si delta > 0
+        if ($delta > 0) {
+            $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            $success = $stmt->execute([$idProduit, $idPanier, $delta]);
+        } else {
+            $success = false;
+        }
+    }
+    
+    return $success;
+
+}
+
+// ============================================================================
+// GESTION DES ACTIONS AJAX
+// ============================================================================
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if (ob_get_length()) ob_clean(); 
+    
+    header('Content-Type: application/json');
+    
+    try {
+        if (!$idClient) {
+            echo json_encode(['success' => false, 'error' => 'Session expirée']);
+            exit;
+        }
+
+        switch ($_POST['action']) {
+            case 'updateQty':
+                $idProduit = $_POST['idProduit'] ?? '';
+                $delta = intval($_POST['delta'] ?? 0);
+                if ($idProduit && $delta != 0) {
+                    $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta);
+                    echo json_encode(['success' => $success]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Paramètres invalides']);
+                }
+                break;
+
+            case 'getCart':
+                $cart = getCurrentCart($pdo, $idClient);
+                echo json_encode($cart);
+                break;
+                
+            default:
+                echo json_encode(['success' => false, 'error' => 'Action non reconnue']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit; 
+}
+
+// ============================================================================
+// RÉCUPÉRATION DES DONNÉES POUR LA PAGE
+// ============================================================================
+
+// recuperation panier courent
+$cart = getCurrentCart($pdo, $idClient);
+
+// ============================================================================
+// GESTION DES COOKIES
+// ============================================================================
 ?>
 
 <!DOCTYPE html>
@@ -114,6 +242,10 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
             <article class="triNote">
+                <div>
+                    <input type="radio" id="aucunTri" name="tri">
+                    <label for="aucunTri">Aucun tri</label>
+                </div>
                 <div>
                     <input type="radio" id="triNoteCroissant" name="tri" value="noteAsc">
                     <label for="triNoteCroissant">Note croissante</label>
@@ -146,7 +278,6 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                     <input type="range" id="sliderMax" min="0" max="<?php echo $maxPrice; ?>" value="<?php echo $maxPrice; ?>">
                 </div>
             </div>
-
             <label for="minNote" id="minNoteLabel">Trier par note minimale:</label>
             <div>
                 <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
@@ -157,9 +288,8 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 <input type="hidden" name="note" id="note" value="0"> 
             </div>
 
-            <label for="categorie">Catégorie :</label>
+            <label for="categorie">-- Catégorie --</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
-                
                 <?php if (isset($_GET['categorie'])) {
                     $nomCategorie = $_GET['categorie'];
                     $nomCategorie = str_replace("_", " ", $nomCategorie); ?>
@@ -171,10 +301,16 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 <?php foreach ($listeCategories as $categorie) { ?>
                     <option value="<?= $categorie['typeProd'] ?>" class="choix"><?= $categorie['typeProd'] ?></option>
                 <?php } ?>
-
             </select>
 
-            <label for="zone">Zone géographique :</label>
+            <label for="zone">-- Zone géographique --</label>
+            <select name="zone" id="zoneSelect" class="filter-select">
+                <option value="">Tous les départements</option>
+                <?php foreach ($listeDepts as $code => $nom) : ?>
+                    <option value="<?= $code ?>"><?= $code ?> - <?= htmlspecialchars($nom) ?></option>
+                <?php endforeach; ?>
+            </select>
+
             <label for="vendeur">Vendeur :</label>
             <select id="vendeur" name="vendeur">
                 <option value="">-- Tous les vendeurs --</option>
@@ -275,7 +411,7 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                         <?php if(number_format($value['stock'], 1) == 0) { ?>
                             <b style="color: red; margin-right: 5px;">Aucun stock</b>
                         <?php } else { ?>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>">
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                         <?php } ?>
@@ -296,18 +432,19 @@ $maxPrice = $maxPriceRow['maxPrix'] ?? 100;
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
                     <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
                 <?php endfor; ?>
-
                 <?php if ($page < $nbPages): ?>
                     <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
-</main>
 
-<section class="confirmationAjout">
-    <h4>Produit ajouté au panier !</h4>
+</main>
 </section>
+
+    <script src="../scripts/frontoffice/paiement-ajax.js"></script>
+    <script src="../../public/amd-shim.js"></script>
+    <script src="../../public/script.js"></script>
 
 <script>
 // Filtres prix
@@ -317,9 +454,10 @@ const minValue = document.getElementById('minValue');
 const maxValue = document.getElementById('maxValue');
 const range = document.getElementById('range');
 
-// Tri notes
+// Tri
 const triNoteCroissant = document.getElementById('triNoteCroissant');
 const triNoteDecroissant = document.getElementById('triNoteDecroissant');
+const aucunTri = document.getElementById('aucunTri');
 let sortOrder = '';
 
 // Variables globales
@@ -342,6 +480,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Gestion des étoiles
     stars.forEach((star, index) => {
         star.addEventListener('click', () => {
+            if(index === noteInput.value - 1) {
+                // Si on clique sur la première étoile vide, on remet tout à zéro
+                stars.forEach((s) => {
+                    s.src = emptyStar;
+                });
+                noteInput.value = 0;
+                loadProduits(1);
+                return;
+            }
             const rating = index + 1;
             stars.forEach((s, i) => {
                 s.src = i < rating ? fullStar : emptyStar;
@@ -403,7 +550,9 @@ function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
-    const catValue = categorieSelect.value; 
+    const catValue = categorieSelect.value;
+    const zoneValue = document.getElementById('zoneSelect').value;
+
     let idVendeur;
     if(vendeur.value!=""){
         idVendeur = parseInt(vendeur.value);
@@ -411,20 +560,18 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&zone=${zoneValue}&search=${encodeURIComponent(searchQuery)}`)
         .then(res => {
-            // Vérifie si la réponse HTTP est correcte (status 200-299)
             if (!res.ok) {
                 throw new Error(`Erreur HTTP: ${res.status}`);
             }
-            return res.json(); // Conversion en JSON
+            return res.json();
         })
         .then(data => {
-            listeArticle.innerHTML = data.html; // Recuperation des nouvelles données et mise à jour des produits
-            currentPage = page; // Mise à jour de la page cournante
-            resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`; // Mise à jour du nombre de résultats
+            listeArticle.innerHTML = data.html;
+            currentPage = page;
+            resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
             
-            // Mise à jour de la pagination
             let pagHTML = '';
             if (data.nbPages > 1) {
                 if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
@@ -433,7 +580,7 @@ function loadProduits(page = 1) {
                 }
                 if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
             }
-            paginationDiv.innerHTML = pagHTML;  // Recuperation des nouvelles données et mise à jour des produits
+            paginationDiv.innerHTML = pagHTML;
 
             pagination();
             reattacherAjouterPanier();
@@ -446,6 +593,9 @@ function loadProduits(page = 1) {
         });
 }
 
+// Déplacer cet event listener en dehors de la fonction, avec les autres
+document.getElementById('zoneSelect').addEventListener('change', () => loadProduits(1));
+
 // Events listeners sur les sliders
 sliderMin.addEventListener('input', () => { 
     updateSlider(); 
@@ -456,6 +606,13 @@ sliderMin.addEventListener('input', () => {
 sliderMax.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
+});
+
+aucunTri.addEventListener('change', () => {
+    if (aucunTri.checked) {
+        sortOrder = '';
+        loadProduits(1);
+    }
 });
 
 triNoteCroissant.addEventListener('change', () => {
@@ -493,6 +650,13 @@ else{
     searchbar.value = searchQuery;
 }
 
+window.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" && document.activeElement === searchbar) {
+        event.preventDefault();
+        searchQuery = searchbar.value.trim();
+        loadProduits(1);
+    }
+});
 
 updateSlider();
 
@@ -505,16 +669,33 @@ const imgFiltre = document.getElementById('img-filtre');
 const filterSort = document.querySelector('.filter-sort');
 
 if (toggleFiltersBtn) {
-    toggleFiltersBtn.addEventListener('click', () => {
+    toggleFiltersBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         filterSort.classList.toggle('active');
-        toggleFiltersBtn.style.color = '#000000';
-        imgFiltre.style.filter = 'invert(0)';
+        
+        // Toggle le style du bouton
+        if (filterSort.classList.contains('active')) {
+            toggleFiltersBtn.style.transition = '0.6s ease, box-shadow 0.6s ease';
+            toggleFiltersBtn.style.backgroundColor = '#e3f2fe';
+            toggleFiltersBtn.style.width = '100%';
+            toggleFiltersBtn.style.color = '#000000';
+            imgFiltre.style.filter = 'brightness(0)';
+        } else {
+            toggleFiltersBtn.style.width = '20%';
+            toggleFiltersBtn.style.backgroundColor = '#fffefa';
+            toggleFiltersBtn.style.color = '#273469';
+            imgFiltre.style.filter = 'none';
+        }
     });
 
     document.addEventListener('click', (e) => {
         if (window.innerWidth <= 512) {
             if (!filterSort.contains(e.target) && !toggleFiltersBtn.contains(e.target)) {
                 filterSort.classList.remove('active');
+                toggleFiltersBtn.style.width = '20%';
+                toggleFiltersBtn.style.backgroundColor = '#fffefa';
+                toggleFiltersBtn.style.color = '#273469';
+                imgFiltre.style.filter = 'none';
             }
         }
     });
