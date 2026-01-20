@@ -576,8 +576,8 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
                             <input value="${dateFinPromo}" type="text" id="dateLimite" name="date_limite" class="dateLimite" placeholder="Jour/Mois/Année">
                         </div>
                         <h2><strong> Bannière actuelle : </strong></h2>
-                        <div style="background-image: url(${defImg})"  class="ajouterBaniere">
-                            <input type="file" id="baniere" name="baniere" accept="image/*">  
+                        <div style="background-image: url(${defImg})"  class="ajouterBaniere" id='preview-baniere'>
+                            <input type="file" id="baniere" name="baniere" accept="image/*"> 
                         </div>
                         
                         <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
@@ -674,6 +674,14 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
         txtTotal.textContent = totalPromo; // Ajouter plus tard prix de la bannière
     });
 }
+
+document.getElementById('baniere').addEventListener('input', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const url = URL.createObjectURL(file);
+        document.getElementById('preview-baniere').style.backgroundImage = `url(${url})`;
+    }
+})
 
 function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo = new Date().toLocaleDateString('fr-FR', { timeZone: 'UTC' })) {
 
