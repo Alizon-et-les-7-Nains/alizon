@@ -75,7 +75,15 @@ const searchbar = document.getElementById('searchbar');
 
 // Redirection vers la page catalogue avec le terme de recherche
 loupe.addEventListener('click', () => {
-    const recherche = searchbar.value;
-    window.location.href = `catalogue.php?search=${encodeURIComponent(recherche)}`;
+    searchQuery = searchbar.value.trim();
+    window.location.href = `catalogue.php?search=${encodeURIComponent(searchQuery)}`;
+});
+
+// Cliquer sur "entrée" dans la barre de recherche déclenche la recherche
+window.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" && document.activeElement === searchbar) {
+        searchQuery = searchbar.value.trim();
+        window.location.href = `catalogue.php?search=${encodeURIComponent(searchQuery)}`;
+    }
 });
 </script>
