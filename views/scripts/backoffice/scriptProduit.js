@@ -675,11 +675,11 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
     });
 }
 
-document.getElementById('baniere').addEventListener('input', (e) => {
+document.getElementById('baniere').addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
         const url = URL.createObjectURL(file);
-        document.getElementById('preview-baniere').style.backgroundImage = `url(${url})`;
+        document.getElementById('preview-baniere').style.backgroundImage = `url('${url}')`;
     }
 })
 
