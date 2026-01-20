@@ -421,7 +421,6 @@ if (isset($_SESSION['message_panier'])) {
     </article>
     <article class="actionsProduit">
         <h2>Vendu par <?php echo htmlspecialchars($produit['raisonSocial']); ?></h2>
-        <p class="underline" id="plusDarticles"><a href="">Plus d'article de ce vendeur</a></p>
         <br>
         <hr>
         <div class="ligneActions">
