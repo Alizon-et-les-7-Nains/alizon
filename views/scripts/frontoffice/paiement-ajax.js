@@ -37,11 +37,6 @@ class PaymentAPI {
       console.error("Erreur lors de la mise à jour:", error);
       alert("Erreur réseau lors de la mise à jour");
     }
-
-          // Debug : affiche le résultat complet dans la console
-      var debug = JSON.stringify(result);
-      console.log("Résultat de la mise à jour:", debug);
-      console.log("Produit ID:", idProduit, "Delta:", delta);
   }
 
   // Suppression d'un produit du panier
