@@ -46,13 +46,13 @@ $stmtImg = $pdo->prepare("
     WHERE idClient = ? AND idProduit = ?");
 $stmtImg->execute([$idClient, $idProduit]);
 $imageAvis = $stmtImg->fetch(PDO::FETCH_ASSOC);
-
+var_dump($imageAvis);
 // Déterminer si une image existe
 $hasImage = ($imageAvis && !empty($imageAvis['url']));
-
+var_dump($hasImage);
 // URL finale à afficher
 $imageUrl = $hasImage ? $imageAvis['url'] : $imageDefaut;
-
+var_dump($imageUrl);
 
 ?>
 

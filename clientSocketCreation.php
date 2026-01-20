@@ -33,13 +33,6 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDestination[0]["idCommande"]]);
 //echo "Réponse: $create_response\n\n";
 
-
-// Test 4: HELP
-//echo "Test HELP:\n";
-fwrite($socket, "HELP");
-$help_response = fgets($socket, 1024);
-//echo $help_response;
-
 fwrite($socket, "QUIT");
 // Fermeture de la connexion
 fclose($socket);
