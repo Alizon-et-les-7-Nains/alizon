@@ -10,3 +10,4 @@ config.*
 **/*.map.*
 /controllers/config.php
 /controllers/pdo.php
+.vscode/
