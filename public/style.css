@@ -7722,6 +7722,132 @@ dialog.reassort form input {
     height: 10px;
   }
 }
+.pageCatalogue {
+  /* ============================================================
+     AJUSTEMENTS RESPONSIVE PROGRESSIFS
+     Pagination – Filtres – Bannière promo – Bouton panier
+     ============================================================ */
+  /* =========================
+     PALIER ≤ 1024px
+     ========================= */
+}
+@media (max-width: 1024px) {
+  .pageCatalogue {
+    /* Pagination */
+  }
+  .pageCatalogue .pagination {
+    gap: 8px;
+  }
+  .pageCatalogue .pagination a,
+  .pageCatalogue .pagination span {
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 22px;
+  }
+  .pageCatalogue {
+    /* Bannière promo */
+  }
+  .pageCatalogue .bannierePromo {
+    transform: scale(0.9);
+    transform-origin: top left;
+  }
+}
+.pageCatalogue {
+  /* =========================
+     PALIER ≤ 768px
+     ========================= */
+}
+@media (max-width: 768px) {
+  .pageCatalogue {
+    /* Pagination */
+  }
+  .pageCatalogue .pagination {
+    gap: 6px;
+  }
+  .pageCatalogue .pagination a,
+  .pageCatalogue .pagination span {
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 18px;
+  }
+  .pageCatalogue {
+    /* Filtres */
+  }
+  .pageCatalogue .filter-sort form label {
+    font-size: 14px;
+  }
+  .pageCatalogue .filter-sort select {
+    font-size: 13px;
+  }
+  .pageCatalogue {
+    /* Bannière promo */
+  }
+  .pageCatalogue .bannierePromo {
+    transform: scale(0.85);
+    transform-origin: top left;
+  }
+  .pageCatalogue {
+    /* Bouton ajout panier */
+  }
+  .pageCatalogue .infoProd button img {
+    width: 40px;
+    height: 40px;
+  }
+}
+.pageCatalogue {
+  /* =========================
+     PALIER ≤ 580px (mobile)
+     ========================= */
+}
+@media (max-width: 580px) {
+  .pageCatalogue {
+    /* Pagination */
+  }
+  .pageCatalogue .pagination {
+    gap: 5px;
+    margin-left: 0;
+  }
+  .pageCatalogue .pagination a,
+  .pageCatalogue .pagination span {
+    min-width: 30px;
+    min-height: 30px;
+    font-size: 14px;
+    border-width: 1px;
+  }
+  .pageCatalogue {
+    /* Filtres */
+  }
+  .pageCatalogue .filter-sort form {
+    gap: 12px;
+  }
+  .pageCatalogue .filter-sort form label {
+    font-size: 15px;
+  }
+  .pageCatalogue .filter-sort article div {
+    gap: 10px;
+  }
+  .pageCatalogue {
+    /* Bannière promo */
+  }
+  .pageCatalogue .bannierePromo {
+    transform: scale(0.75);
+    transform-origin: top left;
+  }
+  .pageCatalogue .tempsRestant {
+    font-size: 7px;
+    padding: 2px;
+  }
+  .pageCatalogue {
+    /* Bouton ajout panier */
+  }
+  .pageCatalogue .infoProd button {
+    padding: 4px;
+  }
+  .pageCatalogue .infoProd button img {
+    width: 32px;
+    height: 32px;
+  }
+}
 
 .overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
   position: fixed;
