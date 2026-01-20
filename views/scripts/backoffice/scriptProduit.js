@@ -675,7 +675,7 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
     });
 }
 
-document.getElementById('baniere').addEventListener('change', (e) => {
+document.querySelector('input#baniere').addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (file) {
     const reader = new FileReader();
