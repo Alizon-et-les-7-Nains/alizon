@@ -52,7 +52,6 @@ function afficherEtoiles($note) {
                 $stmt2 = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = ?");
                 $stmt2->execute([$p]);
                 $monProduit = $stmt2->fetch(PDO::FETCH_ASSOC);
-                var_dump($monProduit);
                 $stmt3 = $pdo->prepare("SELECT * FROM _imageDeProduit WHERE idProduit = ?");
                 $stmt3->execute([$p]);
                 $imageProduit = $stmt3->fetch(PDO::FETCH_ASSOC); 
