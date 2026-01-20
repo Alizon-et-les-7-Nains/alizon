@@ -102,11 +102,18 @@ if (!empty($_FILES['url']['name'])) {
 
     $extension = pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION);
     $fileName = uniqid("avis_", true) . "." . $extension;
-    $filePath = $uploadDir . '/' . $fileName;
+    $filePath = $uploadDir . '/images/imagesAvis/' . $fileName;
 
     // Traitement de l'image
     try {
         treat($_FILES['url']['tmp_name'], $filePath);
+    
+        // Vérifier si compression a eu lieu
+        if (filesize($_FILES['url']['tmp_name']) / 1000 > AIM_IMAGES) {
+            $imageUrl = pathinfo($fileName, PATHINFO_FILENAME) . '.jpg';
+        } else {
+            $imageUrl = $fileName;
+        }
     } catch (Exception $e) {
         if (!move_uploaded_file($_FILES['url']['tmp_name'], $filePath)) {
             throw new Exception("Impossible de traiter l'image.");
@@ -114,7 +121,7 @@ if (!empty($_FILES['url']['name'])) {
     }
 
     // URL stockée en base
-    $imageUrl = "$fileName";
+    $imageUrl = $fileName;
 
     // Vérifier si une image existe déjà
     $stmtImg = $pdo->prepare("
