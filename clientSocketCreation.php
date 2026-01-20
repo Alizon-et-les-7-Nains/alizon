@@ -27,6 +27,7 @@ $auth_response = fgets($socket, 1024);
 //echo "Test CREATE:\n";
 
 fwrite($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"]);
+echo "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"];
 $create_response = fgets($socket, 1024);
 var_dump($create_response);
 $sql = "UPDATE _commande SET noBordereau = :noBordereau WHERE idCommande = :idCommande";
