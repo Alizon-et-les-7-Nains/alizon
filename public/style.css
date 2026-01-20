@@ -7182,6 +7182,7 @@ dialog.reassort form input {
   left: 0;
   background-color: #e4d9ff;
   z-index: 700;
+  padding: 20px;
 }
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
