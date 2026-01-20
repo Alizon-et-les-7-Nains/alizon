@@ -276,7 +276,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <img src="../../public/images/etoileVide.svg" data-index="5" class="star" alt="5 étoiles">
                 <input type="hidden" name="note" id="note" value="0"> 
             </div>
-            <label for="categorie">Catégorie :</label>
+            <label for="categorie">-- Catégorie --</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
                 <?php if (isset($_GET['categorie'])) {
                     $nomCategorie = $_GET['categorie'];
@@ -291,7 +291,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php } ?>
             </select>
 
-            <label for="zone">Zone géographique :</label>
+            <label for="zone">-- Zone géographique --</label>
             <select name="zone" id="zoneSelect" class="filter-select">
                 <option value="">Tous les départements</option>
                 <?php foreach ($listeDepts as $code => $nom) : ?>
@@ -445,8 +445,6 @@ const range = document.getElementById('range');
 // Tri notes
 const triNoteCroissant = document.getElementById('triNoteCroissant');
 const triNoteDecroissant = document.getElementById('triNoteDecroissant');
-const triPertinenceCroissant = document.getElementById('triPertinenceCroissant');
-const triPertinenceDecroissant = document.getElementById('triPertinenceDecroissant');
 let sortOrder = '';
 
 // Variables globales
@@ -540,7 +538,7 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&zone=${zoneValue}&search=${encodeURIComponent(searchQuery)}&pertinenceCroissant=${triPertinenceCroissant}&pertinenceDeroissant=${triPertinenceDecroissant}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&zone=${zoneValue}&search=${encodeURIComponent(searchQuery)}`)
         .then(res => {
             if (!res.ok) {
                 throw new Error(`Erreur HTTP: ${res.status}`);
@@ -588,19 +586,6 @@ sliderMax.addEventListener('input', () => {
     loadProduits(1); 
 });
 
-triPertinenceCroissant.addEventListener('change', () =>{
-    if (triPertinenceCroissant.checked){
-        sortOrder = true;
-        loadProduits(1);
-    }
-});
-
-triPertinenceDecroissant.addEventListener('change', () =>{
-    if (triPertinenceDecroissant.checked){
-        sortOrder = true;
-        loadProduits(1);
-    }
-});
 
 triNoteCroissant.addEventListener('change', () => {
     if (triNoteCroissant.checked) {
@@ -644,7 +629,6 @@ window.addEventListener("keydown", function(event) {
         loadProduits(1);
     }
 });
-
 
 updateSlider();
 

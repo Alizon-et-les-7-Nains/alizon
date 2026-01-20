@@ -477,8 +477,10 @@ if (isset($_SESSION['message_panier'])) {
         <button class="bouton boutonBleu">Acheter maintenant</button>
     </form>
 <?php } else if($produit['stock'] <= 0){ ?>
-    <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
-    <button class="bouton boutonGrisé">Acheter maintenant</button>
+    <form action="" method="POST">
+        <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
+        <button class="bouton boutonGrisé">Acheter maintenant</button>
+    </form>
 <?php } else { ?>
     <form action="connexionClient.php" method="POST">
         <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
@@ -543,10 +545,6 @@ if ($produit['stock'] > 0) {
         '<label>
             Achetez ce produit avant de pouvoir écrire un avis 
         </label>';
-        echo 
-        "<label>
-            Evan nique ta mere y'a pas de CSS la;
-        </label>";
     }
     } else {
     echo     
@@ -616,7 +614,7 @@ if ($produit['stock'] > 0) {
                     <div class="sectionImagesAvis">
                         <?php foreach ($imagesAvis as $imageAvis): ?>
                             <?php if (!empty($imageAvis['URL'])): ?>
-                                <img src="/images/imagesAvis/<?php echo htmlspecialchars($imageAvis['URL']); ?>" 
+                                <img src="<?php echo htmlspecialchars($imageAvis['URL']); ?>" 
                                     alt="Photo avis" 
                                     style="max-width: 100px; height: auto; border-radius: 5px; margin-top: 10px; border: 1px solid #ddd;">
                             <?php endif; ?>

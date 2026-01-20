@@ -46,13 +46,10 @@ $stmtImg = $pdo->prepare("
     WHERE idClient = ? AND idProduit = ?");
 $stmtImg->execute([$idClient, $idProduit]);
 $imageAvis = $stmtImg->fetch(PDO::FETCH_ASSOC);
-
 // Déterminer si une image existe
 $hasImage = ($imageAvis && !empty($imageAvis['url']));
-
 // URL finale à afficher
 $imageUrl = $hasImage ? $imageAvis['url'] : $imageDefaut;
-
 
 ?>
 
@@ -100,7 +97,7 @@ $imageUrl = $hasImage ? $imageAvis['url'] : $imageDefaut;
             <?= afficherEtoiles(round($avis['note'])); ?>
         </article>
         <input type="hidden" name="note" id="note" value="<?= htmlspecialchars($avis['note'] ?? '') ?>">
-
+        
         <label>Contenu :</label><br>
         <textarea name="contenuAvis" required><?php echo htmlspecialchars($avis['contenuAvis']); ?></textarea><br><br>
 
@@ -113,21 +110,44 @@ $imageUrl = $hasImage ? $imageAvis['url'] : $imageDefaut;
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
+    /* ==========================
+       GESTION DES ÉTOILES
+    ========================== */
+    const noteInput = document.getElementById('note');
+    const stars = document.querySelectorAll('.etoiles .star');
+    const emptyStar = "/public/images/etoileVide.svg";
+    const fullStar  = "/public/images/etoile.svg";
+
+    if (stars.length > 0 && noteInput) {
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                const rating = index + 1;
+
+                stars.forEach((s, i) => {
+                    s.src = i < rating ? fullStar : emptyStar;
+                });
+
+                noteInput.value = rating;
+            });
+        });
+    }
+
+    /* ==========================
+       PREVIEW IMAGE
+    ========================== */
     const fileInput = document.getElementById('photoUpload');
     const imagePreview = document.getElementById('imagePreview');
     const placeholderText = document.getElementById('placeholderText');
     const overlayText = document.getElementById('overlayText');
 
-    if (!fileInput) {
-        console.error("input file introuvable !");
+    if (!fileInput || !imagePreview) {
+        console.error("Éléments image manquants");
         return;
     }
 
     fileInput.addEventListener('change', function () {
-        if (!this.files || this.files.length === 0) {
-            console.warn("Aucun fichier sélectionné");
-            return;
-        }
+        if (!this.files || this.files.length === 0) return;
 
         const file = this.files[0];
 
@@ -141,10 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.onload = e => {
             imagePreview.src = e.target.result;
             imagePreview.style.display = "block";
-            placeholderText.style.display = 'none';
-            overlayText.style.display = 'flex';
+            if (placeholderText) placeholderText.style.display = 'none';
+            if (overlayText) overlayText.style.display = 'flex';
         };
         reader.readAsDataURL(file);
     });
+
 });
 </script>
