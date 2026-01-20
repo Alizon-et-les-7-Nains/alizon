@@ -138,7 +138,7 @@ $commandes = $commandesSTMT->fetchAll(PDO::FETCH_ASSOC);
             </tr>
             <tr>
                 <td>" . formatDate($commande['dateCommande']) . "</td>
-                <th>" . $commande['quantiteProduit'] . "</th>
+                <th>" . $commande['quantite'] . "</th>
             </tr>
         </table>
         ";
