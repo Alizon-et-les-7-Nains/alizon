@@ -174,33 +174,40 @@ MYSQL* config_BD() {
  * num_bordereau_unique() - Génère un numéro de bordereau aléatoire à 10 chiffres
  */
 long long num_bordereau_unique() {
-    long long num = 0;
-    
+    unsigned long long num = 0;  // ← UTILISER unsigned long long
+
     // Utiliser /dev/urandom pour une vraie aléatoire
-    FILE *urandom = fopen("/dev/urandom", "rb");
+    FILE urandom = fopen("/dev/urandom", "rb");
     if (urandom) {
         unsigned char bytes[8];
         fread(bytes, 1, 8, urandom);
         fclose(urandom);
-        
-        // Générer un nombre entre 1000000000 et 9999999999
+
+        // Construire un nombre positif
         for (int i = 0; i < 8; i++) {
             num = (num << 8) | bytes[i];
         }
-        num = (num % 9000000000LL) + 1000000000LL;
+
+        // Forcer à être entre 1000000000 et 9999999999 (10 chiffres)
+        num = (num % 9000000000ULL) + 1000000000ULL;
     } else {
-        // Fallback sur rand() avec microseconde + PID
+        // Fallback sur rand() avec seed amélioré
         struct timespec ts;
         clock_gettime(CLOCK_REALTIME, &ts);
         srand(ts.tv_nsec ^ getpid());
-        
-        num = 1000000000LL;
+
+        num = 0;
         for (int i = 0; i < 10; i++) {
-            num = num * 10 / 10 + (rand() % 10) * (long long)pow(10, 9 - i);
+            num = num 10 + (rand() % 10);
+        }
+
+        // S'assurer qu'on a bien 10 chiffres
+        if (num < 1000000000ULL) {
+            num += 1000000000ULL;
         }
     }
-    
-    return num;
+
+    return (long long)num;  // Cast final en long long (sera toujours positif)
 }
 /**
  * get_capacite_actuelle() - Récupère le nombre de colis actuellement dans la file
