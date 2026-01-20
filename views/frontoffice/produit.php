@@ -543,10 +543,6 @@ if ($produit['stock'] > 0) {
         '<label>
             Achetez ce produit avant de pouvoir écrire un avis 
         </label>';
-        echo 
-        "<label>
-            Evan nique ta mere y'a pas de CSS la;
-        </label>";
     }
     } else {
     echo     
