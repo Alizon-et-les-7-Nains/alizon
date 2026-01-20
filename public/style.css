@@ -7478,6 +7478,11 @@ dialog.reassort form input {
   font-size: 26px;
   font-family: "berkshire", serif;
 }
+.pageCatalogue .pagination span.disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
 .pageCatalogue .btnToggleFilters {
   display: none;
 }
