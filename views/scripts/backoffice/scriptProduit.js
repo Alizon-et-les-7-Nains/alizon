@@ -675,12 +675,15 @@ function popUpModifierPromotion(id, nom, imgURL, prix, nbEval, note, prixAuKg, d
     });
 }
 
-document.getElementById('baniere').addEventListener('input', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        const url = URL.createObjectURL(file);
-        document.getElementById('preview-baniere').style.backgroundImage = `url(${url})`;
-    }
+document.getElementById('baniere').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        document.getElementById('preview-baniere').style.backgroundImage = `url(${event.target.result})`;
+    };
+    reader.readAsDataURL(file);
+  }
 })
 
 function popUpPromouvoir(id, nom, imgURL, prix, nbEval, note, prixAuKg, dateFinPromo = new Date().toLocaleDateString('fr-FR', { timeZone: 'UTC' })) {

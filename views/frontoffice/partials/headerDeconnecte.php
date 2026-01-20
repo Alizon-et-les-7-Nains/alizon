@@ -21,10 +21,11 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- Barre de recherche de produits -->
+        <!-- Barre de recherche de produits -->
         <div class="searchBar">
             <div class="search-wrapper">
-                <i id="validerRecherche" class="bi bi-search"></i>
                 <input type="search" name="recherche" id="searchbar" placeholder="Rechercher">
+                <img id ="recherche" src="../../../public/images/searchDarkBlue.svg" alt="">
             </div>
         </div>
 
@@ -63,4 +64,14 @@ function menuBurger() {
     var burgerIcon = document.getElementById("burgerIcon");
     burgerIcon.style.display = (burgerIcon.style.display === "flex") ? "none" : "flex";
 }
+
+// Gestion de la recherche via l'icône loupe
+const loupe = document.getElementById('recherche');
+const searchbar = document.getElementById('searchbar');
+
+// Redirection vers la page catalogue avec le terme de recherche
+loupe.addEventListener('click', () => {
+    const recherche = searchbar.value;
+    window.location.href = `catalogue.php?search=${encodeURIComponent(recherche)}`;
+});
 </script>
