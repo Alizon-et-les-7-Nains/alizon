@@ -471,20 +471,20 @@ if (isset($_SESSION['message_panier'])) {
                 <button class="bouton boutonRose" type="submit" name="ajouter_panier">Ajouter au panier</button>
             <?php endif; ?>
         </form>
-<?php if (isset($_SESSION['user_id']) && $produit['stock'] > 0): ?>
+<?php if (isset($_SESSION['user_id']) && $produit['stock'] > 0){ ?>
     <form action="pagePaiement.php" method="POST">
         <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
         <button class="bouton boutonBleu">Acheter maintenant</button>
     </form>
-<?php else if($produit['stock'] <= 0): ?>
+<?php } else if($produit['stock'] <= 0){ ?>
     <form action="connexionClient.php" method="POST">
         <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
         <button class="bouton boutonBleu">Acheter maintenant</button>
     </form>
-<?php else: ?>
+<?php } else { ?>
     <input type="hidden" name="idProduit" value="<?php echo $productId; ?>">
     <button class="bouton boutonGrisé">Acheter maintenant</button>
-<?php endif; ?>
+<?php } ?>
     </div>
 </article>
 </section>
