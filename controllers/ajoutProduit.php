@@ -34,8 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':note' => 0.0,
             ':seuilAlerte' => 0,
             ':enVente' => 0,
-            ':dateAjout' => formatDate(date()),
-            ':dateDerniereModif' => formatDate(date()),
+            ':dateAjout' => formatDate(time()),
+            ':dateDerniereModif' => formatDate(time()),
             'idCategorie' => $categorie
         ]);
 
