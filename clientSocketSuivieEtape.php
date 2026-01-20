@@ -56,10 +56,11 @@ $destination = $status_parts[2];
 $localisation = $status_parts[3];
 $etape = $status_parts[4];
 $date_etape = $status_parts[5];
+$typeLivraison = $status_parts[6] ?? '';
 
 $image_data = '';
 if ($etape == '9' && $typeLivraison === 'ABSENT') {
-    $typeLivraison = $status_parts[6];
+    
     
     // Lire jusqu'au \n final
     while (!feof($socket)) {
