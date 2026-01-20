@@ -7463,6 +7463,10 @@ dialog.reassort form input {
   width: fit-content;
 }
 .pageCatalogue .pagination a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
   min-width: 50px;
   min-height: 50px;
   background-color: #273469;
