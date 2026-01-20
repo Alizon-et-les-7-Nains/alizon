@@ -276,7 +276,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <img src="../../public/images/etoileVide.svg" data-index="5" class="star" alt="5 étoiles">
                 <input type="hidden" name="note" id="note" value="0"> 
             </div>
-            <label for="categorie">Catégorie :</label>
+            <label for="categorie">-- Catégorie --</label>
             <select name="categorie" id="categorieSelect" class="filter-select">
                 <?php if (isset($_GET['categorie'])) {
                     $nomCategorie = $_GET['categorie'];
@@ -291,7 +291,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php } ?>
             </select>
 
-            <label for="zone">Zone géographique :</label>
+            <label for="zone">-- Zone géographique --</label>
             <select name="zone" id="zoneSelect" class="filter-select">
                 <option value="">Tous les départements</option>
                 <?php foreach ($listeDepts as $code => $nom) : ?>
