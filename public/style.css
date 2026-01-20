@@ -7466,7 +7466,7 @@ dialog.reassort form input {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1em;
+  padding: 0.3em;
   min-width: 50px;
   min-height: 50px;
   background-color: #273469;
