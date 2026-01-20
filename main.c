@@ -474,11 +474,11 @@ void create(struct ClientSession *session, int commande_id, char *destination,
                  "VALUES (%lld, %d, '%s', 'Entrepôt Alizon', 1, NOW())",
                  new_bordereau, commande_id, escaped_destination);
         
-        if (mysql_query(conn, query)) {
-            snprintf(response, sizeof(response), "ERROR DB_INSERT", mysql_errno(conn), mysql_error(conn));
-            send(session->client_socket, response, strlen(response), 0);
-            return;
-        }
+        // if (mysql_query(conn, query)) {
+        //     snprintf(response, sizeof(response), "ERROR DB_INSERT", mysql_errno(conn), mysql_error(conn));
+        //     send(session->client_socket, response, strlen(response), 0);
+        //     return;
+        // }
     
     // 5. Si capacité disponible, ajouter à la file de prise en charge
     if (current_load < config.capacity) {
