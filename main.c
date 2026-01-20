@@ -546,14 +546,24 @@ void create(struct ClientSession *session, int commande_id, char *destination,
     } 
     // 6. Si capacité pleine, mettre en file d'attente
     else {
+        // Échapper le username aussi
+        char escaped_username[100];
+        mysql_real_escape_string(conn, escaped_username, session->username, strlen(session->username));
+        
         snprintf(query, sizeof(query),
-                 "INSERT INTO _delivraptor_queue (noCommande, destination, numBordereau, username) "
-                 "VALUES (%d, '%s', %lld, '%s')",
-                 commande_id, escaped_destination, new_bordereau, session->username);
+                "INSERT INTO _delivraptor_queue (noCommande, destination, numBordereau, username) "
+                "VALUES (%d, '%s', %lld, '%s')",
+                commande_id, escaped_destination, new_bordereau, escaped_username);
         
         if (mysql_query(conn, query)) {
-            snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT\n");
+            snprintf(response, sizeof(response), "ERROR DB_QUEUE_INSERT %s\n", mysql_error(conn));
             send(session->client_socket, response, strlen(response), 0);
+            
+            // Log l'erreur détaillée
+            char log_msg[512];
+            snprintf(log_msg, sizeof(log_msg), "Erreur insertion queue: %s", mysql_error(conn));
+            write_log(config.log_file, session->client_ip, session->client_port,
+                    session->username, "CREATE_ERROR", log_msg);
             return;
         }
         
@@ -561,10 +571,10 @@ void create(struct ClientSession *session, int commande_id, char *destination,
         
         char log_msg[256];
         snprintf(log_msg, sizeof(log_msg), 
-                 "Bordereau %lld créé pour commande %d (mis en file d'attente - capacité: %d/%d)", 
-                 new_bordereau, commande_id, current_load, config.capacity);
+                "Bordereau %lld créé pour commande %d (mis en file d'attente - capacité: %d/%d)", 
+                new_bordereau, commande_id, current_load, config.capacity);
         write_log(config.log_file, session->client_ip, session->client_port,
-                  session->username, "CREATE", log_msg);
+                session->username, "CREATE", log_msg);
     }
     
     send(session->client_socket, response, strlen(response), 0);
