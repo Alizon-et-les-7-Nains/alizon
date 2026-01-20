@@ -2500,7 +2500,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 12px;
   padding: 28px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(37, 43, 86, 0.08);
+  border: 2px solid #252b56;
 }
 @media (max-width: 920px) {
   .pagePaiement .order-summary {
