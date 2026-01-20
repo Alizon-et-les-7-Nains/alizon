@@ -3308,7 +3308,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   max-width: 800px;
   margin-bottom: 40px;
   align-items: center;
-  justify-content: space-around;
 }
 .panier .quantiteProduit {
   display: flex;
@@ -3337,11 +3336,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 24px;
   font-weight: bold;
   margin-top: 15px;
-}
-.panier .prix-remise {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
+  width: 200px;
 }
 .panier .listeProduit div {
   margin: 0px 15px;
@@ -3356,7 +3351,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   align-items: flex-start;
   justify-content: space-around;
   height: 180px;
-  width: -webkit-fill-available;
+  width: 300px;
   margin-left: 40px;
 }
 .panier .infoProduit img {
@@ -3461,7 +3456,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     align-items: stretch;
   }
 }
-@media (max-width: 900px) {
+@media (max-width: 767px) {
   .panier .listeProduit article {
     border: none;
     padding: none;
@@ -3470,7 +3465,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     display: none;
   }
   .panier .listeProduit article img {
-    max-height: 100px;
+    max-height: 180px;
     margin: 0px 10px;
   }
   .panier .infoProduit div h2 {
@@ -3502,9 +3497,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .panier button .delete {
     margin-top: 20px;
-  }
-  .panier .prix-remise {
-    font-size: 18px;
   }
 }
 .panier button {
