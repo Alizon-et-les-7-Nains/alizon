@@ -37,39 +37,42 @@ foreach ($extensionsPossibles as $ext) {
 
 // Si une image à été mise et qu'il n'y a pas d'erreur alors on le met dans le serveur
 // Cela permet d'éviter le cas où aucun fichier n'a été mis ce qui aurait supprimer l'image
+$nouveauNomImage;
 if (isset($_FILES['url']) && $_FILES['url']['error'] === UPLOAD_ERR_OK) {
     if (file_exists($photoPath . $extension)) { 
         unlink($photoPath . $extension); 
     }
 
+    $extension = strtolower(pathinfo($_FILES['url']['name'], PATHINFO_EXTENSION));
+    $nouveauNomImage = 'produit_' . $idNewProduit . '_' . time() . '.' . $extension;
+    $dossierDestination = $_SERVER['DOCUMENT_ROOT'] . '/images/' . $nouveauNomImage;
+
     try {
-        treat($_FILES['url']['tmp_name'], $photoPath . $extension);
+        treat($_FILES['url']['tmp_name'], $dossierDestination);
     } catch (Exception $e) {
-        if (!move_uploaded_file($_FILES['url']['tmp_name'], $photoPath.$extension)) {
+        if (!move_uploaded_file($_FILES['url']['tmp_name'], $dossierDestination)) {
             throw new Exception("Impossible de traiter l'image.");
         }
     }
 
     $fileName = $_FILES['url']['name'];
     $url = "/images/" . $fileName;
+
+    try{
+        $imgDeProd->execute([
+            ':url' => "/images/$nouveauNomImage",
+            ':idProduit' => $idProd
+        ]);
+    }
+    catch(PDOException $e){
+        echo "Erreur SQL : " . $e->getMessage();
+        }
+    }
 } else {
     $sqlUrl = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
     $sqlUrl->execute([':idProduit' => $idProd]);
     $row = $sqlUrl->fetch(PDO::FETCH_ASSOC);
     $fileName = $row['URL']; 
-}
-
-$url = "/images/produit" . $idProd.$extension;
-
-try{
-    $imgDeProd->execute([
-        ':url' => $url,
-        ':idProduit' => $idProd
-    ]);
-}
-catch(PDOException $e){
-    echo "Erreur SQL : " . $e->getMessage();
-    }
 }
 
 
