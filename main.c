@@ -174,10 +174,10 @@ MYSQL* config_BD() {
  * num_bordereau_unique() - Génère un numéro de bordereau aléatoire à 10 chiffres
  */
 long long num_bordereau_unique() {
-    unsigned long long num = 0;  // ← UTILISER unsigned long long
+    unsigned long long num = 0;
 
     // Utiliser /dev/urandom pour une vraie aléatoire
-    FILE urandom = fopen("/dev/urandom", "rb");
+    FILE urandom = fopen("/dev/urandom", "rb");  // ← Ajout du
     if (urandom) {
         unsigned char bytes[8];
         fread(bytes, 1, 8, urandom);
@@ -198,7 +198,7 @@ long long num_bordereau_unique() {
 
         num = 0;
         for (int i = 0; i < 10; i++) {
-            num = num 10 + (rand() % 10);
+            num = num * 10 + (rand() % 10);  // ← Ajout du *
         }
 
         // S'assurer qu'on a bien 10 chiffres
@@ -207,7 +207,7 @@ long long num_bordereau_unique() {
         }
     }
 
-    return (long long)num;  // Cast final en long long (sera toujours positif)
+    return (long long)num;
 }
 /**
  * get_capacite_actuelle() - Récupère le nombre de colis actuellement dans la file
