@@ -4,7 +4,6 @@
 use function Composer\Autoload\includeFile;
 
 include "../../controllers/pdo.php";
-include "../catalogue.php";
 
 // Récupération de toutes les catégories de produits distinctes pour le menu de navigation
 $query = $pdo->prepare("SELECT DISTINCT typeProd FROM _produit p WHERE typeProd IS NOT NULL;");
