@@ -2333,7 +2333,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 12px;
   padding: 32px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(37, 43, 86, 0.08);
+  border: 2px solid #252b56;
   transition: all 0.3s ease;
 }
 @media (max-width: 720px) {
@@ -2407,7 +2407,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .pagePaiement input[type=text] {
   padding: 14px 16px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid #252b56;
   border-radius: 8px;
   font-family: "lora", serif;
   font-size: 15px;
@@ -2500,7 +2500,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 12px;
   padding: 28px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(37, 43, 86, 0.08);
+  border: 2px solid #252b56;
 }
 @media (max-width: 920px) {
   .pagePaiement .order-summary {
@@ -7460,14 +7460,22 @@ dialog.reassort form input {
   align-items: center;
   gap: 10px;
   padding: 1em;
-  border: 2px solid black;
-  border-radius: 16px;
-  font-size: 20px;
   width: fit-content;
 }
 .pageCatalogue .pagination a {
-  border: 2px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  min-width: 50px;
+  min-height: 50px;
+  background-color: #273469;
+  color: #fffefa;
+  border: 1px solid #6e6e6e;
+  border-radius: 50%;
   text-decoration: none;
+  font-size: 26px;
+  font-family: "berkshire", serif;
 }
 .pageCatalogue .btnToggleFilters {
   display: none;
