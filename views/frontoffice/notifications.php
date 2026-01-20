@@ -9,54 +9,34 @@ if (!isset($_SESSION['user_id'])) {
 }
 $id_client = $_SESSION['user_id'];
 
-function getNotifications($pdo, $idClient, $est_vendeur) {
-    $sql = "SELECT * FROM _notification 
-            WHERE (idClient = ? OR idClient = 34) 
-            AND est_vendeur = ?
-            ORDER BY dateNotif DESC";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$idClient, $est_vendeur]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
-}
-$notifs = getNotifications($pdo, $id_client, 0);
+// Récupération des notifications pour le client
+$stmt = $pdo->prepare("SELECT * FROM _notification WHERE idClient = ? AND est_vendeur = 0 ORDER BY dateNotif DESC");
+$stmt->execute([$id_client]);
+$notifs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes notifications</title>
-    <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
     <?php include './partials/headerConnecte.php'; ?>
     <main class="mesNotif">
-        <section class="topRecherche" ><h1>Mes notifications</h1></section>
+        <section class="topRecherche"><h1>Mes notifications</h1></section>
 
         <?php if(!empty($notifs)): ?>
             <section class="ensembleNotif">
                 <div class="sidebarNotif">
-                <?php foreach($notifs as $notif): 
-                    $contenuApercu = substr($notif['contenuNotif'], 0, 50) . "..."; ?>
+                <?php foreach($notifs as $notif): ?>
                     <div class="apercuNotif" tabindex="0" onclick="afficherContenu(this, '<?= addslashes($notif['titreNotif']) ?>', '<?= $notif['dateNotif'] ?>', '<?= addslashes($notif['contenuNotif']) ?>')">
-                        <div>
-                            <img id="regular" src="../../public/images/bellRingDark.svg">
-                            <img id="focus" src="../../public/images/bellRingLight.svg">
-                        </div>
+                        <div><img src="../../public/images/bellRingDark.svg"></div>
                         <div>
                             <h3><?= htmlspecialchars($notif['titreNotif']) ?></h3>
-                            <h4><?= htmlspecialchars($contenuApercu) ?></h4>
                             <h5><?= $notif['dateNotif'] ?></h5>
                         </div>
                     </div>
-                    <article class="contenuTel">
-                        <div class="titleNotifResponsive">
-                            <h2><?= htmlspecialchars($notif['titreNotif']) ?></h2>
-                            <small><?= $notif['dateNotif'] ?></small>
-                        </div>
-                        <div class="corpsNotif"><p><?= nl2br(htmlspecialchars($notif['contenuNotif'])) ?></p></div>
-                    </article>
                 <?php endforeach; ?>
                 </div>
                 <article class="ecranNotif">
@@ -65,7 +45,7 @@ $notifs = getNotifications($pdo, $id_client, 0);
                         <h3 id="contenu_date"></h3>
                     </div>
                     <div class="contenuNotif" id="notif_body">
-                        <p id="date_placeholder">Sélectionnez une notification pour voir le détail.</p>
+                        <p>Sélectionnez une notification pour voir le détail.</p>
                     </div>
                 </article>
             </section>
@@ -73,30 +53,38 @@ $notifs = getNotifications($pdo, $id_client, 0);
             <h2 class="aucuneNotif">Aucune notification</h2>
         <?php endif; ?>
     </main>
-    <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
     <script>
         function afficherContenu(el, t, d, c) {
+            // Affichage du titre et de la date
             document.getElementById("titre").innerText = t;
             document.getElementById("contenu_date").innerText = d;
             
+            // Recherche de l'ID produit caché [ID_PROD:XX] via Regex
             const match = c.match(/\[ID_PROD:(\d+)\]/);
-            let textePropre = c.replace(/\[ID_PROD:\d+\]/, "");
+            let texteSansTag = c.replace(/\[ID_PROD:\d+\]/, "");
             
-            let html = `<p>${textePropre}</p>`;
+            let htmlContent = `<p>${texteSansTag}</p>`;
+            
+            // Si un ID produit est trouvé, on génère le bouton de redirection vers l'ancre
             if (match) {
                 const idProd = match[1];
-                html += `<br><a href="mesAvis.php#avis-${idProd}" class="btn-voir-reponse" style="display:inline-block; margin-top:20px; padding:10px 20px; background:#273469; color:white; border-radius:5px; text-decoration:none; font-weight:bold;">Voir la réponse sur mon avis</a>`;
+                htmlContent += `
+                    <br><br>
+                    <a href="mesAvis.php#avis-${idProd}" 
+                       style="display:inline-block; padding:12px 25px; background:#273469; color:white; border-radius:8px; text-decoration:none; font-weight:bold; font-size:14px;">
+                       Voir la réponse sur mon avis
+                    </a>`;
             }
-            document.getElementById("notif_body").innerHTML = html;
+            
+            document.getElementById("notif_body").innerHTML = htmlContent;
 
+            // Gestion responsive pour mobile
             if (window.innerWidth <= 840) {
                 const mobileContent = el.nextElementSibling;
-                document.querySelectorAll('.contenuTel').forEach(item => item.classList.remove('active'));
-                if (mobileContent) {
+                if (mobileContent && mobileContent.classList.contains('contenuTel')) {
+                    document.querySelectorAll('.contenuTel').forEach(item => item.classList.remove('active'));
                     mobileContent.classList.add('active');
-                    mobileContent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
             }
         }
