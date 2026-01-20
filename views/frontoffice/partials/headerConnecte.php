@@ -60,6 +60,7 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
 
 </header>
 
+<script src="../../../public/script.js"></script>
 <!-- Scripts pour gérer les interactions du header -->
 <script>
 // Fonction pour afficher/masquer le menu burger
