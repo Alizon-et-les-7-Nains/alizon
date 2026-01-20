@@ -738,7 +738,7 @@ void auth(struct ClientSession *session, char *username, char *password_md5,
  */
 void gerer_client(struct ClientSession session, struct ServerConfig config) {
 
-    srand(time(NULL)) ^ getpid();
+    srand(time(NULL) ^ getpid());
 
     MYSQL *conn_client = config_BD();
     if (!conn_client) {
