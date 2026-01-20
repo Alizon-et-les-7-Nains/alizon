@@ -14,7 +14,7 @@ if (!$socket) {
     exit(1);
 }
 
-// OPTIMISATION 1: Définir un timeout de lecture plus court
+// Timeout de lecture
 stream_set_timeout($socket, 5);
 
 // Authentification
@@ -32,7 +32,7 @@ $bordereau = trim($result['noBordereau']);
 fwrite($socket, "STATUS $bordereau\n");
 fflush($socket);
 
-// OPTIMISATION 2: Lire la ligne complète d'un coup (limite à 4096 car contient 7 champs)
+// OPTIMISATION: Lire la ligne de statut complète d'un coup
 $text_line = fgets($socket, 4096);
 
 if ($text_line === false) {
@@ -58,13 +58,13 @@ $etape = $status_parts[4];
 $date_etape = $status_parts[5];
 $typeLivraison = $status_parts[6] ?? '';
 
-// OPTIMISATION 3: Gestion optimisée de l'image
-$image_data = '';
-
+// OPTIMISATION IMAGE: Lecture par gros chunks
 if ($etape == '9' && $typeLivraison === 'ABSENT') {
-    // MÉTHODE OPTIMISÉE: Lire par gros chunks jusqu'au \n final
-    $buffer = '';
-    $chunk_size = 65536; // 64 KB chunks pour performance maximale
+    // Configurer pour lecture binaire efficace
+    stream_set_blocking($socket, true);
+    
+    $image_data = '';
+    $chunk_size = 65536; // 64 KB - optimal pour gros fichiers
     
     while (!feof($socket)) {
         $chunk = fread($socket, $chunk_size);
@@ -73,26 +73,29 @@ if ($etape == '9' && $typeLivraison === 'ABSENT') {
             break;
         }
         
-        $buffer .= $chunk;
+        $image_data .= $chunk;
         
-        // Vérifier si on a le \n final
-        $newline_pos = strpos($buffer, "\n");
-        if ($newline_pos !== false) {
-            // On a trouvé le \n, extraire seulement la partie image
-            $image_data = substr($buffer, 0, $newline_pos);
+        // Chercher le \n final uniquement dans les derniers octets du buffer
+        $check_length = min(10, strlen($image_data));
+        $end_part = substr($image_data, -$check_length);
+        
+        if (strpos($end_part, "\n") !== false) {
+            // Trouver la position exacte du \n
+            $newline_pos = strrpos($image_data, "\n");
+            $image_data = substr($image_data, 0, $newline_pos);
             break;
         }
     }
     
-    // Vérifier que ce n'est pas "null"
+    // Vérifier validité
     if ($image_data !== 'null' && strlen($image_data) > 10) {
         $_SESSION['photo'] = base64_encode($image_data);
     } else {
         unset($_SESSION['photo']);
     }
 } else {
-    // Lire la réponse "null\n"
-    $null_response = fgets($socket, 10);
+    // Lire "null\n" rapidement
+    fgets($socket, 10);
     unset($_SESSION['photo']);
 }
 
