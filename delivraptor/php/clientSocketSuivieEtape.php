@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . "/controllers/pdo.php";
+require_once __DIR__ . '/../../controllers/pdo.php';
 
 $idCommande = intval($_GET['idCommande']);
 
@@ -128,6 +128,6 @@ $_SESSION['typeLivraison'] = $typeLivraison;
 fwrite($socket, "QUIT\n");
 fclose($socket);
 
-header('Location: views/frontoffice/commandes.php?idCommande=' . $idCommande);
+header('Location: ../../views/frontoffice/commandes.php?idCommande=' . $idCommande);
 exit;
 ?>
