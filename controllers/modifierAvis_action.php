@@ -1,5 +1,7 @@
 <?php
 require_once "pdo.php";
+require_once 'treatment.php';
+
 session_start();
 
 /* ==========================
@@ -93,7 +95,7 @@ if (!empty($_FILES['url']['name'])) {
         die("Format d'image non autorisé.");
     }
 
-    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/images/imagesAvis/';
+    $uploadDir = $_SERVER['DOCUMENT_ROOT'];
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }

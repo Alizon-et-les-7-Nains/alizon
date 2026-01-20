@@ -4,89 +4,97 @@ require_once __DIR__ . "/controllers/pdo.php";
 
 $idCommande = intval($_GET['idCommande']);
 
-function send_command($socket, $command)
-{
-    // Envoi de la commande
-    fwrite($socket, $command . "\n");
-
-    // Lecture de la réponse
-    $response = '';
-    while (!feof($socket)) {
-        $response .= fgets($socket, 1024);
-        if (strpos($response, "\n") !== false) {
-            break;
-        }
-    }
-
-    return trim($response);
-}
-
-// Utilisation
 $host = 'web';
 $port = 8080;
 
-// Connexion persistante
 $socket = @fsockopen($host, $port, $errno, $errstr, 5);
 
 if (!$socket) {
     echo "ERREUR: Impossible de se connecter à $host:$port\n";
-    echo "Code: $errno - Message: $errstr\n";
     exit(1);
 }
 
-// Test 1: Authentification
-//echo "Test AUTH:\n";
-$auth_response = send_command($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e");
-//echo "Réponse: $auth_response\n\n";
+// Authentification
+fwrite($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e\n");
+$auth_response = fgets($socket, 1024);
 
+// Récupérer le bordereau
 $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([":idCommande" => $idCommande]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
+$stmt = $pdo->prepare($sql);
+$stmt->execute([":idCommande" => $idCommande]);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
 $bordereau = $result['noBordereau'];
 
-// Extraire le numéro de bordereau
-// Test 3: Consultation
-//echo "Test STATUS:\n";
-$status_response = send_command($socket, "STATUS $bordereau");
-$status_response = explode("|", $status_response);
-$sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([":etape" => $status_response[4], ":idCommande" => $idCommande]);
+// Envoyer STATUS
+fwrite($socket, "STATUS $bordereau\n");
 
-$photo = $status_response[7];
-$typeLivraison = $status_response[6];
-$etape = $status_response[4];
-$_SESSION['typeLivraison'] = $typeLivraison;
+// 1. LIRE TOUTE LA LIGNE TEXTE JUSQU'AU 7E PIPE
+$text_line = '';
+$pipe_count = 0;
 
+while (!feof($socket)) {
+    $char = fgetc($socket);
+    if ($char === false) break;
+    
+    $text_line .= $char;
+    
+    if ($char === '|') {
+        $pipe_count++;
+    }
+    
+    if ($pipe_count === 7) {
+        break;
+    }
+}
 
-if ($etape == 9 && $typeLivraison === 'ABSENT') {
+//faire un tableau avec les parties
+$status_parts = explode("|", rtrim($text_line, '|'));
 
-    if ($photo != null) {
-        $imageData = '';
-        while (!feof($socket)) {
-            $chunk = fread($socket, 8192);
-            if ($chunk === false || $chunk === '') break;
-            $imageData .= $chunk;
+$bordereau_recu = $status_parts[0];
+$commande = $status_parts[1];
+$destination = $status_parts[2];
+$localisation = $status_parts[3];
+$etape = $status_parts[4];
+$date_etape = $status_parts[5];
+$typeLivraison = $status_parts[6] ?? '';
+
+$image_data = '';
+if ($etape == '9' && $typeLivraison === 'ABSENT') {
+    
+    
+    // Lire jusqu'au \n final
+    while (!feof($socket)) {
+        $chunk = fread($socket, 8192);
+        if ($chunk === false) break;
+        
+        $image_data .= $chunk;
+        
+        // Vérifier si on a atteint le \n final
+        if (substr($image_data, -1) === "\n") {
+            $image_data = substr($image_data, 0, -1); // Retirer le \n
+            break;
         }
-        $_SESSION['photo'] = $imageData;
-        file_put_contents('test.jpg', $_SESSION['photo']);
+    }
+    
+    // Vérifier que ce n'est pas juste "null"
+    if ($image_data !== 'null' && strlen($image_data) > 10) {
+        $_SESSION['photo'] = base64_encode($image_data);
+    } else {
+        unset($_SESSION['photo']);
     }
 } else {
-    // Supprimer la session photo si autre chose que ABSENT
+    // Lire "null\n"
+    $null_response = fgets($socket, 10);
     unset($_SESSION['photo']);
 }
 
-//echo "Réponse: $status_response\n\n";
+// Mettre à jour la base
+$sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([":etape" => $etape, ":idCommande" => $idCommande]);
 
+$_SESSION['typeLivraison'] = $typeLivraison;
 
-// Test 4: HELP
-//echo "Test HELP:\n";
-$help_response = send_command($socket, "HELP");
-//echo $help_response;
-
-// Fermeture de la connexion
 fclose($socket);
 
 header('Location: views/frontoffice/commandes.php?idCommande=' . $idCommande);

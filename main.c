@@ -273,60 +273,60 @@ void status(struct ClientSession *session, char *bordereau, struct ServerConfig 
     }
     
     MYSQL_ROW row = mysql_fetch_row(result);
-    // Dans status() de main.c
-    if (row) {
-        char *livraison_type = row[5];
-        char *photo_path = row[6];
-        int etape = atoi(row[3]);
-        
-        // 1. Envoyer les données texte avec le dernier pipe
-        snprintf(response, sizeof(response),
-                "%s|%s|%s|%s|%s|%s|%s|",
-                bordereau, row[0], row[1], row[2], row[3], row[4], 
-                livraison_type ? livraison_type : "");
-        
-        send(session->client_socket, response, strlen(response), 0);
-        
-        // 2. CONDITION : Si étape 9 + ABSENT + image existe
-        if (etape == 9 && 
-            livraison_type && strcmp(livraison_type, "ABSENT") == 0 && 
-            photo_path && strlen(photo_path) > 0) {
-            
-            FILE *img_file = fopen(photo_path, "rb");
-            if (img_file) {
-                fseek(img_file, 0, SEEK_END);
-                long img_size = ftell(img_file);
-                fseek(img_file, 0, SEEK_SET);
-                
-                char *img_buffer = malloc(img_size);
-                if (img_buffer) {
-                    fread(img_buffer, 1, img_size, img_file);
-                    fclose(img_file);
-                    
-                    // ENVOYER L'IMAGE BINAIRE
-                    send(session->client_socket, img_buffer, img_size, 0);
-                    
-                    free(img_buffer);
-                }
-            }
-        }
-        else {
-            // 3. SANS IMAGE : envoyer "null"
-            char null_text[] = "null";
-            send(session->client_socket, null_text, strlen(null_text), 0);
-        }
-        
-        // 4. ENVOYER LE RETOUR À LA LIGNE FINAL
-        char newline[] = "\n";
-        send(session->client_socket, newline, strlen(newline), 0);
-    } else {
+    
+    if (!row) {
+        // GÉRER L'ERREUR AVANT TOUT ENVOI
         snprintf(response, sizeof(response), "ERROR BORDEREAU_NOT_FOUND\n");
+        send(session->client_socket, response, strlen(response), 0);
         
         write_log(config.log_file, session->client_ip, session->client_port,
                   session->username, "STATUS", "Bordereau non trouvé");
+        
+        mysql_free_result(result);
+        return; // ← IMPORTANT : sortir ici
     }
     
+    // Le reste du code (envoi données + image + \n)
+    char *livraison_type = row[5];
+    char *photo_path = row[6];
+    int etape = atoi(row[3]);
+    
+    // 1. Envoyer les données texte avec le dernier pipe
+    snprintf(response, sizeof(response),
+            "%s|%s|%s|%s|%s|%s|%s|",
+            bordereau, row[0], row[1], row[2], row[3], row[4], 
+            livraison_type ? livraison_type : "");
+    
     send(session->client_socket, response, strlen(response), 0);
+    
+    // 2. Envoyer l'image ou "null"
+    if (etape == 9 && 
+        livraison_type && strcmp(livraison_type, "ABSENT") == 0 && 
+        photo_path && strlen(photo_path) > 0) {
+        
+        FILE *img_file = fopen(photo_path, "rb");
+        if (img_file) {
+            fseek(img_file, 0, SEEK_END);
+            long img_size = ftell(img_file);
+            fseek(img_file, 0, SEEK_SET);
+            
+            char *img_buffer = malloc(img_size);
+            if (img_buffer) {
+                fread(img_buffer, 1, img_size, img_file);
+                send(session->client_socket, img_buffer, img_size, 0);
+                free(img_buffer);
+            }
+            fclose(img_file);
+        }
+    } else {
+        char null_text[] = "null";
+        send(session->client_socket, null_text, strlen(null_text), 0);
+    }
+    
+    // 3. Envoyer le \n final
+    char newline[] = "\n";
+    send(session->client_socket, newline, strlen(newline), 0);
+    
     mysql_free_result(result);
 }
 
