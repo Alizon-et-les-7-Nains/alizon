@@ -421,7 +421,6 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php if ($page > 1): ?>
                     <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>">« Précédent</a>
                 <?php endif; ?>
-
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
                     <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
                 <?php endfor; ?>
@@ -431,14 +430,11 @@ $cart = getCurrentCart($pdo, $idClient);
             <?php endif; ?>
         </div>
     </div>
-
 </main>
 </section>
-
     <script src="../scripts/frontoffice/paiement-ajax.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
-
 <script>
 // Filtres prix
 const sliderMin = document.getElementById('sliderMin');
