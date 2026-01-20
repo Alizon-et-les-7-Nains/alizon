@@ -1,8 +1,11 @@
 <?php
+// Initialisation de la connexion avec le serveur / BDD
 include '../../controllers/pdo.php';
 session_start();
 
 $userId = $_SESSION['user_id'] ?? null;
+
+// Fonction pour récupérer le vote d'un utilisateur sur un avis spécifique
 function getVoteUtilisateur($idProduit, $idClientAvis) {
     if (!isset($_SESSION['user_id'])) {
         return null;
@@ -12,12 +15,18 @@ function getVoteUtilisateur($idProduit, $idClientAvis) {
     return $_SESSION[$keyVote] ?? null;
 }
 
+// Récupération de l'ID du produit depuis l'URL
 $productId = intval($_GET['id']) ?? 0;
 
 if($productId == 0) {
     die("Produit non spécifié");
 }
 
+// ============================================================================
+// GESTION DES VOTES SUR LES AVIS
+// ============================================================================
+
+// Traitement AJAX pour les votes (like/dislike) sur les avis clients
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'voter_avis') {
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
@@ -29,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $idClientAvis = intval($_POST['idClientAvis']);
     $typeVote = $_POST['type'];
     
+    // Empêcher un utilisateur de voter pour son propre avis
     if ($idClientVotant === $idClientAvis) {
         http_response_code(403);
         exit;
@@ -40,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $keyVote = "vote_{$idProduit}_{$idClientAvis}";
         $votePrecedent = $_SESSION[$keyVote] ?? null;
         
+        // Si l'utilisateur clique sur le même vote, on l'annule
         if ($votePrecedent === $typeVote) {
             if ($typeVote === 'like') {
                 $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
@@ -52,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             unset($_SESSION[$keyVote]);
             
         } else {
+            // Retirer le vote précédent si existant
             if ($votePrecedent !== null) {
                 if ($votePrecedent === 'like') {
                     $sql = "UPDATE _avis SET positifs = GREATEST(0, positifs - 1) WHERE idProduit = ? AND idClient = ?";
@@ -82,9 +94,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         error_log("Erreur lors du vote: " . $e->getMessage());
         http_response_code(500);
     }
-    exit; // IMPORTANT : Ne pas rediriger, juste terminer
+    exit;
 }
 
+// ============================================================================
+// RÉCUPÉRATION DES DONNÉES DU PRODUIT
+// ============================================================================
+
+// Requête SQL pour récupérer toutes les informations du produit avec ses promotions et remises
 $sqlProduit = "SELECT 
                 p.idProduit,
                 p.nom AS nom_produit,
@@ -115,6 +132,7 @@ $result = $pdo->prepare($sqlProduit);
 $result->execute([$productId]);
 $produit = $result->fetch(PDO::FETCH_ASSOC);
 
+// Récupération de l'adresse du client connecté
 $idClient = $_SESSION['user_id'] ?? 0;
 $sqlAdresse = "SELECT * 
                FROM _adresseClient 
@@ -127,6 +145,8 @@ if (!$produit) {
     echo "<p>Produit introuvable.</p>";
     exit;
 }
+
+// Récupération des images du produit
 $sqlImages = "SELECT * 
               FROM _imageDeProduit 
               WHERE idProduit = ?";
@@ -135,8 +155,11 @@ $resultImages = $pdo->prepare($sqlImages);
 $resultImages->execute([$productId]);
 $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 
+// ============================================================================
+// FONCTION DE GESTION DU PANIER
+// ============================================================================
 
-
+// Fonction pour ajouter ou modifier la quantité d'un produit dans le panier
 function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     $idProduit = intval($idProduit);
     $idClient = intval($idClient);
@@ -147,10 +170,12 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     }
     
     try {        
+        // Récupérer le panier actuel du client
         $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
         $stmtPanier->execute([$idClient]);
         $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
         
+        // Créer un nouveau panier si nécessaire
         if (!$panier) {            
             $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
             $stmtCreate->execute([$idClient]);
@@ -159,6 +184,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
             $idPanier = $panier['idPanier'];
         }
         
+        // Vérifier si le produit existe déjà dans le panier
         $sql = "SELECT quantiteProduit FROM _produitAuPanier 
                 WHERE idProduit = ? AND idPanier = ?";
         $stmt = $pdo->prepare($sql);
@@ -166,6 +192,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
         $current = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($current) {
+            // Mettre à jour la quantité existante
             $newQty = intval($current['quantiteProduit']) + $delta;
             
             $sql = "UPDATE _produitAuPanier SET quantiteProduit = ? 
@@ -173,6 +200,7 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
             $stmt = $pdo->prepare($sql);
             return $stmt->execute([$newQty, $idProduit, $idPanier]);
         } else {
+            // Ajouter le produit au panier
             $sql = "INSERT INTO _produitAuPanier (idProduit, idPanier, quantiteProduit) VALUES (?, ?, ?)";
             $stmt = $pdo->prepare($sql);
             return $stmt->execute([$idProduit, $idPanier, $delta]);
@@ -183,6 +211,11 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
     }
 }
 
+// ============================================================================
+// RÉCUPÉRATION DES AVIS ET NOTES
+// ============================================================================
+
+// Récupération de tous les avis pour ce produit
 $sqlAvis = "SELECT a.*
             FROM _avis a
             WHERE a.idProduit = ?";
@@ -191,48 +224,25 @@ $resultAvis = $pdo->prepare($sqlAvis);
 $resultAvis->execute([$productId]);
 $lesAvis = $resultAvis->fetchAll(PDO::FETCH_ASSOC);
 
+// Calcul et mise à jour de la note moyenne du produit
 $sqlNoteMoyenne = "SELECT AVG(note) as moyenne_note FROM _avis WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlNoteMoyenne);
 $stmt->execute([$productId]);
 $resultNote = $stmt->fetch(PDO::FETCH_ASSOC);
 $note = $resultNote['moyenne_note'] ?? 0;
 
-$sqlModifAvisProduit = "UPDATE _produit SET note = $note WHERE idProduit = ?";
+$sqlModifAvisProduit = "UPDATE _produit SET note = ? WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlModifAvisProduit);
-$stmt->execute([$productId]);
+$stmt->execute([$note, $productId]);
 
+// Comptage du nombre total d'avis
 $sqlNbAvis = "SELECT COUNT(note) as nb_avis FROM _avis WHERE idProduit = ?";
 $stmt = $pdo->prepare($sqlNbAvis);
 $stmt->execute([$productId]);
 $resultNbAvis = $stmt->fetch(PDO::FETCH_ASSOC);
 $nombreAvis = $resultNbAvis['nb_avis'] ?? 0;
 
-
-
-// $images = [
-//     [
-//         'URL' => 'cidre.png',
-//         'title' => 'Premium Cidre'
-//     ],
-//     [
-//         'URL' => 'rillettes.png', 
-//         'title' => 'Artisanal Cidre'
-//     ],
-//     [
-//         'URL' => 'defaultImageProduit.png',
-//         'title' => 'Traditional Cidre'
-//     ]
-// ];
-
-// // Your existing product data (mock)
-// $produit = [
-//     'nom_produit' => 'Cidre Artisanal Breton de merde',
-//     'description' => 'Un cidre artisanal produit selon les méthodes traditionnelles bretonnes...',
-//     'prix' => 12.50,
-//     'prenom_vendeur' => 'Jean',
-//     'nom_vendeur' => 'Dupont',
-//     'stock' => 20 ];
-// 
+// Fonction pour calculer les informations de promotion d'un produit
 function calculerPromotion($produit) {
     $promotion = [
         'est_en_promotion' => false,
@@ -243,6 +253,8 @@ function calculerPromotion($produit) {
         'economie' => 0,
         'date_fin_promotion' => null
     ];
+    
+    // Vérifier si une remise est active
     if (!empty($produit['idRemise']) && 
         $produit['debutRemise'] <= date('Y-m-d') && 
         $produit['finRemise'] >= date('Y-m-d')) {
@@ -254,6 +266,7 @@ function calculerPromotion($produit) {
         $promotion['date_fin_promotion'] = $produit['finRemise'];
     }
     
+    // Vérifier si une promotion est active
     if (!empty($produit['idPromotion']) && 
             $produit['debutPromotion'] <= date('Y-m-d') && 
             $produit['finPromotion'] >= date('Y-m-d')) {
@@ -266,6 +279,7 @@ function calculerPromotion($produit) {
 
 $promotion = calculerPromotion($produit);
 
+// Récupération de la quantité déjà présente dans le panier pour ce produit
 $quantiteActuellePanier = 0;
 if ($idClient > 0) {
     $sqlProduitAuPanier = "SELECT pap.quantiteProduit as qty 
@@ -278,16 +292,18 @@ if ($idClient > 0) {
     $quantiteActuellePanier = $produitAuPanier ? intval($produitAuPanier['qty']) : 0;
 }
 
+// ============================================================================
+// TRAITEMENT DE L'AJOUT AU PANIER
+// ============================================================================
 
-
-
+// Gestion de l'ajout d'un produit au panier
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
     
     $idClient = $_SESSION['user_id'];
     
-    // Vérifier la quantité disponible
+    // Vérifier la quantité disponible en tenant compte du panier actuel
     $sqlVerifStock = "SELECT p.stock, COALESCE(pap.quantiteProduit, 0) as qtyPanier
                       FROM _produit p
                       LEFT JOIN _panier pan ON pan.idClient = ?
@@ -317,14 +333,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- sass --watch views/styles/main.scss:public/style.css -->
-    <!--
-    ssh sae@10.253.5.104
-    su -
-    grognasseEtCompagnie
-    cd /docker/data/web/html
-    git pull -->
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($produit['nom_produit'])?></title>
@@ -356,7 +364,6 @@ if (isset($_SESSION['message_panier'])) {
             <img class="poly2" src="../../public/images/poly2.svg" alt="">
         </div>
     <?php endif; ?>
-    <!-- <img src="../../public/images/flecheGauche.svg" alt="Previous" class="carousel-arrow prev-arrow"> -->
     <div class="carousel-container">
         <div class="carousel-slide">
             <?php if (!empty($images)): ?>
@@ -378,7 +385,6 @@ if (isset($_SESSION['message_panier'])) {
             <?php endif; ?>
         </div>
     </div>
-    <!--  <img src="../../public/images/flecheDroite.svg" alt="Next" class="carousel-arrow next-arrow"> -->
     </article>
     <article class="infoPreviewProduit">
         <div class="attributsproduit">
@@ -490,6 +496,7 @@ if (isset($_SESSION['message_panier'])) {
 </article>
 </section>
 <?php 
+// Affichage de l'état du stock
 if ($produit['stock'] > 0) {
     echo '<p class="stockDisponible">En stock (' . htmlspecialchars($produit['stock']) . ' restants)</p>';
     if ($quantiteActuellePanier > 0) {
@@ -516,6 +523,10 @@ if ($produit['stock'] > 0) {
     <label for="activeVoirPlus" class="voirPlus"> </label> 
 </section>
 <hr id="margin-top-2em">
+
+<!-- ========================================
+     SECTION DES AVIS CLIENTS
+     ======================================== -->
 <section class="sectionAvis">
     <h2>Ce qu'en disent nos clients</h2>
     <div class="product-rating">
@@ -528,6 +539,7 @@ if ($produit['stock'] > 0) {
         <span class="review-count"><?php echo $nombreAvis; ?> évaluations</span>
     </div>
     <?php 
+        // Vérifier si le client a déjà commandé ce produit pour pouvoir laisser un avis
         $stmt = $pdo->prepare("SELECT * FROM _commande c NATURAL JOIN _panier p WHERE p.idClient = ?");
         $stmt->execute([$userId]);
         $commande = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -557,6 +569,7 @@ if ($produit['stock'] > 0) {
 <?php if (!empty($lesAvis)): ?>
     <?php foreach ($lesAvis as $avis): ?>
         <?php
+        // Récupération des images associées à l'avis
         $sqlImagesAvis = "SELECT * 
         FROM _imageAvis 
         WHERE idClient = ? AND idProduit = ?";
@@ -564,11 +577,13 @@ if ($produit['stock'] > 0) {
         $stmtImagesAvis->execute([intval($avis['idClient']), intval($productId)]);
         $imagesAvis = $stmtImagesAvis->fetchAll(PDO::FETCH_ASSOC);
 
+        // Récupération des informations du client ayant posté l'avis
         $sqlNomClient = "SELECT * FROM _client WHERE idClient = ?";
         $stmtNomClient = $pdo->prepare($sqlNomClient);
         $stmtNomClient->execute([intval($avis['idClient'])]);
         $client = $stmtNomClient->fetch(PDO::FETCH_ASSOC);
         
+        // Récupération de la réponse du vendeur si elle existe
         $sqlReponseAvis = "SELECT * FROM _reponseAvis WHERE idProduit = ? AND idClient = ?";
         $stmtReponseAvis = $pdo->prepare($sqlReponseAvis);
         $stmtReponseAvis->execute([intval($productId), intval($avis['idClient'])]);
@@ -579,6 +594,7 @@ if ($produit['stock'] > 0) {
         ?>
         <article>
             <?php
+            // Gestion de l'affichage de la photo de profil
             $photoProfilPath = "/images/photoProfilClient/photo_profil" . $avis['idClient'];
             $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
             $photoProfilUrl = "../../public/images/profil.png";
@@ -594,6 +610,7 @@ if ($produit['stock'] > 0) {
             <img src="<?php echo htmlspecialchars($photoProfilUrl); ?>" id="pp" alt="Photo de profil de <?php echo htmlspecialchars($client['pseudo']); ?>">
             <div>
                 <?php
+                    // Vérifier si l'avis a été signalé
                     $stmt = $pdo->prepare("SELECT DISTINCT titre FROM _signalement WHERE idProduitSignale = ? AND idClientSignale = ?");
                     $stmt->execute([$produit['idProduit'], $avis['idClient']]);
                     $signalement = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -699,6 +716,8 @@ if ($produit['stock'] > 0) {
         </aside>
     </article>
 </section>
+
+<!-- Modal de signalement d'avis -->
 <div id="modalSignalement" class="modal-signalement" style="display: none;">
     <div class="modal-content">
         <span class="close-modal">&times;</span>
@@ -739,6 +758,7 @@ if ($produit['stock'] > 0) {
 } ?>
 </body>
 <script>
+// Classe pour gérer le carrousel d'images du produit
 class ProductCarousel {
     constructor() {
         this.currentImageIndex = 0;
@@ -821,6 +841,7 @@ class ProductCarousel {
 document.addEventListener('DOMContentLoaded', function() {
     new ProductCarousel();
     
+    // Gestion de la quantité de produits à ajouter au panier
     let quantite = 1;
     const quantiteInput = document.getElementById('quantiteInput');
     const plusBtn = document.getElementById('plus');
@@ -853,6 +874,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Gestion des boutons de vote sur les avis
     const voteButtonsNotDisabled = document.querySelectorAll('.btn-vote:not([disabled])');
     
     voteButtonsNotDisabled.forEach((button) => {
@@ -880,6 +902,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const likeWasActive = likeButton.classList.contains('active');
             const dislikeWasActive = dislikeButton.classList.contains('active');
             
+            // Logique de mise à jour visuelle instantanée des votes
             if (wasActive) {
                 this.classList.remove('active');
                 if (type === 'like') {
@@ -911,6 +934,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
+            // Envoi de la requête AJAX pour enregistrer le vote
             const formData = new FormData();
             formData.append('action', 'voter_avis');
             formData.append('idProduit', idProduit);
@@ -925,6 +949,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+    
+    // Gestion du modal de signalement d'avis
     const modal = document.getElementById('modalSignalement');
     const closeBtn = document.querySelector('.close-modal');
     const formSignalement = document.getElementById('formSignalement');

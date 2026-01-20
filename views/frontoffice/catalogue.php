@@ -321,6 +321,27 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php } ?>
             </select>
         </form>
+        <style>
+            .pageCatalogue .filter-sort {
+                display: flex;
+                flex-direction: column;
+            }
+        </style>
+        <a href="./catalogue.php" class="retirer-filtres">Effacer les filtres</a>
+        <style>
+            a.retirer-filtres {
+                transition: all 0.2s ease;
+                color: #000000;
+                font-family: 'open-sans';
+                font-weight: bold;
+                user-select: none;
+                margin-top: 1em;
+            }
+            a:hover {
+                color: #273469;
+                cursor: pointer;
+            }
+        </style>
     </aside>
     
     <div class="products-section">
