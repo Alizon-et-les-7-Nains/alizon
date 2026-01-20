@@ -5759,6 +5759,10 @@ dialog.reassort form input {
   background-color: #273469;
   color: #fffefa;
 }
+.pageProduit .boutonGrisé {
+  background-color: grey;
+  color: white;
+}
 .pageProduit .boutonCommentaire {
   display: inline-block;
   margin: 2em 0;
@@ -5966,8 +5970,8 @@ dialog.reassort form input {
   background-color: #e4d9ff;
   border-radius: 16px;
   padding: 1em;
-  margin-top: -1em;
-  margin-left: 6em;
+  margin-top: -0.5em;
+  margin-left: 5.5em;
 }
 .pageProduit .carousel-container {
   position: relative;
