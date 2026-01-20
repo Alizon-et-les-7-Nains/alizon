@@ -14,6 +14,7 @@
     max-width: 800px;
     margin-bottom: 40px;
     align-items: center;
+    justify-content: space-around;
   }
   .quantiteProduit {
     display: flex;
@@ -42,7 +43,6 @@
     font-size: 24px;
     font-weight: bold;
     margin-top: 15px;
-    width: 200px;
   }
 
   .listeProduit div {
@@ -162,6 +162,12 @@
       }
       .recapPanier {
         align-items: stretch;
+      }
+      .infoProduit {
+        width: unset;
+      }
+      .imgProduit {
+        width: unset;
       }
   }
   @media (max-width: 767px) {
