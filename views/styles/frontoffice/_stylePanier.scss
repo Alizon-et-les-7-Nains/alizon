@@ -14,7 +14,6 @@
     max-width: 800px;
     margin-bottom: 40px;
     align-items: center;
-    justify-content: space-around;
   }
   .quantiteProduit {
     display: flex;
@@ -43,12 +42,9 @@
     font-size: 24px;
     font-weight: bold;
     margin-top: 15px;
+    width: 200px;
   }
-  .prix-remise {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-  }
+
   .listeProduit div {
     margin: 0px 15px;
   }
@@ -62,7 +58,7 @@
       align-items: flex-start;
       justify-content: space-around;
       height: 180px;
-      width: -webkit-fill-available;
+      width: 300px;
       margin-left: 40px;
   }
   .infoProduit img {
@@ -168,7 +164,7 @@
         align-items: stretch;
       }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 767px) {
     .listeProduit article {
         border: none;
         padding: none;
@@ -177,7 +173,7 @@
       display: none;
     }
     .listeProduit article img {
-      max-height: 100px;
+      max-height: 180px;
       margin: 0px 10px;
     }
     .infoProduit div h2 {
@@ -209,9 +205,6 @@
     }
     button .delete {
       margin-top: 20px;
-    }
-    .prix-remise {
-      font-size: 18px;
     }
   }
   button {
