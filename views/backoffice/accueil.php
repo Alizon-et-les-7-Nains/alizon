@@ -29,10 +29,14 @@
         $produitsEnAlerte = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($produitsEnAlerte as $p) {
-            $checkNotif = $pdo->prepare("SELECT COUNT(*) FROM _notification WHERE idClient = ? AND est_vendeur = 1 AND contenuNotif LIKE ?");
-            $checkNotif->execute([$idVendeur, "%" . $p['nom'] . "%"]);
+            // On cherche si l'ID du produit est déjà mentionné dans une ALERTE de ce vendeur
+            $check = $pdo->prepare("SELECT 1 FROM _notification 
+                                    WHERE idClient = ? 
+                                    AND titreNotif LIKE 'Alerte Stock%' 
+                                    AND contenuNotif LIKE ?");
+            $check->execute([$idVendeur, "%(ID:" . $p['idProduit'] . ")%"]);
             
-            if ($checkNotif->fetchColumn() == 0) {
+            if (!$check->fetch()) {
                 $ins = $pdo->prepare("INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), 1)");
                 $titre = "Alerte Stock : " . $p['nom'];
                 $contenu = "Le produit " . $p['nom'] . " est à " . $p['stock'] . " unités. (ID:" . $p['idProduit'] . ")";
