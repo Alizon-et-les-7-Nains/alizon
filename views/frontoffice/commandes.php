@@ -141,15 +141,25 @@ function getCurrentCart($pdo, $idClient)
 
     if ($panier) {
         $idPanier = intval($panier['idPanier']);
-
-        // Récupération de tous les produits présents dans le panier
-        $sql = "SELECT p.idProduit, p.nom, p.prix, pa.quantiteProduit as qty, i.URL as img
+        $sql = "SELECT 
+                    p.idProduit, 
+                    p.nom, 
+                    p.prix, 
+                    p.stock, 
+                    pa.quantiteProduit as qty, 
+                    i.URL as img,
+                    COALESCE(r.tauxRemise, 0) as tauxRemise
                 FROM _produitAuPanier pa
                 JOIN _produit p ON pa.idProduit = p.idProduit
                 LEFT JOIN _imageDeProduit i ON p.idProduit = i.idProduit
+                LEFT JOIN (
+                    SELECT idProduit, tauxRemise 
+                    FROM _remise 
+                    WHERE CURDATE() BETWEEN debutRemise AND finRemise
+                ) r ON p.idProduit = r.idProduit
                 WHERE pa.idPanier = ?";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([intval($idPanier)]);
+        $stmt->execute([$idPanier]);
         $cart = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     }
 
