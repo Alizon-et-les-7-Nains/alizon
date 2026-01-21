@@ -23,14 +23,40 @@
     <?php
         $idVendeur = $_SESSION['id'];
 
-        $sqlCheckStock = file_get_contents('../../queries/backoffice/stockFaible.sql');
-        $stmtStock = $pdo->prepare($sqlCheckStock);
-        $stmtStock->execute([':idVendeur' => $idVendeur]);
+        $sqlStock = "SELECT idProduit, nom, stock, seuilAlerte 
+                    FROM _produit 
+                    WHERE idVendeur = ? AND stock <= seuilAlerte";
+
+        $stmtStock = $pdo->prepare($sqlStock);
+        $stmtStock->execute([$idVendeur]);
         $produitsEnAlerte = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
 
-    ?>
+        // On boucle sur chaque produit en alerte pour créer la notif
+        foreach ($produitsEnAlerte as $p) {
+            $idProd = $p['idProduit'];
+            $nomProd = $p['nom'];
+            $stockActuel = $p['stock'];
+            
+            // Titre unique pour éviter les doublons
+            $titreAlerte = "Alerte Stock : " . $nomProd;
 
-    <?php
+            // On vérifie si cette notification précise existe déjà pour ce vendeur
+            $check = $pdo->prepare("SELECT COUNT(*) FROM _notification 
+                                    WHERE idClient = ? 
+                                    AND titreNotif = ? 
+                                    AND est_vendeur = 1");
+            $check->execute([$idVendeur, $titreAlerte]);
+            
+            if ($check->fetchColumn() == 0) {
+                // Si elle n'existe pas, on l'insère
+                $contenu = "Le produit $nomProd est à $stockActuel unités. (ID:$idProd)";
+                
+                $ins = $pdo->prepare("INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) 
+                                    VALUES (?, ?, ?, NOW(), 1)");
+                $ins->execute([$idVendeur, $titreAlerte, $contenu]);
+            }
+        }
+
         $currentPage = basename(__FILE__);
         require_once './partials/aside.php';
     ?>

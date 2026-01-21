@@ -139,7 +139,7 @@ function getCurrentCart($pdo, $idClient)
 
     $cart = [];
 
-    if ($panier) {
+     if ($panier) {
         $idPanier = intval($panier['idPanier']);
         $sql = "SELECT 
                     p.idProduit, 
