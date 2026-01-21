@@ -1,8 +1,10 @@
 function setError(element, message) {
   if (!element) return;
   element.classList.add("invalid");
+
   const container = element.parentElement;
   if (!container) return;
+
   let err = container.querySelector(".error-message");
   if (!err) {
     err = document.createElement("small");
@@ -15,22 +17,22 @@ function setError(element, message) {
 function clearError(element) {
   if (!element) return;
   element.classList.remove("invalid");
+
   const container = element.parentElement;
   if (!container) return;
+
   const err = container.querySelector(".error-message");
   if (err) err.textContent = "";
 }
 
 function validerMdp(mdp) {
-  if (mdp.length < 12) {
-    return false;
-  }
-  
-  const contientUneMaj = /[A-Z]/.test(mdp);
-  const contientUnChiffre = /[0-9]/.test(mdp);
-  const contientUnCharSpe = /[^a-zA-Z0-9]/.test(mdp);
-  
-  return contientUneMaj && contientUnChiffre && contientUnCharSpe;
+  if (mdp.length < 12) return false;
+
+  const maj = /[A-Z]/.test(mdp);
+  const chiffre = /[0-9]/.test(mdp);
+  const special = /[^a-zA-Z0-9]/.test(mdp);
+
+  return maj && chiffre && special;
 }
 
 function fermerPopUp() {
@@ -42,115 +44,84 @@ function popUpModifierMdp() {
   const overlay = document.createElement("div");
   overlay.className = "overlayPopUpCompteClient";
   overlay.innerHTML = `
-                <main class="mainPopUpCompteClient">
-                <div class="croixFermerLaPage">
-                    <div></div>
-                    <div></div>
-                </div> 
-                <h1>Modification de votre mot de passe</h1>
-                <section>
-                    <div class="formulaireMdp">
-                        <form id="formMdp" method="POST" action="../../controllers/modifierMdp.php">
-                            <div class="input"><input type="password" name="ancienMdp" placeholder="Ancien mot de passe"></div>
-                            <div class="input"><input type="password" name="nouveauMdp" placeholder="Nouveau mot de passe"></div>
-                            <div class="input"><input type="password" name="confirmationMdp" placeholder="Confirmer le nouveau mot de passe"></div>
-                            
-                        
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Longueur minimale de 12 charactères</p>
-                            </article>
-    
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Au moins une minuscule / majuscule</p>
-                            </article>
-    
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div> 
-                                <p>Au moins un chiffre</p>
-                            </article>
-    
-                            <article>
-                                <div class="croix">
-                                    <div></div>
-                                    <div></div>
-                                </div>  
-                                <p>Au moins un charactères spéciale</p>
-                            </article>
-                        </div>
-                            <button type="submit">Valider</button>
-                        </form>
-                    </section>
-                </main>`;
+    <main class="mainPopUpCompteClient">
+      <div class="croixFermerLaPage">
+        <div></div><div></div>
+      </div>
+
+      <h1>Modification de votre mot de passe</h1>
+
+      <section>
+        <div class="formulaireMdp">
+          <form id="formMdp" method="POST" action="../../controllers/modifierMdp.php">
+            <div class="input">
+              <input type="password" name="ancienMdp" placeholder="Ancien mot de passe" required>
+            </div>
+
+            <div class="input">
+              <input type="password" name="nouveauMdp" placeholder="Nouveau mot de passe" required>
+            </div>
+
+            <div class="input">
+              <input type="password" name="confirmationMdp" placeholder="Confirmer le nouveau mot de passe" required>
+            </div>
+
+            <article><p>✔ Longueur minimale de 12 caractères</p></article>
+            <article><p>✔ Au moins une majuscule</p></article>
+            <article><p>✔ Au moins un chiffre</p></article>
+            <article><p>✔ Au moins un caractère spécial</p></article>
+
+            <button type="submit">Valider</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  `;
+
   document.body.appendChild(overlay);
-  
-  let croixFermerLaPage = overlay.getElementsByClassName("croixFermerLaPage");
-  croixFermerLaPage = croixFermerLaPage[0];
-  croixFermerLaPage.addEventListener("click", fermerPopUp);
-  
-  let form = overlay.querySelector("form");
-  let button = overlay.querySelectorAll("button");
-  let valider = button[0];
-  let input = overlay.querySelectorAll("input");
-  
-  let ancienMdp = input[0];
-  let nouveauMdp = input[1];
-  let confirmationMdp = input[2];
-  
-  function verifMdp(event) {
-    let testAncien = false;
-    let testNouveau = false;
-    let testConfirm = false;
-    
-    const ancien = vignere(ancienMdp.value, cle, 1);
-    const nouveau = vignere(nouveauMdp.value, cle, 1);
-    const confirm = vignere(confirmationMdp.value, cle, 1);
-    
-    if (ancien !== mdp) {
-      setError(ancienMdp, "L'ancien mot de passe est incorrect");
+
+  overlay
+    .querySelector(".croixFermerLaPage")
+    .addEventListener("click", fermerPopUp);
+
+  const form = overlay.querySelector("#formMdp");
+  const ancienMdp = form.querySelector('input[name="ancienMdp"]');
+  const nouveauMdp = form.querySelector('input[name="nouveauMdp"]');
+  const confirmationMdp = form.querySelector('input[name="confirmationMdp"]');
+
+  form.addEventListener("submit", function (event) {
+    let ok = true;
+
+    if (!ancienMdp.value.trim()) {
+      setError(ancienMdp, "Champ obligatoire");
+      ok = false;
     } else {
       clearError(ancienMdp);
-      testAncien = true;
     }
-    
-    if (!validerMdp(vignere(nouveau, cle, -1))) {
+
+    if (!validerMdp(nouveauMdp.value)) {
       setError(
         nouveauMdp,
-        "Mot de passe incorrect, il doit respecter les conditions ci-dessous"
+        "Mot de passe trop faible (voir les règles ci-dessous)"
       );
+      ok = false;
     } else {
       clearError(nouveauMdp);
-      testNouveau = true;
     }
-    
-    if (nouveau !== confirm) {
+
+    if (nouveauMdp.value !== confirmationMdp.value) {
       setError(confirmationMdp, "Les mots de passe ne correspondent pas");
+      ok = false;
     } else {
       clearError(confirmationMdp);
-      testConfirm = true;
     }
-    
-    if (!(testAncien && testNouveau && testConfirm)) {
+
+    if (!ok) {
       event.preventDefault();
-    } else {
-      nouveauMdp.value = nouveau;
-      confirmationMdp.value = confirm;
-      form.submit();
     }
-  }
-  
-  valider.addEventListener("click", verifMdp);
+  });
 }
+
 
 function verifierChamp() {
   const bouton = document.querySelector(".boutonModiferProfil");
