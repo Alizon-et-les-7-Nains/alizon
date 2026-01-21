@@ -12,7 +12,7 @@ if (($handle = fopen("../../public/data/departements.csv", "r")) !== FALSE) {
 }
 session_start();
 
-$produitsParPage = 15;
+$produitsParPage = 16;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $produitsParPage;
 
@@ -452,7 +452,7 @@ $cart = getCurrentCart($pdo, $idClient);
                     <span class="disabled">« Précédent</span>
                 <?php } ?>
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a <?php if($i == $page) echo 'style="background-color: #e3f2fe color="#273469";"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>"><?= $i ?></a>
+                    <a <?php if($i == $page) echo 'style="class: active;"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>"><?= $i ?></a>
                 <?php endfor; ?>
                 <?php if ($page < $nbPages) { ?>
                     <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
