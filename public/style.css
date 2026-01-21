@@ -5647,7 +5647,7 @@ dialog.reassort form input {
   padding: 0.5em 1em;
 }
 .pageProduit .resume {
-  max-height: 55px;
+  max-height: 58px;
   overflow: hidden;
 }
 .pageProduit .version {
@@ -7809,7 +7809,7 @@ dialog.reassort form input {
   }
   .pageCatalogue .pagination a,
   .pageCatalogue .pagination span {
-    margin: 10px 0;
+    margin: 20px 0;
     min-width: 30px;
     min-height: 30px;
     font-size: 14px;

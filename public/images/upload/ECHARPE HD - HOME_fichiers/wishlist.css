@@ -1,0 +1,132 @@
+.ets-wishlist-modal{display:block;opacity:0;pointer-events:none;z-index:0}
+.ets-wishlist-modal.show {
+	opacity: 1;
+	pointer-events: all;
+	z-index: 1051;
+	background: rgba(0,0,0,0.7);
+}
+.ets-wishlist-modal.show+.modal-backdrop{pointer-events:all}.ets-wishlist-modal.fade .modal-dialog{max-width:550px;-webkit-transform:translateY(0);transform:translateY(0)}.ets-wishlist-modal .close{font-weight:400;color:#7a7a7a;opacity:1;font-size:2.25rem}.ets-wishlist-modal .close:hover{opacity:0.6}
+.ets-wishlist-modal .modal-header {
+	padding: 0.625rem 1.875rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+.ets-wishlist-modal .modal-header h5{color:#232323;font-size:22px;font-weight:bold;letter-spacing:0;line-height:30px}
+.ets-wishlist-modal .modal-header::after{content:none}
+.ets-wishlist-modal .modal-text{color:#232323;font-size:14px;letter-spacing:0;line-height:19px}
+.ets-wishlist-modal .modal-body{padding:15px 30px}
+.ets-wishlist-modal .modal-body .form-group{margin-bottom:0}
+.ets-wishlist-modal .modal-body .form-group .form-control {
+	background: none;
+	border-radius: 3px;
+	border: 1px solid #ccc;
+	color: black;
+	outline: none!important;
+}
+.ets-wishlist-modal button {
+	outline: none!important;
+}
+.ets-wishlist-modal .modal-content{width:100%}
+.ets-wishlist-modal .modal-cancel{background:#dddddd;margin-right:10px}
+.ets-wishlist-modal .modal-cancel:hover{opacity:0.7}
+.ets-wishlist-modal .modal-footer {
+	padding: 0 30px;
+	border: none;
+	text-align: left;
+	padding-bottom: 15px;
+	border-top: 1px solid #ddd;
+	padding-top: 15px;
+	margin-top: 20px;
+	display: flex;
+	justify-content: space-between;
+}
+.ets-wishlist-modal .modal-footer:after {
+	display: none;
+}
+.ets_wl_share_social {
+	display: inline-block;
+	position: relative;
+}
+ul.ets-wishlist-list {
+	margin-bottom: 0;
+}
+.ets-wishlist-create .modal-footer {
+	border-top: 1px solid #f2f2f2;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	margin-top: 15px;
+	display: flex;
+	justify-content: space-between;
+}
+.ets-wishlist-modal label.required:after {
+	content: "*";
+	color: red;
+}
+.ets-wishlist-create .modal-footer:after{
+	display: none;
+}
+.ets-wishlist-list p {
+	margin: 0;
+	padding: 10px 0;
+	color: #24b9d7;
+	cursor: pointer;
+	font-size: 13px;
+}
+.ets-wishlist-list p:hover{
+	color: #1d93ab;
+}
+a.ets-wishlist-add-to-new {
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	color: #555!important;
+	font-size: 13px;
+	border: 1px solid #ccc;
+	padding: 7px 10px;
+	border-radius: 4px;
+}
+.ets-wishlist-container table tr.nodrag.nodrop:not(.filter) th {
+	border-top: none;
+}
+.list-order-products img {
+	width: 50px;
+}
+#module-ets_wishlist_pres17-lists button {
+	outline: none;
+}
+button.tbn-shareurl-wishlist:hover {
+	color: #24b9d7;
+	fill: #24b9d7;
+}
+a.ets-wishlist-add-to-new:hover {
+	background: #24b9d7;
+	color: #ffffff!important;
+	border-color: #24b9d7;
+}
+a.ets-wishlist-add-to-new i.material-icons {
+	margin-right: 5px;
+	font-size: 16px;
+}
+.ets-wishlist-modal .modal-footer .btn{text-transform:none}
+.ets-wishlist-modal .modal-backdrop{pointer-events:none}
+.ets-wishlist-modal .modal-backdrop.in{pointer-events:all}
+.ets-wishlist-modal+.modal-backdrop{pointer-events:none}
+.ets-wishlist-modal+.modal-backdrop.in{pointer-events:all}
+.ets-wishlist-footer-links{margin-bottom:50px}
+.ets-wishlist-footer-links>a{color:#2fb5d2;font-size:14px;letter-spacing:0;line-height:19px}
+.ets-wishlist-footer-links>a:not(:first-child){margin-left:20px}
+.ets-wishlist-footer-links>a i{font-size:20px;margin-right:4px;vertical-align:middle}
+
+
+
+
+
+
+

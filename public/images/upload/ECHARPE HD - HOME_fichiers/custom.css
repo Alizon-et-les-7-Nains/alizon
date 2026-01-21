@@ -1,0 +1,22 @@
+.products article .ets-wishlist-button-add.left {
+  left: px!important;
+  top: 5px!important;
+}
+.products article .ets-wishlist-button-add.right {
+  right: 5px!important;
+  top: 5px!important;
+}
+.ets-wishlist-button-add:not(.view_page) {
+  background-color: #ffffff!important;
+}
+.ets-wishlist-button-add:not(.view_page):hover {
+  background-color: #b95209!important;
+}
+.ets-wishlist-button-add:not(.view_page):not(.delete_wishlist) svg {
+  color: #212529!important;
+  fill: #212529!important;
+}
+.ets-wishlist-button-add.delete_wishlist svg {
+  color: #ea670b!important;
+  fill: #ea670b!important;
+}
