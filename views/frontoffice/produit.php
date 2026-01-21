@@ -542,8 +542,6 @@ if ($produit['stock'] > 0) {
         // Vérifier si le client a déjà commandé ce produit pour pouvoir laisser un avis
         $stmt = $pdo->prepare("SELECT * FROM _commande c NATURAL JOIN _contient cn NATURAL JOIN _panier p WHERE p.idClient = ? AND cn.idProduit=?");
         $stmt->execute([$userId, $productId]);
-        $stmt = $pdo->prepare("SELECT * FROM _commande c NATURAL JOIN _panier p WHERE p.idClient = ?");
-        $stmt->execute([$userId]);
         $commande = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     ?>
