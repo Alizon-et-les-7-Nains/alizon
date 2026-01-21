@@ -258,7 +258,8 @@ foreach ($cart as $item) {
     $quantiteTotal += $item['qty'];
 }
 
-$montantTTC = $sousTotal * 1.20; // TVA à 20%
+$livraison = 0;
+$montantTTC = ($sousTotal * 1.2) + $livraison;
 
 $clientInfo = clientInformations($pdo, $idClient);
 ?>
@@ -476,6 +477,10 @@ $clientInfo = clientInformations($pdo, $idClient);
         <div class="total-row">
             <span>Sous-total</span>
             <span><?php echo number_format($sousTotal, 2); ?> €</span>
+        </div>
+        <div class="total-row">
+            <span>Livraison</span>
+            <span><?php echo number_format($livraison, 2); ?> €</span>
         </div>
         <div class="total-row final">
             <span>Total</span>
