@@ -37,7 +37,7 @@ function afficherEtoiles($note) {
 }
 
 // Image par défaut
-$imageDefaut = "../../public/images/far_breton.jpg";
+$imageDefaut = "../../public/images/addImage.svg";
 
 // Récupération de l'image liée à l'avis
 $stmtImg = $pdo->prepare("

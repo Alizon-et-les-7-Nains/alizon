@@ -2,6 +2,10 @@
 // =========================================================
 // GÉNÉRATION DES NOTIFICATIONS
 // =========================================================
+
+require_once "../../controllers/pdo.php";
+require_once "../../controllers/date.php";
+
 $idVendeur = $_SESSION['id'] ?? 0;
 
 if ($idVendeur > 0) {
@@ -19,8 +23,7 @@ if ($idVendeur > 0) {
         // Vérifie si une notification existe déjà
         $checkSql = "SELECT COUNT(*) FROM _notification 
                      WHERE idClient = :idVendeur 
-                     AND est_vendeur = 1 
-                     AND contenuNotif LIKE :pattern";
+                     AND est_vendeur = 1";
         $checkStmt = $pdo->prepare($checkSql);
         $checkStmt->execute([
             ':idVendeur' => $idVendeur,
@@ -34,7 +37,7 @@ if ($idVendeur > 0) {
             $insStmt = $pdo->prepare($insertSql);
             $insStmt->execute([
                 ':idVendeur' => $idVendeur,
-                ':contenu' => "Le stock de '$nomProd' est faible ($stockActuel restant). Réassort nécessaire ! "
+                ':contenu' => "Le stock de '$nomProd' est faible ($stockActuel restant). Réassort nécessaire ! (ID:$idProd)"
             ]);
         }
     }
