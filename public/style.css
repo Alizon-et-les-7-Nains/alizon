@@ -1078,7 +1078,7 @@ body {
     background-color: #BABABA;
   }
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 750px) {
   .pageCommandes p {
     font-size: 10px;
   }
