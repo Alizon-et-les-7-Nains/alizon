@@ -53,7 +53,7 @@ function popUpModifierMdp() {
 
       <section>
         <div class="formulaireMdp">
-          <form id="formMdp" method="POST" action="../../controllers/modifierMdp.php">
+          <form id="formMdp" method="POST" action="../../controllers/modifMdp.php">
             <div class="input">
               <input type="password" name="ancienMdp" placeholder="Ancien mot de passe" required>
             </div>
