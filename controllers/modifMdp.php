@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../controllers/pdo.php';
+require_once 'pdo.php';
 
 $id_client = $_SESSION['user_id'];
 
@@ -37,5 +37,5 @@ $stmt->execute([
     ':idClient' => $id_client
 ]);
 
-header("Location: ../frontoffice/compteClient.php");
+header("Location: ../views/frontoffice/compteClient.php");
 exit();
