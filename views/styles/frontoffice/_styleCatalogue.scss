@@ -19,7 +19,7 @@
     .filter-sort{
         background-color: #e4d9ff;
         width: 240px; /* Largeur fixe au lieu de 22% */
-        height: 66%;
+        height: 60%;
         position: fixed;
         left: 0;
         z-index: 800;
@@ -377,6 +377,11 @@
             width: 200px;
             padding: 10px;
         }
+
+        .fakePanneauGris{
+            width: 200px;
+            padding: 10px;
+        }
         
         .products-section {
             width: calc(100% - 220px);
@@ -441,6 +446,11 @@
             width: 190px;
             padding: 5px;
         }
+
+        .fakePanneauGris{
+            width: 195px;
+            padding: 5px;
+        }
         
         .products-section {
             width: calc(100% - 200px);
@@ -458,7 +468,7 @@
         }
     }
 
-@media (max-width: 620px) {
+@media (max-width: 580px) {
     .btnToggleFilters {
         display: flex;
         align-items: center;
@@ -494,6 +504,16 @@
         z-index: 1000;
     }
 
+    .fakePanneauGris{
+        width: 100%;
+        padding: 15px;
+        font-size: 14px;
+        left: -620px;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        z-index: 700;
+    }
+
     .filter-sort form{
         margin-top: 50px;
     }
@@ -505,6 +525,10 @@
     .filter-sort.active {
         left: 0;
     }
+
+    .slider-wrapper, .filter-sort select{
+        width : 70%
+    }
     
     .products-section {
         width: 100%;
@@ -512,7 +536,7 @@
     }
 
     .listeArticle {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
         gap: 5px;
         position: relative;
         top: 50px;
@@ -603,4 +627,111 @@
         height: 10px;
     }
 }
+@media (max-width: 1024px) {
+
+    /* Pagination */
+    .pagination {
+        gap: 8px;
+    }
+
+    .pagination a,
+    .pagination span {
+        min-width: 40px;
+        min-height: 40px;
+        font-size: 22px;
+    }
+
+    /* Bannière promo */
+    .bannierePromo {
+        transform: scale(0.9);
+        transform-origin: top left;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    /* Pagination */
+    .pagination {
+        gap: 6px;
+    }
+
+    .pagination a,
+    .pagination span {
+        min-width: 36px;
+        min-height: 36px;
+        font-size: 16px;
+    }
+
+    .filter-sort form label {
+        font-size: 14px;
+    }
+
+    .filter-sort select {
+        font-size: 13px;
+    }
+
+    .bannierePromo {
+        transform: scale(0.85);
+        transform-origin: top left;
+    }
+
+    .infoProd button img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 580px) {
+
+    /* Pagination */
+    .pagination {
+        gap: 5px;
+        margin-left: 0;
+    }
+
+    .pagination a,
+    .pagination span {
+        margin: 20px 0;
+        min-width: 30px;
+        min-height: 30px;
+        font-size: 14px;
+        border-width: 1px;
+    }
+
+    /* Filtres */
+    .filter-sort form {
+        gap: 12px;
+    }
+
+    .filter-sort form label {
+        font-size: 15px;
+    }
+
+    .filter-sort article div {
+        gap: 10px;
+    }
+
+    /* Bannière promo */
+    .bannierePromo {
+        transform: scale(0.75);
+        transform-origin: top left;
+    }
+
+    .tempsRestant {
+        font-size: 7px;
+        padding: 2px;
+    }
+
+    /* Bouton ajout panier */
+    .infoProd button {
+        padding: 4px;
+    }
+
+    .infoProd button img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
 }
