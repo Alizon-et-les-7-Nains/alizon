@@ -610,7 +610,7 @@ $breakpoint-xs: 480px;
 .seller-name {
   margin: 0;
   font-size: 16px;
-  color: #333;
+  color: $accent;
   font-weight: 600;
 }
 
@@ -644,7 +644,7 @@ $breakpoint-xs: 480px;
 .cart-item-name {
   font-weight: 500;
   margin-bottom: 5px;
-  color: #333;
+  color: $accent;
 }
 
 .cart-item-details {
