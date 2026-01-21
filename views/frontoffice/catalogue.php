@@ -432,8 +432,8 @@ $cart = getCurrentCart($pdo, $idClient);
                         <?php if(number_format($value['stock'], 1) == 0) { ?>
                             <b style="color: red; margin-right: 5px;">Aucun stock</b>
                         <?php } else { ?>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" data-stock="<?= intval($value['stock']) ?>">
-                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                            <button class="plus" style="display: none;" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" data-stock="<?= intval($value['stock']) ?>">
+                                <img style="display: none;" src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                         <?php } ?>
                     </div>
