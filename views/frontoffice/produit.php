@@ -553,8 +553,8 @@ if ($produit['stock'] > 0) {
     </a>';
     } else{
         echo 
-        '<label>
-            Achetez ce produit avant de pouvoir écrire un avis 
+        '<label class="labelAvis">
+            Achetez ce produit avant de pouvoir écrire un avis !
         </label>';
     }
     } else {
