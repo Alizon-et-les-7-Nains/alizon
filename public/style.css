@@ -1078,6 +1078,31 @@ body {
     background-color: #BABABA;
   }
 }
+@media screen and (max-width: 750px) {
+  .pageCommandes p {
+    font-size: 10px;
+  }
+  .pageCommandes p:nth-of-type(1) {
+    top: 80px !important;
+    left: -13% !important;
+  }
+  .pageCommandes p:nth-of-type(2) {
+    top: -185px !important;
+    left: 39% !important;
+  }
+  .pageCommandes p:nth-of-type(3) {
+    top: 95px !important;
+    left: 30% !important;
+  }
+  .pageCommandes p:nth-of-type(4) {
+    top: -215px !important;
+    left: 88% !important;
+  }
+  .pageCommandes p:nth-of-type(5) {
+    top: 45px !important;
+    left: 90% !important;
+  }
+}
 
 /* ---- Header ---- */
 header.backoffice {
@@ -2517,9 +2542,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .pagePaiement .order-summary .discount-row {
   color: #4caf50;
   font-weight: bold;
-}
-.pagePaiement .order-summary .discount-row span:last-child::before {
-  content: "-";
 }
 @media (max-width: 920px) {
   .pagePaiement .order-summary {
