@@ -34,6 +34,8 @@
         $produitsEnAlerte = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($produitsEnAlerte as $p) {
+                var_dump($produitsEnAlerte);
+                var_dump($p);
             $tagID = "(ID:" . $p['idProduit'] . ")"; // Marqueur unique pour le produit
             
                 $titre = "Alerte Stock : " . $p['nom'];
@@ -44,7 +46,7 @@
             }
         }
 
-    var_dump($produitsEnAlerte);
+
 
     $currentPage = basename(__FILE__);
     require_once './partials/aside.php';
