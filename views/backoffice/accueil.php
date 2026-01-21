@@ -20,89 +20,38 @@
 <body class="backoffice">
     <?php require_once './partials/header.php' ?>
 
-    <?php
-        $idVendeur = $_SESSION['id'];
+<?php
 
-        $sqlStock = "SELECT idProduit, nom, stock, seuilAlerte 
-                    FROM _produit 
-                    WHERE idVendeur = ? AND stock <= seuilAlerte";
+    // --- GÉNÉRATION DES NOTIFICATIONS ---
+    $idVendeur = $_SESSION['id'] ?? 0;
 
-        $stmtStock = $pdo->prepare($sqlStock);
+    if ($idVendeur > 0) {
+        // 1. Récupérer les produits en alerte
+        $stmtStock = $pdo->prepare("SELECT idProduit, nom, stock, seuilAlerte FROM _produit WHERE idVendeur = ? AND stock <= seuilAlerte");
         $stmtStock->execute([$idVendeur]);
         $produitsEnAlerte = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
 
-        // On boucle sur chaque produit en alerte pour créer la notif
         foreach ($produitsEnAlerte as $p) {
-            $idProd = $p['idProduit'];
-            $nomProd = $p['nom'];
-            $stockActuel = $p['stock'];
+            $tagID = "(ID:" . $p['idProduit'] . ")"; // Marqueur unique pour le produit
             
-            // Titre unique pour éviter les doublons
-            $titreAlerte = "Alerte Stock : " . $nomProd;
+            // 2. Vérifier si une notification existe déjà pour ce produit
+            $check = $pdo->prepare("SELECT COUNT(*) FROM _notification WHERE idClient = ? AND est_vendeur = 1 AND contenuNotif LIKE ?");
+            $check->execute([$idVendeur, "%$tagID%"]);
 
-            // On vérifie si cette notification précise existe déjà pour ce vendeur
-            $check = $pdo->prepare("SELECT COUNT(*) FROM _notification 
-                                    WHERE idClient = ? 
-                                    AND titreNotif = ? 
-                                    AND est_vendeur = 1");
-            $check->execute([$idVendeur, $titreAlerte]);
-            
             if ($check->fetchColumn() == 0) {
-                // Si elle n'existe pas, on l'insère
-                $contenu = "Le produit $nomProd est à $stockActuel unités. (ID:$idProd)";
+                // 3. Si elle n'existe pas, on l'insère
+                $titre = "Alerte Stock : " . $p['nom'];
+                $contenu = "Le produit " . $p['nom'] . " est à " . $p['stock'] . " unités. Réassort nécessaire ! $tagID";
                 
-                $ins = $pdo->prepare("INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) 
-                                    VALUES (?, ?, ?, NOW(), 1)");
-                $ins->execute([$idVendeur, $titreAlerte, $contenu]);
+                $ins = $pdo->prepare("INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), 1)");
+                $ins->execute([$idVendeur, $titre, $contenu]);
             }
         }
-
-if ($idVendeur > 0) {
-    // 1. Récupère les produits en alerte
-    $sqlStock = "SELECT idProduit, nom, stock, seuilAlerte 
-                 FROM _produit 
-                 WHERE idVendeur = :idVendeur AND stock <= seuilAlerte";
-
-    $stmtStock = $pdo->prepare($sqlStock);
-    $stmtStock->execute([':idVendeur' => $idVendeur]);
-    $produitsEnAlerte = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($produitsEnAlerte as $p) {
-        $idProd = $p['idProduit'];
-        $nomProd = $p['nom'];
-        $stockActuel = $p['stock'];
-        
-        // On crée un marqueur unique (ex: [ID:12]) pour vérifier l'existence
-        $tagID = "[ID:$idProd]";
-        $titreAlerte = "Alerte Stock : " . $nomProd;
-        $contenu = "Le produit $nomProd est à $stockActuel unités. $tagID";
-
-        // 2. Vérifie si une notification pour ce produit existe déjà
-        $check = $pdo->prepare("SELECT COUNT(*) FROM _notification 
-                                WHERE idClient = :idVendeur 
-                                AND est_vendeur = 1 
-                                AND contenuNotif LIKE :pattern");
-        $check->execute([
-            ':idVendeur' => $idVendeur,
-            ':pattern'   => "%$tagID%"
-        ]);
-
-        // 3. Insertion si elle n'existe pas
-        if ($check->fetchColumn() == 0) {
-            $ins = $pdo->prepare("INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) 
-                                 VALUES (:idVendeur, :titre, :contenu, NOW(), 1)");
-            $ins->execute([
-                ':idVendeur' => $idVendeur,
-                ':titre'     => $titreAlerte,
-                ':contenu'   => $contenu
-            ]);
-        }
     }
-}
 
-        $currentPage = basename(__FILE__);
-        require_once './partials/aside.php';
-    ?>
+    $currentPage = basename(__FILE__);
+    require_once './partials/aside.php';
+?>
 
     <main class="acceuilBackoffice">
         <section class="stock">
