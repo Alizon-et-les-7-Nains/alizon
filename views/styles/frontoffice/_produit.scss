@@ -593,6 +593,7 @@
   .reponseAvis {
     display: flex;
     flex-direction: row;
+    align-items: center;
     background-color: $color-pastel-purple;
     border-radius: 16px;
     padding: 1em;
