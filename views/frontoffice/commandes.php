@@ -267,6 +267,7 @@ $cart = getCurrentCart($pdo, $idClient);
     </head>
 <body class="pageCommandes">
     <?php if (!isset($_GET['idCommande']) && !$showPopup){
+        // On retire l'affichage du header quand ce sont les popups
          include '../../views/frontoffice/partials/headerConnecte.php';
         }
     ?>
@@ -442,6 +443,8 @@ $cart = getCurrentCart($pdo, $idClient);
             $stmt = $pdo->prepare($sql);
             $stmt->execute([":idCommande" => $tabIdDestination[0]["idCommande"]]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            // Pour pouvoir afficher les informations essentielles de la commande
+            // C'est à dire idCommande destination et le numero de bordereau
         ?>
         <div class="overlay">
             <div class="popup">
@@ -456,7 +459,7 @@ $cart = getCurrentCart($pdo, $idClient);
         </div>
     <?php endif; ?>
 
-    <?php // Affichage du popup de suivi de livraison si un ID de commande est fourni
+    <?php // Affichage du popup de suivi de livraison
     if (isset($_GET['idCommande'])): ?>
             <?php
             $idCommande = intval($_GET['idCommande']);
@@ -475,12 +478,14 @@ $cart = getCurrentCart($pdo, $idClient);
                 <h2>Suivi de la livraison</h2>
                 <div class="popup-content">
                     <?php
+                        // On récupère touts les produits de la commande avec la description et leur image
                         $sql = "SELECT nom, description, URL FROM _commande inner join _contient on _commande.idCommande = _contient.idCommande inner join _produit on _produit.idProduit = _contient.idProduit INNER JOIN _imageDeProduit on _produit.idProduit = _imageDeProduit.idProduit WHERE _commande.idCommande = :idCommande";
                         $stmt = $pdo->prepare($sql);
                         $stmt->execute([":idCommande" => $idCommande]);
                         $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     ?>
-                    <?php foreach ($produits as $produit): ?>
+                    <?php // On parcourt tout le tableau pour pouvoir afficher tous les produits de la commande
+                        foreach ($produits as $produit): ?>
                         <div class="recapProduit">
                             <img src="<?= htmlspecialchars($produit['URL']) ?>" alt="Image du produit">
                             <div class="nomEtDescription">
@@ -491,15 +496,16 @@ $cart = getCurrentCart($pdo, $idClient);
                         
                     <?php endforeach; ?> 
                 </div>
-                <?php if ($etape['etape'] == 9 && $_SESSION['typeLivraison'] === 'ABSENT'): ?>
+                <?php // Si c'est l'étape 9 et que le type de livraison est ABSENT alors on affiche la photo binaire de la boite aux lettres
+                    if ($etape['etape'] == 9 && $_SESSION['typeLivraison'] === 'ABSENT'): ?>
                     <img class="boiteAuxLettres" src="data:image/jpeg;base64,<?php echo $_SESSION['photo']; ?>" alt="Image boite aux lettres">
                 <?php endif; ?> 
                 <div class="stepper">
                     <div class="stepperEtTexte">
                         <p>En cours de préparation</p>
                         <p>Prise en charge du colis</p>
-                        <p>Arrivé à la plateforme Régional</p>
-                        <p>Arrivé à la plateforme local</p>
+                        <p>Arriver à la plateforme Régional</p>
+                        <p>Arriver à la plateforme local</p>
                         <p>Colis livré</p>
                         <div class="rond"></div>
                         <div class="trait">

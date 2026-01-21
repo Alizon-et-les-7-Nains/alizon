@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/../../controllers/pdo.php';
 
-
+//focntion pour créer un numéro de commande unique
 function creerNoCommande($pdo)
 {
     do {
@@ -20,7 +20,7 @@ function creerNoCommande($pdo)
     return $idCommande;
 }
 
-
+//fonction pour mettre à jour le stock après une commande
 function updateStockAfterOrder($pdo, $idPanier)
 {
     try {
@@ -48,14 +48,20 @@ function chiffrerCodeCarte($code) {
     return password_hash($code, PASSWORD_DEFAULT);
 }
 
+//fonction principale pour créer une commande
+//qui retourne l'id de la commande créée
+//avec toutes les informations nécessaires
 function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivraison, $numeroCarte, $codePostal, $nomCarte, $dateExp, $cvv, $idAdresseFacturation = null)
 {
     try {
+        // Commencer une transaction
         $pdo->beginTransaction();
         $idClient = intval($idClient);
 
+        // Créer un numéro de commande unique avec la fonction dédiée
         $idCommande = creerNoCommande($pdo);
 
+        // Récupérer le panier actif du client
         $stmt = $pdo->prepare("SELECT * FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
         $stmt->execute([$idClient]);
         $panier = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -64,6 +70,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             throw new Exception("Aucun panier trouvé pour ce client.");
         $idPanier = intval($panier['idPanier']);
 
+        // Calculer le sous-total et le nombre d'articles
         $sqlTotals = "
                 SELECT SUM(p.prix * pap.quantiteProduit) AS sousTotal, SUM(pap.quantiteProduit) AS nbArticles
                 FROM _produitAuPanier pap
@@ -95,7 +102,6 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
                 throw new Exception("Erreur lors de l'ajout de la carte bancaire.");
             }
         }
-
         $sqlAdresseLivraison = "
                 INSERT INTO _adresseLivraison (idClient, adresse, codePostal, ville)
                 VALUES (?, ?, ?, ?)
@@ -144,6 +150,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $montantHT = $sousTotal;
         $montantTTC = $sousTotal * 1.20;
 
+        //On insère les données dans la table _commande
         $sqlCommande = "
                 INSERT INTO _commande (
                     idCommande, dateCommande, etatLivraison, montantCommandeTTC, montantCommandeHt,
@@ -202,11 +209,13 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 }
 
 $_SESSION['commandePayee'] = true;
+//On récupère l'id du client
 $idClient = $_SESSION['user_id'];
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    //On récupère toutes les informations de la commande qui vient d'être passé
     $adresseLivraison = $_POST['adresseLivraison'] ?? '';
     $villeLivraison = $_POST['villeLivraison'] ?? '';
     $codePostal = $_POST['codePostal'] ?? '';
@@ -217,6 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $idAdresseFacturation = !empty($_POST['idAdresseFacturation']) ? $_POST['idAdresseFacturation'] : null;
 
+    //Et on créer un id de commande unique qui est lié aux info qu'on vient de recevoir
     $idCommande = createOrderInDatabase(
         $pdo,
         $idClient,
@@ -230,6 +240,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $idAdresseFacturation
     );
 
+    //On récupère l'id de la commande qu'on vient de passer ainsi que la destination 
+    //Pour pouvoir intéragir avec le service
     $stmt = $pdo->prepare('
             SELECT idCommande, CONCAT(adresse, ", " ,codePostal, " ", ville) AS destination
             FROM _commande
@@ -239,9 +251,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([':idCommande' => $idCommande]);
     $tab = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    //On stock ces informations dans la sesssion
     $_SESSION['tabIdDestination'] = $tab;
 }   
 
+//On inclu le fichier qui communique avec le service
 include "clientSocketCreation.php";
 
 ?>
