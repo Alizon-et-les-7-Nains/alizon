@@ -1,282 +1,53 @@
 <?php
-    require_once '../../controllers/pdo.php';
-    require_once '../../controllers/prix.php';
-    require_once '../../controllers/date.php';
-    require_once '../../controllers/auth.php';
-?>
+// On récupère l'ID du vendeur depuis la session
+$idVendeur = $_SESSION['id'] ?? 0;
 
-<!DOCTYPE html>
-<html lang="fr">
+if ($idVendeur > 0) {
+    // 1. Récupérer les produits en alerte (stock <= seuil)
+    // On part du principe que la table est '_produit'
+    $sqlStock = "SELECT idProduit, nom, stock, seuilAlerte 
+                 FROM _produit 
+                 WHERE idVendeur = :idVendeur AND stock <= seuilAlerte";
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alizon</title>
+    $stmtStock = $pdo->prepare($sqlStock);
+    $stmtStock->execute([':idVendeur' => $idVendeur]);
+    $produitsEnAlerte = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
 
-    <link rel="stylesheet" href="../../public/style.css">
-    <link rel="icon" href="/public/images/logoBackoffice.svg">
-</head>
+    // 2. Boucler sur chaque produit pour générer la notification
+    foreach ($produitsEnAlerte as $p) {
+        $idProd = $p['idProduit'];
+        $nomProd = $p['nom'];
+        $stockActuel = $p['stock'];
+        
+        // On définit un titre et un contenu unique par produit
+        $titreAlerte = "Alerte Stock : " . $nomProd;
+        $contenu = "Le produit $nomProd est presque épuisé ($stockActuel restant). [ID:$idProd]";
 
-<body class="backoffice">
-    <?php require_once './partials/header.php' ?>
+        // 3. VÉRIFICATION : Existe-t-il déjà une notif pour ce produit et ce vendeur ?
+        // On utilise LIKE avec l'ID du produit pour être sûr
+        $check = $pdo->prepare("SELECT COUNT(*) FROM _notification 
+                                WHERE idClient = :idVendeur 
+                                AND est_vendeur = 1 
+                                AND contenuNotif LIKE :pattern");
+        
+        $check->execute([
+            ':idVendeur' => $idVendeur,
+            ':pattern' => "%[ID:$idProd]%"
+        ]);
 
-    <?php
-        $idVendeur = $_SESSION['id'];
-
-        $sqlStock = "SELECT idProduit, nom, stock, seuilAlerte 
-                    FROM _produit 
-                    WHERE idVendeur = ? AND stock <= seuilAlerte";
-
-        $stmtStock = $pdo->prepare($sqlStock);
-        $stmtStock->execute([$idVendeur]);
-        $produitsEnAlerte = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
-
-        // On boucle sur chaque produit en alerte pour créer la notif
-        foreach ($produitsEnAlerte as $p) {
-            $idProd = $p['idProduit'];
-            $nomProd = $p['nom'];
-            $stockActuel = $p['stock'];
+        // 4. INSERTION : Si aucune notification n'existe pour ce produit
+        if ($check->fetchColumn() == 0) {
+            $ins = $pdo->prepare("INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) 
+                                 VALUES (:idVendeur, :titre, :contenu, NOW(), 1)");
             
-            // Titre unique pour éviter les doublons
-            $titreAlerte = "Alerte Stock : " . $nomProd;
-
-            // On vérifie si cette notification précise existe déjà pour ce vendeur
-            $check = $pdo->prepare("SELECT COUNT(*) FROM _notification 
-                                    WHERE idClient = ? 
-                                    AND titreNotif = ? 
-                                    AND est_vendeur = 1");
-            $check->execute([$idVendeur, $titreAlerte]);
-            
-            if ($check->fetchColumn() == 0) {
-                // Si elle n'existe pas, on l'insère
-                $contenu = "Le produit $nomProd est à $stockActuel unités. (ID:$idProd)";
-                
-                $ins = $pdo->prepare("INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) 
-                                    VALUES (?, ?, ?, NOW(), 1)");
-                $ins->execute([$idVendeur, $titreAlerte, $contenu]);
-            }
+            $ins->execute([
+                ':idVendeur' => $idVendeur,
+                ':titre'     => $titreAlerte,
+                ':contenu'   => $contenu
+            ]);
         }
-
-        $currentPage = basename(__FILE__);
-        require_once './partials/aside.php';
-    ?>
-
-    <main class="acceuilBackoffice">
-        <section class="stock">
-            <h1>Stocks Faibles</h1>
-            <article>
-                <?php
-$stockSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/stockFaibleAccueil.sql'));
-$stockSTMT->execute([':idVendeur' => $_SESSION['id']]);
-$stock = $stockSTMT->fetchAll(PDO::FETCH_ASSOC);
-    if (count($stock) == 0) echo "<h2>Aucun stock affaibli</h2>";
-    foreach ($stock as $produit => $atr) {
-        $idProduit = $atr['idProduit'];
-        $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
-        $image = $image = !empty($image) ? $image[0]['URL'] : '';
-        
-        // Récupérer les remises
-        $remiseSTMT = $pdo->prepare("SELECT tauxRemise FROM _remise WHERE idProduit = ? AND CURDATE() BETWEEN debutRemise AND finRemise");
-        $remiseSTMT->execute([$idProduit]);
-        $remise = $remiseSTMT->fetch(PDO::FETCH_ASSOC);
-        
-        $prixOriginal = $atr['prix'];
-        $tauxRemise = $remise['tauxRemise'] ?? 0;
-        $enRemise = !empty($remise) && $tauxRemise > 0;
-        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
-        
-        $html = "
-        <table>
-            <tr>
-                <td><img src='$image'></td>
-            </tr>
-            <tr>
-                <td>" . $atr['nom'] . "</td>
-            </tr>
-            <tr>";
-                if ($enRemise) {
-                    $html .= "<td><div style='display: flex; align-items: center; gap: 8px;'>
-                        <span>" . formatPrice($prixRemise) . "</span>
-                        <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
-                    </div></td>";
-                } else {
-                    $html .= "<td>" . formatPrice($prixOriginal) . "</td>";
-                }
-                $stock = $atr['stock'];
-                $seuil = "";
-                if ($stock == 0) {
-                    $seuil = "epuise";
-                } else if ($stock <= $atr['seuilAlerte']) {
-                    $seuil = "faible";
-                }
-                $html .= "<td class=\"$seuil\">$stock</td>
-            </tr>
-        </table>
-        ";
-        echo $html;
     }
+}
+
+// Suite de votre code (affichage, etc.)
 ?>
-            </article>
-            <a href="./stocks.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-        </section>
-
-        <section class="commandes">
-            <h1>Dernières Commandes</h1>
-            <article>
-                <?php
-$commandesSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/dernieresCommandes.sql'));
-$commandesSTMT->execute([':idVendeur' => $_SESSION['id']]);
-$commandes = $commandesSTMT->fetchAll(PDO::FETCH_ASSOC);
-    if (count($commandes) == 0) echo "<h2>Aucune commande</h2>";
-    foreach ($commandes as $commande) {
-        $idProduit = $commande['idProduit'];
-        $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
-        $image = $image = !empty($image) ? $image[0]['URL'] : '';
-        
-        // Récupérer les remises
-        $remiseSTMT = $pdo->prepare("SELECT tauxRemise FROM _remise WHERE idProduit = ? AND CURDATE() BETWEEN debutRemise AND finRemise");
-        $remiseSTMT->execute([$idProduit]);
-        $remise = $remiseSTMT->fetch(PDO::FETCH_ASSOC);
-        
-        $prixOriginal = $commande['prix'];
-        $tauxRemise = $remise['tauxRemise'] ?? 0;
-        $enRemise = !empty($remise) && $tauxRemise > 0;
-        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
-        $prixAffichage = $enRemise ? $prixRemise : $prixOriginal;
-        
-        $html = "
-        <table>
-            <tr>
-                <td rowspan=2><img src='$image'></td>
-                <th>" . $commande['nom'] . "</th>
-            </tr>
-            <tr>
-                <td>
-                    Prix Unitaire : <strong>" . ($enRemise ? 
-                        "<div style='display: flex; align-items: center; gap: 4px;'>
-                            <span>" . formatPrice($prixRemise) . "</span>
-                            <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
-                        </div>" 
-                        : formatPrice($prixOriginal)) . "</strong><br>
-                    Prix Total : <strong>" . formatPrice($prixAffichage * $commande['quantite']) . "</strong><br>
-                    Statut : <strong>" . $commande['etatLivraison'] . "</strong>
-                </td>
-            </tr>
-            <tr>
-                <td>" . formatDate($commande['dateCommande']) . "</td>
-                <th>" . $commande['quantite'] . "</th>
-            </tr>
-        </table>
-        ";
-        echo $html;
-    }
-?>
-            </article>
-            <a href="./commandes.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-        </section>
-
-        <section class="avis">
-            <h1>Derniers Avis</h1>
-            <article>
-                <?php
-$avisSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/derniersAvis.sql'));
-$avisSTMT->execute([':idVendeur' => $_SESSION['id']]);
-$avis = $avisSTMT->fetchAll(PDO::FETCH_ASSOC);
-    if (count($avis) == 0) echo "<h2>Aucun avis</h2>";
-    foreach ($avis as $avi) {
-        $imagesAvis = ($pdo->query(str_replace('$idClient', $avi['idClient'], str_replace('$idProduit', $avi['idProduit'], file_get_contents('../../queries/imagesAvis.sql')))))->fetchAll(PDO::FETCH_ASSOC);
-        $imageClient = "/images/photoProfilClient/photo_profil" . $avi['idClient'] . ".svg";
-        $html = "
-        <table>
-            <tr>
-                <th rowspan=2>
-                    <figure>
-                        <img src='$imageClient' onerror=" . '"this.style.display=' . "'none'" . '"' . ">
-                        <figcaption>" . $avi['pseudo'] . "</figcaption>
-                    </figure>
-                    <figure>
-                        <figcaption>" . str_replace('.', ',', $avi['note']) . "</figcaption>
-                        <img src='/public/images/etoile.svg'>
-                    </figure>
-                </th>
-                <th>" . $avi['nomProduit'] . " - " . $avi['titreAvis'] . "</th>
-                <td>Le " . formatDate($avi['dateAvis']) . "</td>
-            </tr>
-            <tr>
-                <td colspan='2'>" . $avi['contenuAvis'] . "</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan='2'>";   
-                    foreach ($imagesAvis as $imageAvi) {
-                        $html .= "<img src='" . $imageAvi['URL'] . "' class='imageAvis'>";
-                    }
-                $html .= "</td>
-            </tr>
-        </table>
-        ";
-        echo $html;
-    }
-?>
-            </article>
-            <a href="./avis.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-        </section>
-
-        <section class="produits">
-            <h1>Produits en Vente</h1>
-            <article>
-                <?php
-$produitsSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/produitsVente.sql'));
-$produitsSTMT->execute([':idVendeur' => $_SESSION['id']]);
-$produits = $produitsSTMT->fetchAll(PDO::FETCH_ASSOC);
-if (count($produits) == 0) echo "<h2>Aucun produit en vente</h2>";
-    foreach ($produits as $produit => $atr) {
-        $idProduit = $atr['idProduit'];
-        $image = ($pdo->query(str_replace('$idProduit', $idProduit, file_get_contents('../../queries/imagesProduit.sql'))))->fetchAll(PDO::FETCH_ASSOC);
-        $image = $image = !empty($image) ? $image[0]['URL'] : '';
-        
-        // Récupérer les remises
-        $remiseSTMT = $pdo->prepare("SELECT tauxRemise FROM _remise WHERE idProduit = ? AND CURDATE() BETWEEN debutRemise AND finRemise");
-        $remiseSTMT->execute([$idProduit]);
-        $remise = $remiseSTMT->fetch(PDO::FETCH_ASSOC);
-        
-        $prixOriginal = $atr['prix'];
-        $tauxRemise = $remise['tauxRemise'] ?? 0;
-        $enRemise = !empty($remise) && $tauxRemise > 0;
-        $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
-        
-        $html = "
-        <table>
-            <tr>
-                <td><img src='$image'></td>
-            </tr>
-            <tr>";
-                $html .= "<td>" . $atr['nom'] . "</td>";
-                if ($enRemise) {
-                    $html .= "<td><div style='display: flex; align-items: center; gap: 8px;'>
-                        <span>" . formatPrice($prixRemise) . "</span>
-                        <span style='text-decoration: line-through; color: #999; font-size: 0.9em;'>" . formatPrice($prixOriginal) . "</span>
-                    </div></td>";
-                } else {
-                    $html .= "<td>" . formatPrice($prixOriginal) . "</td>";
-                }
-            $html .= "</tr>
-        </table>
-        ";
-        echo $html;
-    }
-?>
-            </article>
-            <a href="./produits.php" title="Voir plus"><img src="/public/images/infoDark.svg"></a>
-        </section>
-
-        <?php require_once './partials/retourEnHaut.php' ?>
-    </main>
-
-    <?php require_once './partials/footer.php' ?>
-
-    <script src="../../public/amd-shim.js"></script>
-    <script src="../../public/script.js"></script>
-</body>
-
-</html>
