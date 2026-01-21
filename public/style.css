@@ -6009,6 +6009,8 @@ dialog.reassort form input {
   padding: 1em;
   margin-top: -0.5em;
   margin-left: 5.5em;
+  gap: 10px;
+  width: fit-content;
 }
 .pageProduit .carousel-container {
   position: relative;
@@ -7513,7 +7515,9 @@ dialog.reassort form input {
   gap: 10px;
   padding: 1em;
   width: fit-content;
-  margin-left: 30%;
+  display: block;
+  left: 50%;
+  right: 50%;
 }
 .pageCatalogue .pagination a, .pageCatalogue .pagination span {
   display: flex;
