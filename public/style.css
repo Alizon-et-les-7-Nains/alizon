@@ -5511,6 +5511,15 @@ dialog.reassort form input {
   position: relative;
   width: 100%;
 }
+.pageProduit .labelAvis {
+  display: inline-block;
+  position: relative;
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  text-decoration: underline;
+}
 .pageProduit button {
   cursor: pointer;
 }
