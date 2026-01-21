@@ -432,8 +432,8 @@ $cart = getCurrentCart($pdo, $idClient);
                         <?php if(number_format($value['stock'], 1) == 0) { ?>
                             <b style="color: red; margin-right: 5px;">Aucun stock</b>
                         <?php } else { ?>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" data-stock="<?= intval($value['stock']) ?>">
-                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                            <button class="plus" style="display: none;" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" data-stock="<?= intval($value['stock']) ?>">
+                                <img style="display: none;" src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                         <?php } ?>
                     </div>
@@ -452,7 +452,7 @@ $cart = getCurrentCart($pdo, $idClient);
                     <span class="disabled">« Précédent</span>
                 <?php } ?>
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a href="?page=<?= $i ?>&search=<?= $searchQuery ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
+                    <a <?php if($i == $page) echo 'style="background-color: #e3f2fe color="#273469";"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>"><?= $i ?></a>
                 <?php endfor; ?>
                 <?php if ($page < $nbPages) { ?>
                     <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
