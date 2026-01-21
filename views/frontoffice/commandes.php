@@ -264,6 +264,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 // Récupération du panier courant pour l'affichage
 $cart = getCurrentCart($pdo, $idClient);
 
+// Calculer totals avec remises 
+
+$sousTotal = 0;
+$remiseTotale = 0;
+$quantiteTotal = 0;
+
+foreach ($cart as $item) {
+    $prixOriginal = $item['prix'] * $item['qty'];
+    $tauxRemise = floatval($item['tauxRemise'] ?? 0);
+    
+    if ($tauxRemise > 0) {
+        $montantRemise = $prixOriginal * ($tauxRemise / 100);
+        $prixApresRemise = $prixOriginal - $montantRemise;
+        $remiseTotale += $montantRemise;
+        $sousTotal += $prixApresRemise;
+    } else {
+        $sousTotal += $prixOriginal;
+    }
+    
+    $quantiteTotal += $item['qty'];
+}
+
+$livraison = 0;
+$montantTTC = ($sousTotal * 1.2) + $livraison;
+
 ?>
 
 <!DOCTYPE html>
@@ -353,7 +378,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         </div>
                         <div class="infoCommande">
                             <p>Total</p>
-                            <p><?php echo $commande['total']; ?> €</p>
+                            <p><?php echo $montantTTC ?> €</p>
                         </div>
                         <div class="infoCommande">
                             <p>N° de commande</p>
