@@ -723,10 +723,5 @@ if (toggleFiltersBtn) {
 
 </script>
 
-    <!-- Popup de confirmation d'ajout au panier -->
-    <section class="confirmationAjout">
-        <h4>Produit ajouté au panier !</h4>
-    </section>
-
 </body>
 </html>
