@@ -34,20 +34,13 @@
         foreach ($produitsEnAlerte as $p) {
             $tagID = "(ID:" . $p['idProduit'] . ")"; // Marqueur unique pour le produit
             
-            // 2. Vérifier si une notification existe déjà pour ce produit
-            $check = $pdo->prepare("SELECT COUNT(*) FROM _notification WHERE idClient = ? AND est_vendeur = 1 AND contenuNotif LIKE ?");
-            $check->execute([$idVendeur, "%$tagID%"]);
-
-            if ($check->fetchColumn() == 0) {
-                // 3. Si elle n'existe pas, on l'insère
                 $titre = "Alerte Stock : " . $p['nom'];
                 $contenu = "Le produit " . $p['nom'] . " est à " . $p['stock'] . " unités. Réassort nécessaire ! $tagID";
                 
-                $ins = $pdo->prepare("INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), 1)");
-                $ins->execute([$idVendeur, $titre, $contenu]);
+                $ins = $pdo->prepare("INSERT INTO _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), 1)");
+                $ins->execute([$idVendeur, $contenu, $titre]);
             }
         }
-    }
 
     $currentPage = basename(__FILE__);
     require_once './partials/aside.php';
