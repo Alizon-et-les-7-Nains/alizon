@@ -23,8 +23,7 @@ if ($idVendeur > 0) {
         // Vérifie si une notification existe déjà
         $checkSql = "SELECT COUNT(*) FROM _notification 
                      WHERE idClient = :idVendeur 
-                     AND est_vendeur = 1 
-                     AND contenuNotif LIKE :pattern";
+                     AND est_vendeur = 1";
         $checkStmt = $pdo->prepare($checkSql);
         $checkStmt->execute([
             ':idVendeur' => $idVendeur,
