@@ -6003,6 +6003,7 @@ dialog.reassort form input {
 .pageProduit .reponseAvis {
   display: flex;
   flex-direction: row;
+  align-items: center;
   background-color: #e4d9ff;
   border-radius: 16px;
   padding: 1em;
