@@ -378,7 +378,7 @@ $montantTTC = ($sousTotal * 1.2) + $livraison;
                         </div>
                         <div class="infoCommande">
                             <p>Total</p>
-                            <p><?php echo $quantiteTotal ?> €</p>
+                            <p><?php echo $montantTTC ?> €</p>
                         </div>
                         <div class="infoCommande">
                             <p>N° de commande</p>
