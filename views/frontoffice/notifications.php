@@ -14,18 +14,21 @@ if (!isset($_SESSION['user_id'])) {
 $id_client = $_SESSION['user_id'];
 
 // Fonction pour récupérer les notifications en fonction de l'utilisateur et de son rôle
-function getNotifications($pdo, $idClient, $est_vendeur) {
+function getNotifications($pdo, $idClient) {
     $sql = "SELECT * FROM _notification 
-            WHERE (idClient = ? OR idClient = 34) 
-            AND est_vendeur = ?
+            WHERE idClient = ? OR idClient = 34
+            AND est_vendeur = 0
             ORDER BY dateNotif DESC";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$idClient, $est_vendeur]);
+    $stmt->execute([$idClient]);
     
     return $stmt->fetchAll(PDO::FETCH_ASSOC); 
 }
 
-$notifs = getNotifications($pdo, $id_client, 0);
+$notifs = getNotifications($pdo, $id_client);
+
+var_dump($notifs);
+var_dump($id_client);
 
 ?>
 
@@ -35,8 +38,7 @@ $notifs = getNotifications($pdo, $id_client, 0);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes notifications</title>
-
-    <link rel="icon" href="/public/images/logoBackoffice.svg">
+    <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
