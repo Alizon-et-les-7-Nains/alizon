@@ -237,7 +237,6 @@ $cart = getCurrentCart($pdo, $idClient);
 
 // Calculer totals avec remises 
 
-// Ajouter TVA
 $sousTotal = 0;
 $remiseTotale = 0;
 $quantiteTotal = 0;
