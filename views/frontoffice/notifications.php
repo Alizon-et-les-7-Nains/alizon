@@ -1,93 +1,135 @@
 <?php 
+// Initialisation de la connexion avec le serveur / BDD
+
 require_once "../../controllers/pdo.php";
 require_once "../../controllers/date.php";
+
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../frontoffice/connexionClient.php");
     exit();
 }
+
 $id_client = $_SESSION['user_id'];
 
-// Récupération des notifications pour le client
-$stmt = $pdo->prepare("SELECT * FROM _notification WHERE idClient = ? AND est_vendeur = 0 ORDER BY dateNotif DESC");
-$stmt->execute([$id_client]);
-$notifs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Fonction pour récupérer les notifications en fonction de l'utilisateur et de son rôle
+function getNotifications($pdo, $idClient, $est_vendeur) {
+    $sql = "SELECT * FROM _notification 
+            WHERE (idClient = ? OR idClient = 34) 
+            AND est_vendeur = ?
+            ORDER BY dateNotif DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idClient, $est_vendeur]);
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+}
+
+$notifs = getNotifications($pdo, $id_client, 0);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes notifications</title>
+
+    <link rel="icon" href="/public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
     <?php include './partials/headerConnecte.php'; ?>
-    <main class="mesNotif">
-        <section class="topRecherche"><h1>Mes notifications</h1></section>
 
-        <?php if(!empty($notifs)): ?>
+    <main class="mesNotif">
+        <section class="topRecherche" >
+            <h1>Mes notifications</h1>
+        </section>
+
+        <!-- Affichage de la totalité des notifications par ordre croissant  -->
+        <!-- Sont affichés le titre de la notification, le contenu ainsi que la date -->
+        <?php if(!empty($notifs)) { ?>
             <section class="ensembleNotif">
                 <div class="sidebarNotif">
-                <?php foreach($notifs as $notif): ?>
-                    <div class="apercuNotif" tabindex="0" onclick="afficherContenu(this, '<?= addslashes($notif['titreNotif']) ?>', '<?= $notif['dateNotif'] ?>', '<?= addslashes($notif['contenuNotif']) ?>')">
-                        <div><img src="../../public/images/bellRingDark.svg"></div>
+                <?php foreach($notifs as $notif) { 
+                    $contenuNotif = $notif['contenuNotif'];
+                    $contenuNotif = substr($contenuNotif, 0, 50) . "...";?>
+                    <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu(this, '<?= htmlspecialchars($notif['titreNotif'], ENT_QUOTES) ?>',
+                        '<?= htmlspecialchars($notif['dateNotif'], ENT_QUOTES) ?>',
+                        '<?= htmlspecialchars($notif['contenuNotif'], ENT_QUOTES) ?>')">
                         <div>
-                            <h3><?= htmlspecialchars($notif['titreNotif']) ?></h3>
+                            <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
+                            <img id="focus" src="../../public/images/bellRingLight.svg" alt="Nouvelle notification">
+                        </div>
+                        <div>
+                            <!-- Récupération des données souhaitées dans le tableau notif -->
+                            <h3><?= $notif['titreNotif'] ?></h3>
+                            <h4><?= $contenuNotif ?></h4>
                             <h5><?= $notif['dateNotif'] ?></h5>
                         </div>
                     </div>
-                <?php endforeach; ?>
+                    
+                    <!-- Affichage du contenu de la notification en format téléphone -->
+                    <article class="contenuTel">
+                        <div class="titleNotifResponsive">
+                            <h2 style="color: #273469;"><?= htmlspecialchars($notif['titreNotif']) ?></h2>
+                            <small><?= htmlspecialchars($notif['dateNotif']) ?></small>
+                        </div>
+                        <div class="corpsNotif" style="margin-top: 15px;">
+                            <p><?= nl2br(htmlspecialchars($notif['contenuNotif'])) ?></p>
+                        </div>
+                    </article>
+                <?php } ?>
                 </div>
                 <article class="ecranNotif">
                     <div class="titleNotif">
-                        <h1 id="titre">Cliquez sur une notification</h1>
-                        <h3 id="contenu_date"></h3>
+                        <h1 id="titre"><?= 'Cliquez sur une notification pour afficher son contenu' ?></h1>
+                        <h3 id="contenu"><?= htmlspecialchars($notif['dateNotif'] ?? ' ') ?></h3>
                     </div>
-                    <div class="contenuNotif" id="notif_body">
-                        <p>Sélectionnez une notification pour voir le détail.</p>
+                    <div class="contenuNotif">
+                        <p id="date"><?= htmlspecialchars($notif['dateNotif'] ?? ' ') ?></p>
                     </div>
                 </article>
             </section>
-        <?php else: ?>
+            <!-- Message d'erreur dnas le cas où aucune notification n'a été trouvées -->
+        <?php } else { ?>
             <h2 class="aucuneNotif">Aucune notification</h2>
-        <?php endif; ?>
+        <?php } ?>
+
     </main>
 
-    <script>
-        function afficherContenu(el, t, d, c) {
-            // Affichage du titre et de la date
-            document.getElementById("titre").innerText = t;
-            document.getElementById("contenu_date").innerText = d;
-            
-            // Recherche de l'ID produit caché [ID_PROD:XX] via Regex
-            const match = c.match(/\[ID_PROD:(\d+)\]/);
-            let texteSansTag = c.replace(/\[ID_PROD:\d+\]/, "");
-            
-            let htmlContent = `<p>${texteSansTag}</p>`;
-            
-            // Si un ID produit est trouvé, on génère le bouton de redirection vers l'ancre
-            if (match) {
-                const idProd = match[1];
-                htmlContent += `
-                    <br><br>
-                    <a href="mesAvis.php#avis-${idProd}" 
-                       style="display:inline-block; padding:12px 25px; background:#273469; color:white; border-radius:8px; text-decoration:none; font-weight:bold; font-size:14px;">
-                       Voir la réponse sur mon avis
-                    </a>`;
-            }
-            
-            document.getElementById("notif_body").innerHTML = htmlContent;
+    <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
+    <?php include '../../views/frontoffice/partials/footerConnecte.php'; ?>
 
-            // Gestion responsive pour mobile
+    <script>
+        const titreContent = document.getElementById("titre");
+        const contenuContent = document.getElementById("contenu");
+        const dateContent = document.getElementById("date");
+
+        // Fonction mettant en jour les informations dans la fenetre d'affichage du contenu de la notification
+        function afficherContenu(el, t, d, c) {
+            if (titreContent) titreContent.innerText = t;
+            if (contenuContent) contenuContent.innerText = d;
+            if (dateContent) dateContent.innerText = c;
+
+            const mobileContent = el.nextElementSibling;
+
             if (window.innerWidth <= 840) {
-                const mobileContent = el.nextElementSibling;
-                if (mobileContent && mobileContent.classList.contains('contenuTel')) {
-                    document.querySelectorAll('.contenuTel').forEach(item => item.classList.remove('active'));
-                    mobileContent.classList.add('active');
+                document.querySelectorAll('.contenuTel').forEach(item => {
+                    if (item !== mobileContent) item.classList.remove('active');
+                });
+
+                if (mobileContent) {
+                    mobileContent.classList.toggle('active'); 
+                    if(mobileContent.classList.contains('active')) {
+                        setTimeout(() => {
+                            mobileContent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }, 100);
+                    }
                 }
             }
         }
-    </script>
+</script>
+
 </body>
-</html>

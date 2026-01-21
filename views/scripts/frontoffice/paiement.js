@@ -26,7 +26,7 @@ class PaymentPage {
       this.factAddrCheckbox.addEventListener("change", () => {
         this.billingSection.classList.toggle(
           "active",
-          this.factAddrCheckbox.checked
+          this.factAddrCheckbox.checked,
         );
         if (!this.factAddrCheckbox.checked) this.idAdresseFacturation = null;
       });
@@ -195,7 +195,7 @@ class PaymentPage {
     } else if (!/^\d{5}$/.test(codePostal.value.trim())) {
       this.showError(
         "Le code postal doit contenir 5 chiffres",
-        "code-postal-fact"
+        "code-postal-fact",
       );
       valid = false;
     }
@@ -336,7 +336,7 @@ class PaymentPage {
       if (field.required && !value) {
         this.showError(
           `${this.getFieldName(field.errorKey)} requis`,
-          field.errorKey
+          field.errorKey,
         );
         isValid = false;
       } else if (field.pattern && !field.pattern.test(value)) {
@@ -354,7 +354,7 @@ class PaymentPage {
       if (!cardNumber.startsWith("4")) {
         this.showError(
           "Ceci n'est pas une carte Visa (les cartes Visa commencent par 4)",
-          "num-carte"
+          "num-carte",
         );
         isValid = false;
       }
@@ -363,7 +363,7 @@ class PaymentPage {
       if (![13, 16, 19].includes(cardNumber.length)) {
         this.showError(
           "Numéro de carte invalide (13, 16 ou 19 chiffres attendus)",
-          "num-carte"
+          "num-carte",
         );
         isValid = false;
       }
@@ -372,7 +372,7 @@ class PaymentPage {
       if (!this.cardVerification(cardNumber)) {
         this.showError(
           "Numéro de carte invalide selon l'algorithme de vérification",
-          "num-carte"
+          "num-carte",
         );
         isValid = false;
       }
@@ -388,7 +388,7 @@ class PaymentPage {
         this.validateBillingFields(
           document.querySelector(".adresse-fact-input"),
           document.querySelector(".code-postal-fact-input"),
-          document.querySelector(".ville-fact-input")
+          document.querySelector(".ville-fact-input"),
         ) && isValid;
     }
 
@@ -440,108 +440,126 @@ class PaymentPage {
    * Retourne :
    * void
    */
+
+  /**
+   * Affiche le popup de confirmation de commande avec récapitulatif
+   * Construit le HTML du panier trié par vendeur et affiche les détails de la commande
+   *
+   * Parametres :
+   * formData - Données du formulaire de paiement
+   * cart - Array des articles du panier
+   *
+   * Retourne :
+   * void
+   */
   showConfirmationPopup(formData, cart) {
-    let cartHtml = '<div class="cart-summary">';
-    let total = window.__PAYMENT_DATA__?.totals?.montantTTC || 0;
+    // Grouper les produits par vendeur
+    const produitsParVendeur = {};
 
     cart.forEach((item) => {
-      const itemTotal = item.prix * item.qty;
+      const vendeurId = item.idVendeur || "unknown";
+      const nomVendeur = item.nomVendeur || "Vendeur inconnu";
 
+      if (!produitsParVendeur[vendeurId]) {
+        produitsParVendeur[vendeurId] = {
+          nom: nomVendeur,
+          produits: [],
+        };
+      }
+
+      produitsParVendeur[vendeurId].produits.push(item);
+    });
+
+    // Construire le HTML par vendeur
+    let cartHtml = '<div class="cart-summary-by-seller">';
+
+    Object.values(produitsParVendeur).forEach((vendeur) => {
       cartHtml += `
+            <div class="seller-section">
+                <div class="seller-header">
+                    <h4 class="seller-name">${vendeur.nom}</h4>
+                </div>
+                <div class="seller-products">
+        `;
+
+      vendeur.produits.forEach((item) => {
+        const itemTotal = item.prix * item.qty;
+
+        cartHtml += `
                 <div class="cart-item-summary">
-                    <img src="${item.img}" alt="${
-        item.nom
-      }" class="cart-item-image">
+                    <img src="${item.img}" alt="${item.nom}" class="cart-item-image">
                     <div class="cart-item-info">
                         <div class="cart-item-name">${item.nom}</div>
                         <div class="cart-item-details">
-                            Quantité: ${item.qty} × ${item.prix.toFixed(
-        2
-      )}€ = ${itemTotal.toFixed(2)}€
+                            Quantité: ${item.qty} × ${item.prix.toFixed(2)}€ = ${itemTotal.toFixed(2)}€
                         </div>
                     </div>
                 </div>
             `;
+      });
+
+      cartHtml += `
+                </div>
+            </div>
+        `;
     });
 
     cartHtml += "</div>";
 
     const popupHtml = `
-            <div class="popup-header">
-                <h2>Confirmation de commande</h2>
-                <button class="close-popup">&times;</button>
-            </div>
-            <div class="order-info">
-                <div class="info-section">
-                    <h4>Adresse de livraison</h4>
-                    <p>${formData.adresseLivraison}<br>
-                    ${formData.codePostal} ${formData.villeLivraison}</p>
-                </div>
-                
-                <div class="info-section">
-                    <h4>Paiement</h4>
-                    <p>Carte Visa se terminant par ${formData.numCarte.slice(
-                      -4
-                    )}</p>
-                </div>
+        <div class="popup-header">
+            <h2>Confirmation de commande</h2>
+            <button class="close-popup">&times;</button>
+        </div>
+        <div class="order-info">
+            <div class="info-section">
+                <h4>Adresse de livraison</h4>
+                <p>${formData.adresseLivraison}<br>
+                ${formData.codePostal} ${formData.villeLivraison}</p>
             </div>
             
-            <div class="popup-cart">
-                <h3>Récapitulatif du panier</h3>
-                ${cartHtml}
+            <div class="info-section">
+                <h4>Paiement</h4>
+                <p>Carte Visa se terminant par ${formData.numCarte.slice(-4)}</p>
             </div>
-            
-            <div class="total-section">
-                <div class="total-row">
-                    <span>Sous-total</span>
-                    <span>${
-                      window.__PAYMENT_DATA__?.totals?.sousTotal?.toFixed(2) ||
-                      "0.00"
-                    } €</span>
-                </div>
-                <div class="total-row">
-                    <span>Livraison</span>
-                    <span>${
-                      window.__PAYMENT_DATA__?.totals?.livraison?.toFixed(2) ||
-                      "0.00"
-                    } €</span>
-                </div>
-                <div class="total-row final">
-                    <span>Total TTC</span>
-                    <span><strong>${total.toFixed(2)} €</strong></span>
-                </div>
+        </div>
+        
+        <div class="popup-cart">
+            <h3>Récapitulatif du panier (par vendeur)</h3>
+            ${cartHtml}
+        </div>
+        
+        <div class="total-section">
+            <div class="total-row">
+                <span>Sous-total</span>
+                <span>${window.__PAYMENT_DATA__?.totals?.sousTotal?.toFixed(2) || "0.00"} €</span>
             </div>
-            
-            <div class="popup-buttons">
-                <button type="button" class="btn-cancel btn-secondary">Modifier</button>
-                <form method="POST" action="../../delivraptor/php/alizon.php" class="order-form">
-                    <input type="hidden" name="action" value="createOrder">
-                    <input type="hidden" name="adresseLivraison" value="${
-                      formData.adresseLivraison
-                    }">
-                    <input type="hidden" name="villeLivraison" value="${
-                      formData.villeLivraison
-                    }">
-                    <input type="hidden" name="codePostal" value="${
-                      formData.codePostal
-                    }">
-                    <input type="hidden" name="numeroCarte" value="${
-                      formData.numCarte
-                    }">
-                    <input type="hidden" name="nomCarte" value="${
-                      formData.nomCarte
-                    }">
-                    <input type="hidden" name="dateExpiration" value="${
-                      formData.dateExpiration
-                    }">
-                    <input type="hidden" name="cvv" value="${formData.cvv}">
-                    <input type="hidden" name="idAdresseFacturation" value="${
-                      this.idAdresseFacturation || ""
-                    }">
-                    <button type="submit" class="btn-confirm btn-primary">Confirmer et payer</button>
-                </form>
+            <div class="total-row">
+                <span>Livraison</span>
+                <span>${window.__PAYMENT_DATA__?.totals?.livraison?.toFixed(2) || "0.00"} €</span>
             </div>
-        `;
+            <div class="total-row final">
+                <span>Total TTC</span>
+                <span><strong>${window.__PAYMENT_DATA__?.totals?.montantTTC?.toFixed(2) || "0.00"} €</strong></span>
+            </div>
+        </div>
+        
+        <div class="popup-buttons">
+            <button type="button" class="btn-cancel btn-secondary">Modifier</button>
+            <form method="POST" action="../../delivraptor/php/alizon.php" class="order-form">
+                <input type="hidden" name="action" value="createOrder">
+                <input type="hidden" name="adresseLivraison" value="${formData.adresseLivraison}">
+                <input type="hidden" name="villeLivraison" value="${formData.villeLivraison}">
+                <input type="hidden" name="codePostal" value="${formData.codePostal}">
+                <input type="hidden" name="numeroCarte" value="${formData.numCarte}">
+                <input type="hidden" name="nomCarte" value="${formData.nomCarte}">
+                <input type="hidden" name="dateExpiration" value="${formData.dateExpiration}">
+                <input type="hidden" name="cvv" value="${formData.cvv}">
+                <input type="hidden" name="idAdresseFacturation" value="${this.idAdresseFacturation || ""}">
+                <button type="submit" class="btn-confirm btn-primary">Confirmer et payer</button>
+            </form>
+        </div>
+    `;
 
     this.popupContent.innerHTML = popupHtml;
     this.confirmationPopup.classList.add("show");

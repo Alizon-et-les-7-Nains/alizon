@@ -540,8 +540,8 @@ if ($produit['stock'] > 0) {
     </div>
     <?php 
         // Vérifier si le client a déjà commandé ce produit pour pouvoir laisser un avis
-        $stmt = $pdo->prepare("SELECT * FROM _commande c NATURAL JOIN _panier p WHERE p.idClient = ?");
-        $stmt->execute([$userId]);
+        $stmt = $pdo->prepare("SELECT * FROM _commande c NATURAL JOIN _contient cn NATURAL JOIN _panier p WHERE p.idClient = ? AND cn.idProduit=?");
+        $stmt->execute([$userId, $productId]);
         $commande = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     ?>
@@ -553,8 +553,8 @@ if ($produit['stock'] > 0) {
     </a>';
     } else{
         echo 
-        '<label>
-            Achetez ce produit avant de pouvoir écrire un avis 
+        '<label class="labelAvis">
+            Achetez ce produit avant de pouvoir écrire un avis !
         </label>';
     }
     } else {

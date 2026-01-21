@@ -66,6 +66,51 @@ function getCurrentCart($pdo, $idClient) {
 }
 
 
+/**
+ * Récupère les informations des vendeurs pour les produits du panier
+ *
+ * Parametres :
+ *    $pdo L'objet PDO pour la connexion à la base de données.
+ *    $cart Tableau des produits du panier
+ * 
+ * Retourne : un tableau associatif avec les informations des vendeurs
+ */
+function getVendeursForCart($pdo, $cart) {
+    if (empty($cart)) {
+        return [];
+    }
+    
+    // Récupérer les IDs des produits
+    $productIds = array_column($cart, 'idProduit');
+    $placeholders = implode(',', array_fill(0, count($productIds), '?'));
+    
+    $sql = "SELECT 
+                p.idProduit,
+                p.idVendeur,
+                v.raisonSocial,
+                v.prenom,
+                v.nom,
+                v.pseudo
+            FROM _produit p
+            JOIN _vendeur v ON p.idVendeur = v.codeVendeur
+            WHERE p.idProduit IN ($placeholders)";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($productIds);
+    
+    $vendeurs = [];
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $vendeurs[$row['idProduit']] = [
+            'idVendeur' => $row['idVendeur'],
+            'raisonSocial' => $row['raisonSocial'] ?: '',
+            'nomComplet' => trim($row['prenom'] . ' ' . $row['nom']),
+            'pseudo' => $row['pseudo']
+        ];
+    }
+    
+    return $vendeurs;
+}
+
 
 /**
  * Met à jour le stock des produits après la création d'une commande
@@ -237,7 +282,6 @@ $cart = getCurrentCart($pdo, $idClient);
 
 // Calculer totals avec remises 
 
-// Ajouter TVA
 $sousTotal = 0;
 $remiseTotale = 0;
 $quantiteTotal = 0;
@@ -258,7 +302,8 @@ foreach ($cart as $item) {
     $quantiteTotal += $item['qty'];
 }
 
-$montantTTC = $sousTotal * 1.20; // TVA à 20%
+$livraison = 0;
+$montantTTC = ($sousTotal * 1.2) + $livraison;
 
 $clientInfo = clientInformations($pdo, $idClient);
 ?>
@@ -277,11 +322,14 @@ $clientInfo = clientInformations($pdo, $idClient);
 <body class="pagePaiement">
     <?php include '../../views/frontoffice/partials/headerConnecte.php'; ?>
 
-   <script>
+    <script>
     window.__PAYMENT_DATA__ = {
         cart: <?php 
             $formattedCart = [];
+            $vendeursInfo = getVendeursForCart($pdo, $cart); // Nouvelle fonction
+            
             foreach ($cart as $item) {
+                $vendeurInfo = $vendeursInfo[$item['idProduit']] ?? null;
                 $formattedCart[] = [
                     'id' => strval($item['idProduit']),
                     'nom' => htmlspecialchars($item['nom']),
@@ -293,7 +341,11 @@ $clientInfo = clientInformations($pdo, $idClient);
                     'tauxRemise' => floatval($item['tauxRemise'] ?? 0),
                     'qty' => intval($item['qty']),
                     'stock' => intval($item['stock']),
-                    'img' => $item['img'] ?? '../../public/images/default.png'
+                    'img' => $item['img'] ?? '../../public/images/default.png',
+                    'idVendeur' => $vendeurInfo['idVendeur'] ?? null,
+                    'nomVendeur' => $vendeurInfo['raisonSocial'] ?? 
+                                ($vendeurInfo['nomComplet'] ?? 
+                                ($vendeurInfo['pseudo'] ?? 'Vendeur inconnu'))
                 ];
             }
             echo json_encode($formattedCart, JSON_UNESCAPED_UNICODE); 
@@ -476,6 +528,10 @@ $clientInfo = clientInformations($pdo, $idClient);
         <div class="total-row">
             <span>Sous-total</span>
             <span><?php echo number_format($sousTotal, 2); ?> €</span>
+        </div>
+        <div class="total-row">
+            <span>Livraison</span>
+            <span><?php echo number_format($livraison, 2); ?> €</span>
         </div>
         <div class="total-row final">
             <span>Total</span>

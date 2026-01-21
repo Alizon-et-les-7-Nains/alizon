@@ -9,6 +9,16 @@
     width: 100%;
   }
 
+  .labelAvis {
+    display: inline-block;
+    position: relative;
+    font-weight: 500;
+    font-size: 18px;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    text-decoration: underline;
+  }
+
   button{
     cursor: pointer;
   }
@@ -593,11 +603,14 @@
   .reponseAvis {
     display: flex;
     flex-direction: row;
+    align-items: center;
     background-color: $color-pastel-purple;
     border-radius: 16px;
     padding: 1em;
     margin-top: -0.5em;
     margin-left: 5.5em;
+    gap: 10px;
+    width: fit-content;
   }
 
   .carousel-container {
