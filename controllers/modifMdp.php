@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../controllers/pdo.php';
+require_once 'pdo.php';
 
 $id_client = $_SESSION['user_id'];
 
