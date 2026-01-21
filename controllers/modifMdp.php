@@ -37,5 +37,5 @@ $stmt->execute([
     ':idClient' => $id_client
 ]);
 
-header("Location: ../frontoffice/compteClient.php");
+header("Location: views/frontoffice/compteClient.php");
 exit();
