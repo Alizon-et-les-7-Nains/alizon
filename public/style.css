@@ -2801,6 +2801,69 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-size: 16px;
 }
 
+/* Styles pour l'affichage par vendeur */
+.cart-summary-by-seller {
+  margin-top: 15px;
+}
+
+.seller-section {
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.seller-header {
+  background-color: #f8f9fa;
+  padding: 10px 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.seller-name {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+}
+
+.seller-products {
+  padding: 15px;
+}
+
+.cart-item-summary {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cart-item-summary:last-child {
+  border-bottom: none;
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 15px;
+}
+
+.cart-item-info {
+  flex: 1;
+}
+
+.cart-item-name {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.cart-item-details {
+  font-size: 14px;
+  color: #666;
+}
+
 .mainCompteClient {
   background-image: url("../../../public/images/triskel.png");
   background-repeat: no-repeat;
