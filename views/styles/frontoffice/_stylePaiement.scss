@@ -293,10 +293,6 @@ $breakpoint-xs: 480px;
       font-weight: bold;
     }
 
-    .discount-row span:last-child::before {
-      content: "-";
-    }
-
     @media (max-width: $breakpoint-md) {
       position: static;
     }
