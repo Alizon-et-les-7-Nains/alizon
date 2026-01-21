@@ -235,7 +235,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
 $cart = getCurrentCart($pdo, $idClient);
 
-// Calculer totals avec remises
+// Calculer totals avec remises 
+
+// Ajouter TVA
 $sousTotal = 0;
 $remiseTotale = 0;
 $quantiteTotal = 0;
@@ -256,8 +258,7 @@ foreach ($cart as $item) {
     $quantiteTotal += $item['qty'];
 }
 
-$livraison = 5.99;
-$montantTTC = $sousTotal + $livraison;
+$montantTTC = $sousTotal * 1.20; // TVA à 20%
 
 $clientInfo = clientInformations($pdo, $idClient);
 ?>
@@ -475,10 +476,6 @@ $clientInfo = clientInformations($pdo, $idClient);
         <div class="total-row">
             <span>Sous-total</span>
             <span><?php echo number_format($sousTotal, 2); ?> €</span>
-        </div>
-        <div class="total-row">
-            <span>Livraison</span>
-            <span><?php echo number_format($livraison, 2); ?> €</span>
         </div>
         <div class="total-row final">
             <span>Total</span>
