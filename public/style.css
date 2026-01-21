@@ -7515,9 +7515,7 @@ dialog.reassort form input {
   gap: 10px;
   padding: 1em;
   width: fit-content;
-  display: block;
-  left: 50%;
-  right: 50%;
+  margin-left: 30%;
 }
 .pageCatalogue .pagination a, .pageCatalogue .pagination span {
   display: flex;
