@@ -25,6 +25,8 @@
     // --- GÉNÉRATION DES NOTIFICATIONS ---
     $idVendeur = $_SESSION['id'] ?? 0;
 
+    var_dump($idVendeur);
+
     if ($idVendeur > 0) {
         // 1. Récupérer les produits en alerte
         $stmtStock = $pdo->prepare("SELECT idProduit, nom, stock, seuilAlerte FROM _produit WHERE idVendeur = ? AND stock <= seuilAlerte");
@@ -41,6 +43,8 @@
                 $ins->execute([$idVendeur, $contenu, $titre]);
             }
         }
+
+    var_dump($produitsEnAlerte);
 
     $currentPage = basename(__FILE__);
     require_once './partials/aside.php';
