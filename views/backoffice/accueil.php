@@ -20,29 +20,35 @@
 <body class="backoffice">
     <?php require_once './partials/header.php' ?>
 
-    <?php
-        $idVendeur = $_SESSION['id'];
+<?php
 
-        $sqlCheckStock = file_get_contents('../../queries/backoffice/stockFaible.sql');
-        $stmtStock = $pdo->prepare($sqlCheckStock);
-        $stmtStock->execute([':idVendeur' => $idVendeur]);
+    // --- GÉNÉRATION DES NOTIFICATIONS ---
+    $idVendeur = $_SESSION['id'] ?? 0;
+
+    var_dump($idVendeur);
+
+    if ($idVendeur > 0) {
+        // 1. Récupérer les produits en alerte
+        $stmtStock = $pdo->prepare("SELECT idProduit, nom, stock, seuilAlerte FROM _produit WHERE idVendeur = ? AND stock <= seuilAlerte");
+        $stmtStock->execute([$idVendeur]);
         $produitsEnAlerte = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($produitsEnAlerte as $p) {
-            $checkNotif = $pdo->prepare("SELECT COUNT(*) FROM _notification WHERE idClient = ? AND est_vendeur = 1 AND contenuNotif LIKE ?");
-            $checkNotif->execute([$idVendeur, "%" . $p['nom'] . "%"]);
+                $tagID = "(ID:" . $p['idProduit'] . ")"; // Marqueur unique pour le produit
             
-            if ($checkNotif->fetchColumn() == 0) {
-                $ins = $pdo->prepare("INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), 1)");
                 $titre = "Alerte Stock : " . $p['nom'];
-                $contenu = "Le produit " . $p['nom'] . " est à " . $p['stock'] . " unités. (ID:" . $p['idProduit'] . ")";
-                $ins->execute([$idVendeur, $titre, $contenu]);
+                $contenu = "Le produit " . $p['nom'] . " est à " . $p['stock'] . " unités. Réassort nécessaire ! $tagID";
+                
+                $ins = $pdo->prepare("INSERT INTO _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), 1)");
+                $ins->execute([$idVendeur, $contenu, $titre]);
             }
         }
 
-        $currentPage = basename(__FILE__);
-        require_once './partials/aside.php';
-    ?>
+
+
+    $currentPage = basename(__FILE__);
+    require_once './partials/aside.php';
+?>
 
     <main class="acceuilBackoffice">
         <section class="stock">

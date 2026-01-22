@@ -37,7 +37,11 @@ function afficherEtoiles($note) {
 }
 
 // Image par défaut
+<<<<<<< HEAD
 $imageDefaut = "../../public/images/add_image.jpg";
+=======
+$imageDefaut = "../../public/images/addImage.svg";
+>>>>>>> bc626ffe7cd36919a38ee16a2a62c16f09fe9f1f
 
 // Récupération de l'image liée à l'avis
 $stmtImg = $pdo->prepare("
