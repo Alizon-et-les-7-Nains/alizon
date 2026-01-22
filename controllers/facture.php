@@ -12,8 +12,8 @@ global $pdo;
 
 $stmt = $pdo->prepare("
     SELECT
-        c.idCommande, c.dateCommande, c.montantCommandeHt, c.montantCommandeTTC,
-        p.nbArticles, p.prixHt, p.prixTotalTvaPanier,
+        c.idCommande, c.dateCommande, c.montantCommandeHt, c.montantCommandeTTC, c.quantiteCommande
+        p.prixHt, p.prixTotalTvaPanier,
         cl.prenom, cl.nom, cl.email,
         a.adresse, a.codePostal, a.ville
     FROM _commande c
@@ -26,6 +26,11 @@ $stmt = $pdo->prepare("
 $stmt->execute([':commande' => $idCommande]);
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
+$stmt = $pdo->prepare("        
+    FROM _commande c
+    NATURAL JOIN _contient cnt 
+    NATURAL JOIN _produit p
+");
 if (!$data) {
     throw new Exception("Commande introuvable");
 }
@@ -68,7 +73,7 @@ ob_start();
         <th>Total TTC</th>
     </tr>
     <tr>
-        <td><?= $data['nbArticles'] ?></td>
+        <td><?= $data['quantiteCommande'] ?></td>
         <td><?= number_format($data['montantCommandeHt'], 2, ',', ' ') ?> €</td>
         <td><?= number_format($tva, 2, ',', ' ') ?> €</td>
         <td><?= number_format($data['montantCommandeTTC'], 2, ',', ' ') ?> €</td>
