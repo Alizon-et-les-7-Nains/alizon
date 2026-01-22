@@ -12,7 +12,7 @@ global $pdo;
 
 $stmt = $pdo->prepare("
     SELECT
-        c.idCommande, c.dateCommande, c.montantCommandeHt, c.montantCommandeTTC, c.quantiteCommande
+        c.idCommande, c.dateCommande, c.montantCommandeHt, c.montantCommandeTTC, c.quantiteCommande,
         p.prixHt, p.prixTotalTvaPanier,
         cl.prenom, cl.nom, cl.email,
         a.adresse, a.codePostal, a.ville
