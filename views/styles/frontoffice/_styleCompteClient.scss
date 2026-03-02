@@ -98,9 +98,23 @@
         cursor: pointer;
     }
 
-    .boutonModifierMdp{
+    .boutonModifierMdp, .boutonSupprimerMdp{
         width: 250px;
         height: 55px;
+    }
+
+    .boutonSupprimerMdp {
+        background-color: $color-red;
+        color: white;
+        transition: 0.5s;
+    }
+
+    .boutonSupprimerMdpI {
+        transition: 0.5s; 
+        border: 1px solid $color-red;
+        background-color: white;
+        color: white;
+        cursor: not-allowed;
     }
 
     .boutonModiferProfil{
@@ -155,7 +169,11 @@
     }   
 }
 
-
+.erreur {
+    background-color: $color-pastel-red;
+    padding: 20px;
+    margin-top: 10px;
+}
 
 .overlayPopUpCompteClient{
         position: fixed;

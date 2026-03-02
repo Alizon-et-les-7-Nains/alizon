@@ -11,3 +11,4 @@ config.*
 /controllers/config.php
 /controllers/pdo.php
 .vscode/
+/dompdf/

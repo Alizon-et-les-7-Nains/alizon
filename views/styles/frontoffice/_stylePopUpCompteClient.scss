@@ -6,6 +6,21 @@
     padding: 30px 50px;
     border-radius: 16px;
     position: relative;
+
+    .boutonSupprimerMdp {
+        background-color: $color-red;
+        color: white;
+        transition: 0.5s;
+    }
+
+    .boutonSupprimerMdpI {
+        transition: 0.5s; 
+        border: 1px solid $color-red;
+        background-color: white;
+        color: $color-red;
+        cursor: not-allowed;
+    }
+
     h1{
         
         font-style: normal;
@@ -18,7 +33,7 @@
     form{
         display: flex;
         flex-direction: column;
-        
+        align-items: center;
     }
     
     .input{
@@ -93,6 +108,7 @@
         flex-direction: row;
         gap: 20px;
         padding-left: 10px;
+        align-self: flex-start;
     }
     
     p{

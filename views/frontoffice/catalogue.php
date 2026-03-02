@@ -1,6 +1,7 @@
 <?php
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
+
 // Chargement des départements
 $listeDepts = [];
 if (($handle = fopen("../../public/data/departements.csv", "r")) !== FALSE) {
@@ -214,6 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 $cart = getCurrentCart($pdo, $idClient);
 
 // ============================================================================
+// sass --watch views/styles/main.scss:public/style.css
 // GESTION DES COOKIES
 // ============================================================================
 ?>
@@ -226,10 +228,12 @@ $cart = getCurrentCart($pdo, $idClient);
     <title>Catalogue</title>
     <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <style>
-    </style>
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
 </head>
 <body>
 <?php if (isset($_SESSION['user_id'])) {
@@ -238,8 +242,7 @@ $cart = getCurrentCart($pdo, $idClient);
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
 <main class="pageCatalogue">
-    <aside class="fakePanneauGris"></aside>
-    </aside>
+    <aside class="fakePanneauGris"></aside></aside>
     <aside class="filter-sort">
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
@@ -322,6 +325,8 @@ $cart = getCurrentCart($pdo, $idClient);
                     </option>
                 <?php } ?>
             </select>
+            <label for="carte">Vendeur sur carte :</label>
+            <button id="btnCarte">Afficher sur la carte</button>
         </form>
         <style>
             .pageCatalogue .filter-sort {
@@ -345,12 +350,9 @@ $cart = getCurrentCart($pdo, $idClient);
             }
         </style>
     </aside>
-    
-    <div id="map"></div>
-    
-    <style>
-        #map { height: 180px; }
-    </style>
+
+    <div id="map" style=""></div>
+
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
@@ -499,6 +501,18 @@ const noteInput = document.getElementById('note');
 const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
+
+const carteAffiche = document.getElementById('map');
+
+var map = L.map('map').setView([48.735004, -3.460140], 13);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+const btnCarte = document.getElementById('btnCarte');
+btnCarte.addEventListener('click', () => {
+    carteAffiche.classList.toggle('active');
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     const stars = document.querySelectorAll('.star');
@@ -727,13 +741,6 @@ if (toggleFiltersBtn) {
         }
     });
 }
-
-    var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
-
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
 
 </script>
 

@@ -6,6 +6,21 @@
     flex-direction: row;
     background-color: $color-white;
 
+    #map{
+        margin: 2em;
+        margin-left: 300px;
+        border: 2px solid #273469;
+        border-radius: 4px;
+        width: 1600px;
+        height: 70vh;
+        overscroll-behavior: contain;
+        display: none;
+    }
+
+    #map.active {
+        display: block;
+    }
+
     .fakePanneauGris{
         width: 240px;
         height: 100%;
@@ -54,7 +69,6 @@
         width: calc(100% - 280px);
         display: flex;
         flex-direction: column;
-        margin-left: 280px;
         overflow-x: hidden;
     }
 
@@ -733,5 +747,4 @@
         height: 24px;
     }
 }
-
 }

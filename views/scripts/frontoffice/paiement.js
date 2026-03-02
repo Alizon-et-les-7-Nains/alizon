@@ -440,18 +440,6 @@ class PaymentPage {
    * Retourne :
    * void
    */
-
-  /**
-   * Affiche le popup de confirmation de commande avec récapitulatif
-   * Construit le HTML du panier trié par vendeur et affiche les détails de la commande
-   *
-   * Parametres :
-   * formData - Données du formulaire de paiement
-   * cart - Array des articles du panier
-   *
-   * Retourne :
-   * void
-   */
   showConfirmationPopup(formData, cart) {
     // Grouper les produits par vendeur
     const produitsParVendeur = {};

@@ -2950,9 +2950,21 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-family: "lora";
   cursor: pointer;
 }
-.mainCompteClient .boutonModifierMdp {
+.mainCompteClient .boutonModifierMdp, .mainCompteClient .boutonSupprimerMdp {
   width: 250px;
   height: 55px;
+}
+.mainCompteClient .boutonSupprimerMdp {
+  background-color: #f14e4e;
+  color: white;
+  transition: 0.5s;
+}
+.mainCompteClient .boutonSupprimerMdpI {
+  transition: 0.5s;
+  border: 1px solid #f14e4e;
+  background-color: white;
+  color: white;
+  cursor: not-allowed;
 }
 .mainCompteClient .boutonModiferProfil {
   width: 200px;
@@ -2996,6 +3008,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient input:focus {
   outline: none;
   border: 0;
+}
+
+.erreur {
+  background-color: #f7afaf;
+  padding: 20px;
+  margin-top: 10px;
 }
 
 .overlayPopUpCompteClient {
@@ -3294,6 +3312,18 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 16px;
   position: relative;
 }
+.mainPopUpCompteClient .boutonSupprimerMdp {
+  background-color: #f14e4e;
+  color: white;
+  transition: 0.5s;
+}
+.mainPopUpCompteClient .boutonSupprimerMdpI {
+  transition: 0.5s;
+  border: 1px solid #f14e4e;
+  background-color: white;
+  color: #f14e4e;
+  cursor: not-allowed;
+}
 .mainPopUpCompteClient h1 {
   font-style: normal;
   font-weight: normal;
@@ -3304,6 +3334,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainPopUpCompteClient form {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 .mainPopUpCompteClient .input {
   display: flex;
@@ -3366,6 +3397,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: row;
   gap: 20px;
   padding-left: 10px;
+  align-self: flex-start;
 }
 .mainPopUpCompteClient p {
   margin: 5px;
@@ -7291,6 +7323,19 @@ dialog.reassort form input {
   flex-direction: row;
   background-color: #fffefa;
 }
+.pageCatalogue #map {
+  margin: 2em;
+  margin-left: 300px;
+  border: 2px solid #273469;
+  border-radius: 4px;
+  width: 1600px;
+  height: 70vh;
+  overscroll-behavior: contain;
+  display: none;
+}
+.pageCatalogue #map.active {
+  display: block;
+}
 .pageCatalogue .fakePanneauGris {
   width: 240px;
   height: 100%;
@@ -7333,7 +7378,6 @@ dialog.reassort form input {
   width: calc(100% - 280px);
   display: flex;
   flex-direction: column;
-  margin-left: 280px;
   overflow-x: hidden;
 }
 .pageCatalogue .product-list {
