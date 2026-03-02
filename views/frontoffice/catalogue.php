@@ -502,14 +502,40 @@ let isFiltering = false;
 
 const carteAffiche = document.getElementById('map');
 
+const coordonnees = [
+    { lat: 48.7412, lng: -3.4523, nom: "Ferme du Vieux Moulin" },
+    { lat: 48.7198, lng: -3.4871, nom: "Manoir de Keravel" },
+    { lat: 48.7534, lng: -3.5012, nom: "Hameau de Kerdaniel" },
+    { lat: 48.7089, lng: -3.4234, nom: "Domaine de Penhouët" },
+    { lat: 48.7623, lng: -3.4789, nom: "Mas de Kergroix" },
+    { lat: 48.7301, lng: -3.5234, nom: "Lieu-dit Kervégan" },
+    { lat: 48.7456, lng: -3.4101, nom: "Ferme de Tremel" },
+    { lat: 48.7178, lng: -3.5089, nom: "Hameau de Keroudan" }
+];
+
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+
+for (let i = 0; i < coordonnees.length; i++) {
+    const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
+    marker.on('click', () => {
+        window.location.href = `produit.php?id=${coordonnees[i].id}`;
+    });
+}
+
 const btnCarte = document.getElementById('btnCarte');
+
 btnCarte.addEventListener('click', () => {
     carteAffiche.classList.toggle('active');
+    
+    if (carteAffiche.classList.contains('active')) {
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+    }
 });
 
 document.addEventListener('DOMContentLoaded', function() {

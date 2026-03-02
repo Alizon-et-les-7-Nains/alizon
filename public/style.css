@@ -7343,7 +7343,7 @@ dialog.reassort form input {
   border: 2px solid #273469;
   border-radius: 4px;
   width: 1600px;
-  height: 70vh;
+  height: 75vh;
   display: none;
 }
 .pageCatalogue #map.active {
