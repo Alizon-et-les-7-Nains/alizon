@@ -326,6 +326,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php } ?>
             </select>
             <label for="carte">Vendeur sur carte :</label>
+            <button id="btnCarte">Afficher sur la carte</button>
         </form>
         <style>
             .pageCatalogue .filter-sort {
@@ -499,14 +500,17 @@ const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
 
+const carteAffiche = document.getElementById('map');
+
 var map = L.map('map').setView([48.735004, -3.460140], 13);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
-const btnCarte = document.getElementById('afficherCarte');
-// btnCarte.addEventListener('click', () => {
-// });
+const btnCarte = document.getElementById('btnCarte');
+btnCarte.addEventListener('click', () => {
+    carteAffiche.classList.toggle('active');
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     const stars = document.querySelectorAll('.star');

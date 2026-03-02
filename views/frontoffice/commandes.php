@@ -361,9 +361,10 @@ $cart = getCurrentCart($pdo, $idClient);
                             $total = preg_replace('/[^0-9.]/', '', $total);
 
                             $totalTTC = (float)$total * 1.2;
+                            $totalTTC = round($totalTTC, 2);
                             ?>
 
-                            <p><?= $totalTTC * 1.2 ?> € TTC</p>
+                            <p><?= $totalTTC ?> € TTC</p>
 
 
                         </div>
@@ -412,7 +413,7 @@ $cart = getCurrentCart($pdo, $idClient);
 
                             ?>
 
-                            <a onclick="popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>', '<?= $commande['montantHT'] ?>', '<?= (float)$commande['total'] * 1.2?>', '<?= $nomCarte['nom'] ?>')" href="#">Détails</a>
+                            <a onclick="popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>', '<?= $commande['montantHT'] ?>', '<?= $totalTTC ?>', '<?= $nomCarte['nom'] ?>')" href="#">Détails</a>
                             <span class="supprElem">|</span>
                             <a href="../../controllers/facture.php?id= <?php echo ($commande['id']); ?>">Facture</a>
                         </div>
