@@ -11,9 +11,9 @@ if (!isset($_SESSION['user_id'])) {
 if (isset($_GET['error'])) {
     $error = $_GET['error'];
     if ($error == 1) {
-        echo "<script>alert('Ancien mot de passe incorrect');</script>";
+        echo "<p class='erreur'>Ancien mot de passe incorrect</p>";
     } elseif ($error == 2) {
-        echo "<script>alert('Les mots de passe ne correspondent pas');</script>";
+        echo "<p class='erreur'>Les mots de passe ne correspondent pas</p>";
     }
 }
 
