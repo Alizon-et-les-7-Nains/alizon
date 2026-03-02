@@ -521,7 +521,9 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 for (let i = 0; i < coordonnees.length; i++) {
     const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
-    marker.bindPopup(coordonnees[i].nom);
+    marker.on('click', () => {
+        window.location.href = `produit.php?id=${coord.id}`;
+    });
 }
 
 const btnCarte = document.getElementById('btnCarte');
