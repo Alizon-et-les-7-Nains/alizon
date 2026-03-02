@@ -1,0 +1,24 @@
+import 'dotenv/config';
+const API_KEY = process.env.GOOGLE_API_KEY;
+
+async function geocodeAdresse(adresse) {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(adresse)}&key=${API_KEY}`;
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (data.status === "OK") {
+    const result = data.results[0];
+    const { lat, lng } = result.geometry.location;
+
+    console.log("Adresse formatée :", result.formatted_address);
+    console.log("Latitude :", lat);
+    console.log("Longitude :", lng);
+
+    return { lat, lng };
+  } else {
+    throw new Error(`Erreur Geocoding : ${data.status}`);
+  }
+}
+
+geocodeAdresse("Tour Eiffel, Paris");
