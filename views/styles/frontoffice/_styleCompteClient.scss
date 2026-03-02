@@ -104,7 +104,8 @@
     }
 
     .boutonSupprimerMdp {
-        color: $color-red;
+        background-color: $color-red;
+        color: white;
     }
 
     .boutonModiferProfil{
