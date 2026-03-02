@@ -19,7 +19,8 @@ $client = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Vérification de l'ancien mot de passe
 if (!password_verify($ancienMdp, $client['mdp'])) {
-    die("Ancien mot de passe incorrect");
+    header("Location: ../views/frontoffice/compteClient.php?error=1");
+    exit();
 }
 
 // Hash du nouveau mot de passe

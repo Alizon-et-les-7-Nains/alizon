@@ -327,7 +327,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php } ?>
             </select>
             <label for="carte">Vendeur sur carte :</label>
-            <div id="map"></div>
+            <div id="map" style="width: 600px; height: 400px;"></div>
         </form>
         <style>
             .pageCatalogue .filter-sort {
