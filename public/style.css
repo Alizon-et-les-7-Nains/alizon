@@ -3347,9 +3347,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 }
 .mainPopUpCompteClient .inputB {
   display: flex;
-  width: 450px;
+  width: 650px;
   height: auto;
   margin-bottom: 5px;
+  justify-content: space-around;
 }
 .mainPopUpCompteClient input {
   padding: 10px;
@@ -7342,7 +7343,7 @@ dialog.reassort form input {
   border: 2px solid #273469;
   border-radius: 4px;
   width: 1600px;
-  height: 70vh;
+  height: 75vh;
   display: none;
 }
 .pageCatalogue #map.active {

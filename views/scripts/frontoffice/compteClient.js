@@ -122,7 +122,7 @@ function popUpModifierMdp() {
   });
 }
 
-function popUpSupprimerMdp() {
+function popUpSupprimerMdp(id_client) {
   const overlay = document.createElement("div");
   overlay.className = "overlayPopUpCompteClient";
   overlay.innerHTML = `
@@ -135,11 +135,12 @@ function popUpSupprimerMdp() {
 
       <section>
         <div class="formulaireMdp">
-          <form id="formMdp" method="POST" action="">
+          <form id="formMdp" method="POST" action="../../controllers/supprCompte.php">
 
             <div class="inputB">
-              <input type="text" id="champValidation" name="confirmationSuppression" placeholder="Écrivez supprimer pour valider la suppression" required>
+              <input style="width:330px !important;" type="text" id="champValidation" name="confirmationSuppression" placeholder="Écrivez supprimer pour valider la suppression" required>
               <button type="submit" id="btnValidation" class="boutonSupprimerMdpI" disabled>Valider</button>
+              <input value="${id_client}" style="visibility:hidden; display:none;" name="id_client">
             </div>
 
           </form>
@@ -162,9 +163,7 @@ function popUpSupprimerMdp() {
   const btnValidation = document.getElementById("btnValidation");
 
   champValidation.addEventListener("input", function (e) {
-    console.log("Nouvelle entrée de texte\n");
     if(champValidation.value.toLowerCase() == "supprimer") {
-      console.log("Autorisation désactivation\n");
       btnValidation.classList.remove("boutonSupprimerMdpI");
       btnValidation.classList.add("boutonSupprimerMdp");
       btnValidation.disabled = false;
