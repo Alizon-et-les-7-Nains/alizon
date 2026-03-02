@@ -7302,6 +7302,9 @@ dialog.reassort form input {
 }
 .pageCatalogue #map {
   margin-left: 280px;
+  padding: 2em;
+  border: 2px solid #273469;
+  border-radius: 4px;
 }
 .pageCatalogue .fakePanneauGris {
   width: 240px;
