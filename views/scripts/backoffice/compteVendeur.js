@@ -469,7 +469,7 @@ function validerFormulaire() {
     "noSiren",
     "pseudo",
   ];
-
+  
   // Valider les champs normaux seulement en mode édition
   if (modeEdition) {
     for (const champId of champs) {
