@@ -349,7 +349,7 @@ $cart = getCurrentCart($pdo, $idClient);
             }
         </style>
     </aside>
-    <div id="map" style="width: 1600px; height: 800px;"></div>
+    <div id="map" style=""></div>
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
