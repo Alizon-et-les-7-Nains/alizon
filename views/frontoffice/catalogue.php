@@ -522,7 +522,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 for (let i = 0; i < coordonnees.length; i++) {
     const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
     marker.on('click', () => {
-        vendeur.value = coordonnees[i].nom;
+        vendeur.value = coordonnees[i].id;
         loadProduits(1);
     });
 }
