@@ -8,14 +8,6 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-if (isset($_GET['error'])) {
-    $error = $_GET['error'];
-    if ($error == 1) {
-        echo "<p class='erreur'>Ancien mot de passe incorrect</p>";
-    } elseif ($error == 2) {
-        echo "<p class='erreur'>Les mots de passe ne correspondent pas</p>";
-    }
-}
 
 // On récupère l'id du client
 $id_client = $_SESSION['user_id'];
@@ -172,7 +164,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body>
-    <?php include 'partials/headerConnecte.php'; ?>
+    <?php include 'partials/headerConnecte.php'; 
+
+        if (isset($_GET['error'])) {
+        $error = $_GET['error'];
+        if ($error == 1) {
+            echo "<p class='erreur'>Ancien mot de passe incorrect</p>";
+        } elseif ($error == 2) {
+            echo "<p class='erreur'>Les mots de passe ne correspondent pas</p>";
+        }
+    }
+    ?>
 
     <main class="mainCompteClient">
         <form method="POST" enctype="multipart/form-data" action="">
