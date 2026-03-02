@@ -3005,6 +3005,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .erreur {
   background-color: #f7afaf;
   padding: 20px;
+  margin-top: 10px;
 }
 
 .overlayPopUpCompteClient {
@@ -7302,6 +7303,11 @@ dialog.reassort form input {
 }
 .pageCatalogue #map {
   margin-left: 280px;
+  margin: 2em;
+  border: 2px solid #273469;
+  border-radius: 4px;
+  width: 1600px;
+  height: max-content;
 }
 .pageCatalogue .fakePanneauGris {
   width: 240px;
