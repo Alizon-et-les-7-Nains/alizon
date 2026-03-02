@@ -167,7 +167,8 @@ function popUpSupprimerMdp() {
       btnValidation.classList.add("boutonSupprimerMdp");
       btnValidation.disabled = false;
     } else {
-      btnValidation.classList.add("boutonSupprimerMdp");
+      btnValidation.classList.add("boutonSupprimerMdpI");
+      btnValidation.classList.remove("boutonSupprimerMdp");
       btnValidation.disabled = true;
     }
   })
