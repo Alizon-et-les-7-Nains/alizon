@@ -361,6 +361,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             $total = preg_replace('/[^0-9.]/', '', $total);
 
                             $totalTTC = (float)$total * 1.2;
+                            $totalTTC = round($totalTTC, 2);
                             ?>
 
                             <p><?= $totalTTC ?> € TTC</p>
