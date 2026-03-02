@@ -7331,6 +7331,7 @@ dialog.reassort form input {
   width: 1600px;
   height: 70vh;
   overscroll-behavior: contain;
+  display: none;
 }
 .pageCatalogue #map.active {
   display: block;
