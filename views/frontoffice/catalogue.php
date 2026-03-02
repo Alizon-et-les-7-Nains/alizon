@@ -242,8 +242,7 @@ $cart = getCurrentCart($pdo, $idClient);
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
 <main class="pageCatalogue">
-    <aside class="fakePanneauGris"></aside>
-    </aside>
+    <aside class="fakePanneauGris"></aside></aside>
     <aside class="filter-sort">
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
@@ -327,7 +326,6 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php } ?>
             </select>
             <label for="carte">Vendeur sur carte :</label>
-            <div id="map" style="width: 600px; height: 400px;"></div>
         </form>
         <style>
             .pageCatalogue .filter-sort {
@@ -351,7 +349,7 @@ $cart = getCurrentCart($pdo, $idClient);
             }
         </style>
     </aside>
-    
+    <div id="map" style="width: 1200px; height: 1600px;"></div>
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
@@ -501,7 +499,7 @@ const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
 
-var map = L.map('map').setView([51.505, -0.09], 13);
+var map = L.map('map').setView([48.735004, -3.460140], 13);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'

@@ -159,7 +159,7 @@ function popUpSupprimerMdp() {
   const champValidation = document.getElementById("champValidation");
   const btnValidation = document.getElementById("btnValidation");
 
-  champValidation.addEventListener(input, function () {
+  champValidation.addEventListener("input", function (e) {
     console.log("Nouvelle entrée de texte\n");
     if(champValidation.value.toLowerCase() == "supprimer") {
       console.log("Autorisation désactivation\n");
