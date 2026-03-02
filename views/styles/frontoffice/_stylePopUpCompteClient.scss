@@ -11,9 +11,11 @@
         background-color: $color-red;
         color: white;
         transition: 0.5s;
+        margin-top: 0;
     }
 
     .boutonSupprimerMdpI {
+        margin-top: 0;
         transition: 0.5s; 
         border: 1px solid $color-red;
         background-color: white;
@@ -45,6 +47,14 @@
         margin-bottom: 5px;
     }
 
+    .inputB{
+        display: flex;
+        width: 450px;
+        height: auto;
+        margin-bottom: 5px;
+    }
+
+
     input{
         padding: 10px;
         color: #6E6E6E;
@@ -56,6 +66,12 @@
         height: 100%;
         display: flex;
         align-items: center;
+    }
+
+    input .diff {
+        width: auto;
+        height: auto;
+        width: 330px;
     }
 
     
