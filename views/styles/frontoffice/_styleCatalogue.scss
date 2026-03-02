@@ -13,9 +13,8 @@
         border-radius: 4px;
         width: 1600px;
         height: 70vh;
-        overscroll-behavior: contain;
+        position: fixed;
         display: none;
-        
     }
 
     #map.active {
