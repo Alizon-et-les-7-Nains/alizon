@@ -7294,6 +7294,9 @@ dialog.reassort form input {
   flex-direction: row;
   background-color: #fffefa;
 }
+.pageCatalogue #map {
+  height: 180px;
+}
 .pageCatalogue .fakePanneauGris {
   width: 240px;
   height: 100%;
