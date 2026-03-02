@@ -1,2 +1,2 @@
 #!/bin/bash
-php simutaleur.php
+php simulateur.php
