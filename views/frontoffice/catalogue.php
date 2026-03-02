@@ -227,9 +227,12 @@ $cart = getCurrentCart($pdo, $idClient);
     <title>Catalogue</title>
     <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
-    <style></style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
 </head>
 <body>
 <?php if (isset($_SESSION['user_id'])) {
@@ -323,7 +326,7 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php } ?>
             </select>
             <label for="carte">Vendeur sur carte :</label>
-            <div id="map" style="height: 300px; width: 100%;"></div>
+            <div id="map"></div>
         </form>
         <style>
             .pageCatalogue .filter-sort {
@@ -496,6 +499,11 @@ const noteInput = document.getElementById('note');
 const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
+
+const btnCarte = document.getElementById('afficherCarte');
+btnCarte.addEventListener('click', () => {
+    
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     const stars = document.querySelectorAll('.star');
