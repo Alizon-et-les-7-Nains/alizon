@@ -9,19 +9,6 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alizon</title>
-
-    <link rel="stylesheet" href="../../public/style.css">
-    <link rel="icon" href="/public/images/logoBackoffice.svg">
-</head>
-
-<body class="backoffice">
-    <?php require_once './partials/header.php' ?>
-
-<?php
-
     // --- GÉNÉRATION DES NOTIFICATIONS ---
     $idVendeur = $_SESSION['id'] ?? 0;
 
@@ -43,8 +30,18 @@
                 $ins->execute([$idVendeur, $contenu, $titre]);
             }
         }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alizon</title>
 
+    <link rel="stylesheet" href="../../public/style.css">
+    <link rel="icon" href="/public/images/logoBackoffice.svg">
+</head>
 
+<body class="backoffice">
+    <?php require_once './partials/header.php' ?>
+
+<?php
 
     $currentPage = basename(__FILE__);
     require_once './partials/aside.php';

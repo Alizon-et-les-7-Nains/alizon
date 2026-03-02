@@ -7329,8 +7329,12 @@ dialog.reassort form input {
   border: 2px solid #273469;
   border-radius: 4px;
   width: 1600px;
-  height: 100vh;
+  height: 70vh;
   overscroll-behavior: contain;
+  display: none;
+}
+.pageCatalogue #map.active {
+  display: block;
 }
 .pageCatalogue .fakePanneauGris {
   width: 240px;
