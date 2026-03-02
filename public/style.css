@@ -3321,7 +3321,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   transition: 0.5s;
   border: 1px solid #f14e4e;
   background-color: white;
-  color: white;
+  color: #f14e4e;
   cursor: not-allowed;
 }
 .mainPopUpCompteClient h1 {
