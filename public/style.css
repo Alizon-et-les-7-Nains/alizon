@@ -7307,7 +7307,7 @@ dialog.reassort form input {
   border: 2px solid #273469;
   border-radius: 4px;
   width: 1600px;
-  height: max-content;
+  height: 100%;
 }
 .pageCatalogue .fakePanneauGris {
   width: 240px;
