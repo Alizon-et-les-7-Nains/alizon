@@ -137,16 +137,17 @@ function popUpSupprimerMdp() {
         <div class="formulaireMdp">
           <form id="formMdp" method="POST" action="">
 
-            <div class="input supprCompte">
-              <input type="text" id="champValidation" name="confirmationSuppression" placeholder="Écrivez supprimer pour valider la suppression" required>
+            <div class="inputB">
+              <input style="width:330px !important;" type="text" id="champValidation" name="confirmationSuppression" placeholder="Écrivez supprimer pour valider la suppression" required>
               <button type="submit" id="btnValidation" class="boutonSupprimerMdpI" disabled>Valider</button>
             </div>
 
           </form>
+
+          <article><p>Ce n’est pas une suppression, mais un blocage des données accompagné d’une anonymisation.</p></article>
+
         </div>
       </section>
-
-      <article><p>Ce n’est pas une suppression, mais un blocage des données accompagné d’une anonymisation.</p></article>
 
     </main>
   `;
