@@ -142,11 +142,12 @@ function popUpSupprimerMdp() {
               <button type="submit" id="btnValidation" class="boutonSupprimerMdpI" disabled>Valider</button>
             </div>
 
-            <article><p>Ce n’est pas une suppression, mais un blocage des données accompagné d’une anonymisation.</p></article>
-
           </form>
         </div>
       </section>
+
+      <article><p>Ce n’est pas une suppression, mais un blocage des données accompagné d’une anonymisation.</p></article>
+
     </main>
   `;
 
