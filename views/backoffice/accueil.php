@@ -9,27 +9,6 @@
 <html lang="fr">
 
 <head>
-    // --- GÉNÉRATION DES NOTIFICATIONS ---
-    $idVendeur = $_SESSION['id'] ?? 0;
-
-    var_dump($idVendeur);
-
-    if ($idVendeur > 0) {
-        // 1. Récupérer les produits en alerte
-        $stmtStock = $pdo->prepare("SELECT idProduit, nom, stock, seuilAlerte FROM _produit WHERE idVendeur = ? AND stock <= seuilAlerte");
-        $stmtStock->execute([$idVendeur]);
-        $produitsEnAlerte = $stmtStock->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($produitsEnAlerte as $p) {
-                $tagID = "(ID:" . $p['idProduit'] . ")"; // Marqueur unique pour le produit
-            
-                $titre = "Alerte Stock : " . $p['nom'];
-                $contenu = "Le produit " . $p['nom'] . " est à " . $p['stock'] . " unités. Réassort nécessaire ! $tagID";
-                
-                $ins = $pdo->prepare("INSERT INTO _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), 1)");
-                $ins->execute([$idVendeur, $contenu, $titre]);
-            }
-        }
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alizon</title>
@@ -42,7 +21,6 @@
     <?php require_once './partials/header.php' ?>
 
 <?php
-
     $currentPage = basename(__FILE__);
     require_once './partials/aside.php';
 ?>
