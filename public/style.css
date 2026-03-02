@@ -3316,8 +3316,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   background-color: #f14e4e;
   color: white;
   transition: 0.5s;
+  margin-top: 0;
 }
 .mainPopUpCompteClient .boutonSupprimerMdpI {
+  margin-top: 0;
   transition: 0.5s;
   border: 1px solid #f14e4e;
   background-color: white;
@@ -3343,6 +3345,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   height: auto;
   margin-bottom: 5px;
 }
+.mainPopUpCompteClient .inputB {
+  display: flex;
+  width: 450px;
+  height: auto;
+  margin-bottom: 5px;
+}
 .mainPopUpCompteClient input {
   padding: 10px;
   color: #6E6E6E;
@@ -3354,6 +3362,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   height: 100%;
   display: flex;
   align-items: center;
+}
+.mainPopUpCompteClient input .diff {
+  width: auto;
+  height: auto;
+  width: 330px;
 }
 .mainPopUpCompteClient button {
   width: 200px;
@@ -7330,7 +7343,6 @@ dialog.reassort form input {
   border-radius: 4px;
   width: 1600px;
   height: 70vh;
-  position: fixed;
   display: none;
 }
 .pageCatalogue #map.active {
