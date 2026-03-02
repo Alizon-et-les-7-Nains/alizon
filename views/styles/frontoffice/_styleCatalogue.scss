@@ -7,12 +7,13 @@
     background-color: $color-white;
 
     #map{
-        margin-left: 280px;
         margin: 2em;
+        margin-left: 300px;
         border: 2px solid #273469;
         border-radius: 4px;
         width: 1600px;
         height: 100vh;
+        overscroll-behavior: contain;
     }
 
     .fakePanneauGris{
