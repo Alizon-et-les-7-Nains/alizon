@@ -2957,6 +2957,14 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainCompteClient .boutonSupprimerMdp {
   background-color: #f14e4e;
   color: white;
+  transition: 0.5s;
+}
+.mainCompteClient .boutonSupprimerMdpI {
+  transition: 0.5s;
+  border: 1px solid #f14e4e;
+  background-color: white;
+  color: white;
+  cursor: not-allowed;
 }
 .mainCompteClient .boutonModiferProfil {
   width: 200px;
@@ -7307,7 +7315,7 @@ dialog.reassort form input {
   border: 2px solid #273469;
   border-radius: 4px;
   width: 1600px;
-  height: max-content;
+  height: 100vh;
 }
 .pageCatalogue .fakePanneauGris {
   width: 240px;
