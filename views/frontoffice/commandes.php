@@ -353,7 +353,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         </div>
                         <div class="infoCommande">
                             <p>Total</p>
-                            <p><?php echo $commande['total'] * 1.2; ?> €</p>
+                            <p><?php echo (int)$commande['total'] * 1.2; ?> €</p>
                         </div>
                         <div class="infoCommande">
                             <p>N° de commande</p>
