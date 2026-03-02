@@ -1,6 +1,7 @@
 <?php
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
+
 // Chargement des départements
 $listeDepts = [];
 if (($handle = fopen("../../public/data/departements.csv", "r")) !== FALSE) {
@@ -214,6 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 $cart = getCurrentCart($pdo, $idClient);
 
 // ============================================================================
+// sass --watch views/styles/main.scss:public/style.css
 // GESTION DES COOKIES
 // ============================================================================
 ?>
@@ -226,8 +228,12 @@ $cart = getCurrentCart($pdo, $idClient);
     <title>Catalogue</title>
     <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
-    <style>
-    </style>
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
 </head>
 <body>
 <?php if (isset($_SESSION['user_id'])) {
@@ -320,6 +326,8 @@ $cart = getCurrentCart($pdo, $idClient);
                     </option>
                 <?php } ?>
             </select>
+            <label for="carte">Vendeur sur carte :</label>
+            <div id="map" style="width: 600px; height: 400px;"></div>
         </form>
         <style>
             .pageCatalogue .filter-sort {
@@ -492,6 +500,15 @@ const noteInput = document.getElementById('note');
 const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
+
+var map = L.map('map').setView([51.505, -0.09], 13);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+const btnCarte = document.getElementById('afficherCarte');
+// btnCarte.addEventListener('click', () => {
+// });
 
 document.addEventListener('DOMContentLoaded', function() {
     const stars = document.querySelectorAll('.star');

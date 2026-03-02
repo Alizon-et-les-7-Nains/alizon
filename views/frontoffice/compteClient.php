@@ -248,6 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </section>
 
             <div id="buttonsCompte">
+                <button type="button" onclick="popUpSupprimerMdp()" class="boutonSupprimerMdp">Supprimer mon compte</button>
                 <button type="button" onclick="popUpModifierMdp()" class="boutonModifierMdp">Modifier le mot de passe</button>
                 <button class="boutonAnnuler" type="button" onclick="boutonAnnuler()">Annuler</button>
                 <button type="button" class="boutonModiferProfil">Modifier</button>

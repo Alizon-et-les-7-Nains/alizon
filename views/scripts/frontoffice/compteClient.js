@@ -122,6 +122,52 @@ function popUpModifierMdp() {
   });
 }
 
+function popUpSupprimerMdp() {
+  const overlay = document.createElement("div");
+  overlay.className = "overlayPopUpCompteClient";
+  overlay.innerHTML = `
+    <main class="mainPopUpCompteClient">
+      <div class="croixFermerLaPage">
+        <div></div><div></div>
+      </div>
+
+      <h1>Êtes-vous sur de vouloir supprimer votre compte ?</h1>
+
+      <section>
+        <div class="formulaireMdp">
+          <form id="formMdp" method="POST" action="">
+
+            <div class="input">
+              <input type="text" id="champValidation" name="confirmationSuppression" placeholder="Écrivez supprimer pour valider la suppression" required>
+              <button type="submit" id="btnValidation" disabled>Valider</button>
+            </div>
+
+            <article><p>Ce n’est pas une suppression, mais un blocage des données accompagné d’une anonymisation.</p></article>
+
+          </form>
+        </div>
+      </section>
+    </main>
+  `;
+
+  document.body.appendChild(overlay);
+
+  overlay
+    .querySelector(".croixFermerLaPage")
+    .addEventListener("click", fermerPopUp);
+
+  const champValidation = document.getElementById("champValidation");
+  const btnValidation = document.getElementById("btnValidation");
+
+  champValidation.addEventListener(input, function () {
+    console.log("Nouvelle entrée de texte\n");
+    if(champValidation.value.toLowerCase() == "supprimer") {
+      console.log("Autorisation désactivation\n");
+      btnValidation.replaceWith('<button type="submit" id="btnValidation">Valider</button>')
+    }
+  })
+}
+
 
 function verifierChamp() {
   const bouton = document.querySelector(".boutonModiferProfil");

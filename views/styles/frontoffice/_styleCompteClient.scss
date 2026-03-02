@@ -98,9 +98,14 @@
         cursor: pointer;
     }
 
-    .boutonModifierMdp{
+    .boutonModifierMdp, .boutonSupprimerMdp{
         width: 250px;
         height: 55px;
+    }
+
+    .boutonSupprimerMdp {
+        background-color: $color-red;
+        color: white;
     }
 
     .boutonModiferProfil{

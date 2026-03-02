@@ -2950,9 +2950,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-family: "lora";
   cursor: pointer;
 }
-.mainCompteClient .boutonModifierMdp {
+.mainCompteClient .boutonModifierMdp, .mainCompteClient .boutonSupprimerMdp {
   width: 250px;
   height: 55px;
+}
+.mainCompteClient .boutonSupprimerMdp {
+  background-color: #f14e4e;
+  color: white;
 }
 .mainCompteClient .boutonModiferProfil {
   width: 200px;
@@ -7303,7 +7307,7 @@ dialog.reassort form input {
 .pageCatalogue .filter-sort {
   background-color: #e4d9ff;
   width: 240px; /* Largeur fixe au lieu de 22% */
-  height: 60%;
+  height: 65%;
   position: fixed;
   left: 0;
   z-index: 800;
