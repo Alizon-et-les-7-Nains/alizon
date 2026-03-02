@@ -502,7 +502,7 @@ let isFiltering = false;
 
 const carteAffiche = document.getElementById('map');
 
-var map = L.map('map').setView([48.735004, -3.460140], 13);
+var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
