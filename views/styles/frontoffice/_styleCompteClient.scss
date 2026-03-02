@@ -104,7 +104,8 @@
     }
 
     .boutonSupprimerMdp {
-        color: $color-red;
+        background-color: $color-red;
+        color: white;
     }
 
     .boutonModiferProfil{
@@ -158,8 +159,6 @@
         border: 0;
     }   
 }
-
-
 
 .overlayPopUpCompteClient{
         position: fixed;

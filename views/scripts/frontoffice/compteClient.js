@@ -135,7 +135,7 @@ function popUpSupprimerMdp() {
 
       <section>
         <div class="formulaireMdp">
-          <form id="formMdp" method="POST" action="../../controllers/modifMdp.php">
+          <form id="formMdp" method="POST" action="">
 
             <div class="input">
               <input type="text" id="champValidation" name="confirmationSuppression" placeholder="Écrivez supprimer pour valider la suppression" required>
@@ -159,9 +159,10 @@ function popUpSupprimerMdp() {
   const champValidation = document.getElementById("champValidation");
   const btnValidation = document.getElementById("btnValidation");
 
-  champValidation.addEventListener(oninput, function () {
+  champValidation.addEventListener("input", function (e) {
     console.log("Nouvelle entrée de texte\n");
     if(champValidation.value.toLowerCase() == "supprimer") {
+      console.log("Autorisation désactivation\n");
       btnValidation.replaceWith('<button type="submit" id="btnValidation">Valider</button>')
     }
   })

@@ -8,6 +8,15 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+if (isset($_GET['error'])) {
+    $error = $_GET['error'];
+    if ($error == 1) {
+        echo "<script>alert('Ancien mot de passe incorrect');</script>";
+    } elseif ($error == 2) {
+        echo "<script>alert('Les mots de passe ne correspondent pas');</script>";
+    }
+}
+
 // On récupère l'id du client
 $id_client = $_SESSION['user_id'];
 
