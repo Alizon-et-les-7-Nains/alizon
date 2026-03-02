@@ -3312,6 +3312,18 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 16px;
   position: relative;
 }
+.mainPopUpCompteClient .boutonSupprimerMdp {
+  background-color: #f14e4e;
+  color: white;
+  transition: 0.5s;
+}
+.mainPopUpCompteClient .boutonSupprimerMdpI {
+  transition: 0.5s;
+  border: 1px solid #f14e4e;
+  background-color: white;
+  color: white;
+  cursor: not-allowed;
+}
 .mainPopUpCompteClient h1 {
   font-style: normal;
   font-weight: normal;
