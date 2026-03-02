@@ -138,7 +138,7 @@ function popUpSupprimerMdp() {
           <form id="formMdp" method="POST" action="">
 
             <div class="inputB">
-              <input class="diff" type="text" id="champValidation" name="confirmationSuppression" placeholder="Écrivez supprimer pour valider la suppression" required>
+              <input style="width:330px !important;" type="text" id="champValidation" name="confirmationSuppression" placeholder="Écrivez supprimer pour valider la suppression" required>
               <button type="submit" id="btnValidation" class="boutonSupprimerMdpI" disabled>Valider</button>
             </div>
 

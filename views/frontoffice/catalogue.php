@@ -508,8 +508,15 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 const btnCarte = document.getElementById('btnCarte');
+
 btnCarte.addEventListener('click', () => {
     carteAffiche.classList.toggle('active');
+    
+    if (carteAffiche.classList.contains('active')) {
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+    }
 });
 
 document.addEventListener('DOMContentLoaded', function() {
