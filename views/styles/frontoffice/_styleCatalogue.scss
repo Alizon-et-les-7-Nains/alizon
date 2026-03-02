@@ -6,6 +6,9 @@
     flex-direction: row;
     background-color: $color-white;
 
+    #map{
+        margin-left: 280px;
+    }
 
     .fakePanneauGris{
         width: 240px;
@@ -55,7 +58,6 @@
         width: calc(100% - 280px);
         display: flex;
         flex-direction: column;
-        margin-left: 280px;
         overflow-x: hidden;
     }
 
