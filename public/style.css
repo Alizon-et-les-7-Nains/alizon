@@ -3005,6 +3005,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .erreur {
   background-color: #f7afaf;
   padding: 20px;
+  margin-top: 10px;
 }
 
 .overlayPopUpCompteClient {
@@ -3313,6 +3314,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .mainPopUpCompteClient form {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 .mainPopUpCompteClient .input {
   display: flex;
@@ -3375,6 +3377,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: row;
   gap: 20px;
   padding-left: 10px;
+  align-self: flex-start;
 }
 .mainPopUpCompteClient p {
   margin: 5px;
