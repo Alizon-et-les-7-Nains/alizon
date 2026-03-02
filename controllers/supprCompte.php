@@ -3,7 +3,7 @@ require_once 'pdo.php';
 session_start();  
 
 //Récupération de l'id de l'utilisateur
-$id_client = $_POST['confirmationSuppression'];
+$id_client = $_POST['id_client'];
 
 // Suppression de la réponse à un avis
 $stmt = $pdo->prepare("DELETE FROM _client WHERE idClient = :idClient");

@@ -138,8 +138,9 @@ function popUpSupprimerMdp(id_client) {
           <form id="formMdp" method="POST" action="../../controllers/supprCompte.php">
 
             <div class="inputB">
-              <input style="width:330px !important;" type="text" id="champValidation" value=${id_client} name="confirmationSuppression" placeholder="Écrivez supprimer pour valider la suppression" required>
+              <input style="width:330px !important;" type="text" id="champValidation" name="confirmationSuppression" placeholder="Écrivez supprimer pour valider la suppression" required>
               <button type="submit" id="btnValidation" class="boutonSupprimerMdpI" disabled>Valider</button>
+              <input value="${id_client}" style="visibility:hidden; display:none;" name="id_client">
             </div>
 
           </form>
