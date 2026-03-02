@@ -215,6 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 $cart = getCurrentCart($pdo, $idClient);
 
 // ============================================================================
+// sass --watch views/styles/main.scss:public/style.css
 // GESTION DES COOKIES
 // ============================================================================
 ?>

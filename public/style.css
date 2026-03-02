@@ -7920,6 +7920,9 @@ dialog.reassort form input {
     width: 24px;
     height: 24px;
   }
+  .pageCatalogue #map {
+    height: 180px;
+  }
 }
 
 .overlayPopUpDetails, .overlayPopUpSuiviCommande, .overlayPopUpAnnulerCommande {
