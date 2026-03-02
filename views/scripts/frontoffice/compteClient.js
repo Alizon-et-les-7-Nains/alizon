@@ -163,7 +163,11 @@ function popUpSupprimerMdp() {
     console.log("Nouvelle entrée de texte\n");
     if(champValidation.value.toLowerCase() == "supprimer") {
       console.log("Autorisation désactivation\n");
-      btnValidation.replaceWith('<button type="submit" id="btnValidation">Valider</button>')
+      btnValidation.classList.remove("btnValidationI");
+      btnValidation.disabled = false;
+    } else {
+      btnValidation.classList.add("btnValidationI");
+      btnValidation.disabled = true;
     }
   })
 }
