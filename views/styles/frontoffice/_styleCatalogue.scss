@@ -6,6 +6,10 @@
     flex-direction: row;
     background-color: $color-white;
 
+    #map{
+        height: 180px;
+    }
+
     .fakePanneauGris{
         width: 240px;
         height: 100%;
@@ -732,6 +736,5 @@
         width: 24px;
         height: 24px;
     }
-    #map { height: 180px; }
 }
 }
