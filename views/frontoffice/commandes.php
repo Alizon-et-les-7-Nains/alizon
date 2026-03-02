@@ -355,6 +355,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             <p>Total</p>
                             
                             <p><?php echo $commande['total'] * 1.2; ?> €</p>
+                            <?php var_dump($commande['total']); ?>
 
                         </div>
                         <div class="infoCommande">
