@@ -354,8 +354,17 @@ $cart = getCurrentCart($pdo, $idClient);
                         <div class="infoCommande">
                             <p>Total</p>
                             
-                            <p><?php echo str_replace(',', '.', $commande['total'] * 1.2); ?> €</p>
-                            
+                            <?php
+                            $total = $commande['total'] ?? 0;
+                            $total = trim($total);
+                            $total = str_replace(',', '.', $total);
+                            $total = preg_replace('/[^0-9.]/', '', $total);
+
+                            $totalTTC = (float)$total * 1.2;
+                            ?>
+
+                            <p><?= $totalTTC * 1.2 ?> € TTC</p>
+
 
                         </div>
                         <div class="infoCommande">
