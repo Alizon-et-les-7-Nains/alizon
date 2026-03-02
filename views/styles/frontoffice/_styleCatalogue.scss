@@ -6,6 +6,10 @@
     flex-direction: row;
     background-color: $color-white;
 
+    #map{
+        height: 180px;
+    }
+
     .fakePanneauGris{
         width: 240px;
         height: 100%;
@@ -19,7 +23,7 @@
     .filter-sort{
         background-color: #e4d9ff;
         width: 240px; /* Largeur fixe au lieu de 22% */
-        height: 60%;
+        height: 65%;
         position: fixed;
         left: 0;
         z-index: 800;
@@ -733,5 +737,4 @@
         height: 24px;
     }
 }
-
 }
