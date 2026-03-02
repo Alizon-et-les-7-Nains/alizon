@@ -160,6 +160,11 @@
     }   
 }
 
+.erreur {
+    background-color: $color-pastel-red;
+    padding: 20px;
+}
+
 .overlayPopUpCompteClient{
         position: fixed;
         inset: 0;
