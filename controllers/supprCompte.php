@@ -13,7 +13,8 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion adresse livraison / facturation client";
+        echo "\n\n\nerreur suprresion adresse livraison / facturation client";
+        echo $e;
     }
 
     try {
@@ -23,7 +24,8 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion avis";
+        echo "\n\n\nerreur suprresion avis";
+        echo $e;
     }
 
     try {
@@ -33,7 +35,8 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion reponses";
+        echo "\n\n\nerreur suprresion reponses";
+        echo $e;
     }
     
     try {
@@ -43,7 +46,8 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion reponses";
+        echo "\n\n\nerreur suprresion reponses";
+        echo $e;
     }
 
     try {
@@ -53,7 +57,8 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion notifications";
+        echo "\n\n\nerreur suprresion notifications";
+        echo $e;
     }
 
     try {
@@ -63,7 +68,8 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion signalement";
+        echo "\n\n\nerreur suprresion signalement";
+        echo $e;
     }
 
     try {
@@ -82,7 +88,8 @@ try{
             $stmt->execute([':idPanier' => $idPanier]);
         }
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion commandes";
+        echo "\n\n\nerreur suprresion commandes";
+        echo $e;
     }
 
     try {
@@ -94,7 +101,8 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion panier";
+        echo "\n\n\nerreur suprresion panier";
+        echo $e;
     }
 
     try {
@@ -104,7 +112,8 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion compte";
+        echo "\n\n\nerreur suprresion compte";
+        echo $e;
     }
 
     session_unset();
