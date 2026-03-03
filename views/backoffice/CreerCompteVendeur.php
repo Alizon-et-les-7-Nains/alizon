@@ -101,7 +101,7 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="col-md-6">
                         <label>Adresse de l'entreprise</label>
-                        <input type="text" name="idAdresse" required class="form-control"
+                        <input type="text" name="idAdresse" id="idAdresse" required class="form-control"
                             value="<?= htmlspecialchars($idAdresse) ?>">
                     </div>
 
@@ -159,7 +159,8 @@ unset($_SESSION['form_data']);
         // Eléments 
         const latInput = document.getElementById('lat');
         const lngInput = document.getElementById('lng');
-        const passwordInput = document.getElementById('mdp');
+        const adresseInput = document.getElementById('idAdresse');
+        const passwordInput = document.getElementById('mdp')
         const confirmPasswordInput = document.getElementById('confirmer_mdp');
         const submitButton = document.getElementById('btn_inscription');
         const passwordRequirementsContainer = document.getElementById('password-requirements-container');
@@ -310,7 +311,7 @@ unset($_SESSION['form_data']);
                 e.preventDefault();
             }
         });
-
+        geocodeAdresse(adresseInput.value);
         validatePassword();
         </script>
 
