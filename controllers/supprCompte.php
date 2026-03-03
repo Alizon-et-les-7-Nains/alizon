@@ -14,6 +14,7 @@ try{
         ]);
     } catch (PDOException $e) {
         echo "\n\n\nerreur suprresion adresse livraison / facturation client";
+        echo $e;
     }
 
     try {
@@ -24,6 +25,7 @@ try{
         ]);
     } catch (PDOException $e) {
         echo "\n\n\nerreur suprresion avis";
+        echo $e;
     }
 
     try {
@@ -34,6 +36,7 @@ try{
         ]);
     } catch (PDOException $e) {
         echo "\n\n\nerreur suprresion reponses";
+        echo $e;
     }
     
     try {
@@ -44,6 +47,7 @@ try{
         ]);
     } catch (PDOException $e) {
         echo "\n\n\nerreur suprresion reponses";
+        echo $e;
     }
 
     try {
@@ -54,6 +58,7 @@ try{
         ]);
     } catch (PDOException $e) {
         echo "\n\n\nerreur suprresion notifications";
+        echo $e;
     }
 
     try {
@@ -64,6 +69,7 @@ try{
         ]);
     } catch (PDOException $e) {
         echo "\n\n\nerreur suprresion signalement";
+        echo $e;
     }
 
     try {
@@ -83,6 +89,7 @@ try{
         }
     } catch (PDOException $e) {
         echo "\n\n\nerreur suprresion commandes";
+        echo $e;
     }
 
     try {
@@ -95,6 +102,7 @@ try{
         ]);
     } catch (PDOException $e) {
         echo "\n\n\nerreur suprresion panier";
+        echo $e;
     }
 
     try {
@@ -105,6 +113,7 @@ try{
         ]);
     } catch (PDOException $e) {
         echo "\n\n\nerreur suprresion compte";
+        echo $e;
     }
 
     session_unset();
