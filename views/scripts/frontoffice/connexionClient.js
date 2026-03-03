@@ -29,6 +29,7 @@ a2f.addEventListener("change", function () {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
+
           // Popup avec QR code pour configurer l'authentification à deux facteurs
           document.body.appendChild(qrCodePopup);
           

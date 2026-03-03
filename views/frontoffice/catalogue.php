@@ -554,6 +554,8 @@ btnCarte.addEventListener('click', () => {
             map.invalidateSize();
         }, 100);
     }
+
+    filterSort.style.width = carteAffiche.classList.contains('active') ? '600px' : '240px';
 });
 
 document.addEventListener('DOMContentLoaded', function() {
