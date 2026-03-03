@@ -172,67 +172,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($input_data['activate'])) {
     <link rel="stylesheet" href="../../public/style.css">
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <title>Connexion</title>
-    <style>
-        /* Styles pour la popup QR code */
-        .qr-code-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .qr-code-content {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            max-width: 400px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .qr-code-content img {
-            max-width: 300px;
-            margin: 20px 0;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        
-        .qr-code-content button {
-            padding: 10px 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s;
-        }
-        
-        .qr-code-content button:hover {
-            background: #0056b3;
-        }
-        
-        .qr-code-content h2 {
-            color: #333;
-            margin-bottom: 15px;
-        }
-        
-        .error-message {
-            color: red;
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid red;
-            border-radius: 5px;
-            background: #ffe6e6;
-        }
-    </style>
 </head>
 
 <body class="pageConnexionCLient">
