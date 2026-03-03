@@ -56,6 +56,13 @@ $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
+$stmtTous = $pdo->prepare($sql);
+foreach ($params as $key => $val) {
+    $stmtTous->bindValue($key, $val, PDO::PARAM_STR);
+}
+$stmtTous->execute();
+$allProducts = $stmtTous->fetchAll(PDO::FETCH_ASSOC);
+
 $sql .= " LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($sql);
 
@@ -85,12 +92,12 @@ $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Prix Max en tenant compte des remises :)
 $stmt = "SELECT MAX(CASE 
-                    WHEN r.tauxRemise > 0 AND CURDATE() BETWEEN r.debutRemise AND r.finRemise 
-                        THEN p.prix * (1 - r.tauxRemise/100)
-                        ELSE p.prix 
-                    END) as maxPrice
-                    FROM _produit p
-                    LEFT JOIN _remise r ON p.idProduit = r.idProduit";
+        WHEN r.tauxRemise > 0 AND CURDATE() BETWEEN r.debutRemise AND r.finRemise 
+            THEN p.prix * (1 - r.tauxRemise/100)
+            ELSE p.prix 
+        END) as maxPrice
+        FROM _produit p
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit";
 $stmt = $pdo->prepare($stmt);
 $stmt->execute();
 $maxPrice = $stmt->fetchColumn() ?? 100;
@@ -499,18 +506,18 @@ const noteInput = document.getElementById('note');
 const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
-let products = <?= json_encode($totalProduits) ?>;
-let vendeurs = <?= json_encode($vendeurs) ?>;
 
+let products = <?= json_encode($products) ?>;
+let vendeurs = <?= json_encode($vendeurs) ?>;
 let listeIdVendeurs = [];
 for (let i = 0; i < products.length; i++) {
     if (!listeIdVendeurs.includes(products[i].idVendeur)) {
         listeIdVendeurs.push(products[i].idVendeur);
     }
 }
-console.log(listeIdVendeurs[0]);
-const carteAffiche = document.getElementById('map');
+console.log(listeIdVendeurs);
 
+const carteAffiche = document.getElementById('map');
 const coordonnees = [
     { lat: 48.7412, lng: -3.4523, nom: "Les produits natus", id: 1 },
     { lat: 48.7198, lng: -3.4871, nom: "Les produits natus", id: 2 },
