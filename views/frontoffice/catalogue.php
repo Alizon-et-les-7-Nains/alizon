@@ -520,6 +520,7 @@ for (let i = 0; i < products.length; i++) {
 console.log(listeIdVendeurs);
 
 const carteAffiche = document.getElementById('mapWrapper');
+const carte = document.getElementById('map');
 const coordonnees = [];
 
 for (let i = 0; i < vendeurs.length; i++) {
@@ -545,12 +546,13 @@ for (let i = 0; i < coordonnees.length; i++) {
 }
 
 const btnCarte = document.getElementById('btnCarte');
+const barreResultat = document.getElementById('resultat');
 
 btnCarte.addEventListener('click', () => {
     carteAffiche.classList.toggle('active');
     barreResultat.classList.toggle('active');
     
-    if (carteAffiche.classList.contains('active')) {
+    if (carte.classList.contains('active')) {
         setTimeout(() => {
             map.invalidateSize();
         }, 100);
