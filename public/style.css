@@ -7382,26 +7382,18 @@ dialog.reassort form input {
   flex-direction: row;
   background-color: #fffefa;
 }
-.pageCatalogue .map-wrapper {
-  display: none;
-  position: fixed;
-  top: 200px;
-  left: 280px;
-  width: 1200px;
-  height: 75vh;
-  background-color: #e4d9ff;
-  padding: 2em;
-  z-index: 600;
-  box-sizing: border-box;
-}
-.pageCatalogue .map-wrapper.active {
-  display: block;
-}
 .pageCatalogue #map {
-  width: 100%;
-  height: 100%;
+  padding: 2em;
+  margin-left: 300px;
   border: 2px solid #273469;
   border-radius: 4px;
+  width: 1600px;
+  height: 75vh;
+  display: none;
+  background-color: #e4d9ff;
+}
+.pageCatalogue #map.active {
+  display: block;
 }
 .pageCatalogue .fakePanneauGris {
   width: 240px;

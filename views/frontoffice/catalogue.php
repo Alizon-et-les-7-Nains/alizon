@@ -357,9 +357,7 @@ $cart = getCurrentCart($pdo, $idClient);
             }
         </style>
     </aside>
-    <div class="map-wrapper" id="mapWrapper">
-        <div id="map"></div>
-    </div>
+    <div id="map"></div>
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
@@ -519,8 +517,8 @@ for (let i = 0; i < products.length; i++) {
 }
 console.log(listeIdVendeurs);
 
-const carteAffiche = document.getElementById('mapWrapper');
-const carte = document.getElementById('map');
+const carteAffiche = document.getElementById('map');
+const barreResultat = document.getElementById('resultat');
 const coordonnees = [];
 
 for (let i = 0; i < vendeurs.length; i++) {
@@ -546,19 +544,16 @@ for (let i = 0; i < coordonnees.length; i++) {
 }
 
 const btnCarte = document.getElementById('btnCarte');
-const barreResultat = document.getElementById('resultat');
 
 btnCarte.addEventListener('click', () => {
     carteAffiche.classList.toggle('active');
     barreResultat.classList.toggle('active');
     
-    if (carte.classList.contains('active')) {
+    if (carteAffiche.classList.contains('active')) {
         setTimeout(() => {
             map.invalidateSize();
         }, 100);
     }
-
-    listeArticle.style.marginLeft = carteAffiche.classList.contains('active') ? '1200px' : '0';
 });
 
 document.addEventListener('DOMContentLoaded', function() {
