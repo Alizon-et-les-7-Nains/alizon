@@ -222,69 +222,6 @@ $pays = $adresse['pays'] ?? '';
     <link rel="icon" href="/public/images/logoBackoffice.svg">
     <title>Mon Compte</title>
     <link rel="stylesheet" href="../../public/style.css">
-    <style>
-        .qr-code-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .qr-code-content {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-        }
-        
-        .qr-code-content h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-        
-        #qrcode-container {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        
-        #qrcode-container img {
-            max-width: 250px;
-            height: auto;
-        }
-        
-        #closePopup {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-        }
-        
-        #closePopup:hover {
-            background: #45a049;
-        }
-        
-        .secret-text {
-            background: #f5f5f5;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            word-break: break-all;
-            font-family: monospace;
-        }
-    </style>
 </head>
 <body>
     <?php include 'partials/headerConnecte.php'; ?>
@@ -379,6 +316,7 @@ $pays = $adresse['pays'] ?? '';
                     <label for="remember_me">Activer l'authentification à deux facteurs</label>
                     <input type="checkbox" id="remember_me" name="remember_me" <?php echo $otp_enabled ? 'checked' : ''; ?>>
                 </div>
+            <button type="button" class="boutonA2F" onclick="handleA2FToggle()">Configurer l'A2F</button>
             </div>
         </form>
     </main>
@@ -397,126 +335,6 @@ $pays = $adresse['pays'] ?? '';
     </script>
     <script src="../scripts/frontoffice/compteClient.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-    <!-- <script src="../scripts/frontoffice/connexionClient.js"></script> --> 
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const a2f = document.getElementById('remember_me');
-            
-            if (!a2f) {
-                console.error('Checkbox A2F non trouvée');
-                return;
-            }
-
-            a2f.addEventListener("change", function() {
-                if (this.checked) {
-                    console.log("Activation de l'authentification à deux facteurs");
-                    this.disabled = true;
-
-                    fetch(window.location.href, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ activate: true }),
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Erreur réseau');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            // Créer et afficher la popup
-                            const qrCodePopup = document.createElement("div");
-                            qrCodePopup.classList.add("qr-code-popup");
-                            qrCodePopup.innerHTML = `
-                                <div class="qr-code-content">
-                                    <h2>Scannez ce QR code avec votre application d'authentification</h2>
-                                    <div id="qrcode-container"></div>
-                                    <p>Ou saisissez manuellement cette clé secrète :</p>
-                                    <div class="secret-text">${data.secret}</div>
-                                    <button id="closePopup">Fermer</button>
-                                </div>
-                            `;
-                            
-                            document.body.appendChild(qrCodePopup);
-                            
-                            // Générer le QR code
-                            const qrcodeContainer = qrCodePopup.querySelector('#qrcode-container');
-                            
-                            setTimeout(() => {
-                                if (typeof QRCode !== 'undefined') {
-                                    QRCode.toCanvas(qrcodeContainer, data.otpauthUrl, {
-                                        width: 250,
-                                        height: 250
-                                    }, function (error) {
-                                        if (error) {
-                                            console.error(error);
-                                            qrcodeContainer.innerHTML = '<p style="color: red;">Erreur de chargement du QR code</p>';
-                                        }
-                                    });
-                                } else {
-                                    console.error("Bibliothèque QRCode non chargée");
-                                    qrcodeContainer.innerHTML = '<p style="color: red;">Erreur de chargement du QR code</p>';
-                                }
-                            }, 0);
-
-                            // Fermeture de la popup
-                            const closeButton = qrCodePopup.querySelector("#closePopup");
-                            closeButton.addEventListener("click", function() {
-                                qrCodePopup.remove();
-                            });
-                        } else {
-                            alert("Une erreur est survenue lors de l'activation.");
-                            this.checked = false;
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Erreur:", error);
-                        alert("Une erreur est survenue lors de l'activation.");
-                        this.checked = false;
-                    })
-                    .finally(() => {
-                        this.disabled = false;
-                    });
-                } else {
-                    console.log("Désactivation de l'authentification à deux facteurs");
-                    this.disabled = true;
-
-                    if (confirm('Êtes-vous sûr de vouloir désactiver l\'authentification à deux facteurs ?')) {
-                        fetch(window.location.href, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({ activate: false }),
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("L'authentification à deux facteurs a été désactivée.");
-                            } else {
-                                alert("Une erreur est survenue lors de la désactivation.");
-                                this.checked = true;
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Erreur:", error);
-                            alert("Une erreur est survenue lors de la désactivation.");
-                            this.checked = true;
-                        })
-                        .finally(() => {
-                            this.disabled = false;
-                        });
-                    } else {
-                        this.checked = true;
-                        this.disabled = false;
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="../scripts/frontoffice/a2f.js"></script>
 </body>
 </html>

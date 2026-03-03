@@ -6,124 +6,40 @@ session_start();
 $id_client = $_POST['id_client'];
 
 try{
-    try {
-        // Supprimer l'adresse de livraison et facturation du client
-        $stmt = $pdo->prepare("DELETE FROM _adresseLivraison WHERE idClient = :idClient");
-        $stmt->execute([
-            ':idClient' => $id_client
-        ]);
-    } catch (PDOException $e) {
-        echo "\n\n\nerreur suprresion adresse livraison / facturation client";
-        echo $e;
-    }
+    // Anonymiser les données
+    $stmt = $pdo->prepare("UPDATE _client SET email = NULL, prenom = NULL, dateNaissance = NULL, nom = NULL, mdp = NULL, noTelephone = NULL, pseudo = 'Anonyme' WHERE idClient = :idClient");
+    $stmt->execute([
+        ':idClient' => $id_client
+    ]);
 
-    try {
-        // Remplacer les avis par le compte anonyme
-        $stmt = $pdo->prepare("UPDATE _avis SET idClient = 11111 WHERE idClient = :idClient");
-        $stmt->execute([
-            ':idClient' => $id_client
-        ]);
-    } catch (PDOException $e) {
-        echo "\n\n\nerreur suprresion avis";
-        echo $e;
-    }
+    // Supprimer les données qui ne serviront plus (ex: notification, photo de profil...)
+    $stmt = $pdo->prepare("DELETE FROM _notification WHERE idClient = :idClient");
+    $stmt->execute([
+        ':idClient' => $id_client
+    ]);
 
-    try {
-        // Remplacer les réponses à un avis lié au compte client
-        $stmt = $pdo->prepare("UPDATE _reponseAvis SET idClient = 11111 WHERE idClient = :idClient");
-        $stmt->execute([
-            ':idClient' => $id_client
-        ]);
-    } catch (PDOException $e) {
-        echo "\n\n\nerreur suprresion reponses";
-        echo $e;
-    }
-    
-    try {
-        // Remplacer les images attachés aux avis par le compte anonyme
-        $stmt = $pdo->prepare("UPDATE _imageAvis SET idClient = 11111 WHERE idClient = :idClient");
-        $stmt->execute([
-            ':idClient' => $id_client
-        ]);
-    } catch (PDOException $e) {
-        echo "\n\n\nerreur suprresion reponses";
-        echo $e;
-    }
+    // Gestion de l'affichage de la photo de profil
+    $photoProfilPath = "/images/photoProfilClient/photo_profil" . $id_client;
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $photoProfilUrl = "../../public/images/profil.png";
 
-    try {
-        // Supprimer les notifications attachés au compte client
-        $stmt = $pdo->prepare("DELETE FROM _notification WHERE idClient = :idClient");
-        $stmt->execute([
-            ':idClient' => $id_client
-        ]);
-    } catch (PDOException $e) {
-        echo "\n\n\nerreur suprresion notifications";
-        echo $e;
-    }
-
-    try {
-        // Supprimer les signalements attachés au compte client
-        $stmt = $pdo->prepare("UPDATE _signalement SET idClientSignale = 11111 WHERE idClientSignale = :idClient");
-        $stmt->execute([
-            ':idClient' => $id_client
-        ]);
-    } catch (PDOException $e) {
-        echo "\n\n\nerreur suprresion signalement";
-        echo $e;
-    }
-
-    try {
-        // Supprimer les commandes du compte client
-        $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = :idClient");
-        $stmt->execute([
-            ':idClient' => $id_client
-        ]);
-        $paniers = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        foreach ($paniers as $idPanier) {
-            $stmt = $pdo->prepare("DELETE FROM _facture WHERE idCommande IN (SELECT idCommande FROM _commande WHERE idPanier = :idPanier)");
-            $stmt->execute([':idPanier' => $idPanier]);
-            $stmt = $pdo->prepare("DELETE FROM _contient WHERE idCommande IN (SELECT idCommande FROM _commande WHERE idPanier = :idPanier)");
-            $stmt->execute([':idPanier' => $idPanier]);
-            $stmt = $pdo->prepare("DELETE FROM _commande WHERE idPanier = :idPanier");
-            $stmt->execute([':idPanier' => $idPanier]);
+    foreach ($extensionsPossibles as $ext) {
+        $cheminComplet = "/var/www/html" . $photoProfilPath . "." . $ext;
+        if (file_exists($cheminComplet)) {
+            unlink($cheminComplet);
+            break;
         }
-    } catch (PDOException $e) {
-        echo "\n\n\nerreur suprresion commandes";
-        echo $e;
     }
 
-    try {
-        // Supprimer le panier du compte client
-        $stmt = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier IN (SELECT idPanier FROM _panier WHERE idClient = :idClient)");
-        $stmt->execute([':idClient' => $id_client]);
-        $stmt = $pdo->prepare("DELETE FROM _panier WHERE idClient = :idClient");
-        $stmt->execute([
-            ':idClient' => $id_client
-        ]);
-    } catch (PDOException $e) {
-        echo "\n\n\nerreur suprresion panier";
-        echo $e;
-    }
-
-    try {
-        // Supprimer le compte client
-        $stmt = $pdo->prepare("DELETE FROM _client WHERE idClient = :idClient");
-        $stmt->execute([
-            ':idClient' => $id_client
-        ]);
-    } catch (PDOException $e) {
-        echo "\n\n\nerreur suprresion compte";
-        echo $e;
-    }
-
-    session_unset();
-    session_destroy();
-    setcookie(session_name(), '', time() - 3600, '/');   
-    header('Location: ../views/frontoffice/accueilDeconnecte.php');
-    exit();
 }
 catch(PDOException $e){
-    echo "Erreur SQL : " . $e->getMessage();
+    error_log("Erreur SQL : " . $e->getMessage());
 }
+
+session_unset();
+session_destroy();
+setcookie(session_name(), '', time() - 3600, '/');   
+header('Location: ../views/frontoffice/accueilDeconnecte.php');
+exit();
 
 ?>

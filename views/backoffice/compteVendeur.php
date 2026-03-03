@@ -102,7 +102,7 @@ $pays          = $vendeur['pays'] ?? '';
     ?>
 
     <main class="page-compte">
-        <form class="form-compte" method="POST" action="../../controllers/compteVendeur.php"
+        <form class="form-compte" method="POST" action="../../controllers/modifCompteVendeur.php"
             enctype="multipart/form-data">
             <div class="header-compte">
                 <div class="photo-profil-container">
