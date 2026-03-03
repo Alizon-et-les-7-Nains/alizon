@@ -26,6 +26,7 @@
     <main class="backoffice-stats">
         <section>
             <h1>Ventes</h1>
+
             <table>
                 <tr>
                     <td><button class="selected">Journalier</button></td>
@@ -50,9 +51,17 @@
                     </td>
                 </tr>
             </table>
-            <article>
-                <canvas id="stats"></canvas>
-            </article>
+
+            <ul class="stats">
+                <li><button id="prev"><img src="../../public/images/flecheDroite.svg" alt="Précédent"></button></li>
+                <li>
+                    <article>
+                        <canvas id="stats"></canvas>
+                    </article>
+                </li>
+                <li><button id="next" disabled><img src="../../public/images/flecheDroite.svg" alt="Suivant"></button></li>
+            </ul>
+            
             <table>
                 <tr>
                     <th>Ventes</th>

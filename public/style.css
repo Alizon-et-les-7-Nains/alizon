@@ -8510,8 +8510,6 @@ main.backoffice-stats button, main.backoffice-stats select {
 }
 main.backoffice-stats button option, main.backoffice-stats select option {
   background-color: #e3f2fe;
-  border: none;
-  outline: none;
   border-radius: 16px;
   color: #273469;
 }
@@ -8531,11 +8529,51 @@ main.backoffice-stats article {
   background-color: #e4d9ff;
   border-radius: 16px;
   padding: 1em;
-  margin: 1em;
 }
 main.backoffice-stats canvas {
   width: 100%;
   height: 40vh;
+}
+main.backoffice-stats ul.stats {
+  display: flex;
+  justify-self: center;
+  width: 95%;
+  justify-content: space-between;
+  padding: 0;
+  align-items: stretch;
+  gap: 1em;
+}
+main.backoffice-stats ul.stats li {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+main.backoffice-stats ul.stats li button img {
+  filter: brightness(0) invert(1);
+}
+main.backoffice-stats ul.stats li button:hover img {
+  filter: none;
+}
+main.backoffice-stats ul.stats li button:hover {
+  outline: none;
+}
+main.backoffice-stats ul.stats li button:disabled {
+  background-color: #bababa;
+}
+main.backoffice-stats ul.stats li button:disabled:hover {
+  cursor: not-allowed;
+}
+main.backoffice-stats ul.stats li button:disabled:hover img {
+  filter: brightness(0) invert(1);
+}
+main.backoffice-stats ul.stats li:first-child img {
+  transform: rotate(180deg);
+}
+main.backoffice-stats ul.stats li:nth-child(2) {
+  width: 100%;
+}
+main.backoffice-stats ul.stats li:nth-child(2) article {
+  width: 100%;
 }
 
 /*# sourceMappingURL=style.css.map */
