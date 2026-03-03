@@ -555,7 +555,7 @@ btnCarte.addEventListener('click', () => {
         }, 100);
     }
 
-    filterSort.style.width = carteAffiche.classList.contains('active') ? '600px' : '240px';
+    filterSort.style.paddingRight = carteAffiche.classList.contains('active') ? '1300px' : '20px';
     listeArticle.style.marginLeft = carteAffiche.classList.contains('active') ? '0px' : '300px';
 });
 
