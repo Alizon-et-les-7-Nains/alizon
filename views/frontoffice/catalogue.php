@@ -522,8 +522,8 @@ const coordonnees = [];
 
 for (let i = 0; i < vendeurs.length; i++) {
     if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
-        const lat = 48.174838642366915 + Math.random() * 0.1 - 0.05;
-        const lng = -2.7538102129824145 + Math.random() * 0.1 - 0.05;
+        const lat = 48.174838642366915 + Math.random() * 0.2 - 0.2;
+        const lng = -2.7538102129824145 + Math.random() * 0.2 - 0.2;
         coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
     }
 }
