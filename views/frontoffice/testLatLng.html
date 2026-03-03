@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Titre</h1>
+</body>
+</html>
+
+<script>
+    async function geocodeAdresse(adresse) {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(adresse)}&format=json`;
+    const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
+    const data = await rep.json();
+    
+    if (data.length > 0) {
+        const { lat, lon } = data[0];
+        console.log("Latitude :", lat);
+        console.log("Longitude :", lon);
+        return { lat, lng: lon };
+    } else {
+        throw new Error("Adresse introuvable");
+    }
+    }
+
+    geocodeAdresse("Tour Eiffel, Paris");
+</script>

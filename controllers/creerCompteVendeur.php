@@ -18,6 +18,8 @@ $noSiren = trim($_POST['noSiren'] ?? '');
 $raisonSocial = trim($_POST['raisonSocial'] ?? '');
 $mdp_clair = $_POST['mdp'] ?? '';
 $confirmer_mdp = $_POST['confirmer_mdp'] ?? '';
+$lat = $_POST['lat'] ?? '';
+$lng = $_POST['lng'] ?? '';
 
 $errors = [];
 
@@ -54,8 +56,8 @@ if (empty($errors)) {
     
     try {
         $sql_insert = "INSERT INTO _vendeur (nom, prenom, email, noTelephone, pseudo, 
-                      dateNaissance, noSiren, raisonSocial, mdp) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                      dateNaissance, noSiren, raisonSocial, mdp, lat, lng) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt_insert = $pdo->prepare($sql_insert);
         $stmt_insert->execute([
@@ -67,7 +69,9 @@ if (empty($errors)) {
             $dateNaissance,
             $noSiren,
             $raisonSocial,
-            $mdp_hash
+            $mdp_hash,
+            $lat,
+            $lng
         ]);
         
         $_SESSION['message'] = "Votre compte vendeur a été créé avec succès.";

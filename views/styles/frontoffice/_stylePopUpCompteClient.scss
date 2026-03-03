@@ -6,6 +6,23 @@
     padding: 30px 50px;
     border-radius: 16px;
     position: relative;
+
+    .boutonSupprimerMdp {
+        background-color: $color-red;
+        color: white;
+        transition: 0.5s;
+        margin-top: 0;
+    }
+
+    .boutonSupprimerMdpI {
+        margin-top: 0;
+        transition: 0.5s; 
+        border: 1px solid $color-red;
+        background-color: white;
+        color: $color-red;
+        cursor: not-allowed;
+    }
+
     h1{
         
         font-style: normal;
@@ -26,9 +43,17 @@
         flex-direction: column; 
         width: 450px;
         height: auto;
-        
         margin-bottom: 5px;
     }
+
+    .inputB{
+        display: flex;
+        width: 650px;
+        height: auto;
+        margin-bottom: 5px;
+        justify-content: space-around;
+    }
+
 
     input{
         padding: 10px;
@@ -41,6 +66,12 @@
         height: 100%;
         display: flex;
         align-items: center;
+    }
+
+    input .diff {
+        width: auto;
+        height: auto;
+        width: 330px;
     }
 
     

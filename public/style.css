@@ -3312,6 +3312,20 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 16px;
   position: relative;
 }
+.mainPopUpCompteClient .boutonSupprimerMdp {
+  background-color: #f14e4e;
+  color: white;
+  transition: 0.5s;
+  margin-top: 0;
+}
+.mainPopUpCompteClient .boutonSupprimerMdpI {
+  margin-top: 0;
+  transition: 0.5s;
+  border: 1px solid #f14e4e;
+  background-color: white;
+  color: #f14e4e;
+  cursor: not-allowed;
+}
 .mainPopUpCompteClient h1 {
   font-style: normal;
   font-weight: normal;
@@ -3331,6 +3345,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   height: auto;
   margin-bottom: 5px;
 }
+.mainPopUpCompteClient .inputB {
+  display: flex;
+  width: 650px;
+  height: auto;
+  margin-bottom: 5px;
+  justify-content: space-around;
+}
 .mainPopUpCompteClient input {
   padding: 10px;
   color: #6E6E6E;
@@ -3342,6 +3363,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   height: 100%;
   display: flex;
   align-items: center;
+}
+.mainPopUpCompteClient input .diff {
+  width: auto;
+  height: auto;
+  width: 330px;
 }
 .mainPopUpCompteClient button {
   width: 200px;
@@ -7317,8 +7343,11 @@ dialog.reassort form input {
   border: 2px solid #273469;
   border-radius: 4px;
   width: 1600px;
-  height: 100vh;
-  overscroll-behavior: contain;
+  height: 75vh;
+  display: none;
+}
+.pageCatalogue #map.active {
+  display: block;
 }
 .pageCatalogue .fakePanneauGris {
   width: 240px;
@@ -7373,8 +7402,14 @@ dialog.reassort form input {
   background: #E3F2FE;
   position: sticky;
   padding: 0.3em;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 500;
+  margin: 0;
+  margin-left: 280px;
+  z-index: 100;
+  width: 100%;
+}
+.pageCatalogue #resultat.active {
   margin: 0;
 }
 .pageCatalogue .listeArticle {
@@ -7382,6 +7417,7 @@ dialog.reassort form input {
   grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
   gap: 10px;
   width: 100%;
+  margin-top: 40px;
 }
 .pageCatalogue .listeArticle article {
   position: relative;
