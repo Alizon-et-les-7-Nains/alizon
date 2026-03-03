@@ -19,8 +19,8 @@ $raisonSocial = trim($_POST['raisonSocial'] ?? '');
 $mdp_clair = $_POST['mdp'] ?? '';
 $confirmer_mdp = $_POST['confirmer_mdp'] ?? '';
 $adresse = $_POST['idAdresse'] ?? '';
-$lat = $_POST['lat'] ?? '';
-$lng = $_POST['lng'] ?? '';
+$lat = $_POST['lat'] !== '' ? (float)$_POST['lat'] : null;
+$lng = $_POST['lng'] !== '' ? (float)$_POST['lng'] : null;
 
 $errors = [];
 
@@ -70,8 +70,7 @@ if (empty($errors)) {
 
         $sql_insert = "INSERT INTO _vendeur (nom, prenom, email, noTelephone, pseudo, 
                       dateNaissance, idAdresse, noSiren, raisonSocial, mdp) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
 
         $stmt_insert = $pdo->prepare($sql_insert);
