@@ -518,16 +518,15 @@ for (let i = 0; i < products.length; i++) {
 console.log(listeIdVendeurs);
 
 const carteAffiche = document.getElementById('map');
-const coordonnees = [
-    { lat: 48.7412, lng: -3.4523, nom: "Les produits natus", id: 1 },
-    { lat: 48.7198, lng: -3.4871, nom: "Les produits natus", id: 2 },
-    { lat: 48.7534, lng: -3.5012, nom: "Les produits natus", id: 3 },
-    { lat: 48.7089, lng: -3.4234, nom: "Les produits natus", id: 4 },
-    { lat: 48.7623, lng: -3.4789, nom: "Les produits natus", id: 5 },
-    { lat: 48.7301, lng: -3.5234, nom: "Les produits natus", id: 6 },
-    { lat: 48.7456, lng: -3.4101, nom: "Les produits natus", id: 7 },
-    { lat: 48.7178, lng: -3.5089, nom: "Les produits natus", id: 8 }
-];
+const coordonnes = [];
+
+for (let i = 0; i < vendeurs.length; i++) {
+    if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
+        const lat = 48.174838642366915 + Math.random() * 0.1 - 0.05;
+        const lng = -2.7538102129824145 + Math.random() * 0.1 - 0.05;
+        coordonnes.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
+    }
+}
 
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
