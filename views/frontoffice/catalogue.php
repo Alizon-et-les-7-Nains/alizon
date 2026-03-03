@@ -534,7 +534,6 @@ for ($i = 0; $i < count($vendeurs); $i++) {
 ?>
 
 let addresses = <?= json_encode($addresses) ?>; 
-console.log(addresses);
 
 for (let i = 0; i < vendeurs.length; i++) {
     if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
