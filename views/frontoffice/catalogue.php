@@ -525,15 +525,20 @@ const coordonnees = [];
 
 <?php
 for ($i = 0; $i < count($vendeurs); $i++) {
-    echo "vendeurs[$i].codeVendeur = " . json_encode($vendeurs[$i]['codeVendeur']) . ";\n";
-    echo "vendeurs[$i].raisonSocial = " . json_encode($vendeurs[$i]['raisonSocial']) . ";\n";
+    $sqlAddressesVendeur = "SELECT latitude, longitude FROM _addresseVendeur
+                            WHERE idAddresse = :id";
+    $stmtAddresses = $pdo->prepare($sqlAddressesVendeur);
+    $stmtAddresses->execute([':id' => $vendeurs[$i]['idAddresse']]);
+    $addresses = $stmtAddresses->fetch(PDO::FETCH_ASSOC);
 }
 ?>
 
+let addresses = <?= json_encode($addresses) ?>; 
+
 for (let i = 0; i < vendeurs.length; i++) {
     if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
-        const lat = 48.174838642366915 + Math.random() * 0.2 - 0.05;
-        const lng = -2.7538102129824145 + Math.random() * 0.2 - 0.05;
+        const lat = addresses[i].latitude;
+        const lng = addresses[i].longitude;
         coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
     }
 }
