@@ -1,11 +1,12 @@
-<script>import 'dotenv/config';
+<script>
+import 'dotenv/config';
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 async function geocodeAdresse(adresse) {
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(adresse)}&key=${API_KEY}`;
 
-  const response = await fetch(url);
-  const data = await response.json();
+  const rep = await fetch(url);
+  const data = await rep.json();
 
   if (data.status === "OK") {
     const result = data.results[0];
