@@ -8525,4 +8525,100 @@ main.commandesBackoffice dialog:focus {
   background-color: rgb(25.1875, 33.5833333333, 67.8125);
 }
 
+.bodyPopupA2f {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+}
+
+h1 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  color: #273469;
+  text-align: center;
+}
+
+.popupA2f {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  flex-direction: column;
+  position: relative;
+}
+.popupA2f form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.popupA2f div {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+.popupA2f input {
+  height: 80px;
+  width: 50px;
+  border-radius: 16px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 30px;
+  border: 3px solid #273469;
+  color: #273469;
+}
+.popupA2f input:nth-of-type(3) {
+  margin-right: 20px;
+}
+.popupA2f input:focus {
+  outline: none;
+  border: 3px solid #273469;
+}
+.popupA2f button {
+  width: 300px;
+  color: #273469;
+  background-color: #E4D9FF;
+  border-radius: 32px;
+  padding: 10px;
+  border: none;
+  border-radius: 32px;
+  font-size: 18px;
+  font-family: "lora";
+  text-align: center;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.croixFermerLaPage {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  height: 30px;
+  width: 30px;
+  z-index: 10;
+  cursor: pointer;
+}
+.croixFermerLaPage div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 3px;
+  background-color: #BABABA;
+}
+.croixFermerLaPage div:first-of-type {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.croixFermerLaPage div:last-of-type {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 /*# sourceMappingURL=style.css.map */
