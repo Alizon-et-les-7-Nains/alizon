@@ -30,7 +30,7 @@ a2f.addEventListener("change", function () {
       .then((data) => {
         if (data.success) {
           alert("L'authentification à deux facteurs a été activée.");
-
+          console.log("Données reçues du serveur:", data);
           // Pop up avec qr code pour configurer l'authentification à deux facteurs
           document.body.appendChild(qrCodePopup);
 
