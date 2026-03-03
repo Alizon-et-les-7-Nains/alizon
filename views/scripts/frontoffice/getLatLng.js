@@ -1,5 +1,4 @@
-<script>
-import 'dotenv/config';
+require('dotenv').config();
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 async function geocodeAdresse(adresse) {
@@ -22,5 +21,3 @@ async function geocodeAdresse(adresse) {
   }
 }
 
-geocodeAdresse("Tour Eiffel, Paris");
- </script>
