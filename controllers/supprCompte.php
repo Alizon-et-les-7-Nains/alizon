@@ -12,11 +12,24 @@ try{
         ':idClient' => $id_client
     ]);
 
-    // Supprimer les données qui ne serviront plus (ex: notification, panier acutel...)
+    // Supprimer les données qui ne serviront plus (ex: notification, photo de profil...)
     $stmt = $pdo->prepare("DELETE FROM _notification WHERE idClient = :idClient");
     $stmt->execute([
         ':idClient' => $id_client
     ]);
+
+    // Gestion de l'affichage de la photo de profil
+    $photoProfilPath = "/images/photoProfilClient/photo_profil" . $avis['idClient'];
+    $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+    $photoProfilUrl = "../../public/images/profil.png";
+
+    foreach ($extensionsPossibles as $ext) {
+        $cheminComplet = "/var/www/html" . $photoProfilPath . "." . $ext;
+        if (file_exists($cheminComplet)) {
+            unlink($cheminComplet);
+            break;
+        }
+    }
 
 }
 catch(PDOException $e){
