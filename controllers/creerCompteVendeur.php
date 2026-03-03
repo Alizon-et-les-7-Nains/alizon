@@ -57,16 +57,12 @@ if (empty($errors)) {
     try {
         $sql_adresse = "INSERT INTO _adresseVendeur(adresse, latitude, longitude) VALUES  (?, ?, ?)";
         $stmt_adresse = $pdo->prepare($sql_adresse);
-        $stmt_adresse->execute([
-            $adresse,
-            $lat,
-            $lng
-        ]);
+        $stmt_adresse->execute([$adresse,$lat,$lng]);
 
         $sql_idAdr = "SELECT idAdresse FROM _adresseVendeur WHERE adresse = ?";
         $sql_idAdr = $pdo->prepare($sql_adresse);
         $sql_idAdr->execute([$adresse]);
-        $idAdr = $sql_idAdr->fetchColumn();
+        $idAdr = $sql_idAdr->fetch(PDO::FETCH_ASSOC);
 
         $sql_insert = "INSERT INTO _vendeur (nom, prenom, email, noTelephone, pseudo, 
                       dateNaissance, idAdresse, noSiren, raisonSocial, mdp) 
