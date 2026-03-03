@@ -448,10 +448,14 @@ $pays = $adresse['pays'] ?? '';
                             
                             setTimeout(() => {
                                 if (typeof QRCode !== 'undefined') {
-                                    new QRCode(qrcodeContainer, {
-                                        text: data.otpauthUrl,
+                                    QRCode.toCanvas(qrcodeContainer, data.otpauthUrl, {
                                         width: 250,
                                         height: 250
+                                    }, function (error) {
+                                        if (error) {
+                                            console.error(error);
+                                            qrcodeContainer.innerHTML = '<p style="color: red;">Erreur de chargement du QR code</p>';
+                                        }
                                     });
                                 } else {
                                     console.error("Bibliothèque QRCode non chargée");
