@@ -7,7 +7,7 @@ qrCodePopup.classList.add("qr-code-popup");
 qrCodePopup.innerHTML = `
             <div class="qr-code-content">
                 <h2>Scannez ce QR code avec votre application d'authentification</h2>
-                <img src="connexionClient.php" alt="QR Code">
+                <img src="" alt="QR Code">
                 <button id="closePopup">Fermer</button>
             </div>
         `;
@@ -48,12 +48,12 @@ a2f.addEventListener("change", function () {
     // generation du QR code
     const otpauthUrl =
       "otpauth://totp/MonSite:TestUser?secret=SECRET_KEY&issuer=MonSite";
-    toDataURL(otpauthUrl, function (err, url) {
+    QRCode.toDataURL(otpauthUrl, function (err, url) {
       if (err) throw err;
       const qrCodeImage = qrCodePopup.querySelector("img");
       qrCodeImage.src = url;
     });
-    
+
     const closeButton = qrCodePopup.querySelector("#closePopup");
     closeButton.addEventListener("click", function () {
       qrCodePopup.remove();
