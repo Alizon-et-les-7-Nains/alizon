@@ -10,7 +10,7 @@ $stmt = $pdo->prepare("DELETE FROM _client WHERE idClient = :idClient");
 
 try{
     $stmt->execute([
-        ':idClient' => $idClient
+        ':idClient' => $id_client
     ]);
 }
 catch(PDOException $e){

@@ -503,14 +503,14 @@ let isFiltering = false;
 const carteAffiche = document.getElementById('map');
 
 const coordonnees = [
-    { lat: 48.7412, lng: -3.4523, nom: "Les produits natus" },
-    { lat: 48.7198, lng: -3.4871, nom: "Les produits natus" },
-    { lat: 48.7534, lng: -3.5012, nom: "Les produits natus" },
-    { lat: 48.7089, lng: -3.4234, nom: "Les produits natus" },
-    { lat: 48.7623, lng: -3.4789, nom: "Les produits natus" },
-    { lat: 48.7301, lng: -3.5234, nom: "Les produits natus" },
-    { lat: 48.7456, lng: -3.4101, nom: "Les produits natus" },
-    { lat: 48.7178, lng: -3.5089, nom: "Les produits natus" }
+    { lat: 48.7412, lng: -3.4523, nom: "Les produits natus", id: 1 },
+    { lat: 48.7198, lng: -3.4871, nom: "Les produits natus", id: 2 },
+    { lat: 48.7534, lng: -3.5012, nom: "Les produits natus", id: 3 },
+    { lat: 48.7089, lng: -3.4234, nom: "Les produits natus", id: 4 },
+    { lat: 48.7623, lng: -3.4789, nom: "Les produits natus", id: 5 },
+    { lat: 48.7301, lng: -3.5234, nom: "Les produits natus", id: 6 },
+    { lat: 48.7456, lng: -3.4101, nom: "Les produits natus", id: 7 },
+    { lat: 48.7178, lng: -3.5089, nom: "Les produits natus", id: 8 }
 ];
 
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
@@ -522,7 +522,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 for (let i = 0; i < coordonnees.length; i++) {
     const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
     marker.on('click', () => {
-        vendeur.value = 1;
+        vendeur.value = coordonnees[i].id;
         loadProduits(1);
     });
 }
