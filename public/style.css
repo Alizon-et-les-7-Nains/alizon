@@ -7383,14 +7383,22 @@ dialog.reassort form input {
   background-color: #fffefa;
 }
 .pageCatalogue #map {
-  margin: 2em;
-  margin-left: 300px;
-  border: 2px solid #273469;
-  border-radius: 4px;
+  display: none;
+  position: fixed;
+  top: 200px; /* ajuste à la hauteur de ton header */
+  left: 240px;
   width: 1600px;
   height: 75vh;
-  display: none;
   background-color: #e4d9ff;
+  padding: 2em;
+  box-sizing: border-box;
+  z-index: 600;
+}
+.pageCatalogue #map .map-inner {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #273469;
+  border-radius: 4px;
 }
 .pageCatalogue #map.active {
   display: block;
@@ -7446,7 +7454,7 @@ dialog.reassort form input {
 }
 .pageCatalogue #resultat {
   background: #E3F2FE;
-  position: sticky;
+  position: fixed;
   padding: 0.3em;
   font-size: 18px;
   font-weight: 500;
