@@ -3,7 +3,7 @@
 session_start();
 // Inclure le fichier de connexion à la base de données
 require_once "../../controllers/pdo.php";
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/var/www/html/vendor/autoload.php';
 
 use OTPHP\TOTP;
 
