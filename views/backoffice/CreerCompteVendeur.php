@@ -264,7 +264,7 @@ unset($_SESSION['form_data']);
             if (data.length > 0) {
                 const { lat, lon } = data[0];
                 latInput.value = lat;
-                lngInput.value = lng;
+                lngInput.value = lon;
                 return { lat, lng: lon };
             } else {
                 throw new Error("Adresse introuvable");
