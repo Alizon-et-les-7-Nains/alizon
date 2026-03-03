@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_nom'] = $user['nom'];
             
             // Rediriger vers la page d'accueil connecté
-            header('Location: ../../views/frontoffice/accueilConnecte.php');
+            header('Location: ../../views/frontoffice/popupA2f.php');
             exit;
         } else {
             // Mot de passe incorrect
@@ -120,4 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 </body>
+<<<<<<< HEAD
+
+=======
+>>>>>>> d38c02f550829defd38327ac28b8ab7d7d1e6564
 </html>
