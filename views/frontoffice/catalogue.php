@@ -508,7 +508,7 @@ for (let i = 0; i < products.length; i++) {
         listeIdVendeurs.push(products[i].idVendeur);
     }
 }
-console.log(listeIdVendeurs);
+console.log(listeIdVendeurs[0]);
 const carteAffiche = document.getElementById('map');
 
 const coordonnees = [
