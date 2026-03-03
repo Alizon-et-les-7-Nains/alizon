@@ -6,10 +6,16 @@ session_start();
 $id_client = $_POST['id_client'];
 
 try{
-    // On commence par les commandes car elles bloquent souvent le reste
+    // Suppression des dépendances des commandes (factures et contenu) pour débloquer les adresses
+    $pdo->prepare("DELETE FROM _contient WHERE idCommande IN (SELECT idCommande FROM _commande WHERE idPanier IN (SELECT idPanier FROM _panier WHERE idClient = :idClient))")->execute([':idClient' => $id_client]);
+    $pdo->prepare("DELETE FROM _facture WHERE idClient = :idClient")->execute([':idClient' => $id_client]);
+
     // Supprimer les commandes du compte client
     $stmt = $pdo->prepare("DELETE FROM _commande WHERE idPanier IN (SELECT idPanier FROM _panier WHERE idClient = :idClient)");
     $stmt->execute([':idClient' => $id_client]);
+
+    // Suppression des articles dans le panier avant de supprimer le panier
+    $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier IN (SELECT idPanier FROM _panier WHERE idClient = :idClient)")->execute([':idClient' => $id_client]);
 
     // Supprimer le panier du compte client
     $stmt = $pdo->prepare("DELETE FROM _panier WHERE idClient = :idClient");
@@ -62,7 +68,7 @@ try{
 }
 catch(PDOException $e){
     echo "Erreur SQL : " . $e->getMessage();
-    exit(); // Ajouté pour éviter l'erreur de headers déjà envoyés en cas de crash SQL
+    exit(); 
 }
 
 session_unset();
@@ -70,5 +76,4 @@ session_destroy();
 setcookie(session_name(), '', time() - 3600, '/');   
 header('Location: ../views/frontoffice/accueilDeconnecte.php');
 exit();
-
 ?>
