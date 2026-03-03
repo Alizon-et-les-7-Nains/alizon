@@ -7337,17 +7337,21 @@ dialog.reassort form input {
   flex-direction: row;
   background-color: #fffefa;
 }
+.pageCatalogue .map-wrapper {
+  display: none;
+  background-color: #e4d9ff;
+  margin-left: 240px;
+  padding: 2em;
+  width: calc(100% - 240px);
+}
+.pageCatalogue .map-wrapper.active {
+  display: block;
+}
 .pageCatalogue #map {
-  margin: 2em;
-  margin-left: 300px;
   border: 2px solid #273469;
   border-radius: 4px;
-  width: 1600px;
+  width: 100%;
   height: 75vh;
-  display: none;
-}
-.pageCatalogue #map.active {
-  display: block;
 }
 .pageCatalogue .fakePanneauGris {
   width: 240px;
