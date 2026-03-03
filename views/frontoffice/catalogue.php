@@ -549,7 +549,7 @@ const btnCarte = document.getElementById('btnCarte');
 const barreResultat = document.getElementById('resultat');
 
 btnCarte.addEventListener('click', () => {
-    carteAffiche.classList.toggle('active');
+    carte.classList.toggle('active');
     barreResultat.classList.toggle('active');
     
     if (carte.classList.contains('active')) {
