@@ -358,7 +358,7 @@ $cart = getCurrentCart($pdo, $idClient);
         </style>
     </aside>
     <div id="map"></div>
-    <div style="height: 100%; width: 1px; background-color: #273469;"></div>
+    <div id="vertical-bar" style="height: 100%; width: 1px; background-color: #273469;"></div>
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
@@ -520,6 +520,7 @@ console.log(listeIdVendeurs);
 
 const carteAffiche = document.getElementById('map');
 const barreResultat = document.getElementById('resultat');
+const barreVerticale = document.getElementById('vertical-bar');
 const coordonnees = [];
 
 for (let i = 0; i < vendeurs.length; i++) {
@@ -549,6 +550,7 @@ const btnCarte = document.getElementById('btnCarte');
 btnCarte.addEventListener('click', () => {
     carteAffiche.classList.toggle('active');
     barreResultat.classList.toggle('active');
+    barreVerticale.classList.toggle('active');
     
     if (carteAffiche.classList.contains('active')) {
         setTimeout(() => {
