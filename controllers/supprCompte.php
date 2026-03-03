@@ -41,7 +41,7 @@ try{
     ]);
 
     // Supprimer les signalements attachés au compte client
-    $stmt = $pdo->prepare("DELETE FROM _signalement WHERE idClient = :idClient");
+    $stmt = $pdo->prepare("DELETE FROM _signalement WHERE idClientSignale = :idClient");
     $stmt->execute([
         ':idClient' => $id_client
     ]);
