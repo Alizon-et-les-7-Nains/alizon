@@ -519,8 +519,7 @@ for (let i = 0; i < products.length; i++) {
 }
 console.log(listeIdVendeurs);
 
-const carteAffiche = document.getElementById('map');
-const barreResultat = document.getElementById('resultat');
+const carteAffiche = document.getElementById('mapWrapper');
 const coordonnees = [];
 
 for (let i = 0; i < vendeurs.length; i++) {
