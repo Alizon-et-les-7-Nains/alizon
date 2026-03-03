@@ -552,11 +552,13 @@ btnCarte.addEventListener('click', () => {
     carteAffiche.classList.toggle('active');
     barreResultat.classList.toggle('active');
     
-    if (carteAffiche.classList.contains('active')) {
+    if (carte.classList.contains('active')) {
         setTimeout(() => {
             map.invalidateSize();
         }, 100);
     }
+
+    listeArticle.style.marginLeft = carteAffiche.classList.contains('active') ? '1200px' : '0';
 });
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -7387,7 +7387,7 @@ dialog.reassort form input {
   position: fixed;
   top: 200px;
   left: 280px;
-  width: calc(100% - 280px);
+  width: 1200px;
   height: 75vh;
   background-color: #e4d9ff;
   padding: 2em;
