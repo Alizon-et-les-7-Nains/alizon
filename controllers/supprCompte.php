@@ -19,7 +19,7 @@ try{
     ]);
 
     // Gestion de l'affichage de la photo de profil
-    $photoProfilPath = "/images/photoProfilClient/photo_profil" . $avis['idClient'];
+    $photoProfilPath = "/images/photoProfilClient/photo_profil" . $id_client;
     $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
     $photoProfilUrl = "../../public/images/profil.png";
 
