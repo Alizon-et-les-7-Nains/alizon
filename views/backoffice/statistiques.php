@@ -41,7 +41,6 @@
                     <td colspan=2>
                         <select name="category" id="category">
                             <option value="" default>Aucun filtre de catégorie</option>
-                            <option value="">Caca</option>
                         </select>
                     </td>
                     <td colspan=2>
@@ -79,7 +78,6 @@
 
     <?php require_once './partials/footer.php' ?>
 
-    <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
     <script type="module" src="../scripts/backoffice/charts.js"></script>
     <script type="module" src="../scripts/backoffice/stats.js"></script>
