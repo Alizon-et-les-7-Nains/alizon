@@ -3,7 +3,7 @@
 session_start();
 // Inclure le fichier de connexion à la base de données
 require_once "../../controllers/pdo.php";
-require_once __DIR__ . '/vendor/autoload.php';
+require_once '/var/www/html/vendor/autoload.php';
 
 use OTPHP\TOTP;
 
@@ -168,8 +168,7 @@ if (isset($data['activate'])) {
     </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
-
-    <script src="../scripts/frontoffice/connexionClient.js"></script>
+    <script type="module" src="../scripts/frontoffice/connexionClient.js"></script>
 </body>
 
 </html>
