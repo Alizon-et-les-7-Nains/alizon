@@ -59,6 +59,8 @@ unset($_SESSION['form_data']);
                 enctype="multipart/form-data">
                 <div class="row g-3">
 
+                    <input type="text" id="lat" name="lat" style="display:none;">
+                    <input type="text" id="lng" name="lng" style="display:none;">
                     <div class="col-md-6">
                         <label>Nom de contact</label>
                         <input type="text" name="nom" required class="form-control"
@@ -155,6 +157,8 @@ unset($_SESSION['form_data']);
 
         <script>
         // Eléments 
+        const latInput = document.getElementById('lat');
+        const lngInput = document.getElementById('lng');
         const passwordInput = document.getElementById('mdp');
         const confirmPasswordInput = document.getElementById('confirmer_mdp');
         const submitButton = document.getElementById('btn_inscription');
@@ -247,6 +251,21 @@ unset($_SESSION['form_data']);
             submitButton.disabled = !allValid;
 
             return allValid;
+        }
+
+        async function geocodeAdresse(adresse) {
+            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(adresse)}&format=json`;
+            const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
+            const data = await rep.json();
+            
+            if (data.length > 0) {
+                const { lat, lon } = data[0];
+                latInput.value = lat;
+                lngInput.value = lng;
+                return { lat, lng: lon };
+            } else {
+                throw new Error("Adresse introuvable");
+            }
         }
 
         passwordInput.addEventListener('blur', () => {
