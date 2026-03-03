@@ -7458,6 +7458,12 @@ dialog.reassort form input {
 .pageCatalogue #resultat.active {
   margin: 0;
 }
+.pageCatalogue .vertical-bar {
+  display: none;
+}
+.pageCatalogue .vertical-bar.active {
+  display: block;
+}
 .pageCatalogue .listeArticle {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
@@ -7465,6 +7471,7 @@ dialog.reassort form input {
   width: 100%;
   margin-top: 40px;
   margin-left: 300px;
+  overflow-y: scroll;
 }
 .pageCatalogue .listeArticle article {
   position: relative;
@@ -8534,16 +8541,14 @@ main.commandesBackoffice dialog:focus {
   justify-content: center;
   z-index: 1000;
 }
-
-h1 {
+.bodyPopupA2f h1 {
   font-style: normal;
   font-weight: normal;
   font-size: 30px;
   color: #273469;
   text-align: center;
 }
-
-.popupA2f {
+.bodyPopupA2f .popupA2f {
   background-color: #f0f0f0;
   padding: 20px;
   border-radius: 10px;
@@ -8554,17 +8559,17 @@ h1 {
   flex-direction: column;
   position: relative;
 }
-.popupA2f form {
+.bodyPopupA2f .popupA2f form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.popupA2f div {
+.bodyPopupA2f .popupA2f div {
   display: flex;
   flex-direction: row;
   gap: 15px;
 }
-.popupA2f input {
+.bodyPopupA2f .popupA2f input {
   height: 80px;
   width: 50px;
   border-radius: 16px;
@@ -8575,14 +8580,14 @@ h1 {
   border: 3px solid #273469;
   color: #273469;
 }
-.popupA2f input:nth-of-type(3) {
+.bodyPopupA2f .popupA2f input:nth-of-type(3) {
   margin-right: 20px;
 }
-.popupA2f input:focus {
+.bodyPopupA2f .popupA2f input:focus {
   outline: none;
   border: 3px solid #273469;
 }
-.popupA2f button {
+.bodyPopupA2f .popupA2f button {
   width: 300px;
   color: #273469;
   background-color: #E4D9FF;
@@ -8596,8 +8601,7 @@ h1 {
   margin-top: 30px;
   cursor: pointer;
 }
-
-.croixFermerLaPage {
+.bodyPopupA2f .croixFermerLaPage {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -8606,7 +8610,7 @@ h1 {
   z-index: 10;
   cursor: pointer;
 }
-.croixFermerLaPage div {
+.bodyPopupA2f .croixFermerLaPage div {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -8614,10 +8618,10 @@ h1 {
   height: 3px;
   background-color: #BABABA;
 }
-.croixFermerLaPage div:first-of-type {
+.bodyPopupA2f .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
 }
-.croixFermerLaPage div:last-of-type {
+.bodyPopupA2f .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
