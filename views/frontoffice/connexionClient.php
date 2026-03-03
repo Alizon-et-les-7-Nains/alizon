@@ -168,7 +168,6 @@ if (isset($data['activate'])) {
     </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
-
     <script src="../scripts/frontoffice/connexionClient.js"></script>
 </body>
 
