@@ -549,10 +549,10 @@ const btnCarte = document.getElementById('btnCarte');
 const barreResultat = document.getElementById('resultat');
 
 btnCarte.addEventListener('click', () => {
-    carte.classList.toggle('active');
+    carteAffiche.classList.toggle('active');
     barreResultat.classList.toggle('active');
     
-    if (carte.classList.contains('active')) {
+    if (carteAffiche.classList.contains('active')) {
         setTimeout(() => {
             map.invalidateSize();
         }, 100);
