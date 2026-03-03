@@ -13,7 +13,7 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion adresse livraison / facturation client";
+        echo "\n\n\nerreur suprresion adresse livraison / facturation client";
     }
 
     try {
@@ -23,7 +23,7 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion avis";
+        echo "\n\n\nerreur suprresion avis";
     }
 
     try {
@@ -33,7 +33,7 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion reponses";
+        echo "\n\n\nerreur suprresion reponses";
     }
     
     try {
@@ -43,7 +43,7 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion reponses";
+        echo "\n\n\nerreur suprresion reponses";
     }
 
     try {
@@ -53,7 +53,7 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion notifications";
+        echo "\n\n\nerreur suprresion notifications";
     }
 
     try {
@@ -63,7 +63,7 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion signalement";
+        echo "\n\n\nerreur suprresion signalement";
     }
 
     try {
@@ -82,7 +82,7 @@ try{
             $stmt->execute([':idPanier' => $idPanier]);
         }
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion commandes";
+        echo "\n\n\nerreur suprresion commandes";
     }
 
     try {
@@ -94,7 +94,7 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion panier";
+        echo "\n\n\nerreur suprresion panier";
     }
 
     try {
@@ -104,7 +104,7 @@ try{
             ':idClient' => $id_client
         ]);
     } catch (PDOException $e) {
-        echo $e + "\n\n\nerreur suprresion compte";
+        echo "\n\n\nerreur suprresion compte";
     }
 
     session_unset();
