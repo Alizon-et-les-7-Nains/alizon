@@ -529,7 +529,7 @@ for ($i = 0; $i < count($vendeurs); $i++) {
                             WHERE idAddresse = :id";
     $stmtAddresses = $pdo->prepare($sqlAddressesVendeur);
     $stmtAddresses->execute([':id' => $vendeurs[$i]['idAddresse']]);
-    $addresses = $stmtAddresses->fetch(PDO::FETCH_ASSOC);
+    $addresses = $stmtAddresses->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
 
