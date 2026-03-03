@@ -37,7 +37,7 @@ try{
     ]);
 
     // Supprimer les signalements attachés au compte client
-    $stmt = $pdo->prepare("DELETE FROM _signalement WHERE idClientSignale = :idClient");
+    $stmt = $pdo->prepare("UPDATE _signalement SET idClientSignale = 11111 WHERE idClientSignale = :idClient");
     $stmt->execute([
         ':idClient' => $id_client
     ]);
@@ -70,15 +70,15 @@ try{
     $stmt->execute([
         ':idClient' => $id_client
     ]);
+
+    session_unset();
+    session_destroy();
+    setcookie(session_name(), '', time() - 3600, '/');   
+    header('Location: ../views/frontoffice/accueilDeconnecte.php');
+    exit();
 }
 catch(PDOException $e){
-    error_log("Erreur SQL : " . $e->getMessage());
+    echo "Erreur SQL : " . $e->getMessage();
 }
-
-session_unset();
-session_destroy();
-setcookie(session_name(), '', time() - 3600, '/');   
-header('Location: ../views/frontoffice/accueilDeconnecte.php');
-exit();
 
 ?>
