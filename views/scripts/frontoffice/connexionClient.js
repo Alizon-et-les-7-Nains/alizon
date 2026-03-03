@@ -7,7 +7,7 @@ qrCodePopup.classList.add("qr-code-popup");
 qrCodePopup.innerHTML = `
             <div class="qr-code-content">
                 <h2>Scannez ce QR code avec votre application d'authentification</h2>
-                <img src="" alt="QR Code">
+                <img src="connexionClient.php" alt="QR Code">
                 <button id="closePopup">Fermer</button>
             </div>
         `;
