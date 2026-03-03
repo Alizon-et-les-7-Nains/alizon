@@ -18,6 +18,7 @@ $noSiren = trim($_POST['noSiren'] ?? '');
 $raisonSocial = trim($_POST['raisonSocial'] ?? '');
 $mdp_clair = $_POST['mdp'] ?? '';
 $confirmer_mdp = $_POST['confirmer_mdp'] ?? '';
+$adresse = $_POST['idAdresse'] ?? '';
 $lat = $_POST['lat'] ?? '';
 $lng = $_POST['lng'] ?? '';
 
@@ -53,12 +54,26 @@ if (empty($errors)) {
 // --- INSERTION ---
 if (empty($errors)) {
     $mdp_hash = password_hash($mdp_clair, PASSWORD_DEFAULT);
-    
     try {
+        $sql_adresse = "INSERT INTO _adresseVendeur(adresse, latitude, longitude) VALUES  (?, ?, ?)";
+        $stmt_adresse = $pdo->prepare($sql_adresse);
+        $stmt_adresse->execute([
+            $adresse,
+            $lat,
+            $lng
+        ]);
+
+        $sql_idAdr = "SELECT idAdresse FROM _adresseVendeur WHERE adresse = ?";
+        $sql_idAdr = $pdo->prepare($sql_adresse);
+        $sql_idAdr->execute([$adresse]);
+        $idAdr = $sql_idAdr->fetchColumn();
+
         $sql_insert = "INSERT INTO _vendeur (nom, prenom, email, noTelephone, pseudo, 
-                      dateNaissance, noSiren, raisonSocial, mdp, lat, lng) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                      dateNaissance, idAdresse, noSiren, raisonSocial, mdp) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
+        
+
         $stmt_insert = $pdo->prepare($sql_insert);
         $stmt_insert->execute([
             $nom,
@@ -67,11 +82,10 @@ if (empty($errors)) {
             $telephone_clean,
             $pseudo,
             $dateNaissance,
+            $idAdr,
             $noSiren,
             $raisonSocial,
             $mdp_hash,
-            $lat,
-            $lng
         ]);
         
         $_SESSION['message'] = "Votre compte vendeur a été créé avec succès.";
