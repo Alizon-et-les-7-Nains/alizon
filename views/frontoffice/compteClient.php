@@ -434,7 +434,7 @@ $pays = $adresse['pays'] ?? '';
                             qrCodePopup.innerHTML = `
                                 <div class="qr-code-content">
                                     <h2>Scannez ce QR code avec votre application d'authentification</h2>
-                                    <div id="qrcode-container"></div>
+                                    <canvas id="qrcode-container"></canvas>
                                     <p>Ou saisissez manuellement cette clé secrète :</p>
                                     <div class="secret-text">${data.secret}</div>
                                     <button id="closePopup">Fermer</button>
