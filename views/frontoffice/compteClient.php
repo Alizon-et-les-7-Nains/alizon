@@ -435,9 +435,9 @@ $pays = $adresse['pays'] ?? '';
                             qrCodePopup.innerHTML = `
                                 <div class="qr-code-content">
                                     <h2>Scannez ce QR code avec votre application d'authentification</h2>
+                                    <div id="qrcode-container"></div>
                                     <p>Ou saisissez manuellement cette clé secrète :</p>
                                     <div class="secret-text">${data.secret}</div>
-                                    <div id="qrcode-container"></div>
                                     <button id="closePopup">Fermer</button>
                                 </div>
                             `;
@@ -447,16 +447,18 @@ $pays = $adresse['pays'] ?? '';
                             // Générer le QR code
                             const qrcodeContainer = qrCodePopup.querySelector('#qrcode-container');
                             
-                            if (typeof QRCode !== 'undefined') {
-                                new QRCode(qrcodeContainer, {
-                                    text: data.otpauthUrl,
-                                    width: 200,
-                                    height: 200
-                                });
-                            } else {
-                                console.error("Bibliothèque QRCode non chargée");
-                                qrcodeContainer.innerHTML = '<p>Erreur de chargement du QR code</p>';
-                            }
+                            setTimeout(() => {
+                                if (typeof QRCode !== 'undefined') {
+                                    new QRCode(qrcodeContainer, {
+                                        text: data.otpauthUrl,
+                                        width: 250,
+                                        height: 250
+                                    });
+                                } else {
+                                    console.error("Bibliothèque QRCode non chargée");
+                                    qrcodeContainer.innerHTML = '<p style="color: red;">Erreur de chargement du QR code</p>';
+                                }
+                            }, 0);
 
                             // Fermeture de la popup
                             const closeButton = qrCodePopup.querySelector("#closePopup");
