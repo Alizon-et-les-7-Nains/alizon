@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_nom'] = $user['nom'];
             
             // Rediriger vers la page d'accueil connecté
-            header('Location: ../../views/frontoffice/popupA2f.php');
+            header('Location: ../../views/frontoffice/accueilConnecte.php');
             exit;
         } else {
             // Mot de passe incorrect

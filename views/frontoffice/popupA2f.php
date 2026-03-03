@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="../../public/style.css">
 </head>
 <body class="bodyPopupA2f">
-    
     <div class="popupA2f">
         <a href="connexionClient.php">
             <div class="croixFermerLaPage">
