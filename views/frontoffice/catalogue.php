@@ -499,7 +499,9 @@ const noteInput = document.getElementById('note');
 const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
-
+let products = <?= json_encode($products) ?>;
+let productIdsInPage = products.map(p => p.idProduit);
+console.log("Produits sur la page:", productIdsInPage);
 const carteAffiche = document.getElementById('map');
 
 const coordonnees = [
