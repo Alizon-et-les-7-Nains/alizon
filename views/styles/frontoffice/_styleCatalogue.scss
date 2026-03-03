@@ -6,24 +6,16 @@
     flex-direction: row;
     background-color: $color-white;
 
-    #map {
-        display: none;
-        position: fixed;
-        top: 200px;           /* ajuste à la hauteur de ton header */
-        left: 240px;
+    #map{
+        margin: 2em;
+        margin-left: 300px;
+        border: 2px solid #273469;
+        border-radius: 4px;
         width: 1600px;
         height: 75vh;
+        display: none;
         background-color: #e4d9ff;
-        padding: 2em;
-        box-sizing: border-box;
-        z-index: 600;
-
-        .map-inner {
-            width: 100%;
-            height: 100%;
-            border: 2px solid #273469;
-            border-radius: 4px;
-        }
+        
     }
 
     #map.active {
