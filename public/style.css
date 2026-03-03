@@ -8532,7 +8532,6 @@ main.commandesBackoffice dialog:focus {
   background-color: rgb(25.1875, 33.5833333333, 67.8125);
 }
 
-<<<<<<< HEAD
 .bodyPopupA2f {
   position: fixed;
   inset: 0;
@@ -8624,7 +8623,8 @@ main.commandesBackoffice dialog:focus {
 }
 .bodyPopupA2f .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
-=======
+}
+
 main.backoffice-stats * {
   transition: all 0.2s ease;
   font-family: "open-sans";
@@ -8741,7 +8741,6 @@ main.backoffice-stats ul.stats li:nth-child(2) {
 }
 main.backoffice-stats ul.stats li:nth-child(2) article {
   width: 100%;
->>>>>>> stats
 }
 
 /*# sourceMappingURL=style.css.map */
