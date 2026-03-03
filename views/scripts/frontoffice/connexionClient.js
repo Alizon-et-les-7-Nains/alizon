@@ -48,16 +48,15 @@ a2f.addEventListener("change", function () {
     // generation du QR code
     const otpauthUrl =
       "otpauth://totp/MonSite:TestUser?secret=SECRET_KEY&issuer=MonSite";
-    toDataURL(otpauthUrl, function (err, url) {
+    QRCode.toDataURL(otpauthUrl, function (err, url) {
       if (err) throw err;
       const qrCodeImage = qrCodePopup.querySelector("img");
       qrCodeImage.src = url;
-
-      document
-        .querySelector("#closePopup")
-        .addEventListener("click", function () {
-          qrCodePopup.remove();
-        });
+    });
+    
+    const closeButton = qrCodePopup.querySelector("#closePopup");
+    closeButton.addEventListener("click", function () {
+      qrCodePopup.remove();
     });
   } else {
     // Envoyer une requête AJAX pour désactiver l'authentification à deux facteurs
