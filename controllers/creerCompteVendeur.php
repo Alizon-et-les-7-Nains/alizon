@@ -70,8 +70,7 @@ if (empty($errors)) {
 
         $sql_insert = "INSERT INTO _vendeur (nom, prenom, email, noTelephone, pseudo, 
                       dateNaissance, idAdresse, noSiren, raisonSocial, mdp) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
 
         $stmt_insert = $pdo->prepare($sql_insert);

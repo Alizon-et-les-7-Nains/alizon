@@ -172,7 +172,9 @@ unset($_SESSION['form_data']);
         const reqNumber = document.getElementById('req-number');
         const reqSpecial = document.getElementById('req-special');
         const reqMatch = document.getElementById('req-match');
-
+        
+        console.log(latInput.value);
+        console.log(lngInput.value);
         // Critères de validation
         const rules = {
             length: {
