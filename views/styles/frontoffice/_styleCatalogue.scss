@@ -15,7 +15,7 @@
         height: 75vh;
         display: none;
         background-color: #e4d9ff;
-        
+
     }
 
     #map.active {
@@ -95,6 +95,14 @@
         margin: 0;
     }
 
+    .vertical-bar {
+        display: none;
+    }
+
+    .vertical-bar.active {
+        display: block;
+    }
+
     .listeArticle {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
@@ -102,6 +110,7 @@
         width: 100%;
         margin-top: 40px;
         margin-left: 300px;
+        overflow-y: scroll;
     }
 
     .listeArticle article {
