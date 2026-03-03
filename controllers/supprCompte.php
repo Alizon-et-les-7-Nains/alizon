@@ -11,10 +11,10 @@ try{
     $stmt->execute([
         ':idClient' => $id_client
     ]);
-    $stmt = $pdo->prepare("DELETE FROM _adresseClient WHERE idClient = :idClient");
-    $stmt->execute([
-        ':idClient' => $id_client
-    ]);
+    // $stmt = $pdo->prepare("DELETE FROM _adresseClient WHERE idClient = :idClient");
+    // $stmt->execute([
+    //     ':idClient' => $id_client
+    // ]);
 
     // Remplacer les avis par le compte anonyme
     $stmt = $pdo->prepare("UPDATE _avis SET idClient = 11111 WHERE idClient = :idClient");
