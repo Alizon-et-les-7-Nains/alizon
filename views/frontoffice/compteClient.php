@@ -392,7 +392,6 @@ $pays = $adresse['pays'] ?? '';
         $mdp = $tabMdp['mdp'] ?? '';
     ?>
     
-    <script src="../../controllers/Chiffrement.js"></script>
     <script>
         const mdp = <?php echo json_encode($mdp); ?>;
     </script>
