@@ -6,28 +6,20 @@
     flex-direction: row;
     background-color: $color-white;
 
-    .map-wrapper {
-        display: none;
-        position: fixed;
-        top: 200px;
-        left: 280px;
-        width: calc(100% - 280px);
-        height: 75vh;
-        background-color: #e4d9ff;
+    #map{
         padding: 2em;
-        z-index: 600;
-        box-sizing: border-box;
-
-        &.active {
-            display: block;
-        }
-    }
-
-    #map {
-        width: 100%;
-        height: 100%;
+        margin-left: 300px;
         border: 2px solid #273469;
         border-radius: 4px;
+        width: 1600px;
+        height: 75vh;
+        display: none;
+        background-color: #e4d9ff;
+        
+    }
+
+    #map.active {
+        display: block;
     }
 
     .fakePanneauGris{
