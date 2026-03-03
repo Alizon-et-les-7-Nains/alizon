@@ -7,6 +7,7 @@
                 <figcaption>Accueil</figcaption>
             </figure>
         </li>
+
         <?php $class = $currentPage == 'produits.php' ? 'here' : ''; ?>
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
@@ -14,6 +15,7 @@
                 <figcaption>Produits</figcaption>
             </figure>
         </li>
+
         <?php $class = $currentPage == 'stocks.php' ? 'here' : ''; ?>
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
@@ -21,6 +23,7 @@
                 <figcaption>Stocks</figcaption>
             </figure>
         </li>
+
         <?php $class = $currentPage == 'commandes.php' ? 'here' : ''; ?>
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
@@ -28,6 +31,7 @@
                 <figcaption>Commandes</figcaption>
             </figure>
         </li>
+
         <?php $class = $currentPage == 'avis.php' ? 'here' : ''; ?>
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
@@ -35,6 +39,15 @@
                 <figcaption>Avis</figcaption>
             </figure>
         </li>
+
+        <?php $class = $currentPage == 'statistiques.php' ? 'here' : ''; ?>
+        <li class="aside-btn <?php echo $class; ?>">
+            <figure>
+                <img id="focus" src="../../public/images/courbeDark.svg">
+                <figcaption>Statistiques</figcaption>
+            </figure>
+        </li>
+
         <?php $class = $currentPage == 'notifications.php' ? 'here' : ''; ?>
         <li class="aside-btn <?php echo $class; ?>">
             <figure>
