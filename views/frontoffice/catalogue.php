@@ -56,6 +56,13 @@ $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
+$stmtTous = $pdo->prepare($sql);
+foreach ($params as $key => $val) {
+    $stmtTous->bindValue($key, $val, PDO::PARAM_STR);
+}
+$stmtTous->execute();
+$allProducts = $stmtTous->fetchAll(PDO::FETCH_ASSOC);
+
 $sql .= " LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($sql);
 
@@ -85,12 +92,12 @@ $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Prix Max en tenant compte des remises :)
 $stmt = "SELECT MAX(CASE 
-                    WHEN r.tauxRemise > 0 AND CURDATE() BETWEEN r.debutRemise AND r.finRemise 
-                        THEN p.prix * (1 - r.tauxRemise/100)
-                        ELSE p.prix 
-                    END) as maxPrice
-                    FROM _produit p
-                    LEFT JOIN _remise r ON p.idProduit = r.idProduit";
+        WHEN r.tauxRemise > 0 AND CURDATE() BETWEEN r.debutRemise AND r.finRemise 
+            THEN p.prix * (1 - r.tauxRemise/100)
+            ELSE p.prix 
+        END) as maxPrice
+        FROM _produit p
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit";
 $stmt = $pdo->prepare($stmt);
 $stmt->execute();
 $maxPrice = $stmt->fetchColumn() ?? 100;
@@ -499,28 +506,27 @@ const noteInput = document.getElementById('note');
 const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
-let products = <?= json_encode($totalProduits) ?>;
-let vendeurs = <?= json_encode($vendeurs) ?>;
 
+let products = <?= json_encode($allProducts) ?>;
+let vendeurs = <?= json_encode($vendeurs) ?>;
 let listeIdVendeurs = [];
 for (let i = 0; i < products.length; i++) {
     if (!listeIdVendeurs.includes(products[i].idVendeur)) {
         listeIdVendeurs.push(products[i].idVendeur);
     }
 }
-console.log(listeIdVendeurs[0]);
-const carteAffiche = document.getElementById('map');
+console.log(listeIdVendeurs);
 
-const coordonnees = [
-    { lat: 48.7412, lng: -3.4523, nom: "Les produits natus", id: 1 },
-    { lat: 48.7198, lng: -3.4871, nom: "Les produits natus", id: 2 },
-    { lat: 48.7534, lng: -3.5012, nom: "Les produits natus", id: 3 },
-    { lat: 48.7089, lng: -3.4234, nom: "Les produits natus", id: 4 },
-    { lat: 48.7623, lng: -3.4789, nom: "Les produits natus", id: 5 },
-    { lat: 48.7301, lng: -3.5234, nom: "Les produits natus", id: 6 },
-    { lat: 48.7456, lng: -3.4101, nom: "Les produits natus", id: 7 },
-    { lat: 48.7178, lng: -3.5089, nom: "Les produits natus", id: 8 }
-];
+const carteAffiche = document.getElementById('map');
+const coordonnees = [];
+
+for (let i = 0; i < vendeurs.length; i++) {
+    if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
+        const lat = 48.174838642366915 + Math.random() * 0.2 - 0.2;
+        const lng = -2.7538102129824145 + Math.random() * 0.2 - 0.2;
+        coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
+    }
+}
 
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
