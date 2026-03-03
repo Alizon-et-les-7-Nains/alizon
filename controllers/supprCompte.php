@@ -46,6 +46,17 @@ try{
         ':idClient' => $id_client
     ]);
 
+    // Supprimer les commandes du compte client
+    $stmt = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = :idClient");
+    $stmt->execute([
+        ':idClient' => $id_client
+    ]);
+    $res = $stmt->fetch();
+    $stmt = $pdo->prepare("DELETE FROM _commande WHERE idPanier = :idPanier");
+    $stmt->execute([
+        ':idPanier' => $res
+    ]);
+
     // Supprimer le panier du compte client
     $stmt = $pdo->prepare("DELETE FROM _panier WHERE idClient = :idClient");
     $stmt->execute([
