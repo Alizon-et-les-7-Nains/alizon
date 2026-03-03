@@ -397,7 +397,7 @@ $pays = $adresse['pays'] ?? '';
     </script>
     <script src="../scripts/frontoffice/compteClient.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-    <script src="../scripts/frontoffice/connexionClient.js"></script>
+    <!-- <script src="../scripts/frontoffice/connexionClient.js"></script> --> 
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
