@@ -226,7 +226,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($input_data['activate'])) {
     </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
-    <script type="module" src="../scripts/frontoffice/connexionClient.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="../scripts/frontoffice/connexionClient.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-import "https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js";
+
 
 const a2f = document.querySelector('.authenTwofacts input[type="checkbox"]');
 
