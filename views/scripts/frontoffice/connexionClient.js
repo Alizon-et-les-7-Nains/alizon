@@ -1,14 +1,12 @@
-import QRCode from "https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js";
-
 const a2f = document.querySelector('.authenTwofacts input[type="checkbox"]');
 
-// Create popup element but don't append it yet
+// Créer l'élément popup mais ne pas l'ajouter tout de suite
 const qrCodePopup = document.createElement("div");
 qrCodePopup.classList.add("qr-code-popup");
 qrCodePopup.innerHTML = `
     <div class="qr-code-content">
         <h2>Scannez ce QR code avec votre application d'authentification</h2>
-        <img src="" alt="QR Code">
+        <div id="qrcode-container"></div>
         <button id="closePopup">Fermer</button>
     </div>
 `;
@@ -17,7 +15,7 @@ a2f.addEventListener("change", function () {
   if (this.checked) {
     console.log("Activation de l'authentification à deux facteurs");
 
-    // Disable checkbox while processing
+    // Désactiver la checkbox pendant le traitement
     this.disabled = true;
 
     // Envoyer une requête AJAX pour activer l'authentification à deux facteurs
@@ -31,30 +29,27 @@ a2f.addEventListener("change", function () {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          alert("L'authentification à deux facteurs a été activée.");
-
-          // Pop up avec qr code pour configurer l'authentification à deux facteurs
+          // Popup avec QR code pour configurer l'authentification à deux facteurs
           document.body.appendChild(qrCodePopup);
-
-          // Génération du QR code avec l'URL reçue du serveur
-          if (data.otpauthUrl) {
-            QRCode.toDataURL(data.otpauthUrl, function (err, url) {
-              if (err) {
-                console.error("Erreur génération QR code:", err);
-                throw err;
-              }
-              const qrCodeImage = qrCodePopup.querySelector("img");
-              qrCodeImage.src = url;
+          
+          // Générer le QR code avec l'URL otpauth
+          const qrcodeContainer = document.getElementById('qrcode-container');
+          qrcodeContainer.innerHTML = ''; // Vider le conteneur
+          
+          // URL OTPAuth pour le QR code (version de secours si le serveur ne renvoie pas l'URL)
+          const otpauthUrl = data.otpauthUrl || "otpauth://totp/MonSite:TestUser?secret=JBSWY3DPEHPK3PXP&issuer=MonSite";
+          
+          // Utiliser la bibliothèque QRCode pour générer le QR code
+          if (typeof QRCode !== 'undefined') {
+            new QRCode(qrcodeContainer, {
+              text: otpauthUrl,
+              width: 200,
+              height: 200
             });
           } else {
-            // Fallback pour le développement
-            const otpauthUrl =
-              "otpauth://totp/MonSite:TestUser?secret=JBSWY3DPEHPK3PXP&issuer=MonSite";
-            QRCode.toDataURL(otpauthUrl, function (err, url) {
-              if (err) throw err;
-              const qrCodeImage = qrCodePopup.querySelector("img");
-              qrCodeImage.src = url;
-            });
+            // Fallback si QRCode n'est pas disponible
+            console.error("Bibliothèque QRCode non chargée");
+            qrcodeContainer.innerHTML = '<p>Impossible de générer le QR code</p>';
           }
 
           // Fermeture de la popup
@@ -80,7 +75,7 @@ a2f.addEventListener("change", function () {
         this.disabled = false;
       });
   } else {
-    // Disable checkbox while processing
+    // Désactiver la checkbox pendant le traitement
     this.disabled = true;
 
     // Envoyer une requête AJAX pour désactiver l'authentification à deux facteurs
