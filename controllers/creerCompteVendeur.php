@@ -80,7 +80,7 @@ if (empty($errors)) {
             $idAdr,
             $noSiren,
             $raisonSocial,
-            $mdp_hash,
+            $mdp_hash
         ]);
         
         $_SESSION['message'] = "Votre compte vendeur a été créé avec succès.";
