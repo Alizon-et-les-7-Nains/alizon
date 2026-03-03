@@ -8458,4 +8458,84 @@ main.commandesBackoffice dialog:focus {
   background-color: rgb(25.1875, 33.5833333333, 67.8125);
 }
 
+main.backoffice-stats * {
+  transition: all 0.2s ease;
+  font-family: "open-sans";
+  color: #273469;
+}
+main.backoffice-stats h1 {
+  user-select: none;
+}
+main.backoffice-stats h1 {
+  color: #273469;
+  font-family: "lora";
+}
+main.backoffice-stats table {
+  width: 100%;
+}
+main.backoffice-stats table:first-of-type {
+  border-collapse: separate;
+  border-spacing: 2em 0;
+  table-layout: fixed;
+}
+main.backoffice-stats table:first-of-type th {
+  text-align: left;
+  font-size: 1em;
+  padding: 1em 1em 0.5em 1em;
+}
+main.backoffice-stats table:last-of-type {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+main.backoffice-stats table:last-of-type * {
+  text-align: center;
+  padding: 0;
+}
+main.backoffice-stats table:last-of-type th {
+  font-size: 1.5em;
+}
+main.backoffice-stats table:last-of-type figcaption {
+  font-weight: bold;
+  font-size: 3em;
+}
+main.backoffice-stats button, main.backoffice-stats select {
+  border: none;
+  font-weight: bold;
+  font-size: 1em;
+  padding: 1em;
+  border-radius: 16px;
+  background-color: #273469;
+  color: #fffefa;
+  width: 100%;
+}
+main.backoffice-stats button option, main.backoffice-stats select option {
+  background-color: #e3f2fe;
+  border: none;
+  outline: none;
+  border-radius: 16px;
+  color: #273469;
+}
+main.backoffice-stats button:hover, main.backoffice-stats button.selected, main.backoffice-stats select:hover, main.backoffice-stats select.selected {
+  background-color: #e3f2fe;
+  color: #273469;
+  outline: solid 3px #273469;
+  outline-offset: -3px;
+}
+main.backoffice-stats button:hover, main.backoffice-stats select:hover {
+  cursor: pointer;
+}
+main.backoffice-stats button.selected:hover, main.backoffice-stats select.selected:hover {
+  cursor: default;
+}
+main.backoffice-stats article {
+  background-color: #e4d9ff;
+  border-radius: 16px;
+  padding: 1em;
+  margin: 1em;
+}
+main.backoffice-stats canvas {
+  width: 100%;
+  height: 40vh;
+}
+
 /*# sourceMappingURL=style.css.map */
