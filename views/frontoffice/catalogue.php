@@ -518,13 +518,13 @@ for (let i = 0; i < products.length; i++) {
 console.log(listeIdVendeurs);
 
 const carteAffiche = document.getElementById('map');
-const coordonnes = [];
+const coordonnees = [];
 
 for (let i = 0; i < vendeurs.length; i++) {
     if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
         const lat = 48.174838642366915 + Math.random() * 0.1 - 0.05;
         const lng = -2.7538102129824145 + Math.random() * 0.1 - 0.05;
-        coordonnes.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
+        coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
     }
 }
 
