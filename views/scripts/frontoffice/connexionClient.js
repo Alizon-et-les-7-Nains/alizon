@@ -1,4 +1,4 @@
-const QRCode = require("qrcode");
+import { toDataURL } from "qrcode";
 
 const a2f = document.querySelector('.authenTwofacts input[type="checkbox"]');
 
@@ -47,7 +47,7 @@ a2f.addEventListener("change", function () {
     // generation du QR code
     const otpauthUrl =
       "otpauth://totp/MonSite:TestUser?secret=SECRET_KEY&issuer=MonSite";
-    QRCode.toDataURL(otpauthUrl, function (err, url) {
+    toDataURL(otpauthUrl, function (err, url) {
       if (err) throw err;
       const qrCodeImage = qrCodePopup.querySelector("img");
       qrCodeImage.src = url;
