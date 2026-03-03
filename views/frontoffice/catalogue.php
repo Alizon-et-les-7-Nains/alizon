@@ -507,7 +507,7 @@ const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
 
-let products = <?= json_encode($products) ?>;
+let products = <?= json_encode($allProducts) ?>;
 let vendeurs = <?= json_encode($vendeurs) ?>;
 let listeIdVendeurs = [];
 for (let i = 0; i < products.length; i++) {
