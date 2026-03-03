@@ -357,7 +357,7 @@ $cart = getCurrentCart($pdo, $idClient);
             }
         </style>
     </aside>
-    <div id="map" style=""></div>
+    <div id="map"></div>
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
@@ -518,12 +518,13 @@ for (let i = 0; i < products.length; i++) {
 console.log(listeIdVendeurs);
 
 const carteAffiche = document.getElementById('map');
+const barreResultat = document.getElementById('resultat');
 const coordonnees = [];
 
 for (let i = 0; i < vendeurs.length; i++) {
     if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
-        const lat = 48.174838642366915 + Math.random() * 0.2 - 0.2;
-        const lng = -2.7538102129824145 + Math.random() * 0.2 - 0.2;
+        const lat = 48.174838642366915 + Math.random() * 0.2 - 0.05;
+        const lng = -2.7538102129824145 + Math.random() * 0.2 - 0.05;
         coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
     }
 }
@@ -546,6 +547,7 @@ const btnCarte = document.getElementById('btnCarte');
 
 btnCarte.addEventListener('click', () => {
     carteAffiche.classList.toggle('active');
+    barreResultat.classList.toggle('active');
     
     if (carteAffiche.classList.contains('active')) {
         setTimeout(() => {

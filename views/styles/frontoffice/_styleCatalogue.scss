@@ -81,9 +81,16 @@
         background: #E3F2FE;
         position: sticky;
         padding: 0.3em;
-        font-size: 13px;
+        font-size: 18px;
         font-weight: 500;
         margin: 0;
+        margin-left: 280px;
+        z-index: 100;
+        width: 100%;
+    }
+
+    #resultat.active {
+        margin-left: 0;
     }
 
     .listeArticle {
@@ -91,6 +98,7 @@
         grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
         gap: 10px;
         width: 100%;
+        margin-top: 40px;
     }
 
     .listeArticle article {
