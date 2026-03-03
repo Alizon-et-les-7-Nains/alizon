@@ -1,5 +1,4 @@
-require('dotenv').config();
-const API_KEY = process.env.GOOGLE_API_KEY;
+const API_KEY="AIzaSyBjiVyQzKD4GNR2Pq9gbo5EwY0mpqRxbVo";
 
 async function geocodeAdresse(adresse) {
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(adresse)}&key=${API_KEY}`;
