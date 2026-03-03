@@ -1,7 +1,9 @@
 <?php
 session_start();
 require_once '../../controllers/pdo.php' ;
-    
+require_once '/var/www/html/vendor/autoload.php';
+
+use OTPHP\TOTP;
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../frontoffice/connexionClient.php");
@@ -11,7 +13,26 @@ if (!isset($_SESSION['user_id'])) {
 
 // On récupère l'id du client
 $id_client = $_SESSION['user_id'];
+    
 
+$data = json_decode(file_get_contents("php://input"), true);
+
+if (isset($data['activate'])) {
+
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['success' => false]);
+        exit;
+    }
+
+    $activate = $data['activate'] ? 1 : 0;
+
+    $sql = "UPDATE _client SET otp_enabled = ? WHERE idClient = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$activate, $_SESSION['user_id']]);
+
+    echo json_encode(['success' => true]);
+    exit;
+}
 // On récupère l'id de son adresse
 $stmt = $pdo->prepare("SELECT idAdresse FROM saedb._client WHERE idClient = :idClient");
 $stmt->execute([":idClient" => $id_client]);
@@ -153,6 +174,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pays = $adresse['pays'] ?? '';
 
 
+
+function chiffremnent($data) {
+    $key = 'la_super_cle_secrete';
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+    $encrypted = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
+    return base64_encode($iv . $encrypted);
+}
+
+function a2f() {
+    $totp = TOTP::create();
+
+    $totp->setLabel('TestUser');
+    $totp->setIssuer('MonSite');
+
+    // Ajouter le secret à la BDD chiffré
+    $sql = "UPDATE _client SET otp_secret = ? WHERE idClient = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([chiffremnent($totp->getSecret()), $_SESSION['user_id']]);
+}
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -254,6 +297,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" onclick="popUpModifierMdp()" class="boutonModifierMdp">Modifier le mot de passe</button>
                 <button class="boutonAnnuler" type="button" onclick="boutonAnnuler()">Annuler</button>
                 <button type="button" class="boutonModiferProfil">Modifier</button>
+                <label for="remember_me">Activer l'authentification à deux facteurs</label>
+                <input type="checkbox" id="remember_me" name="remember_me">
             </div>
         </form>
 
@@ -275,5 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const mdp = <?php echo json_encode($mdp); ?>;
     </script>
     <script src="../scripts/frontoffice/compteClient.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="../scripts/frontoffice/connexionClient.js"></script>
 </body>
 </html>
