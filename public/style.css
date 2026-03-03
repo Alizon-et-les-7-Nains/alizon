@@ -7391,7 +7391,6 @@ dialog.reassort form input {
   height: 75vh;
   display: none;
   background-color: #e4d9ff;
-  z-index: 100;
 }
 .pageCatalogue #map.active {
   display: block;
