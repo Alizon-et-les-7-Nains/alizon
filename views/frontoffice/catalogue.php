@@ -358,6 +358,7 @@ $cart = getCurrentCart($pdo, $idClient);
         </style>
     </aside>
     <div id="map"></div>
+    <div style="height: 100%; width: 1px; background-color: #273469;"></div>
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
@@ -554,8 +555,6 @@ btnCarte.addEventListener('click', () => {
             map.invalidateSize();
         }, 100);
     }
-
-    filterSort.style.paddingRight = carteAffiche.classList.contains('active') ? '1300px' : '20px';
     listeArticle.style.marginLeft = carteAffiche.classList.contains('active') ? '0px' : '300px';
 });
 

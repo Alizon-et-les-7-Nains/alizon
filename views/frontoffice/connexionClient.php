@@ -119,7 +119,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
-    <script src="../scripts/frontoffice/connexionClient.js"></script>
 </body>
-
-</html> 
+</html>
