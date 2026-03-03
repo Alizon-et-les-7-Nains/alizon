@@ -372,6 +372,55 @@ $breakpoint-small-mobile: 480px;
       margin-top: 15px;
     }
   }
-  
+}
 
+
+.qr-code-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .qr-code-content {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+    h2 {
+      color: $color-blue;
+      font-family: fonts.$font-lora;
+      font-size: 20px;
+      margin-bottom: 24px;
+    }
+
+    img {
+      max-width: 100%;
+      margin-bottom: 24px;
+    }
+
+    button {
+      padding: $btn-padding;
+      background: $color-pastel-purple;
+      color: $color-blue;
+      font-family: fonts.$font-lora;
+      border: none;
+      border-radius: $btn-radius;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
 }

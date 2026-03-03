@@ -12,9 +12,10 @@
         border: 2px solid #273469;
         border-radius: 4px;
         width: 1600px;
-        height: 70vh;
-        overscroll-behavior: contain;
+        height: 75vh;
         display: none;
+        background-color: #e4d9ff;
+
     }
 
     #map.active {
@@ -80,11 +81,26 @@
 
     #resultat{
         background: #E3F2FE;
-        position: sticky;
+        position: fixed;
         padding: 0.3em;
-        font-size: 13px;
+        font-size: 18px;
         font-weight: 500;
         margin: 0;
+        margin-left: 280px;
+        z-index: 100;
+        width: 100%;
+    }
+
+    #resultat.active {
+        margin: 0;
+    }
+
+    .vertical-bar {
+        display: none;
+    }
+
+    .vertical-bar.active {
+        display: block;
     }
 
     .listeArticle {
@@ -92,6 +108,9 @@
         grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
         gap: 10px;
         width: 100%;
+        margin-top: 40px;
+        margin-left: 300px;
+        overflow-y: scroll;
     }
 
     .listeArticle article {

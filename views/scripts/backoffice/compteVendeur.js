@@ -567,6 +567,20 @@ function boutonAnnuler() {
   }
 }
 
+async function geocodeAdresse(adresse) {
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(adresse)}&format=json`;
+  const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
+  const data = await rep.json();        
+  if (data.length > 0) {
+    const { lat, lon } = data[0];
+    latInput.value = lat;
+    lngInput.value = lon;
+    return { lat, lng: lon };
+  } else {
+    throw new Error("Adresse introuvable");
+  }
+}
+
 // Événements DOM
 document.addEventListener("DOMContentLoaded", function () {
   // Initialisation - cacher toutes les erreurs au chargement
@@ -628,7 +642,7 @@ document.addEventListener("DOMContentLoaded", function () {
         boutonSauvegarder.textContent = "Sauvegarde...";
         boutonSauvegarder.disabled = true;
       }
-
+      geocodeAdresse(document.getElementById("adresse").value);
       console.log(" Soumission du formulaire...");
     });
   }

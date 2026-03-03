@@ -56,6 +56,13 @@ $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
+$stmtTous = $pdo->prepare($sql);
+foreach ($params as $key => $val) {
+    $stmtTous->bindValue($key, $val, PDO::PARAM_STR);
+}
+$stmtTous->execute();
+$allProducts = $stmtTous->fetchAll(PDO::FETCH_ASSOC);
+
 $sql .= " LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($sql);
 
@@ -85,12 +92,12 @@ $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Prix Max en tenant compte des remises :)
 $stmt = "SELECT MAX(CASE 
-                    WHEN r.tauxRemise > 0 AND CURDATE() BETWEEN r.debutRemise AND r.finRemise 
-                        THEN p.prix * (1 - r.tauxRemise/100)
-                        ELSE p.prix 
-                    END) as maxPrice
-                    FROM _produit p
-                    LEFT JOIN _remise r ON p.idProduit = r.idProduit";
+        WHEN r.tauxRemise > 0 AND CURDATE() BETWEEN r.debutRemise AND r.finRemise 
+            THEN p.prix * (1 - r.tauxRemise/100)
+            ELSE p.prix 
+        END) as maxPrice
+        FROM _produit p
+        LEFT JOIN _remise r ON p.idProduit = r.idProduit";
 $stmt = $pdo->prepare($stmt);
 $stmt->execute();
 $maxPrice = $stmt->fetchColumn() ?? 100;
@@ -351,7 +358,8 @@ $cart = getCurrentCart($pdo, $idClient);
         </style>
     </aside>
 
-    <div id="map" style=""></div>
+    <div id="map"></div>
+    <div id="vertical-bar" style="width: 5px; background-color: black;"></div>
 
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
@@ -502,16 +510,68 @@ const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
 
-const carteAffiche = document.getElementById('map');
+let products = <?= json_encode($allProducts) ?>;
+let vendeurs = <?= json_encode($vendeurs) ?>;
+let listeIdVendeurs = [];
+for (let i = 0; i < products.length; i++) {
+    if (!listeIdVendeurs.includes(products[i].idVendeur)) {
+        listeIdVendeurs.push(products[i].idVendeur);
+    }
+}
+console.log(listeIdVendeurs);
 
-var map = L.map('map').setView([48.735004, -3.460140], 13);
+const carteAffiche = document.getElementById('map');
+const barreResultat = document.getElementById('resultat');
+const barreVerticale = document.getElementById('vertical-bar');
+const coordonnees = [];
+
+<?php
+for ($i = 0; $i < count($vendeurs); $i++) {
+    $sqlAddressesVendeur = "SELECT latitude, longitude FROM _addresseVendeur
+                            WHERE idAddresse = :id";
+    $stmtAddresses = $pdo->prepare($sqlAddressesVendeur);
+    $stmtAddresses->execute([':id' => $vendeurs[$i]['idAddresse']]);
+    $addresses = $stmtAddresses->fetch(PDO::FETCH_ASSOC);
+}
+?>
+
+let addresses = <?= json_encode($addresses) ?>; 
+
+for (let i = 0; i < vendeurs.length; i++) {
+    if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
+        const lat = addresses[i].latitude;
+        const lng = addresses[i].longitude;
+        coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
+    }
+}
+
+var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+
+for (let i = 0; i < coordonnees.length; i++) {
+    const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
+    marker.on('click', () => {
+        vendeur.value = coordonnees[i].id;
+        loadProduits(1);
+    });
+}
+
 const btnCarte = document.getElementById('btnCarte');
+
 btnCarte.addEventListener('click', () => {
     carteAffiche.classList.toggle('active');
+    barreResultat.classList.toggle('active');
+    barreVerticale.classList.toggle('active');
+    
+    if (carteAffiche.classList.contains('active')) {
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+    }
+    listeArticle.style.marginLeft = carteAffiche.classList.contains('active') ? '0px' : '300px';
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -634,7 +694,6 @@ function loadProduits(page = 1) {
         });
 }
 
-// Déplacer cet event listener en dehors de la fonction, avec les autres
 document.getElementById('zoneSelect').addEventListener('change', () => loadProduits(1));
 
 // Events listeners sur les sliders

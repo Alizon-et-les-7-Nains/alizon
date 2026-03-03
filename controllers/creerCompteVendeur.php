@@ -18,6 +18,9 @@ $noSiren = trim($_POST['noSiren'] ?? '');
 $raisonSocial = trim($_POST['raisonSocial'] ?? '');
 $mdp_clair = $_POST['mdp'] ?? '';
 $confirmer_mdp = $_POST['confirmer_mdp'] ?? '';
+$adresse = $_POST['idAdresse'] ?? '';
+$lat = $_POST['lat'] !== '' ? (float)$_POST['lat'] : null;
+$lng = $_POST['lng'] !== '' ? (float)$_POST['lng'] : null;
 
 $errors = [];
 
@@ -51,12 +54,16 @@ if (empty($errors)) {
 // --- INSERTION ---
 if (empty($errors)) {
     $mdp_hash = password_hash($mdp_clair, PASSWORD_DEFAULT);
-    
     try {
+        $sql_adresse = "INSERT INTO _adresseVendeur(adresse, latitude, longitude) VALUES (?, ?, ?)";
+        $stmt_adresse = $pdo->prepare($sql_adresse);
+        $stmt_adresse->execute([$adresse, $lat, $lng]);
+
+        $idAdr = $pdo->lastInsertId(); 
+
         $sql_insert = "INSERT INTO _vendeur (nom, prenom, email, noTelephone, pseudo, 
-                      dateNaissance, noSiren, raisonSocial, mdp) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
+                          dateNaissance, idAdresse, noSiren, raisonSocial, mdp) 
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt_insert = $pdo->prepare($sql_insert);
         $stmt_insert->execute([
             $nom,
@@ -65,20 +72,20 @@ if (empty($errors)) {
             $telephone_clean,
             $pseudo,
             $dateNaissance,
+            $idAdr,        
             $noSiren,
             $raisonSocial,
             $mdp_hash
         ]);
-        
+
         $_SESSION['message'] = "Votre compte vendeur a été créé avec succès.";
         header('Location: ../views/backoffice/connexion.php');
         exit;
-        
+
     } catch (PDOException $e) {
         $errors[] = "Erreur lors de l'insertion : " . $e->getMessage();
     }
 }
-
 // --- REDIRECTION EN CAS D'ERREUR ---
 $_SESSION['form_errors'] = $errors;
 $_SESSION['form_data'] = $_POST;

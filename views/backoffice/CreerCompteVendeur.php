@@ -59,6 +59,8 @@ unset($_SESSION['form_data']);
                 enctype="multipart/form-data">
                 <div class="row g-3">
 
+                    <input type="text" id="lat" name="lat" style="display:none;">
+                    <input type="text" id="lng" name="lng" style="display:none;">
                     <div class="col-md-6">
                         <label>Nom de contact</label>
                         <input type="text" name="nom" required class="form-control"
@@ -99,7 +101,7 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="col-md-6">
                         <label>Adresse de l'entreprise</label>
-                        <input type="text" name="idAdresse" required class="form-control"
+                        <input type="text" name="idAdresse" id="idAdresse" required class="form-control"
                             value="<?= htmlspecialchars($idAdresse) ?>">
                     </div>
 
@@ -155,7 +157,10 @@ unset($_SESSION['form_data']);
 
         <script>
         // Eléments 
-        const passwordInput = document.getElementById('mdp');
+        const latInput = document.getElementById('lat');
+        const lngInput = document.getElementById('lng');
+        const adresseInput = document.getElementById('idAdresse');
+        const passwordInput = document.getElementById('mdp')
         const confirmPasswordInput = document.getElementById('confirmer_mdp');
         const submitButton = document.getElementById('btn_inscription');
         const passwordRequirementsContainer = document.getElementById('password-requirements-container');
@@ -167,7 +172,9 @@ unset($_SESSION['form_data']);
         const reqNumber = document.getElementById('req-number');
         const reqSpecial = document.getElementById('req-special');
         const reqMatch = document.getElementById('req-match');
-
+        
+        console.log(latInput.value);
+        console.log(lngInput.value);
         // Critères de validation
         const rules = {
             length: {
@@ -249,6 +256,21 @@ unset($_SESSION['form_data']);
             return allValid;
         }
 
+        async function geocodeAdresse(adresse) {
+            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(adresse)}&format=json`;
+            const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
+            const data = await rep.json();
+            
+            if (data.length > 0) {
+                const { lat, lon } = data[0];
+                latInput.value = lat;
+                lngInput.value = lon;
+                return { lat, lng: lon };
+            } else {
+                throw new Error("Adresse introuvable");
+            }
+        }
+
         passwordInput.addEventListener('blur', () => {
             // Masque les critères si le champ est vide
             if (passwordInput.value.length === 0) {
@@ -291,7 +313,7 @@ unset($_SESSION['form_data']);
                 e.preventDefault();
             }
         });
-
+        geocodeAdresse(adresseInput.value);
         validatePassword();
         </script>
 

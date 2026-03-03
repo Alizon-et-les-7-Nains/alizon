@@ -1,8 +1,8 @@
 <?php 
-// Inclure le fichier de connexion à la base de données
-require_once "../../controllers/pdo.php";
 // Démarrer la session pour gérer l'authentification
 session_start();
+// Inclure le fichier de connexion à la base de données
+require_once "../../controllers/pdo.php";
 
 // Initialiser les variables
 $error = '';
@@ -109,7 +109,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" id="password_input" name="password_clair" placeholder="Mot de passe*"
                     class="inputConnexionClient" required>
             </div>
-
             <div>
                 <a href="inscription.php">Pas encore client ? Inscrivez-vous ici</a>
                 <button type="submit" class="boutonConnexionClient">Se connecter</button>
@@ -121,5 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 </body>
+<<<<<<< HEAD
 
+=======
+>>>>>>> d38c02f550829defd38327ac28b8ab7d7d1e6564
 </html>
