@@ -55,20 +55,15 @@ if (empty($errors)) {
 if (empty($errors)) {
     $mdp_hash = password_hash($mdp_clair, PASSWORD_DEFAULT);
     try {
-        $sql_adresse = "INSERT INTO _adresseVendeur(adresse, latitude, longitude) VALUES  (?, ?, ?)";
+        $sql_adresse = "INSERT INTO _adresseVendeur(adresse, latitude, longitude) VALUES (?, ?, ?)";
         $stmt_adresse = $pdo->prepare($sql_adresse);
-        $stmt_adresse->execute([$adresse,$lat,$lng]);
+        $stmt_adresse->execute([$adresse, $lat, $lng]);
 
-        $sql_idAdr = "SELECT idAdresse FROM _adresseVendeur WHERE adresse = ?";
-        $sql_idAdr = $pdo->prepare($sql_adresse);
-        $sql_idAdr->execute([$adresse]);
-        $idAdr = $sql_idAdr->fetch(PDO::FETCH_ASSOC);
+        $idAdr = $pdo->lastInsertId(); 
 
         $sql_insert = "INSERT INTO _vendeur (nom, prenom, email, noTelephone, pseudo, 
-                      dateNaissance, idAdresse, noSiren, raisonSocial, mdp) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
-
+                          dateNaissance, idAdresse, noSiren, raisonSocial, mdp) 
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt_insert = $pdo->prepare($sql_insert);
         $stmt_insert->execute([
             $nom,
@@ -77,21 +72,20 @@ if (empty($errors)) {
             $telephone_clean,
             $pseudo,
             $dateNaissance,
-            $idAdr,
+            $idAdr,        
             $noSiren,
             $raisonSocial,
             $mdp_hash
         ]);
-        
+
         $_SESSION['message'] = "Votre compte vendeur a été créé avec succès.";
         header('Location: ../views/backoffice/connexion.php');
         exit;
-        
+
     } catch (PDOException $e) {
         $errors[] = "Erreur lors de l'insertion : " . $e->getMessage();
     }
 }
-
 // --- REDIRECTION EN CAS D'ERREUR ---
 $_SESSION['form_errors'] = $errors;
 $_SESSION['form_data'] = $_POST;
