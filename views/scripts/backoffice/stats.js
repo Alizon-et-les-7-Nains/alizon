@@ -1,13 +1,36 @@
 import { Chart} from 'https://cdn.jsdelivr.net/npm/chart.js/auto/+esm';
 import { dayChart, weekChart, monthChart, yearChart } from './charts.js';
+import moment from 'https://cdn.jsdelivr.net/npm/moment/+esm';
 
-const canva = document.getElementById('stats');
+const data = await fetch('/controllers/api.php?action=stats').then(res => res.json());
+
+console.log(data);
+
+
+const yearsData = {};
+
+for (const d of data) {
+    const year = moment(d.date).year();
+    if (!yearsData[year]) {
+        yearsData[year] = {
+            vente: 0,
+            argent: 0
+        }
+    }
+
+    yearsData[year].vente += parseInt(d.quantite);
+    yearsData[year].argent += parseFloat(d.prixProduitHt) * parseInt(d.quantite);
+    yearsData[year].argent = Math.round(yearsData[year].argent * 100) / 100;
+}
+
+console.log(yearsData);
 
 let [vente, argent] = [[12, 19, 3, 5, 2, 3, 2], [45, 41, 21, 45, 13, 5, 13]];
 
 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
 document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
 
+const canva = document.getElementById('stats');
 let chart = new Chart(canva, dayChart(vente, argent));
 
 document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
@@ -36,8 +59,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
                 document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
 
-                document.getElementById('prev').style.display = 'block';
-                document.getElementById('next').style.display = 'block';
+                document.getElementById('prev').disabled = false;
+                document.getElementById('next').disabled = true;
                 break;
             
             case 'Mensuel':
@@ -46,8 +69,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
                 document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
 
-                document.getElementById('prev').style.display = 'block';
-                document.getElementById('next').style.display = 'block';
+                document.getElementById('prev').disabled = false;
+                document.getElementById('next').disabled = true;
                 break;
             
             case 'Annuel':
@@ -56,8 +79,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
                 document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
 
-                document.getElementById('prev').style.display = 'none';
-                document.getElementById('next').style.display = 'none';
+                document.getElementById('prev').disabled = true;
+                document.getElementById('next').disabled = true;
                 break;
         }
     })
