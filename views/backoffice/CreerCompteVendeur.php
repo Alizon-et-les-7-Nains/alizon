@@ -355,7 +355,7 @@ unset($_SESSION['form_data']);
                             <h1>Confirmer votre adresse</h1>
                             <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
                             <div class="conteneurSections">
-                                <div id="map"></div>
+                                <div id="map" style="height: 380px; background-color: black;"></div>
                             </div>
                             <button>Confirmer</button>
                         </main>`;
@@ -380,6 +380,8 @@ unset($_SESSION['form_data']);
                 }
 
                 var map = L.map('map').setView([lat, lon], 13);
+                consolo.log(map);
+
         </script>
 
         <?php require_once './partials/retourEnHaut.php' ?>
