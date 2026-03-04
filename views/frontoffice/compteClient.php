@@ -40,9 +40,14 @@ if (isset($data['generateQR'])) {
         exit;
     }
     
+    // Récupérer le pseudo du client
+    $stmt_client = $pdo->prepare("SELECT pseudo FROM _client WHERE idClient = ?");
+    $stmt_client->execute([$_SESSION['user_id']]);
+    $client_data = $stmt_client->fetch(PDO::FETCH_ASSOC);
+    
     // Générer un nouveau secret pour l'A2F
     $totp = TOTP::create();
-    $totp->setLabel($client['pseudo']);
+    $totp->setLabel($client_data['pseudo'] ?? $_SESSION['user_id']);
     $totp->setIssuer('Alizon');
     
     $secret = $totp->getSecret();
