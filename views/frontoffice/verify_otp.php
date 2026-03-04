@@ -28,6 +28,8 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 $otp = $data['otp'] ?? '';
 
+var_dump($otp);
+
 $user_id = $_SESSION['user_id'] ?? null;
 
 if (!$user_id) {

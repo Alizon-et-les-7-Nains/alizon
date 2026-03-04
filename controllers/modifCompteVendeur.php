@@ -23,7 +23,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $raisonSocial = trim($_POST['raisonSocial'] ?? '');
     $mdp_clair = $_POST['mdp'] ?? '';
     $confirmer_mdp = $_POST['confirmer_mdp'] ?? '';
-    
+    $adresse = $_POST['adresse'] ?? '';
+    $codePostal = $_POST['codePostal'] ?? '';
+    $ville = $_POST['ville'] ?? '';
+    $region = $_POST['region'] ?? '';
+    $pays = $_POST['pays'] ?? '';
+    $lat = $_POST['lat'] !== '' ? (float)$_POST['lat'] : null;
+    $lng = $_POST['lng'] !== '' ? (float)$_POST['lng'] : null;
+
+
     $errors = [];
     
     // Validation des mots de passe (seulement si fourni)
@@ -100,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $raisonSocial,
                     $mdp_hash,
                     $idVendeur
-                ]);
+                ]);             
             } else {
                 // Sans modifier le mot de passe
                 $sql_update = "UPDATE _vendeur SET nom = ?, prenom = ?, email = ?, noTelephone = ?, 
@@ -121,6 +129,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $idVendeur
                 ]);
             }
+
+            $sql_update = "UPDATE _adresseVendeur SET adresse = ?, codePostal = ?, ville = ?,
+                           region = ?, pays = ? WHERE idAdresse = ?";
+
+            $stmt_update = $pdo->prepare($sql_update);
+            $stmt_update->execute([
+                $adresse,
+                $codePostal,
+                $ville,
+                $region,
+                $pays,
+                $idAdresse
+            ]);  
             
             // Redirection avec message de succès
             $_SESSION['message'] = "Votre compte a été modifié avec succès.";

@@ -2964,10 +2964,11 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   align-items: center;
 }
-.mainCompteClient article div p, .mainCompteClient input {
+.mainCompteClient article div p,
+.mainCompteClient input {
   background-color: transparent;
   width: 100%;
-  color: #6E6E6E;
+  color: #6e6e6e;
   font-size: 16px;
   font-family: "lora";
   font-weight: bold;
@@ -2994,8 +2995,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 32px;
   font-family: "lora";
   cursor: pointer;
+  font-size: 20px;
 }
-.mainCompteClient .boutonModifierMdp, .mainCompteClient .boutonSupprimerMdp {
+.mainCompteClient .boutonModifierMdp,
+.mainCompteClient .boutonSupprimerMdp {
   width: 250px;
   height: 55px;
 }
@@ -3118,7 +3121,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   text-align: center;
 }
 .mainPopUpA2F p {
-  color: #6E6E6E;
+  color: #6e6e6e;
   font-family: "open-sans", sans-serif;
   font-size: 16px;
   line-height: 1.6;
