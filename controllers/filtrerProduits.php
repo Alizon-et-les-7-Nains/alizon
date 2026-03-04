@@ -72,7 +72,7 @@ $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $data = ['html' => '', 'nbPages' => $nbPages, 'totalProduits' => $totalProduits,
- 'idVendeurs' => array_values(array_unique(array_column($products, 'idVendeur')))];
+ 'idVendeurs' => array_values(array_unique(array_map('strval', array_column($products, 'idVendeur'))))];
 
 if (count($products) > 0) {
     foreach ($products as $value) {
