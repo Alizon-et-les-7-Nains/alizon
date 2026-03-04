@@ -383,9 +383,9 @@ unset($_SESSION['form_data']);
                 function onMapClick(e) {
                     alert("You clicked the map at " + e.latlng);
                     var pAdresseAct = document.getElementById('adrAct');
-                    pAdresseAct.textContent = "Adresse actuelle : ", reverseGeocodeAdresse(latlng[0], latlng[1]);
-                    var map = L.map('map').setView([latlng[0], latlng[1]], 13);
-                    var marker = L.marker([latlng[0], latlng[1]]).addTo(map);
+                    pAdresseAct.textContent = "Adresse actuelle : ", reverseGeocodeAdresse(e.latlng[0], e.latlng[1]);
+                    var map = L.map('map').setView([e.latlng[0], e.latlng[1]], 13);
+                    var marker = L.marker([e.latlng[0], e.latlng[1]]).addTo(map);
                 }
 
                 map.on('click', onMapClick);
