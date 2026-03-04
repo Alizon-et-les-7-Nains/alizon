@@ -528,20 +528,18 @@ const coordonnees = [];
 <?php
 $adresses = [];
 for ($i = 0; $i < count($vendeurs); $i++) {
-    $stmt = $pdo->prepare("SELECT latitude, longitude FROM _adresseVendeur WHERE idadresse = :id");
+    $stmt = $pdo->prepare("SELECT latitude, longitude, idAdresse FROM _adresseVendeur WHERE idAdresse = :id");
     $stmt->execute([':id' => $vendeurs[$i]['idadresse']]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $adresses[] = $row ?: ['latitude' => null, 'longitude' => null];
 }
 ?>
-
-
 let adresses = <?= json_encode($adresses) ?>; 
 
 for (let i = 0; i < adresses.length; i++) {
     const lat = adresses[i].latitude;
     const lng = adresses[i].longitude;
-    if (lat && lng) {
+    if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
         coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
     }
 }
