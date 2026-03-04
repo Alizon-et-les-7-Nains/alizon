@@ -42,8 +42,8 @@ if (isset($data['generateQR'])) {
     
     // Générer un nouveau secret pour l'A2F
     $totp = TOTP::create();
-    $totp->setLabel($_SESSION['user_id']);
-    $totp->setIssuer('MonSite');
+    $totp->setLabel($client['pseudo']);
+    $totp->setIssuer('Alizon');
     
     $secret = $totp->getSecret();
     
@@ -74,7 +74,7 @@ if (isset($data['verifyAndActivate'])) {
     // Vérifier le code OTP
     $totp = TOTP::create($secret);
     $isValid = $totp->verify($code);
-    
+
     if ($isValid) {
         // Code valide : enregistrer en BDD et activer l'A2F
         $secret_chiffre = chiffrement($secret);
