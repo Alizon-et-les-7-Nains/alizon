@@ -102,7 +102,7 @@ unset($_SESSION['form_data']);
                     <div class="col-md-6">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <label>Adresse de l'entreprise</label>
-                            <h5 onclick="geocodeAdresse(<?= htmlspecialchars($idAdresse) ?>)">Vérifier l'adresse</h5>
+                            <p onclick="geocodeAdresse(<?= htmlspecialchars($idAdresse) ?>)" style="cursor: pointer; font-size: smaller; margin: 0; margin-top: 3px;">Vérifier l'adresse</p>
                         </div>
                         <input type="text" name="idAdresse" id="idAdresse" required class="form-control"
                             value="<?= htmlspecialchars($idAdresse) ?>" placeholder="Ex: 12 Rue de la Fonderie, 72100 Le Mans, France">
