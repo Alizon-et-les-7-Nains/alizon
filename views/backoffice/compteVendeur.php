@@ -73,7 +73,7 @@ $stmt = $pdo->prepare("SELECT idAdresse, otp_enabled FROM _vendeur WHERE codeVen
 $stmt->execute([':id' => $code_vendeur]);
 $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
 $idAdresse = $vendeur['idAdresse'] ?? null;
-$otp_enabled = $vendeur['otp_enabled'] ?? 0;
+$otp_enabled = (int) ($vendeur['otp_enabled'] ?? 0);
 
 // Si pas d'adresse, en créer une vide
 if (!$idAdresse) {
