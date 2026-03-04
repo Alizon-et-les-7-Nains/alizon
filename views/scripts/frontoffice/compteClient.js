@@ -425,6 +425,10 @@ let a2fTotalSlides = 4;
 
 function handleA2FToggle() {
   const checkbox = document.getElementById("remember_me");
+  if (!checkbox) {
+    console.error("Checkbox 'remember_me' not found in the DOM");
+    return;
+  }
   if (checkbox.checked) {
     // Si déjà activé, désactiver
     desactiverA2F();
