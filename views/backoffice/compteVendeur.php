@@ -1,6 +1,10 @@
 <?php
 require_once '../../controllers/auth.php';
 require_once '../../controllers/pdo.php';
+require_once '../../controllers/a2f_helpers.php';
+require_once '/var/www/html/vendor/autoload.php';
+
+use OTPHP\TOTP;
 
 if (!isset($_SESSION['id'])) {
     header("Location: ../backoffice/connexion.php");
@@ -9,11 +13,67 @@ if (!isset($_SESSION['id'])) {
 
 $code_vendeur = $_SESSION['id'];
 
+$data = json_decode(file_get_contents('php://input'), true);
+
+if (isset($data['generateQR'])) {
+    $totp = TOTP::create();
+
+    $stmt = $pdo->prepare("SELECT pseudo FROM _vendeur WHERE codeVendeur = ?");
+    $stmt->execute([$code_vendeur]);
+    $vendeurData = $stmt->fetch(PDO::FETCH_ASSOC);
+    $pseudoA2F = $vendeurData['pseudo'] ?? 'Vendeur';
+
+    $totp->setLabel($pseudoA2F);
+    $totp->setIssuer('Alizon');
+
+    $secret = $totp->getSecret();
+    $_SESSION['bo_temp_otp_secret'] = $secret;
+
+    echo json_encode([
+        'success' => true,
+        'otpauthUrl' => $totp->getProvisioningUri(),
+        'secret' => $secret
+    ]);
+    exit;
+}
+
+if (isset($data['verifyAndActivate'])) {
+    if (!isset($_SESSION['bo_temp_otp_secret'])) {
+        echo json_encode(['success' => false, 'message' => 'Secret temporaire manquant']);
+        exit;
+    }
+
+    $code = $data['code'] ?? '';
+    $secret = $_SESSION['bo_temp_otp_secret'];
+
+    $totp = TOTP::create($secret);
+    $isValid = $totp->verify($code);
+
+    if ($isValid) {
+        $secretChiffre = a2f_encrypt($secret);
+        $stmt = $pdo->prepare("UPDATE _vendeur SET otp_enabled = 1, otp_secret = ? WHERE codeVendeur = ?");
+        $success = $stmt->execute([$secretChiffre, $code_vendeur]);
+        unset($_SESSION['bo_temp_otp_secret']);
+        echo json_encode(['success' => $success, 'message' => 'A2F activée']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Code incorrect']);
+    }
+    exit;
+}
+
+if (isset($data['activate']) && $data['activate'] === false) {
+    $stmt = $pdo->prepare("UPDATE _vendeur SET otp_enabled = 0, otp_secret = NULL WHERE codeVendeur = ?");
+    $success = $stmt->execute([$code_vendeur]);
+    echo json_encode(['success' => $success]);
+    exit;
+}
+
 // Récupération de l'idAdresse du vendeur
-$stmt = $pdo->prepare("SELECT idAdresse FROM _vendeur WHERE codeVendeur = :id");
+$stmt = $pdo->prepare("SELECT idAdresse, otp_enabled FROM _vendeur WHERE codeVendeur = :id");
 $stmt->execute([':id' => $code_vendeur]);
 $vendeur = $stmt->fetch(PDO::FETCH_ASSOC);
 $idAdresse = $vendeur['idAdresse'] ?? null;
+$otp_enabled = $vendeur['otp_enabled'] ?? 0;
 
 // Si pas d'adresse, en créer une vide
 if (!$idAdresse) {
@@ -292,6 +352,9 @@ $pays          = $vendeur['pays'] ?? '';
                 <button type="button" class="annuler boutonAnnuler" style="display: none;">Annuler</button>
                 <button type="submit" class="sauvegarder boutonSauvegarder" style="display: none;">Sauvegarder</button>
                 <button type="button" class="modifier-mdp boutonModifierMdp">Modifier le mot de passe</button>
+                <button type="button" class="boutonA2F" onclick="handleA2FToggle(<?php echo $otp_enabled ? 'true' : 'false'; ?>)">
+                    <?php echo $otp_enabled ? 'Désactiver l\'A2F' : 'Configurer l\'A2F'; ?>
+                </button>
             </div>
         </form>
 
@@ -334,6 +397,8 @@ $pays          = $vendeur['pays'] ?? '';
     const mdpCrypte = <?php echo json_encode($mdp); ?>;
     </script>
     <script src="../scripts/backoffice/compteVendeur.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="../scripts/frontoffice/a2f.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 </body>
