@@ -553,12 +553,13 @@ function afficherPointsSurCarte() {
             coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
         }
     }
-    
-    for (let i = 0; i < map._layers.length; i++) {
-        if (map._layers[i]._icon) {
-            map.removeLayer(map._layers[i]);
+
+    // Supprimer les anciens marqueurs
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
         }
-    }
+    });
 
     for (let i = 0; i < coordonnees.length; i++) {
         const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
