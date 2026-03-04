@@ -50,8 +50,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Rediriger vers la page d'accueil connecté
             //header('Location: ../../views/frontoffice/accueilConnecte.php');
-            header('Location: ../../views/frontoffice/popupA2f.php');
-            exit;
+            $sql = "SELECT otp_enabled FROM _client WHERE idClient = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$_SESSION['user_id']]);
+            $otp_enabled = $stmt->fetchColumn();
+            if (!$otp_enabled) {
+                header('Location: ../../views/frontoffice/accueilConnecte.php');
+                exit();
+            } else {
+                header('Location: ../../views/frontoffice/popupA2f.php');
+                exit();
+            }
         } else {
             // Mot de passe incorrect
             $error = "Mot de passe incorrect";
