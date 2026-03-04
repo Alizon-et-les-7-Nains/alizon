@@ -1,9 +1,9 @@
-'<?php
+<?php
+session_start();
+
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
 
-
-session_start();
 
 $produitsParPage = 16;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
@@ -607,8 +607,8 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
             });
             group.addLayer(marker);
         }
-        map.fitBounds(group.getBounds(), { padding: [30, 30] });
     }
+    map.fitBounds(group.getBounds(), { padding: [30, 30] });
 }
 
 afficherPointsSurCarte();
