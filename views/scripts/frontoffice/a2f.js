@@ -50,9 +50,9 @@ function ouvrirPopupA2F() {
                     <h2>Applications compatibles</h2>
                     <p>Choisissez l'une de ces applications gratuites :</p>
                     <div class="apps">
-                        <img src="../../public/images/google.png" alt="Google Authenticator" title="Google Authenticator">
-                        <img src="../../public/images/microsoft.png" alt="Microsoft Authenticator" title="Microsoft Authenticator">
-                        <img src="../../public/images/apple.png" alt="Authy" title="Authy">
+                      <img src="/public/images/google.png" alt="Google Authenticator" title="Google Authenticator">
+                      <img src="/public/images/microsoft.png" alt="Microsoft Authenticator" title="Microsoft Authenticator">
+                      <img src="/public/images/apple.png" alt="Authy" title="Authy">
                     </div>
                 </div>
 
@@ -213,12 +213,19 @@ function genererQRCodeA2F(overlay) {
 }
 
 function activerA2F() {
+  const code = prompt("Entrez le code à 6 chiffres de votre application :");
+
+  if (!code || !/^\d{6}$/.test(code.trim())) {
+    alert("Veuillez entrer un code valide à 6 chiffres.");
+    return;
+  }
+
   fetch(window.location.href, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ activate: true }),
+    body: JSON.stringify({ verifyAndActivate: true, code: code.trim() }),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -233,7 +240,7 @@ function activerA2F() {
         // Recharger la page pour mettre à jour le bouton
         window.location.reload();
       } else {
-        alert("Erreur lors de l'activation de l'A2F");
+        alert(data.message || "Erreur lors de l'activation de l'A2F");
       }
     })
     .catch((error) => {
