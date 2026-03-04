@@ -342,23 +342,25 @@ unset($_SESSION['form_data']);
         </script>
 
         <script>
+            let mapInstance = null;
+            let currentMarker = null;
+
             function popUpAdresse(lat, lon) {
                 const overlay = document.createElement("div");
                 overlay.className = "overlayPopUpDetails";
 
                 overlay.innerHTML = `
-                        <main class="popUpDetails" style=" text-align: center;">
-                            <div class="croixFermerLaPage">
-                                <div></div>
-                                <div></div>
-                            </div>
-                            <h1>Confirmer votre adresse</h1>
-                            <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
-                            <div style="height: 380px; background-color: black; border-radius: 16px;" id="map">
-                            </div>
-                            <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : ${reverseGeocodeAdresse(lat, lon)}</p>
-                            <button>Confirmer</button>
-                        </main>`;
+                    <main class="popUpDetails" style="text-align: center;">
+                        <div class="croixFermerLaPage">
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <h1>Confirmer votre adresse</h1>
+                        <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
+                        <div style="height: 380px; background-color: black; border-radius: 16px;" id="map"></div>
+                        <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : ${reverseGeocodeAdresse(lat, lon)}</p>
+                        <button>Confirmer</button>
+                    </main>`;
 
                 document.body.appendChild(overlay);
 
@@ -367,35 +369,37 @@ unset($_SESSION['form_data']);
 
                 croixFermer.addEventListener("click", fermerPopUpDetailsCommande);
                 if (btnFermer) btnFermer.addEventListener("click", fermerPopUpDetailsCommande);
-                    overlay.addEventListener("click", (e) => {
-                    if (e.target === overlay) {
-                        fermerPopUpDetailsCommande();
-                    }
+                overlay.addEventListener("click", (e) => {
+                    if (e.target === overlay) fermerPopUpDetailsCommande();
                 });
 
-                var map = L.map('map').setView([lat, lon], 13);
+                mapInstance = L.map('map').setView([lat, lon], 13);
                 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                }).addTo(map);
-                var marker = L.marker([lat, lon]).addTo(map);
+                }).addTo(mapInstance);
+                currentMarker = L.marker([lat, lon]).addTo(mapInstance);
+                mapInstance.on('click', onMapClick);
+            }
 
-                map.on('click', onMapClick);
-
+            function fermerPopUpDetailsCommande() {
+                const overlay = document.querySelector(".overlayPopUpDetails");
+                if (overlay) overlay.remove();
+                if (mapInstance) {
+                    mapInstance.remove();
+                    mapInstance = null;
+                    currentMarker = null;
                 }
+            }
 
-                function fermerPopUpDetailsCommande() {
-                    const overlay = document.querySelector(".overlayPopUpDetails");
-                    if (overlay) overlay.remove();
+            function onMapClick(e) {
+                const pAdresseAct = document.getElementById('adrAct');
+                if (currentMarker) {
+                    currentMarker.remove();
                 }
-
-                function onMapClick(e) {
-                    map.remove();
-                    var pAdresseAct = document.getElementById('adrAct');
-                    var map = L.map('map').setView([e.latlng.lat, e.latlng.lng], 13);
-                    var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-                    pAdresseAct.textContent = "Adresse actuelle : ", reverseGeocodeAdresse(e.latlng.lat, e.latlng.lng);
-                }
+                currentMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mapInstance);
+                pAdresseAct.textContent = "Adresse actuelle : " + reverseGeocodeAdresse(e.latlng.lat, e.latlng.lng);
+            }
 
         </script>
 
