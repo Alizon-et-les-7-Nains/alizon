@@ -521,6 +521,7 @@ let adresses = <?= json_encode($adresses) ?>;
 
 
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
+var group = L.markerClusterGroup();
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -529,10 +530,12 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 function afficherPointsSurCarte(idVendeursActifs = null) {
     let coordonnees = [];
 
-    // ✅ Normalise tout en string pour éviter les problèmes de type int/string
-    const _listeIdVendeurs = idVendeursActifs !== null
-        ? idVendeursActifs.map(String)
-        : [...new Set(products.map(p => String(p.idVendeur)))];
+    if (idVendeursActifs !==null) {
+        const listeIdVendeurs = idVendeursActifs
+    }
+    else{
+        const listeIdVendeurs = [...new Set(products.map(p => String(p.idVendeur)))];
+    }
 
     map.eachLayer(layer => {
         if (layer instanceof L.Marker) map.removeLayer(layer);
@@ -541,15 +544,16 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
         const lng = adresses[i].longitude;
-        // ✅ Normalise aussi le codeVendeur en string avant comparaison
         if (lat && lng && _listeIdVendeurs.includes(String(vendeurs[i].codeVendeur))) {
-            const marker = L.marker([lat, lng]).addTo(map);
+            const marker = L.marker([lat, lng]);
+            group.addLayer(marker);
             marker.on('click', () => {
                 vendeur.value = vendeurs[i].codeVendeur;
                 loadProduits(1);
             });
         }
     }
+    map.addLayer(group);
 }
 
 afficherPointsSurCarte();
