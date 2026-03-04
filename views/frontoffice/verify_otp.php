@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "../../controllers/pdo.php";
+require_once "../../vendor/autoload.php";
 
 header('Content-Type: application/json');
 
@@ -27,8 +28,7 @@ $totp = TOTP::create($secret);
 
 if ($totp->verify($otp)) {
 
-    $_SESSION['user_id'] = $user_id;
-    unset($_SESSION['user_id']);
+    $_SESSION['tmp_usr'] = $user_id;
 
     echo json_encode(["success" => true]);
 
