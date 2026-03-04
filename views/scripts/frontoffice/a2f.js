@@ -1,28 +1,23 @@
 // ===== GESTION DE L'AUTHENTIFICATION À DEUX FACTEURS (A2F) =====
 let a2fCurrentSlide = 0;
-let a2fTotalSlides = 4;
 
 function handleA2FToggle(isEnabled) {
   if (isEnabled) {
-    // Si l'A2F est déjà activée, proposer de la désactiver
     desactiverA2F();
   } else {
-    // Sinon, ouvrir le popup pour activer l'A2F
     ouvrirPopupA2F();
   }
 }
 
 function ouvrirPopupA2F() {
   const overlay = document.createElement("div");
-  overlay.className = "overlayPopUpCompteClient";
+  overlay.className = "bodyPopupA2f"; // Même classe que le frontoffice
   overlay.innerHTML = `
-        <main class="mainPopUpA2F">
-            <div class="croixFermerLaPage">
-                <div></div>
-                <div></div>
+        <div class="popupA2f">
+            <div class="croixFermerLaPage" onclick="this.closest('.bodyPopupA2f').remove()">
+                <div></div><div></div>
             </div>
-
-            <!-- Carousel -->
+            
             <div class="carousel-container">
                 <!-- Slide 1 -->
                 <div class="carousel-slide active" data-index="0">
@@ -50,9 +45,12 @@ function ouvrirPopupA2F() {
                     <h2>Applications compatibles</h2>
                     <p>Choisissez l'une de ces applications gratuites :</p>
                     <div class="apps">
-                      <img src="/public/images/google.png" alt="Google Authenticator" title="Google Authenticator">
-                      <img src="/public/images/microsoft.png" alt="Microsoft Authenticator" title="Microsoft Authenticator">
-                      <img src="/public/images/apple.png" alt="Authy" title="Authy">
+                        <img src="/public/images/google.png" alt="Google Authenticator" 
+                             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg'">
+                        <img src="/public/images/microsoft.png" alt="Microsoft Authenticator"
+                             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg'">
+                        <img src="/public/images/apple.png" alt="Authy"
+                             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg'">
                     </div>
                 </div>
 
@@ -64,26 +62,18 @@ function ouvrirPopupA2F() {
                         scannez ce code.
                     </p>
                     <div id="qrCodeContainer">
-                        <!-- QR Code sera généré ici -->
                         <p>Génération du QR code en cours...</p>
                     </div>
-                  <div style="margin-top: 12px;">
-                    <label for="a2fVerificationCode">Code à 6 chiffres</label>
-                    <input
-                      type="text"
-                      id="a2fVerificationCode"
-                      maxlength="6"
-                      inputmode="numeric"
-                      pattern="[0-9]*"
-                      placeholder="Entrez le code"
-                      style="display:block; margin:8px auto 0; text-align:center; letter-spacing:4px;"
-                    />
-                    <p class="erreur" id="a2fActivationError" style="display:none; margin-top:8px;"></p>
-                  </div>
-                    <p>
-                        <small>Ce code sera demandé à votre prochaine connexion.</small>
-                    </p>
-                    <button onclick="activerA2F()" class="boutonModiferProfil" style="margin-top: 20px; width: auto; padding: 10px 30px;">Activer l'A2F</button>
+                    <div style="margin-top: 20px;">
+                        <label for="a2fVerificationCode">Code à 6 chiffres</label>
+                        <input type="text" id="a2fVerificationCode" maxlength="6" 
+                               inputmode="numeric" pattern="[0-9]*" 
+                               placeholder="Entrez le code"
+                               style="display:block; margin:10px auto 0; text-align:center; letter-spacing:4px; font-size:20px; padding:8px; width:200px;" />
+                        <p class="erreur" id="a2fActivationError" style="display:none; margin-top:10px; color:red;"></p>
+                    </div>
+                    <p><small>Ce code sera demandé à votre prochaine connexion.</small></p>
+                    <button onclick="activerA2F()" class="boutonModiferProfil" style="margin-top: 20px; padding: 10px 30px;">Activer l'A2F</button>
                 </div>
 
                 <!-- Flèches de navigation -->
@@ -98,28 +88,13 @@ function ouvrirPopupA2F() {
                     <span class="dot" data-index="3"></span>
                 </div>
             </div>
-        </main>
+        </div>
     `;
 
   document.body.appendChild(overlay);
   a2fCurrentSlide = 0;
 
-  // Fermeture du popup
-  overlay.querySelector(".croixFermerLaPage").addEventListener("click", () => {
-    overlay.remove();
-  });
-
-  // Fermeture en cliquant sur l'overlay
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) {
-      overlay.remove();
-    }
-  });
-
-  // Initialisation de la navigation
   initA2FCarouselNavigation(overlay);
-
-  // Génération du QR code
   genererQRCodeA2F(overlay);
 }
 
@@ -172,7 +147,6 @@ function initA2FCarouselNavigation(overlay) {
 }
 
 function genererQRCodeA2F(overlay) {
-  // Appel AJAX pour générer le secret et obtenir l'URL du QR code
   fetch(window.location.href, {
     method: "POST",
     headers: {
@@ -184,34 +158,36 @@ function genererQRCodeA2F(overlay) {
     .then((data) => {
       if (data.success && data.otpauthUrl) {
         const container = overlay.querySelector("#qrCodeContainer");
-        container.innerHTML = ""; // Vider le conteneur
+        container.innerHTML = "";
 
-        // Créer le canvas pour le QR code
-        const canvas = document.createElement("canvas");
-        container.appendChild(canvas);
+        // Créer le QR code
+        if (typeof QRCode !== "undefined" && QRCode.toCanvas) {
+          const canvas = document.createElement("canvas");
+          container.appendChild(canvas);
 
-        // Générer le QR code
-        QRCode.toCanvas(
-          canvas,
-          data.otpauthUrl,
-          {
-            width: 200,
-            margin: 2,
-            color: {
-              dark: "#273469",
-              light: "#FFFFFF",
+          QRCode.toCanvas(
+            canvas,
+            data.otpauthUrl,
+            {
+              width: 200,
+              margin: 2,
+              color: {
+                dark: "#273469",
+                light: "#FFFFFF",
+              },
             },
-          },
-          function (error) {
-            if (error) {
-              console.error("Erreur génération QR code:", error);
-              container.innerHTML =
-                '<p class="erreur">Erreur lors de la génération du QR code</p>';
-            }
-          },
-        );
+            function (error) {
+              if (error) {
+                console.error("Erreur QR code:", error);
+                fallbackQRCode(container, data.otpauthUrl);
+              }
+            },
+          );
+        } else {
+          // Fallback si QRCode n'est pas disponible
+          fallbackQRCode(container, data.otpauthUrl);
+        }
 
-        // Stocker le secret pour l'activation
         overlay.dataset.secret = data.secret;
       } else {
         overlay.querySelector("#qrCodeContainer").innerHTML =
@@ -225,9 +201,20 @@ function genererQRCodeA2F(overlay) {
     });
 }
 
+function fallbackQRCode(container, url) {
+  // Fallback si la librairie QRCode n'est pas chargée
+  container.innerHTML = `
+        <div style="text-align: center;">
+            <p style="color: #666;">Impossible de générer le QR code</p>
+            <p style="font-size: 12px; word-break: break-all;">${url}</p>
+        </div>
+    `;
+}
+
 function activerA2F() {
-  const codeInput = document.querySelector("#a2fVerificationCode");
-  const errorNode = document.querySelector("#a2fActivationError");
+  const overlay = document.querySelector(".bodyPopupA2f");
+  const codeInput = document.getElementById("a2fVerificationCode");
+  const errorNode = document.getElementById("a2fActivationError");
   const code = (codeInput?.value || "").trim();
 
   if (!code || !/^\d{6}$/.test(code)) {
@@ -255,22 +242,21 @@ function activerA2F() {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        // Fermer le popup
-        const overlay = document.querySelector(".overlayPopUpCompteClient");
         if (overlay) {
           overlay.remove();
         }
-        // Afficher un message de succès
         alert("Authentification à deux facteurs activée avec succès !");
-        // Recharger la page pour mettre à jour le bouton
         window.location.reload();
       } else {
         if (errorNode) {
-          errorNode.textContent =
-            data.message || "Erreur lors de l'activation de l'A2F";
+          errorNode.textContent = data.message || "Code incorrect";
           errorNode.style.display = "block";
         } else {
-          alert(data.message || "Erreur lors de l'activation de l'A2F");
+          alert(data.message || "Code incorrect");
+        }
+        if (codeInput) {
+          codeInput.value = "";
+          codeInput.focus();
         }
       }
     })
@@ -296,7 +282,6 @@ function desactiverA2F() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          // Recharger la page pour mettre à jour l'affichage
           window.location.reload();
         } else {
           alert("Erreur lors de la désactivation");
