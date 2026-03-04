@@ -575,12 +575,12 @@ let adresses = <?= json_encode($adresses) ?>;
 
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 var group = L.markerClusterGroup();
-map.fitBounds(group.getBounds(), { padding: [30, 30] });
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 10,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 map.addLayer(group);
+map.fitBounds(group.getBounds(), { padding: [30, 30] });
 
 function getListeAdressesVendeurs(idVendeursActifs = null) {
     let _listeIdVendeurs;
