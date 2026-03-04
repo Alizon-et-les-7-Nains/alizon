@@ -2,9 +2,14 @@
 let a2fCurrentSlide = 0;
 let a2fTotalSlides = 4;
 
-function handleA2FToggle() {
-  // Ouvrir directement le popup pour activer l'A2F
-  ouvrirPopupA2F();
+function handleA2FToggle(isEnabled) {
+  if (isEnabled) {
+    // Si l'A2F est déjà activée, proposer de la désactiver
+    desactiverA2F();
+  } else {
+    // Sinon, ouvrir le popup pour activer l'A2F
+    ouvrirPopupA2F();
+  }
 }
 
 function ouvrirPopupA2F() {
@@ -45,9 +50,9 @@ function ouvrirPopupA2F() {
                     <h2>Applications compatibles</h2>
                     <p>Choisissez l'une de ces applications gratuites :</p>
                     <div class="apps">
-                        <img src="../../public/images/google-authenticator.png" alt="Google Authenticator" title="Google Authenticator">
-                        <img src="../../public/images/microsoft-authenticator.png" alt="Microsoft Authenticator" title="Microsoft Authenticator">
-                        <img src="../../public/images/authy.png" alt="Authy" title="Authy">
+                        <img src="../../public/images/google.svg" alt="Google Authenticator" title="Google Authenticator">
+                        <img src="../../public/images/microsoft.png" alt="Microsoft Authenticator" title="Microsoft Authenticator">
+                        <img src="../../public/images/apple.svg" alt="Authy" title="Authy">
                     </div>
                 </div>
 
@@ -219,9 +224,14 @@ function activerA2F() {
     .then((data) => {
       if (data.success) {
         // Fermer le popup
-        fermerPopUp();
+        const overlay = document.querySelector(".overlayPopUpCompteClient");
+        if (overlay) {
+          overlay.remove();
+        }
         // Afficher un message de succès
         alert("Authentification à deux facteurs activée avec succès !");
+        // Recharger la page pour mettre à jour le bouton
+        window.location.reload();
       } else {
         alert("Erreur lors de l'activation de l'A2F");
       }
@@ -248,21 +258,16 @@ function desactiverA2F() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          document.getElementById("remember_me").checked = false;
           alert("Authentification à deux facteurs désactivée");
+          // Recharger la page pour mettre à jour l'affichage
+          window.location.reload();
         } else {
           alert("Erreur lors de la désactivation");
-          // Re-cocher la checkbox si erreur
-          document.getElementById("remember_me").checked = true;
         }
       })
       .catch((error) => {
         console.error("Erreur:", error);
         alert("Erreur de connexion");
-        document.getElementById("remember_me").checked = true;
       });
-  } else {
-    // Si l'utilisateur annule, on remet la checkbox à son état initial
-    document.getElementById("remember_me").checked = true;
   }
 }

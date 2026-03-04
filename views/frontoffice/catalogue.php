@@ -526,9 +526,13 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-function afficherPointsSurCarte() {
+function afficherPointsSurCarte(idVendeursActifs = null) {
     let coordonnees = [];
     let _listeIdVendeurs = [...new Set(products.map(p => p.idVendeur))];
+
+    if (idVendeursActifs !== null && Array.isArray(idVendeursActifs)) {
+        _listeIdVendeurs = _listeIdVendeurs.filter(id => idVendeursActifs.includes(id));
+    }
 
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
@@ -538,7 +542,6 @@ function afficherPointsSurCarte() {
         }
     }
 
-    // Supprimer les anciens marqueurs
     map.eachLayer(layer => {
         if (layer instanceof L.Marker) {
             map.removeLayer(layer);
@@ -594,7 +597,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             noteInput.value = rating;
             loadProduits(1);
-            afficherPointsSurCarte();
         });
     });
 
@@ -651,7 +653,6 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value;
-    const zoneValue = document.getElementById('zoneSelect').value;
 
     let idVendeur;
     if(vendeur.value!=""){
@@ -660,7 +661,7 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&zone=${zoneValue}&search=${encodeURIComponent(searchQuery)}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}`)
         .then(res => {
             if (!res.ok) {
                 throw new Error(`Erreur HTTP: ${res.status}`);
@@ -671,7 +672,13 @@ function loadProduits(page = 1) {
             listeArticle.innerHTML = data.html;
             currentPage = page;
             resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
-            
+
+            if (data.idVendeurs) {
+                const idVendeursActifs = data.idVendeurs;
+                listeIdVendeurs = idVendeursActifs;
+                afficherPointsSurCarte(idVendeursActifs);
+            }
+
             let pagHTML = '';
             if (data.nbPages > 1) {
                 if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
@@ -693,13 +700,11 @@ function loadProduits(page = 1) {
         });
 }
 
-document.getElementById('zoneSelect').addEventListener('change', () => loadProduits(1));
 
 // Events listeners sur les sliders
 sliderMin.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
-        afficherPointsSurCarte();
     console.log(searchbar.value);
 });
 
