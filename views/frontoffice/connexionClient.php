@@ -8,7 +8,8 @@ require_once "../../controllers/pdo.php";
 $error = '';
 $email_tel = '';
 $password = '';
-$popupA2f = false;
+
+var_dump($popupA2f);
 
 // Vérifier si la requête est en POST (formulaire soumis)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -56,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$_SESSION['user_id']]);
             $otp_enabled = $stmt->fetchColumn();
             if (!$otp_enabled) {
+                $popupA2f = false;
                 header('Location: ../../views/frontoffice/accueilConnecte.php');
                 exit();
             } else {
