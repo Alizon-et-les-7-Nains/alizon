@@ -597,7 +597,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             noteInput.value = rating;
             loadProduits(1);
-            afficherPointsSurCarte();
         });
     });
 
@@ -708,7 +707,6 @@ document.getElementById('zoneSelect').addEventListener('change', () => loadProdu
 sliderMin.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
-        afficherPointsSurCarte();
     console.log(searchbar.value);
 });
 
