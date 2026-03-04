@@ -283,6 +283,19 @@ unset($_SESSION['form_data']);
             }
         }
 
+        async function reverseGeocodeAdresse(lat, lon) {
+            const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+            const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
+            const data = await rep.json();
+
+            if (data && data.display_name) {
+                adresseInput.value = data.display_name;
+                return data.display_name;
+            } else {
+                throw new Error("Coordonnées introuvables");
+            }
+        }
+
         passwordInput.addEventListener('blur', () => {
             // Masque les critères si le champ est vide
             if (passwordInput.value.length === 0) {

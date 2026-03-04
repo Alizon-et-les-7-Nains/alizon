@@ -1,4 +1,4 @@
-<?php
+'<?php
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
 
@@ -205,6 +205,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
     exit;
 }
+
+// $sql_lat = "SELECT latitude FROM _adresseVendeur";
+// $stmt_lat = $pdo->prepare($sql_lat);
+// $stmt_lat->execute([]);
+// $latitudes = $stmt_lat->fetchAll(PDO::FETCH_ASSOC);
+
+// $sql_lng = "SELECT longitude FROM _adresseVendeur";
+// $stmt_lng = $pdo->prepare($sql_lng);
+// $stmt_lng->execute([]);
+// $longitudes = $stmt_lng->fetchAll(PDO::FETCH_ASSOC);
+
+// $resLat = 0;
+// $resLng = 0;
+// $totalLat = 0;
+// $totalLng = 0;
+
+
+// $corner1Lat=$latitudes[0];
+// $corner1Lng=$longitudes[0]; 
+
+// $corner2Lat=$latitudes[0]; 
+// $corner2Lng=$longitudes[0];
+
+// foreach($latitudes as $lat){
+//     $resLat+=$lat;
+//     $totalLat++;
+
+//     if($corner1Lat < $lat){
+//         $corner1Lat = $lat;
+//     }
+
+//     if($corner2Lat > $lat){
+//         $corner2Lat = $lat;
+//     }
+// }
+
+// foreach($longitudes as $lng){
+//     $resLng+=$lng;
+//     $totalLng++;
+
+//     if($corner1Lng < $lng){
+//         $corner1Lng = $lng;
+//     }
+
+//     if($corner2Lng > $lng){
+//         $corner2Lng = $lng;
+//     }
+// }
+
+// $latMoy = $resLat/$totalLat;
+// $lngMoy = $resLng/$totalLng;
 
 // ============================================================================
 // RÉCUPÉRATION DES DONNÉES POUR LA PAGE
@@ -525,18 +576,23 @@ let adresses = <?= json_encode($adresses) ?>;
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 var group = L.markerClusterGroup();
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 10,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 map.addLayer(group);
 
-function afficherPointsSurCarte(idVendeursActifs = null) {
+function getListeAdressesVendeurs(idVendeursActifs = null) {
     let _listeIdVendeurs;
     if (idVendeursActifs !== null) {
         _listeIdVendeurs = idVendeursActifs.map(String);
     } else {
         _listeIdVendeurs = [...new Set(products.map(p => String(p.idVendeur)))];
     }
+    return _listeIdVendeurs;
+}
+
+function afficherPointsSurCarte(idVendeursActifs = null) {
+    let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs = null);
 
     group.clearLayers();
 
@@ -551,12 +607,11 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
             });
             group.addLayer(marker);
         }
+        map.fitBounds(group.getBounds(), { padding: [30, 30] });
     }
 }
 
 afficherPointsSurCarte();
-
-
 
 const btnCarte = document.getElementById('btnCarte');
 
@@ -806,4 +861,4 @@ if (toggleFiltersBtn) {
 </script>
 
 </body>
-</html>
+</html>'
