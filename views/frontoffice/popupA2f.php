@@ -8,7 +8,6 @@
 </head>
 
 <body class="bodyPopupA2f">
-    <?php include 'partials/headerDeconnecte.php'; ?>
     <div class="popupA2f">
         <a href="connexionClient.php">
             <div class="croixFermerLaPage">
@@ -28,7 +27,6 @@
         <button type="submit">Submit</button>
         </form>
     </div>
-    <?php include 'partials/footerDeconnecte.php'; ?>
 </body>
 
 </html>
