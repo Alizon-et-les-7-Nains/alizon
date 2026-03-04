@@ -46,9 +46,8 @@ if (isset($data['otp']) && isset($_SESSION['user_id'])) {
     if (!isset($_SESSION['otp_blocked_until'])) {
         $_SESSION['otp_blocked_until'] = 0;
     }
-    if (!isset($_SESSION['otp_block_duration'])) {
-        $_SESSION['otp_block_duration'] = 30; // Durée de blocage initiale en secondes
-    }
+    
+    $blockDuration = 30; // Durée de blocage fixe de 30 secondes
     
     // Vérifier si l'utilisateur est actuellement bloqué
     $currentTime = time();
@@ -80,7 +79,6 @@ if (isset($data['otp']) && isset($_SESSION['user_id'])) {
             // Réinitialiser les compteurs en cas de succès
             $_SESSION['otp_failed_attempts'] = 0;
             $_SESSION['otp_blocked_until'] = 0;
-            $_SESSION['otp_block_duration'] = 30;
             
             echo json_encode(['success' => true]);
             exit;
@@ -90,18 +88,15 @@ if (isset($data['otp']) && isset($_SESSION['user_id'])) {
             
             // Vérifier si on atteint 3 tentatives échouées
             if ($_SESSION['otp_failed_attempts'] >= 3) {
-                // Bloquer l'utilisateur
-                $_SESSION['otp_blocked_until'] = $currentTime + $_SESSION['otp_block_duration'];
+                // Bloquer l'utilisateur pour 30 secondes
+                $_SESSION['otp_blocked_until'] = $currentTime + $blockDuration;
                 
                 echo json_encode([
                     'success' => false,
                     'blocked' => true,
-                    'remainingTime' => $_SESSION['otp_block_duration'],
-                    'message' => 'Trop de tentatives échouées. Veuillez patienter ' . $_SESSION['otp_block_duration'] . ' secondes.'
+                    'remainingTime' => $blockDuration,
+                    'message' => 'Trop de tentatives échouées. Veuillez patienter ' . $blockDuration . ' secondes.'
                 ]);
-                
-                // Augmenter la durée de blocage pour la prochaine fois
-                $_SESSION['otp_block_duration'] += 30;
                 
                 // Réinitialiser le compteur de tentatives
                 $_SESSION['otp_failed_attempts'] = 0;
