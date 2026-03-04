@@ -536,15 +536,6 @@ for ($i = 0; $i < count($vendeurs); $i++) {
 ?>
 let adresses = <?= json_encode($adresses) ?>; 
 
-const _listeIdVendeurs = [...new Set(products.map(p => p.idVendeur))];
-
-for (let i = 0; i < adresses.length; i++) {
-    const lat = adresses[i].latitude;
-    const lng = adresses[i].longitude;
-    if (lat && lng && _listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
-        coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
-    }
-}
 
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -552,13 +543,29 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-for (let i = 0; i < coordonnees.length; i++) {
-    const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
-    marker.on('click', () => {
-        vendeur.value = coordonnees[i].id;
-        loadProduits(1);
-    });
+function afficherPointsSurCarte() {
+    const _listeIdVendeurs = [...new Set(products.map(p => p.idVendeur))];
+
+    for (let i = 0; i < adresses.length; i++) {
+        const lat = adresses[i].latitude;
+        const lng = adresses[i].longitude;
+        if (lat && lng && _listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
+            coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
+        }
+    }
+
+    for (let i = 0; i < coordonnees.length; i++) {
+        const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
+        marker.on('click', () => {
+            vendeur.value = coordonnees[i].id;
+            loadProduits(1);
+        });
+    }
 }
+
+afficherPointsSurCarte();
+
+
 
 const btnCarte = document.getElementById('btnCarte');
 
@@ -596,6 +603,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             noteInput.value = rating;
             loadProduits(1);
+            afficherPointsSurCarte();
         });
     });
 
@@ -622,6 +630,7 @@ function updateSlider() {
     const percent2 = (max / sliderMax.max) * 100;
     range.style.left = percent1 + '%';
     range.style.width = (percent2 - percent1) + '%';
+    afficherPointsSurCarte();
 }
 
 function reattacherAjouterPanier() {
@@ -700,7 +709,7 @@ document.getElementById('zoneSelect').addEventListener('change', () => loadProdu
 sliderMin.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
-    console.log(searchbar.value)
+    console.log(searchbar.value);
 });
 
 sliderMax.addEventListener('input', () => { 
