@@ -145,7 +145,7 @@ unset($_SESSION['form_data']);
                         <p class="code_vendeur"> Code vendeur : <strong>VD640</strong> </p>
                         <a class="connexion_lien" href="connexion.php">Déjà vendeur ? Connectez vous ici</a>
 
-                        <button type="submit" id="btn_inscription" class="btn_inscription" disabled>S'inscrire</button>
+                        <button type="submit" id="btn_inscription" class="btn_inscription" onclick="geocodeAdresse(adresseInput.value);" disabled>S'inscrire</button>
                     </div>
 
                 </div>
@@ -265,14 +265,16 @@ unset($_SESSION['form_data']);
             const data = await rep.json();
 
             if (data.length > 0) {
-                const { lat, lng } = data[0];
+                const { lat, lon } = data[0];
                 latInput.value = lat;
-                lngInput.value = lng;
+                lngInput.value = lon;
                 console.log("-----------------\nAdresse récupérée : ", adresse, "\n");
-                console.log("Latitude : ", lat, "\nLongitude : ", lng, "\n-----------------\n");
-                return { lat, lng };
+                console.log("Latitude : ", lat, "\nLongitude : ", lon, "\n-----------------\n");
+                adresseInput.classList.remove('input-error');
+                return { lat, lon: lng };
             } else {
                 throw new Error("Adresse introuvable");
+                adresseInput.classList.add('input-error');
             }
         }
 
@@ -318,7 +320,6 @@ unset($_SESSION['form_data']);
                 e.preventDefault();
             }
         });
-        geocodeAdresse(adresseInput.value);
         validatePassword();
         </script>
 
