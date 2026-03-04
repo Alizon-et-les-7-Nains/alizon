@@ -16,7 +16,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $vendeurSTMT->execute([':pseudo' => $_POST['pseudo']]);
             $vendeur = $vendeurSTMT->fetch(PDO::FETCH_ASSOC);
 
-            if (!empty($vendeur['otp_enabled'])) {
+            if (!$vendeur || !isset($vendeur['codeVendeur'])) {
+                header('Location: ../views/backoffice/connexion.php?error=1');
+                exit;
+            }
+
+            $otpEnabledStmt = $pdo->prepare("SELECT otp_enabled FROM _vendeur WHERE codeVendeur = ?");
+            $otpEnabledStmt->execute([$vendeur['codeVendeur']]);
+            $otpEnabled = (int) ($otpEnabledStmt->fetchColumn() ?? 0);
+
+            if ($otpEnabled === 1) {
                 session_regenerate_id(true);
                 $_SESSION['bo_a2f_required'] = true;
                 $_SESSION['bo_pending_vendeur_id'] = $vendeur['codeVendeur'];
