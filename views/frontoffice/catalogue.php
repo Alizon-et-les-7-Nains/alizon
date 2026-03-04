@@ -630,6 +630,7 @@ function updateSlider() {
     const percent2 = (max / sliderMax.max) * 100;
     range.style.left = percent1 + '%';
     range.style.width = (percent2 - percent1) + '%';
+    afficherPointsSurCarte();
 }
 
 function reattacherAjouterPanier() {
@@ -708,7 +709,7 @@ document.getElementById('zoneSelect').addEventListener('change', () => loadProdu
 sliderMin.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
-    console.log(searchbar.value)
+    console.log(searchbar.value);
 });
 
 sliderMax.addEventListener('input', () => { 
