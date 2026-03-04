@@ -572,8 +572,7 @@ for ($i = 0; $i < count($vendeurs); $i++) {
 ?>
 let adresses = <?= json_encode($adresses) ?>; 
 
-bounds = L.latLngBounds(corner1, corner2);
-var map = L.map('map').setView(bounds, 9);
+var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 var group = L.markerClusterGroup();
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
