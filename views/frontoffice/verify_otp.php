@@ -28,8 +28,6 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 $otp = $data['otp'] ?? '';
 
-var_dump($otp);
-
 $user_id = $_SESSION['user_id'] ?? null;
 
 if (!$user_id) {
@@ -45,12 +43,7 @@ $secret = dechiffrement($secret);
 
 $totp = TOTP::create($secret);
 
-$getsecret = $totp->getSecret();
-var_dump($getsecret);
-var_dump($otp);
-var_dump($totp->now());
-var_dump($totp->verify($otp));
-var_dump($secret);
+var_dump($totp);
 
 if ($totp->verify($otp)) {
 
