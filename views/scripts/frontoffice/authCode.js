@@ -6,4 +6,8 @@ let num5 = document.getElementById("num5");
 let num6 = document.getElementById("num6");
 
 console.log(num1.value);
-console.log(num1);
+console.log(num2.value);
+console.log(num3.value);
+console.log(num4.value);
+console.log(num5.value);
+console.log(num6.value);
