@@ -2,17 +2,17 @@
 let a2fCurrentSlide = 0;
 
 function handleA2FToggle(isEnabled) {
-  if (isEnabled) {
-    desactiverA2F();
-  } else {
-    ouvrirPopupA2F();
-  }
+    if (isEnabled) {
+        desactiverA2F();
+    } else {
+        ouvrirPopupA2F();
+    }
 }
 
 function ouvrirPopupA2F() {
-  const overlay = document.createElement("div");
-  overlay.className = "bodyPopupA2f"; // Même classe que le frontoffice
-  overlay.innerHTML = `
+    const overlay = document.createElement("div");
+    overlay.className = "bodyPopupA2f"; // Même classe que le frontoffice
+    overlay.innerHTML = `
         <div class="popupA2f">
             <div class="croixFermerLaPage" onclick="this.closest('.bodyPopupA2f').remove()">
                 <div></div><div></div>
@@ -91,119 +91,119 @@ function ouvrirPopupA2F() {
         </div>
     `;
 
-  document.body.appendChild(overlay);
-  a2fCurrentSlide = 0;
+    document.body.appendChild(overlay);
+    a2fCurrentSlide = 0;
 
-  initA2FCarouselNavigation(overlay);
-  genererQRCodeA2F(overlay);
+    initA2FCarouselNavigation(overlay);
+    genererQRCodeA2F(overlay);
 }
 
 function initA2FCarouselNavigation(overlay) {
-  const slides = overlay.querySelectorAll(".carousel-slide");
-  const prevBtn = overlay.querySelector("#a2fPrevBtn");
-  const nextBtn = overlay.querySelector("#a2fNextBtn");
-  const dots = overlay.querySelectorAll(".dot");
+    const slides = overlay.querySelectorAll(".carousel-slide");
+    const prevBtn = overlay.querySelector("#a2fPrevBtn");
+    const nextBtn = overlay.querySelector("#a2fNextBtn");
+    const dots = overlay.querySelectorAll(".dot");
 
-  function showSlide(index) {
-    if (index >= slides.length) {
-      a2fCurrentSlide = 0;
-    } else if (index < 0) {
-      a2fCurrentSlide = slides.length - 1;
-    } else {
-      a2fCurrentSlide = index;
+    function showSlide(index) {
+        if (index >= slides.length) {
+            a2fCurrentSlide = 0;
+        } else if (index < 0) {
+            a2fCurrentSlide = slides.length - 1;
+        } else {
+            a2fCurrentSlide = index;
+        }
+
+        slides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === a2fCurrentSlide);
+        });
+
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === a2fCurrentSlide);
+        });
     }
 
-    slides.forEach((slide, i) => {
-      slide.classList.toggle("active", i === a2fCurrentSlide);
+    prevBtn.addEventListener("click", () => showSlide(a2fCurrentSlide - 1));
+    nextBtn.addEventListener("click", () => showSlide(a2fCurrentSlide + 1));
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => showSlide(index));
     });
 
-    dots.forEach((dot, i) => {
-      dot.classList.toggle("active", i === a2fCurrentSlide);
-    });
-  }
-
-  prevBtn.addEventListener("click", () => showSlide(a2fCurrentSlide - 1));
-  nextBtn.addEventListener("click", () => showSlide(a2fCurrentSlide + 1));
-
-  dots.forEach((dot, index) => {
-    dot.addEventListener("click", () => showSlide(index));
-  });
-
-  // Navigation clavier
-  const keyHandler = (e) => {
-    if (!overlay.isConnected) {
-      document.removeEventListener("keydown", keyHandler);
-      return;
-    }
-    if (e.key === "ArrowRight") {
-      showSlide(a2fCurrentSlide + 1);
-    } else if (e.key === "ArrowLeft") {
-      showSlide(a2fCurrentSlide - 1);
-    } else if (e.key === "Escape") {
-      overlay.remove();
-    }
-  };
-  document.addEventListener("keydown", keyHandler);
+    // Navigation clavier
+    const keyHandler = (e) => {
+        if (!overlay.isConnected) {
+            document.removeEventListener("keydown", keyHandler);
+            return;
+        }
+        if (e.key === "ArrowRight") {
+            showSlide(a2fCurrentSlide + 1);
+        } else if (e.key === "ArrowLeft") {
+            showSlide(a2fCurrentSlide - 1);
+        } else if (e.key === "Escape") {
+            overlay.remove();
+        }
+    };
+    document.addEventListener("keydown", keyHandler);
 }
 
 function genererQRCodeA2F(overlay) {
-  fetch(window.location.href, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ generateQR: true }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success && data.otpauthUrl) {
-        const container = overlay.querySelector("#qrCodeContainer");
-        container.innerHTML = "";
-
-        // Créer le QR code
-        if (typeof QRCode !== "undefined" && QRCode.toCanvas) {
-          const canvas = document.createElement("canvas");
-          container.appendChild(canvas);
-
-          QRCode.toCanvas(
-            canvas,
-            data.otpauthUrl,
-            {
-              width: 200,
-              margin: 2,
-              color: {
-                dark: "#273469",
-                light: "#FFFFFF",
-              },
-            },
-            function (error) {
-              if (error) {
-                console.error("Erreur QR code:", error);
-                fallbackQRCode(container, data.otpauthUrl);
-              }
-            },
-          );
-        } else {
-          // Fallback si QRCode n'est pas disponible
-          fallbackQRCode(container, data.otpauthUrl);
-        }
-
-        overlay.dataset.secret = data.secret;
-      } else {
-        overlay.querySelector("#qrCodeContainer").innerHTML =
-          '<p class="erreur">Erreur lors de la génération du QR code</p>';
-      }
+    fetch(window.location.href, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ generateQR: true }),
     })
-    .catch((error) => {
-      console.error("Erreur:", error);
-      overlay.querySelector("#qrCodeContainer").innerHTML =
-        '<p class="erreur">Erreur de connexion</p>';
-    });
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success && data.otpauthUrl) {
+                const container = overlay.querySelector("#qrCodeContainer");
+                container.innerHTML = "";
+
+                // Créer le QR code
+                if (typeof QRCode !== 'undefined' && QRCode.toCanvas) {
+                    const canvas = document.createElement("canvas");
+                    container.appendChild(canvas);
+                    
+                    QRCode.toCanvas(
+                        canvas,
+                        data.otpauthUrl,
+                        {
+                            width: 200,
+                            margin: 2,
+                            color: {
+                                dark: "#273469",
+                                light: "#FFFFFF",
+                            },
+                        },
+                        function (error) {
+                            if (error) {
+                                console.error("Erreur QR code:", error);
+                                fallbackQRCode(container, data.otpauthUrl);
+                            }
+                        }
+                    );
+                } else {
+                    // Fallback si QRCode n'est pas disponible
+                    fallbackQRCode(container, data.otpauthUrl);
+                }
+
+                overlay.dataset.secret = data.secret;
+            } else {
+                overlay.querySelector("#qrCodeContainer").innerHTML =
+                    '<p class="erreur">Erreur lors de la génération du QR code</p>';
+            }
+        })
+        .catch((error) => {
+            console.error("Erreur:", error);
+            overlay.querySelector("#qrCodeContainer").innerHTML =
+                '<p class="erreur">Erreur de connexion</p>';
+        });
 }
 
 function fallbackQRCode(container, url) {
-  // Fallback si la librairie QRCode n'est pas chargée
-  container.innerHTML = `
+    // Fallback si la librairie QRCode n'est pas chargée
+    container.innerHTML = `
         <div style="text-align: center;">
             <p style="color: #666;">Impossible de générer le QR code</p>
             <p style="font-size: 12px; word-break: break-all;">${url}</p>
@@ -212,84 +212,80 @@ function fallbackQRCode(container, url) {
 }
 
 function activerA2F() {
-  const overlay = document.querySelector(".bodyPopupA2f");
-  const codeInput = document.getElementById("a2fVerificationCode");
-  const errorNode = document.getElementById("a2fActivationError");
-  const code = (codeInput?.value || "").trim();
+    const overlay = document.querySelector(".bodyPopupA2f");
+    const codeInput = document.getElementById("a2fVerificationCode");
+    const errorNode = document.getElementById("a2fActivationError");
+    const code = (codeInput?.value || "").trim();
 
-  if (!code || !/^\d{6}$/.test(code)) {
-    if (errorNode) {
-      errorNode.textContent = "Veuillez entrer un code valide à 6 chiffres.";
-      errorNode.style.display = "block";
-    }
-    if (codeInput) {
-      codeInput.focus();
-    }
-    return;
-  }
-
-  if (errorNode) {
-    errorNode.style.display = "none";
-  }
-
-  fetch(window.location.href, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ verifyAndActivate: true, code }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        if (overlay) {
-          overlay.remove();
-        }
-        alert("Authentification à deux facteurs activée avec succès !");
-        window.location.reload();
-      } else {
+    if (!code || !/^\d{6}$/.test(code)) {
         if (errorNode) {
-          errorNode.textContent = data.message || "Code incorrect";
-          errorNode.style.display = "block";
-        } else {
-          alert(data.message || "Code incorrect");
+            errorNode.textContent = "Veuillez entrer un code valide à 6 chiffres.";
+            errorNode.style.display = "block";
         }
         if (codeInput) {
-          codeInput.value = "";
-          codeInput.focus();
+            codeInput.focus();
         }
-      }
+        return;
+    }
+
+    if (errorNode) {
+        errorNode.style.display = "none";
+    }
+
+    fetch(window.location.href, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ verifyAndActivate: true, code }),
     })
-    .catch((error) => {
-      console.error("Erreur:", error);
-      alert("Erreur de connexion");
-    });
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                if (overlay) {
+                    overlay.remove();
+                }
+                alert("Authentification à deux facteurs activée avec succès !");
+                window.location.reload();
+            } else {
+                if (errorNode) {
+                    errorNode.textContent = data.message || "Code incorrect";
+                    errorNode.style.display = "block";
+                } else {
+                    alert(data.message || "Code incorrect");
+                }
+                if (codeInput) {
+                    codeInput.value = "";
+                    codeInput.focus();
+                }
+            }
+        })
+        .catch((error) => {
+            console.error("Erreur:", error);
+            alert("Erreur de connexion");
+        });
 }
 
 function desactiverA2F() {
-  if (
-    confirm(
-      "Êtes-vous sûr de vouloir désactiver l'authentification à deux facteurs ?",
-    )
-  ) {
-    fetch(window.location.href, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ activate: false }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          window.location.reload();
-        } else {
-          alert("Erreur lors de la désactivation");
-        }
-      })
-      .catch((error) => {
-        console.error("Erreur:", error);
-        alert("Erreur de connexion");
-      });
-  }
+    if (confirm("Êtes-vous sûr de vouloir désactiver l'authentification à deux facteurs ?")) {
+        fetch(window.location.href, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ activate: false }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert("Erreur lors de la désactivation");
+                }
+            })
+            .catch((error) => {
+                console.error("Erreur:", error);
+                alert("Erreur de connexion");
+            });
+    }
 }
