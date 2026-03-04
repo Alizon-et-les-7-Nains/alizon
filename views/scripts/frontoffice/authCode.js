@@ -24,6 +24,11 @@ if (inputs.length > 0) {
       if (value && index < inputs.length - 1) {
         inputs[index + 1].focus();
       }
+
+      // Soumettre automatiquement quand le dernier champ est rempli
+      if (value && index === inputs.length - 1) {
+        form.submit();
+      }
     });
 
     // Gérer la touche Backspace pour revenir en arrière
