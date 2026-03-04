@@ -1,9 +1,11 @@
 '<?php
-include "../../controllers/pdo.php";
-include "../../controllers/prix.php";
 
 
 session_start();
+
+include "../../controllers/pdo.php";
+include "../../controllers/prix.php";
+
 
 $produitsParPage = 16;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
