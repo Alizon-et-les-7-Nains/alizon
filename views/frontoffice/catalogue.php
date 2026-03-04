@@ -249,7 +249,7 @@ $cart = getCurrentCart($pdo, $idClient);
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
 <main class="pageCatalogue">
-    <aside class="fakePanneauGris"></aside></aside>
+    <aside class="fakePanneauGris"></aside>
     <aside class="filter-sort">
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
@@ -595,7 +595,6 @@ document.addEventListener('DOMContentLoaded', function() {
             loadProduits(1);
         });
     });
-    const vendeur = document.getElementById('vendeur');
 
     vendeur.addEventListener('change', function () {
         const idVendeur = vendeur.value;
