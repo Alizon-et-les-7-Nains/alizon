@@ -523,7 +523,6 @@ if ($produit['stock'] > 0) {
     <label for="activeVoirPlus" class="voirPlus"> </label> 
 </section>
 <hr id="margin-top-2em">
-
 <!-- ========================================
      SECTION DES AVIS CLIENTS
      ======================================== -->
