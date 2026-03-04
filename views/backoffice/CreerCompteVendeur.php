@@ -263,6 +263,8 @@ unset($_SESSION['form_data']);
             const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(adresse)}&format=json`;
             const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
             const data = await rep.json();
+            const adresseInputErr = document.getElementsByName('idAdresse');
+            console.log(adresseInputErr);
 
             if (data.length > 0) {
                 const { lat, lon } = data[0];
@@ -270,11 +272,11 @@ unset($_SESSION['form_data']);
                 lngInput.value = lon;
                 console.log("-----------------\nAdresse récupérée : ", adresse, "\n");
                 console.log("Latitude : ", lat, "\nLongitude : ", lon, "\n-----------------\n");
-                adresseInput.classList.remove('input-error');
+                adresseInputErr.classList.remove('input-error');
                 return { lat, lon: lng };
             } else {
                 throw new Error("Adresse introuvable");
-                adresseInput.classList.add('input-error');
+                adresseInputErr.classList.add('input-error');
             }
         }
 
