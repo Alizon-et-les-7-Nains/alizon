@@ -9,6 +9,8 @@ $error = '';
 $email_tel = '';
 $password = '';
 
+var_dump($popupA2f);
+
 // Vérifier si la requête est en POST (formulaire soumis)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupérer et nettoyer les données du formulaire
@@ -55,10 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$_SESSION['user_id']]);
             $otp_enabled = $stmt->fetchColumn();
             if (!$otp_enabled) {
+                $popupA2f = false;
                 header('Location: ../../views/frontoffice/accueilConnecte.php');
                 exit();
             } else {
-                header('Location: ../../views/frontoffice/popupA2f.php');
+                $popupA2f = true;
+                header('Location: ../../views/frontoffice/connexionClient.php');
                 exit();
             }
         } else {
@@ -95,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
     </header>
-    
+
     <main>
         <div class="profile">
             <img src="../../public/images/utilLightBlue.svg" alt="">
@@ -126,8 +130,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-    </main>
 
+        <?php if ($popupA2f): ?>
+            <div class="bodyPopupA2f">
+                <div class="popupA2f">
+                    <a href="connexionClient.php">
+                        <div class="croixFermerLaPage">
+                            <div></div><div></div>
+                        </div>
+                    </a>
+                    <h1>Authentification à double facteur</h1>
+                    <form action="" method="POST">
+                        <div>
+                            <input type="text" name="num1" id="num1">
+                            <input type="text" name="num2" id="num2">
+                            <input type="text" name="num3" id="num3">
+                            <input type="text" name="num4" id="num4">
+                            <input type="text" name="num5" id="num5">
+                            <input type="text" name="num6" id="num6">
+                    </div>
+                    <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        <?php endif; ?>
+    </main>
+    <script src="../scripts/frontoffice/authCode.js"></script>
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 </body>
 </html>
