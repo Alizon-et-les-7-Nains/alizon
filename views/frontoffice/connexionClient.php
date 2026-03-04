@@ -11,8 +11,6 @@ $password = '';
 $popupA2f = $_SESSION['a2f_required'] ?? false;
 unset($_SESSION['a2f_required']);
 
-var_dump($popupA2f);
-
 // Vérifier si la requête est en POST (formulaire soumis)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupérer et nettoyer les données du formulaire

@@ -1,0 +1,37 @@
+<?php
+session_start();
+require_once "../../controllers/pdo.php";
+
+header('Content-Type: application/json');
+
+// Récupérer les données JSON envoyées
+$data = json_decode(file_get_contents("php://input"), true);
+
+$otp = $data['otp'] ?? '';
+
+use OTPHP\TOTP;
+
+$user_id = $_SESSION['user_id'] ?? null;
+
+if (!$user_id) {
+    echo json_encode(["success" => false]);
+    exit();
+}
+
+// Récupérer la clé secrète en base
+$stmt = $pdo->prepare("SELECT otp_secret FROM _client WHERE idClient = ?");
+$stmt->execute([$user_id]);
+$secret = $stmt->fetchColumn();
+
+$totp = TOTP::create($secret);
+
+if ($totp->verify($otp)) {
+
+    $_SESSION['user_id'] = $user_id;
+    unset($_SESSION['user_id']);
+
+    echo json_encode(["success" => true]);
+
+} else {
+    echo json_encode(["success" => false]);
+}
