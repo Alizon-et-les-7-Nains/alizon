@@ -84,7 +84,8 @@ $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // 8. Construction de la réponse JSON
-$data = ['html' => '', 'nbPages' => $nbPages, 'totalProduits' => $totalProduits];
+$data = ['html' => '', 'nbPages' => $nbPages, 'totalProduits' => $totalProduits,
+ 'idVendeurs' => array_values(array_unique(array_column($produits, 'idVendeur')))];
 
 if (count($products) > 0) {
     foreach ($products as $value) {
