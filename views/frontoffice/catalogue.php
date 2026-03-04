@@ -653,7 +653,6 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value;
-    const zoneValue = document.getElementById('zoneSelect').value;
 
     let idVendeur;
     if(vendeur.value!=""){
@@ -662,7 +661,7 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&zone=${zoneValue}&search=${encodeURIComponent(searchQuery)}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}`)
         .then(res => {
             if (!res.ok) {
                 throw new Error(`Erreur HTTP: ${res.status}`);
@@ -701,7 +700,6 @@ function loadProduits(page = 1) {
         });
 }
 
-document.getElementById('zoneSelect').addEventListener('change', () => loadProduits(1));
 
 // Events listeners sur les sliders
 sliderMin.addEventListener('input', () => { 
