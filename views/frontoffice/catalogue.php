@@ -580,6 +580,13 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 map.addLayer(group);
+const nbVendeursControl = L.control({ position: 'topright' });
+nbVendeursControl.onAdd = function() {
+    const div = L.DomUtil.create('div', 'nb-vendeurs-control');
+    div.innerHTML = '-----------------------';
+    return div;
+};
+nbVendeursControl.addTo(map);
 function getListeAdressesVendeurs(idVendeursActifs = null) {
     let _listeIdVendeurs;
     if (idVendeursActifs !== null) {
@@ -627,21 +634,11 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
     }
     if (group.getLayers().length > 0) {
         map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
-        nbVendeurs = adresses.length;
-        nbVendeursMarker = L.marker(map.getCenter(), {
-            icon: L.divIcon({
-                className: '',
-                html: `<div style="transform:translate(-50%,-50%); font-size:18px; font-weight:bold; color:black; white-space:nowrap; background:white; padding:8px; border-radius:6px; border:1px solid #273469;">${nbVendeurs} vendeur${nbVendeurs > 1 ? 's' : ''}</div>`,
-            })
-        }).addTo(map);
+        const nb = group.getLayers().length;
+        document.querySelector('.nb-vendeurs-control').innerHTML =`<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`;
     } else {
+        document.querySelector('.nb-vendeurs-control').innerHTML = '<b>-------------</b>';
         map.setView([48.174838642366915, -2.7538102129824145], 9);
-        messageErreur = L.marker([48.174838642366915, -2.7538102129824145], {
-            icon: L.divIcon({
-                className: '',
-                html: '<div style="transform:translate(-50%,-50%); font-size:18px; font-weight:bold; color:black; white-space:nowrap; background:white; padding:8px; border-radius:6px; border:1px solid #273469;">Aucun vendeur trouvé</div>',
-            })
-        }).addTo(map);
     }
 }
 
