@@ -524,21 +524,21 @@ const barreVerticale = document.getElementById('vertical-bar');
 const coordonnees = [];
 
 <?php
+$addresses = [];
 for ($i = 0; $i < count($vendeurs); $i++) {
-    $sqlAddressesVendeur = "SELECT latitude, longitude FROM _addresseVendeur
-                            WHERE idAddresse = :id";
-    $stmtAddresses = $pdo->prepare($sqlAddressesVendeur);
-    $stmtAddresses->execute([':id' => $vendeurs[$i]['idAddresse']]);
-    $addresses = $stmtAddresses->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare("SELECT latitude, longitude FROM _addresseVendeur WHERE idAddresse = :id");
+    $stmt->execute([':id' => $vendeurs[$i]['idAddresse']]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $addresses[] = $row ?: ['latitude' => null, 'longitude' => null];
 }
 ?>
 
 let addresses = <?= json_encode($addresses) ?>; 
 
-for (let i = 0; i < vendeurs.length; i++) {
-    if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
-        const lat = addresses[i].latitude;
-        const lng = addresses[i].longitude;
+for (let i = 0; i < coordonnees.length; i++) {
+    const lat = addresses[i]?.latitude;
+    const lng = addresses[i]?.longitude;
+    if (lat && lng) {
         coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
     }
 }
