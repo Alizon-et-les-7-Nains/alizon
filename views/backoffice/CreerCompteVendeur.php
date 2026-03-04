@@ -29,6 +29,8 @@ unset($_SESSION['form_data']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../public/style.css">
     <title>Alizon</title>
@@ -271,10 +273,26 @@ unset($_SESSION['form_data']);
                 console.log("-----------------\nAdresse récupérée : ", adresse, "\n");
                 console.log("Latitude : ", lat, "\nLongitude : ", lon, "\n-----------------\n");
                 adresseInput.classList.remove('input-error');
+
+                popUpAdresse(lat, lon);
+
                 return { lat, lon: lng };
             } else {
                 adresseInput.classList.add('input-error');
                 throw new Error("Adresse introuvable");
+            }
+        }
+
+        async function reverseGeocodeAdresse(lat, lon) {
+            const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+            const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
+            const data = await rep.json();
+
+            if (data && data.display_name) {
+                adresseInput.value = data.display_name;
+                return data.display_name;
+            } else {
+                throw new Error("Coordonnées introuvables");
             }
         }
 
@@ -321,6 +339,44 @@ unset($_SESSION['form_data']);
             }
         });
         validatePassword();
+        </script>
+
+        <script>
+            function popUpAdresse(lat, lon) {
+                const overlay = document.createElement("div");
+                overlay.className = "overlayPopUpDetails";
+
+                overlay.innerHTML = `
+                        <main class="popUpDetails">
+                            <div class="croixFermerLaPage">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <h1>Confirmer votre adresse</h1>
+                            <div class="conteneurSections">
+                                <div id="map"></div>
+                            </div>
+                        </main>`;
+
+                var map = L.map('map').setView([lat, lon], 13);
+                document.body.appendChild(overlay);
+
+                const croixFermer = overlay.querySelector(".croixFermerLaPage");
+                const btnFermer = overlay.querySelector(".btnFermer");
+
+                croixFermer.addEventListener("click", fermerPopUpDetailsCommande);
+                if (btnFermer) btnFermer.addEventListener("click", fermerPopUpDetailsCommande);
+                    overlay.addEventListener("click", (e) => {
+                    if (e.target === overlay) {
+                        fermerPopUpDetailsCommande();
+                    }
+                });
+                }
+
+                function fermerPopUpDetailsCommande() {
+                    const overlay = document.querySelector(".overlayPopUpDetails");
+                    if (overlay) overlay.remove();
+                }
         </script>
 
         <?php require_once './partials/retourEnHaut.php' ?>
