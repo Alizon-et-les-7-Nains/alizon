@@ -81,7 +81,7 @@ $stmt->execute();
 $listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Vendeurs
-$vendeurSql = "SELECT v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbProduits
+$vendeurSql = "SELECT v.idAddresse, v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbProduits
                FROM _vendeur v
                JOIN _produit p ON p.idVendeur = v.codeVendeur
                GROUP BY v.codeVendeur, v.raisonSocial
@@ -493,6 +493,8 @@ const range = document.getElementById('range');
 // Tri
 const triNoteCroissant = document.getElementById('triNoteCroissant');
 const triNoteDecroissant = document.getElementById('triNoteDecroissant');
+const triPrixCroissant = document.getElementById('triPrixCroissant');
+const triPrixDecroissant = document.getElementById('triPrixDecroissant');
 const aucunTri = document.getElementById('aucunTri');
 let sortOrder = '';
 
@@ -535,7 +537,7 @@ for ($i = 0; $i < count($vendeurs); $i++) {
 
 let addresses = <?= json_encode($addresses) ?>; 
 
-for (let i = 0; i < coordonnees.length; i++) {
+for (let i = 0; i < addresses.length; i++) {
     const lat = addresses[i]?.latitude;
     const lng = addresses[i]?.longitude;
     if (lat && lng) {
