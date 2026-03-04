@@ -591,6 +591,7 @@ function getListeAdressesVendeurs(idVendeursActifs = null) {
 }
 
 let messageErreur = null;
+let nbVendeurs = 0;
 
 function afficherPointsSurCarte(idVendeursActifs = null) {
     let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
@@ -608,7 +609,11 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
         if (lat && lng && _listeIdVendeurs.includes(String(vendeurs[i].codeVendeur))) {
             const marker = L.marker([lat, lng]);
             marker.on('click', () => {
-                vendeur.value = vendeurs[i].codeVendeur;
+                if (vendeur.value == vendeurs[i].codeVendeur) {
+                    vendeur.value = "";
+                } else {
+                    vendeur.value = vendeurs[i].codeVendeur;
+                }
                 loadProduits(1);
             });
             marker.bindTooltip(vendeurs[i].raisonSocial, {
@@ -622,6 +627,13 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
     }
     if (group.getLayers().length > 0) {
         map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
+        nbVendeurs = adresses.length;
+        nbVendeursMarker = L.marker(map.getCenter(), {
+            icon: L.divIcon({
+                className: '',
+                html: `<div style="transform:translate(-50%,-50%); font-size:18px; font-weight:bold; color:black; white-space:nowrap; background:white; padding:8px; border-radius:6px; border:1px solid #273469;">${nbVendeurs} vendeur${nbVendeurs > 1 ? 's' : ''}</div>`,
+            })
+        }).addTo(map);
     } else {
         map.setView([48.174838642366915, -2.7538102129824145], 9);
         messageErreur = L.marker([48.174838642366915, -2.7538102129824145], {
