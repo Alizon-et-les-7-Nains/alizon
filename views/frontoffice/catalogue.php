@@ -611,10 +611,15 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
                 vendeur.value = vendeurs[i].codeVendeur;
                 loadProduits(1);
             });
+            marker.bindTooltip(vendeurs[i].raisonSocial, {
+                permanent: true,
+                direction: 'top',
+                offset: [0, -10],
+                className: 'vendor-label'
+            });
             group.addLayer(marker);
         }
     }
-
     if (group.getLayers().length > 0) {
         map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
     } else {
