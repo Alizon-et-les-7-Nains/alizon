@@ -2995,7 +2995,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   border-radius: 32px;
   font-family: "lora";
   cursor: pointer;
-  font-size: 20px;
+  font-size: 16px;
 }
 .mainCompteClient .boutonModifierMdp,
 .mainCompteClient .boutonSupprimerMdp {
