@@ -2,15 +2,7 @@
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
 
-// Chargement des départements
-$listeDepts = [];
-if (($handle = fopen("../../public/data/departements.csv", "r")) !== FALSE) {
-    fgetcsv($handle, 1000, ";");
-    while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-        $listeDepts[$data[0]] = $data[2];
-    }
-    fclose($handle);
-}
+
 session_start();
 
 $produitsParPage = 16;
@@ -233,7 +225,6 @@ $cart = getCurrentCart($pdo, $idClient);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogue</title>
-    <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -315,13 +306,6 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php } ?>
             </select>
 
-            <label for="zone">-- Zone géographique --</label>
-            <select name="zone" id="zoneSelect" class="filter-select">
-                <option value="">Tous les départements</option>
-                <?php foreach ($listeDepts as $code => $nom) : ?>
-                    <option value="<?= $code ?>"><?= $code ?> - <?= htmlspecialchars($nom) ?></option>
-                <?php endforeach; ?>
-            </select>
 
             <label for="vendeur">Vendeur :</label>
             <select id="vendeur" name="vendeur">
