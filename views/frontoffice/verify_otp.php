@@ -43,7 +43,7 @@ $secret = dechiffrement($secret);
 
 $totp = TOTP::create($secret);
 
-var_dump($topt);
+var_dump($totp);
 
 if ($totp->verify($otp)) {
 
