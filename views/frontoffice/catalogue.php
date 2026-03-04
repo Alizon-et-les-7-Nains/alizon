@@ -631,6 +631,16 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
             })
         }).addTo(map);
     }
+    map.on('zoomend', () => {
+        const zoomLevel = map.getZoom();
+        group.eachLayer(layer => {
+            if (zoomLevel >= 11) {
+                layer.openTooltip();
+            } else {
+                layer.closeTooltip();
+            }
+        });
+    });
 }
 
 afficherPointsSurCarte();
