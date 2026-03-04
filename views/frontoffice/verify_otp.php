@@ -48,7 +48,7 @@ var_dump($getsecret);
 var_dump($otp);
 var_dump($totp->now());
 var_dump($totp->verify($otp));
-var_dump($secret)
+var_dump($secret);
 
 if ($totp->verify($otp)) {
 
