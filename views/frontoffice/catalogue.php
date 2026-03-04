@@ -607,8 +607,8 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
             });
             group.addLayer(marker);
         }
-        map.fitBounds(group.getBounds(), { padding: [30, 30] });
     }
+    map.fitBounds(group.getBounds(), { padding: [30, 30] });
 }
 
 afficherPointsSurCarte();
