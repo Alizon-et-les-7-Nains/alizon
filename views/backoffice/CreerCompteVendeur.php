@@ -390,7 +390,6 @@ unset($_SESSION['form_data']);
                 }
 
                 function onMapClick(e) {
-                    map.off();
                     map.remove();
                     var pAdresseAct = document.getElementById('adrAct');
                     var map = L.map('map').setView([e.latlng.lat, e.latlng.lng], 13);
