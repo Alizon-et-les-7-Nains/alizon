@@ -41,8 +41,6 @@ $stmt->execute([$user_id]);
 $secret = $stmt->fetchColumn();
 $secret = dechiffrement($secret);
 
-var_dump($secret);
-
 $totp = TOTP::create($secret);
 
 if ($totp->verify($otp)) {
