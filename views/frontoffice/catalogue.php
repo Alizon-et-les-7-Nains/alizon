@@ -537,8 +537,8 @@ for ($i = 0; $i < count($vendeurs); $i++) {
 let adresses = <?= json_encode($adresses) ?>; 
 
 for (let i = 0; i < adresses.length; i++) {
-    const lat = adresses[i].latitude;
-    const lng = adresses[i].longitude;
+    const lat = adresses[i]?.latitude;
+    const lng = adresses[i]?.longitude;
     if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
         coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
     }
