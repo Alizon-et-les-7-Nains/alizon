@@ -85,7 +85,7 @@ $vendeurSql = "SELECT v.idadresse, v.codeVendeur, v.raisonSocial, COUNT(p.idProd
                FROM _vendeur v
                JOIN _produit p ON p.idVendeur = v.codeVendeur
                GROUP BY v.codeVendeur, v.raisonSocial
-               ORDER BY nbProduits DESC LIMIT 10";
+               ORDER BY nbProduits DESC";
 $stmt = $pdo->prepare($vendeurSql);
 $stmt->execute();
 $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -290,7 +290,7 @@ $cart = getCurrentCart($pdo, $idClient);
                     <input type="range" id="sliderMax" min="0" max="<?php echo $maxPrice; ?>" value="<?php echo $maxPrice; ?>">
                 </div>
             </div>
-            <label for="minNote" id="minNoteLabel">Trier par note minimale:</label>
+            <label for="minNote" id="minNoteLabel">Filtrer par note minimale:</label>
             <div>
                 <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
                 <img src="../../public/images/etoileVide.svg" data-index="2" class="star" alt="2 étoiles">
@@ -535,11 +535,12 @@ for ($i = 0; $i < count($vendeurs); $i++) {
 }
 ?>
 
+
 let adresses = <?= json_encode($adresses) ?>; 
 
 for (let i = 0; i < adresses.length; i++) {
-    const lat = adresses[i]?.latitude;
-    const lng = adresses[i]?.longitude;
+    const lat = adresses[i].latitude;
+    const lng = adresses[i].longitude;
     if (lat && lng) {
         coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
     }
