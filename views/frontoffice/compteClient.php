@@ -312,13 +312,9 @@ $pays = $adresse['pays'] ?? '';
                 <button type="button" onclick="popUpModifierMdp()" class="boutonModifierMdp">Modifier le mot de passe</button>
                 <button class="boutonAnnuler" type="button" onclick="boutonAnnuler()">Annuler</button>
                 <button type="button" class="boutonModiferProfil">Modifier</button>
-                <div class="authenTwofacts">
-                    <label for="remember_me">Activer l'authentification à deux facteurs</label>
-                    <input type="checkbox" id="remember_me" name="remember_me" <?php echo $otp_enabled ? 'checked' : ''; ?>>
-                </div>
-            <button type="button" class="boutonA2F" onclick="handleA2FToggle()">
-    <?php echo $otp_enabled ? 'Désactiver l\'A2F' : 'Configurer l\'A2F'; ?>
-</button>
+                <button type="button" class="boutonA2F" onclick="handleA2FToggle()">
+                    <?php echo $otp_enabled ? 'Désactiver l\'A2F' : 'Configurer l\'A2F'; ?>
+                </button>
             </div>
         </form>
     </main>
