@@ -1,15 +1,36 @@
 <?php
 session_start();
 require_once "../../controllers/pdo.php";
+require_once "../../vendor/autoload.php";
+
+use OTPHP\TOTP;
 
 header('Content-Type: application/json');
+
+function chiffrement($data) {
+    $key = 'la_super_cle_secrete';
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+    $encrypted = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
+    return base64_encode($iv . $encrypted);
+}
+
+function dechiffrement($data) {
+    $key = 'la_super_cle_secrete';
+    $data = base64_decode($data);
+    $iv_length = openssl_cipher_iv_length('aes-256-cbc');
+    $iv = substr($data, 0, $iv_length);
+    $encrypted = substr($data, $iv_length);
+    return openssl_decrypt($encrypted, 'aes-256-cbc', $key, 0, $iv);
+}
 
 // Récupérer les données JSON envoyées
 $data = json_decode(file_get_contents("php://input"), true);
 
+var_dump($data);
+
 $otp = $data['otp'] ?? '';
 
-use OTPHP\TOTP;
+var_dump($otp);
 
 $user_id = $_SESSION['user_id'] ?? null;
 
@@ -22,13 +43,15 @@ if (!$user_id) {
 $stmt = $pdo->prepare("SELECT otp_secret FROM _client WHERE idClient = ?");
 $stmt->execute([$user_id]);
 $secret = $stmt->fetchColumn();
+$secret = dechiffrement($secret);
 
 $totp = TOTP::create($secret);
 
+var_dump($totp);
+
 if ($totp->verify($otp)) {
 
-    $_SESSION['user_id'] = $user_id;
-    unset($_SESSION['user_id']);
+    $_SESSION['tmp_usr'] = $user_id;
 
     echo json_encode(["success" => true]);
 

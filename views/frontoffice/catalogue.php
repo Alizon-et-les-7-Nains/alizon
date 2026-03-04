@@ -2,15 +2,7 @@
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
 
-// Chargement des départements
-$listeDepts = [];
-if (($handle = fopen("../../public/data/departements.csv", "r")) !== FALSE) {
-    fgetcsv($handle, 1000, ";");
-    while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-        $listeDepts[$data[0]] = $data[2];
-    }
-    fclose($handle);
-}
+
 session_start();
 
 $produitsParPage = 16;
@@ -233,7 +225,6 @@ $cart = getCurrentCart($pdo, $idClient);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogue</title>
-    <link rel="icon" href="../../public/images/logoBackoffice.svg">
     <link rel="stylesheet" href="../../public/style.css">
      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -315,13 +306,6 @@ $cart = getCurrentCart($pdo, $idClient);
                 <?php } ?>
             </select>
 
-            <label for="zone">-- Zone géographique --</label>
-            <select name="zone" id="zoneSelect" class="filter-select">
-                <option value="">Tous les départements</option>
-                <?php foreach ($listeDepts as $code => $nom) : ?>
-                    <option value="<?= $code ?>"><?= $code ?> - <?= htmlspecialchars($nom) ?></option>
-                <?php endforeach; ?>
-            </select>
 
             <label for="vendeur">Vendeur :</label>
             <select id="vendeur" name="vendeur">
@@ -523,7 +507,6 @@ console.log(listeIdVendeurs);
 const carteAffiche = document.getElementById('map');
 const barreResultat = document.getElementById('resultat');
 const barreVerticale = document.getElementById('vertical-bar');
-const coordonnees = [];
 
 <?php
 $adresses = [];
@@ -536,15 +519,6 @@ for ($i = 0; $i < count($vendeurs); $i++) {
 ?>
 let adresses = <?= json_encode($adresses) ?>; 
 
-const _listeIdVendeurs = [...new Set(products.map(p => p.idVendeur))];
-
-for (let i = 0; i < adresses.length; i++) {
-    const lat = adresses[i].latitude;
-    const lng = adresses[i].longitude;
-    if (lat && lng && _listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
-        coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
-    }
-}
 
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -552,13 +526,35 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-for (let i = 0; i < coordonnees.length; i++) {
-    const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
-    marker.on('click', () => {
-        vendeur.value = coordonnees[i].id;
-        loadProduits(1);
+function afficherPointsSurCarte(idVendeursActifs = null) {
+    let coordonnees = [];
+
+    // ✅ Normalise tout en string pour éviter les problèmes de type int/string
+    const _listeIdVendeurs = idVendeursActifs !== null
+        ? idVendeursActifs.map(String)
+        : [...new Set(products.map(p => String(p.idVendeur)))];
+
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) map.removeLayer(layer);
     });
+
+    for (let i = 0; i < adresses.length; i++) {
+        const lat = adresses[i].latitude;
+        const lng = adresses[i].longitude;
+        // ✅ Normalise aussi le codeVendeur en string avant comparaison
+        if (lat && lng && _listeIdVendeurs.includes(String(vendeurs[i].codeVendeur))) {
+            const marker = L.marker([lat, lng]).addTo(map);
+            marker.on('click', () => {
+                vendeur.value = vendeurs[i].codeVendeur;
+                loadProduits(1);
+            });
+        }
+    }
 }
+
+afficherPointsSurCarte();
+
+
 
 const btnCarte = document.getElementById('btnCarte');
 
@@ -652,7 +648,6 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value;
-    const zoneValue = document.getElementById('zoneSelect').value;
 
     let idVendeur;
     if(vendeur.value!=""){
@@ -661,7 +656,7 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&zone=${zoneValue}&search=${encodeURIComponent(searchQuery)}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}`)
         .then(res => {
             if (!res.ok) {
                 throw new Error(`Erreur HTTP: ${res.status}`);
@@ -672,7 +667,13 @@ function loadProduits(page = 1) {
             listeArticle.innerHTML = data.html;
             currentPage = page;
             resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
-            
+
+            if (data.idVendeurs) {
+                const idVendeursActifs = data.idVendeurs;
+                listeIdVendeurs = idVendeursActifs;
+                afficherPointsSurCarte(idVendeursActifs);
+            }
+
             let pagHTML = '';
             if (data.nbPages > 1) {
                 if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
@@ -694,13 +695,12 @@ function loadProduits(page = 1) {
         });
 }
 
-document.getElementById('zoneSelect').addEventListener('change', () => loadProduits(1));
 
 // Events listeners sur les sliders
 sliderMin.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
-    console.log(searchbar.value)
+    console.log(searchbar.value);
 });
 
 sliderMax.addEventListener('input', () => { 

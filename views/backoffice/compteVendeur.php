@@ -121,6 +121,9 @@ $pays          = $vendeur['pays'] ?? '';
 
             <input type="hidden" name="code_vendeur" value="<?= $code_vendeur ?>">
             <input type="hidden" name="id_adresse" value="<?= $idAdresse ?>">
+            <input type="hidden" name="lat">
+            <input type="hidden" name="lng">
+
 
             <!-- CONTENEUR DES COLONNES -->
             <div class="colonnes-container">
@@ -304,6 +307,26 @@ $pays          = $vendeur['pays'] ?? '';
     $mdp = $tabMdp['mdp'] ?? '';
     ?>
 
+    <script>
+        const adresseInput = document.getElementById('adresse');
+
+        async function geocodeAdresse(adresse) {
+            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(adresse)}&format=json`;
+            const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
+            const data = await rep.json();
+            
+            if (data.length > 0) {
+                const { lat, lon } = data[0];
+                latInput.value = lat;
+                lngInput.value = lon;
+                return { lat, lng: lon };
+            } else {
+                throw new Error("Adresse introuvable");
+            }
+        }
+
+        geocodeAdresse(adresseInput.value);
+    </script>
     <script src="../../controllers/Chiffrement.js"></script>
     <script>
     // Variables globales pour le JavaScript
