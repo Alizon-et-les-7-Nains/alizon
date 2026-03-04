@@ -316,7 +316,9 @@ $pays = $adresse['pays'] ?? '';
                     <label for="remember_me">Activer l'authentification à deux facteurs</label>
                     <input type="checkbox" id="remember_me" name="remember_me" <?php echo $otp_enabled ? 'checked' : ''; ?>>
                 </div>
-            <button type="button" class="boutonA2F" onclick="handleA2FToggle()">Configurer l'A2F</button>
+            <button type="button" class="boutonA2F" onclick="handleA2FToggle()">
+    <?php echo $otp_enabled ? 'Désactiver l\'A2F' : 'Configurer l\'A2F'; ?>
+</button>
             </div>
         </form>
     </main>
