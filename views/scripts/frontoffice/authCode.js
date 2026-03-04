@@ -27,5 +27,9 @@ button.addEventListener("click", function (e) {
         } else {
             alert("Code incorrect");
         }
+    })
+    .catch(err => {
+        console.error("Erreur fetch:", err);
+        alert("Erreur serveur, vérifie la console.");
     });
 });
