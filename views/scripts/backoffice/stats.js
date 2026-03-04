@@ -4,12 +4,10 @@ import moment from 'https://cdn.jsdelivr.net/npm/moment/+esm';
 
 const data = await fetch('/controllers/api.php?action=stats').then(res => res.json());
 
-console.log(data);
-
-
 const yearsData = {};
 
 for (const d of data) {
+    // Split by year
     const year = moment(d.date).year();
     if (!yearsData[year]) {
         yearsData[year] = {
@@ -22,8 +20,6 @@ for (const d of data) {
     yearsData[year].argent += parseFloat(d.prixProduitHt) * parseInt(d.quantite);
     yearsData[year].argent = Math.round(yearsData[year].argent * 100) / 100;
 }
-
-console.log(yearsData);
 
 let [vente, argent] = [[12, 19, 3, 5, 2, 3, 2], [45, 41, 21, 45, 13, 5, 13]];
 
@@ -49,8 +45,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
                 document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
 
-                document.getElementById('prev').style.display = 'block';
-                document.getElementById('next').style.display = 'block';
+                document.getElementById('prev').disabled = false;
+                document.getElementById('next').disabled = true;
                 break;
 
             case 'Hebdomadaire':
@@ -74,8 +70,12 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 break;
             
             case 'Annuel':
-                [vente, argent] = [[200, 187, 354], [541, 345, 1623]];
-                chart = new Chart(canva, yearChart(vente, argent));
+                [vente, argent] = [[], []];
+                for (const y in yearsData) {
+                    vente.push(yearsData[y].vente);
+                    argent.push(yearsData[y].argent);
+                }
+                chart = new Chart(canva, yearChart(vente, argent, Object.keys(yearsData)));
                 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
                 document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
 
