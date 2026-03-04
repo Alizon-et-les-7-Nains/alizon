@@ -74,8 +74,6 @@ if (isset($data['verifyAndActivate'])) {
     // Vérifier le code OTP
     $totp = TOTP::create($secret);
     $isValid = $totp->verify($code);
-    var_dump($totp);
-    var_dump($code);
     
     if ($isValid) {
         // Code valide : enregistrer en BDD et activer l'A2F
