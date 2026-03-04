@@ -43,6 +43,13 @@ $secret = dechiffrement($secret);
 
 $totp = TOTP::create($secret);
 
+$getsecret = $totp->getSecret();
+var_dump($getsecret);
+var_dump($otp);
+var_dump($totp->now());
+var_dump($totp->verify($otp));
+var_dump($secret);
+
 if ($totp->verify($otp)) {
 
     $_SESSION['tmp_usr'] = $user_id;
