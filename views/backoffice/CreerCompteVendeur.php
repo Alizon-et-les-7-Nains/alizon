@@ -356,6 +356,7 @@ unset($_SESSION['form_data']);
                             <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
                             <div style="height: 380px; background-color: black;" id="map">
                             </div>
+                            <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : ${reverseGeocodeAdresse(lat, lon)}</p>
                             <button>Confirmer</button>
                         </main>`;
 
@@ -377,6 +378,15 @@ unset($_SESSION['form_data']);
                     maxZoom: 19,
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map);
+                var marker = L.marker([lat, lon]).addTo(map);
+
+                function onMapClick(e) {
+                    alert("You clicked the map at " + e.latlng);
+                    var pAdresseAct = document.getElementById('adrAct');
+                    pAdresseAct.textContent = "Adresse actuelle : ", reverseGeocodeAdresse(lat, lon);
+                }
+
+                map.on('click', onMapClick);
 
                 }
 
