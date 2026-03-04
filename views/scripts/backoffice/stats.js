@@ -25,6 +25,9 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 chart = new Chart(canva, dayChart(vente, argent));
                 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
                 document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
+
+                document.getElementById('prev').style.display = 'block';
+                document.getElementById('next').style.display = 'block';
                 break;
 
             case 'Hebdomadaire':
@@ -32,6 +35,9 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 chart = new Chart(canva, weekChart(vente, argent));
                 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
                 document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
+
+                document.getElementById('prev').style.display = 'block';
+                document.getElementById('next').style.display = 'block';
                 break;
             
             case 'Mensuel':
@@ -39,6 +45,9 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 chart = new Chart(canva, monthChart(vente, argent));
                 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
                 document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
+
+                document.getElementById('prev').style.display = 'block';
+                document.getElementById('next').style.display = 'block';
                 break;
             
             case 'Annuel':
@@ -46,9 +55,9 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 chart = new Chart(canva, yearChart(vente, argent));
                 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
                 document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
-                break;
 
-            default:
+                document.getElementById('prev').style.display = 'none';
+                document.getElementById('next').style.display = 'none';
                 break;
         }
     })
