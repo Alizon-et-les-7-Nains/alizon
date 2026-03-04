@@ -1,11 +1,11 @@
-let num1 = document.getElementById("num1").value;
-let num2 = document.getElementById("num2").value;
-let num3 = document.getElementById("num3").value;
-let num4 = document.getElementById("num4").value;
-let num5 = document.getElementById("num5").value;
-let num6 = document.getElementById("num6").value;
+let num1 = document.getElementById("num1");
+let num2 = document.getElementById("num2");
+let num3 = document.getElementById("num3");
+let num4 = document.getElementById("num4");
+let num5 = document.getElementById("num5");
+let num6 = document.getElementById("num6");
 
-number = num1 + num2 + num3 + num4 + num5 + num6;
+number = num1.value + num2.value + num3.value + num4.value + num5.value + num6.value;
 number = parseInt(number);
 
 document.addEventListener("DOMContentLoaded", function () {
