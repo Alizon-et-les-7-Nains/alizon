@@ -275,8 +275,8 @@ unset($_SESSION['form_data']);
                 adresseInputErr.classList.remove('input-error');
                 return { lat, lon: lng };
             } else {
-                throw new Error("Adresse introuvable");
                 adresseInputErr.classList.add('input-error');
+                throw new Error("Adresse introuvable");
             }
         }
 
