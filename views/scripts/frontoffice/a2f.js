@@ -213,160 +213,32 @@ function genererQRCodeA2F(overlay) {
 }
 
 function activerA2F() {
-  // Fermer la popup du carousel
-  const carouselOverlay = document.querySelector(".overlayPopUpCompteClient");
-  if (carouselOverlay) {
-    carouselOverlay.remove();
-  }
-
-  // Afficher la popup de vérification du code
-  afficherPopupVerificationCode();
-}
-
-function afficherPopupVerificationCode() {
-  const overlay = document.createElement("div");
-  overlay.className = "bodyPopupA2f";
-  overlay.innerHTML = `
-    <div class="popupA2f">
-      <div class="croixFermerLaPage" onclick="fermerPopupVerification()">
-        <div></div>
-        <div></div>
-      </div>
-      <h1>Authentification à double facteur</h1>
-      <p style="margin-bottom: 20px; color: #666;">Entrez le code à 6 chiffres de votre application d'authentification</p>
-      <form id="formVerificationOTP">
-        <div class="code-inputs">
-          <input type="text" name="num1" id="num1" maxlength="1" pattern="[0-9]" autocomplete="off">
-          <input type="text" name="num2" id="num2" maxlength="1" pattern="[0-9]" autocomplete="off">
-          <input type="text" name="num3" id="num3" maxlength="1" pattern="[0-9]" autocomplete="off">
-          <input type="text" name="num4" id="num4" maxlength="1" pattern="[0-9]" autocomplete="off">
-          <input type="text" name="num5" id="num5" maxlength="1" pattern="[0-9]" autocomplete="off">
-          <input type="text" name="num6" id="num6" maxlength="1" pattern="[0-9]" autocomplete="off">
-        </div>
-        <p class="erreur" id="erreurCode" style="display: none; color: red; margin-top: 15px;">Code incorrect</p>
-        <button type="submit">Vérifier</button>
-      </form>
-    </div>
-  `;
-
-  document.body.appendChild(overlay);
-
-  // Gérer la saisie automatique entre les champs
-  const inputs = overlay.querySelectorAll('input[type="text"]');
-  inputs.forEach((input, index) => {
-    // Focus automatique sur le premier champ
-    if (index === 0) {
-      input.focus();
-    }
-
-    // Passer au champ suivant après saisie
-    input.addEventListener("input", (e) => {
-      const value = e.target.value;
-
-      // Ne garder que les chiffres
-      if (!/^[0-9]$/.test(value)) {
-        e.target.value = "";
-        return;
-      }
-
-      // Passer au champ suivant si rempli
-      if (value && index < inputs.length - 1) {
-        inputs[index + 1].focus();
-      }
-    });
-
-    // Gérer la touche Backspace pour revenir en arrière
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Backspace" && !e.target.value && index > 0) {
-        inputs[index - 1].focus();
-      }
-    });
-
-    // Gérer le collage d'un code complet
-    input.addEventListener("paste", (e) => {
-      e.preventDefault();
-      const pastedData = e.clipboardData.getData("text").replace(/\D/g, "");
-
-      if (pastedData.length === 6) {
-        inputs.forEach((inp, i) => {
-          inp.value = pastedData[i] || "";
-        });
-        inputs[5].focus();
-      }
-    });
-  });
-
-  // Gérer la soumission du formulaire
-  overlay
-    .querySelector("#formVerificationOTP")
-    .addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      // Récupérer le code complet
-      const code = Array.from(inputs)
-        .map((inp) => inp.value)
-        .join("");
-
-      if (code.length !== 6) {
-        const erreur = overlay.querySelector("#erreurCode");
-        erreur.textContent = "Veuillez entrer les 6 chiffres";
-        erreur.style.display = "block";
-        return;
-      }
-
-      // Vérifier le code
-      verifierCodeOTP(code, overlay);
-    });
-
-  // Fermeture en cliquant sur l'overlay
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) {
-      overlay.remove();
-    }
-  });
-}
-
-function fermerPopupVerification() {
-  const overlay = document.querySelector(".bodyPopupA2f");
-  if (overlay) {
-    overlay.remove();
-  }
-}
-
-function verifierCodeOTP(code, overlay) {
   fetch(window.location.href, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ verifyAndActivate: true, code: code }),
+    body: JSON.stringify({ activate: true }),
   })
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        // Fermer la popup
-        overlay.remove();
+        // Fermer le popup
+        const overlay = document.querySelector(".overlayPopUpCompteClient");
+        if (overlay) {
+          overlay.remove();
+        }
         // Afficher un message de succès
         alert("Authentification à deux facteurs activée avec succès !");
         // Recharger la page pour mettre à jour le bouton
         window.location.reload();
       } else {
-        // Afficher l'erreur
-        const erreur = overlay.querySelector("#erreurCode");
-        erreur.textContent = data.message || "Code incorrect";
-        erreur.style.display = "block";
-
-        // Réinitialiser les champs
-        const inputs = overlay.querySelectorAll('input[type="text"]');
-        inputs.forEach((inp) => (inp.value = ""));
-        inputs[0].focus();
+        alert("Erreur lors de l'activation de l'A2F");
       }
     })
     .catch((error) => {
       console.error("Erreur:", error);
-      const erreur = overlay.querySelector("#erreurCode");
-      erreur.textContent = "Erreur de connexion";
-      erreur.style.display = "block";
+      alert("Erreur de connexion");
     });
 }
 

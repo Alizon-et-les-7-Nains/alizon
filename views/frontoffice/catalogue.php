@@ -206,6 +206,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     exit;
 }
 
+// $sql_lat = "SELECT latitude FROM _adresseVendeur";
+// $stmt_lat = $pdo->prepare($sql_lat);
+// $stmt_lat->execute([]);
+// $latitudes = $stmt_lat->fetchAll(PDO::FETCH_ASSOC);
+
+// $sql_lng = "SELECT longitude FROM _adresseVendeur";
+// $stmt_lng = $pdo->prepare($sql_lng);
+// $stmt_lng->execute([]);
+// $longitudes = $stmt_lng->fetchAll(PDO::FETCH_ASSOC);
+
+// $resLat = 0;
+// $resLng = 0;
+// $totalLat = 0;
+// $totalLng = 0;
+
+
+// $corner1Lat=$latitudes[0];
+// $corner1Lng=$longitudes[0]; 
+
+// $corner2Lat=$latitudes[0]; 
+// $corner2Lng=$longitudes[0];
+
+// foreach($latitudes as $lat){
+//     $resLat+=$lat;
+//     $totalLat++;
+
+//     if($corner1Lat < $lat){
+//         $corner1Lat = $lat;
+//     }
+
+//     if($corner2Lat > $lat){
+//         $corner2Lat = $lat;
+//     }
+// }
+
+// foreach($longitudes as $lng){
+//     $resLng+=$lng;
+//     $totalLng++;
+
+//     if($corner1Lng < $lng){
+//         $corner1Lng = $lng;
+//     }
+
+//     if($corner2Lng > $lng){
+//         $corner2Lng = $lng;
+//     }
+// }
+
+// $latMoy = $resLat/$totalLat;
+// $lngMoy = $resLng/$totalLng;
+
 // ============================================================================
 // RÉCUPÉRATION DES DONNÉES POUR LA PAGE
 // ============================================================================
@@ -341,8 +392,10 @@ $cart = getCurrentCart($pdo, $idClient);
             }
         </style>
     </aside>
+
     <div id="map"></div>
     <div id="vertical-bar" style="width: 5px; background-color: black;"></div>
+
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
@@ -518,7 +571,6 @@ for ($i = 0; $i < count($vendeurs); $i++) {
 }
 ?>
 let adresses = <?= json_encode($adresses) ?>; 
-
 
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 var group = L.markerClusterGroup();
