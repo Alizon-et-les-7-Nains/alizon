@@ -19,8 +19,48 @@ function dechiffrement($data) {
 
 // Traiter la vérification du code OTP via JSON
 $data = json_decode(file_get_contents('php://input'), true);
+
+// Vérifier le statut de blocage
+if (isset($data['checkBlock']) && isset($_SESSION['user_id'])) {
+    $blockedUntil = $_SESSION['otp_blocked_until'] ?? 0;
+    $currentTime = time();
+    
+    if ($blockedUntil > $currentTime) {
+        echo json_encode([
+            'blocked' => true,
+            'remainingTime' => $blockedUntil - $currentTime
+        ]);
+    } else {
+        echo json_encode(['blocked' => false]);
+    }
+    exit;
+}
+
 if (isset($data['otp']) && isset($_SESSION['user_id'])) {
     $code = $data['otp'];
+    
+    // Initialiser les variables de blocage si elles n'existent pas
+    if (!isset($_SESSION['otp_failed_attempts'])) {
+        $_SESSION['otp_failed_attempts'] = 0;
+    }
+    if (!isset($_SESSION['otp_blocked_until'])) {
+        $_SESSION['otp_blocked_until'] = 0;
+    }
+    if (!isset($_SESSION['otp_block_duration'])) {
+        $_SESSION['otp_block_duration'] = 30; // Durée de blocage initiale en secondes
+    }
+    
+    // Vérifier si l'utilisateur est actuellement bloqué
+    $currentTime = time();
+    if ($_SESSION['otp_blocked_until'] > $currentTime) {
+        echo json_encode([
+            'success' => false,
+            'blocked' => true,
+            'remainingTime' => $_SESSION['otp_blocked_until'] - $currentTime,
+            'message' => 'Trop de tentatives échouées. Veuillez patienter.'
+        ]);
+        exit;
+    }
     
     // Récupérer le secret OTP de l'utilisateur
     $sql = "SELECT otp_secret FROM _client WHERE idClient = ?";
@@ -37,12 +77,50 @@ if (isset($data['otp']) && isset($_SESSION['user_id'])) {
         $isValid = $totp->verify($code);
         
         if ($isValid) {
+            // Réinitialiser les compteurs en cas de succès
+            $_SESSION['otp_failed_attempts'] = 0;
+            $_SESSION['otp_blocked_until'] = 0;
+            $_SESSION['otp_block_duration'] = 30;
+            
             echo json_encode(['success' => true]);
+            exit;
+        } else {
+            // Incrémenter le compteur d'échecs
+            $_SESSION['otp_failed_attempts']++;
+            
+            // Vérifier si on atteint 3 tentatives échouées
+            if ($_SESSION['otp_failed_attempts'] >= 3) {
+                // Bloquer l'utilisateur
+                $_SESSION['otp_blocked_until'] = $currentTime + $_SESSION['otp_block_duration'];
+                
+                echo json_encode([
+                    'success' => false,
+                    'blocked' => true,
+                    'remainingTime' => $_SESSION['otp_block_duration'],
+                    'message' => 'Trop de tentatives échouées. Veuillez patienter ' . $_SESSION['otp_block_duration'] . ' secondes.'
+                ]);
+                
+                // Augmenter la durée de blocage pour la prochaine fois
+                $_SESSION['otp_block_duration'] += 30;
+                
+                // Réinitialiser le compteur de tentatives
+                $_SESSION['otp_failed_attempts'] = 0;
+                
+                exit;
+            }
+            
+            // Retourner le nombre de tentatives restantes
+            echo json_encode([
+                'success' => false,
+                'blocked' => false,
+                'attemptsLeft' => 3 - $_SESSION['otp_failed_attempts'],
+                'message' => 'Code incorrect'
+            ]);
             exit;
         }
     }
     
-    echo json_encode(['success' => false]);
+    echo json_encode(['success' => false, 'message' => 'Erreur de vérification']);
     exit;
 }
 
