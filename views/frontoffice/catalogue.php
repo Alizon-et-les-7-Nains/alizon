@@ -575,18 +575,23 @@ let adresses = <?= json_encode($adresses) ?>;
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 var group = L.markerClusterGroup();
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 10,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 map.addLayer(group);
 
-function afficherPointsSurCarte(idVendeursActifs = null) {
+function getListeAdressesVendeurs(idVendeursActifs = null) {
     let _listeIdVendeurs;
     if (idVendeursActifs !== null) {
         _listeIdVendeurs = idVendeursActifs.map(String);
     } else {
         _listeIdVendeurs = [...new Set(products.map(p => String(p.idVendeur)))];
     }
+    return _listeIdVendeurs;
+}
+
+function afficherPointsSurCarte(idVendeursActifs = null) {
+    let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs = null);
 
     group.clearLayers();
 
