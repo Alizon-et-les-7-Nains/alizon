@@ -402,6 +402,16 @@
         display: none;
     }
 
+    .nb-vendeurs-control {
+        background: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: 1px solid #273469;
+        font-size: 13px;
+        color: #273469;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
     /** Media Queries */
 
     @media (max-width: 1024px) {
