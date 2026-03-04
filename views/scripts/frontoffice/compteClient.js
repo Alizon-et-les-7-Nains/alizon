@@ -645,8 +645,6 @@ function activerA2F() {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        // Cocher la checkbox
-        document.getElementById("remember_me").checked = true;
         // Fermer le popup
         fermerPopUp();
         // Afficher un message de succès
