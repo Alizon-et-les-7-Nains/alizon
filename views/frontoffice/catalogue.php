@@ -575,6 +575,7 @@ let adresses = <?= json_encode($adresses) ?>;
 
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 var group = L.markerClusterGroup();
+map.fitBounds(group.getBounds(), { padding: [30, 30] });
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 10,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -612,12 +613,13 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
         map.fitBounds(group.getBounds(), { padding: [30, 30] });
     }
     else{
+        map.clearLayers();
         map.setView([48.174838642366915, -2.7538102129824145], 9);
         const textMarker = L.marker([48.17, -2.75], {
             icon: L.divIcon({
-                className: '',  // vide pour éviter les styles par défaut de Leaflet
-                html: '<div style="font-size:14px; font-weight:bold; color:#273469; white-space:nowrap;">Aucun vendeur trouvé pour cette sélection</div>',
-                iconAnchor: [0, 0]  // point d'ancrage
+                className: '',
+                html: '<div style="font-size:32px; font-weight:bold; color: black; white-space:nowrap;">Aucun vendeur trouvé pour cette sélection</div>',
+                iconAnchor: null
             })
         }).addTo(map);
     }
