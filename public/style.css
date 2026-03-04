@@ -8540,6 +8540,7 @@ main.commandesBackoffice dialog:focus {
   display: flex;
   justify-content: center;
   z-index: 1000;
+  flex-direction: column;
 }
 .bodyPopupA2f h1 {
   font-style: normal;
