@@ -523,7 +523,6 @@ console.log(listeIdVendeurs);
 const carteAffiche = document.getElementById('map');
 const barreResultat = document.getElementById('resultat');
 const barreVerticale = document.getElementById('vertical-bar');
-const coordonnees = [];
 
 <?php
 $adresses = [];
@@ -544,13 +543,20 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 function afficherPointsSurCarte() {
-    const _listeIdVendeurs = [...new Set(products.map(p => p.idVendeur))];
+    let coordonnees = [];
+    let _listeIdVendeurs = [...new Set(products.map(p => p.idVendeur))];
 
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
         const lng = adresses[i].longitude;
         if (lat && lng && _listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
             coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
+        }
+    }
+    
+    for (let i = 0; i < map._layers.length; i++) {
+        if (map._layers[i]._icon) {
+            map.removeLayer(map._layers[i]);
         }
     }
 
