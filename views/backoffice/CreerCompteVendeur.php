@@ -102,7 +102,7 @@ unset($_SESSION['form_data']);
                     <div class="col-md-6">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <label>Adresse de l'entreprise</label>
-                            <p onclick="geocodeAdresse(<?= htmlspecialchars($idAdresse) ?>)" style="cursor: pointer; font-size: smaller; margin: 0; margin-top: 3px;">Vérifier l'adresse</p>
+                            <p onclick="geocodeAdresse(document.getElementById('idAdresse').value)" style="cursor: pointer; font-size: smaller; margin: 0; margin-top: 3px;">Vérifier l'adresse</p>
                         </div>
                         <input type="text" name="idAdresse" id="idAdresse" required class="form-control"
                             value="<?= htmlspecialchars($idAdresse) ?>" placeholder="Ex: 12 Rue de la Fonderie, 72100 Le Mans, France">
@@ -268,8 +268,8 @@ unset($_SESSION['form_data']);
                 const { lat, lng } = data[0];
                 latInput.value = lat;
                 lngInput.value = lng;
-                console.log("Adresse récupérée : ", adresse, "\n");
-                console.log("\n-----------------\nLatitude : ", lat, "\nLongitude : ", lng, "\n-----------------\n");
+                console.log("-----------------\nAdresse récupérée : ", adresse, "\n");
+                console.log("Latitude : ", lat, "\nLongitude : ", lng, "\n-----------------\n");
                 return { lat, lng };
             } else {
                 throw new Error("Adresse introuvable");
