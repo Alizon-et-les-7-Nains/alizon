@@ -526,9 +526,13 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-function afficherPointsSurCarte() {
+function afficherPointsSurCarte(idVendeursActifs = null) {
     let coordonnees = [];
     let _listeIdVendeurs = [...new Set(products.map(p => p.idVendeur))];
+
+    if (idVendeursActifs !== null && Array.isArray(idVendeursActifs)) {
+        _listeIdVendeurs = _listeIdVendeurs.filter(id => idVendeursActifs.includes(id));
+    }
 
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
@@ -538,7 +542,6 @@ function afficherPointsSurCarte() {
         }
     }
 
-    // Supprimer les anciens marqueurs
     map.eachLayer(layer => {
         if (layer instanceof L.Marker) {
             map.removeLayer(layer);
@@ -671,7 +674,13 @@ function loadProduits(page = 1) {
             listeArticle.innerHTML = data.html;
             currentPage = page;
             resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
-            
+
+            if (data.idVendeurs) {
+                const idVendeursActifs = data.idVendeurs;
+                listeIdVendeurs = idVendeursActifs;
+                afficherPointsSurCarte(idVendeursActifs);
+            }
+
             let pagHTML = '';
             if (data.nbPages > 1) {
                 if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
