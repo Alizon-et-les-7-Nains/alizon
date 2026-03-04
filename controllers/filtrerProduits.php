@@ -71,8 +71,21 @@ $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$data = ['html' => '', 'nbPages' => $nbPages, 'totalProduits' => $totalProduits,
- 'idVendeurs' => array_values(array_unique(array_map('strval', array_column($products, 'idVendeur'))))];
+$sqlVendeurs = "SELECT DISTINCT p.idVendeur " . $baseSqlFrom;
+$stmtVendeurs = $pdo->prepare($sqlVendeurs);
+foreach ($params as $k => $v) {
+    $stmtVendeurs->bindValue($k, $v);
+}
+$stmtVendeurs->execute();
+$tousLesProduitsFiltres = $stmtVendeurs->fetchAll(PDO::FETCH_ASSOC);
+
+$data = [
+    'html'          => '',
+    'nbPages'       => $nbPages,
+    'totalProduits' => $totalProduits,
+    'idVendeurs'    => array_values(array_map('strval', array_column($tousLesProduitsFiltres, 'idVendeur')))
+    //                 ^^^ tous les vendeurs, pas juste ceux de la page
+];
 
 if (count($products) > 0) {
     foreach ($products as $value) {
