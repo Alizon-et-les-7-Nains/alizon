@@ -81,7 +81,7 @@ $stmt->execute();
 $listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Vendeurs
-$vendeurSql = "SELECT v.idAddresse, v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbProduits
+$vendeurSql = "SELECT v.idadresse, v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbProduits
                FROM _vendeur v
                JOIN _produit p ON p.idVendeur = v.codeVendeur
                GROUP BY v.codeVendeur, v.raisonSocial
@@ -526,20 +526,20 @@ const barreVerticale = document.getElementById('vertical-bar');
 const coordonnees = [];
 
 <?php
-$addresses = [];
+$adresses = [];
 for ($i = 0; $i < count($vendeurs); $i++) {
-    $stmt = $pdo->prepare("SELECT latitude, longitude FROM _addresseVendeur WHERE idAddresse = :id");
-    $stmt->execute([':id' => $vendeurs[$i]['idAddresse']]);
+    $stmt = $pdo->prepare("SELECT latitude, longitude FROM _adresseVendeur WHERE idadresse = :id");
+    $stmt->execute([':id' => $vendeurs[$i]['idadresse']]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $addresses[] = $row ?: ['latitude' => null, 'longitude' => null];
+    $adresses[] = $row ?: ['latitude' => null, 'longitude' => null];
 }
 ?>
 
-let addresses = <?= json_encode($addresses) ?>; 
+let adresses = <?= json_encode($adresses) ?>; 
 
-for (let i = 0; i < addresses.length; i++) {
-    const lat = addresses[i]?.latitude;
-    const lng = addresses[i]?.longitude;
+for (let i = 0; i < adresses.length; i++) {
+    const lat = adresses[i]?.latitude;
+    const lng = adresses[i]?.longitude;
     if (lat && lng) {
         coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
     }
