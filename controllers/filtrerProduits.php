@@ -14,7 +14,6 @@ $noteMin  = (float)($_GET['minNote'] ?? 0);
 $categorie = isset($_GET['categorie']) ? str_replace('_', ' ', $_GET['categorie']) : '';
 $vendeur   = $_GET['vendeur'] ?? '';
 $recherche = trim($_GET['search'] ?? '');
-$zone      = $_GET['zone'] ?? '';
 
 $params = [
     ':noteMin'  => $noteMin,
@@ -40,10 +39,6 @@ if (!empty($vendeur)) {
     $params[':idVendeur'] = $vendeur;
 }
 
-if ($zone !== '') {
-    $sqlWhere .= " AND a.codePostal LIKE :zone";
-    $params[':zone'] = $zone . '%';
-}
 
 $baseSqlFrom = " FROM _produit p
                  LEFT JOIN _vendeur v ON p.idVendeur = v.codeVendeur
