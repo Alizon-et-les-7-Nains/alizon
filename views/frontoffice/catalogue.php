@@ -526,34 +526,30 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+map.addLayer(group);
 
 function afficherPointsSurCarte(idVendeursActifs = null) {
-    let coordonnees = [];
-
-    if (idVendeursActifs !==null) {
-        const listeIdVendeurs = idVendeursActifs
-    }
-    else{
-        const listeIdVendeurs = [...new Set(products.map(p => String(p.idVendeur)))];
+    let _listeIdVendeurs;
+    if (idVendeursActifs !== null) {
+        _listeIdVendeurs = idVendeursActifs.map(String);
+    } else {
+        _listeIdVendeurs = [...new Set(products.map(p => String(p.idVendeur)))];
     }
 
-    map.eachLayer(layer => {
-        if (layer instanceof L.Marker) map.removeLayer(layer);
-    });
+    group.clearLayers();
 
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
         const lng = adresses[i].longitude;
         if (lat && lng && _listeIdVendeurs.includes(String(vendeurs[i].codeVendeur))) {
             const marker = L.marker([lat, lng]);
-            group.addLayer(marker);
             marker.on('click', () => {
                 vendeur.value = vendeurs[i].codeVendeur;
                 loadProduits(1);
             });
+            group.addLayer(marker);
         }
     }
-    map.addLayer(group);
 }
 
 afficherPointsSurCarte();
