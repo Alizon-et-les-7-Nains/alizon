@@ -8,6 +8,7 @@ require_once "../../controllers/pdo.php";
 $error = '';
 $email_tel = '';
 $password = '';
+$popupA2f = false;
 
 var_dump($popupA2f);
 
