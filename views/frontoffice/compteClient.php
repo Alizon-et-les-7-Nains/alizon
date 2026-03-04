@@ -33,44 +33,77 @@ function dechiffrement($data) {
 // Traitement de l'activation/désactivation de l'A2F
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (isset($data['activate'])) {
+// Générer le QR code (sans activer l'A2F)
+if (isset($data['generateQR'])) {
     if (!isset($_SESSION['user_id'])) {
         echo json_encode(['success' => false, 'message' => 'Non authentifié']);
         exit;
     }
-
-    $activate = $data['activate'] ? 1 : 0;
     
-    if ($activate == 1) {
-        // Générer un nouveau secret pour l'A2F
-        $totp = TOTP::create();
-        $totp->setLabel($_SESSION['user_id']);
-        $totp->setIssuer('MonSite');
-        
-        $secret = $totp->getSecret();
+    // Générer un nouveau secret pour l'A2F
+    $totp = TOTP::create();
+    $totp->setLabel($_SESSION['user_id']);
+    $totp->setIssuer('MonSite');
+    
+    $secret = $totp->getSecret();
+    
+    // Stocker temporairement le secret en session (pas encore en BDD)
+    $_SESSION['temp_otp_secret'] = $secret;
+    
+    // URL pour le QR code
+    $otpauthUrl = $totp->getProvisioningUri();
+    
+    echo json_encode([
+        'success' => true,
+        'otpauthUrl' => $otpauthUrl,
+        'secret' => $secret
+    ]);
+    exit;
+}
+
+// Vérifier le code OTP et activer l'A2F
+if (isset($data['verifyAndActivate'])) {
+    if (!isset($_SESSION['user_id']) || !isset($_SESSION['temp_otp_secret'])) {
+        echo json_encode(['success' => false, 'message' => 'Non authentifié ou secret manquant']);
+        exit;
+    }
+    
+    $code = $data['code'];
+    $secret = $_SESSION['temp_otp_secret'];
+    
+    // Vérifier le code OTP
+    $totp = TOTP::create($secret);
+    $isValid = $totp->verify($code);
+    
+    if ($isValid) {
+        // Code valide : enregistrer en BDD et activer l'A2F
         $secret_chiffre = chiffrement($secret);
-        
-        // URL pour le QR code
-        $otpauthUrl = $totp->getProvisioningUri();
-        
-        // Mettre à jour la BDD
         $sql = "UPDATE _client SET otp_enabled = 1, otp_secret = ? WHERE idClient = ?";
         $stmt = $pdo->prepare($sql);
         $success = $stmt->execute([$secret_chiffre, $_SESSION['user_id']]);
         
-        echo json_encode([
-            'success' => $success,
-            'otpauthUrl' => $otpauthUrl,
-            'secret' => $secret
-        ]);
-    } else {
-        // Désactiver l'A2F
-        $sql = "UPDATE _client SET otp_enabled = 0, otp_secret = NULL WHERE idClient = ?";
-        $stmt = $pdo->prepare($sql);
-        $success = $stmt->execute([$_SESSION['user_id']]);
+        // Nettoyer la session
+        unset($_SESSION['temp_otp_secret']);
         
-        echo json_encode(['success' => $success]);
+        echo json_encode(['success' => $success, 'message' => 'A2F activé avec succès']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Code incorrect']);
     }
+    exit;
+}
+
+// Désactiver l'A2F
+if (isset($data['activate']) && $data['activate'] === false) {
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['success' => false, 'message' => 'Non authentifié']);
+        exit;
+    }
+    
+    $sql = "UPDATE _client SET otp_enabled = 0, otp_secret = NULL WHERE idClient = ?";
+    $stmt = $pdo->prepare($sql);
+    $success = $stmt->execute([$_SESSION['user_id']]);
+    
+    echo json_encode(['success' => $success]);
     exit;
 }
 
