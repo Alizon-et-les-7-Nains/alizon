@@ -267,13 +267,13 @@ unset($_SESSION['form_data']);
             console.log(data);
 
             if (data.length > 0) {
-                const { lat, lng } = data[0];
+                const { lat, lon } = data[0];
                 latInput.value = lat;
-                lngInput.value = lng;
+                lngInput.value = lon;
                 console.log("-----------------\nAdresse récupérée : ", adresse, "\n");
                 console.log("Latitude : ", lat, "\nLongitude : ", lng, "\n-----------------\n");
                 inputElement.classList.remove('input-error');
-                return { lat, lng };
+                return { lat, lon: lng };
             } else {
                 throw new Error("Adresse introuvable");
                 inputElement.classList.add('input-error');
