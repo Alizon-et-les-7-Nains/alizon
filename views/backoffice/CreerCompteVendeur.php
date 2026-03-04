@@ -392,13 +392,18 @@ unset($_SESSION['form_data']);
                 }
             }
 
-            function onMapClick(e) {
+            async function onMapClick(e) {
                 const pAdresseAct = document.getElementById('adrAct');
-                if (currentMarker) {
-                    currentMarker.remove();
-                }
+                if (currentMarker) currentMarker.remove();
+                
                 currentMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mapInstance);
-                pAdresseAct.textContent = "Adresse actuelle : " + reverseGeocodeAdresse(e.latlng.lat, e.latlng.lng);
+                
+                try {
+                    const adresse = await reverseGeocodeAdresse(e.latlng.lat, e.latlng.lng);
+                    pAdresseAct.textContent = "Adresse actuelle : " + adresse;
+                } catch (err) {
+                    pAdresseAct.textContent = "Adresse introuvable";
+                }
             }
 
         </script>
