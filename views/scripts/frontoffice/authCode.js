@@ -24,8 +24,16 @@ if (inputs.length > 0) {
       if (value && index < inputs.length - 1) {
         inputs[index + 1].focus();
       } else if (value && index === inputs.length - 1) {
-        // Soumettre automatiquement quand le dernier champ est rempli
-        setTimeout(() => form.submit(), 100);
+        // Petite pause pour permettre l'affichage du dernier chiffre
+        setTimeout(() => {
+          // Vérifier que tous les champs sont remplis avant de soumettre
+          const allFilled = Array.from(inputs).every(
+            (inp) => inp.value.length === 1,
+          );
+          if (allFilled) {
+            form.requestSubmit(); // Utiliser requestSubmit() au lieu de submit()
+          }
+        }, 50);
       }
     });
 
@@ -45,7 +53,14 @@ if (inputs.length > 0) {
         inputs.forEach((inp, i) => {
           inp.value = pastedData[i] || "";
         });
+
+        // Focus sur le dernier champ et soumettre
         inputs[5].focus();
+
+        // Petite pause puis soumettre
+        setTimeout(() => {
+          form.requestSubmit();
+        }, 50);
       }
     });
   });
@@ -63,6 +78,14 @@ if (inputs.length > 0) {
     if (code.length !== 6) {
       const erreur = document.querySelector("#erreurCodeA2F");
       erreur.textContent = "Veuillez entrer les 6 chiffres";
+      erreur.style.display = "block";
+      return;
+    }
+
+    // Vérifier que tous les caractères sont des chiffres
+    if (!/^\d{6}$/.test(code)) {
+      const erreur = document.querySelector("#erreurCodeA2F");
+      erreur.textContent = "Le code doit contenir uniquement des chiffres";
       erreur.style.display = "block";
       return;
     }

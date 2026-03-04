@@ -4765,6 +4765,9 @@ button#haut.visible:hover {
   margin-top: 0;
   margin-bottom: 0;
 }
+.CreerCompteVendeur #map {
+  height: 180px;
+}
 
 .popUpPromouvoir {
   background-color: #fffefa;
