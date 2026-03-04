@@ -576,7 +576,7 @@ let adresses = <?= json_encode($adresses) ?>;
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 var group = L.markerClusterGroup();
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 8,
+    maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 map.addLayer(group);
@@ -616,7 +616,7 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
     }
 
     if (group.getLayers().length > 0) {
-        map.fitBounds(group.getBounds(), { padding: [30, 30] });
+        map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 12 });
     } else {
         map.setView([48.174838642366915, -2.7538102129824145], 9);
         messageErreur = L.marker([48.174838642366915, -2.7538102129824145], {
