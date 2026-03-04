@@ -358,7 +358,6 @@ unset($_SESSION['form_data']);
                             </div>
                         </main>`;
 
-                var map = L.map('map').setView([lat, lon], 13);
                 document.body.appendChild(overlay);
 
                 const croixFermer = overlay.querySelector(".croixFermerLaPage");
@@ -377,6 +376,8 @@ unset($_SESSION['form_data']);
                     const overlay = document.querySelector(".overlayPopUpDetails");
                     if (overlay) overlay.remove();
                 }
+
+                var map = L.map('map').setView([lat, lon], 13);
         </script>
 
         <?php require_once './partials/retourEnHaut.php' ?>

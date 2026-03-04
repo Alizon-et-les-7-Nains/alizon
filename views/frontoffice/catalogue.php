@@ -1,6 +1,4 @@
-'<?php
-
-
+<?php
 session_start();
 
 include "../../controllers/pdo.php";
@@ -594,7 +592,7 @@ function getListeAdressesVendeurs(idVendeursActifs = null) {
 }
 
 function afficherPointsSurCarte(idVendeursActifs = null) {
-    let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs = null);
+    let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
 
     group.clearLayers();
 
@@ -609,8 +607,8 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
             });
             group.addLayer(marker);
         }
-        map.fitBounds(group.getBounds(), { padding: [30, 30] });
     }
+    map.fitBounds(group.getBounds(), { padding: [30, 30] });
 }
 
 afficherPointsSurCarte();
