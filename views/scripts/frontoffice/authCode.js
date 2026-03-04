@@ -23,11 +23,9 @@ if (inputs.length > 0) {
       // Passer au champ suivant si rempli
       if (value && index < inputs.length - 1) {
         inputs[index + 1].focus();
-      }
-
-      // Soumettre automatiquement quand le dernier champ est rempli
-      if (value && index === inputs.length - 1) {
-        form.submit();
+      } else if (value && index === inputs.length - 1) {
+        // Soumettre automatiquement quand le dernier champ est rempli
+        setTimeout(() => form.submit(), 100);
       }
     });
 
