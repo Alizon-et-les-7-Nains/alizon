@@ -26,6 +26,8 @@ $stmt = $pdo->prepare("SELECT otp_secret FROM _client WHERE idClient = ?");
 $stmt->execute([$user_id]);
 $secret = $stmt->fetchColumn();
 
+var_dump($secret);
+
 $totp = TOTP::create($secret);
 
 if ($totp->verify($otp)) {
