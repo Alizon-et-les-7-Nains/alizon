@@ -100,9 +100,12 @@ unset($_SESSION['form_data']);
                             value="<?= htmlspecialchars($noSiren) ?>">
                     </div>
                     <div class="col-md-6">
-                        <label>Adresse de l'entreprise</label>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <label>Adresse de l'entreprise</label>
+                            <h5 onclick="geocodeAdresse(<?= htmlspecialchars($idAdresse) ?>)">Vérifier l'adresse</h5>
+                        </div>
                         <input type="text" name="idAdresse" id="idAdresse" required class="form-control"
-                            value="<?= htmlspecialchars($idAdresse) ?>">
+                            value="<?= htmlspecialchars($idAdresse) ?>" placeholder="Ex: 12 Rue de la Fonderie, 72100 Le Mans, France">
                     </div>
 
                     <div class="col-md-12">
@@ -260,12 +263,14 @@ unset($_SESSION['form_data']);
             const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(adresse)}&format=json`;
             const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
             const data = await rep.json();
-            
+
             if (data.length > 0) {
-                const { lat, lon } = data[0];
+                const { lat, lng } = data[0];
                 latInput.value = lat;
-                lngInput.value = lon;
-                return { lat, lng: lon };
+                lngInput.value = lng;
+                console.log("Adresse récupérée : ", adresse, "\n");
+                console.log("\n-----------------\nLatitude : ", lat, "\nLongitude : ", lng, "\n-----------------\n");
+                return { lat, lng };
             } else {
                 throw new Error("Adresse introuvable");
             }
