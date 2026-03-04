@@ -1,4 +1,4 @@
-<?php
+'<?php
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
 
@@ -572,6 +572,7 @@ for ($i = 0; $i < count($vendeurs); $i++) {
 ?>
 let adresses = <?= json_encode($adresses) ?>; 
 
+
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 var group = L.markerClusterGroup();
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -606,12 +607,11 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
             });
             group.addLayer(marker);
         }
+        map.fitBounds(group.getBounds(), { padding: [30, 30] });
     }
 }
 
 afficherPointsSurCarte();
-
-
 
 const btnCarte = document.getElementById('btnCarte');
 
@@ -861,4 +861,4 @@ if (toggleFiltersBtn) {
 </script>
 
 </body>
-</html>
+</html>'
