@@ -354,8 +354,7 @@ unset($_SESSION['form_data']);
                             </div>
                             <h1>Confirmer votre adresse</h1>
                             <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
-                            <div class="conteneurSections">
-                                <div id="map" style="height: 380px; background-color: black;"></div>
+                            <div style="height: 380px; background-color: black;" id="map">
                             </div>
                             <button>Confirmer</button>
                         </main>`;
