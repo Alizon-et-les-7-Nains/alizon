@@ -3,6 +3,8 @@ session_start();
 require_once "../../controllers/pdo.php";
 require_once "../../vendor/autoload.php";
 
+use OTPHP\TOTP;
+
 header('Content-Type: application/json');
 
 // Récupérer les données JSON envoyées
@@ -10,7 +12,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 $otp = $data['otp'] ?? '';
 
-use OTPHP\TOTP;
+
 
 $user_id = $_SESSION['user_id'] ?? null;
 
