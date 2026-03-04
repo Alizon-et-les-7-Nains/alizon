@@ -592,7 +592,7 @@ function getListeAdressesVendeurs(idVendeursActifs = null) {
 }
 
 function afficherPointsSurCarte(idVendeursActifs = null) {
-    let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs = null);
+    let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
 
     group.clearLayers();
 
