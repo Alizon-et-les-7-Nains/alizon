@@ -347,15 +347,17 @@ unset($_SESSION['form_data']);
                 overlay.className = "overlayPopUpDetails";
 
                 overlay.innerHTML = `
-                        <main class="popUpDetails">
+                        <main class="popUpDetails" style=" text-align: center;">
                             <div class="croixFermerLaPage">
                                 <div></div>
                                 <div></div>
                             </div>
                             <h1>Confirmer votre adresse</h1>
+                            <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
                             <div class="conteneurSections">
                                 <div id="map"></div>
                             </div>
+                            <button>Confirmer</button>
                         </main>`;
 
                 document.body.appendChild(overlay);
