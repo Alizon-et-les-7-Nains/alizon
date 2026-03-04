@@ -8,7 +8,8 @@ require_once "../../controllers/pdo.php";
 $error = '';
 $email_tel = '';
 $password = '';
-$popupA2f = false;
+$popupA2f = $_SESSION['a2f_required'] ?? false;
+unset($_SESSION['a2f_required']);
 
 var_dump($popupA2f);
 
@@ -62,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: ../../views/frontoffice/accueilConnecte.php');
                 exit();
             } else {
-                $popupA2f = true;
+                $_SESSION['a2f_required'] = true;
                 header('Location: ../../views/frontoffice/connexionClient.php');
                 exit();
             }
