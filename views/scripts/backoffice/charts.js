@@ -42,11 +42,11 @@ const options = {
     }
 }
 
-const dayChart = (vente, argent) => ({
+const dayChart = (vente, argent, days) => ({
     type: 'bar',
     
     data: {
-        labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+        labels: days,
         datasets: [
             {
                 label: 'Nombre de Ventes',
@@ -129,11 +129,11 @@ const monthChart = (vente, argent) => ({
     options: options
 })
 
-const yearChart = (vente, argent) => ({
+const yearChart = (vente, argent, years) => ({
     type: 'bar',
     
     data: {
-        labels: [2024, 2025, 2026],
+        labels: years,
         datasets: [
             {
                 label: 'Nombre de Ventes',
