@@ -1,6 +1,9 @@
 <?php
 session_start();
 require_once "../../controllers/pdo.php";
+require_once "../../vendor/autoload.php";
+
+use OTPHP\TOTP;
 
 header('Content-Type: application/json');
 
@@ -9,7 +12,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 $otp = $data['otp'] ?? '';
 
-use OTPHP\TOTP;
+
 
 $user_id = $_SESSION['user_id'] ?? null;
 
@@ -23,12 +26,13 @@ $stmt = $pdo->prepare("SELECT otp_secret FROM _client WHERE idClient = ?");
 $stmt->execute([$user_id]);
 $secret = $stmt->fetchColumn();
 
+var_dump($secret);
+
 $totp = TOTP::create($secret);
 
 if ($totp->verify($otp)) {
 
-    $_SESSION['user_id'] = $user_id;
-    unset($_SESSION['user_id']);
+    $_SESSION['tmp_usr'] = $user_id;
 
     echo json_encode(["success" => true]);
 

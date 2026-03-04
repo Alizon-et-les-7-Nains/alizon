@@ -1,116 +1,268 @@
-function handleA2FToggle() {
-  const a2f = document.getElementById("remember_me");
+// ===== GESTION DE L'AUTHENTIFICATION À DEUX FACTEURS (A2F) =====
+let a2fCurrentSlide = 0;
+let a2fTotalSlides = 4;
 
-  if (!a2f) {
-    console.error("Checkbox A2F non trouvée");
-    return;
+function handleA2FToggle() {
+  // Ouvrir directement le popup pour activer l'A2F
+  ouvrirPopupA2F();
+}
+
+function ouvrirPopupA2F() {
+  const overlay = document.createElement("div");
+  overlay.className = "overlayPopUpCompteClient";
+  overlay.innerHTML = `
+        <main class="mainPopUpA2F">
+            <div class="croixFermerLaPage">
+                <div></div>
+                <div></div>
+            </div>
+
+            <!-- Carousel -->
+            <div class="carousel-container">
+                <!-- Slide 1 -->
+                <div class="carousel-slide active" data-index="0">
+                    <h2>Activation de l'A2F</h2>
+                    <p>
+                        L'authentification à deux facteurs (A2F) ajoute une couche de
+                        sécurité essentielle à votre compte. Après votre mot de passe, un
+                        code temporaire à usage unique vous sera demandé.
+                    </p>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-slide" data-index="1">
+                    <h2>Comment ça marche ?</h2>
+                    <p>
+                        Un code à 6 chiffres, valable 30 secondes, est généré sur votre
+                        application d'authentification. Ce code change constamment, le
+                        rendant inutilisable pour quiconque ne possède pas votre
+                        téléphone.
+                    </p>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="carousel-slide" data-index="2">
+                    <h2>Applications compatibles</h2>
+                    <p>Choisissez l'une de ces applications gratuites :</p>
+                    <div class="apps">
+                        <img src="../../public/images/google-authenticator.png" alt="Google Authenticator" title="Google Authenticator">
+                        <img src="../../public/images/microsoft-authenticator.png" alt="Microsoft Authenticator" title="Microsoft Authenticator">
+                        <img src="../../public/images/authy.png" alt="Authy" title="Authy">
+                    </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="carousel-slide" data-index="3">
+                    <h2>Scannez le QR Code</h2>
+                    <p>
+                        Ouvrez votre application, sélectionnez "Ajouter un compte" et
+                        scannez ce code.
+                    </p>
+                    <div id="qrCodeContainer">
+                        <!-- QR Code sera généré ici -->
+                        <p>Génération du QR code en cours...</p>
+                    </div>
+                    <p>
+                        <small>Ce code sera demandé à votre prochaine connexion.</small>
+                    </p>
+                    <button onclick="activerA2F()" class="boutonModiferProfil" style="margin-top: 20px; width: auto; padding: 10px 30px;">Activer l'A2F</button>
+                </div>
+
+                <!-- Flèches de navigation -->
+                <button class="carousel-btn prev" id="a2fPrevBtn">❮</button>
+                <button class="carousel-btn next" id="a2fNextBtn">❯</button>
+
+                <!-- Indicateurs (dots) -->
+                <div class="carousel-dots" id="a2fCarouselDots">
+                    <span class="dot active" data-index="0"></span>
+                    <span class="dot" data-index="1"></span>
+                    <span class="dot" data-index="2"></span>
+                    <span class="dot" data-index="3"></span>
+                </div>
+            </div>
+        </main>
+    `;
+
+  document.body.appendChild(overlay);
+  a2fCurrentSlide = 0;
+
+  // Fermeture du popup
+  overlay.querySelector(".croixFermerLaPage").addEventListener("click", () => {
+    overlay.remove();
+  });
+
+  // Fermeture en cliquant sur l'overlay
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      overlay.remove();
+    }
+  });
+
+  // Initialisation de la navigation
+  initA2FCarouselNavigation(overlay);
+
+  // Génération du QR code
+  genererQRCodeA2F(overlay);
+}
+
+function initA2FCarouselNavigation(overlay) {
+  const slides = overlay.querySelectorAll(".carousel-slide");
+  const prevBtn = overlay.querySelector("#a2fPrevBtn");
+  const nextBtn = overlay.querySelector("#a2fNextBtn");
+  const dots = overlay.querySelectorAll(".dot");
+
+  function showSlide(index) {
+    if (index >= slides.length) {
+      a2fCurrentSlide = 0;
+    } else if (index < 0) {
+      a2fCurrentSlide = slides.length - 1;
+    } else {
+      a2fCurrentSlide = index;
+    }
+
+    slides.forEach((slide, i) => {
+      slide.classList.toggle("active", i === a2fCurrentSlide);
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === a2fCurrentSlide);
+    });
   }
 
-  const isActivating = !a2f.checked;
+  prevBtn.addEventListener("click", () => showSlide(a2fCurrentSlide - 1));
+  nextBtn.addEventListener("click", () => showSlide(a2fCurrentSlide + 1));
 
-  if (isActivating) {
-    console.log("Activation de l'authentification à deux facteurs");
-    a2f.disabled = true;
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => showSlide(index));
+  });
 
+  // Navigation clavier
+  const keyHandler = (e) => {
+    if (!overlay.isConnected) {
+      document.removeEventListener("keydown", keyHandler);
+      return;
+    }
+    if (e.key === "ArrowRight") {
+      showSlide(a2fCurrentSlide + 1);
+    } else if (e.key === "ArrowLeft") {
+      showSlide(a2fCurrentSlide - 1);
+    } else if (e.key === "Escape") {
+      overlay.remove();
+    }
+  };
+  document.addEventListener("keydown", keyHandler);
+}
+
+function genererQRCodeA2F(overlay) {
+  // Appel AJAX pour générer le secret et obtenir l'URL du QR code
+  fetch(window.location.href, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ activate: true }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success && data.otpauthUrl) {
+        const container = overlay.querySelector("#qrCodeContainer");
+        container.innerHTML = ""; // Vider le conteneur
+
+        // Créer le canvas pour le QR code
+        const canvas = document.createElement("canvas");
+        container.appendChild(canvas);
+
+        // Générer le QR code
+        QRCode.toCanvas(
+          canvas,
+          data.otpauthUrl,
+          {
+            width: 200,
+            margin: 2,
+            color: {
+              dark: "#273469",
+              light: "#FFFFFF",
+            },
+          },
+          function (error) {
+            if (error) {
+              console.error("Erreur génération QR code:", error);
+              container.innerHTML =
+                '<p class="erreur">Erreur lors de la génération du QR code</p>';
+            }
+          },
+        );
+
+        // Stocker le secret pour l'activation
+        overlay.dataset.secret = data.secret;
+      } else {
+        overlay.querySelector("#qrCodeContainer").innerHTML =
+          '<p class="erreur">Erreur lors de la génération du QR code</p>';
+      }
+    })
+    .catch((error) => {
+      console.error("Erreur:", error);
+      overlay.querySelector("#qrCodeContainer").innerHTML =
+        '<p class="erreur">Erreur de connexion</p>';
+    });
+}
+
+function activerA2F() {
+  fetch(window.location.href, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ activate: true }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Fermer le popup
+        fermerPopUp();
+        // Afficher un message de succès
+        alert("Authentification à deux facteurs activée avec succès !");
+      } else {
+        alert("Erreur lors de l'activation de l'A2F");
+      }
+    })
+    .catch((error) => {
+      console.error("Erreur:", error);
+      alert("Erreur de connexion");
+    });
+}
+
+function desactiverA2F() {
+  if (
+    confirm(
+      "Êtes-vous sûr de vouloir désactiver l'authentification à deux facteurs ?",
+    )
+  ) {
     fetch(window.location.href, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ activate: true }),
+      body: JSON.stringify({ activate: false }),
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur réseau");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          const qrCodePopup = document.createElement("div");
-          qrCodePopup.classList.add("qr-code-popup");
-          qrCodePopup.innerHTML = `
-            <div class="qr-code-content">
-              <h2>Scannez ce QR code avec votre application d'authentification</h2>
-              <canvas id="qrcode-container"></canvas>
-              <p>Ou saisissez manuellement cette clé secrète :</p>
-              <div class="secret-text">${data.secret}</div>
-              <button id="closePopup">Fermer</button>
-            </div>
-          `;
-
-          document.body.appendChild(qrCodePopup);
-
-          const qrcodeContainer =
-            qrCodePopup.querySelector("#qrcode-container");
-
-          setTimeout(() => {
-            if (typeof QRCode !== "undefined") {
-              QRCode.toCanvas(
-                qrcodeContainer,
-                data.otpauthUrl,
-                { width: 250, height: 250 },
-                function (error) {
-                  if (error) {
-                    console.error(error);
-                    qrcodeContainer.innerHTML =
-                      '<p style="color: red;">Erreur de chargement du QR code</p>';
-                  }
-                },
-              );
-            } else {
-              console.error("Bibliothèque QRCode non chargée");
-              qrcodeContainer.innerHTML =
-                '<p style="color: red;">Erreur de chargement du QR code</p>';
-            }
-          }, 0);
-
-          qrCodePopup
-            .querySelector("#closePopup")
-            .addEventListener("click", () => {
-              qrCodePopup.remove();
-              a2f.checked = true;
-            });
+          document.getElementById("remember_me").checked = false;
+          alert("Authentification à deux facteurs désactivée");
         } else {
-          alert("Une erreur est survenue lors de l'activation.");
+          alert("Erreur lors de la désactivation");
+          // Re-cocher la checkbox si erreur
+          document.getElementById("remember_me").checked = true;
         }
       })
       .catch((error) => {
         console.error("Erreur:", error);
-        alert("Une erreur est survenue lors de l'activation.");
-      })
-      .finally(() => {
-        a2f.disabled = false;
+        alert("Erreur de connexion");
+        document.getElementById("remember_me").checked = true;
       });
   } else {
-    console.log("Désactivation de l'authentification à deux facteurs");
-    if (
-      confirm(
-        "Êtes-vous sûr de vouloir désactiver l'authentification à deux facteurs ?",
-      )
-    ) {
-      a2f.disabled = true;
-      fetch(window.location.href, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ activate: false }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            alert("L'authentification à deux facteurs a été désactivée.");
-            a2f.checked = false;
-          } else {
-            alert("Une erreur est survenue lors de la désactivation.");
-          }
-        })
-        .catch((error) => {
-          console.error("Erreur:", error);
-          alert("Une erreur est survenue lors de la désactivation.");
-        })
-        .finally(() => {
-          a2f.disabled = false;
-        });
-    }
+    // Si l'utilisateur annule, on remet la checkbox à son état initial
+    document.getElementById("remember_me").checked = true;
   }
 }

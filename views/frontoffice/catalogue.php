@@ -507,7 +507,6 @@ console.log(listeIdVendeurs);
 const carteAffiche = document.getElementById('map');
 const barreResultat = document.getElementById('resultat');
 const barreVerticale = document.getElementById('vertical-bar');
-const coordonnees = [];
 
 <?php
 $adresses = [];
@@ -528,7 +527,8 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 function afficherPointsSurCarte() {
-    const _listeIdVendeurs = [...new Set(products.map(p => p.idVendeur))];
+    let coordonnees = [];
+    let _listeIdVendeurs = [...new Set(products.map(p => p.idVendeur))];
 
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
@@ -537,6 +537,13 @@ function afficherPointsSurCarte() {
             coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
         }
     }
+
+    // Supprimer les anciens marqueurs
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
 
     for (let i = 0; i < coordonnees.length; i++) {
         const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
@@ -614,7 +621,6 @@ function updateSlider() {
     const percent2 = (max / sliderMax.max) * 100;
     range.style.left = percent1 + '%';
     range.style.width = (percent2 - percent1) + '%';
-    afficherPointsSurCarte();
 }
 
 function reattacherAjouterPanier() {
@@ -693,6 +699,7 @@ document.getElementById('zoneSelect').addEventListener('change', () => loadProdu
 sliderMin.addEventListener('input', () => { 
     updateSlider(); 
     loadProduits(1); 
+        afficherPointsSurCarte();
     console.log(searchbar.value);
 });
 
