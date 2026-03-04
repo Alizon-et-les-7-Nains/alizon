@@ -6,6 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="../../public/style.css">
 </head>
+<?php include 'partials/headerConnecte.php'; ?>
 <body class="bodyPopupA2f">
     <div class="popupA2f">
         <a href="connexionClient.php">
@@ -27,4 +28,5 @@
         </form>
     </div>
 </body>
+<?php include 'partials/footerConnecte.php'; ?>
 </html>

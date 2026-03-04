@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
     </header>
-
+    
     <main>
         <div class="profile">
             <img src="../../public/images/utilLightBlue.svg" alt="">
@@ -130,8 +130,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 </body>
-<<<<<<< HEAD
-
-=======
->>>>>>> d38c02f550829defd38327ac28b8ab7d7d1e6564
 </html>
