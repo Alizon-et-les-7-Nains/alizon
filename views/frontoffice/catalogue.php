@@ -576,11 +576,10 @@ let adresses = <?= json_encode($adresses) ?>;
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 var group = L.markerClusterGroup();
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 10,
+    maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 map.addLayer(group);
-
 function getListeAdressesVendeurs(idVendeursActifs = null) {
     let _listeIdVendeurs;
     if (idVendeursActifs !== null) {
@@ -591,10 +590,17 @@ function getListeAdressesVendeurs(idVendeursActifs = null) {
     return _listeIdVendeurs;
 }
 
+let messageErreur = null;
+
 function afficherPointsSurCarte(idVendeursActifs = null) {
     let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
 
     group.clearLayers();
+
+    if (messageErreur) {
+        map.removeLayer(messageErreur);
+        messageErreur = null;
+    }
 
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
@@ -608,16 +614,15 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
             group.addLayer(marker);
         }
     }
+
     if (group.getLayers().length > 0) {
-        map.fitBounds(group.getBounds(), { padding: [30, 30] });
-    }
-    else{
+        map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
+    } else {
         map.setView([48.174838642366915, -2.7538102129824145], 9);
-        const textMarker = L.marker([48.17, -2.75], {
+        messageErreur = L.marker([48.174838642366915, -2.7538102129824145], {
             icon: L.divIcon({
-                className: '',  // vide pour éviter les styles par défaut de Leaflet
-                html: '<div style="font-size:14px; font-weight:bold; color:#273469; white-space:nowrap;">Aucun vendeur trouvé pour cette sélection</div>',
-                iconAnchor: [0, 0]  // point d'ancrage
+                className: '',
+                html: '<div style="transform:translate(-50%,-50%); font-size:18px; font-weight:bold; color:black; white-space:nowrap; background:white; padding:8px; border-radius:6px; border:1px solid #273469;">Aucun vendeur trouvé</div>',
             })
         }).addTo(map);
     }
@@ -873,4 +878,4 @@ if (toggleFiltersBtn) {
 </script>
 
 </body>
-</html>'
+</html>
