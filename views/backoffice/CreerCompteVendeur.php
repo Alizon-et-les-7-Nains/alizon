@@ -145,7 +145,7 @@ unset($_SESSION['form_data']);
                         <p class="code_vendeur"> Code vendeur : <strong>VD640</strong> </p>
                         <a class="connexion_lien" href="connexion.php">Déjà vendeur ? Connectez vous ici</a>
 
-                        <button type="submit" id="btn_inscription" class="btn_inscription" disabled>S'inscrire</button>
+                        <button type="submit" id="btn_inscription" class="btn_inscription" onclick="geocodeAdresse(adresseInput.value);" disabled>S'inscrire</button>
                     </div>
 
                 </div>
@@ -264,6 +264,7 @@ unset($_SESSION['form_data']);
             const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
             const data = await rep.json();
             const inputElement = document.getElementById('idAdresse');
+            console.log(data);
 
             if (data.length > 0) {
                 const { lat, lng } = data[0];
@@ -321,7 +322,6 @@ unset($_SESSION['form_data']);
                 e.preventDefault();
             }
         });
-        geocodeAdresse(adresseInput.value);
         validatePassword();
         </script>
 
