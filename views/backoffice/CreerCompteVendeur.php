@@ -380,14 +380,6 @@ unset($_SESSION['form_data']);
                 }).addTo(map);
                 var marker = L.marker([lat, lon]).addTo(map);
 
-                function onMapClick(e) {
-                    alert("You clicked the map at " + e.latlng);
-                    var pAdresseAct = document.getElementById('adrAct');
-                    pAdresseAct.textContent = "Adresse actuelle : ", reverseGeocodeAdresse(e.latlng);
-                    var map = L.map('map').setView([e.latlng], 13);
-                    var marker = L.marker([e.latlng]).addTo(map);
-                }
-
                 map.on('click', onMapClick);
 
                 }
@@ -395,6 +387,14 @@ unset($_SESSION['form_data']);
                 function fermerPopUpDetailsCommande() {
                     const overlay = document.querySelector(".overlayPopUpDetails");
                     if (overlay) overlay.remove();
+                }
+
+                function onMapClick(e) {
+                    alert("You clicked the map at " + e.latlng);
+                    var pAdresseAct = document.getElementById('adrAct');
+                    pAdresseAct.textContent = "Adresse actuelle : ", reverseGeocodeAdresse(e.latlng);
+                    var map = L.map('map').setView([e.latlng], 13);
+                    var marker = L.marker([e.latlng]).addTo(map);
                 }
 
         </script>
