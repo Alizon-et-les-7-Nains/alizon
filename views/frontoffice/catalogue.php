@@ -528,32 +528,27 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 function afficherPointsSurCarte(idVendeursActifs = null) {
     let coordonnees = [];
-    let _listeIdVendeurs = [...new Set(products.map(p => p.idVendeur))];
 
-    if (idVendeursActifs !== null && Array.isArray(idVendeursActifs)) {
-        _listeIdVendeurs = _listeIdVendeurs.filter(id => idVendeursActifs.includes(id));
-    }
+    // ✅ Normalise tout en string pour éviter les problèmes de type int/string
+    const _listeIdVendeurs = idVendeursActifs !== null
+        ? idVendeursActifs.map(String)
+        : [...new Set(products.map(p => String(p.idVendeur)))];
+
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) map.removeLayer(layer);
+    });
 
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
         const lng = adresses[i].longitude;
-        if (lat && lng && _listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
-            coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
+        // ✅ Normalise aussi le codeVendeur en string avant comparaison
+        if (lat && lng && _listeIdVendeurs.includes(String(vendeurs[i].codeVendeur))) {
+            const marker = L.marker([lat, lng]).addTo(map);
+            marker.on('click', () => {
+                vendeur.value = vendeurs[i].codeVendeur;
+                loadProduits(1);
+            });
         }
-    }
-
-    map.eachLayer(layer => {
-        if (layer instanceof L.Marker) {
-            map.removeLayer(layer);
-        }
-    });
-
-    for (let i = 0; i < coordonnees.length; i++) {
-        const marker = L.marker([coordonnees[i].lat, coordonnees[i].lng]).addTo(map);
-        marker.on('click', () => {
-            vendeur.value = coordonnees[i].id;
-            loadProduits(1);
-        });
     }
 }
 
