@@ -354,7 +354,7 @@ unset($_SESSION['form_data']);
                             </div>
                             <h1>Confirmer votre adresse</h1>
                             <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
-                            <div style="height: 380px; background-color: black;" id="map">
+                            <div style="height: 380px; background-color: black; border-radius: 16px;" id="map">
                             </div>
                             <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : ${reverseGeocodeAdresse(lat, lon)}</p>
                             <button>Confirmer</button>
@@ -390,11 +390,12 @@ unset($_SESSION['form_data']);
                 }
 
                 function onMapClick(e) {
-                    alert("You clicked the map at " + e.latlng);
+                    map.off();
+                    map.remove();
                     var pAdresseAct = document.getElementById('adrAct');
-                    pAdresseAct.textContent = "Adresse actuelle : ", reverseGeocodeAdresse(e.latlng);
-                    var map = L.map('map').setView([e.latlng], 13);
-                    var marker = L.marker([e.latlng]).addTo(map);
+                    var map = L.map('map').setView([e.latlng.lat, e.latlng.lng], 13);
+                    var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+                    pAdresseAct.textContent = "Adresse actuelle : ", reverseGeocodeAdresse(e.latlng.lat, e.latlng.lng);
                 }
 
         </script>
