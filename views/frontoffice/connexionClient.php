@@ -60,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit();
             } else {
                 $popupA2f = true;
+                header('Location: ../../views/frontoffice/connexionClient.php');
                 exit();
             }
         } else {
