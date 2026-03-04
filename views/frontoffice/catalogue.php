@@ -1,4 +1,4 @@
-'<?php
+<?php
 session_start();
 
 include "../../controllers/pdo.php";
