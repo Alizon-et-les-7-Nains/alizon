@@ -545,7 +545,8 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
         const lat = adresses[i].latitude;
         const lng = adresses[i].longitude;
         if (lat && lng && _listeIdVendeurs.includes(String(vendeurs[i].codeVendeur))) {
-            const marker = L.marker([lat, lng]).addLayer(group);
+            const marker = L.marker([lat, lng]);
+            group.addLayer(marker);
             marker.on('click', () => {
                 vendeur.value = vendeurs[i].codeVendeur;
                 loadProduits(1);
