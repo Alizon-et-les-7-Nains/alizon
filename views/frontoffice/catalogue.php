@@ -81,11 +81,11 @@ $stmt->execute();
 $listeCategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Vendeurs
-$vendeurSql = "SELECT v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbProduits
+$vendeurSql = "SELECT v.idadresse, v.codeVendeur, v.raisonSocial, COUNT(p.idProduit) AS nbProduits
                FROM _vendeur v
                JOIN _produit p ON p.idVendeur = v.codeVendeur
                GROUP BY v.codeVendeur, v.raisonSocial
-               ORDER BY nbProduits DESC LIMIT 10";
+               ORDER BY nbProduits DESC";
 $stmt = $pdo->prepare($vendeurSql);
 $stmt->execute();
 $vendeurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -249,7 +249,7 @@ $cart = getCurrentCart($pdo, $idClient);
     include '../../views/frontoffice/partials/headerDeconnecte.php';
 } ?>
 <main class="pageCatalogue">
-    <aside class="fakePanneauGris"></aside></aside>
+    <aside class="fakePanneauGris"></aside>
     <aside class="filter-sort">
         <form method="GET" action="">
             <label for="tri">Trier par note minimale :</label>
@@ -290,7 +290,7 @@ $cart = getCurrentCart($pdo, $idClient);
                     <input type="range" id="sliderMax" min="0" max="<?php echo $maxPrice; ?>" value="<?php echo $maxPrice; ?>">
                 </div>
             </div>
-            <label for="minNote" id="minNoteLabel">Trier par note minimale:</label>
+            <label for="minNote" id="minNoteLabel">Filtrer par note minimale:</label>
             <div>
                 <img src="../../public/images/etoileVide.svg" data-index="1" class="star" alt="1 étoile">
                 <img src="../../public/images/etoileVide.svg" data-index="2" class="star" alt="2 étoiles">
@@ -358,7 +358,7 @@ $cart = getCurrentCart($pdo, $idClient);
         </style>
     </aside>
     <div id="map"></div>
-    <div id="vertical-bar" style="width: 10px; background-color: black;"></div>
+    <div id="vertical-bar" style="width: 5px; background-color: black;"></div>
     <div class="products-section">
         <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
@@ -493,6 +493,8 @@ const range = document.getElementById('range');
 // Tri
 const triNoteCroissant = document.getElementById('triNoteCroissant');
 const triNoteDecroissant = document.getElementById('triNoteDecroissant');
+const triPrixCroissant = document.getElementById('triPrixCroissant');
+const triPrixDecroissant = document.getElementById('triPrixDecroissant');
 const aucunTri = document.getElementById('aucunTri');
 let sortOrder = '';
 
@@ -523,10 +525,21 @@ const barreResultat = document.getElementById('resultat');
 const barreVerticale = document.getElementById('vertical-bar');
 const coordonnees = [];
 
-for (let i = 0; i < vendeurs.length; i++) {
+<?php
+$adresses = [];
+for ($i = 0; $i < count($vendeurs); $i++) {
+    $stmt = $pdo->prepare("SELECT latitude, longitude, idAdresse FROM _adresseVendeur WHERE idAdresse = :id");
+    $stmt->execute([':id' => $vendeurs[$i]['idadresse']]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $adresses[] = $row ?: ['latitude' => null, 'longitude' => null];
+}
+?>
+let adresses = <?= json_encode($adresses) ?>; 
+
+for (let i = 0; i < adresses.length; i++) {
+    const lat = adresses[i].latitude;
+    const lng = adresses[i].longitude;
     if (listeIdVendeurs.includes(vendeurs[i].codeVendeur)) {
-        const lat = 48.174838642366915 + Math.random() * 0.2 - 0.05;
-        const lng = -2.7538102129824145 + Math.random() * 0.2 - 0.05;
         coordonnees.push({ lat, lng, nom: vendeurs[i].raisonSocial, id: vendeurs[i].codeVendeur });
     }
 }
@@ -583,7 +596,6 @@ document.addEventListener('DOMContentLoaded', function() {
             loadProduits(1);
         });
     });
-    const vendeur = document.getElementById('vendeur');
 
     vendeur.addEventListener('change', function () {
         const idVendeur = vendeur.value;

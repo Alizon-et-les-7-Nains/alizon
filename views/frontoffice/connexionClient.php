@@ -8,6 +8,8 @@ require_once "../../controllers/pdo.php";
 $error = '';
 $email_tel = '';
 $password = '';
+$popupA2f = $_SESSION['a2f_required'] ?? false;
+unset($_SESSION['a2f_required']);
 
 // Vérifier si la requête est en POST (formulaire soumis)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -49,8 +51,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_nom'] = $user['nom'];
             
             // Rediriger vers la page d'accueil connecté
-            header('Location: ../../views/frontoffice/accueilConnecte.php');
-            exit;
+            //header('Location: ../../views/frontoffice/accueilConnecte.php');
+            $sql = "SELECT otp_enabled FROM _client WHERE idClient = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$_SESSION['user_id']]);
+            $otp_enabled = $stmt->fetchColumn();
+            if (!$otp_enabled) {
+                $popupA2f = false;
+                header('Location: ../../views/frontoffice/accueilConnecte.php');
+                exit();
+            } else {
+                $_SESSION['a2f_required'] = true;
+                header('Location: ../../views/frontoffice/connexionClient.php');
+                exit();
+            }
         } else {
             // Mot de passe incorrect
             $error = "Mot de passe incorrect";
@@ -116,8 +130,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-    </main>
 
+        <?php if ($popupA2f): ?>
+            <div class="bodyPopupA2f">
+                <div class="popupA2f">
+                    <a href="connexionClient.php">
+                        <div class="croixFermerLaPage">
+                            <div></div><div></div>
+                        </div>
+                    </a>
+                    <h1>Authentification à double facteur</h1>
+                    <form action="" method="POST">
+                        <div>
+                            <input type="text" name="num1" id="num1">
+                            <input type="text" name="num2" id="num2">
+                            <input type="text" name="num3" id="num3">
+                            <input type="text" name="num4" id="num4">
+                            <input type="text" name="num5" id="num5">
+                            <input type="text" name="num6" id="num6">
+                    </div>
+                    <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        <?php endif; ?>
+    </main>
+    <script src="../scripts/frontoffice/authCode.js"></script>
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 </body>
 </html>
