@@ -616,7 +616,7 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
     }
 
     if (group.getLayers().length > 0) {
-        map.fitBounds(group.getBounds(), { padding: [30, 30] });
+        map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
     } else {
         map.setView([48.174838642366915, -2.7538102129824145], 9);
         messageErreur = L.marker([48.174838642366915, -2.7538102129824145], {
@@ -878,4 +878,4 @@ if (toggleFiltersBtn) {
 </script>
 
 </body>
-</html>'
+</html>
