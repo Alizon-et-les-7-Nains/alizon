@@ -3,11 +3,55 @@
 session_start();
 // Inclure le fichier de connexion à la base de données
 require_once "../../controllers/pdo.php";
+require_once '/var/www/html/vendor/autoload.php';
+
+use OTPHP\TOTP;
+
+// Fonctions de chiffrement/déchiffrement
+function dechiffrement($data) {
+    $key = 'la_super_cle_secrete';
+    $data = base64_decode($data);
+    $iv_length = openssl_cipher_iv_length('aes-256-cbc');
+    $iv = substr($data, 0, $iv_length);
+    $encrypted = substr($data, $iv_length);
+    return openssl_decrypt($encrypted, 'aes-256-cbc', $key, 0, $iv);
+}
+
+// Traiter la vérification du code OTP via JSON
+$data = json_decode(file_get_contents('php://input'), true);
+if (isset($data['otp']) && isset($_SESSION['user_id'])) {
+    $code = $data['otp'];
+    
+    // Récupérer le secret OTP de l'utilisateur
+    $sql = "SELECT otp_secret FROM _client WHERE idClient = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$_SESSION['user_id']]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($result && $result['otp_secret']) {
+        // Déchiffrer le secret
+        $secret = dechiffrement($result['otp_secret']);
+        
+        // Vérifier le code OTP
+        $totp = TOTP::create($secret);
+        $isValid = $totp->verify($code);
+        
+        if ($isValid) {
+            echo json_encode(['success' => true]);
+            exit;
+        }
+    }
+    
+    echo json_encode(['success' => false]);
+    exit;
+}
 
 // Initialiser les variables
 $error = '';
 $email_tel = '';
 $password = '';
+$popupA2f = $_SESSION['a2f_required'] ?? false;
+unset($_SESSION['a2f_required']);
 
 // Vérifier si la requête est en POST (formulaire soumis)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -50,8 +94,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Rediriger vers la page d'accueil connecté
             //header('Location: ../../views/frontoffice/accueilConnecte.php');
-            header('Location: ../../views/frontoffice/popupA2f.php');
-            exit;
+            $sql = "SELECT otp_enabled FROM _client WHERE idClient = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$_SESSION['user_id']]);
+            $otp_enabled = $stmt->fetchColumn();
+            if (!$otp_enabled) {
+                $popupA2f = false;
+                header('Location: ../../views/frontoffice/accueilConnecte.php');
+                exit();
+            } else {
+                $_SESSION['a2f_required'] = true;
+                header('Location: ../../views/frontoffice/connexionClient.php');
+                exit();
+            }
         } else {
             // Mot de passe incorrect
             $error = "Mot de passe incorrect";
@@ -117,12 +172,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
-    </main>
 
+        <?php if ($popupA2f): ?>
+            <div class="bodyPopupA2f">
+                <div class="popupA2f">
+                    <div class="croixFermerLaPage" onclick="fermerPopupA2F()">
+                        <div></div><div></div>
+                    </div>
+                    <h1>Authentification à double facteur</h1>
+                    <p style="margin-bottom: 20px; color: #666;">Entrez le code à 6 chiffres de votre application d'authentification</p>
+                    <form id="formA2F">
+                        <div>
+                            <input type="text" name="num1" id="num1" maxlength="1" pattern="[0-9]" autocomplete="off">
+                            <input type="text" name="num2" id="num2" maxlength="1" pattern="[0-9]" autocomplete="off">
+                            <input type="text" name="num3" id="num3" maxlength="1" pattern="[0-9]" autocomplete="off">
+                            <input type="text" name="num4" id="num4" maxlength="1" pattern="[0-9]" autocomplete="off">
+                            <input type="text" name="num5" id="num5" maxlength="1" pattern="[0-9]" autocomplete="off">
+                            <input type="text" name="num6" id="num6" maxlength="1" pattern="[0-9]" autocomplete="off">
+                        </div>
+                        <p class="erreur" id="erreurCodeA2F" style="display: none; color: red; margin-top: 15px;">Code incorrect</p>
+                        <button type="submit">Vérifier</button>
+                    </form>
+                </div>
+            </div>
+        <?php endif; ?>
+    </main>
+    <script src="../scripts/frontoffice/authCode.js"></script>
     <?php include '../../views/frontoffice/partials/footerDeconnecte.php'; ?>
 </body>
-<<<<<<< HEAD
-
-=======
->>>>>>> d38c02f550829defd38327ac28b8ab7d7d1e6564
 </html>

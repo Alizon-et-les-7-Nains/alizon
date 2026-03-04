@@ -100,9 +100,12 @@ unset($_SESSION['form_data']);
                             value="<?= htmlspecialchars($noSiren) ?>">
                     </div>
                     <div class="col-md-6">
-                        <label>Adresse de l'entreprise</label>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <label>Adresse de l'entreprise</label>
+                            <p onclick="geocodeAdresse(document.getElementById('idAdresse').value)" style="cursor: pointer; font-size: smaller; margin: 0; margin-top: 3px;">Vérifier l'adresse</p>
+                        </div>
                         <input type="text" name="idAdresse" id="idAdresse" required class="form-control"
-                            value="<?= htmlspecialchars($idAdresse) ?>">
+                            value="<?= htmlspecialchars($idAdresse) ?>" placeholder="Ex: 12 Rue de la Fonderie, 72100 Le Mans, France">
                     </div>
 
                     <div class="col-md-12">
@@ -142,7 +145,7 @@ unset($_SESSION['form_data']);
                         <p class="code_vendeur"> Code vendeur : <strong>VD640</strong> </p>
                         <a class="connexion_lien" href="connexion.php">Déjà vendeur ? Connectez vous ici</a>
 
-                        <button type="submit" id="btn_inscription" class="btn_inscription" disabled>S'inscrire</button>
+                        <button type="submit" id="btn_inscription" class="btn_inscription" onclick="geocodeAdresse(adresseInput.value);" disabled>S'inscrire</button>
                     </div>
 
                 </div>
@@ -260,14 +263,18 @@ unset($_SESSION['form_data']);
             const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(adresse)}&format=json`;
             const rep = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
             const data = await rep.json();
-            
+
             if (data.length > 0) {
                 const { lat, lon } = data[0];
                 latInput.value = lat;
                 lngInput.value = lon;
-                return { lat, lng: lon };
+                console.log("-----------------\nAdresse récupérée : ", adresse, "\n");
+                console.log("Latitude : ", lat, "\nLongitude : ", lon, "\n-----------------\n");
+                adresseInput.classList.remove('input-error');
+                return { lat, lon: lng };
             } else {
                 throw new Error("Adresse introuvable");
+                adresseInput.classList.add('input-error');
             }
         }
 
@@ -313,7 +320,6 @@ unset($_SESSION['form_data']);
                 e.preventDefault();
             }
         });
-        geocodeAdresse(adresseInput.value);
         validatePassword();
         </script>
 

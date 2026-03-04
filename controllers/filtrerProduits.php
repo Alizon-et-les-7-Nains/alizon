@@ -7,7 +7,6 @@ $produitsParPage = 15;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $produitsParPage;
 
-// 1. Récupération et sécurisation des paramètres
 $minPrice = (float)($_GET['minPrice'] ?? 0);
 $maxPrice = (float)($_GET['maxPrice'] ?? 1000000);
 $sortOrder = $_GET['sortOrder'] ?? '';
@@ -15,16 +14,13 @@ $noteMin  = (float)($_GET['minNote'] ?? 0);
 $categorie = isset($_GET['categorie']) ? str_replace('_', ' ', $_GET['categorie']) : '';
 $vendeur   = $_GET['vendeur'] ?? '';
 $recherche = trim($_GET['search'] ?? '');
-$zone      = $_GET['zone'] ?? '';
 
-// 2. Initialisation des paramètres PDO (évite les erreurs de variables indéfinies)
 $params = [
     ':noteMin'  => $noteMin,
     ':minPrice' => $minPrice,
     ':maxPrice' => $maxPrice
 ];
 
-// 3. Construction de la clause WHERE dynamique
 $sqlWhere = " WHERE COALESCE(p.note, 0) >= :noteMin 
               AND (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) BETWEEN :minPrice AND :maxPrice";
 
@@ -43,19 +39,13 @@ if (!empty($vendeur)) {
     $params[':idVendeur'] = $vendeur;
 }
 
-if ($zone !== '') {
-    $sqlWhere .= " AND a.codePostal LIKE :zone";
-    $params[':zone'] = $zone . '%';
-}
 
-// 4. Définition de la structure SQL avec les JOINTURES (indispensable pour la zone et les remises)
 $baseSqlFrom = " FROM _produit p
                  LEFT JOIN _vendeur v ON p.idVendeur = v.codeVendeur
                  LEFT JOIN _adresseVendeur a ON v.idAdresse = a.idAdresse
                  LEFT JOIN _remise r ON p.idProduit = r.idProduit 
                  AND CURDATE() BETWEEN r.debutRemise AND r.finRemise " . $sqlWhere;
 
-// 5. Calcul du total pour la pagination
 $countStmt = $pdo->prepare("SELECT COUNT(*) " . $baseSqlFrom);
 foreach ($params as $k => $v) { 
     $countStmt->bindValue($k, $v); 
@@ -64,14 +54,12 @@ $countStmt->execute();
 $totalProduits = $countStmt->fetchColumn();
 $nbPages = ceil($totalProduits / $produitsParPage);
 
-// 6. Gestion du Tri
 $orderClause = " ORDER BY p.idProduit DESC";
 if ($sortOrder === 'noteAsc')  $orderClause = " ORDER BY p.note ASC";
 if ($sortOrder === 'noteDesc') $orderClause = " ORDER BY p.note DESC";
 if ($sortOrder === 'prixAsc')  $orderClause = " ORDER BY (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) ASC";
 if ($sortOrder === 'prixDesc') $orderClause = " ORDER BY (p.prix * (1 - COALESCE(r.tauxRemise,0)/100)) DESC";
 
-// 7. Requête finale pour récupérer les produits
 $sql = "SELECT p.*, r.tauxRemise, r.debutRemise, r.finRemise " . $baseSqlFrom . $orderClause . " LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($sql);
 
@@ -83,8 +71,21 @@ $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// 8. Construction de la réponse JSON
-$data = ['html' => '', 'nbPages' => $nbPages, 'totalProduits' => $totalProduits];
+$sqlVendeurs = "SELECT DISTINCT p.idVendeur " . $baseSqlFrom;
+$stmtVendeurs = $pdo->prepare($sqlVendeurs);
+foreach ($params as $k => $v) {
+    $stmtVendeurs->bindValue($k, $v);
+}
+$stmtVendeurs->execute();
+$tousLesProduitsFiltres = $stmtVendeurs->fetchAll(PDO::FETCH_ASSOC);
+
+$data = [
+    'html'          => '',
+    'nbPages'       => $nbPages,
+    'totalProduits' => $totalProduits,
+    'idVendeurs'    => array_values(array_map('strval', array_column($tousLesProduitsFiltres, 'idVendeur')))
+    //                 ^^^ tous les vendeurs, pas juste ceux de la page
+];
 
 if (count($products) > 0) {
     foreach ($products as $value) {
