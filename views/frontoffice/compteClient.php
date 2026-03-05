@@ -73,12 +73,17 @@ if (isset($data['verifyAndActivate'])) {
         exit;
     }
     
-    $code = $data['code'];
+    $code = trim((int)$data['code']);
     $secret = $_SESSION['temp_otp_secret'];
     
     // Vérifier le code OTP
-    $totp = TOTP::create($secret);
-    $isValid = $totp->verify($code);
+    try {
+        $totp = TOTP::create($secret);
+        $isValid = $totp->verify($code);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Erreur lors de la vérification: ' . $e->getMessage()]);
+        exit;
+    }
 
     if ($isValid) {
         // Code valide : enregistrer en BDD et activer l'A2F
@@ -369,8 +374,8 @@ $pays = $adresse['pays'] ?? '';
     <script>
         const mdp = <?php echo json_encode($mdp); ?>;
     </script>
-    <script src="../scripts/frontoffice/compteClient.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script src="../scripts/frontoffice/a2f.js"></script>
+    <script src="../scripts/frontoffice/compteClient.js"></script>
 </body>
 </html>

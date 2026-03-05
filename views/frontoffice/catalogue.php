@@ -1,9 +1,9 @@
 <?php
+session_start();
+
 include "../../controllers/pdo.php";
 include "../../controllers/prix.php";
 
-
-session_start();
 
 $produitsParPage = 16;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
@@ -572,6 +572,7 @@ for ($i = 0; $i < count($vendeurs); $i++) {
 ?>
 let adresses = <?= json_encode($adresses) ?>; 
 
+
 var map = L.map('map').setView([48.174838642366915, -2.7538102129824145], 9);
 var group = L.markerClusterGroup();
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -579,16 +580,35 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 map.addLayer(group);
-
-function afficherPointsSurCarte(idVendeursActifs = null) {
+const nbVendeursControl = L.control({ position: 'topright' });
+nbVendeursControl.onAdd = function() {
+    const div = L.DomUtil.create('div', 'nb-vendeurs-control');
+    div.innerHTML = '-----------------------';
+    return div;
+};
+nbVendeursControl.addTo(map);
+function getListeAdressesVendeurs(idVendeursActifs = null) {
     let _listeIdVendeurs;
     if (idVendeursActifs !== null) {
         _listeIdVendeurs = idVendeursActifs.map(String);
     } else {
         _listeIdVendeurs = [...new Set(products.map(p => String(p.idVendeur)))];
     }
+    return _listeIdVendeurs;
+}
+
+let messageErreur = null;
+let nbVendeurs = 0;
+
+function afficherPointsSurCarte(idVendeursActifs = null) {
+    let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
 
     group.clearLayers();
+
+    if (messageErreur) {
+        map.removeLayer(messageErreur);
+        messageErreur = null;
+    }
 
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
@@ -596,17 +616,33 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
         if (lat && lng && _listeIdVendeurs.includes(String(vendeurs[i].codeVendeur))) {
             const marker = L.marker([lat, lng]);
             marker.on('click', () => {
-                vendeur.value = vendeurs[i].codeVendeur;
+                if (vendeur.value == vendeurs[i].codeVendeur) {
+                    vendeur.value = "";
+                } else {
+                    vendeur.value = vendeurs[i].codeVendeur;
+                }
                 loadProduits(1);
+            });
+            marker.bindTooltip(vendeurs[i].raisonSocial, {
+                permanent: true,
+                direction: 'top',
+                offset: [0, -10],
+                className: 'vendor-label'
             });
             group.addLayer(marker);
         }
     }
+    if (group.getLayers().length > 0) {
+        map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
+        const nb = group.getLayers().length;
+        document.querySelector('.nb-vendeurs-control').innerHTML =`<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`;
+    } else {
+        document.querySelector('.nb-vendeurs-control').innerHTML = '<b>-------------</b>';
+        map.setView([48.174838642366915, -2.7538102129824145], 9);
+    }
 }
 
 afficherPointsSurCarte();
-
-
 
 const btnCarte = document.getElementById('btnCarte');
 
