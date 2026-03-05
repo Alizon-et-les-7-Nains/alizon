@@ -73,12 +73,17 @@ if (isset($data['verifyAndActivate'])) {
         exit;
     }
     
-    $code = $data['code'];
+    $code = trim((int)$data['code']);
     $secret = $_SESSION['temp_otp_secret'];
     
     // Vérifier le code OTP
-    $totp = TOTP::create($secret);
-    $isValid = $totp->verify($code);
+    try {
+        $totp = TOTP::create($secret);
+        $isValid = $totp->verify($code);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Erreur lors de la vérification: ' . $e->getMessage()]);
+        exit;
+    }
 
     if ($isValid) {
         // Code valide : enregistrer en BDD et activer l'A2F
