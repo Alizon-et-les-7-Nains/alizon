@@ -359,7 +359,7 @@ unset($_SESSION['form_data']);
                         <h1>Confirmer votre adresse</h1>
                         <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
                         <div style="height: 380px; background-color: black; border-radius: 16px;" id="map"></div>
-                        <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : ${reverseGeocodeAdresse(lat, lon)}</p>
+                        <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : Chargement...</p>
                         <button class="btnConfirm">Confirmer</button>
                     </main>`;
 
@@ -402,7 +402,10 @@ unset($_SESSION['form_data']);
                     currentMarker.remove();
                 }
                 currentMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mapInstance);
-                pAdresseAct.textContent = "Adresse actuelle : " + reverseGeocodeAdresse(e.latlng.lat, e.latlng.lng);
+                pAdresseAct.textContent = "Adresse actuelle : Chargement...";
+                reverseGeocodeAdresse(e.latlng.lat, e.latlng.lng).then(adresse => {
+                    pAdresseAct.textContent = "Adresse actuelle : " + adresse;
+                });
             }
 
         </script>
