@@ -8546,11 +8546,11 @@ main.backoffice-stats h1 {
 }
 main.backoffice-stats table {
   width: 100%;
+  table-layout: fixed;
 }
 main.backoffice-stats table:first-of-type {
   border-collapse: separate;
   border-spacing: 2em 0;
-  table-layout: fixed;
 }
 main.backoffice-stats table:first-of-type th {
   text-align: left;

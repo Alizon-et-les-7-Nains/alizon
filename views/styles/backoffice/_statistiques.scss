@@ -19,11 +19,11 @@ main.backoffice-stats {
     
     table {
         width: 100%;
+        table-layout: fixed;
         
         &:first-of-type {
             border-collapse: separate;
             border-spacing: 2em 0;
-            table-layout: fixed;
             
             th {
                 text-align: left;
