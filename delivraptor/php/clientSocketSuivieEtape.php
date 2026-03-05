@@ -133,23 +133,23 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $etape, ":idCommande" => $idCommande]);
 $etape = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($etape == 1 || $etape == 2) {
+if ($etape['etape'] == 1 || $etape['etape'] == 2) {
     $sql = "UPDATE _commande SET etatLivraison = 'En cours de préparation' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
-} else if ($etape == 3 || $etape == 4){
+} else if ($etape['etape'] == 3 || $etape['etape'] == 4){
     $sql = "UPDATE _commande SET etatLivraison = 'Prise en charge du colis' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
-} else if ($etape == 5 || $etape == 6){
+} else if ($etape['etape'] == 5 || $etape['etape'] == 6){
     $sql = "UPDATE _commande SET etatLivraison = 'Arriver à la plateforme Régional' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
-} else if ($etape == 7 || $etape == 8){
+} else if ($etape['etape'] == 7 || $etape['etape'] == 8){
     $sql = "UPDATE _commande SET etatLivraison = 'Arriver à la plateforme local' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
-} else if ($etape == 9 ){
+} else if ($etape['etape'] == 9 ){
     $sql = "UPDATE _commande SET etatLivraison = 'Colis livré' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
