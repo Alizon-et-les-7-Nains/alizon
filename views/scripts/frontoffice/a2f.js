@@ -50,9 +50,9 @@ function ouvrirPopupA2F() {
                     <h2>Applications compatibles</h2>
                     <p>Choisissez l'une de ces applications gratuites :</p>
                     <div class="apps">
-                      <img src="/public/images/google.png" alt="Google Authenticator" title="Google Authenticator">
-                      <img src="/public/images/microsoft.png" alt="Microsoft Authenticator" title="Microsoft Authenticator">
-                      <img src="/public/images/apple.png" alt="Authy" title="Authy">
+                        <img src="../../public/images/google.png" alt="Google Authenticator" title="Google Authenticator">
+                        <img src="../../public/images/microsoft.png" alt="Microsoft Authenticator" title="Microsoft Authenticator">
+                        <img src="../../public/images/apple.png" alt="Authy" title="Authy">
                     </div>
                 </div>
 
@@ -67,19 +67,6 @@ function ouvrirPopupA2F() {
                         <!-- QR Code sera généré ici -->
                         <p>Génération du QR code en cours...</p>
                     </div>
-                  <div style="margin-top: 12px;">
-                    <label for="a2fVerificationCode">Code à 6 chiffres</label>
-                    <input
-                      type="text"
-                      id="a2fVerificationCode"
-                      maxlength="6"
-                      inputmode="numeric"
-                      pattern="[0-9]*"
-                      placeholder="Entrez le code"
-                      style="display:block; margin:8px auto 0; text-align:center; letter-spacing:4px;"
-                    />
-                    <p class="erreur" id="a2fActivationError" style="display:none; margin-top:8px;"></p>
-                  </div>
                     <p>
                         <small>Ce code sera demandé à votre prochaine connexion.</small>
                     </p>
@@ -226,31 +213,12 @@ function genererQRCodeA2F(overlay) {
 }
 
 function activerA2F() {
-  const codeInput = document.querySelector("#a2fVerificationCode");
-  const errorNode = document.querySelector("#a2fActivationError");
-  const code = (codeInput?.value || "").trim();
-
-  if (!code || !/^\d{6}$/.test(code)) {
-    if (errorNode) {
-      errorNode.textContent = "Veuillez entrer un code valide à 6 chiffres.";
-      errorNode.style.display = "block";
-    }
-    if (codeInput) {
-      codeInput.focus();
-    }
-    return;
-  }
-
-  if (errorNode) {
-    errorNode.style.display = "none";
-  }
-
   fetch(window.location.href, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ verifyAndActivate: true, code }),
+    body: JSON.stringify({ activate: true }),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -265,13 +233,7 @@ function activerA2F() {
         // Recharger la page pour mettre à jour le bouton
         window.location.reload();
       } else {
-        if (errorNode) {
-          errorNode.textContent =
-            data.message || "Erreur lors de l'activation de l'A2F";
-          errorNode.style.display = "block";
-        } else {
-          alert(data.message || "Erreur lors de l'activation de l'A2F");
-        }
+        alert("Erreur lors de l'activation de l'A2F");
       }
     })
     .catch((error) => {

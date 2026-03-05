@@ -1,11 +1,6 @@
 // Gestion de l'authentification à deux facteurs
 const form = document.querySelector("#formA2F");
 const inputs = form ? form.querySelectorAll('input[type="text"]') : [];
-const successRedirect =
-  (form && form.dataset.successRedirect) ||
-  "../../views/frontoffice/accueilConnecte.php";
-const closeRedirect =
-  (form && form.dataset.closeRedirect) || "connexionClient.php";
 let isBlocked = false;
 let blockTimer = null;
 
@@ -124,7 +119,7 @@ if (inputs.length > 0) {
 
       if (data.success) {
         // Code correct : rediriger vers l'accueil
-        window.location.href = successRedirect;
+        window.location.href = "../../views/frontoffice/accueilConnecte.php";
       } else if (data.blocked) {
         // Utilisateur bloqué
         blockUser(data.remainingTime);
@@ -254,5 +249,5 @@ function fermerPopupA2F() {
   // Vider les champs et afficher un message
   inputs.forEach((inp) => (inp.value = ""));
   // Rediriger vers la page de connexion
-  window.location.href = closeRedirect;
+  window.location.href = "connexionClient.php";
 }
