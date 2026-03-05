@@ -8268,7 +8268,7 @@ dialog.reassort form input {
   padding: 40px 30px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-.popUpDetails #btnConfirm, .popUpSuivi #btnConfirm, .popUpAnnulerCommande #btnConfirm {
+.popUpDetails .btnConfirm, .popUpSuivi .btnConfirm, .popUpAnnulerCommande .btnConfirm {
   border: 2px solid #273469;
   color: #273469;
   font-family: "lora";
@@ -8277,7 +8277,7 @@ dialog.reassort form input {
   padding: 8px 50px;
   transition: 0.3s;
 }
-.popUpDetails #btnConfirm, .popUpSuivi #btnConfirm, .popUpAnnulerCommande #btnConfirm {
+.popUpDetails .btnConfirm, .popUpSuivi .btnConfirm, .popUpAnnulerCommande .btnConfirm {
   transition: 0.3s;
   color: white;
   background: #273469;
