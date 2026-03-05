@@ -359,15 +359,33 @@ unset($_SESSION['form_data']);
                         <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
                         <div style="height: 380px; background-color: black; border-radius: 16px;" id="map"></div>
                         <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : ${reverseGeocodeAdresse(lat, lon)}</p>
-                        <button>Confirmer</button>
+                        <button class="btnConfirm">Confirmer</button>
+                        <style>
+                            #btnConfirm {
+                                border: 2px solid #273469;
+                                color: #273469;
+                                font-family: 'lora';
+                                border-radius: 20px;
+                                background: white;
+                                padding: 8px 50px;
+                                transition 0.3s;
+                            }
+                            #btnConfirm {
+                                transition 0.3s;
+                                color: white;
+                                background: #273469;
+                            }
+                        </style>
                     </main>`;
 
                 document.body.appendChild(overlay);
 
                 const croixFermer = overlay.querySelector(".croixFermerLaPage");
                 const btnFermer = overlay.querySelector(".btnFermer");
+                const btnConfirm = overlay.querySelector(".btnConfirm");
 
                 croixFermer.addEventListener("click", fermerPopUpDetailsCommande);
+                if (btnConfirm) btnConfirm.addEventListener("click", fermerPopUpDetailsCommande);
                 if (btnFermer) btnFermer.addEventListener("click", fermerPopUpDetailsCommande);
                 overlay.addEventListener("click", (e) => {
                     if (e.target === overlay) fermerPopUpDetailsCommande();
@@ -392,18 +410,14 @@ unset($_SESSION['form_data']);
                 }
             }
 
-            async function onMapClick(e) {
+            function onMapClick(e) {
                 const pAdresseAct = document.getElementById('adrAct');
-                if (currentMarker) currentMarker.remove();
-                
-                currentMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mapInstance);
-                
-                try {
-                    const adresse = await reverseGeocodeAdresse(e.latlng.lat, e.latlng.lng);
-                    pAdresseAct.textContent = "Adresse actuelle : " + adresse;
-                } catch (err) {
-                    pAdresseAct.textContent = "Adresse introuvable";
+
+                if (currentMarker) {
+                    currentMarker.remove();
                 }
+                currentMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mapInstance);
+                pAdresseAct.textContent = "Adresse actuelle : " + reverseGeocodeAdresse(e.latlng.lat, e.latlng.lng);
             }
 
         </script>
