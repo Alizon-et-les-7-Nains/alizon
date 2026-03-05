@@ -43,11 +43,16 @@ if (isset($data['verifyAndActivate'])) {
         exit;
     }
 
-    $code = $data['code'] ?? '';
+    $code = trim((int)($data['code'] ?? ''));
     $secret = $_SESSION['bo_temp_otp_secret'];
 
-    $totp = TOTP::create($secret);
-    $isValid = $totp->verify($code);
+    try {
+        $totp = TOTP::create($secret);
+        $isValid = $totp->verify($code);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Erreur lors de la vérification: ' . $e->getMessage()]);
+        exit;
+    }
 
     if ($isValid) {
         $secretChiffre = a2f_encrypt($secret);
