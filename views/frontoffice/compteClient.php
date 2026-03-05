@@ -369,8 +369,8 @@ $pays = $adresse['pays'] ?? '';
     <script>
         const mdp = <?php echo json_encode($mdp); ?>;
     </script>
+    <script src="../scripts/frontoffice/a2f.js"></script>
     <script src="../scripts/frontoffice/compteClient.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-    <script src="../scripts/frontoffice/a2f.js"></script>
 </body>
 </html>

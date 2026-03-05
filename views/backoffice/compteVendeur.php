@@ -396,9 +396,9 @@ $pays          = $vendeur['pays'] ?? '';
     const codeVendeur = <?= $code_vendeur ?>;
     const mdpCrypte = <?php echo json_encode($mdp); ?>;
     </script>
+    <script src="../scripts/frontoffice/a2f.js"></script>
     <script src="../scripts/backoffice/compteVendeur.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-    <script src="../scripts/frontoffice/a2f.js"></script>
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 </body>
