@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once '../../controllers/pdo.php';
-require_once '../../controllers/a2f_helpers.php';
 require_once '/var/www/html/vendor/autoload.php';
 
 use OTPHP\TOTP;
@@ -13,6 +12,23 @@ if (!isset($_SESSION['user_id'])) {
 
 // On récupère l'id du client
 $id_client = $_SESSION['user_id'];
+
+// Fonction de chiffrement
+function chiffrement($data) {
+    $key = 'la_super_cle_secrete';
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+    $encrypted = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
+    return base64_encode($iv . $encrypted);
+}
+
+function dechiffrement($data) {
+    $key = 'la_super_cle_secrete';
+    $data = base64_decode($data);
+    $iv_length = openssl_cipher_iv_length('aes-256-cbc');
+    $iv = substr($data, 0, $iv_length);
+    $encrypted = substr($data, $iv_length);
+    return openssl_decrypt($encrypted, 'aes-256-cbc', $key, 0, $iv);
+}
 
 // Traitement de l'activation/désactivation de l'A2F
 $data = json_decode(file_get_contents("php://input"), true);
@@ -26,12 +42,7 @@ if (isset($data['generateQR'])) {
     
     // Générer un nouveau secret pour l'A2F
     $totp = TOTP::create();
-    $stmt = $pdo->prepare("SELECT pseudo FROM saedb._client WHERE idClient = ?");
-    $stmt->execute([$id_client]);
-    $clientData = $stmt->fetch(PDO::FETCH_ASSOC);
-    $pseudo = $clientData['pseudo'] ?? 'User';
-    
-    $totp->setLabel($pseudo);
+    $totp->setLabel($client['pseudo']);
     $totp->setIssuer('Alizon');
     
     $secret = $totp->getSecret();
@@ -66,7 +77,7 @@ if (isset($data['verifyAndActivate'])) {
 
     if ($isValid) {
         // Code valide : enregistrer en BDD et activer l'A2F
-        $secret_chiffre = a2f_encrypt($secret);
+        $secret_chiffre = chiffrement($secret);
         $sql = "UPDATE _client SET otp_enabled = 1, otp_secret = ? WHERE idClient = ?";
         $stmt = $pdo->prepare($sql);
         $success = $stmt->execute([$secret_chiffre, $_SESSION['user_id']]);
