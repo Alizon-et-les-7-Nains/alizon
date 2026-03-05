@@ -290,6 +290,7 @@ unset($_SESSION['form_data']);
 
             if (data && data.display_name) {
                 adresseInput.value = data.display_name;
+                console.log(data.display_name);
                 return data.display_name;
             } else {
                 throw new Error("Coordonnées introuvables");
@@ -360,22 +361,6 @@ unset($_SESSION['form_data']);
                         <div style="height: 380px; background-color: black; border-radius: 16px;" id="map"></div>
                         <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : ${reverseGeocodeAdresse(lat, lon)}</p>
                         <button class="btnConfirm">Confirmer</button>
-                        <style>
-                            #btnConfirm {
-                                border: 2px solid #273469;
-                                color: #273469;
-                                font-family: 'lora';
-                                border-radius: 20px;
-                                background: white;
-                                padding: 8px 50px;
-                                transition 0.3s;
-                            }
-                            #btnConfirm {
-                                transition 0.3s;
-                                color: white;
-                                background: #273469;
-                            }
-                        </style>
                     </main>`;
 
                 document.body.appendChild(overlay);

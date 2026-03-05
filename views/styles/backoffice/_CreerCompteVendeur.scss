@@ -20,7 +20,7 @@
     position: relative;
     overflow-x: hidden;
     z-index: 1;
-
+    
     h1 {
         margin: {
             top: 10px;
@@ -30,7 +30,7 @@
         text-align: left;
         font-weight: 600;
     }
-
+    
     .triskiel{
         position: absolute;
         top: 0;
@@ -41,7 +41,7 @@
         z-index: 0;
         pointer-events: none;
     }
-
+    
     .haut_de_page{
         width: 100%;
         max-width: 900px;
@@ -55,7 +55,7 @@
         display: flex;
         align-items: center;
     }
-
+    
     .haut_de_page > img[alt="photo de profil"]{
         width: 150px;
         height: 150px;
@@ -66,8 +66,8 @@
             right: 20px;
         }
     }
-
-
+    
+    
     .container{
         width: 100%;
         max-width: 900px;
@@ -76,14 +76,14 @@
             left: auto;
             right: auto;
         }
-
+        
         .form-vendeur{
             display: flex;
             flex-direction: column;
             label{
                 margin-left:5px;
             }
-
+            
             input.form-control {
                 padding: 10px 15px;
                 height: 48px;
@@ -92,11 +92,11 @@
                 border-radius: 8px;
                 font-size: 1rem;
                 color: $color-blue;
-
+                
                 &[type="date"] {
                     line-height: normal;
                 }
-
+                
                 &::placeholder {
                     color: $color-dark-gray;
                     font: {
@@ -126,8 +126,8 @@
                     margin-bottom: 5px;
                 }
             }
-
-
+            
+            
             .btn_inscription{
                 background-color: $color-pastel-purple;
                 max-width: 300px;
@@ -138,21 +138,21 @@
                 
                 border: 0;
                 cursor: pointer;
-
+                
                 margin: {
                     top: 20px;
                     right: auto;
                     left: auto;
                 }
-
+                
                 display: block;
-
+                
                 &:disabled {
                     opacity: 0.7;
                     cursor: not-allowed;
                 }
             }
-
+            
             p, .connexion_lien{
                 font: {
                     weight: normal;
@@ -164,29 +164,29 @@
                     top: 10px;
                 }
             }
-
+            
             .connexion_lien {
                 a {
                     color: $color-blue;
                     text-decoration: underline;
-
+                    
                     :visited {
                         color: $color-blue !important;
                     }
-
+                    
                     :hover {
                         color: darken($color-blue, 10%);
                     }
                 }
             }
-
+            
             .inscriptions_autres{
                 text-align: center;
                 color: $color-dark-gray;
                 margin: {
                     top: 15px;
                 }
-
+                
                 .logos {
                     display: flex;
                     justify-content: center;
@@ -194,11 +194,11 @@
                     margin: {
                         bottom: 30px;
                     }
-
+                    
                     a {
                         text-decoration: none;
                         display: flex;
-
+                        
                         img {
                             padding: 5px;
                         }
@@ -224,30 +224,45 @@
             style: normal;
             weight: normal;
         }
-
+        
         color: $color-dark-gray;
-
+        
         margin: {
             top: 20px;
             left: auto;
             right: auto;
         }
-
+        
         padding: 0 20px;
     }
-
+    
     .hidden{
         display: none !important;
         height: 0;
-
+        
         padding: {
             top: 0;
             bottom: 0;
         }
-
+        
         margin: {
             top: 0;
             bottom: 0;
         }
+    }
+    
+    #btnConfirm {
+        border: 2px solid #273469;
+        color: #273469;
+        font-family: 'lora';
+        border-radius: 20px;
+        background: white;
+        padding: 8px 50px;
+        transition: 0.3s;
+    }
+    #btnConfirm {
+        transition: 0.3s;
+        color: white;
+        background: #273469;
     }
 }
