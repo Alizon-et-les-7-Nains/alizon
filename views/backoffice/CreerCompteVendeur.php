@@ -281,6 +281,7 @@ unset($_SESSION['form_data']);
                 console.log("-----------------\nAdresse récupérée : ", adresse, "\n");
                 console.log("Latitude : ", lat, "\nLongitude : ", lon, "\n-----------------\n");
                 adresseInput.classList.remove('input-error');
+                let adresseValidee = true;
 
                 popUpAdresse(lat, lon);
 
