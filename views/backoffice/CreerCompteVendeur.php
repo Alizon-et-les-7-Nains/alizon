@@ -363,6 +363,7 @@ unset($_SESSION['form_data']);
                         <button class="btnConfirm">Confirmer</button>
                     </main>`;
 
+                fermerPopUpDetailsCommande()
                 document.body.appendChild(overlay);
 
                 const croixFermer = overlay.querySelector(".croixFermerLaPage");
@@ -385,10 +386,7 @@ unset($_SESSION['form_data']);
                 currentMarker = L.marker([lat, lon]).addTo(mapInstance);
                 mapInstance.on('click', onMapClick);
 
-                pAdresseAct.textContent = "Adresse actuelle : Chargement...";
-                reverseGeocodeAdresse(lat, lng).then(adresse => {
-                    pAdresseAct.textContent = "Adresse actuelle : " + adresse;
-                });
+                pAdresseAct.textContent = document.getElementById('idAdresse').value;
             }
 
             function fermerPopUpDetailsCommande() {
