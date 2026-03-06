@@ -177,6 +177,9 @@ unset($_SESSION['form_data']);
         const reqNumber = document.getElementById('req-number');
         const reqSpecial = document.getElementById('req-special');
         const reqMatch = document.getElementById('req-match');
+
+        // Validation de l'adresse
+        let adresseValidee = false;
         
         console.log(latInput.value);
         console.log(lngInput.value);
@@ -255,6 +258,11 @@ unset($_SESSION['form_data']);
                 allValid = false;
             }
 
+            if (!adresseValidee) {
+                allValid = false;
+                adresseInput.classList.remove('input-error');
+            }
+
             // Activation/Désactivation du bouton
             submitButton.disabled = !allValid;
 
@@ -279,6 +287,7 @@ unset($_SESSION['form_data']);
                 return { lat, lon: lng };
             } else {
                 adresseInput.classList.add('input-error');
+                let adresseValidee = false;
                 throw new Error("Adresse introuvable");
             }
         }
@@ -363,7 +372,8 @@ unset($_SESSION['form_data']);
                         <button class="btnConfirm">Confirmer</button>
                     </main>`;
 
-                fermerPopUpDetailsCommande()
+                let adresseValidee = true;
+                fermerPopUpDetailsCommande();
                 document.body.appendChild(overlay);
 
                 const croixFermer = overlay.querySelector(".croixFermerLaPage");
