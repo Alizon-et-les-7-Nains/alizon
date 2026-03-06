@@ -386,7 +386,7 @@ unset($_SESSION['form_data']);
                 currentMarker = L.marker([lat, lon]).addTo(mapInstance);
                 mapInstance.on('click', onMapClick);
 
-                pAdresseAct.textContent = document.getElementById('idAdresse').value;
+                pAdresseAct.textContent = "Adresse actuelle : " + document.getElementById('idAdresse').value;
             }
 
             function fermerPopUpDetailsCommande() {
