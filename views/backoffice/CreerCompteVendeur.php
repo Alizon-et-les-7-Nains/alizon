@@ -261,6 +261,12 @@ unset($_SESSION['form_data']);
             // Activation/Désactivation du bouton
             submitButton.disabled = !allValid;
 
+            if(allValid && adresseValidee) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+
             return allValid;
         }
 
@@ -277,6 +283,7 @@ unset($_SESSION['form_data']);
                 console.log("Latitude : ", lat, "\nLongitude : ", lon, "\n-----------------\n");
                 adresseInput.classList.remove('input-error');
                 adresseValidee = true;
+                validatePassword();
 
                 popUpAdresse(lat, lon);
 
@@ -284,6 +291,7 @@ unset($_SESSION['form_data']);
             } else {
                 adresseInput.classList.add('input-error');
                 adresseValidee = false;
+                validatePassword();
                 throw new Error("Adresse introuvable");
             }
         }
@@ -325,7 +333,6 @@ unset($_SESSION['form_data']);
 
         passwordInput.addEventListener('input', () => {
             passwordInput.classList.remove('input-error');
-            console.log(adresseValidee);
             validatePassword();
         });
 
@@ -352,6 +359,13 @@ unset($_SESSION['form_data']);
             let mapInstance = null;
             let currentMarker = null;
 
+            let adrIn = document.getElementById('idAdresse');
+
+            adrIn.addEventListener("input", (e) => {
+                if (adresseValidee == true) adresseValidee = false;
+                validatePassword();
+            });
+
             function popUpAdresse(lat, lon) {
                 const overlay = document.createElement("div");
                 overlay.className = "overlayPopUpDetails";
@@ -366,7 +380,7 @@ unset($_SESSION['form_data']);
                         <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
                         <div style="height: 380px; background-color: black; border-radius: 16px;" id="map"></div>
                         <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : Chargement...</p>
-                        <button class="btnConfirm" onclick="adresseValidee = true;">Confirmer</button>
+                        <button class="btnConfirm" onclick="adresseValidee = true; validatePassword();">Confirmer</button>
                     </main>`;
 
                 fermerPopUpDetailsCommande();
