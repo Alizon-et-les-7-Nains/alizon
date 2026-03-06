@@ -147,7 +147,7 @@ unset($_SESSION['form_data']);
                         <p class="code_vendeur"> Code vendeur : <strong>VD640</strong> </p>
                         <a class="connexion_lien" href="connexion.php">Déjà vendeur ? Connectez vous ici</a>
 
-                        <button type="submit" id="btn_inscription" class="btn_inscription" onclick="geocodeAdresse(adresseInput.value);" disabled>S'inscrire</button>
+                        <button type="submit" id="btn_inscription" class="btn_inscription" disabled>S'inscrire</button>
                     </div>
 
                 </div>
@@ -368,6 +368,7 @@ unset($_SESSION['form_data']);
                 const croixFermer = overlay.querySelector(".croixFermerLaPage");
                 const btnFermer = overlay.querySelector(".btnFermer");
                 const btnConfirm = overlay.querySelector(".btnConfirm");
+                const pAdresseAct = document.getElementById('adrAct');
 
                 croixFermer.addEventListener("click", fermerPopUpDetailsCommande);
                 if (btnConfirm) btnConfirm.addEventListener("click", fermerPopUpDetailsCommande);
@@ -383,6 +384,11 @@ unset($_SESSION['form_data']);
                 }).addTo(mapInstance);
                 currentMarker = L.marker([lat, lon]).addTo(mapInstance);
                 mapInstance.on('click', onMapClick);
+
+                pAdresseAct.textContent = "Adresse actuelle : Chargement...";
+                reverseGeocodeAdresse(lat, lng).then(adresse => {
+                    pAdresseAct.textContent = "Adresse actuelle : " + adresse;
+                });
             }
 
             function fermerPopUpDetailsCommande() {

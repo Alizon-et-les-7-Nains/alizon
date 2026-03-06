@@ -8277,7 +8277,7 @@ dialog.reassort form input {
   padding: 8px 50px;
   transition: 0.3s;
 }
-.popUpDetails .btnConfirm, .popUpSuivi .btnConfirm, .popUpAnnulerCommande .btnConfirm {
+.popUpDetails .btnConfirm:hover, .popUpSuivi .btnConfirm:hover, .popUpAnnulerCommande .btnConfirm:hover {
   transition: 0.3s;
   color: white;
   background: #273469;
