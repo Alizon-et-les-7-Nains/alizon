@@ -131,7 +131,6 @@ if ($etape == '9' && $typeLivraison === 'ABSENT') {
 $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $etape, ":idCommande" => $idCommande]);
-$etape = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($etape == 1 || $etape == 2) {
     $sql = "UPDATE _commande SET etatLivraison = 'En cours de préparation' WHERE idCommande = :idCommande";
