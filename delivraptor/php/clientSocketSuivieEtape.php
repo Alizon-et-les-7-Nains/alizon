@@ -132,6 +132,30 @@ $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":etape" => $etape, ":idCommande" => $idCommande]);
 
+if ($etape == 1 || $etape == 2) {
+    $sql = "UPDATE _commande SET etatLivraison = 'En cours de préparation' WHERE idCommande = :idCommande";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idCommande" => $idCommande]);
+} else if ($etape == 3 || $etape == 4){
+    $sql = "UPDATE _commande SET etatLivraison = 'Prise en charge du colis' WHERE idCommande = :idCommande";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idCommande" => $idCommande]);
+} else if ($etape == 5 || $etape == 6){
+    $sql = "UPDATE _commande SET etatLivraison = 'Arriver à la plateforme Régional' WHERE idCommande = :idCommande";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idCommande" => $idCommande]);
+} else if ($etape == 7 || $etape == 8){
+    $sql = "UPDATE _commande SET etatLivraison = 'Arriver à la plateforme local' WHERE idCommande = :idCommande";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idCommande" => $idCommande]);
+} else if ($etape == 9 ){
+    $sql = "UPDATE _commande SET etatLivraison = 'Colis livré' WHERE idCommande = :idCommande";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":idCommande" => $idCommande]);
+}
+
+
+
 $_SESSION['typeLivraison'] = $typeLivraison;
 
 // Fermer proprement
