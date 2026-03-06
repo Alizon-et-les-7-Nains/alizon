@@ -258,11 +258,6 @@ unset($_SESSION['form_data']);
                 allValid = false;
             }
 
-            if (!adresseValidee) {
-                allValid = false;
-                adresseInput.classList.remove('input-error');
-            }
-
             // Activation/Désactivation du bouton
             submitButton.disabled = !allValid;
 
@@ -330,6 +325,7 @@ unset($_SESSION['form_data']);
 
         passwordInput.addEventListener('input', () => {
             passwordInput.classList.remove('input-error');
+            console.log(adresseValidee);
             validatePassword();
         });
 
