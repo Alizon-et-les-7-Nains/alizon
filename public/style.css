@@ -8603,9 +8603,15 @@ main.backoffice-stats article {
   background-color: #e4d9ff;
   border-radius: 16px;
   padding: 1em;
+  height: 45vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 main.backoffice-stats canvas {
   width: 100%;
+  min-height: 0;
   height: 40vh;
 }
 main.backoffice-stats ul.stats {

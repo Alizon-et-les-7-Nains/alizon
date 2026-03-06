@@ -86,10 +86,16 @@ main.backoffice-stats {
         background-color: $color-pastel-purple;
         border-radius: 16px;
         padding: 1em;
+        height: 45vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
     }
     
     canvas {
         width: 100%;
+        min-height: 0;
         height: 40vh;
     }
     
