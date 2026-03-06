@@ -117,7 +117,7 @@ unset($_SESSION['form_data']);
                     </div>
 
                     <div class="col-md-6">
-                        <label>Mot de passe</label>
+                        <label onclick>Mot de passe</label>
                         <input type="password" name="mdp" id="mdp" required class="form-control">
 
                         <div id="password-requirements-container" class="mt-2 hidden">
@@ -276,14 +276,14 @@ unset($_SESSION['form_data']);
                 console.log("-----------------\nAdresse récupérée : ", adresse, "\n");
                 console.log("Latitude : ", lat, "\nLongitude : ", lon, "\n-----------------\n");
                 adresseInput.classList.remove('input-error');
-                let adresseValidee = true;
+                adresseValidee = true;
 
                 popUpAdresse(lat, lon);
 
                 return { lat, lon: lng };
             } else {
                 adresseInput.classList.add('input-error');
-                let adresseValidee = false;
+                adresseValidee = false;
                 throw new Error("Adresse introuvable");
             }
         }
@@ -366,10 +366,9 @@ unset($_SESSION['form_data']);
                         <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
                         <div style="height: 380px; background-color: black; border-radius: 16px;" id="map"></div>
                         <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : Chargement...</p>
-                        <button class="btnConfirm">Confirmer</button>
+                        <button class="btnConfirm" onclick="adresseValidee = true;">Confirmer</button>
                     </main>`;
 
-                let adresseValidee = true;
                 fermerPopUpDetailsCommande();
                 document.body.appendChild(overlay);
 
