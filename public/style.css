@@ -7649,9 +7649,10 @@ dialog.reassort form input {
   font-size: 18px;
   font-weight: 500;
   margin: 0;
-  margin-left: 280px;
+  left: 280px;
+  margin-left: 0;
+  width: calc(100% - 280px);
   z-index: 100;
-  width: 100%;
 }
 .pageCatalogue #resultat.active {
   margin: 0;
@@ -7668,7 +7669,7 @@ dialog.reassort form input {
   gap: 10px;
   width: 100%;
   margin-top: 40px;
-  margin-left: 300px;
+  margin-left: 0;
   overflow-y: scroll;
 }
 .pageCatalogue .listeArticle article {
