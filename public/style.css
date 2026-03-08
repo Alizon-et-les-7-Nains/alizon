@@ -7632,7 +7632,7 @@ dialog.reassort form input {
   filter: invert(0);
 }
 .pageCatalogue .products-section {
-  width: calc(100% - 280px);
+  width: 100%;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
