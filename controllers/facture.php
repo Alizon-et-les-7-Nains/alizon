@@ -87,6 +87,10 @@ ob_start();
             padding: 6px;
         }
 
+        .top {
+            padding: 6px;
+        }
+
         th {
             background-color: #f0f0f0;
         }
@@ -111,8 +115,8 @@ ob_start();
 <h1>FACTURE</h1>
 
 <table class="header">
-    <tr>
-        <td>
+    <tr class="top">
+        <td class="top">
             <strong>Vendeur</strong><br>
             Alizon<br>
             3 rue Edouard Branly<br>
