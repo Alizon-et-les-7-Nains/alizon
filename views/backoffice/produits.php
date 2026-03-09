@@ -28,21 +28,22 @@
         <link rel="icon" href="/public/images/logoBackoffice.svg">
     </head>
 
-    <?php if (isset($_GET['error'])): ?>
-        <?php $error = $_GET['error']; ?>
-        <?php if ($error == 1): ?>
-            <p class='erreur'>Vous avez déjà 2 promotions en cours</p>
-        <?php endif; ?>
-    <?php endif; ?>
+    
 
 
-    <body class="backoffice">
+    <body class="backoffice bodyProduitsBackoffice" >
         
         <?php require_once './partials/header.php' ?>
 
         <?php $currentPage = basename(__FILE__); require_once './partials/aside.php' ?>
 
-        
+        <?php if (isset($_GET['error'])): ?>
+            <?php $error = $_GET['error']; ?>
+            <?php if ($error == 1): ?>
+                <p class='erreur'>Vous avez déjà 2 promotions en cours</p>
+            <?php endif; ?>
+        <?php endif; ?>
+
         <main class="produitBackOffice">
 
             <h1>Produits en Vente</h1>
