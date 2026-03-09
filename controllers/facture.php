@@ -83,7 +83,6 @@ ob_start();
         }
 
         th, td {
-            border: 1px solid #000;
             padding: 6px;
         }
 
