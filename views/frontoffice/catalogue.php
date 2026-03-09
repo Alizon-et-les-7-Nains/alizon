@@ -499,15 +499,15 @@ $cart = getCurrentCart($pdo, $idClient);
         <div class="pagination">
             <?php if ($nbPages > 1): ?>
                 <?php if ($page > 1){ ?>
-                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>">« Précédent</a>
+                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">« Précédent</a>
                 <?php } else { ?>
                     <span class="disabled">« Précédent</span>
                 <?php } ?>
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a <?php if($i == $page) echo 'style="class: active;"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>"><?= $i ?></a>
+                    <a <?php if($i == $page) echo 'style="class: active;"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><?= $i ?></a>
                 <?php endfor; ?>
                 <?php if ($page < $nbPages) { ?>
-                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>">Suivant »</a>
+                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">Suivant »</a>
                 <?php } else { ?>
                     <span class="disabled">Suivant »</span>
                 <?php } ?>
@@ -587,6 +587,15 @@ nbVendeursControl.onAdd = function() {
     return div;
 };
 nbVendeursControl.addTo(map);
+
+const mapActiveParam = <?= json_encode($mapActive) ?>;
+if (mapActiveParam) {
+    carteAffiche.classList.add('active');
+    barreResultat.classList.add('active');
+    barreVerticale.classList.add('active');
+    setTimeout(() => map.invalidateSize(), 100);
+}
+
 function getListeAdressesVendeurs(idVendeursActifs = null) {
     let _listeIdVendeurs;
     if (idVendeursActifs !== null) {
@@ -736,8 +745,7 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value;
-    const mapEstActive = carteAffiche.classList.contains('active'); // ✅ capturé AVANT le fetch
-
+    const mapEstActive = carteAffiche.classList.contains('active');
     let idVendeur = vendeur.value !== "" ? parseInt(vendeur.value) : "";
 
     fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`)
