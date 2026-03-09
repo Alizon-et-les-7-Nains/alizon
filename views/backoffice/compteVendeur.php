@@ -6,6 +6,10 @@ require_once '/var/www/html/vendor/autoload.php';
 
 use OTPHP\TOTP;
 
+if ($pdo->inTransaction()) {
+    $pdo->commit();
+}
+
 if (!isset($_SESSION['id'])) {
     header("Location: ../backoffice/connexion.php");
     exit();
