@@ -32,7 +32,7 @@ $stmt = $pdo->prepare("
     FROM _commande c
     NATURAL JOIN _contient cnt 
     NATURAL JOIN _produit p
-    NATURAL JOIN _typeTva t
+    NATURAL JOIN _tva t
     WHERE c.idCommande = :commande
 ");
 
