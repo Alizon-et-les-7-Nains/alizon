@@ -667,6 +667,7 @@ btnCarte.addEventListener('click', () => {
         }, 100);
     }
     listeArticle.style.marginLeft = carteAffiche.classList.contains('active') ? '0px' : '300px';
+    mapActiveParam = carteAffiche.classList.contains('active');
 });
 
 document.addEventListener('DOMContentLoaded', function() {
