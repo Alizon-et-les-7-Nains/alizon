@@ -3,7 +3,7 @@
 // Avant de stopper le buffer. Ensuite on fait une page html puis on récupère tout ce qui est
 // Dans le buffer. 
 
-require_once __DIR__ . '/dompdf/autoload.inc.php';
+require_once __DIR__ . '/../dompdf/autoload.inc.php';
 require_once './pdo.php';
 
 $idCommande = $_GET['id'];
@@ -13,12 +13,12 @@ global $pdo;
 $stmt = $pdo->prepare("
     SELECT
         c.idCommande, c.dateCommande, c.montantCommandeHt, c.montantCommandeTTC, c.quantiteCommande,
-        p.prixHt, p.prixTotalTvaPanier,
+        p.prixHt, p.prixTotalTvaPanier, 
         cl.prenom, cl.nom, cl.email,
         a.adresse, a.codePostal, a.ville
     FROM _commande c
     JOIN _panier p ON c.idPanier = p.idPanier
-    JOIN _client cl ON p.idClient = cl.idClient
+    JOIN _client cl ON p.idClient = cl.idClient 
     NATUTRAL JOIN _adresseLivraison a 
     WHERE c.idCommande = :commande
     ");
