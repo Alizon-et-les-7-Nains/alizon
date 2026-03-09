@@ -83,16 +83,17 @@ ob_start();
         }
 
         th, td {
+            border: 1px solid #000;
+            padding: 6px;
+        }
+
+        .top {
+            border: 1px solid #000;
             padding: 6px;
         }
 
         th {
             background-color: #f0f0f0;
-        }
-
-        .recap {
-            border: 1px solid #000;
-            padding: 6px;
         }
 
         .right {
@@ -115,8 +116,8 @@ ob_start();
 <h1>FACTURE</h1>
 
 <table class="header">
-    <tr>
-        <td>
+    <tr class="top">
+        <td class="top">
             <strong>Vendeur</strong><br>
             Alizon<br>
             3 rue Edouard Branly<br>
@@ -142,7 +143,7 @@ ob_start();
     France
 </div>
 
-<table class="recap">
+<table>
     <tr>
         <th>Référence</th>
         <th>Désignation</th>
