@@ -88,7 +88,6 @@ ob_start();
         }
 
         .top {
-            border: 1px solid #000;
             padding: 6px;
         }
 
