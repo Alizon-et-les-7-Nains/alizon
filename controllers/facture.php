@@ -19,7 +19,7 @@ $stmt = $pdo->prepare("
     FROM _commande c
     JOIN _panier p ON c.idPanier = p.idPanier
     JOIN _client cl ON p.idClient = cl.idClient 
-    NATUTRAL JOIN _adresseLivraison a 
+    JOIN _adresseLivraison a ON cl.idClient = a.idClient
     WHERE c.idCommande = :commande
     ");
 
@@ -32,7 +32,7 @@ $stmt = $pdo->prepare("
     FROM _commande c
     NATURAL JOIN _contient cnt 
     NATURAL JOIN _produit p
-    NATURAL JOIN _typeTva t
+    NATURAL JOIN _tva t
     WHERE c.idCommande = :commande
 ");
 
@@ -83,12 +83,16 @@ ob_start();
         }
 
         th, td {
-            border: 1px solid #000;
             padding: 6px;
         }
 
         th {
             background-color: #f0f0f0;
+        }
+
+        .recap {
+            border: 1px solid #000;
+            padding: 6px;
         }
 
         .right {
@@ -138,7 +142,7 @@ ob_start();
     France
 </div>
 
-<table>
+<table class="recap">
     <tr>
         <th>Référence</th>
         <th>Désignation</th>
