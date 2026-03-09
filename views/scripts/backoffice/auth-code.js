@@ -252,6 +252,5 @@ function fermerPopupA2F() {
   inputs.forEach((inp) => (inp.value = ""));
 
   // Rediriger vers la page de connexion
-  const closeRedirect = form.dataset.closeRedirect || "connexion.php";
-  window.location.href = closeRedirect;
+  window.location.href = "connexion.php";
 }
