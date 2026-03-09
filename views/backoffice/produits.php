@@ -38,6 +38,7 @@
             <?php $error = $_GET['error']; ?>
             <?php if ($error == 1): ?>
                 <p class='erreur'>Vous avez déjà 2 promotions en cours</p>
+            <?php endif; ?>
         <?php endif; ?>
 
         <main class="produitBackOffice">
