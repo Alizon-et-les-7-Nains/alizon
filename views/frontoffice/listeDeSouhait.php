@@ -23,28 +23,26 @@ $idClient = $_SESSION['user_id'];
 
 // Fonction pour récupérer le contenu de la liste de souhait d'un client
 function getWishlist($pdo, $idClient) {
-    // Récupération du dernier panier de l'utilisateur
-    $stmt = $pdo->prepare("SELECT * FROM _listeDeSouhait WHERE idClient = ? ORDER BY dateAjout DESC LIMIT 1");
+    $stmt = $pdo->prepare("SELECT * FROM _listeDeSouhait WHERE idClient = ? ORDER BY dateAjout DESC");
     $stmt->execute([intval($idClient)]);
-    $wishlist = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC): false;
+    $wishlist = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     
     return $wishlist;
 }
 
 // Fonction pour rechercher un produit dans la liste de souhait d'un client
 function getWishlistProduct($pdo, $idClient, $idProduit) {
-    // Récupération du dernier panier de l'utilisateur
     $stmt = $pdo->prepare("SELECT * FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
     $stmt->execute([intval($idClient), intval($idProduit)]);
-    $wishlist = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC): false;
+    $wishlist = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
     
-    return ($wishlist == null);
+    return $wishlist !== false;
 }
 
 // Fonction pour modifier la liste de souhait
 function updateWishlist($pdo, $idClient, $idProduit) {
 
-    $res = getWishlistProduct($pdo, $idClient,$idProduit);
+    $res = getWishlistProduct($pdo, $idClient, $idProduit);
 
     if ($res) {
         try {
@@ -67,7 +65,6 @@ function updateWishlist($pdo, $idClient, $idProduit) {
 
 // Fonction pour rechercher récupérer les informations d'un produit dans la liste de souhait d'un client
 function getProductDetails($pdo, $idProduit) {
-    // Récupération du dernier panier de l'utilisateur
     $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = ?");
     $stmt->execute([intval($idProduit)]);
     $product = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC): false;
@@ -107,11 +104,14 @@ $wishlist = getWishlist($pdo, $idClient);
         <section class="ensembleProduits">
             <?php if ($wishlist) : ?>
                 <?php foreach ($wishlist as $item) : ?>
-                    <?php $productDetails = getProductDetails($pdo, $item['idProduit']); ?>
-                    <div class="produit">
-                        <h1><?= $productDetails['nom'] ?></h1>
-                        <button class="plus" data-stock="<?= $productDetails['stock'] ?>" data-id="<?= $item['idProduit'] ?>">Ajouter au panier</button>
-                    </div>
+                    <?php if (isset($item['idProduit'])) : ?>
+                        <?php $productDetails = getProductDetails($pdo, $item['idProduit']); ?>
+                        <?php if ($productDetails && isset($productDetails['nom'])) : ?>
+                            <div class="produit">
+                                <h1><?= $productDetails['nom'] ?></h1>
+                            </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php else : ?>
                 <p>Votre liste de souhaits est vide.</p>
