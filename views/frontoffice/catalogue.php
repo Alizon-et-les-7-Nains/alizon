@@ -744,7 +744,7 @@ function loadProduits(page = 1) {
     else{
         idVendeur = "";
     }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}`)
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}&mapActive=${carteAffiche.classList.contains('active')}`)
         .then(res => {
             if (!res.ok) {
                 throw new Error(`Erreur HTTP: ${res.status}`);
@@ -771,6 +771,11 @@ function loadProduits(page = 1) {
                 if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
             }
             paginationDiv.innerHTML = pagHTML;
+
+            if (data.mapActive) {
+                afficherPointsSurCarte(data.idVendeurs);
+                carteAffiche.classList.toggle('active');
+            }
 
             pagination();
             reattacherAjouterPanier();
