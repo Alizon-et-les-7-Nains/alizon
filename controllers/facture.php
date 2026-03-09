@@ -90,6 +90,11 @@ ob_start();
             background-color: #f0f0f0;
         }
 
+        .recap {
+            border: 1px solid #000;
+            padding: 6px;
+        }
+
         .right {
             text-align: right;
         }
@@ -137,7 +142,7 @@ ob_start();
     France
 </div>
 
-<table>
+<table class="recap">
     <tr>
         <th>Référence</th>
         <th>Désignation</th>
