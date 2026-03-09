@@ -3,9 +3,12 @@ const form = document.querySelector("#formA2F");
 const inputs = form ? form.querySelectorAll('input[type="text"]') : [];
 let isBlocked = false;
 let blockTimer = null;
+let otpTimer = null;
+const OTP_DURATION_SECONDS = 30;
 
 // Vérifier le statut de blocage au chargement de la page
 if (form) {
+  initOtpCountdown();
   checkBlockStatus();
 }
 
@@ -241,11 +244,109 @@ function unblockUser() {
   inputs[0].focus();
 }
 
+function ensureOtpTimerStyles() {
+  if (document.getElementById("otpTimerStyles")) {
+    return;
+  }
+
+  const style = document.createElement("style");
+  style.id = "otpTimerStyles";
+  style.textContent = `
+    .big-circle {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 15px;
+    }
+
+    .circle {
+      width: 100px;
+      height: 100px;
+      background: conic-gradient(#e4d9ff 360deg, #ffffff 0deg);
+      border-radius: 50%;
+      position: relative;
+      border: #273469 solid 5px;
+      transform: scaleX(-1);
+    }
+
+    .time {
+      font-size: 20px;
+      font-weight: bold;
+      z-index: 10;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      color: #273469;
+      transform: translate(-50%, -50%) scaleX(-1);
+    }
+  `;
+
+  document.head.appendChild(style);
+}
+
+function getSecondsUntilOtpChange() {
+  const epoch = Math.floor(Date.now() / 1000);
+  const remainder = epoch % OTP_DURATION_SECONDS;
+  return remainder === 0
+    ? OTP_DURATION_SECONDS
+    : OTP_DURATION_SECONDS - remainder;
+}
+
+function renderOtpCountdown() {
+  const circle = document.querySelector(".circle");
+  const time = document.querySelector(".time");
+  if (!circle || !time) {
+    return;
+  }
+
+  const secondsLeft = getSecondsUntilOtpChange();
+  const degrees = secondsLeft * (360 / OTP_DURATION_SECONDS);
+
+  circle.style.background = `conic-gradient(#e4d9ff ${degrees}deg, #ffffff 0deg)`;
+  time.textContent = `${secondsLeft}s`;
+}
+
+function initOtpCountdown() {
+  if (!form || form.querySelector(".big-circle")) {
+    return;
+  }
+
+  ensureOtpTimerStyles();
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "big-circle";
+  wrapper.innerHTML = `
+    <div class="circle">
+      <div class="time">30s</div>
+    </div>
+  `;
+
+  const errorElement = document.querySelector("#erreurCodeA2F");
+  if (errorElement) {
+    form.insertBefore(wrapper, errorElement);
+  } else {
+    form.appendChild(wrapper);
+  }
+
+  renderOtpCountdown();
+
+  if (otpTimer) {
+    clearInterval(otpTimer);
+  }
+
+  otpTimer = setInterval(() => {
+    renderOtpCountdown();
+  }, 1000);
+}
+
 // Fonction pour fermer la popup A2F
 async function fermerPopupA2F() {
   // Nettoyer le timer si actif
   if (blockTimer) {
     clearInterval(blockTimer);
+  }
+  if (otpTimer) {
+    clearInterval(otpTimer);
   }
 
   // Vider les champs
