@@ -242,7 +242,7 @@ function unblockUser() {
 }
 
 // Fonction pour fermer la popup A2F
-function fermerPopupA2F() {
+async function fermerPopupA2F() {
   // Nettoyer le timer si actif
   if (blockTimer) {
     clearInterval(blockTimer);
@@ -251,11 +251,18 @@ function fermerPopupA2F() {
   // Vider les champs
   inputs.forEach((inp) => (inp.value = ""));
 
-  // Cacher la popup
-  const form = document.querySelector("#formA2F");
-  if (form && form.closest('[role="dialog"]')) {
-    form.closest('[role="dialog"]').style.display = "none";
-  } else if (form) {
-    form.style.display = "none";
+  try {
+    await fetch(window.location.href, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cancelA2F: true }),
+    });
+  } catch (err) {
+    console.error("Erreur annulation A2F:", err);
   }
+
+  // Rediriger vers la page de connexion
+  window.location.href = "connexion.php";
 }

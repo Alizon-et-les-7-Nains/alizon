@@ -83,6 +83,11 @@ ob_start();
         }
 
         th, td {
+            border: 1px solid #000;
+            padding: 6px;
+        }
+
+        .top {
             padding: 6px;
         }
 
@@ -110,8 +115,8 @@ ob_start();
 <h1>FACTURE</h1>
 
 <table class="header">
-    <tr>
-        <td>
+    <tr class="top">
+        <td class="top">
             <strong>Vendeur</strong><br>
             Alizon<br>
             3 rue Edouard Branly<br>
