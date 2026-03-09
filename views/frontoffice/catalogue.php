@@ -736,19 +736,13 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value;
+    const mapEstActive = carteAffiche.classList.contains('active'); // ✅ capturé AVANT le fetch
 
-    let idVendeur;
-    if(vendeur.value!=""){
-        idVendeur = parseInt(vendeur.value);
-    }
-    else{
-        idVendeur = "";
-    }
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}&mapActive=${carteAffiche.classList.contains('active')}`)
+    let idVendeur = vendeur.value !== "" ? parseInt(vendeur.value) : "";
+
+    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`)
         .then(res => {
-            if (!res.ok) {
-                throw new Error(`Erreur HTTP: ${res.status}`);
-            }
+            if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
             return res.json();
         })
         .then(data => {
@@ -757,29 +751,26 @@ function loadProduits(page = 1) {
             resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
 
             if (data.idVendeurs) {
-                const idVendeursActifs = data.idVendeurs;
-                listeIdVendeurs = idVendeursActifs;
-                afficherPointsSurCarte(idVendeursActifs);
+                listeIdVendeurs = data.idVendeurs;
+                afficherPointsSurCarte(data.idVendeurs);
+            }
+
+            if (mapEstActive) {
+                setTimeout(() => map.invalidateSize(), 100);
             }
 
             let pagHTML = '';
             if (data.nbPages > 1) {
                 if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
-                for (let i=1; i<=data.nbPages; i++){
-                    pagHTML += `<a href="#" class="pageLink ${i===page?'active':''}" data-page="${i}">${i}</a>`;
+                for (let i = 1; i <= data.nbPages; i++) {
+                    pagHTML += `<a href="#" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
                 }
                 if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
             }
             paginationDiv.innerHTML = pagHTML;
 
-            if (data.mapActive) {
-                afficherPointsSurCarte(data.idVendeurs);
-                carteAffiche.classList.toggle('active');
-            }
-
             pagination();
             reattacherAjouterPanier();
-            
             isFiltering = true;
         })
         .catch(error => {
