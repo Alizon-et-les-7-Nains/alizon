@@ -3,7 +3,7 @@
 // Avant de stopper le buffer. Ensuite on fait une page html puis on récupère tout ce qui est
 // Dans le buffer. 
 
-require_once __DIR__ . '../dompdf/autoload.inc.php';
+require_once __DIR__ . '/dompdf/autoload.inc.php';
 require_once './pdo.php';
 
 $idCommande = $_GET['id'];
