@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-<script src="../partials/authCode-backoffice.js"></script>
+<script src="../scripts/backoffice/auth-code.js"></script>
 </body>
 
 </html>
