@@ -3,6 +3,16 @@
 
 .bodyProduitsBackoffice{
     margin-top: 58px;
+
+    .erreur {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: $color-pastel-red;
+        padding: 20px;
+        margin: 0;
+    }
 }
 
 .produitBackOffice{
@@ -188,15 +198,7 @@
         justify-content: space-between;
     }
 
-    .erreur {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background-color: $color-pastel-red;
-        padding: 20px;
-        margin: 0;
-    }
+    
 }
 
 .overlaypopUpPromouvoir{
