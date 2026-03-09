@@ -12,6 +12,7 @@ $offset = ($page - 1) * $produitsParPage;
 $idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 $categoryQuery = isset($_GET['categorie']) ? trim(str_replace('_', ' ', $_GET['categorie'])) : "";
+$mapActive = isset($_GET['mapActive']) && $_GET['mapActive'] === 'true';
 
 $conditions = [];
 $params = [];
@@ -666,6 +667,7 @@ btnCarte.addEventListener('click', () => {
         }, 100);
     }
     listeArticle.style.marginLeft = carteAffiche.classList.contains('active') ? '0px' : '300px';
+    mapActiveParam = carteAffiche.classList.contains('active');
 });
 
 document.addEventListener('DOMContentLoaded', function() {

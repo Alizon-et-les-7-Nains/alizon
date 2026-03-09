@@ -5,7 +5,16 @@ require_once 'treatment.php';
 
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
+$sql = "SELECT COUNT(*) as jeton FROM _promotion INNER JOIN _produit ON _promotion.idProduit = _produit.idProduit WHERE idVendeur = :idVendeur";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([':idVendeur' => $_SESSION['id']]);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($result['jeton'] >= 2) {
+    header('Location: ../views/backoffice/produits.php?error=1');
+    exit;
+} else {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
 
     if (isset($_POST['supprimer_banniere']) && $_POST['supprimer_banniere'] == "1") {
 
@@ -100,6 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     header('Location: ../views/backoffice/produits.php');
     exit;
+    }
 }
+
+
 
 ?>
