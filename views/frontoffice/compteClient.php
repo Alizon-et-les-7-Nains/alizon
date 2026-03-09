@@ -266,16 +266,17 @@ $pays = $adresse['pays'] ?? '';
     <title>Mon Compte</title>
     <link rel="stylesheet" href="../../public/style.css">
 </head>
-<?php if (isset($_GET['error'])): ?>
-    <?php $error = $_GET['error']; ?>
-    <?php if ($error == 1): ?>
-        <p class='erreur'>Ancien mot de passe incorrect</p>
-    <?php elseif ($error == 2): ?>
-        <p class='erreur'>Les mots de passe ne correspondent pas</p>
-    <?php endif; ?>
-<?php endif; ?>
 <body>
     <?php include 'partials/headerConnecte.php'; ?>
+
+    <?php if (isset($_GET['error'])): ?>
+        <?php $error = $_GET['error']; ?>
+        <?php if ($error == 1): ?>
+            <p class='erreur'>Ancien mot de passe incorrect</p>
+        <?php elseif ($error == 2): ?>
+            <p class='erreur'>Les mots de passe ne correspondent pas</p>
+        <?php endif; ?>
+    <?php endif; ?>
 
     <main class="mainCompteClient">
         <form method="POST" enctype="multipart/form-data" action="">
