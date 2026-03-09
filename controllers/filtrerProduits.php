@@ -6,6 +6,7 @@ session_start();
 $produitsParPage = 15;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $produitsParPage;
+$mapActive = isset($_GET['mapActive']) && $_GET['mapActive'] === 'true';
 
 $minPrice = (float)($_GET['minPrice'] ?? 0);
 $maxPrice = (float)($_GET['maxPrice'] ?? 1000000);
@@ -83,8 +84,8 @@ $data = [
     'html'          => '',
     'nbPages'       => $nbPages,
     'totalProduits' => $totalProduits,
-    'idVendeurs'    => array_values(array_map('strval', array_column($tousLesProduitsFiltres, 'idVendeur')))
-    //                 ^^^ tous les vendeurs, pas juste ceux de la page
+    'idVendeurs'    => array_values(array_map('strval', array_column($tousLesProduitsFiltres, 'idVendeur'))),
+    'mapActive'     => $mapActive
 ];
 
 if (count($products) > 0) {
