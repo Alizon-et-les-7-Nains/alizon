@@ -1953,7 +1953,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 
 .erreur {
   position: absolute;
-  top: 75px;
+  top: 70px;
   left: 0;
   width: 100%;
   background-color: #f7afaf;
