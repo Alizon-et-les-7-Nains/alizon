@@ -117,7 +117,7 @@ unset($_SESSION['form_data']);
                     </div>
 
                     <div class="col-md-6">
-                        <label>Mot de passe</label>
+                        <label onclick>Mot de passe</label>
                         <input type="password" name="mdp" id="mdp" required class="form-control">
 
                         <div id="password-requirements-container" class="mt-2 hidden">
@@ -147,7 +147,7 @@ unset($_SESSION['form_data']);
                         <p class="code_vendeur"> Code vendeur : <strong>VD640</strong> </p>
                         <a class="connexion_lien" href="connexion.php">Déjà vendeur ? Connectez vous ici</a>
 
-                        <button type="submit" id="btn_inscription" class="btn_inscription" onclick="geocodeAdresse(adresseInput.value);" disabled>S'inscrire</button>
+                        <button type="submit" id="btn_inscription" class="btn_inscription" disabled>S'inscrire</button>
                     </div>
 
                 </div>
@@ -177,6 +177,9 @@ unset($_SESSION['form_data']);
         const reqNumber = document.getElementById('req-number');
         const reqSpecial = document.getElementById('req-special');
         const reqMatch = document.getElementById('req-match');
+
+        // Validation de l'adresse
+        let adresseValidee = false;
         
         console.log(latInput.value);
         console.log(lngInput.value);
@@ -258,6 +261,12 @@ unset($_SESSION['form_data']);
             // Activation/Désactivation du bouton
             submitButton.disabled = !allValid;
 
+            if(allValid && adresseValidee) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+
             return allValid;
         }
 
@@ -273,12 +282,16 @@ unset($_SESSION['form_data']);
                 console.log("-----------------\nAdresse récupérée : ", adresse, "\n");
                 console.log("Latitude : ", lat, "\nLongitude : ", lon, "\n-----------------\n");
                 adresseInput.classList.remove('input-error');
+                adresseValidee = true;
+                validatePassword();
 
                 popUpAdresse(lat, lon);
 
                 return { lat, lon: lng };
             } else {
                 adresseInput.classList.add('input-error');
+                adresseValidee = false;
+                validatePassword();
                 throw new Error("Adresse introuvable");
             }
         }
@@ -346,6 +359,13 @@ unset($_SESSION['form_data']);
             let mapInstance = null;
             let currentMarker = null;
 
+            let adrIn = document.getElementById('idAdresse');
+
+            adrIn.addEventListener("input", (e) => {
+                if (adresseValidee == true) adresseValidee = false;
+                validatePassword();
+            });
+
             function popUpAdresse(lat, lon) {
                 const overlay = document.createElement("div");
                 overlay.className = "overlayPopUpDetails";
@@ -360,14 +380,16 @@ unset($_SESSION['form_data']);
                         <p>Si ce n'est pas le cas, veuillez déplacer le pointeur sur la carte ou réessayez d'entrer votre adresse sur le formulaire d'inscription</p>
                         <div style="height: 380px; background-color: black; border-radius: 16px;" id="map"></div>
                         <p style="margin-top: 16px;" id="adrAct">Adresse actuelle : Chargement...</p>
-                        <button class="btnConfirm">Confirmer</button>
+                        <button class="btnConfirm" onclick="adresseValidee = true; validatePassword();">Confirmer</button>
                     </main>`;
 
+                fermerPopUpDetailsCommande();
                 document.body.appendChild(overlay);
 
                 const croixFermer = overlay.querySelector(".croixFermerLaPage");
                 const btnFermer = overlay.querySelector(".btnFermer");
                 const btnConfirm = overlay.querySelector(".btnConfirm");
+                const pAdresseAct = document.getElementById('adrAct');
 
                 croixFermer.addEventListener("click", fermerPopUpDetailsCommande);
                 if (btnConfirm) btnConfirm.addEventListener("click", fermerPopUpDetailsCommande);
@@ -383,6 +405,8 @@ unset($_SESSION['form_data']);
                 }).addTo(mapInstance);
                 currentMarker = L.marker([lat, lon]).addTo(mapInstance);
                 mapInstance.on('click', onMapClick);
+
+                pAdresseAct.textContent = "Adresse actuelle : " + document.getElementById('idAdresse').value;
             }
 
             function fermerPopUpDetailsCommande() {

@@ -7,12 +7,14 @@
     background-color: $color-white;
 
     #map{
-        margin: 2em;
+        margin-right: 2em;
         margin-left: 300px;
+        margin-top: 3em;
+        margin-bottom: 4em;
         border: 2px solid #273469;
         border-radius: 4px;
-        width: 1600px;
-        height: 75vh;
+        width: 60%;
+        height: 64vh;
         display: none;
         background-color: #e4d9ff;
     }
@@ -66,7 +68,7 @@
     }
 
     .products-section{
-        width: calc(100% - 280px);
+        width: calc(100% - 40px);
         display: flex;
         flex-direction: column;
         overflow-x: hidden;
@@ -85,9 +87,10 @@
         font-size: 18px;
         font-weight: 500;
         margin: 0;
-        margin-left: 280px;
-        z-index: 100;
+        left: 280px;
+        margin-left: 0;
         width: 100%;
+        z-index: 100;
     }
 
     #resultat.active {
@@ -108,7 +111,7 @@
         gap: 10px;
         width: 100%;
         margin-top: 40px;
-        margin-left: 300px;
+        margin-left: 0;
         overflow-y: scroll;
     }
 

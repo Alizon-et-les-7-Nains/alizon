@@ -215,30 +215,30 @@
     </main>
 
     <?php require_once "./partials/footer.php"; ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // éléments
+    const pseudoInput = document.getElementById('pseudo');
+    const mdpInput = document.getElementById('mdp');
+    const btnConnexion = document.getElementById('btnConnexion');
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // éléments
-        const pseudoInput = document.getElementById('pseudo');
-        const mdpInput = document.getElementById('mdp');
-        const btnConnexion = document.getElementById('btnConnexion');
-
-        // vérification
-        function verifierChamps() {
-            // Si pseudo et mdp sont remplis
-            if (pseudoInput.value.trim() !== "" && mdpInput.value.trim() !== "") {
-                btnConnexion.disabled = false; // On active le bouton
-            } else {
-                btnConnexion.disabled = true; // On désactive le bouton
-            }
+    // vérification
+    function verifierChamps() {
+        // Si pseudo et mdp sont remplis
+        if (pseudoInput.value.trim() !== "" && mdpInput.value.trim() !== "") {
+            btnConnexion.disabled = false; // On active le bouton
+        } else {
+            btnConnexion.disabled = true; // On désactive le bouton
         }
+    }
 
-        // tapage utilisateur
-        pseudoInput.addEventListener('input', verifierChamps);
-        mdpInput.addEventListener('input', verifierChamps);
-    });
-    </script>
-    <script src="../scripts/frontoffice/authCode.js"></script>
+    // tapage utilisateur
+    pseudoInput.addEventListener('input', verifierChamps);
+    mdpInput.addEventListener('input', verifierChamps);
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script src="../scripts/backoffice/auth-code.js"></script>
 </body>
 
 </html>
