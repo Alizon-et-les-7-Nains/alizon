@@ -19,7 +19,7 @@ $stmt = $pdo->prepare("
     FROM _commande c
     JOIN _panier p ON c.idPanier = p.idPanier
     JOIN _client cl ON p.idClient = cl.idClient 
-    NATUTRAL JOIN _adresseLivraison a 
+    JOIN _adresseLivraison a ON cl.idClient = a.idClient
     WHERE c.idCommande = :commande
     ");
 
@@ -32,7 +32,7 @@ $stmt = $pdo->prepare("
     FROM _commande c
     NATURAL JOIN _contient cnt 
     NATURAL JOIN _produit p
-    NATURAL JOIN _typeTva t
+    NATURAL JOIN _tva t
     WHERE c.idCommande = :commande
 ");
 
