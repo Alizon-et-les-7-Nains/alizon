@@ -1,6 +1,20 @@
 @use '../fonts';
 @use '../colors' as *;
 
+.bodyProduitsBackoffice{
+    margin-top: 58px;
+
+    .erreur {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: $color-pastel-red;
+        padding: 20px;
+        margin: 0;
+    }
+}
+
 .produitBackOffice{
 
     a{
@@ -184,11 +198,7 @@
         justify-content: space-between;
     }
 
-    .erreur {
-        background-color: $color-pastel-red;
-        padding: 20px;
-        margin-top: 10px;
-    }
+    
 }
 
 .overlaypopUpPromouvoir{
