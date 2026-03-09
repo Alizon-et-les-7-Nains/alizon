@@ -251,6 +251,11 @@ function fermerPopupA2F() {
   // Vider les champs
   inputs.forEach((inp) => (inp.value = ""));
 
-  // Rediriger vers la page de connexion
-  window.location.href = "connexion.php";
+  // Cacher la popup
+  const form = document.querySelector("#formA2F");
+  if (form && form.closest('[role="dialog"]')) {
+    form.closest('[role="dialog"]').style.display = "none";
+  } else if (form) {
+    form.style.display = "none";
+  }
 }
