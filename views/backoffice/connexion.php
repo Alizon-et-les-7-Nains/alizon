@@ -95,6 +95,18 @@
         exit;
     }
 
+    if (isset($data['cancelA2F'])) {
+        unset(
+            $_SESSION['bo_a2f_required'],
+            $_SESSION['bo_pending_vendeur_id'],
+            $_SESSION['bo_otp_failed_attempts'],
+            $_SESSION['bo_otp_blocked_until']
+        );
+
+        echo json_encode(['success' => true]);
+        exit;
+    }
+
     $isA2FPending = !empty($_SESSION['bo_a2f_required']) && !empty($_SESSION['bo_pending_vendeur_id']);
     $flashMessage = $_SESSION['message'] ?? '';
 
