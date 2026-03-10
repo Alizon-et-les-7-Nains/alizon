@@ -7,7 +7,7 @@ $id_client = $_POST['id_client'];
 
 try{
     // Anonymiser les données
-    $stmt = $pdo->prepare("UPDATE _client SET email = NULL, prenom = NULL, dateNaissance = NULL, nom = NULL, mdp = NULL, noTelephone = NULL, pseudo = 'Anonyme' WHERE idClient = :idClient");
+    $stmt = $pdo->prepare("UPDATE _client SET email = NULL, prenom = ' ', dateNaissance = NULL, nom = 'Anonyme, mdp = NULL, noTelephone = NULL, pseudo = 'Anonyme' WHERE idClient = :idClient");
     $stmt->execute([
         ':idClient' => $id_client
     ]);
