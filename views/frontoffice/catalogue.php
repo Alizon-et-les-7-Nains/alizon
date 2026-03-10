@@ -500,15 +500,15 @@ $cart = getCurrentCart($pdo, $idClient);
         <div class="pagination">
             <?php if ($nbPages > 1): ?>
                 <?php if ($page > 1){ ?>
-                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'false' : 'true' ?>">« Précédent</a>
+                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">« Précédent</a>
                 <?php } else { ?>
                     <span class="disabled">« Précédent</span>
                 <?php } ?>
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a <?php if($i == $page) echo 'style="class: active;"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'false' : 'true' ?>"><?= $i ?></a>
+                    <a <?php if($i == $page) echo 'style="class: active;"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><?= $i ?></a>
                 <?php endfor; ?>
                 <?php if ($page < $nbPages) { ?>
-                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'false' : 'true' ?>">Suivant »</a>
+                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">Suivant »</a>
                 <?php } else { ?>
                     <span class="disabled">Suivant »</span>
                 <?php } ?>
@@ -769,14 +769,17 @@ function loadProduits(page = 1) {
                 setTimeout(() => map.invalidateSize(), 100);
             }
 
+            // Dans loadProduits, remplace la génération des liens de pagination :
             let pagHTML = '';
             if (data.nbPages > 1) {
-                if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
+                const mapEstActive = carteAffiche.classList.contains('active'); // ← ajoute ça
+                if (page > 1) pagHTML += `<a href="?page=${page-1}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink" data-page="${page-1}">« Précédent</a>`;
                 for (let i = 1; i <= data.nbPages; i++) {
-                    pagHTML += `<a href="#" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                    pagHTML += `<a href="?page=${i}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
                 }
-                if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
+                if (page < data.nbPages) pagHTML += `<a href="?page=${page+1}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink" data-page="${page+1}">Suivant »</a>`;
             }
+
             paginationDiv.innerHTML = pagHTML;
 
             pagination();
