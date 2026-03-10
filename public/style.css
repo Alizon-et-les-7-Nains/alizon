@@ -1951,12 +1951,9 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: bold;
 }
 
-.bodyProduitsBackoffice {
-  margin-top: 58px;
-}
-.bodyProduitsBackoffice .erreur {
-  position: fixed;
-  top: 0;
+.erreur {
+  position: absolute;
+  top: 70px;
   left: 0;
   width: 100%;
   background-color: #f7afaf;
@@ -7588,12 +7585,22 @@ dialog.reassort form input {
   color: #fffefa;
 }
 
+.pageCatalogue html, .pageCatalogue body {
+  height: 100%;
+  overflow: hidden;
+}
 .pageCatalogue {
+  min-height: 0;
   display: flex;
   flex-direction: row;
   background-color: #fffefa;
+  height: calc(100vh - hauteur_de_ton_header);
+  overflow: hidden;
 }
 .pageCatalogue #map {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
   margin-right: 2em;
   margin-left: 300px;
   margin-top: 3em;
@@ -7601,7 +7608,7 @@ dialog.reassort form input {
   border: 2px solid #273469;
   border-radius: 4px;
   width: 60%;
-  height: 64vh;
+  height: 65vh;
   display: none;
   background-color: #e4d9ff;
 }
@@ -7651,6 +7658,9 @@ dialog.reassort form input {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  min-height: 0;
+  overflow-y: auto;
+  height: 100vh;
 }
 .pageCatalogue .product-list {
   display: flex;
@@ -8774,7 +8784,7 @@ main.backoffice-stats * {
   font-family: "open-sans";
   color: #273469;
 }
-main.backoffice-stats h1 {
+main.backoffice-stats h1, main.backoffice-stats button, main.backoffice-stats select, main.backoffice-stats option {
   user-select: none;
 }
 main.backoffice-stats h1 {
@@ -8783,11 +8793,11 @@ main.backoffice-stats h1 {
 }
 main.backoffice-stats table {
   width: 100%;
+  table-layout: fixed;
 }
 main.backoffice-stats table:first-of-type {
   border-collapse: separate;
   border-spacing: 2em 0;
-  table-layout: fixed;
 }
 main.backoffice-stats table:first-of-type th {
   text-align: left;
@@ -8840,9 +8850,15 @@ main.backoffice-stats article {
   background-color: #e4d9ff;
   border-radius: 16px;
   padding: 1em;
+  height: 45vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 main.backoffice-stats canvas {
   width: 100%;
+  min-height: 0;
   height: 40vh;
 }
 main.backoffice-stats ul.stats {
@@ -8978,6 +8994,47 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 }
 .bodyPopupA2f .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.listeDeSouhait {
+  font-family: "Lora", serif;
+  color: #273469;
+}
+.listeDeSouhait .produit {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border: 2px solid #273469;
+  border-radius: 20px;
+  width: 650px;
+  padding: 15px 10px;
+  margin: 25px;
+}
+.listeDeSouhait .produit h1, .listeDeSouhait .produit h3, .listeDeSouhait .produit p {
+  margin: 0;
+}
+.listeDeSouhait .produit img {
+  width: 200px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 20px;
+}
+.listeDeSouhait .produit .info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.listeDeSouhait .produit .info h2 {
+  margin: 0;
+}
+.listeDeSouhait .ensembleProduits {
+  column-count: 2;
+}
+.listeDeSouhait h1 .titre {
+  margin-top: 30px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  font-size: 48px;
 }
 
 /*# sourceMappingURL=style.css.map */

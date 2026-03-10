@@ -1,0 +1,45 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.listeDeSouhait {
+    font-family: "Lora", serif;
+    color: #273469;
+    
+    .produit {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        border: 2px solid #273469;
+        border-radius: 20px;
+        width: 650px;
+        padding: 15px 10px;
+        margin: 25px;
+        h1, h3, p {
+            margin: 0;
+        }
+        img {
+            width: 200px;
+            object-fit: cover;
+            margin-right: 20px;
+            border-radius: 20px;
+        }
+        .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            h2 {
+                margin: 0;
+            }
+        }
+    }
+    .ensembleProduits {
+        column-count: 2;
+
+    }
+    h1 .titre {
+        margin-top: 30px;
+        margin-bottom: 0px;
+        margin-right: 10px;
+        font-size: 48px;
+    }
+}

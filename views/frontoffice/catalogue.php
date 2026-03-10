@@ -521,6 +521,7 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 <script>
+
 // Filtres prix
 const sliderMin = document.getElementById('sliderMin');
 const sliderMax = document.getElementById('sliderMax');
@@ -667,7 +668,6 @@ btnCarte.addEventListener('click', () => {
         }, 100);
     }
     listeArticle.style.marginLeft = carteAffiche.classList.contains('active') ? '0px' : '300px';
-    mapActiveParam = carteAffiche.classList.contains('active');
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -769,14 +769,17 @@ function loadProduits(page = 1) {
                 setTimeout(() => map.invalidateSize(), 100);
             }
 
+            // Dans loadProduits, remplace la génération des liens de pagination :
             let pagHTML = '';
             if (data.nbPages > 1) {
-                if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
+                const mapEstActive = carteAffiche.classList.contains('active'); // ← ajoute ça
+                if (page > 1) pagHTML += `<a href="?page=${page-1}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink" data-page="${page-1}">« Précédent</a>`;
                 for (let i = 1; i <= data.nbPages; i++) {
-                    pagHTML += `<a href="#" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                    pagHTML += `<a href="?page=${i}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
                 }
-                if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
+                if (page < data.nbPages) pagHTML += `<a href="?page=${page+1}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink" data-page="${page+1}">Suivant »</a>`;
             }
+
             paginationDiv.innerHTML = pagHTML;
 
             pagination();
