@@ -2,11 +2,16 @@
 @use "../fonts" as *;
 
 .pageCatalogue {
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+    min-height: 0;
     display: flex;
     flex-direction: row;
     background-color: $color-white;
-    height: 100vh;        // ← ajoute ça
-    overflow: hidden;     // ← empêche le scroll global
+    height: calc(100vh - hauteur_de_ton_header);
+    overflow: hidden;
 
     #map {
         position: sticky;
@@ -77,6 +82,7 @@
         display: flex;
         flex-direction: column;
         overflow-x: hidden;
+        min-height: 0;
         overflow-y: auto;   // ← le scroll se fait ICI seulement
         height: 100vh;      // ← ajoute ça
     }
