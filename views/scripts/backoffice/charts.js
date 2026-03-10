@@ -71,11 +71,11 @@ const dayChart = (vente, argent) => ({
     options: options
 })
 
-const weekChart = (vente, argent) => ({
+const weekChart = (vente, argent, weeks) => ({
     type: 'bar',
     
     data: {
-        labels: ['1', '2', '3', '4', '5'],
+        labels: weeks,
         datasets: [
             {
                 label: 'Nombre de Ventes',

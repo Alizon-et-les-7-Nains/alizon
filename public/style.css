@@ -8537,7 +8537,7 @@ main.backoffice-stats * {
   font-family: "open-sans";
   color: #273469;
 }
-main.backoffice-stats h1 {
+main.backoffice-stats h1, main.backoffice-stats button, main.backoffice-stats select, main.backoffice-stats option {
   user-select: none;
 }
 main.backoffice-stats h1 {

@@ -4,7 +4,10 @@ import moment from 'https://cdn.jsdelivr.net/npm/moment/+esm';
 
 const data = await fetch('/controllers/api.php?action=stats').then(res => res.json());
 
+const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+
 const daysData = {};
+const weeksData = {};
 const yearsData = {};
 
 let selected = document.querySelector('.selected');
@@ -14,7 +17,6 @@ let index = 0;
 for (const d of data) {
     // Split by day
     const week = moment(d.dateCommande).format('WW/YYYY');
-    console.log(moment('2026-09-12').format('WW/YYYY'))
     const day = moment(d.dateCommande).isoWeekday();
 
     if (!daysData[week]) {
@@ -31,6 +33,32 @@ for (const d of data) {
 
     daysData[week][day].vente += parseInt(d.quantite);
     daysData[week][day].argent = Math.round((daysData[week][day].argent + parseFloat(d.prixProduitHt) * parseInt(d.quantite)) * 100) / 100;
+
+    // Split by week
+    const month = months[moment(d.dateCommande).month()];
+    const N_DAYS = Object.fromEntries([
+        ...["Janvier","Mars","Mai","Juillet","Août","Octobre","Décembre"].map(m => [m, 31]),
+        ...["Avril","Juin","Septembre","Novembre"].map(m => [m, 30])
+    ])
+    const nFevrier = moment(d.dateCommande).year() % 4 == 0 ? 29 : 28;
+    const nDays = month == 'Février' ? nFevrier : N_DAYS[month];
+    const nWeeks = nDays != 28 ? 5 : 4;
+
+    const mont = moment(d.dateCommande).format('MM/YYYY');
+    if (!weeksData[mont]) {
+        weeksData[mont] = {};
+        for (let i = 1; i <= nWeeks; i++) {
+            weeksData[mont][i] = {
+                vente: 0,
+                argent: 0
+            }
+        }
+    }
+
+    const nWeek = Math.ceil(moment(d.dateCommande).date() / 7);
+    weeksData[mont][nWeek].vente += parseInt(d.quantite);
+    weeksData[mont][nWeek].argent += parseFloat(d.prixProduitHt) * parseInt(d.quantite);
+    weeksData[mont][nWeek].argent = Math.round(weeksData[mont][nWeek].argent * 100) / 100;
 
     // Split by year
     const year = moment(d.dateCommande).year();
@@ -140,28 +168,35 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 }
 
                 chart = new Chart(canva, dayChart(vente, argent));
-                document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
-                document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
 
-                document.getElementById('prev').disabled = false;
+                document.getElementById('prev').disabled = index == Object.keys(daysData).length - 1;
                 document.getElementById('next').disabled = true;
+
+                document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
+
                 break;
 
             case 'Hebdomadaire':
-                [vente, argent] = [[8, 5, 2, 3, 2], [21, 45, 13, 8, 13]];
-                chart = new Chart(canva, weekChart(vente, argent));
-                document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
-                document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
+                const month = Object.keys(weeksData).length - 1;
+                for (const w in Object.values(weeksData)[month]) {
+                    vente.push(Object.values(weeksData)[month][w].vente);
+                    argent.push(Object.values(weeksData)[month][w].argent);
+                }
 
-                document.getElementById('prev').disabled = false;
+                chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[Object.keys(weeksData).length - 1]])));
+
+                document.getElementById('prev').disabled = !(index == Object.keys(daysData).length - 1);
                 document.getElementById('next').disabled = true;
+
+                const currentKey = Object.keys(weeksData)[month];
+                
+                document.querySelector('article h3').innerHTML = `${months[moment(currentKey, 'MM/YYYY').month()]} ${moment(currentKey, 'MM/YYYY').year()}`;
+
                 break;
             
             case 'Mensuel':
                 [vente, argent] = [[12, 19, 3, 5, 2, 3, 2, 8, 4, 1, 2, 0], [45, 41, 21, 45, 13, 5, 13, 20, 14, 13, 10, 0]];
                 chart = new Chart(canva, monthChart(vente, argent));
-                document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
-                document.getElementById('argents').innerHTML = argent.reduce((a, b) => a + b, 0) + '€';
 
                 document.getElementById('prev').disabled = false;
                 document.getElementById('next').disabled = true;
@@ -175,14 +210,17 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
 
                 chart = new Chart(canva, yearChart(vente, argent, Object.keys(yearsData)));
 
-                document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
-                total = argent.reduce((a, b) => a + b, 0);
-                formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
-                document.getElementById('argents').innerHTML = formatted;
-
                 document.getElementById('prev').disabled = true;
                 document.getElementById('next').disabled = true;
+
+                document.querySelector('article h3').innerHTML = '';
+
                 break;
         }
+
+        document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
+        let total = argent.reduce((a, b) => a + b, 0);
+        let formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
+        document.getElementById('argents').innerHTML = formatted;
     })
 })
