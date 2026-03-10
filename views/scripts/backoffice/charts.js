@@ -42,11 +42,11 @@ const options = {
     }
 }
 
-const dayChart = (vente, argent, days) => ({
+const dayChart = (vente, argent) => ({
     type: 'bar',
     
     data: {
-        labels: days,
+        labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
         datasets: [
             {
                 label: 'Nombre de Ventes',
@@ -71,11 +71,11 @@ const dayChart = (vente, argent, days) => ({
     options: options
 })
 
-const weekChart = (vente, argent) => ({
+const weekChart = (vente, argent, weeks) => ({
     type: 'bar',
     
     data: {
-        labels: ['1', '2', '3', '4', '5'],
+        labels: weeks,
         datasets: [
             {
                 label: 'Nombre de Ventes',
@@ -142,7 +142,8 @@ const yearChart = (vente, argent, years) => ({
                 borderWidth: 3,
                 borderRadius: 10,
                 backgroundColor: '#e3f2fe',
-                borderColor: '#273469'
+                borderColor: '#273469',
+                maxBarThickness: 250,
             }, {
                 label: 'Chiffre d\'Affaires',
                 data: argent,
@@ -150,7 +151,8 @@ const yearChart = (vente, argent, years) => ({
                 borderWidth: 3,
                 borderRadius: 16,
                 backgroundColor: '#273469',
-                borderColor: 'rgba(0, 0, 0, 0)'
+                borderColor: 'rgba(0, 0, 0, 0)',
+                maxBarThickness: 250,
             }
         ]
     },

@@ -8,7 +8,7 @@ main.backoffice-stats {
         color: $color-blue;
     }
     
-    h1 {
+    h1, button, select, option {
         user-select: none;
     }
     
@@ -19,11 +19,11 @@ main.backoffice-stats {
     
     table {
         width: 100%;
+        table-layout: fixed;
         
         &:first-of-type {
             border-collapse: separate;
             border-spacing: 2em 0;
-            table-layout: fixed;
             
             th {
                 text-align: left;
@@ -86,10 +86,16 @@ main.backoffice-stats {
         background-color: $color-pastel-purple;
         border-radius: 16px;
         padding: 1em;
+        height: 45vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
     }
     
     canvas {
         width: 100%;
+        min-height: 0;
         height: 40vh;
     }
     
