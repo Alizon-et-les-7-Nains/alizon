@@ -148,7 +148,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         }
 
         $montantHT = $sousTotal;
-        $montantTTC = $sousTotal;
+        $montantTTC = $sousTotal * 1.20; 
 
         //On insère les données dans la table _commande
         $sqlCommande = "

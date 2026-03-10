@@ -326,7 +326,7 @@ $clientInfo = clientInformations($pdo, $idClient);
     window.__PAYMENT_DATA__ = {
         cart: <?php 
             $formattedCart = [];
-            $vendeursInfo = getVendeursForCart($pdo, $cart); // Nouvelle fonction
+            $vendeursInfo = getVendeursForCart($pdo, $cart);
             
             foreach ($cart as $item) {
                 $vendeurInfo = $vendeursInfo[$item['idProduit']] ?? null;

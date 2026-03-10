@@ -1,30 +1,37 @@
 @use "../colors" as *;
 @use "../fonts" as *;
 
-.pageCatalogue{
-    display:flex;
+.pageCatalogue {
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+    min-height: 0;
+    display: flex;
     flex-direction: row;
     background-color: $color-white;
+    height: calc(100vh - hauteur_de_ton_header);
+    overflow: hidden;
 
-#map {
-    position: sticky;
-    top: 0;
-    align-self: flex-start;
-    margin-right: 2em;
-    margin-left: 300px;
-    margin-top: 3em;
-    margin-bottom: 4em;
-    border: 2px solid #273469;
-    border-radius: 4px;
-    width: 60%;
-    height: 100vh;
-    display: none;
-    background-color: #e4d9ff;
-}
+    #map {
+        position: sticky;
+        top: 0;
+        align-self: flex-start;
+        margin-right: 2em;
+        margin-left: 300px;
+        margin-top: 3em;
+        margin-bottom: 4em;
+        border: 2px solid #273469;
+        border-radius: 4px;
+        width: 60%;
+        height: 65vh;     // ← un peu moins que 100vh pour les marges
+        display: none;
+        background-color: #e4d9ff;
+    }
 
-#map.active {
-    display: block;
-}
+    #map.active {
+        display: block;
+    }
 
     .fakePanneauGris{
         width: 240px;
@@ -70,11 +77,14 @@
         filter: invert(0);
     }
 
-    .products-section{
+    .products-section {
         width: calc(100% - 40px);
         display: flex;
         flex-direction: column;
         overflow-x: hidden;
+        min-height: 0;
+        overflow-y: auto;
+        height: 100vh;
     }
 
     .product-list{

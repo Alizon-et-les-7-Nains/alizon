@@ -184,7 +184,7 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                     argent.push(Object.values(weeksData)[month][w].argent);
                 }
 
-                chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[Object.keys(weeksData).length - 1]])));
+                chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[Object.keys(weeksData).length - 1]]) ?? ''));
 
                 document.getElementById('prev').disabled = !(index == Object.keys(daysData).length - 1);
                 document.getElementById('next').disabled = true;

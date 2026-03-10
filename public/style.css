@@ -7585,10 +7585,17 @@ dialog.reassort form input {
   color: #fffefa;
 }
 
+.pageCatalogue html, .pageCatalogue body {
+  height: 100%;
+  overflow: hidden;
+}
 .pageCatalogue {
+  min-height: 0;
   display: flex;
   flex-direction: row;
   background-color: #fffefa;
+  height: calc(100vh - hauteur_de_ton_header);
+  overflow: hidden;
 }
 .pageCatalogue #map {
   position: sticky;
@@ -7601,7 +7608,7 @@ dialog.reassort form input {
   border: 2px solid #273469;
   border-radius: 4px;
   width: 60%;
-  height: 100vh;
+  height: 65vh;
   display: none;
   background-color: #e4d9ff;
 }
@@ -7651,6 +7658,9 @@ dialog.reassort form input {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  min-height: 0;
+  overflow-y: auto;
+  height: 100vh;
 }
 .pageCatalogue .product-list {
   display: flex;
