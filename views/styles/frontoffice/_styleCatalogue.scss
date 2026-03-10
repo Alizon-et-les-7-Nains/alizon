@@ -1,10 +1,12 @@
 @use "../colors" as *;
 @use "../fonts" as *;
 
-.pageCatalogue{
-    display:flex;
+.pageCatalogue {
+    display: flex;
     flex-direction: row;
     background-color: $color-white;
+    height: 100vh;        // ← ajoute ça
+    overflow: hidden;     // ← empêche le scroll global
 
     #map {
         position: sticky;
@@ -17,7 +19,7 @@
         border: 2px solid #273469;
         border-radius: 4px;
         width: 60%;
-        height: 100vh;
+        height: 90vh;     // ← un peu moins que 100vh pour les marges
         display: none;
         background-color: #e4d9ff;
     }
@@ -70,11 +72,13 @@
         filter: invert(0);
     }
 
-    .products-section{
+    .products-section {
         width: calc(100% - 40px);
         display: flex;
         flex-direction: column;
         overflow-x: hidden;
+        overflow-y: auto;   // ← le scroll se fait ICI seulement
+        height: 100vh;      // ← ajoute ça
     }
 
     .product-list{
