@@ -31,7 +31,7 @@
     
 
 
-    <body class="backoffice bodyProduitsBackoffice" >
+    <body class="backoffice" >
         
         <?php require_once './partials/header.php' ?>
 
