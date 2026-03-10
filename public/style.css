@@ -9024,7 +9024,7 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 .listeDeSouhait .ensembleProduits {
   column-count: 2;
 }
-.listeDeSouhait h1 {
+.listeDeSouhait h1 .titre {
   margin-top: 30px;
   margin-bottom: 0px;
   margin-right: 10px;

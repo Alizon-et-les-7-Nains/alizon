@@ -99,7 +99,7 @@ $wishlist = getWishlist($pdo, $idClient);
     <?php include "../../views/frontoffice/partials/headerConnecte.php"; ?>
 
     <main>
-        <h1>Liste de souhaits</h1>
+        <h1 class="titre">Liste de souhaits</h1>
 
         <section class="ensembleProduits">
             <?php if ($wishlist) : ?>
