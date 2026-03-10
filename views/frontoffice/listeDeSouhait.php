@@ -119,7 +119,7 @@ $wishlist = getWishlist($pdo, $idClient);
                                     ?>
                                     <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>" class="imgProd">
                                 </div>
-                                <div>
+                                <div class="info">
                                     <h1><?= $productDetails['nom'] ?></h1>
                                     <p><?= $productDetails['description'] ?></p>
                                     <div>
