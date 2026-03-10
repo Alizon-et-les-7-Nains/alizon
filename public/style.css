@@ -8774,7 +8774,7 @@ main.backoffice-stats * {
   font-family: "open-sans";
   color: #273469;
 }
-main.backoffice-stats h1 {
+main.backoffice-stats h1, main.backoffice-stats button, main.backoffice-stats select, main.backoffice-stats option {
   user-select: none;
 }
 main.backoffice-stats h1 {
@@ -8783,11 +8783,11 @@ main.backoffice-stats h1 {
 }
 main.backoffice-stats table {
   width: 100%;
+  table-layout: fixed;
 }
 main.backoffice-stats table:first-of-type {
   border-collapse: separate;
   border-spacing: 2em 0;
-  table-layout: fixed;
 }
 main.backoffice-stats table:first-of-type th {
   text-align: left;
@@ -8840,9 +8840,15 @@ main.backoffice-stats article {
   background-color: #e4d9ff;
   border-radius: 16px;
   padding: 1em;
+  height: 45vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 main.backoffice-stats canvas {
   width: 100%;
+  min-height: 0;
   height: 40vh;
 }
 main.backoffice-stats ul.stats {

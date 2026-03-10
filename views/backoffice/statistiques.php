@@ -46,7 +46,7 @@
                     </td>
                     <td colspan=2>
                         <select name="product" id="product">
-                            <option value="" default hidden>Aucun filtre de produit</option>
+                            <option value="" default>Aucun filtre de produit</option>
                         </select>
                     </td>
                 </tr>
@@ -57,6 +57,7 @@
                 <li>
                     <article>
                         <canvas id="stats"></canvas>
+                        <h3>Semaine du 12/09 au 19/09</h3>
                     </article>
                 </li>
                 <li><button id="next" disabled><img src="../../public/images/flecheDroite.svg" alt="Suivant"></button></li>
