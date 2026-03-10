@@ -8977,4 +8977,21 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
+.listeDeSouhait {
+  font-family: "Lora", serif;
+  color: #273469;
+}
+.listeDeSouhait .produit {
+  display: flex;
+  align-items: center;
+}
+.listeDeSouhait .produit img {
+  width: 200px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+.listeDeSouhait .produit .info {
+  display: flex;
+}
+
 /*# sourceMappingURL=style.css.map */
