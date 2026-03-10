@@ -92,6 +92,7 @@ let chart = new Chart(canva, dayChart(vente, argent));
 document.getElementById('prev').disabled = Object.keys(daysData).length == 1 ? true : false;
 
 function getWeekLabel(week) {
+    if (!week) return '';
     return `Semaine du ${moment().isoWeek(week.split('/')[0]).startOf('isoWeek').format('DD/MM')} au ${moment().isoWeek(week.split('/')[0]).startOf('isoWeek').add(6, 'days').format('DD/MM')}`;
 }
 
