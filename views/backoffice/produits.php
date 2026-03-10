@@ -28,7 +28,10 @@
         <link rel="icon" href="/public/images/logoBackoffice.svg">
     </head>
 
-    <body class="backoffice">
+    
+
+
+    <body class="backoffice" >
         
         <?php require_once './partials/header.php' ?>
 

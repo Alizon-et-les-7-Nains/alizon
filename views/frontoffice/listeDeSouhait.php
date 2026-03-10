@@ -108,7 +108,31 @@ $wishlist = getWishlist($pdo, $idClient);
                         <?php $productDetails = getProductDetails($pdo, $item['idProduit']); ?>
                         <?php if ($productDetails && isset($productDetails['nom'])) : ?>
                             <div class="produit">
-                                <h1><?= $productDetails['nom'] ?></h1>
+                                <div>
+                                    <?php                                  
+                                        // Récupération de l'image du produit ou utilisation de l'image par défaut
+                                        $idProduit = $item['idProduit'] ?? 0;
+                                        $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+                                        $stmtImg->execute([':idProduit' => $idProduit]);
+                                        $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+                                        $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';    
+                                    ?>
+                                    <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>" class="imgProd">
+                                </div>
+                                <div class="info">
+                                    <h1><?= $productDetails['nom'] ?></h1>
+                                    <p><?= $productDetails['description'] ?></p>
+                                    <div>
+                                        <?php 
+                                        if($productDetails['stock'] > 0) {
+                                            echo '<h3 class="enStock">En stock</h3>';
+                                        } else {
+                                            echo '<h3 class="ruptureStock">Hors stock</h3>';
+                                        }
+                                        ?>
+                                        <h3><?= $productDetails['prix'] ?> €</h3>
+                                    </div>
+                                </div>
                             </div>
                         <?php endif; ?>
                     <?php endif; ?>

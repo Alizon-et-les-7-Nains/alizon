@@ -7,7 +7,7 @@ session_start();
 
 $sql = "SELECT COUNT(*) as jeton FROM _promotion INNER JOIN _produit ON _promotion.idProduit = _produit.idProduit WHERE idVendeur = :idVendeur";
 $stmt = $pdo->prepare($sql);
-$stmt->execute([':idVendeur' => $_SESSION['idVendeur']]);
+$stmt->execute([':idVendeur' => $_SESSION['id']]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($result['jeton'] >= 2) {
