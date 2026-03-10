@@ -8987,8 +8987,11 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   justify-content: space-evenly;
   border: 2px solid #273469;
   border-radius: 20px;
+  width: 650px;
+  padding: 15px 10px;
+  margin: 25px;
 }
-.listeDeSouhait .produit h1, .listeDeSouhait .produit p {
+.listeDeSouhait .produit h1, .listeDeSouhait .produit h3, .listeDeSouhait .produit p {
   margin: 0;
 }
 .listeDeSouhait .produit img {
@@ -9004,6 +9007,15 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 }
 .listeDeSouhait .produit .info h2 {
   margin: 0;
+}
+.listeDeSouhait .ensembleProduits {
+  column-count: 2;
+}
+.listeDeSouhait h1 {
+  margin-top: 30px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  font-size: 48px;
 }
 
 /*# sourceMappingURL=style.css.map */
