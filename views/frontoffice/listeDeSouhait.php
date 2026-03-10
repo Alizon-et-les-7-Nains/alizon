@@ -119,15 +119,15 @@ $wishlist = getWishlist($pdo, $idClient);
                                     ?>
                                     <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>" class="imgProd">
                                 </div>
-                                <div class="info">
+                                <div>
                                     <h1><?= $productDetails['nom'] ?></h1>
                                     <p><?= $productDetails['description'] ?></p>
-                                    <div>
+                                    <div class="info">
                                         <?php 
                                         if($productDetails['stock'] > 0) {
-                                            echo '<h3 class="enStock">En stock</h3>';
+                                            echo '<h2 style="color: green;">En stock</h2>';
                                         } else {
-                                            echo '<h3 class="ruptureStock">Hors stock</h3>';
+                                            echo '<h2 style="color: red;">Hors stock</h2>';
                                         }
                                         ?>
                                         <h3><?= $productDetails['prix'] ?> €</h3>
