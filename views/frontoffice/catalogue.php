@@ -500,15 +500,15 @@ $cart = getCurrentCart($pdo, $idClient);
         <div class="pagination">
             <?php if ($nbPages > 1): ?>
                 <?php if ($page > 1){ ?>
-                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">« Précédent</a>
+                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'false' : 'true' ?>">« Précédent</a>
                 <?php } else { ?>
                     <span class="disabled">« Précédent</span>
                 <?php } ?>
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a <?php if($i == $page) echo 'style="class: active;"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><?= $i ?></a>
+                    <a <?php if($i == $page) echo 'style="class: active;"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'false' : 'true' ?>"><?= $i ?></a>
                 <?php endfor; ?>
                 <?php if ($page < $nbPages) { ?>
-                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">Suivant »</a>
+                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'false' : 'true' ?>">Suivant »</a>
                 <?php } else { ?>
                     <span class="disabled">Suivant »</span>
                 <?php } ?>
@@ -521,6 +521,7 @@ $cart = getCurrentCart($pdo, $idClient);
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
 <script>
+
 // Filtres prix
 const sliderMin = document.getElementById('sliderMin');
 const sliderMax = document.getElementById('sliderMax');
@@ -667,7 +668,6 @@ btnCarte.addEventListener('click', () => {
         }, 100);
     }
     listeArticle.style.marginLeft = carteAffiche.classList.contains('active') ? '0px' : '300px';
-    mapActiveParam = carteAffiche.classList.contains('active');
 });
 
 document.addEventListener('DOMContentLoaded', function() {
