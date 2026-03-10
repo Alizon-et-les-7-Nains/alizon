@@ -11,7 +11,10 @@
         justify-content: space-evenly;
         border: 2px solid #273469;
         border-radius: 20px;
-        h1, p {
+        width: 650px;
+        padding: 15px 10px;
+        margin: 25px;
+        h1, h3, p {
             margin: 0;
         }
         img {
@@ -28,5 +31,15 @@
                 margin: 0;
             }
         }
+    }
+    .ensembleProduits {
+        column-count: 2;
+
+    }
+    h1 .titre {
+        margin-top: 30px;
+        margin-bottom: 0px;
+        margin-right: 10px;
+        font-size: 48px;
     }
 }
