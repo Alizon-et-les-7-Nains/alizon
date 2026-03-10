@@ -1951,6 +1951,16 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-weight: bold;
 }
 
+.erreur {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  background-color: #f7afaf;
+  padding: 20px;
+  margin: 0;
+}
+
 .produitBackOffice a {
   text-decoration: none;
   color: #fffefa;
@@ -8965,6 +8975,35 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 }
 .bodyPopupA2f .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.listeDeSouhait {
+  font-family: "Lora", serif;
+  color: #273469;
+}
+.listeDeSouhait .produit {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border: 2px solid #273469;
+  border-radius: 20px;
+}
+.listeDeSouhait .produit h1, .listeDeSouhait .produit p {
+  margin: 0;
+}
+.listeDeSouhait .produit img {
+  width: 200px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 20px;
+}
+.listeDeSouhait .produit .info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.listeDeSouhait .produit .info h2 {
+  margin: 0;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -9,6 +9,6 @@ $sql = "DELETE FROM _remise WHERE finRemise < NOW()";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 
-$sql = "DELETE FROM _produit WHERE dateReassort < NOW()";
+$sql = "UPDATE _produit SET dateReassort = NULL WHERE dateReassort < NOW()";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();

@@ -1,6 +1,7 @@
 // ===== GESTION DE L'AUTHENTIFICATION À DEUX FACTEURS (A2F) POUR BACKOFFICE =====
 let a2fCurrentSlide = 0;
 let a2fTotalSlides = 4;
+const OTP_DURATION_SECONDS = 30;
 
 function handleA2FToggle(isEnabled) {
   if (isEnabled) {
@@ -207,6 +208,70 @@ function genererQRCodeA2F(overlay) {
 }
 
 function activerA2F() {
+  let activationOtpTimer = null;
+
+  function ensureOtpTimerStyles() {
+    if (document.getElementById("otpTimerStylesBackoffice")) {
+      return;
+    }
+
+    const style = document.createElement("style");
+    style.id = "otpTimerStylesBackoffice";
+    style.textContent = `
+      .big-circle {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 10px 0 15px;
+      }
+
+      .circle {
+        width: 100px;
+        height: 100px;
+        background: conic-gradient(#e4d9ff 360deg, #ffffff 0deg);
+        border-radius: 50%;
+        position: relative;
+        border: #273469 solid 5px;
+        transform: scaleX(-1);
+      }
+
+      .time {
+        font-size: 20px;
+        font-weight: bold;
+        z-index: 10;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        color: #273469;
+        transform: translate(-50%, -50%) scaleX(-1);
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  function getSecondsUntilOtpChange() {
+    const epoch = Math.floor(Date.now() / 1000);
+    const remainder = epoch % OTP_DURATION_SECONDS;
+    return remainder === 0
+      ? OTP_DURATION_SECONDS
+      : OTP_DURATION_SECONDS - remainder;
+  }
+
+  function renderOtpCountdown(container) {
+    const circle = container.querySelector(".circle");
+    const time = container.querySelector(".time");
+    if (!circle || !time) {
+      return;
+    }
+
+    const secondsLeft = getSecondsUntilOtpChange();
+    const degrees = secondsLeft * (360 / OTP_DURATION_SECONDS);
+
+    circle.style.background = `conic-gradient(#e4d9ff ${degrees}deg, #ffffff 0deg)`;
+    time.textContent = `${secondsLeft}s`;
+  }
+
   const codePopup = document.createElement("div");
   codePopup.className = "bodyPopupA2f";
   codePopup.innerHTML = `
@@ -225,6 +290,11 @@ function activerA2F() {
           <input type="text" name="num5" id="num5" maxlength="1" pattern="[0-9]" autocomplete="off">
           <input type="text" name="num6" id="num6" maxlength="1" pattern="[0-9]" autocomplete="off">
         </div>
+        <div class="big-circle">
+          <div class="circle">
+            <div class="time">30s</div>
+          </div>
+        </div>
         <p class="erreur" id="erreurCodeA2FActivation" style="display: none; color: red; margin-top: 15px;"></p>
         <button type="submit">Vérifier</button>
       </form>
@@ -236,6 +306,13 @@ function activerA2F() {
   const form = document.getElementById("formA2FActivation");
   const inputs = form.querySelectorAll('input[type="text"]');
   const erreurElement = document.getElementById("erreurCodeA2FActivation");
+
+  ensureOtpTimerStyles();
+  renderOtpCountdown(codePopup);
+  activationOtpTimer = setInterval(() => {
+    renderOtpCountdown(codePopup);
+  }, 1000);
+  codePopup.dataset.otpTimerId = String(activationOtpTimer);
 
   inputs.forEach((input, index) => {
     if (index === 0) {
@@ -313,6 +390,9 @@ function activerA2F() {
       const data = await response.json();
 
       if (data.success) {
+        if (activationOtpTimer) {
+          clearInterval(activationOtpTimer);
+        }
         codePopup.remove();
         const mainPopup = document.querySelector(".overlayPopUpCompteClient");
         if (mainPopup) {
@@ -338,6 +418,10 @@ function activerA2F() {
 function fermerPopupActivationA2F(element) {
   const popup = element.closest(".bodyPopupA2f");
   if (popup) {
+    const timerId = Number(popup.dataset.otpTimerId);
+    if (!Number.isNaN(timerId) && timerId > 0) {
+      clearInterval(timerId);
+    }
     popup.remove();
   }
 }

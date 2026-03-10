@@ -1,6 +1,16 @@
 @use '../fonts';
 @use '../colors' as *;
 
+.erreur {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: $color-pastel-red;
+    padding: 20px;
+    margin: 0;
+}
+
 .produitBackOffice{
 
     a{
@@ -183,6 +193,8 @@
         display: flex;
         justify-content: space-between;
     }
+
+    
 }
 
 .overlaypopUpPromouvoir{

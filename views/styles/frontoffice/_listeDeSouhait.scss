@@ -1,0 +1,32 @@
+@use "../colors" as *;
+@use "../fonts" as *;
+
+.listeDeSouhait {
+    font-family: "Lora", serif;
+    color: #273469;
+    
+    .produit {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        border: 2px solid #273469;
+        border-radius: 20px;
+        h1, p {
+            margin: 0;
+        }
+        img {
+            width: 200px;
+            object-fit: cover;
+            margin-right: 20px;
+            border-radius: 20px;
+        }
+        .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            h2 {
+                margin: 0;
+            }
+        }
+    }
+}
