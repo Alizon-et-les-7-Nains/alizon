@@ -7591,6 +7591,9 @@ dialog.reassort form input {
   background-color: #fffefa;
 }
 .pageCatalogue #map {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
   margin-right: 2em;
   margin-left: 300px;
   margin-top: 3em;
@@ -7598,15 +7601,9 @@ dialog.reassort form input {
   border: 2px solid #273469;
   border-radius: 4px;
   width: 60%;
-  height: 64vh;
+  height: 100vh;
   display: none;
   background-color: #e4d9ff;
-}
-.pageCatalogue #map {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  align-self: flex-start;
 }
 .pageCatalogue #map.active {
   display: block;

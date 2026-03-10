@@ -6,29 +6,25 @@
     flex-direction: row;
     background-color: $color-white;
 
-    #map{
-        margin-right: 2em;
-        margin-left: 300px;
-        margin-top: 3em;
-        margin-bottom: 4em;
-        border: 2px solid #273469;
-        border-radius: 4px;
-        width: 60%;
-        height: 64vh;
-        display: none;
-        background-color: #e4d9ff;
-    }
+#map {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    margin-right: 2em;
+    margin-left: 300px;
+    margin-top: 3em;
+    margin-bottom: 4em;
+    border: 2px solid #273469;
+    border-radius: 4px;
+    width: 60%;
+    height: 100vh;
+    display: none;
+    background-color: #e4d9ff;
+}
 
-    #map {
-        position: sticky;
-        top: 0;
-        height: 100vh;
-        align-self: flex-start;
-    }
-
-    #map.active {
-        display: block;
-    }
+#map.active {
+    display: block;
+}
 
     .fakePanneauGris{
         width: 240px;
