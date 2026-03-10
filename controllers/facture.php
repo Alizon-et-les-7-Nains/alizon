@@ -135,7 +135,7 @@ ob_start();
 
 <div class="bloc">
     <strong>Facturé à :</strong><br>
-    <?= htmlspecialchars(($data['prenom'] ?? '') . ' ' . ($data['nom'] ?? '')) ?><br>
+    <?= htmlspecialchars(($data['prenom'] ?? 'Anonyme') . ' ' . ($data['nom'] ?? '')) ?><br>
     <?= htmlspecialchars($data['email'] ?? '') ?><br>
     <?= htmlspecialchars($data['adresse'] ?? '') ?><br>
     <?= htmlspecialchars(($data['codePostal'] ?? '') . ' ' . ($data['ville'] ?? '')) ?><br>
