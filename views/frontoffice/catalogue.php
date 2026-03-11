@@ -794,11 +794,11 @@ function loadProduits(page = 1) {
 
             let pagHTML = '';
             if (data.nbPages > 1) {
-                if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
+                if (page > 1) pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page-1}">« Précédent</a>`;
                 for (let i = 1; i <= data.nbPages; i++) {
-                    pagHTML += `<a href="#" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                    pagHTML += `<a href="#" class="pageLink lien-page-numero ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
                 }
-                if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
+                if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page+1}">Suivant »</a>`;
             }
 
             paginationDiv.innerHTML = pagHTML;
