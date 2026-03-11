@@ -101,6 +101,8 @@ function getMonthLabel(month) {
     if (!month) return;
 
     console.log(month);
+    console.log(moment(Object.keys(weeksData)[month], 'MM/YYYY').month());
+    console.log(months[moment(Object.keys(weeksData)[month], 'MM/YYYY').month()])
 
     return `${months[moment(Object.keys(weeksData)[month], 'MM/YYYY').month()]} ${moment(Object.keys(weeksData)[month], 'MM/YYYY').year()}`;
 }
