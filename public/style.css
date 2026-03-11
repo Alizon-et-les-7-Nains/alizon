@@ -7594,7 +7594,7 @@ dialog.reassort form input {
   display: flex;
   flex-direction: row;
   background-color: #fffefa;
-  height: calc(100vh - hauteur_de_ton_header);
+  height: calc(100vh - 205px);
   overflow: hidden;
 }
 .pageCatalogue #map {
