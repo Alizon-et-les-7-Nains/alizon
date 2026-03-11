@@ -748,19 +748,30 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value;
-    const mapEstActive = carteAffiche.classList.contains('active'); // ← une seule fois ici
+    const mapEstActive = carteAffiche.classList.contains('active'); // Get current map state
     let idVendeur = vendeur.value !== "" ? parseInt(vendeur.value) : "";
 
-    fetch(`...&mapActive=${mapEstActive}`)
+    // Build URL with all parameters including mapActive
+    const url = new URL(window.location.href);
+    url.searchParams.set('page', page);
+    url.searchParams.set('search', searchQuery);
+    url.searchParams.set('mapActive', mapEstActive);
+    url.searchParams.set('minPrice', min);
+    url.searchParams.set('maxPrice', max);
+    url.searchParams.set('minNote', notemin);
+    if (catValue) url.searchParams.set('categorie', catValue);
+    if (vendeur.value) url.searchParams.set('vendeur', vendeur.value);
+    if (sortOrder) url.searchParams.set('sortOrder', sortOrder);
+
+    fetch(url.pathname + url.search)
         .then(res => res.json())
         .then(data => {
             listeArticle.innerHTML = data.html;
             currentPage = page;
             resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
 
-            // ← plus de "const mapEstActive" ici, on réutilise celle du dessus
-            const newUrl = `?page=${page}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`;
-            history.pushState(null, '', newUrl);
+            // Update URL with current state
+            history.pushState(null, '', url.toString());
 
             if (data.idVendeurs) {
                 listeIdVendeurs = data.idVendeurs;
@@ -771,14 +782,21 @@ function loadProduits(page = 1) {
                 setTimeout(() => map.invalidateSize(), 100);
             }
 
+            // Generate pagination with current map state
             let pagHTML = '';
             if (data.nbPages > 1) {
-                // ← plus de "const mapEstActive" ici non plus
-                if (page > 1) pagHTML += `<a href="?page=${page-1}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink" data-page="${page-1}">« Précédent</a>`;
-                for (let i = 1; i <= data.nbPages; i++) {
-                    pagHTML += `<a href="?page=${i}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                if (page > 1) {
+                    url.searchParams.set('page', page-1);
+                    pagHTML += `<a href="${url.toString()}" class="pageLink" data-page="${page-1}">« Précédent</a>`;
                 }
-                if (page < data.nbPages) pagHTML += `<a href="?page=${page+1}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink" data-page="${page+1}">Suivant »</a>`;
+                for (let i = 1; i <= data.nbPages; i++) {
+                    url.searchParams.set('page', i);
+                    pagHTML += `<a href="${url.toString()}" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                }
+                if (page < data.nbPages) {
+                    url.searchParams.set('page', page+1);
+                    pagHTML += `<a href="${url.toString()}" class="pageLink" data-page="${page+1}">Suivant »</a>`;
+                }
             }
 
             paginationDiv.innerHTML = pagHTML;
