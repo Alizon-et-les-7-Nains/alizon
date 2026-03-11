@@ -115,6 +115,7 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
 
         if (empty($idAdresseFacturation)) {
+            // Si pas d'adresse de facturation spécifiée, essayer de récupérer l'adresse par défaut du client
             $stmtAdresseClient = $pdo->prepare("
                     SELECT idAdresse 
                     FROM _client 
@@ -123,10 +124,12 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             $stmtAdresseClient->execute([$idClient]);
             $clientAdresse = $stmtAdresseClient->fetch(PDO::FETCH_ASSOC);
 
-            if (!$clientAdresse || !$clientAdresse['idAdresse']) {
-                throw new Exception("Aucune adresse de facturation trouvée pour ce client.");
+            if ($clientAdresse && $clientAdresse['idAdresse']) {
+                $idAdresseFacturation = intval($clientAdresse['idAdresse']);
+            } else {
+                // Si pas d'adresse par défaut du client, utiliser l'adresse de livraison
+                $idAdresseFacturation = $idAdresseLivraison;
             }
-            $idAdresseFacturation = intval($clientAdresse['idAdresse']);
         } else {
             $idAdresseFacturation = intval($idAdresseFacturation);
             $checkFact = $pdo->prepare("SELECT idAdresse FROM _adresseClient WHERE idAdresse = ?");
@@ -140,10 +143,12 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
                 $stmtAdresseClient->execute([$idClient]);
                 $clientAdresse = $stmtAdresseClient->fetch(PDO::FETCH_ASSOC);
 
-                if (!$clientAdresse || !$clientAdresse['idAdresse']) {
-                    throw new Exception("Aucune adresse de facturation valide trouvée.");
+                if ($clientAdresse && $clientAdresse['idAdresse']) {
+                    $idAdresseFacturation = intval($clientAdresse['idAdresse']);
+                } else {
+                    // Si pas d'adresse valide trouvée, utiliser l'adresse de livraison
+                    $idAdresseFacturation = $idAdresseLivraison;
                 }
-                $idAdresseFacturation = intval($clientAdresse['idAdresse']);
             }
         }
 

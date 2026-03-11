@@ -124,26 +124,6 @@ $client = $stmt->fetch(PDO::FETCH_ASSOC);
 $idAdresse = $client['idAdresse'] ?? null;
 $otp_enabled = $client['otp_enabled'] ?? 0;
 
-// Si il n'a pas d'adresse on lui en créer une à null 
-if (!$idAdresse) {
-    $pdo->prepare("
-        INSERT INTO saedb._adresseClient 
-        (adresse, region, codePostal, ville, pays, complementAdresse)
-        VALUES (NULL, NULL, NULL, NULL, NULL, NULL)
-    ")->execute();
-
-    $idAdresse = $pdo->lastInsertId();
-
-    $pdo->prepare("
-        UPDATE saedb._client 
-        SET idAdresse = :idAdresse 
-        WHERE idClient = :idClient
-    ")->execute([
-        ":idAdresse" => $idAdresse,
-        ":idClient"  => $id_client
-    ]);
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // on récupère toutes les infos du formulaire
     $pseudo        = $_POST['pseudo'];

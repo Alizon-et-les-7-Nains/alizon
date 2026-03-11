@@ -1,7 +1,9 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include "pdo.php";
 include "prix.php";
-session_start();
 
 $produitsParPage = 15;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;

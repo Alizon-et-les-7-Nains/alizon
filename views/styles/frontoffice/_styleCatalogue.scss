@@ -24,7 +24,7 @@
         border: 2px solid #273469;
         border-radius: 4px;
         width: 60%;
-        height: 65vh;     // ← un peu moins que 100vh pour les marges
+        height: 65vh;
         display: none;
         background-color: #e4d9ff;
     }
@@ -84,7 +84,7 @@
         overflow-x: hidden;
         min-height: 0;
         overflow-y: scroll;
-        height: 100vh;
+        height: 100%;
     }
 
     .product-list{
