@@ -49,10 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         // Hachage du mot de passe avec password_hash
         $mdp_hash = password_hash($mdp_clair, PASSWORD_DEFAULT);
-        
-        // Convertir la date au format MySQL
-        $date_mysql = DateTime::createFromFormat('d/m/Y', $birthdate)->format('Y-m-d');
-        
+                
         try {
             // Insertion dans la base de données
             $sql_insert = "INSERT INTO _client (pseudo, nom, prenom, dateNaissance, noTelephone, email, mdp) 
