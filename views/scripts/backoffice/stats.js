@@ -8,6 +8,7 @@ const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'
 
 const daysData = {};
 const weeksData = {};
+const monthsData = {};
 const yearsData = {};
 
 let selected = document.querySelector('.selected');
@@ -60,6 +61,23 @@ for (const d of data) {
     weeksData[mont][nWeek].vente += parseInt(d.quantite);
     weeksData[mont][nWeek].argent += parseFloat(d.prixProduitHt) * parseInt(d.quantite);
     weeksData[mont][nWeek].argent = Math.round(weeksData[mont][nWeek].argent * 100) / 100;
+
+    // Split by months
+    const yea = moment(d.dataCommande).year();
+    const mo = months[moment(d.dateCommande).month()];
+    if (!monthsData[yea]) {
+        monthsData[yea] = {};
+        for (let mon = 0; mon < 12; mon++) {
+            monthsData[yea][months[mon]] = {
+                vente: 0,
+                argent: 0
+            }
+        }
+    }
+
+    monthsData[yea][mo].vente += parseInt(d.quantite);
+    monthsData[yea][mo].argent += parseFloat(d.prixProduitHt) * parseInt(d.quantite);
+    monthsData[yea][mo].argent = Math.round(monthsData[yea][mo].argent * 100) / 100;
 
     // Split by year
     const year = moment(d.dateCommande).year();
