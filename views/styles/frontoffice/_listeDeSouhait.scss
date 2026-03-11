@@ -15,6 +15,7 @@
         padding: 15px 10px;
         margin: 25px;
         height: 170px;
+        overflow: auto;
         h1, h3, p {
             margin: 0;
         }
@@ -33,11 +34,7 @@
             }
         }
     }
-    .ensembleProduits {
-        column-count: 2;
-
-    }
-    .titre {
+    main .titre {
         margin-top: 30px;
         margin-bottom: 0px;
         margin-right: 10px;
