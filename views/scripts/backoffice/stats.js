@@ -82,8 +82,6 @@ for (const d in Object.values(daysData)[week]) {
     argent.push(Object.values(daysData)[week][d].argent);
 }
 
-max = Object.keys(daysData).length - 1;
-
 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
 let total = argent.reduce((a, b) => a + b, 0);
 let formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
@@ -99,12 +97,12 @@ function getWeekLabel(week) {
     return `Semaine du ${moment().isoWeek(week.split('/')[0]).startOf('isoWeek').format('DD/MM')} au ${moment().isoWeek(week.split('/')[0]).startOf('isoWeek').add(6, 'days').format('DD/MM')}`;
 }
 
-document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
-
-function updateButtonStates() {
-    document.getElementById('prev').disabled = index === 0;
-    document.getElementById('next').disabled = index === max;
+function getMonthLabel(month) {
+    if (!month) return;
+    return `${months[moment(Object.keys(weeksData)[month], 'MM/YYYY').month()]} ${moment(Object.keys(weeksData)[month], 'MM/YYYY').year()}`;
 }
+
+document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
 
 function updateStats() {
     chart.destroy();
@@ -122,12 +120,30 @@ function updateStats() {
 
             chart = new Chart(canva, dayChart(vente, argent));
             break;
+        
+        case 'Hebdomadaire':
+            const month = Object.keys(weeksData).length - 1 - index;
+            for (const w in Object.values(weeksData)[month]) {
+                vente.push(Object.values(weeksData)[month][w].vente);
+                argent.push(Object.values(weeksData)[month][w].argent);
+            }
+
+            document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
+
+            break;
     }
 
     document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
     total = argent.reduce((a, b) => a + b, 0);
     formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
     document.getElementById('argents').innerHTML = formatted;
+}
+
+maxIndex = Object.keys(daysData).length - 1;
+
+function updateButtonStates() {
+    document.getElementById('next').disabled = index === 0;
+    document.getElementById('prev').disabled = index === maxIndex;
 }
 
 document.getElementById('prev').addEventListener('click', () => {
@@ -164,10 +180,12 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
 
                 chart = new Chart(canva, dayChart(vente, argent));
 
-                document.getElementById('prev').disabled = index == Object.keys(daysData).length - 1;
-                document.getElementById('next').disabled = true;
-
                 document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
+
+                maxIndex = Object.keys(daysData).length - 1;
+
+                document.getElementById('prev').disabled = index == maxIndex;
+                document.getElementById('next').disabled = true;
 
                 break;
 
@@ -179,13 +197,13 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 }
 
                 chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[Object.keys(weeksData).length - 1]]) ?? ''));
-
-                document.getElementById('prev').disabled = !(index == Object.keys(daysData).length - 1);
-                document.getElementById('next').disabled = true;
-
-                const currentKey = Object.keys(weeksData)[month];
                 
-                document.querySelector('article h3').innerHTML = `${months[moment(currentKey, 'MM/YYYY').month()]} ${moment(currentKey, 'MM/YYYY').year()}`;
+                document.querySelector('article h3').innerHTML = getMonthLabel(month);
+
+                maxIndex = Object.keys(weeksData).length - 1;
+
+                document.getElementById('prev').disabled = index == maxIndex;
+                document.getElementById('next').disabled = true;
 
                 break;
             
@@ -209,6 +227,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 document.getElementById('next').disabled = true;
 
                 document.querySelector('article h3').innerHTML = '';
+
+                maxIndex = 0;
 
                 break;
         }
