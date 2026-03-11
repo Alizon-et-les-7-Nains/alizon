@@ -12,8 +12,18 @@ try{
         ':idClient' => $id_client
     ]);
 
-    // Supprimer les données qui ne serviront plus (ex: notification, photo de profil...)
+    // Supprimer / anonymiser les données qui ne serviront plus (ex: notification, photo de profil, adresses...)
     $stmt = $pdo->prepare("DELETE FROM _notification WHERE idClient = :idClient");
+    $stmt->execute([
+        ':idClient' => $id_client
+    ]);
+
+    $stmt = $pdo->prepare("DELETE FROM _adresseLivraison WHERE idClient = :idClient");
+    $stmt->execute([
+        ':idClient' => $id_client
+    ]);
+
+    $stmt = $pdo->prepare("UPDATE _adresseClient SET adresse = NULL, region = NULL, codePostal = NULL, ville = NULL, pays = NULL, complementAdresse = NULL WHERE idClient = :idClient");
     $stmt->execute([
         ':idClient' => $id_client
     ]);
