@@ -750,7 +750,7 @@ function loadProduits(page = 1) {
     const mapEstActive = carteAffiche.classList.contains('active');
     let idVendeur = vendeur.value !== "" ? parseInt(vendeur.value) : "";
 
-    fetch(`../../controllers/produit-ajax.php?page=${page}&search=${encodeURIComponent(searchQuery)}&minPrice=${min}&maxPrice=${max}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${encodeURIComponent(catValue)}&vendeur=${idVendeur}&mapActive=${mapEstActive}`)
+    fetch(`../../controllers/filtrerProduits.php?page=${page}&search=${encodeURIComponent(searchQuery)}&minPrice=${min}&maxPrice=${max}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${encodeURIComponent(catValue)}&vendeur=${idVendeur}&mapActive=${mapEstActive}`)
         .then(res => res.json())
         .then(data => {
             listeArticle.innerHTML = data.html;

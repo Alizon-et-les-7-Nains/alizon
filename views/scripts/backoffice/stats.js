@@ -30,7 +30,7 @@ for (const d of data) {
             5: { vente: 0, argent: 0 },
             6: { vente: 0, argent: 0 },
             7: { vente: 0, argent: 0 },
-        };
+        }
     }
 
     daysData[week][day].vente += parseInt(d.quantite);
@@ -93,17 +93,19 @@ for (const d of data) {
     yearsData[year].argent = Math.round(yearsData[year].argent * 100) / 100;
 }
 
+console.log(monthsData)
+
 const sortedDaysKeys = Object.keys(daysData).sort((a, b) => {
     const [wa, ya] = a.split('/');
     const [wb, yb] = b.split('/');
     return ya !== yb ? ya - yb : wa - wb;
-});
+})
 
 const sortedWeeksKeys = Object.keys(weeksData).sort((a, b) => {
     const [ma, ya] = a.split('/');
     const [mb, yb] = b.split('/');
     return ya !== yb ? ya - yb : ma - mb;
-});
+})
 
 let [vente, argent] = [[], []];
 let week = sortedDaysKeys.length - 1;
@@ -130,11 +132,6 @@ function getWeekLabel(weekKey) {
 
 function getMonthLabel(month) {
     if (isNaN(month)) return;
-
-    console.log(month);
-    console.log(moment(sortedWeeksKeys[month], 'MM/YYYY').month());
-    console.log(months[moment(sortedWeeksKeys[month], 'MM/YYYY').month()])
-
     return `${months[moment(sortedWeeksKeys[month], 'MM/YYYY').month()]} ${moment(sortedWeeksKeys[month], 'MM/YYYY').year()}`;
 }
 
@@ -178,6 +175,10 @@ function updateStats() {
             }
 
             maxIndex = Object.keys(daysData).length - 1;
+
+
+            console.log('year : ' + year);
+            console.log('maxindex : ' + maxIndex);
 
             chart = new Chart(canva, monthChart(vente, argent));
     
