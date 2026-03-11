@@ -132,11 +132,6 @@ function getWeekLabel(weekKey) {
 
 function getMonthLabel(month) {
     if (isNaN(month)) return;
-
-    console.log(month);
-    console.log(moment(sortedWeeksKeys[month], 'MM/YYYY').month());
-    console.log(months[moment(sortedWeeksKeys[month], 'MM/YYYY').month()])
-
     return `${months[moment(sortedWeeksKeys[month], 'MM/YYYY').month()]} ${moment(sortedWeeksKeys[month], 'MM/YYYY').year()}`;
 }
 
@@ -181,8 +176,9 @@ function updateStats() {
 
             maxIndex = Object.keys(daysData).length - 1;
 
-            console.log(year);
-            console.log(maxIndex);
+
+            console.log('year : ' + year);
+            console.log('maxindex : ' + maxIndex);
 
             chart = new Chart(canva, monthChart(vente, argent));
     
@@ -275,8 +271,6 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 document.querySelector('article h3').innerHTML = Object.keys(monthsData)[year];
 
                 maxIndex = Object.keys(monthsData).length - 1;
-
-                console.log(maxIndex);
 
                 document.getElementById('prev').disabled = index == maxIndex;
                 document.getElementById('next').disabled = true;

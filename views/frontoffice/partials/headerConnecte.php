@@ -52,6 +52,7 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
         <div id="triangle-codeHeader"></div>
         <a href="../frontoffice/compteClient.php">Mon compte</a>
         <a href="../frontoffice/commandes.php">Mes commandes</a>
+        <a href="../frontoffice/listeDeSouhait.php">Liste de souhaits</a>
         <a href="../frontoffice/notifications.php">Mes notifications</a>
         <a href="../frontoffice/mesAvis.php">Mes commentaires</a>
         <a href="../frontoffice/legalesConnecte.php" class="separation">Mentions légales</a>

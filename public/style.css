@@ -8995,24 +8995,26 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
+.btnCoeur {
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .listeDeSouhait {
   font-family: "Lora", serif;
   color: #273469;
 }
 .listeDeSouhait main {
   padding: 10px 40px;
+  min-height: 64vh;
 }
 .listeDeSouhait .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: fit-content;
-}
-.listeDeSouhait .btnCoeur {
-  height: 40px;
-  background: none;
-  border: none;
-  cursor: pointer;
 }
 .listeDeSouhait .produit {
   display: flex;
