@@ -149,10 +149,12 @@ ob_start();
         <th class="right">Prix HT</th>
         <th class="right">TVA</th>  
         <th class="right">Total HT</th>
+        <th class="right">Total TTC</th>
     </tr>
 
     <?php foreach ($prodVend as $prod): 
         $totalLigneHT = $prod['prix'] * $prod['quantite'];
+        $totalLigneTTC = $data['montantCommandeTTC'] * $prod['quantite'];
         $montantTVA = $totalLigneHT * ($prod['pourcentageTva'] / 100);
     ?>
     <tr>
@@ -162,6 +164,7 @@ ob_start();
         <td class="right"><?= number_format($prod['prix'], 2, ',', ' ') ?> €</td>
         <td class="right"><?= $prod['pourcentageTva'] ?> %</td>
         <td class="right"><?= number_format($totalLigneHT, 2, ',', ' ') ?> €</td>
+        <td class="right"><?= number_format($totalLigneTTC, 2, ',', ' ') ?> €</td>
     </tr>
     <?php endforeach; ?>
 </table>
