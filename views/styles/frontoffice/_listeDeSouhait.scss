@@ -14,6 +14,7 @@
         width: 650px;
         padding: 15px 10px;
         margin: 25px;
+        height: 170px;
         h1, h3, p {
             margin: 0;
         }
@@ -36,10 +37,16 @@
         column-count: 2;
 
     }
-    h1 .titre {
+    .titre {
         margin-top: 30px;
         margin-bottom: 0px;
         margin-right: 10px;
         font-size: 48px;
+    }
+    .descProd {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 150px;
     }
 }
