@@ -6,7 +6,7 @@ session_start();
 $userId = $_SESSION['user_id'] ?? null;
 
 if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
-    updateWishlist($pdo, $idClient, intval($_POST['idProduit']));
+    updateWishlist($pdo, $userId, intval($_POST['idProduit']));
     // Redirection pour éviter la re-soumission du formulaire au refresh
     header('Location: ' . $_SERVER['PHP_SELF']);
     exit;
@@ -19,61 +19,61 @@ if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
 // Fonction pour récupérer le contenu de la liste de souhait d'un client
 
 // Vérifier si le produit est dans la wishlist
-function isInWishlist($pdo, $idClient, $idProduit) {
+function isInWishlist($pdo, $userId, $idProduit) {
     $stmt = $pdo->prepare("SELECT 1 FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
-    $stmt->execute([intval($idClient), intval($idProduit)]);
+    $stmt->execute([intval($userId), intval($idProduit)]);
     return $stmt->fetchColumn() !== false;
 }
 
 // Traitement du toggle wishlist
 if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
     $idProduitToggle = intval($_POST['idProduit']);
-    $inWishlist = isInWishlist($pdo, $idClient, $idProduitToggle);
+    $inWishlist = isInWishlist($pdo, $userId, $idProduitToggle);
 
     if ($inWishlist) {
         $stmt = $pdo->prepare("DELETE FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
-        $stmt->execute([intval($idClient), $idProduitToggle]);
+        $stmt->execute([intval($userId), $idProduitToggle]);
     } else {
         $stmt = $pdo->prepare("INSERT INTO _listeDeSouhait (idClient, idProduit, dateAjout) VALUES (?, ?, ?)");
-        $stmt->execute([intval($idClient), $idProduitToggle, date('Y-m-d H:i:s')]);
+        $stmt->execute([intval($userId), $idProduitToggle, date('Y-m-d H:i:s')]);
     }
 
     header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $idProduitToggle);
     exit;
 }
-function getWishlist($pdo, $idClient) {
+function getWishlist($pdo, $userId) {
     $stmt = $pdo->prepare("SELECT * FROM _listeDeSouhait WHERE idClient = ? ORDER BY dateAjout DESC");
-    $stmt->execute([intval($idClient)]);
+    $stmt->execute([intval($userId)]);
     $wishlist = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
     
     return $wishlist;
 }
 
 // Fonction pour rechercher un produit dans la liste de souhait d'un client
-function getWishlistProduct($pdo, $idClient, $idProduit) {
+function getWishlistProduct($pdo, $userId, $idProduit) {
     $stmt = $pdo->prepare("SELECT * FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
-    $stmt->execute([intval($idClient), intval($idProduit)]);
+    $stmt->execute([intval($userId), intval($idProduit)]);
     $wishlist = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
     
     return $wishlist !== false;
 }
 
 // Fonction pour modifier la liste de souhait
-function updateWishlist($pdo, $idClient, $idProduit) {
+function updateWishlist($pdo, $userId, $idProduit) {
 
-    $res = getWishlistProduct($pdo, $idClient, $idProduit);
+    $res = getWishlistProduct($pdo, $userId, $idProduit);
 
     if ($res) {
         try {
             $stmt = $pdo->prepare("DELETE FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
-            $stmt->execute([intval($idClient), intval($idProduit)]);
+            $stmt->execute([intval($userId), intval($idProduit)]);
         } catch(Exception $e) {
             error_log($e);
         }
     } else {
         try {
             $stmt = $pdo->prepare("INSERT INTO _listeDeSouhait(idClient, idProduit, dateAjout) VALUES (?, ?, ?)");
-            $stmt->execute([intval($idClient), intval($idProduit), date('Y-m-d H:i:s')]);
+            $stmt->execute([intval($userId), intval($idProduit), date('Y-m-d H:i:s')]);
         } catch(Exception $e) {
             error_log($e);
         }
@@ -96,15 +96,15 @@ function getProductDetails($pdo, $idProduit) {
 // ============================================================================
 
 // recuperation panier courent
-$wishlist = getWishlist($pdo, $idClient);
+$wishlist = getWishlist($pdo, $userId);
 
 // Fonction pour récupérer le vote d'un utilisateur sur un avis spécifique
-function getVoteUtilisateur($idProduit, $idClientAvis) {
+function getVoteUtilisateur($idProduit, $userIdAvis) {
     if (!isset($_SESSION['user_id'])) {
         return null;
     }
     
-    $keyVote = "vote_{$idProduit}_{$idClientAvis}";
+    $keyVote = "vote_{$idProduit}_{$userIdAvis}";
     return $_SESSION[$keyVote] ?? null;
 }
 
@@ -126,13 +126,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         exit;
     }
     
-    $idClientVotant = $_SESSION['user_id'];
+    $userIdVotant = $_SESSION['user_id'];
     $idProduit = intval($_POST['idProduit']);
-    $idClientAvis = intval($_POST['idClientAvis']);
+    $userIdAvis = intval($_POST['idClientAvis']);
     $typeVote = $_POST['type'];
     
     // Empêcher un utilisateur de voter pour son propre avis
-    if ($idClientVotant === $idClientAvis) {
+    if ($userIdVotant === $userIdAvis) {
         http_response_code(403);
         exit;
     }
@@ -140,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     try {
         $pdo->beginTransaction();
         
-        $keyVote = "vote_{$idProduit}_{$idClientAvis}";
+        $keyVote = "vote_{$idProduit}_{$userIdAvis}";
         $votePrecedent = $_SESSION[$keyVote] ?? null;
         
         // Si l'utilisateur clique sur le même vote, on l'annule
@@ -151,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
             }
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$idProduit, $idClientAvis]);
+            $stmt->execute([$idProduit, $userIdAvis]);
             
             unset($_SESSION[$keyVote]);
             
@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     $sql = "UPDATE _avis SET negatifs = GREATEST(0, negatifs - 1) WHERE idProduit = ? AND idClient = ?";
                 }
                 $stmt = $pdo->prepare($sql);
-                $stmt->execute([$idProduit, $idClientAvis]);
+                $stmt->execute([$idProduit, $userIdAvis]);
             }
             
             // Ajouter le nouveau vote
@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 $sql = "UPDATE _avis SET negatifs = negatifs + 1 WHERE idProduit = ? AND idClient = ?";
             }
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$idProduit, $idClientAvis]);
+            $stmt->execute([$idProduit, $userIdAvis]);
             
             $_SESSION[$keyVote] = $typeVote;
         }
@@ -226,12 +226,12 @@ $result->execute([$productId]);
 $produit = $result->fetch(PDO::FETCH_ASSOC);
 
 // Récupération de l'adresse du client connecté
-$idClient = $_SESSION['user_id'] ?? 0;
+$userId = $_SESSION['user_id'] ?? 0;
 $sqlAdresse = "SELECT * 
                FROM _adresseClient 
                WHERE idAdresse = (SELECT idAdresse FROM _client WHERE idClient = ?)";
 $stmtAdresse = $pdo->prepare($sqlAdresse);
-$stmtAdresse->execute([$idClient]);
+$stmtAdresse->execute([$userId]);
 $adresse = $stmtAdresse->fetch(PDO::FETCH_ASSOC);
 
 if (!$produit) {
@@ -253,25 +253,25 @@ $images = $resultImages->fetchAll(PDO::FETCH_ASSOC);
 // ============================================================================
 
 // Fonction pour ajouter ou modifier la quantité d'un produit dans le panier
-function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
+function updateQuantityInDatabase($pdo, $userId, $idProduit, $delta) {
     $idProduit = intval($idProduit);
-    $idClient = intval($idClient);
+    $userId = intval($userId);
     $delta = intval($delta);
     
-    if ($idClient <= 0 || $idProduit <= 0 || $delta <= 0) {
+    if ($userId <= 0 || $idProduit <= 0 || $delta <= 0) {
         return false;
     }
     
     try {        
         // Récupérer le panier actuel du client
         $stmtPanier = $pdo->prepare("SELECT idPanier FROM _panier WHERE idClient = ? ORDER BY idPanier DESC LIMIT 1");
-        $stmtPanier->execute([$idClient]);
+        $stmtPanier->execute([$userId]);
         $panier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
         
         // Créer un nouveau panier si nécessaire
         if (!$panier) {            
             $stmtCreate = $pdo->prepare("INSERT INTO _panier (idClient) VALUES (?)");
-            $stmtCreate->execute([$idClient]);
+            $stmtCreate->execute([$userId]);
             $idPanier = $pdo->lastInsertId();
         } else {
             $idPanier = $panier['idPanier'];
@@ -374,13 +374,13 @@ $promotion = calculerPromotion($produit);
 
 // Récupération de la quantité déjà présente dans le panier pour ce produit
 $quantiteActuellePanier = 0;
-if ($idClient > 0) {
+if ($userId > 0) {
     $sqlProduitAuPanier = "SELECT pap.quantiteProduit as qty 
                            FROM _produitAuPanier pap 
                            JOIN _panier p ON pap.idPanier = p.idPanier
                            WHERE p.idClient = ? AND pap.idProduit = ?";
     $stmtPanier = $pdo->prepare($sqlProduitAuPanier);
-    $stmtPanier->execute([$idClient, $productId]);
+    $stmtPanier->execute([$userId, $productId]);
     $produitAuPanier = $stmtPanier->fetch(PDO::FETCH_ASSOC);
     $quantiteActuellePanier = $produitAuPanier ? intval($produitAuPanier['qty']) : 0;
 }
@@ -394,7 +394,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $idProduit = intval($_POST['idProduit']);
     $quantite = intval($_POST['quantite']);
     
-    $idClient = $_SESSION['user_id'];
+    $userId = $_SESSION['user_id'];
     
     // Vérifier la quantité disponible en tenant compte du panier actuel
     $sqlVerifStock = "SELECT p.stock, COALESCE(pap.quantiteProduit, 0) as qtyPanier
@@ -403,14 +403,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                       LEFT JOIN _produitAuPanier pap ON pap.idPanier = pan.idPanier AND pap.idProduit = p.idProduit
                       WHERE p.idProduit = ?";
     $stmtVerif = $pdo->prepare($sqlVerifStock);
-    $stmtVerif->execute([$idClient, $idProduit]);
+    $stmtVerif->execute([$userId, $idProduit]);
     $verif = $stmtVerif->fetch(PDO::FETCH_ASSOC);
     
     if ($verif && ($verif['qtyPanier'] + $quantite) > $verif['stock']) {
         $_SESSION['message_panier'] = "Stock insuffisant. Vous avez déjà " . $verif['qtyPanier'] . " article(s) dans votre panier.";
     } else {
         try{
-            $success = updateQuantityInDatabase($pdo, $idClient, $idProduit, $quantite);
+            $success = updateQuantityInDatabase($pdo, $userId, $idProduit, $quantite);
             if ($success) {
                 $_SESSION['message_panier'] = "Produit ajouté au panier avec succès!";
             } else {
@@ -547,7 +547,7 @@ if (isset($_SESSION['message_panier'])) {
         </div>
         <div class="ligneActions">
             <?php 
-            $dejaEnWishlist = isInWishlist($pdo, $idClient, $productId);
+            $dejaEnWishlist = isInWishlist($pdo, $userId, $productId);
             ?>
             <form method="POST" action="">
                 <input type="hidden" name="idProduit" value="<?= $productId ?>">
