@@ -13,6 +13,7 @@ const yearsData = {};
 let selected = document.querySelector('.selected');
 
 let index = 0;
+let maxIndex = 0;
 
 for (const d of data) {
     // Split by day
@@ -81,6 +82,8 @@ for (const d in Object.values(daysData)[week]) {
     argent.push(Object.values(daysData)[week][d].argent);
 }
 
+max = Object.keys(daysData).length - 1;
+
 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
 let total = argent.reduce((a, b) => a + b, 0);
 let formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
@@ -98,31 +101,10 @@ function getWeekLabel(week) {
 
 document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
 
-document.getElementById('prev').addEventListener('click', () => {
-    index++;
-    updateStats();
-
-    if (index == 0) {
-        document.getElementById('next').disabled = true;
-        document.getElementById('prev').disabled = false;
-    } else if (index == Object.keys(daysData).length - 1) {
-        document.getElementById('next').disabled = false;
-        document.getElementById('prev').disabled = true;
-    }
-})
-
-document.getElementById('next').addEventListener('click', () => {
-    index--;
-    updateStats();
-
-    if (index == 0) {
-        document.getElementById('next').disabled = true;
-        document.getElementById('prev').disabled = false;
-    } else if (index == Object.keys(daysData).length - 1) {
-        document.getElementById('next').disabled = false;
-        document.getElementById('prev').disabled = true;
-    }
-})
+function updateButtonStates() {
+    document.getElementById('prev').disabled = index === 0;
+    document.getElementById('next').disabled = index === max;
+}
 
 function updateStats() {
     chart.destroy();
@@ -147,6 +129,18 @@ function updateStats() {
     formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
     document.getElementById('argents').innerHTML = formatted;
 }
+
+document.getElementById('prev').addEventListener('click', () => {
+    index++;
+    updateStats();
+    updateButtonStates();
+})
+
+document.getElementById('next').addEventListener('click', () => {
+    index--;
+    updateStats();
+    updateButtonStates();
+})
 
 document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
     btn.addEventListener('click', () => {
