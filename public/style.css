@@ -9024,7 +9024,7 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   padding: 15px 10px;
   margin: 25px;
   height: 170px;
-  overflow: auto;
+  overflow: hidden;
 }
 .listeDeSouhait .produit h1, .listeDeSouhait .produit h3, .listeDeSouhait .produit p {
   margin: 0;
