@@ -71,6 +71,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Récupérer l'ID du nouveau client
             $id_client = $pdo->lastInsertId();
             
+            // Créer une adresse par défaut (NULL) pour le client
+            $sql_address = "INSERT INTO _adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) 
+                           VALUES (NULL, NULL, NULL, NULL, NULL, NULL)";
+            $stmt_address = $pdo->prepare($sql_address);
+            $stmt_address->execute();
+            $id_address = $pdo->lastInsertId();
+            
+            // Associer l'adresse au client
+            $sql_update = "UPDATE _client SET idAdresse = ? WHERE idClient = ?";
+            $stmt_update = $pdo->prepare($sql_update);
+            $stmt_update->execute([$id_address, $id_client]);
+            
             // Connecter automatiquement l'utilisateur
             $_SESSION['user_id'] = $id_client;
             $_SESSION['user_email'] = $email;
