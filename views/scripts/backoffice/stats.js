@@ -93,8 +93,6 @@ for (const d of data) {
     yearsData[year].argent = Math.round(yearsData[year].argent * 100) / 100;
 }
 
-console.log(monthsData)
-
 const sortedDaysKeys = Object.keys(daysData).sort((a, b) => {
     const [wa, ya] = a.split('/');
     const [wb, yb] = b.split('/');
@@ -176,9 +174,7 @@ function updateStats() {
 
             maxIndex = Object.keys(monthsData).length - 1;
 
-
-            console.log('year : ' + year);
-            console.log('maxindex : ' + maxIndex);
+            document.querySelector('article h3').innerHTML = Object.keys(monthsData)[year];
 
             chart = new Chart(canva, monthChart(vente, argent));
     
