@@ -176,6 +176,7 @@ function updateStats() {
 
             maxIndex = Object.keys(monthsData).length - 1;
 
+            document.querySelector('article h3').innerHTML = Object.keys(monthsData)[year];
 
             console.log('year : ' + year);
             console.log('maxindex : ' + maxIndex);
