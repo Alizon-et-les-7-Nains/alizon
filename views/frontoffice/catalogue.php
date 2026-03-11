@@ -733,22 +733,21 @@ function reattacherAjouterPanier() {
     });
 }
 
-function pagination() {
-    document.querySelectorAll('.pageLink').forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            const newPage = parseInt(link.dataset.page);
-            loadProduits(newPage);
-        });
+document.querySelectorAll('.pagination a').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        const url = new URL(link.href);
+        const newPage = parseInt(url.searchParams.get('page')) || 1;
+        loadProduits(newPage);
     });
-}
+});
 
 function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value;
-    const mapEstActive = carteAffiche.classList.contains('active'); // ✅ déjà là
+    const mapEstActive = carteAffiche.classList.contains('active');
     let idVendeur = vendeur.value !== "" ? parseInt(vendeur.value) : "";
 
     fetch(`../../controllers/produit-ajax.php?page=${page}&search=${encodeURIComponent(searchQuery)}&minPrice=${min}&maxPrice=${max}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${encodeURIComponent(catValue)}&vendeur=${idVendeur}&mapActive=${mapEstActive}`)
