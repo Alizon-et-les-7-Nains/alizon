@@ -402,10 +402,9 @@
         background-color: $color-blue;
         color: $color-white;
         border: 2px solid #000000;
-        border-radius: 50%;
+        border-radius: 4px;
         text-decoration: none;
         font-size: 26px;
-        font-family: $font-berkshire;
     }
 
     .pagination span.disabled {

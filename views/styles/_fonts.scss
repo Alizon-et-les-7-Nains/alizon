@@ -28,4 +28,9 @@ $font-open-sans: "open-sans", sans-serif;
 @font-face {
   font-family: "open-sans-bold-italic";
   src: url(../../public/fonts/open-sans/static/OpenSans-BoldItalic.ttf);
+
+@font-face {
+  font-family: "roboto";
+  src: url(../../public/fonts/Roboto/static/Roboto-Regular.ttf);
+}
 }
