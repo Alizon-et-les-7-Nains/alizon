@@ -177,8 +177,8 @@ function updateStats() {
             maxIndex = Object.keys(daysData).length - 1;
 
 
-            console.log(year);
-            console.log(maxIndex);
+            console.log('year : ' + year);
+            console.log('maxindex : ' + maxIndex);
 
             chart = new Chart(canva, monthChart(vente, argent));
     
