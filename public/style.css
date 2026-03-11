@@ -7931,8 +7931,7 @@ dialog.reassort form input {
   align-items: center;
   gap: 15px;
   padding: 1em;
-  width: fit-content;
-  margin-left: 30%;
+  width: 100%;
 }
 .pageCatalogue .lien-page-numero {
   display: flex;
