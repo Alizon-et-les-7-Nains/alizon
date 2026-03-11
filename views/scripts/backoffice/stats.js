@@ -97,6 +97,11 @@ function getWeekLabel(week) {
     return `Semaine du ${moment().isoWeek(week.split('/')[0]).startOf('isoWeek').format('DD/MM')} au ${moment().isoWeek(week.split('/')[0]).startOf('isoWeek').add(6, 'days').format('DD/MM')}`;
 }
 
+function getMonthLabel(month) {
+    if (!month) return;
+    return `${months[moment(Object.keys(weeksData)[month], 'MM/YYYY').month()]} ${moment(Object.keys(weeksData)[month], 'MM/YYYY').year()}`;
+}
+
 document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
 
 function updateStats() {
@@ -114,6 +119,17 @@ function updateStats() {
             document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
 
             chart = new Chart(canva, dayChart(vente, argent));
+            break;
+        
+        case 'Hebdomadaire':
+            const month = Object.keys(weeksData).length - 1 - index;
+            for (const w in Object.values(weeksData)[month]) {
+                vente.push(Object.values(weeksData)[month][w].vente);
+                argent.push(Object.values(weeksData)[month][w].argent);
+            }
+
+            document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
+
             break;
     }
 
@@ -181,10 +197,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 }
 
                 chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[Object.keys(weeksData).length - 1]]) ?? ''));
-
-                const currentKey = Object.keys(weeksData)[month];
                 
-                document.querySelector('article h3').innerHTML = `${months[moment(currentKey, 'MM/YYYY').month()]} ${moment(currentKey, 'MM/YYYY').year()}`;
+                document.querySelector('article h3').innerHTML = getMonthLabel(month);
 
                 maxIndex = Object.keys(weeksData).length - 1;
 
