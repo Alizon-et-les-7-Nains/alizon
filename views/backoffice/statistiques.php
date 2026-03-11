@@ -1,5 +1,4 @@
 <?php
-    require_once '../../controllers/pdo.php';
     require_once '../../controllers/auth.php';
 ?>
 
@@ -42,11 +41,31 @@
                     <td colspan=2>
                         <select name="category" id="category">
                             <option value="" default>Aucun filtre de catégorie</option>
+<?php
+    $categoriesSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/stats/categories.sql'));
+    $categoriesSTMT->execute([$_SESSION['id']]);
+    $categories = $categoriesSTMT->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($categories as $category) {
+        $category = $category['nomCategorie'];
+        echo "<option value='$category'>$category</option>";
+    }
+?>
                         </select>
                     </td>
                     <td colspan=2>
                         <select name="product" id="product">
                             <option value="" default>Aucun filtre de produit</option>
+<?php
+    $productsSTMT = $pdo->prepare(file_get_contents('../../queries/backoffice/stats/products.sql'));
+    $productsSTMT->execute([$_SESSION['id']]);
+    $products = $productsSTMT->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($products as $product) {
+        $product = $product['nom'];
+        echo "<option value='$product'>$product</option>";
+    }
+?>
                         </select>
                     </td>
                 </tr>
@@ -57,7 +76,7 @@
                 <li>
                     <article>
                         <canvas id="stats"></canvas>
-                        <h3>Semaine du 12/09 au 19/09</h3>
+                        <h3>Chargement...</h3>
                     </article>
                 </li>
                 <li><button id="next" disabled><img src="../../public/images/flecheDroite.svg" alt="Suivant"></button></li>
@@ -71,12 +90,12 @@
                 <tr>
                     <td>
                         <figure>
-                            <figcaption id="ventes">378</figcaption>
+                            <figcaption id="ventes">Chargement...</figcaption>
                         </figure>
                     </td>
                     <td>
                         <figure>
-                            <figcaption id="argents">1437,50€</figcaption>
+                            <figcaption id="argents">Chargement...</figcaption>
                         </figure>
                     </td>
                 </tr>
