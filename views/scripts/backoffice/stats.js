@@ -82,8 +82,6 @@ for (const d in Object.values(daysData)[week]) {
     argent.push(Object.values(daysData)[week][d].argent);
 }
 
-max = Object.keys(daysData).length - 1;
-
 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
 let total = argent.reduce((a, b) => a + b, 0);
 let formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
@@ -100,11 +98,6 @@ function getWeekLabel(week) {
 }
 
 document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
-
-function updateButtonStates() {
-    document.getElementById('prev').disabled = index === 0;
-    document.getElementById('next').disabled = index === max;
-}
 
 function updateStats() {
     chart.destroy();
@@ -128,6 +121,13 @@ function updateStats() {
     total = argent.reduce((a, b) => a + b, 0);
     formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
     document.getElementById('argents').innerHTML = formatted;
+}
+
+maxIndex = Object.keys(daysData).length - 1;
+
+function updateButtonStates() {
+    document.getElementById('next').disabled = index === 0;
+    document.getElementById('prev').disabled = index === maxIndex;
 }
 
 document.getElementById('prev').addEventListener('click', () => {
