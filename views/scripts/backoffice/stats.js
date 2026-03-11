@@ -128,6 +128,8 @@ function updateStats() {
                 argent.push(Object.values(weeksData)[month][w].argent);
             }
 
+            console.log(month);
+
             document.querySelector('article h3').innerHTML = getMonthLabel(month);
 
             chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[month]]) ?? ''));
