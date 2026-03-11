@@ -98,7 +98,12 @@ function getWeekLabel(week) {
 }
 
 function getMonthLabel(month) {
-    if (!month) return;
+    if (isNaN(month)) return;
+
+    console.log(month);
+    console.log(moment(Object.keys(weeksData)[month], 'MM/YYYY').month());
+    console.log(months[moment(Object.keys(weeksData)[month], 'MM/YYYY').month()])
+
     return `${months[moment(Object.keys(weeksData)[month], 'MM/YYYY').month()]} ${moment(Object.keys(weeksData)[month], 'MM/YYYY').year()}`;
 }
 
@@ -127,8 +132,6 @@ function updateStats() {
                 vente.push(Object.values(weeksData)[month][w].vente);
                 argent.push(Object.values(weeksData)[month][w].argent);
             }
-
-            console.log(month);
 
             document.querySelector('article h3').innerHTML = getMonthLabel(month);
 
@@ -199,8 +202,6 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                     vente.push(Object.values(weeksData)[month][w].vente);
                     argent.push(Object.values(weeksData)[month][w].argent);
                 }
-
-                console.log(month);
 
                 chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[Object.keys(weeksData).length - 1]]) ?? ''));
                 

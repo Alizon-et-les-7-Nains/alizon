@@ -7660,7 +7660,7 @@ dialog.reassort form input {
   overflow-x: hidden;
   min-height: 0;
   overflow-y: scroll;
-  height: 100vh;
+  height: 100%;
 }
 .pageCatalogue .product-list {
   display: flex;
