@@ -128,7 +128,11 @@ function updateStats() {
                 argent.push(Object.values(weeksData)[month][w].argent);
             }
 
-            document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
+            console.log(month);
+
+            document.querySelector('article h3').innerHTML = getMonthLabel(month);
+
+            chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[month]]) ?? ''));
 
             break;
     }
@@ -195,6 +199,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                     vente.push(Object.values(weeksData)[month][w].vente);
                     argent.push(Object.values(weeksData)[month][w].argent);
                 }
+
+                console.log(month);
 
                 chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[Object.keys(weeksData).length - 1]]) ?? ''));
                 

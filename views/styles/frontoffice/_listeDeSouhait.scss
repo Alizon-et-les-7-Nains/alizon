@@ -4,6 +4,24 @@
 .listeDeSouhait {
     font-family: "Lora", serif;
     color: #273469;
+
+    main {
+        padding: 10px 40px;
+    }
+
+    .ensembleProduits {
+        column-count: 2;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .coeur {
+        height: 40px;
+    }
     
     .produit {
         display: flex;
@@ -35,9 +53,6 @@
         }
     }
     main .titre {
-        margin-top: 30px;
-        margin-bottom: 0px;
-        margin-right: 10px;
         font-size: 48px;
     }
     .descProd {
