@@ -761,6 +761,10 @@ function loadProduits(page = 1) {
             currentPage = page;
             resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
 
+            const mapEstActive = carteAffiche.classList.contains('active');
+            const newUrl = `?page=${page}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`;
+            history.pushState(null, '', newUrl);
+
             if (data.idVendeurs) {
                 listeIdVendeurs = data.idVendeurs;
                 afficherPointsSurCarte(data.idVendeurs);
