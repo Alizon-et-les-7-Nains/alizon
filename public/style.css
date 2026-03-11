@@ -7659,7 +7659,7 @@ dialog.reassort form input {
   flex-direction: column;
   overflow-x: hidden;
   min-height: 0;
-  overflow-y: auto;
+  overflow-y: scroll;
   height: 100vh;
 }
 .pageCatalogue .product-list {
@@ -7695,7 +7695,6 @@ dialog.reassort form input {
   width: 100%;
   margin-top: 40px;
   margin-left: 0;
-  overflow-y: scroll;
 }
 .pageCatalogue .listeArticle article {
   position: relative;
@@ -9009,6 +9008,7 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   width: 650px;
   padding: 15px 10px;
   margin: 25px;
+  height: 170px;
 }
 .listeDeSouhait .produit h1, .listeDeSouhait .produit h3, .listeDeSouhait .produit p {
   margin: 0;
@@ -9030,11 +9030,17 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 .listeDeSouhait .ensembleProduits {
   column-count: 2;
 }
-.listeDeSouhait h1 .titre {
+.listeDeSouhait .titre {
   margin-top: 30px;
   margin-bottom: 0px;
   margin-right: 10px;
   font-size: 48px;
+}
+.listeDeSouhait .descProd {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 150px;
 }
 
 /*# sourceMappingURL=style.css.map */

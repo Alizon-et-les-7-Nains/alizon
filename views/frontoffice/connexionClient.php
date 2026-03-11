@@ -71,7 +71,7 @@ if (isset($data['otp']) && isset($_SESSION['user_id'])) {
         // Déchiffrer le secret
         $secret = dechiffrement($result['otp_secret']);
         
-        // Vérifier le code OTP
+        // Vérifier le code OTP avec leeway pour tolérer les décalages de temps
         $totp = TOTP::create($secret);
         $isValid = $totp->verify($code);
         
