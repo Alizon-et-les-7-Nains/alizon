@@ -223,5 +223,7 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
         let total = argent.reduce((a, b) => a + b, 0);
         let formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
         document.getElementById('argents').innerHTML = formatted;
+
+        console.log(maxIndex);
     })
 })
