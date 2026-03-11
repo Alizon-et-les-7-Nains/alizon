@@ -5,6 +5,99 @@ session_start();
 
 $userId = $_SESSION['user_id'] ?? null;
 
+if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
+    updateWishlist($pdo, $idClient, intval($_POST['idProduit']));
+    // Redirection pour éviter la re-soumission du formulaire au refresh
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;
+}
+
+// ============================================================================
+// FONCTIONS DE GESTION DE LA LISTE DE SOUHAIT
+// ============================================================================
+
+// Fonction pour récupérer le contenu de la liste de souhait d'un client
+
+// Vérifier si le produit est dans la wishlist
+function isInWishlist($pdo, $idClient, $idProduit) {
+    $stmt = $pdo->prepare("SELECT 1 FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
+    $stmt->execute([intval($idClient), intval($idProduit)]);
+    return $stmt->fetchColumn() !== false;
+}
+
+// Traitement du toggle wishlist
+if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
+    $idProduitToggle = intval($_POST['idProduit']);
+    $inWishlist = isInWishlist($pdo, $idClient, $idProduitToggle);
+
+    if ($inWishlist) {
+        $stmt = $pdo->prepare("DELETE FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
+        $stmt->execute([intval($idClient), $idProduitToggle]);
+    } else {
+        $stmt = $pdo->prepare("INSERT INTO _listeDeSouhait (idClient, idProduit, dateAjout) VALUES (?, ?, ?)");
+        $stmt->execute([intval($idClient), $idProduitToggle, date('Y-m-d H:i:s')]);
+    }
+
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $idProduitToggle);
+    exit;
+}
+function getWishlist($pdo, $idClient) {
+    $stmt = $pdo->prepare("SELECT * FROM _listeDeSouhait WHERE idClient = ? ORDER BY dateAjout DESC");
+    $stmt->execute([intval($idClient)]);
+    $wishlist = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+    
+    return $wishlist;
+}
+
+// Fonction pour rechercher un produit dans la liste de souhait d'un client
+function getWishlistProduct($pdo, $idClient, $idProduit) {
+    $stmt = $pdo->prepare("SELECT * FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
+    $stmt->execute([intval($idClient), intval($idProduit)]);
+    $wishlist = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+    
+    return $wishlist !== false;
+}
+
+// Fonction pour modifier la liste de souhait
+function updateWishlist($pdo, $idClient, $idProduit) {
+
+    $res = getWishlistProduct($pdo, $idClient, $idProduit);
+
+    if ($res) {
+        try {
+            $stmt = $pdo->prepare("DELETE FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
+            $stmt->execute([intval($idClient), intval($idProduit)]);
+        } catch(Exception $e) {
+            error_log($e);
+        }
+    } else {
+        try {
+            $stmt = $pdo->prepare("INSERT INTO _listeDeSouhait(idClient, idProduit, dateAjout) VALUES (?, ?, ?)");
+            $stmt->execute([intval($idClient), intval($idProduit), date('Y-m-d H:i:s')]);
+        } catch(Exception $e) {
+            error_log($e);
+        }
+    }
+
+    return $idProduit;
+}
+
+// Fonction pour rechercher récupérer les informations d'un produit dans la liste de souhait d'un client
+function getProductDetails($pdo, $idProduit) {
+    $stmt = $pdo->prepare("SELECT * FROM _produit WHERE idProduit = ?");
+    $stmt->execute([intval($idProduit)]);
+    $product = $stmt ? $stmt->fetch(PDO::FETCH_ASSOC): false;
+    
+    return $product;
+}
+
+// ============================================================================
+// RÉCUPÉRATION DES DONNÉES POUR LA PAGE
+// ============================================================================
+
+// recuperation panier courent
+$wishlist = getWishlist($pdo, $idClient);
+
 // Fonction pour récupérer le vote d'un utilisateur sur un avis spécifique
 function getVoteUtilisateur($idProduit, $idClientAvis) {
     if (!isset($_SESSION['user_id'])) {
@@ -453,13 +546,18 @@ if (isset($_SESSION['message_panier'])) {
             </b></p>
         </div>
         <div class="ligneActions">
+            <?php 
+            $dejaEnWishlist = isInWishlist($pdo, $idClient, $productId);
+            ?>
             <form method="POST" action="">
-                <input type="hidden" name="idProduit" value="<?= $item['idProduit'] ?>">
-                <button type="submit" name="toggleWishlist" class="btnCoeur">
-                <img src="../../public/images/coeurRempli.svg" alt="Supprimer de la liste de souhaits" class="coeur">
+                <input type="hidden" name="idProduit" value="<?= $productId ?>">
+                <button type="submit" name="toggleWishlist" class="btnCoeur" title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter à ma liste de souhaits' ?>">
+                    <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg" 
+                        alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter à la liste de souhaits' ?>" 
+                        class="coeur">
                 </button>
-            </form>    
-            <p>Ajouter à ma liste de souhait</p>
+            </form>
+            <p><?= $dejaEnWishlist ? 'Produit déjà dans la liste de souhaits' : 'Ajouter à ma liste de souhaits' ?></p>
         </div>
     <hr>
     <br>
