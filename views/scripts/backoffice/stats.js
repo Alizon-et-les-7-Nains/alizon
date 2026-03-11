@@ -30,7 +30,7 @@ for (const d of data) {
             5: { vente: 0, argent: 0 },
             6: { vente: 0, argent: 0 },
             7: { vente: 0, argent: 0 },
-        };
+        }
     }
 
     daysData[week][day].vente += parseInt(d.quantite);
@@ -93,17 +93,19 @@ for (const d of data) {
     yearsData[year].argent = Math.round(yearsData[year].argent * 100) / 100;
 }
 
+console.log(monthsData)
+
 const sortedDaysKeys = Object.keys(daysData).sort((a, b) => {
     const [wa, ya] = a.split('/');
     const [wb, yb] = b.split('/');
     return ya !== yb ? ya - yb : wa - wb;
-});
+})
 
 const sortedWeeksKeys = Object.keys(weeksData).sort((a, b) => {
     const [ma, ya] = a.split('/');
     const [mb, yb] = b.split('/');
     return ya !== yb ? ya - yb : ma - mb;
-});
+})
 
 let [vente, argent] = [[], []];
 let week = sortedDaysKeys.length - 1;
@@ -178,6 +180,9 @@ function updateStats() {
             }
 
             maxIndex = Object.keys(daysData).length - 1;
+
+            console.log(year);
+            console.log(maxIndex);
 
             chart = new Chart(canva, monthChart(vente, argent));
     
@@ -270,6 +275,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 document.querySelector('article h3').innerHTML = Object.keys(monthsData)[year];
 
                 maxIndex = Object.keys(monthsData).length - 1;
+
+                console.log(maxIndex);
 
                 document.getElementById('prev').disabled = index == maxIndex;
                 document.getElementById('next').disabled = true;
