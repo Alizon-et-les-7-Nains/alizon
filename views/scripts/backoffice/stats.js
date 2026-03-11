@@ -2,7 +2,9 @@ import { Chart} from 'https://cdn.jsdelivr.net/npm/chart.js/auto/+esm';
 import { dayChart, weekChart, monthChart, yearChart } from './charts.js';
 import moment from 'https://cdn.jsdelivr.net/npm/moment/+esm';
 
-const data = await fetch('/controllers/api.php?action=stats').then(res => res.json());
+const res = await fetch('/api/stats');
+if (!res.ok) throw new Error(`HTTP ${res.status}`);
+const data = await res.json();
 
 const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
