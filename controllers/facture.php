@@ -39,7 +39,7 @@ $stmt = $pdo->prepare("
 $stmt->execute([':commande' => $idCommande]);
 $prodVend = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt->execute([':commande' => $idCommande]);
+
 
 if (!$data) {
     throw new Exception("Commande introuvable");
@@ -124,7 +124,6 @@ ob_start();
             France<br>
             Email : contact@alizon.fr<br>
             SIRET : 123 456 789 00012<br>
-            TVA intracom : FR12 123456789
         </td>
         <td class="right">
             <strong>Facture n°</strong> <?= 'FAC-' . date('Y') . '-' . str_pad($data['idCommande'], 6, '0', STR_PAD_LEFT) ?><br>
@@ -148,7 +147,7 @@ ob_start();
         <th>Désignation</th>
         <th class="right">Qté</th>
         <th class="right">Prix HT</th>
-        <th class="right">TVA</th>
+        <th class="right">TVA</th>  
         <th class="right">Total HT</th>
     </tr>
 
