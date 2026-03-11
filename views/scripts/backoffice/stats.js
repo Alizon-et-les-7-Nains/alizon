@@ -156,6 +156,19 @@ function updateStats() {
             chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[month]]) ?? ''));
 
             break;
+        
+        case 'Mensuel':
+            const year = Object.keys(monthsData).length - 1 - index;
+            for (const m in Object.values(monthsData)[year]) {
+                vente.push(Object.values(monthsData)[year][m].vente);
+                argent.push(Object.values(monthsData)[year][m].argent);
+            }
+
+            maxIndex = Object.keys(daysData).length - 1;
+
+            chart = new Chart(canva, monthChart(vente, argent));
+    
+            break;
     }
 
     document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
@@ -233,11 +246,21 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 break;
             
             case 'Mensuel':
-                [vente, argent] = [[12, 19, 3, 5, 2, 3, 2, 8, 4, 1, 2, 0], [45, 41, 21, 45, 13, 5, 13, 20, 14, 13, 10, 0]];
+                const year = Object.keys(monthsData).length - 1;
+                for (const m in Object.values(monthsData)[year]) {
+                    vente.push(Object.values(monthsData)[year][m].vente);
+                    argent.push(Object.values(monthsData)[year][m].argent);
+                }
+                
                 chart = new Chart(canva, monthChart(vente, argent));
 
-                document.getElementById('prev').disabled = false;
+                document.querySelector('article h3').innerHTML = year;
+
+                maxIndex = Object.keys(monthsData).length - 1;
+
+                document.getElementById('prev').disabled = index == maxIndex;
                 document.getElementById('next').disabled = true;
+
                 break;
             
             case 'Annuel':
