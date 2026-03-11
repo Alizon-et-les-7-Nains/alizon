@@ -2,11 +2,16 @@
 @use "../fonts" as *;
 
 .pageCatalogue {
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+    min-height: 0;
     display: flex;
     flex-direction: row;
     background-color: $color-white;
-    height: 100vh;        // ← ajoute ça
-    overflow: hidden;     // ← empêche le scroll global
+    height: calc(100vh - hauteur_de_ton_header);
+    overflow: hidden;
 
     #map {
         position: sticky;
@@ -19,7 +24,7 @@
         border: 2px solid #273469;
         border-radius: 4px;
         width: 60%;
-        height: 90vh;     // ← un peu moins que 100vh pour les marges
+        height: 65vh;     // ← un peu moins que 100vh pour les marges
         display: none;
         background-color: #e4d9ff;
     }
@@ -77,8 +82,9 @@
         display: flex;
         flex-direction: column;
         overflow-x: hidden;
-        overflow-y: auto;   // ← le scroll se fait ICI seulement
-        height: 100vh;      // ← ajoute ça
+        min-height: 0;
+        overflow-y: auto;
+        height: 100vh;
     }
 
     .product-list{

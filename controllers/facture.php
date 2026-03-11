@@ -19,7 +19,7 @@ $stmt = $pdo->prepare("
     FROM _commande c
     JOIN _panier p ON c.idPanier = p.idPanier
     JOIN _client cl ON p.idClient = cl.idClient 
-    JOIN _adresseLivraison a ON cl.idClient = a.idClient
+    LEFT JOIN _adresseLivraison a ON cl.idClient = a.idClient
     WHERE c.idCommande = :commande
     ");
 
@@ -134,10 +134,10 @@ ob_start();
 
 <div class="bloc">
     <strong>Facturé à :</strong><br>
-    <?= htmlspecialchars($data['prenom'] . ' ' . $data['nom']) ?><br>
-    <?= htmlspecialchars($data['email']) ?><br>
-    <?= htmlspecialchars($data['adresse']) ?><br>
-    <?= htmlspecialchars($data['codePostal'] . ' ' . $data['ville']) ?><br>
+    <?= htmlspecialchars(($data['prenom'] ?? 'Anonyme') . ' ' . ($data['nom'] ?? '')) ?><br>
+    <?= htmlspecialchars($data['email'] ?? '') ?><br>
+    <?= htmlspecialchars($data['adresse'] ?? '') ?><br>
+    <?= htmlspecialchars(($data['codePostal'] ?? '') . ' ' . ($data['ville'] ?? '')) ?><br>
     France
 </div>
 
