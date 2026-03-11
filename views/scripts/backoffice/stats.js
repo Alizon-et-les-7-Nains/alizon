@@ -122,9 +122,10 @@ let chart = new Chart(canva, dayChart(vente, argent));
 
 document.getElementById('prev').disabled = sortedDaysKeys.length == 1;
 
-function getWeekLabel(week) {
-    if (!week) return '';
-    return `Semaine du ${moment().isoWeek(week.split('/')[0]).startOf('isoWeek').format('DD/MM')} au ${moment().isoWeek(week.split('/')[0]).startOf('isoWeek').add(6, 'days').format('DD/MM')}`;
+function getWeekLabel(weekKey) {
+    if (!weekKey) return '';
+    const [w, y] = weekKey.split('/');
+    return `Semaine du ${moment().year(y).isoWeek(w).startOf('isoWeek').format('DD/MM')} au ${moment().year(y).isoWeek(w).startOf('isoWeek').add(6, 'days').format('DD/MM')}`;
 }
 
 function getMonthLabel(month) {
@@ -266,7 +267,7 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 
                 chart = new Chart(canva, monthChart(vente, argent));
 
-                document.querySelector('article h3').innerHTML = year;
+                document.querySelector('article h3').innerHTML = Object.keys(monthsData)[year];
 
                 maxIndex = Object.keys(monthsData).length - 1;
 
