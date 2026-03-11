@@ -17,6 +17,13 @@ if (!isset($_SESSION['user_id'])) {
 
 $idClient = $_SESSION['user_id'];
 
+if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
+    updateWishlist($pdo, $idClient, intval($_POST['idProduit']));
+    // Redirection pour éviter la re-soumission du formulaire au refresh
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;
+}
+
 // ============================================================================
 // FONCTIONS DE GESTION DE LA LISTE DE SOUHAIT
 // ============================================================================
@@ -101,38 +108,46 @@ $wishlist = getWishlist($pdo, $idClient);
     <main>
         <h1 class="titre">Liste de souhaits</h1>
 
-        <section class="ensembleProduits">
+        <?php if (count($wishlist) > 1) echo '<section class="ensembleProduits" style="column-count: 2;">'; else echo '<section class="ensembleProduits">' ?>
             <?php if ($wishlist) : ?>
                 <?php foreach ($wishlist as $item) : ?>
                     <?php if (isset($item['idProduit'])) : ?>
                         <?php $productDetails = getProductDetails($pdo, $item['idProduit']); ?>
                         <?php if ($productDetails && isset($productDetails['nom'])) : ?>
-                            <div class="produit">
-                                <div>
-                                    <?php                                  
-                                        // Récupération de l'image du produit ou utilisation de l'image par défaut
-                                        $idProduit = $item['idProduit'] ?? 0;
-                                        $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
-                                        $stmtImg->execute([':idProduit' => $idProduit]);
-                                        $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
-                                        $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';    
-                                    ?>
-                                    <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>" class="imgProd">
-                                </div>
-                                <div class="descProd">
-                                    <h1><?= $productDetails['nom'] ?></h1>
-                                    <p><?= $productDetails['description'] ?></p>
-                                    <div class="info">
-                                        <?php 
-                                        if($productDetails['stock'] > 0) {
-                                            echo '<h2 style="color: green;">En stock</h2>';
-                                        } else {
-                                            echo '<h2 style="color: red;">Hors stock</h2>';
-                                        }
+                            <div class="container">
+                                <div class="produit">
+                                    <div>
+                                        <?php                                  
+                                            // Récupération de l'image du produit ou utilisation de l'image par défaut
+                                            $idProduit = $item['idProduit'] ?? 0;
+                                            $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
+                                            $stmtImg->execute([':idProduit' => $idProduit]);
+                                            $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
+                                            $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';    
                                         ?>
-                                        <h3><?= $productDetails['prix'] ?> €</h3>
+                                        <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>" class="imgProd">
+                                    </div>
+                                    <div class="descProd">
+                                        <h1><?= $productDetails['nom'] ?></h1>
+                                        <p><?= $productDetails['description'] ?></p>
+                                        <div class="info">
+                                            <?php 
+                                            if($productDetails['stock'] > 0) {
+                                                echo '<h2 style="color: green;">En stock</h2>';
+                                            } else {
+                                                echo '<h2 style="color: red;">Hors stock</h2>';
+                                            }
+                                            ?>
+                                            <h3><?= $productDetails['prix'] ?> €</h3>
+                                        </div>
                                     </div>
                                 </div>
+                                <form method="POST" action="">
+                                    <input type="hidden" name="idProduit" value="<?= $item['idProduit'] ?>">
+                                    <button type="submit" name="toggleWishlist" class="btnCoeur">
+                                        <img src="../../public/images/coeurRempli.svg" alt="Supprimer de la liste de souhaits" class="coeur">
+                                    </button>
+                                </form>                            
                             </div>
                         <?php endif; ?>
                     <?php endif; ?>

@@ -1,9 +1,28 @@
 @use "../colors" as *;
 @use "../fonts" as *;
 
+.btnCoeur {
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
 .listeDeSouhait {
     font-family: "Lora", serif;
     color: #273469;
+
+    main {
+        padding: 10px 40px;
+        min-height: 64vh;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: fit-content;
+    }
     
     .produit {
         display: flex;
@@ -15,6 +34,7 @@
         padding: 15px 10px;
         margin: 25px;
         height: 170px;
+        overflow: hidden;
         h1, h3, p {
             margin: 0;
         }
@@ -33,14 +53,7 @@
             }
         }
     }
-    .ensembleProduits {
-        column-count: 2;
-
-    }
-    .titre {
-        margin-top: 30px;
-        margin-bottom: 0px;
-        margin-right: 10px;
+    main .titre {
         font-size: 48px;
     }
     .descProd {

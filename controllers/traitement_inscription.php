@@ -49,10 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         // Hachage du mot de passe avec password_hash
         $mdp_hash = password_hash($mdp_clair, PASSWORD_DEFAULT);
-        
-        // Convertir la date au format MySQL
-        $date_mysql = DateTime::createFromFormat('d/m/Y', $birthdate)->format('Y-m-d');
-        
+
+                
         try {
             // Insertion dans la base de données
             $sql_insert = "INSERT INTO _client (pseudo, nom, prenom, dateNaissance, noTelephone, email, mdp) 
@@ -62,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $pseudo,
                 $nom,
                 $prenom,
-                $date_mysql,
+                $birthdate,
                 $telephone_clean,
                 $email,
                 $mdp_hash
@@ -70,6 +68,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Récupérer l'ID du nouveau client
             $id_client = $pdo->lastInsertId();
+            
+            // Créer une adresse par défaut (NULL) pour le client
+            $sql_address = "INSERT INTO _adresseClient (adresse, region, codePostal, ville, pays, complementAdresse) 
+                           VALUES (NULL, NULL, NULL, NULL, NULL, NULL)";
+            $stmt_address = $pdo->prepare($sql_address);
+            $stmt_address->execute();
+            $id_address = $pdo->lastInsertId();
+            
+            // Associer l'adresse au client
+            $sql_update = "UPDATE _client SET idAdresse = ? WHERE idClient = ?";
+            $stmt_update = $pdo->prepare($sql_update);
+            $stmt_update->execute([$id_address, $id_client]);
             
             // Connecter automatiquement l'utilisateur
             $_SESSION['user_id'] = $id_client;
