@@ -72,9 +72,8 @@ if (isset($data['otp']) && isset($_SESSION['user_id'])) {
         $secret = dechiffrement($result['otp_secret']);
         
         // Vérifier le code OTP avec leeway pour tolérer les décalages de temps
-        // Le leeway de 1 accepte les codes de la période actuelle ±1 (90 secondes au total)
         $totp = TOTP::create($secret);
-        $isValid = $totp->verify($code, null, 1);
+        $isValid = $totp->verify($code);
         
         if ($isValid) {
             // Réinitialiser les compteurs en cas de succès
