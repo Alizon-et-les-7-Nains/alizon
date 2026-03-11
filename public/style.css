@@ -9011,8 +9011,10 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   justify-content: space-between;
   width: fit-content;
 }
-.listeDeSouhait .coeur {
+.listeDeSouhait .btnCoeur {
   height: 40px;
+  background: none;
+  border: none;
 }
 .listeDeSouhait .produit {
   display: flex;

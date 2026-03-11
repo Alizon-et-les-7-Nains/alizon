@@ -733,70 +733,58 @@ function reattacherAjouterPanier() {
     });
 }
 
-function pagination() {
-    document.querySelectorAll('.pageLink').forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            const newPage = parseInt(link.dataset.page);
-            loadProduits(newPage);
-        });
+document.querySelectorAll('.pagination a').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        const url = new URL(link.href);
+        const newPage = parseInt(url.searchParams.get('page')) || 1;
+        loadProduits(newPage);
     });
-}
+});
 
 function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value;
-    const mapEstActive = carteAffiche.classList.contains('active'); // Get current map state
+    const mapEstActive = carteAffiche.classList.contains('active');
     let idVendeur = vendeur.value !== "" ? parseInt(vendeur.value) : "";
 
-    // Build URL with all parameters including mapActive
-    const url = new URL(window.location.href);
-    url.searchParams.set('page', page);
-    url.searchParams.set('search', searchQuery);
-    url.searchParams.set('mapActive', mapEstActive);
-    url.searchParams.set('minPrice', min);
-    url.searchParams.set('maxPrice', max);
-    url.searchParams.set('minNote', notemin);
-    if (catValue) url.searchParams.set('categorie', catValue);
-    if (vendeur.value) url.searchParams.set('vendeur', vendeur.value);
-    if (sortOrder) url.searchParams.set('sortOrder', sortOrder);
-
-    fetch(url.pathname + url.search)
+    fetch(`../../controllers/produit-ajax.php?page=${page}&search=${encodeURIComponent(searchQuery)}&minPrice=${min}&maxPrice=${max}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${encodeURIComponent(catValue)}&vendeur=${idVendeur}&mapActive=${mapEstActive}`)
         .then(res => res.json())
         .then(data => {
             listeArticle.innerHTML = data.html;
             currentPage = page;
-            resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
+            resultat.textContent = `${data.totalProduits} résultat${data.totalProduits > 1 ? 's' : ''}`;
 
-            // Update URL with current state
-            history.pushState(null, '', url.toString());
+            const newUrl = `?page=${page}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`;
+            history.pushState(null, '', newUrl);
+
+            // ✅ CORRECTION : ré-appliquer l'état de la carte après rechargement AJAX
+            if (mapEstActive) {
+                carteAffiche.classList.add('active');
+                barreResultat.classList.add('active');
+                barreVerticale.classList.add('active');
+                setTimeout(() => map.invalidateSize(), 100);
+                listeArticle.style.marginLeft = '0px';
+            } else {
+                carteAffiche.classList.remove('active');
+                barreResultat.classList.remove('active');
+                barreVerticale.classList.remove('active');
+            }
 
             if (data.idVendeurs) {
                 listeIdVendeurs = data.idVendeurs;
                 afficherPointsSurCarte(data.idVendeurs);
             }
 
-            if (mapEstActive) {
-                setTimeout(() => map.invalidateSize(), 100);
-            }
-
-            // Generate pagination with current map state
             let pagHTML = '';
             if (data.nbPages > 1) {
-                if (page > 1) {
-                    url.searchParams.set('page', page-1);
-                    pagHTML += `<a href="${url.toString()}" class="pageLink" data-page="${page-1}">« Précédent</a>`;
-                }
+                if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
                 for (let i = 1; i <= data.nbPages; i++) {
-                    url.searchParams.set('page', i);
-                    pagHTML += `<a href="${url.toString()}" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                    pagHTML += `<a href="#" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
                 }
-                if (page < data.nbPages) {
-                    url.searchParams.set('page', page+1);
-                    pagHTML += `<a href="${url.toString()}" class="pageLink" data-page="${page+1}">Suivant »</a>`;
-                }
+                if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
             }
 
             paginationDiv.innerHTML = pagHTML;
