@@ -12,7 +12,7 @@ $offset = ($page - 1) * $produitsParPage;
 $idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 $categoryQuery = isset($_GET['categorie']) ? trim(str_replace('_', ' ', $_GET['categorie'])) : "";
-$mapActive = isset($_GET['mapActive']) && $_GET['mapActive'] === 'true';
+$mapActive = isset($_GET['mapActive']) && $_GET['mapActive'] === 'false';
 
 $conditions = [];
 $params = [];
@@ -742,6 +742,17 @@ document.querySelectorAll('.pagination a').forEach(link => {
     });
 });
 
+
+function pagination() {
+    document.querySelectorAll('.pageLink').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const newPage = parseInt(link.dataset.page);
+            loadProduits(newPage);
+        });
+    });
+}
+
 function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
@@ -760,7 +771,6 @@ function loadProduits(page = 1) {
             const newUrl = `?page=${page}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`;
             history.pushState(null, '', newUrl);
 
-            // ✅ CORRECTION : ré-appliquer l'état de la carte après rechargement AJAX
             if (mapEstActive) {
                 carteAffiche.classList.add('active');
                 barreResultat.classList.add('active');
