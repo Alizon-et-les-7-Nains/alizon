@@ -7660,7 +7660,7 @@ dialog.reassort form input {
   overflow-x: hidden;
   min-height: 0;
   overflow-y: scroll;
-  height: 100vh;
+  height: 100%;
 }
 .pageCatalogue .product-list {
   display: flex;
@@ -8999,6 +8999,20 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   font-family: "Lora", serif;
   color: #273469;
 }
+.listeDeSouhait main {
+  padding: 10px 40px;
+}
+.listeDeSouhait .ensembleProduits {
+  column-count: 2;
+}
+.listeDeSouhait .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.listeDeSouhait .coeur {
+  height: 40px;
+}
 .listeDeSouhait .produit {
   display: flex;
   align-items: center;
@@ -9029,9 +9043,6 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   margin: 0;
 }
 .listeDeSouhait main .titre {
-  margin-top: 30px;
-  margin-bottom: 0px;
-  margin-right: 10px;
   font-size: 48px;
 }
 .listeDeSouhait .descProd {
