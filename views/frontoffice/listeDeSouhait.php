@@ -108,7 +108,7 @@ $wishlist = getWishlist($pdo, $idClient);
     <main>
         <h1 class="titre">Liste de souhaits</h1>
 
-        <section class="ensembleProduits">
+        <section class="ensembleProduits" <?php if (count($wishlist) > 1) echo 'column-count: 2;"' ?>>
             <?php if ($wishlist) : ?>
                 <?php foreach ($wishlist as $item) : ?>
                     <?php if (isset($item['idProduit'])) : ?>

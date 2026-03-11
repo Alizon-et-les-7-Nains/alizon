@@ -9002,9 +9002,6 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 .listeDeSouhait main {
   padding: 10px 40px;
 }
-.listeDeSouhait .ensembleProduits {
-  column-count: 2;
-}
 .listeDeSouhait .container {
   display: flex;
   align-items: center;
@@ -9015,6 +9012,7 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   height: 40px;
   background: none;
   border: none;
+  cursor: pointer;
 }
 .listeDeSouhait .produit {
   display: flex;
