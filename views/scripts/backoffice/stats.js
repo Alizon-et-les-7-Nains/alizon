@@ -13,6 +13,7 @@ const yearsData = {};
 let selected = document.querySelector('.selected');
 
 let index = 0;
+let maxIndex = 0;
 
 for (const d of data) {
     // Split by day
@@ -98,32 +99,6 @@ function getWeekLabel(week) {
 
 document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
 
-document.getElementById('prev').addEventListener('click', () => {
-    index++;
-    updateStats();
-
-    if (index == 0) {
-        document.getElementById('next').disabled = true;
-        document.getElementById('prev').disabled = false;
-    } else if (index == Object.keys(daysData).length - 1) {
-        document.getElementById('next').disabled = false;
-        document.getElementById('prev').disabled = true;
-    }
-})
-
-document.getElementById('next').addEventListener('click', () => {
-    index--;
-    updateStats();
-
-    if (index == 0) {
-        document.getElementById('next').disabled = true;
-        document.getElementById('prev').disabled = false;
-    } else if (index == Object.keys(daysData).length - 1) {
-        document.getElementById('next').disabled = false;
-        document.getElementById('prev').disabled = true;
-    }
-})
-
 function updateStats() {
     chart.destroy();
     [vente, argent] = [[], []];
@@ -147,6 +122,25 @@ function updateStats() {
     formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
     document.getElementById('argents').innerHTML = formatted;
 }
+
+maxIndex = Object.keys(daysData).length - 1;
+
+function updateButtonStates() {
+    document.getElementById('next').disabled = index === 0;
+    document.getElementById('prev').disabled = index === maxIndex;
+}
+
+document.getElementById('prev').addEventListener('click', () => {
+    index++;
+    updateStats();
+    updateButtonStates();
+})
+
+document.getElementById('next').addEventListener('click', () => {
+    index--;
+    updateStats();
+    updateButtonStates();
+})
 
 document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -175,6 +169,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
 
                 document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
 
+                maxIndex = Object.keys(daysData).length - 1;
+
                 break;
 
             case 'Hebdomadaire':
@@ -192,6 +188,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 const currentKey = Object.keys(weeksData)[month];
                 
                 document.querySelector('article h3').innerHTML = `${months[moment(currentKey, 'MM/YYYY').month()]} ${moment(currentKey, 'MM/YYYY').year()}`;
+
+                maxIndex = Object.keys(weeksData).length - 1;
 
                 break;
             
@@ -215,6 +213,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 document.getElementById('next').disabled = true;
 
                 document.querySelector('article h3').innerHTML = '';
+
+                maxIndex = 0;
 
                 break;
         }

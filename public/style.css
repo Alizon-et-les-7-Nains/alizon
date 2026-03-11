@@ -7659,7 +7659,7 @@ dialog.reassort form input {
   flex-direction: column;
   overflow-x: hidden;
   min-height: 0;
-  overflow-y: auto;
+  overflow-y: scroll;
   height: 100vh;
 }
 .pageCatalogue .product-list {
@@ -7695,7 +7695,6 @@ dialog.reassort form input {
   width: 100%;
   margin-top: 40px;
   margin-left: 0;
-  overflow-y: scroll;
 }
 .pageCatalogue .listeArticle article {
   position: relative;
