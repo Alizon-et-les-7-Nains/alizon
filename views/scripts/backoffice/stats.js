@@ -63,7 +63,7 @@ for (const d of data) {
     weeksData[mont][nWeek].argent = Math.round(weeksData[mont][nWeek].argent * 100) / 100;
 
     // Split by months
-    const yea = moment(d.dataCommande).year();
+    const yea = moment(d.dateCommande).year();
     const mo = months[moment(d.dateCommande).month()];
     if (!monthsData[yea]) {
         monthsData[yea] = {};
@@ -93,11 +93,23 @@ for (const d of data) {
     yearsData[year].argent = Math.round(yearsData[year].argent * 100) / 100;
 }
 
+const sortedDaysKeys = Object.keys(daysData).sort((a, b) => {
+    const [wa, ya] = a.split('/');
+    const [wb, yb] = b.split('/');
+    return ya !== yb ? ya - yb : wa - wb;
+});
+
+const sortedWeeksKeys = Object.keys(weeksData).sort((a, b) => {
+    const [ma, ya] = a.split('/');
+    const [mb, yb] = b.split('/');
+    return ya !== yb ? ya - yb : ma - mb;
+});
+
 let [vente, argent] = [[], []];
-let week = Object.keys(daysData).length - 1;
-for (const d in Object.values(daysData)[week]) {
-    vente.push(Object.values(daysData)[week][d].vente);
-    argent.push(Object.values(daysData)[week][d].argent);
+let week = sortedDaysKeys.length - 1;
+for (const d in daysData[sortedDaysKeys[week]]) {
+    vente.push(daysData[sortedDaysKeys[week]][d].vente);
+    argent.push(daysData[sortedDaysKeys[week]][d].argent);
 }
 
 document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
@@ -108,7 +120,7 @@ document.getElementById('argents').innerHTML = formatted;
 const canva = document.getElementById('stats');
 let chart = new Chart(canva, dayChart(vente, argent));
 
-document.getElementById('prev').disabled = Object.keys(daysData).length == 1 ? true : false;
+document.getElementById('prev').disabled = sortedDaysKeys.length == 1;
 
 function getWeekLabel(week) {
     if (!week) return '';
@@ -119,13 +131,13 @@ function getMonthLabel(month) {
     if (isNaN(month)) return;
 
     console.log(month);
-    console.log(moment(Object.keys(weeksData)[month], 'MM/YYYY').month());
-    console.log(months[moment(Object.keys(weeksData)[month], 'MM/YYYY').month()])
+    console.log(moment(sortedWeeksKeys[month], 'MM/YYYY').month());
+    console.log(months[moment(sortedWeeksKeys[month], 'MM/YYYY').month()])
 
-    return `${months[moment(Object.keys(weeksData)[month], 'MM/YYYY').month()]} ${moment(Object.keys(weeksData)[month], 'MM/YYYY').year()}`;
+    return `${months[moment(sortedWeeksKeys[month], 'MM/YYYY').month()]} ${moment(sortedWeeksKeys[month], 'MM/YYYY').year()}`;
 }
 
-document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
+document.querySelector('article h3').innerHTML = getWeekLabel(sortedDaysKeys[week]);
 
 function updateStats() {
     chart.destroy();
@@ -133,27 +145,27 @@ function updateStats() {
 
     switch (selected.innerHTML) {
         case 'Journalier':
-            week = Object.keys(daysData).length - 1 - index;
-            for (const d in Object.values(daysData)[week]) {
-                vente.push(Object.values(daysData)[week][d].vente);
-                argent.push(Object.values(daysData)[week][d].argent);
+            week = sortedDaysKeys.length - 1 - index;
+            for (const d in daysData[sortedDaysKeys[week]]) {
+                vente.push(daysData[sortedDaysKeys[week]][d].vente);
+                argent.push(daysData[sortedDaysKeys[week]][d].argent);
             }
 
-            document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
+            document.querySelector('article h3').innerHTML = getWeekLabel(sortedDaysKeys[week]);
 
             chart = new Chart(canva, dayChart(vente, argent));
             break;
         
         case 'Hebdomadaire':
-            const month = Object.keys(weeksData).length - 1 - index;
-            for (const w in Object.values(weeksData)[month]) {
-                vente.push(Object.values(weeksData)[month][w].vente);
-                argent.push(Object.values(weeksData)[month][w].argent);
+            const month = sortedWeeksKeys.length - 1 - index;
+            for (const w in weeksData[sortedWeeksKeys[month]]) {
+                vente.push(weeksData[sortedWeeksKeys[month]][w].vente);
+                argent.push(weeksData[sortedWeeksKeys[month]][w].argent);
             }
 
             document.querySelector('article h3').innerHTML = getMonthLabel(month);
 
-            chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[month]]) ?? ''));
+            chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[sortedWeeksKeys[month]]) ?? ''));
 
             break;
         
@@ -177,7 +189,7 @@ function updateStats() {
     document.getElementById('argents').innerHTML = formatted;
 }
 
-maxIndex = Object.keys(daysData).length - 1;
+maxIndex = sortedDaysKeys.length - 1;
 
 function updateButtonStates() {
     document.getElementById('next').disabled = index === 0;
@@ -210,17 +222,17 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
 
         switch (selected.innerHTML) {
             case 'Journalier':
-                week = Object.keys(daysData).length - 1;
-                for (const d in Object.values(daysData)[week]) {
-                    vente.push(Object.values(daysData)[week][d].vente);
-                    argent.push(Object.values(daysData)[week][d].argent);
+                week = sortedDaysKeys.length - 1;
+                for (const d in daysData[sortedDaysKeys[week]]) {
+                    vente.push(daysData[sortedDaysKeys[week]][d].vente);
+                    argent.push(daysData[sortedDaysKeys[week]][d].argent);
                 }
 
                 chart = new Chart(canva, dayChart(vente, argent));
 
-                document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
+                document.querySelector('article h3').innerHTML = getWeekLabel(sortedDaysKeys[week]);
 
-                maxIndex = Object.keys(daysData).length - 1;
+                maxIndex = sortedDaysKeys.length - 1;
 
                 document.getElementById('prev').disabled = index == maxIndex;
                 document.getElementById('next').disabled = true;
@@ -228,17 +240,17 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 break;
 
             case 'Hebdomadaire':
-                const month = Object.keys(weeksData).length - 1;
-                for (const w in Object.values(weeksData)[month]) {
-                    vente.push(Object.values(weeksData)[month][w].vente);
-                    argent.push(Object.values(weeksData)[month][w].argent);
+                const month = sortedWeeksKeys.length - 1;
+                for (const w in weeksData[sortedWeeksKeys[month]]) {
+                    vente.push(weeksData[sortedWeeksKeys[month]][w].vente);
+                    argent.push(weeksData[sortedWeeksKeys[month]][w].argent);
                 }
 
-                chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[Object.keys(weeksData).length - 1]]) ?? ''));
+                chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[sortedWeeksKeys[sortedWeeksKeys.length - 1]]) ?? ''));
                 
                 document.querySelector('article h3').innerHTML = getMonthLabel(month);
 
-                maxIndex = Object.keys(weeksData).length - 1;
+                maxIndex = sortedWeeksKeys.length - 1;
 
                 document.getElementById('prev').disabled = index == maxIndex;
                 document.getElementById('next').disabled = true;
