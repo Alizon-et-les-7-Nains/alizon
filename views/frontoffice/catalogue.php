@@ -499,7 +499,7 @@ $cart = getCurrentCart($pdo, $idClient);
         </section>
         <div class="pagination">
             <?php if ($nbPages > 1): ?>
-                <?php if ($page > 0){ ?>
+                <?php if ($page > 1){ ?>
                     <a class="avancer-reculer" href="?page=1&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">|<</a>
                     <a class="avancer-reculer" href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><   Précédent</a>
                 <?php } else { ?>

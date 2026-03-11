@@ -437,8 +437,13 @@
         transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
     }
 
+    .avancer-reculer.disabled {
+        color: #6c6c6c;
+        cursor: not-allowed;
+    }
+
     .pagination span.disabled {
-        color: #3d3c3c;
+        color: #6c6c6c;
         cursor: not-allowed;
     }
     .btnToggleFilters {
