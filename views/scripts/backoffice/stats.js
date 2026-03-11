@@ -164,12 +164,12 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
 
                 chart = new Chart(canva, dayChart(vente, argent));
 
-                document.getElementById('prev').disabled = index == Object.keys(daysData).length - 1;
-                document.getElementById('next').disabled = true;
-
                 document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
 
                 maxIndex = Object.keys(daysData).length - 1;
+
+                document.getElementById('prev').disabled = index == maxIndex;
+                document.getElementById('next').disabled = true;
 
                 break;
 
@@ -182,14 +182,14 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
 
                 chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[Object.keys(weeksData).length - 1]]) ?? ''));
 
-                document.getElementById('prev').disabled = !(index == Object.keys(daysData).length - 1);
-                document.getElementById('next').disabled = true;
-
                 const currentKey = Object.keys(weeksData)[month];
                 
                 document.querySelector('article h3').innerHTML = `${months[moment(currentKey, 'MM/YYYY').month()]} ${moment(currentKey, 'MM/YYYY').year()}`;
 
                 maxIndex = Object.keys(weeksData).length - 1;
+
+                document.getElementById('prev').disabled = index == maxIndex;
+                document.getElementById('next').disabled = true;
 
                 break;
             
@@ -223,7 +223,5 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
         let total = argent.reduce((a, b) => a + b, 0);
         let formatted = Number.isInteger(total) ? total + '€' : total.toFixed(2) + '€';
         document.getElementById('argents').innerHTML = formatted;
-
-        console.log(maxIndex);
     })
 })
