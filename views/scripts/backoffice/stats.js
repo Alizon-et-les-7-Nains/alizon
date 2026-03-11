@@ -200,6 +200,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                     argent.push(Object.values(weeksData)[month][w].argent);
                 }
 
+                console.log(month);
+
                 chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[Object.keys(weeksData).length - 1]]) ?? ''));
                 
                 document.querySelector('article h3').innerHTML = getMonthLabel(month);
