@@ -500,17 +500,21 @@ $cart = getCurrentCart($pdo, $idClient);
         <div class="pagination">
             <?php if ($nbPages > 1): ?>
                 <?php if ($page > 1){ ?>
-                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">« Précédent</a>
+                    <a class="avancer-reculer" href="?page=1&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">|<</a>
+                    <a class="avancer-reculer" href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">< Précédent</a>
                 <?php } else { ?>
-                    <span class="disabled">« Précédent</span>
+                    <a class="avancer-reculer" class="disabled">|<</a>
+                    <span class="avancer-reculer" class="disabled">< Précédent</span>
                 <?php } ?>
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a <?php if($i == $page) echo 'style="class: active;"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><?= $i ?></a>
+                    <a class="lien-page-numero" <?php if($i == $page) echo 'style="class: active;"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><?= $i ?></a>
                 <?php endfor; ?>
                 <?php if ($page < $nbPages) { ?>
-                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">Suivant »</a>
+                    <a class="avancer-reculer" href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">Suivant ></a>
+                    <a class="avancer-reculer" href="?page=<?= $nbPages ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">>|</a>
                 <?php } else { ?>
-                    <span class="disabled">Suivant »</span>
+                    <span class="avancer-reculer" class="disabled">Suivant ></span>
+                    <a class="avancer-reculer" class="disabled">>|</a>
                 <?php } ?>
             <?php endif; ?>
         </div>

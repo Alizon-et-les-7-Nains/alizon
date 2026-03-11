@@ -392,7 +392,7 @@
         margin-left: 30%;
     }
 
-    .pagination a, .pagination span {
+    .lien-page-numero {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -401,7 +401,20 @@
         min-height: 45px;
         background-color: $color-blue;
         color: $color-white;
-        border: 2px solid #000000;
+        border-radius: 4px;
+        text-decoration: none;
+        font-family: $font-roboto;
+        font-size: 26px;
+    }
+
+    .avancer-reculer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.3em;
+        min-width: 45px;
+        min-height: 45px;
+        color: black;
         border-radius: 4px;
         text-decoration: none;
         font-family: $font-roboto;
@@ -409,8 +422,7 @@
     }
 
     .pagination span.disabled {
-        background-color: #cccccc;
-        color: #666666;
+        color: #585858;
     }
 
     .btnToggleFilters {
