@@ -444,14 +444,23 @@ if (isset($_SESSION['message_panier'])) {
         </div>
         <div class="ligneActions">
             <img src="../../public/images/tec.png" alt="">
-        <p>
-            Consulter les <b><?php if (isset($_SESSION['user_id'])) {
-            echo '<a href="legalesConnecte.php">conditions générales de vente</a>';
-        } else { 
-            echo '<a href="legalesNonConnecte.php">conditions générales de vente</a>';
-        } ?>
-        </b></p>
-    </div>
+            <p>
+                Consulter les <b><?php if (isset($_SESSION['user_id'])) {
+                echo '<a href="legalesConnecte.php">conditions générales de vente</a>';
+            } else { 
+                echo '<a href="legalesNonConnecte.php">conditions générales de vente</a>';
+            } ?>
+            </b></p>
+        </div>
+        <div class="ligneActions">
+            <form method="POST" action="">
+                <input type="hidden" name="idProduit" value="<?= $item['idProduit'] ?>">
+                <button type="submit" name="toggleWishlist" class="btnCoeur">
+                <img src="../../public/images/coeurRempli.svg" alt="Supprimer de la liste de souhaits" class="coeur">
+                </button>
+            </form>    
+            <p>Ajouter à ma liste de souhait</p>
+        </div>
     <hr>
     <br>
     <div id="quantite">
@@ -596,7 +605,7 @@ if ($produit['stock'] > 0) {
             // Gestion de l'affichage de la photo de profil
             $photoProfilPath = "/images/photoProfilClient/photo_profil" . $avis['idClient'];
             $extensionsPossibles = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
-            $photoProfilUrl = "../../public/images/profil.png";
+            $photoProfilUrl = "../../pligneActionsublic/images/profil.png";
 
             foreach ($extensionsPossibles as $ext) {
                 $cheminComplet = "/var/www/html" . $photoProfilPath . "." . $ext;
