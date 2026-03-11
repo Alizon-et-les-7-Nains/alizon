@@ -596,6 +596,7 @@ if (mapActiveParam) {
     barreResultat.classList.add('active');
     barreVerticale.classList.add('active');
     setTimeout(() => map.invalidateSize(), 100);
+    listeArticle.style.marginLeft = '0px';
 }
 
 function getListeAdressesVendeurs(idVendeursActifs = null) {
@@ -747,18 +748,19 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value;
-    const mapEstActive = carteAffiche.classList.contains('active');
+    const mapEstActive = carteAffiche.classList.contains('active'); // ← une seule fois ici
     let idVendeur = vendeur.value !== "" ? parseInt(vendeur.value) : "";
 
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`)
-        .then(res => {
-            if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
-            return res.json();
-        })
+    fetch(`...&mapActive=${mapEstActive}`)
+        .then(res => res.json())
         .then(data => {
             listeArticle.innerHTML = data.html;
             currentPage = page;
             resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
+
+            // ← plus de "const mapEstActive" ici, on réutilise celle du dessus
+            const newUrl = `?page=${page}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`;
+            history.pushState(null, '', newUrl);
 
             if (data.idVendeurs) {
                 listeIdVendeurs = data.idVendeurs;
@@ -769,10 +771,9 @@ function loadProduits(page = 1) {
                 setTimeout(() => map.invalidateSize(), 100);
             }
 
-            // Dans loadProduits, remplace la génération des liens de pagination :
             let pagHTML = '';
             if (data.nbPages > 1) {
-                const mapEstActive = carteAffiche.classList.contains('active'); // ← ajoute ça
+                // ← plus de "const mapEstActive" ici non plus
                 if (page > 1) pagHTML += `<a href="?page=${page-1}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink" data-page="${page-1}">« Précédent</a>`;
                 for (let i = 1; i <= data.nbPages; i++) {
                     pagHTML += `<a href="?page=${i}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
@@ -781,17 +782,11 @@ function loadProduits(page = 1) {
             }
 
             paginationDiv.innerHTML = pagHTML;
-
             pagination();
             reattacherAjouterPanier();
             isFiltering = true;
-        })
-        .catch(error => {
-            console.error('Erreur lors du chargement des produits:', error);
-            listeArticle.innerHTML = '<h1>Erreur lors du chargement des produits</h1>';
         });
 }
-
 
 // Events listeners sur les sliders
 sliderMin.addEventListener('input', () => { 
