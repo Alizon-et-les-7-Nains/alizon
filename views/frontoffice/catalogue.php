@@ -596,6 +596,7 @@ if (mapActiveParam) {
     barreResultat.classList.add('active');
     barreVerticale.classList.add('active');
     setTimeout(() => map.invalidateSize(), 100);
+    listeArticle.style.marginLeft = '0px';
 }
 
 function getListeAdressesVendeurs(idVendeursActifs = null) {
