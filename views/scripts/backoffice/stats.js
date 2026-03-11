@@ -128,7 +128,9 @@ function updateStats() {
                 argent.push(Object.values(weeksData)[month][w].argent);
             }
 
-            document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
+            document.querySelector('article h3').innerHTML = getMonthLabel(Object.keys(weeksData)[month]);
+
+            chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[Object.keys(weeksData)[month]]) ?? ''));
 
             break;
     }
