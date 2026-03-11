@@ -596,6 +596,7 @@ if (mapActiveParam) {
     barreResultat.classList.add('active');
     barreVerticale.classList.add('active');
     setTimeout(() => map.invalidateSize(), 100);
+    listeArticle.style.marginLeft = '0px';
 }
 
 function getListeAdressesVendeurs(idVendeursActifs = null) {
@@ -747,18 +748,30 @@ function loadProduits(page = 1) {
     const max = parseInt(sliderMax.value);
     const notemin = parseInt(noteInput.value);
     const catValue = categorieSelect.value;
-    const mapEstActive = carteAffiche.classList.contains('active');
+    const mapEstActive = carteAffiche.classList.contains('active'); // Get current map state
     let idVendeur = vendeur.value !== "" ? parseInt(vendeur.value) : "";
 
-    fetch(`../../controllers/filtrerProduits.php?minPrice=${min}&maxPrice=${max}&page=${page}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${catValue}&vendeur=${idVendeur}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`)
-        .then(res => {
-            if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
-            return res.json();
-        })
+    // Build URL with all parameters including mapActive
+    const url = new URL(window.location.href);
+    url.searchParams.set('page', page);
+    url.searchParams.set('search', searchQuery);
+    url.searchParams.set('mapActive', mapEstActive);
+    url.searchParams.set('minPrice', min);
+    url.searchParams.set('maxPrice', max);
+    url.searchParams.set('minNote', notemin);
+    if (catValue) url.searchParams.set('categorie', catValue);
+    if (vendeur.value) url.searchParams.set('vendeur', vendeur.value);
+    if (sortOrder) url.searchParams.set('sortOrder', sortOrder);
+
+    fetch(url.pathname + url.search)
+        .then(res => res.json())
         .then(data => {
             listeArticle.innerHTML = data.html;
             currentPage = page;
             resultat.textContent = `${data.totalProduits} produit${data.totalProduits > 1 ? 's' : ''}`;
+
+            // Update URL with current state
+            history.pushState(null, '', url.toString());
 
             if (data.idVendeurs) {
                 listeIdVendeurs = data.idVendeurs;
@@ -769,29 +782,29 @@ function loadProduits(page = 1) {
                 setTimeout(() => map.invalidateSize(), 100);
             }
 
-            // Dans loadProduits, remplace la génération des liens de pagination :
+            // Generate pagination with current map state
             let pagHTML = '';
             if (data.nbPages > 1) {
-                const mapEstActive = carteAffiche.classList.contains('active'); // ← ajoute ça
-                if (page > 1) pagHTML += `<a href="?page=${page-1}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink" data-page="${page-1}">« Précédent</a>`;
-                for (let i = 1; i <= data.nbPages; i++) {
-                    pagHTML += `<a href="?page=${i}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                if (page > 1) {
+                    url.searchParams.set('page', page-1);
+                    pagHTML += `<a href="${url.toString()}" class="pageLink" data-page="${page-1}">« Précédent</a>`;
                 }
-                if (page < data.nbPages) pagHTML += `<a href="?page=${page+1}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}" class="pageLink" data-page="${page+1}">Suivant »</a>`;
+                for (let i = 1; i <= data.nbPages; i++) {
+                    url.searchParams.set('page', i);
+                    pagHTML += `<a href="${url.toString()}" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                }
+                if (page < data.nbPages) {
+                    url.searchParams.set('page', page+1);
+                    pagHTML += `<a href="${url.toString()}" class="pageLink" data-page="${page+1}">Suivant »</a>`;
+                }
             }
 
             paginationDiv.innerHTML = pagHTML;
-
             pagination();
             reattacherAjouterPanier();
             isFiltering = true;
-        })
-        .catch(error => {
-            console.error('Erreur lors du chargement des produits:', error);
-            listeArticle.innerHTML = '<h1>Erreur lors du chargement des produits</h1>';
         });
 }
-
 
 // Events listeners sur les sliders
 sliderMin.addEventListener('input', () => { 

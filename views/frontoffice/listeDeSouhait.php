@@ -17,6 +17,13 @@ if (!isset($_SESSION['user_id'])) {
 
 $idClient = $_SESSION['user_id'];
 
+if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
+    updateWishlist($pdo, $idClient, intval($_POST['idProduit']));
+    // Redirection pour éviter la re-soumission du formulaire au refresh
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;
+}
+
 // ============================================================================
 // FONCTIONS DE GESTION DE LA LISTE DE SOUHAIT
 // ============================================================================
@@ -135,7 +142,12 @@ $wishlist = getWishlist($pdo, $idClient);
                                         </div>
                                     </div>
                                 </div>
-                                <img src="../../public/images/coeurRempli.svg" alt="Supprimer de la liste de souhaits" class="coeur" data-id="<?= $item['idProduit'] ?>">
+                                <form method="POST" action="">
+                                    <input type="hidden" name="idProduit" value="<?= $item['idProduit'] ?>">
+                                    <button type="submit" name="toggleWishlist" class="btnCoeur">
+                                        <img src="../../public/images/coeurRempli.svg" alt="Supprimer de la liste de souhaits" class="coeur">
+                                    </button>
+                                </form>                            
                             </div>
                         <?php endif; ?>
                     <?php endif; ?>
