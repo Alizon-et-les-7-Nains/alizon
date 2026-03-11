@@ -9009,6 +9009,7 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: fit-content;
 }
 .listeDeSouhait .coeur {
   height: 40px;
