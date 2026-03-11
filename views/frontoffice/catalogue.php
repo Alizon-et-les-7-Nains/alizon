@@ -12,7 +12,7 @@ $offset = ($page - 1) * $produitsParPage;
 $idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 $categoryQuery = isset($_GET['categorie']) ? trim(str_replace('_', ' ', $_GET['categorie'])) : "";
-$mapActive = isset($_GET['mapActive']) && $_GET['mapActive'] === 'true';
+$mapActive = isset($_GET['mapActive']) && $_GET['mapActive'] === 'false';
 
 $conditions = [];
 $params = [];
