@@ -7979,7 +7979,6 @@ dialog.reassort form input {
 .pageCatalogue .pagination span.disabled {
   color: #3d3c3c;
   cursor: not-allowed;
-  opacity: 0.5;
 }
 .pageCatalogue .btnToggleFilters {
   display: none;
