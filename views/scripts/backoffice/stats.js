@@ -174,7 +174,7 @@ function updateStats() {
                 argent.push(Object.values(monthsData)[year][m].argent);
             }
 
-            maxIndex = Object.keys(daysData).length - 1;
+            maxIndex = Object.keys(monthsData).length - 1;
 
 
             console.log('year : ' + year);
