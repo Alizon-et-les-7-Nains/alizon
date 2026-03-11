@@ -49,6 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         // Hachage du mot de passe avec password_hash
         $mdp_hash = password_hash($mdp_clair, PASSWORD_DEFAULT);
+
+        $date_mysql = DateTime::createFromFormat('d/m/Y', $birthdate);
                 
         try {
             // Insertion dans la base de données
