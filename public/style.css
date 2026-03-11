@@ -9013,6 +9013,8 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 }
 .listeDeSouhait .coeur {
   height: 40px;
+  background: none;
+  border: none;
 }
 .listeDeSouhait .produit {
   display: flex;
