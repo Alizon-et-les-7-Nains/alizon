@@ -23,6 +23,10 @@
 @font-face {
   font-family: "open-sans-bold-italic";
   src: url(../../public/fonts/open-sans/static/OpenSans-BoldItalic.ttf);
+  @font-face {
+    font-family: "roboto";
+    src: url(../../public/fonts/Roboto/static/Roboto-Regular.ttf);
+  }
 }
 html,
 body {
@@ -7940,10 +7944,10 @@ dialog.reassort form input {
   background-color: #273469;
   color: #fffefa;
   border: 2px solid #000000;
-  border-radius: 50%;
+  border-radius: 4px;
   text-decoration: none;
+  font-family: "roboto", sans-serif;
   font-size: 26px;
-  font-family: "berkshire", serif;
 }
 .pageCatalogue .pagination span.disabled {
   background-color: #cccccc;
