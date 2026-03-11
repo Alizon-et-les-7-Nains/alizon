@@ -501,19 +501,19 @@ $cart = getCurrentCart($pdo, $idClient);
             <?php if ($nbPages > 1): ?>
                 <?php if ($page > 1){ ?>
                     <a class="avancer-reculer" href="?page=1&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">|<</a>
-                    <a class="avancer-reculer" href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">< Précédent</a>
+                    <a class="avancer-reculer" href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><   Précédent</a>
                 <?php } else { ?>
                     <a class="avancer-reculer" class="disabled">|<</a>
-                    <span class="avancer-reculer" class="disabled">< Précédent</span>
+                    <span class="avancer-reculer" class="disabled"><   Précédent</span>
                 <?php } ?>
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
                     <a class="lien-page-numero" <?php if($i == $page) echo 'class="lien-page-numero active"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><?= $i ?></a>
                 <?php endfor; ?>
                 <?php if ($page < $nbPages) { ?>
-                    <a class="avancer-reculer" href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">Suivant ></a>
+                    <a class="avancer-reculer" href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">Suivant   ></a>
                     <a class="avancer-reculer" href="?page=<?= $nbPages ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">>|</a>
                 <?php } else { ?>
-                    <span class="avancer-reculer" class="disabled">Suivant ></span>
+                    <span class="avancer-reculer" class="disabled">Suivant   ></span>
                     <a class="avancer-reculer" class="disabled">>|</a>
                 <?php } ?>
             <?php endif; ?>
@@ -794,11 +794,25 @@ function loadProduits(page = 1) {
 
             let pagHTML = '';
             if (data.nbPages > 1) {
-                if (page > 1) pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page-1}">« Précédent</a>`;
+                if (page > 1) {
+                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="1">|<</a>`;
+                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page - 1}">< Précédent</a>`;
+                } else {
+                    pagHTML += `<span class="avancer-reculer disabled">|<</span>`;
+                    pagHTML += `<span class="avancer-reculer disabled">< Précédent</span>`;
+                }
+
                 for (let i = 1; i <= data.nbPages; i++) {
                     pagHTML += `<a href="#" class="pageLink lien-page-numero ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
                 }
-                if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page+1}">Suivant »</a>`;
+
+                if (page < data.nbPages) {
+                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page + 1}">Suivant ></a>`;
+                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${data.nbPages}">>|</a>`;
+                } else {
+                    pagHTML += `<span class="avancer-reculer disabled">Suivant ></span>`;
+                    pagHTML += `<span class="avancer-reculer disabled">>|</span>`;
+                }
             }
 
             paginationDiv.innerHTML = pagHTML;

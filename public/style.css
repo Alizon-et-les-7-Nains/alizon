@@ -7929,7 +7929,7 @@ dialog.reassort form input {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   padding: 1em;
   width: fit-content;
   margin-left: 30%;
