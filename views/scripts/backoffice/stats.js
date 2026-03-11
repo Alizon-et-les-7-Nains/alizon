@@ -98,7 +98,7 @@ function getWeekLabel(week) {
 }
 
 function getMonthLabel(month) {
-    if (!month) return;
+    if (isNaN(month)) return;
 
     console.log(month);
     console.log(moment(Object.keys(weeksData)[month], 'MM/YYYY').month());
