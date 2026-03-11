@@ -169,6 +169,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
 
                 document.querySelector('article h3').innerHTML = getWeekLabel(Object.keys(daysData)[week]);
 
+                maxIndex = Object.keys(daysData).length - 1;
+
                 break;
 
             case 'Hebdomadaire':
@@ -186,6 +188,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 const currentKey = Object.keys(weeksData)[month];
                 
                 document.querySelector('article h3').innerHTML = `${months[moment(currentKey, 'MM/YYYY').month()]} ${moment(currentKey, 'MM/YYYY').year()}`;
+
+                maxIndex = Object.keys(weeksData).length - 1;
 
                 break;
             
@@ -209,6 +213,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 document.getElementById('next').disabled = true;
 
                 document.querySelector('article h3').innerHTML = '';
+
+                maxIndex = 0;
 
                 break;
         }
