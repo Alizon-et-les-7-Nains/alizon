@@ -660,6 +660,12 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
 
 afficherPointsSurCarte();
 
+map.on('zoom', function() {
+
+   alert('Zoom, zoom, zoom, zoom, I want you in my room');
+
+});
+
 const btnCarte = document.getElementById('btnCarte');
 
 btnCarte.addEventListener('click', () => {
