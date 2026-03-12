@@ -616,6 +616,9 @@ function getListeAdressesVendeurs(idVendeursActifs = null) {
 let messageErreur = null;
 let nbVendeurs = 0;
 
+let mapMoveFromCode = false; // flag pour éviter la boucle infinie
+
+
 function afficherPointsSurCarte(idVendeursActifs = null) {
     let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
     group.clearLayers();
@@ -673,7 +676,7 @@ function getVendeursInBounds() {
     return vendeursActifs;
 }
 
-let mapMoveFromCode = false; // flag pour éviter la boucle infinie
+
 
 map.on('moveend zoomend', function() {
     if (!carteAffiche.classList.contains('active')) return;
