@@ -648,7 +648,9 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
         }
     }
     if (group.getLayers().length > 0) {
+        mapMoveFromCode = true; 
         map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
+        setTimeout(() => { mapMoveFromCode = false; }, 500);
         const nb = group.getLayers().length;
         document.querySelector('.nb-vendeurs-control').innerHTML =`<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`;
     } else {
@@ -671,10 +673,46 @@ function getVendeursInBounds() {
     return vendeursActifs;
 }
 
+let mapMoveFromCode = false; // flag pour éviter la boucle infinie
+
 map.on('moveend zoomend', function() {
     if (!carteAffiche.classList.contains('active')) return;
+    if (mapMoveFromCode) return; // on ignore si c'est nous qui avons bougé
+
     const vendeursActifs = getVendeursInBounds();
-    afficherPointsSurCarte(vendeursActifs);
+    // On met à jour les marqueurs SANS fitBounds (pour ne pas re-déclencher l'event)
+    group.clearLayers();
+    for (let i = 0; i < adresses.length; i++) {
+        const lat = adresses[i].latitude;
+        const lng = adresses[i].longitude;
+        if (lat && lng && vendeursActifs.includes(String(vendeurs[i].codeVendeur))) {
+            const marker = L.marker([lat, lng]);
+            marker.on('click', () => {
+                if (vendeur.value == vendeurs[i].codeVendeur) {
+                    vendeur.value = "";
+                } else {
+                    vendeur.value = vendeurs[i].codeVendeur;
+                }
+                loadProduits(1);
+            });
+            marker.bindTooltip(vendeurs[i].raisonSocial, {
+                permanent: true, direction: 'top',
+                offset: [0, -10], className: 'vendor-label'
+            });
+            group.addLayer(marker);
+        }
+    }
+    const nb = vendeursActifs.length;
+    document.querySelector('.nb-vendeurs-control').innerHTML = nb > 0
+        ? `<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`
+        : '<b>Aucun vendeur visible</b>';
+
+    if (vendeursActifs.length === 0) {
+        listeArticle.innerHTML = '<h1>Aucun produit disponible dans cette zone</h1>';
+        resultat.textContent = '0 résultat';
+        paginationDiv.innerHTML = '';
+        return;
+    }
 
     const idVendeursVisibles = vendeursActifs.join(',');
     fetch(`../../controllers/filtrerProduits.php?page=1&search=${encodeURIComponent(searchQuery)}&minPrice=${sliderMin.value}&maxPrice=${sliderMax.value}&sortOrder=${sortOrder}&minNote=${noteInput.value}&categorie=${encodeURIComponent(categorieSelect.value)}&vendeurs=${encodeURIComponent(idVendeursVisibles)}&mapActive=true`)
@@ -686,7 +724,6 @@ map.on('moveend zoomend', function() {
             pagination();
             reattacherAjouterPanier();
         });
-    time.sleep(2);
 });
 
 const btnCarte = document.getElementById('btnCarte');
