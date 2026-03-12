@@ -686,6 +686,7 @@ map.on('moveend zoomend', function() {
             pagination();
             reattacherAjouterPanier();
         });
+    time.sleep(2);
 });
 
 const btnCarte = document.getElementById('btnCarte');
