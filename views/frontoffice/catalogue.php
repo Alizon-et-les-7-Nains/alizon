@@ -618,7 +618,6 @@ let nbVendeurs = 0;
 
 function afficherPointsSurCarte(idVendeursActifs = null) {
     let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
-
     group.clearLayers();
 
     if (messageErreur) {
@@ -657,11 +656,36 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
         map.setView([48.174838642366915, -2.7538102129824145], 9);
     }
 }
-
 afficherPointsSurCarte();
 
-map.on('zoom', function() {
-   console.log('Zoom, zoom, zoom, zoom, I want you in my room');
+function getVendeursInBounds() {
+    const bounds = map.getBounds();
+    const vendeursActifs = [];
+    for (let i = 0; i < adresses.length; i++) {
+        const lat = adresses[i].latitude;
+        const lng = adresses[i].longitude;
+        if (lat && lng && bounds.contains([lat, lng])) {
+            vendeursActifs.push(String(vendeurs[i].codeVendeur));
+        }
+    }
+    return vendeursActifs;
+}
+
+map.on('moveend zoomend', function() {
+    if (!carteAffiche.classList.contains('active')) return;
+    const vendeursActifs = getVendeursInBounds();
+    afficherPointsSurCarte(vendeursActifs);
+
+    const idVendeursVisibles = vendeursActifs.join(',');
+    fetch(`../../controllers/filtrerProduits.php?page=1&search=${encodeURIComponent(searchQuery)}&minPrice=${sliderMin.value}&maxPrice=${sliderMax.value}&sortOrder=${sortOrder}&minNote=${noteInput.value}&categorie=${encodeURIComponent(categorieSelect.value)}&vendeurs=${encodeURIComponent(idVendeursVisibles)}&mapActive=true`)
+        .then(res => res.json())
+        .then(data => {
+            listeArticle.innerHTML = data.html;
+            resultat.textContent = `${data.totalProduits} résultat${data.totalProduits > 1 ? 's' : ''}`;
+            paginationDiv.innerHTML = '';
+            pagination();
+            reattacherAjouterPanier();
+        });
 });
 
 const btnCarte = document.getElementById('btnCarte');
