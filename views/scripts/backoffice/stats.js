@@ -209,6 +209,23 @@ function updateStats() {
             chart = new Chart(canva, monthChart(vente, argent));
     
             break;
+        
+        case 'Annuel':
+            if (!Object.keys(yearsData).length) break;
+
+            for (const y in yearsData) {
+                vente.push(yearsData[y].vente);
+                argent.push(yearsData[y].argent);
+            }
+
+            chart = new Chart(canva, yearChart(vente, argent, Object.keys(yearsData)));
+
+            document.getElementById('prev').disabled = true;
+            document.getElementById('next').disabled = true;
+            document.querySelector('article h3').innerHTML = '';
+            maxIndex = 0;
+
+            break;
     }
 
     document.getElementById('ventes').innerHTML = vente.reduce((a, b) => a + b, 0);
