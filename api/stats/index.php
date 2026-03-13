@@ -6,8 +6,6 @@ define('ROOT', $_SERVER['DOCUMENT_ROOT']);
 
 require_once ROOT . '/controllers/pdo.php';
 
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
 session_start();
 if (!isset($_SESSION['id'])) {
     http_response_code(401);
@@ -18,7 +16,9 @@ if (!isset($_SESSION['id'])) {
 $stats = [];
 
 if (isset($_GET['category'])) {
-
+    $statsSTMT = $pdo->prepare(file_get_contents(ROOT . '/queries/backoffice/stats/statsByCategory.sql'));
+    $statsSTMT->execute([urldecode($_GET['category']), $_SESSION['id']]);
+    $stats = $statsSTMT->fetchAll(PDO::FETCH_ASSOC);
 } else if (isset($_GET['product'])) {
 
 } else {
@@ -27,7 +27,7 @@ if (isset($_GET['category'])) {
     $stats = $statsSTMT->fetchAll(PDO::FETCH_ASSOC);
 }
 
-if (!$stats) {
+if ($stats === false) {
     http_response_code(500);
     echo json_encode(['500 error' => 'Impossible de résoudre les données']);
     exit();

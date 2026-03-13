@@ -1,10 +1,14 @@
-import { Chart} from 'https://cdn.jsdelivr.net/npm/chart.js/auto/+esm';
+import { Chart } from 'https://cdn.jsdelivr.net/npm/chart.js/auto/+esm';
 import { dayChart, weekChart, monthChart, yearChart } from './charts.js';
 import moment from 'https://cdn.jsdelivr.net/npm/moment/+esm';
 
-const res = await fetch('/api/stats');
-if (!res.ok) throw new Error(`HTTP ${res.status}`);
-const data = await res.json();
+async function fetchStats(apiQuery) {
+    const res = await fetch(apiQuery);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+}
+
+let data = await fetchStats('/api/stats');
 
 const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
@@ -18,7 +22,16 @@ let selected = document.querySelector('.selected');
 let index = 0;
 let maxIndex = 0;
 
-for (const d of data) {
+let sortedDaysKeys;
+let sortedWeeksKeys;
+
+function buildData() {
+    Object.keys(daysData).forEach(k => delete daysData[k]);
+    Object.keys(weeksData).forEach(k => delete weeksData[k]);
+    Object.keys(monthsData).forEach(k => delete monthsData[k]);
+    Object.keys(yearsData).forEach(k => delete yearsData[k]);
+
+    for (const d of data) {
     // Split by day
     const week = moment(d.dateCommande).format('WW/YYYY');
     const day = moment(d.dateCommande).isoWeekday();
@@ -93,19 +106,25 @@ for (const d of data) {
     yearsData[year].vente += parseInt(d.quantite);
     yearsData[year].argent += parseFloat(d.prixProduitHt) * parseInt(d.quantite);
     yearsData[year].argent = Math.round(yearsData[year].argent * 100) / 100;
+    }
+
+    sortedDaysKeys.splice(0, Infinity, ...Object.keys(daysData).sort((a, b) => a.localeCompare(b)));
+    sortedWeeksKeys.splice(0, Infinity, ...Object.keys(weeksData).sort((a, b) => a.localeCompare(b)));
 }
 
-const sortedDaysKeys = Object.keys(daysData).sort((a, b) => {
+sortedDaysKeys = Object.keys(daysData).sort((a, b) => {
     const [wa, ya] = a.split('/');
     const [wb, yb] = b.split('/');
     return ya !== yb ? ya - yb : wa - wb;
 })
 
-const sortedWeeksKeys = Object.keys(weeksData).sort((a, b) => {
+sortedWeeksKeys = Object.keys(weeksData).sort((a, b) => {
     const [ma, ya] = a.split('/');
     const [mb, yb] = b.split('/');
     return ya !== yb ? ya - yb : ma - mb;
 })
+
+buildData();
 
 let [vente, argent] = [[], []];
 let week = sortedDaysKeys.length - 1;
@@ -144,6 +163,9 @@ function updateStats() {
     switch (selected.innerHTML) {
         case 'Journalier':
             week = sortedDaysKeys.length - 1 - index;
+
+            if (!sortedDaysKeys[week] || !daysData[sortedDaysKeys[week]]) break;
+
             for (const d in daysData[sortedDaysKeys[week]]) {
                 vente.push(daysData[sortedDaysKeys[week]][d].vente);
                 argent.push(daysData[sortedDaysKeys[week]][d].argent);
@@ -156,6 +178,9 @@ function updateStats() {
         
         case 'Hebdomadaire':
             const month = sortedWeeksKeys.length - 1 - index;
+
+            if (!sortedWeeksKeys[month] || !weeksData[sortedWeeksKeys[month]]) break;
+
             for (const w in weeksData[sortedWeeksKeys[month]]) {
                 vente.push(weeksData[sortedWeeksKeys[month]][w].vente);
                 argent.push(weeksData[sortedWeeksKeys[month]][w].argent);
@@ -169,6 +194,9 @@ function updateStats() {
         
         case 'Mensuel':
             const year = Object.keys(monthsData).length - 1 - index;
+
+            if (!Object.values(monthsData)[year]) break;
+
             for (const m in Object.values(monthsData)[year]) {
                 vente.push(Object.values(monthsData)[year][m].vente);
                 argent.push(Object.values(monthsData)[year][m].argent);
@@ -223,6 +251,9 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
         switch (selected.innerHTML) {
             case 'Journalier':
                 week = sortedDaysKeys.length - 1;
+
+                if (!sortedDaysKeys[week] || !daysData[sortedDaysKeys[week]]) break;
+
                 for (const d in daysData[sortedDaysKeys[week]]) {
                     vente.push(daysData[sortedDaysKeys[week]][d].vente);
                     argent.push(daysData[sortedDaysKeys[week]][d].argent);
@@ -241,6 +272,9 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
 
             case 'Hebdomadaire':
                 const month = sortedWeeksKeys.length - 1;
+
+                if (!sortedWeeksKeys[month] || !weeksData[sortedWeeksKeys[month]]) break;
+
                 for (const w in weeksData[sortedWeeksKeys[month]]) {
                     vente.push(weeksData[sortedWeeksKeys[month]][w].vente);
                     argent.push(weeksData[sortedWeeksKeys[month]][w].argent);
@@ -259,6 +293,9 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
             
             case 'Mensuel':
                 const year = Object.keys(monthsData).length - 1;
+
+                if (!Object.values(monthsData)[year]) break;
+
                 for (const m in Object.values(monthsData)[year]) {
                     vente.push(Object.values(monthsData)[year][m].vente);
                     argent.push(Object.values(monthsData)[year][m].argent);
@@ -276,6 +313,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
                 break;
             
             case 'Annuel':
+                if (!Object.keys(yearsData).length) break;
+
                 for (const y in yearsData) {
                     vente.push(yearsData[y].vente);
                     argent.push(yearsData[y].argent);
@@ -299,3 +338,23 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
         document.getElementById('argents').innerHTML = formatted;
     })
 })
+
+document.getElementById('category').addEventListener('change', async (e) => {
+    const category = e.target.value;
+
+    data = await fetchStats(category ? `/api/stats?category=${category}` : '/api/stats');
+
+    buildData(data);
+    index = 0;
+
+    if (!sortedDaysKeys.length) {
+        chart.destroy();
+        document.getElementById('ventes').innerHTML = 0;
+        document.getElementById('argents').innerHTML = '0€';
+        document.querySelector('article h3').innerHTML = 'Aucune donnée';
+        return;
+    }
+
+    updateStats();
+    updateButtonStates();
+});
