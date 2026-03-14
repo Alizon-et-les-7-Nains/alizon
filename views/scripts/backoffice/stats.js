@@ -108,21 +108,18 @@ function buildData() {
     yearsData[year].argent = Math.round(yearsData[year].argent * 100) / 100;
     }
 
-    sortedDaysKeys.splice(0, Infinity, ...Object.keys(daysData).sort((a, b) => a.localeCompare(b)));
-    sortedWeeksKeys.splice(0, Infinity, ...Object.keys(weeksData).sort((a, b) => a.localeCompare(b)));
+    sortedDaysKeys.splice(0, Infinity, ...Object.keys(daysData).sort((a, b) => {
+        const [wa, ya] = a.split('/');
+        const [wb, yb] = b.split('/');
+        return ya !== yb ? ya - yb : wa - wb;
+    }))
+
+    sortedWeeksKeys.splice(0, Infinity, ...Object.keys(weeksData).sort((a, b) => {
+        const [ma, ya] = a.split('/');
+        const [mb, yb] = b.split('/');
+        return ya !== yb ? ya - yb : ma - mb;
+    }))
 }
-
-sortedDaysKeys.splice(0, Infinity, ...Object.keys(daysData).sort((a, b) => {
-    const [wa, ya] = a.split('/');
-    const [wb, yb] = b.split('/');
-    return ya !== yb ? ya - yb : wa - wb;
-}))
-
-sortedWeeksKeys.splice(0, Infinity, ...Object.keys(weeksData).sort((a, b) => {
-    const [ma, ya] = a.split('/');
-    const [mb, yb] = b.split('/');
-    return ya !== yb ? ya - yb : ma - mb;
-}))
 
 buildData();
 
