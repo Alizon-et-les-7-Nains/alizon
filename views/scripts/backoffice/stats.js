@@ -22,8 +22,8 @@ let selected = document.querySelector('.selected');
 let index = 0;
 let maxIndex = 0;
 
-let sortedDaysKeys;
-let sortedWeeksKeys;
+let sortedDaysKeys = [];
+let sortedWeeksKeys = [];
 
 function buildData() {
     Object.keys(daysData).forEach(k => delete daysData[k]);
