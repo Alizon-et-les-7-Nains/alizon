@@ -14,13 +14,16 @@ let data = await fetchData('/api/stats');
 
 const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
+// Stockage des données par chronologie
 const daysData = {};
 const weeksData = {};
 const monthsData = {};
 const yearsData = {};
 
+// Chronologie sélectionnée
 let selected = document.querySelector('.selected');
 
+// Gestion des pages
 let index = 0;
 let maxIndex = 0;
 
@@ -355,7 +358,8 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
     })
 })
 
-document.getElementById('category').addEventListener('change', async (e) => {
+// Filtage par catégorie
+document.getElementById('category').addEventListener('change', async e => {
     const category = e.target.value;
 
     // Modification du sélecteur de produit
@@ -369,6 +373,33 @@ document.getElementById('category').addEventListener('change', async (e) => {
 
     // Filtrage des données
     data = await fetchData(category ? `/api/stats?category=${encodeURIComponent(category)}` : '/api/stats');
+
+    buildData(data);
+    index = 0;
+
+    if (!sortedDaysKeys.length) {
+        chart.destroy();
+        document.getElementById('ventes').innerHTML = 0;
+        document.getElementById('argents').innerHTML = '0€';
+        document.querySelector('article h3').innerHTML = 'Aucune donnée';
+        return;
+    }
+
+    updateStats();
+    updateButtonStates();
+})
+
+// Filtrage par produit
+productsSelector.addEventListener('change', async e => {
+    const category = e.target.value;
+    const product = e.target.value;
+
+    console.log(product);
+
+    // Filtrage des données
+    data = await fetchData(product ? `/api/stats?product=${product}` : (category ? `/api/stats?catgory${category}` : '/api/stats'));
+
+    console.log(data);
 
     buildData(data);
     index = 0;

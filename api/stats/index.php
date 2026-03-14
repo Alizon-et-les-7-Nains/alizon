@@ -20,7 +20,9 @@ if (isset($_GET['category'])) {
     $statsSTMT->execute([urldecode($_GET['category']), $_SESSION['id']]);
     $stats = $statsSTMT->fetchAll(PDO::FETCH_ASSOC);
 } else if (isset($_GET['product'])) {
-
+    $statsSTMT = $pdo->prepare(file_get_contents(ROOT . '/queries/backoffice/stats/statsByProduct.sql'));
+    $statsSTMT->execute([urldecode($_GET['product']), $_SESSION['id']]);
+    $stats = $statsSTMT->fetchAll(PDO::FETCH_ASSOC);
 } else {
     $statsSTMT = $pdo->prepare(file_get_contents(ROOT . '/queries/backoffice/stats/stats.sql'));
     $statsSTMT->execute([$_SESSION['id']]);
