@@ -176,6 +176,9 @@ function updateStats() {
             document.querySelector('article h3').innerHTML = getWeekLabel(sortedDaysKeys[week]);
 
             chart = new Chart(canva, dayChart(vente, argent));
+
+            maxIndex = sortedDaysKeys.length - 1;
+
             break;
         
         case 'Hebdomadaire':
@@ -191,6 +194,8 @@ function updateStats() {
             document.querySelector('article h3').innerHTML = getMonthLabel(month);
 
             chart = new Chart(canva, weekChart(vente, argent, Object.keys(weeksData[sortedWeeksKeys[month]]) ?? ''));
+
+            maxIndex = sortedWeeksKeys.length - 1;
 
             break;
         
