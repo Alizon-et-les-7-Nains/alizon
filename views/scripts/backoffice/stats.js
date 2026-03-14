@@ -2,13 +2,15 @@ import { Chart } from 'https://cdn.jsdelivr.net/npm/chart.js/auto/+esm';
 import { dayChart, weekChart, monthChart, yearChart } from './charts.js';
 import moment from 'https://cdn.jsdelivr.net/npm/moment/+esm';
 
-async function fetchStats(apiQuery) {
+const productsSelector = document.getElementById('product');
+
+async function fetchData(apiQuery) {
     const res = await fetch(apiQuery);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
 }
 
-let data = await fetchStats('/api/stats');
+let data = await fetchData('/api/stats');
 
 const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
@@ -356,7 +358,17 @@ document.querySelectorAll('button:not(#prev, #next)').forEach(btn => {
 document.getElementById('category').addEventListener('change', async (e) => {
     const category = e.target.value;
 
-    data = await fetchStats(category ? `/api/stats?category=${category}` : '/api/stats');
+    // Modification du sélecteur de produit
+    productsSelector.innerHTML = '<option value="" default>Aucun filtre de produit</option>';
+
+    const products = await fetchData(`/api/products?category=${encodeURIComponent(category)}`);
+
+    for (const product of products) {
+        productsSelector.innerHTML += `<option value="${product['nom']}">${product['nom']}</option>`;
+    }
+
+    // Filtrage des données
+    data = await fetchData(category ? `/api/stats?category=${encodeURIComponent(category)}` : '/api/stats');
 
     buildData(data);
     index = 0;
@@ -371,4 +383,4 @@ document.getElementById('category').addEventListener('change', async (e) => {
 
     updateStats();
     updateButtonStates();
-});
+})
