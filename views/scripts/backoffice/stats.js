@@ -387,6 +387,7 @@ document.getElementById('category').addEventListener('change', async e => {
         document.getElementById('ventes').innerHTML = 0;
         document.getElementById('argents').innerHTML = '0€';
         document.querySelector('article h3').innerHTML = 'Aucune donnée';
+        updateButtonStates();
         return;
     }
 
@@ -414,6 +415,7 @@ productsSelector.addEventListener('change', async e => {
         document.getElementById('ventes').innerHTML = 0;
         document.getElementById('argents').innerHTML = '0€';
         document.querySelector('article h3').innerHTML = 'Aucune donnée';
+        updateButtonStates();
         return;
     }
 
