@@ -552,6 +552,7 @@ const noteInput = document.getElementById('note');
 const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
+let fitmap = true;
 
 let products = <?= json_encode($allProducts) ?>;
 let vendeurs = <?= json_encode($vendeurs) ?>;
@@ -616,7 +617,7 @@ function getListeAdressesVendeurs(idVendeursActifs = null) {
 let messageErreur = null;
 let nbVendeurs = 0;
 
-let fitmap = true;
+
 let mapMoveFromCode = false;
 
 
