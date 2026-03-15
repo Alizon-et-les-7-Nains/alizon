@@ -616,6 +616,7 @@ function getListeAdressesVendeurs(idVendeursActifs = null) {
 let messageErreur = null;
 let nbVendeurs = 0;
 
+let fitmap = true;
 let mapMoveFromCode = false;
 
 
