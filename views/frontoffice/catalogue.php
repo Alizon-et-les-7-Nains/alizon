@@ -616,7 +616,7 @@ function getListeAdressesVendeurs(idVendeursActifs = null) {
 let messageErreur = null;
 let nbVendeurs = 0;
 
-let mapMoveFromCode = false; // flag pour éviter la boucle infinie
+let mapMoveFromCode = false;
 
 
 function afficherPointsSurCarte(idVendeursActifs = null) {
@@ -678,7 +678,18 @@ function getVendeursInBounds() {
 
 
 
+let pendingMoveFromCode = 0;
+
+// Dans afficherPointsSurCarte(), avant fitBounds :
+pendingMoveFromCode++;
+map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
+
+// Dans le listener moveend :
 map.on('moveend zoomend', function() {
+    if (pendingMoveFromCode > 0) {
+        pendingMoveFromCode--;
+        return; // C'était nous, on ignore
+    }
     if (!carteAffiche.classList.contains('active')) return;
     if (mapMoveFromCode) return; // on ignore si c'est nous qui avons bougé
 
