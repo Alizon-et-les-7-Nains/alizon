@@ -621,7 +621,7 @@ let mapMoveFromCode = false;
 
 let pendingMoveFromCode = 0;
 
-function afficherPointsSurCarte(idVendeursActifs = null) {
+function afficherPointsSurCarte(idVendeursActifs = null, fitmap = true) {
     let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
     group.clearLayers();
 
@@ -654,9 +654,10 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
     }
 
     if (group.getLayers().length > 0) {
-        // On incrémente AVANT fitBounds car l'event peut fire de façon synchrone
-        pendingMoveFromCode++;
-        map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
+        if (fitMap) {
+            pendingMoveFromCode++;
+            map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
+        }
         const nb = group.getLayers().length;
         document.querySelector('.nb-vendeurs-control').innerHTML =
             `<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`;
@@ -752,7 +753,7 @@ map.on('moveend zoomend', function() {
 
             if (data.idVendeurs) {
                 listeIdVendeurs = data.idVendeurs;
-                afficherPointsSurCarte(data.idVendeurs);
+                afficherPointsSurCarte(data.idVendeurs, false);
             }
 
             let pagHTML = '';
@@ -914,7 +915,7 @@ function loadProduits(page = 1) {
 
             if (data.idVendeurs) {
                 listeIdVendeurs = data.idVendeurs;
-                afficherPointsSurCarte(data.idVendeurs);
+                afficherPointsSurCarte(data.idVendeurs, false);
             }
 
             let pagHTML = '';
