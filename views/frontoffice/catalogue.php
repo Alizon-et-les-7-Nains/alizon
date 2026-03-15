@@ -552,7 +552,7 @@ const noteInput = document.getElementById('note');
 const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
-let fitmap = true;
+let fitMap = true;
 
 let products = <?= json_encode($allProducts) ?>;
 let vendeurs = <?= json_encode($vendeurs) ?>;
