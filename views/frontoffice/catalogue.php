@@ -398,7 +398,7 @@ $cart = getCurrentCart($pdo, $idClient);
     <div id="vertical-bar" style="width: 5px; background-color: black;"></div>
 
     <div class="products-section">
-        <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
+        <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : '"' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
         <section class="listeArticle">
             <?php 
@@ -728,16 +728,60 @@ map.on('moveend zoomend', function() {
         return;
     }
 
-    // ✅ Fetch des produits filtrés par les vendeurs VISIBLES sur la carte
     const idVendeursVisibles = vendeursActifs.join(',');
     fetch(`../../controllers/filtrerProduits.php?page=1&search=${encodeURIComponent(searchQuery)}&minPrice=${sliderMin.value}&maxPrice=${sliderMax.value}&sortOrder=${sortOrder}&minNote=${noteInput.value}&categorie=${encodeURIComponent(categorieSelect.value)}&vendeurs=${encodeURIComponent(idVendeursVisibles)}&mapActive=true`)
         .then(res => res.json())
         .then(data => {
             listeArticle.innerHTML = data.html;
             resultat.textContent = `${data.totalProduits} résultat${data.totalProduits > 1 ? 's' : ''}`;
-            paginationDiv.innerHTML = '';
+
+            const newUrl = `?page=${page}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`;
+            history.pushState(null, '', newUrl);
+
+            if (mapEstActive) {
+                carteAffiche.classList.add('active');
+                barreResultat.classList.add('active');
+                barreVerticale.classList.add('active');
+                setTimeout(() => map.invalidateSize(), 100);
+                listeArticle.style.marginLeft = '0px';
+            } else {
+                carteAffiche.classList.remove('active');
+                barreResultat.classList.remove('active');
+                barreVerticale.classList.remove('active');
+            }
+
+            if (data.idVendeurs) {
+                listeIdVendeurs = data.idVendeurs;
+                afficherPointsSurCarte(data.idVendeurs);
+            }
+
+            let pagHTML = '';
+            if (data.nbPages > 1) {
+                if (page > 1) {
+                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="1">|<</a>`;
+                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page - 1}">< Précédent</a>`;
+                } else {
+                    pagHTML += `<span class="avancer-reculer disabled">|<</span>`;
+                    pagHTML += `<span class="avancer-reculer disabled">< Précédent</span>`;
+                }
+
+                for (let i = 1; i <= data.nbPages; i++) {
+                    pagHTML += `<a href="#" class="pageLink lien-page-numero ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+                }
+
+                if (page < data.nbPages) {
+                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page + 1}">Suivant ></a>`;
+                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${data.nbPages}">>|</a>`;
+                } else {
+                    pagHTML += `<span class="avancer-reculer disabled">Suivant ></span>`;
+                    pagHTML += `<span class="avancer-reculer disabled">>|</span>`;
+                }
+            }
+
+            paginationDiv.innerHTML = pagHTML;
             pagination();
             reattacherAjouterPanier();
+            isFiltering = true;
         });
 });
 

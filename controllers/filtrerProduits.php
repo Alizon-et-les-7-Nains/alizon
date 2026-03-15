@@ -16,7 +16,7 @@ $sortOrder = $_GET['sortOrder'] ?? '';
 $noteMin   = (float)($_GET['minNote'] ?? 0);
 $categorie = isset($_GET['categorie']) ? str_replace('_', ' ', $_GET['categorie']) : '';
 $vendeur   = $_GET['vendeur'] ?? '';
-$vendeurs  = $_GET['vendeurs'] ?? ''; // IDs séparés par virgule (filtre carte)
+$vendeurs  = $_GET['vendeurs'] ?? '';
 $recherche = trim($_GET['search'] ?? '');
 
 $params = [
