@@ -619,6 +619,8 @@ let nbVendeurs = 0;
 let mapMoveFromCode = false;
 
 
+let pendingMoveFromCode = 0;
+
 function afficherPointsSurCarte(idVendeursActifs = null) {
     let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
     group.clearLayers();
@@ -650,12 +652,14 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
             group.addLayer(marker);
         }
     }
+
     if (group.getLayers().length > 0) {
-        mapMoveFromCode = true; 
+        // On incrémente AVANT fitBounds car l'event peut fire de façon synchrone
+        pendingMoveFromCode++;
         map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
-        setTimeout(() => { mapMoveFromCode = false; }, 500);
         const nb = group.getLayers().length;
-        document.querySelector('.nb-vendeurs-control').innerHTML =`<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`;
+        document.querySelector('.nb-vendeurs-control').innerHTML =
+            `<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`;
     } else {
         document.querySelector('.nb-vendeurs-control').innerHTML = '<b>-------------</b>';
         map.setView([48.174838642366915, -2.7538102129824145], 9);
@@ -677,24 +681,19 @@ function getVendeursInBounds() {
 }
 
 
-
-let pendingMoveFromCode = 0;
-
 // Dans afficherPointsSurCarte(), avant fitBounds :
-pendingMoveFromCode++;
-map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
-
-// Dans le listener moveend :
 map.on('moveend zoomend', function() {
+    // Ignorer les events déclenchés par notre propre fitBounds
     if (pendingMoveFromCode > 0) {
         pendingMoveFromCode--;
-        return; // C'était nous, on ignore
+        return;
     }
+
     if (!carteAffiche.classList.contains('active')) return;
-    if (mapMoveFromCode) return; // on ignore si c'est nous qui avons bougé
 
     const vendeursActifs = getVendeursInBounds();
-    // On met à jour les marqueurs SANS fitBounds (pour ne pas re-déclencher l'event)
+
+    // Redessiner les marqueurs SANS fitBounds pour ne pas re-déclencher l'event
     group.clearLayers();
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
@@ -716,6 +715,7 @@ map.on('moveend zoomend', function() {
             group.addLayer(marker);
         }
     }
+
     const nb = vendeursActifs.length;
     document.querySelector('.nb-vendeurs-control').innerHTML = nb > 0
         ? `<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`
@@ -728,6 +728,7 @@ map.on('moveend zoomend', function() {
         return;
     }
 
+    // ✅ Fetch des produits filtrés par les vendeurs VISIBLES sur la carte
     const idVendeursVisibles = vendeursActifs.join(',');
     fetch(`../../controllers/filtrerProduits.php?page=1&search=${encodeURIComponent(searchQuery)}&minPrice=${sliderMin.value}&maxPrice=${sliderMax.value}&sortOrder=${sortOrder}&minNote=${noteInput.value}&categorie=${encodeURIComponent(categorieSelect.value)}&vendeurs=${encodeURIComponent(idVendeursVisibles)}&mapActive=true`)
         .then(res => res.json())
