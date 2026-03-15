@@ -623,6 +623,29 @@ let mapMoveFromCode = false;
 
 let pendingMoveFromCode = 0;
 
+function buildPaginationHTML(page, nbPages) {
+    let pagHTML = '';
+    if (nbPages <= 1) return pagHTML;
+
+    pagHTML += page > 1
+        ? `<a href="#" class="pageLink avancer-reculer" data-page="1">|<</a>
+           <a href="#" class="pageLink avancer-reculer" data-page="${page - 1}">< Précédent</a>`
+        : `<span class="avancer-reculer disabled">|<</span>
+           <span class="avancer-reculer disabled">< Précédent</span>`;
+
+    for (let i = 1; i <= nbPages; i++) {
+        pagHTML += `<a href="#" class="pageLink lien-page-numero ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+    }
+
+    pagHTML += page < nbPages
+        ? `<a href="#" class="pageLink avancer-reculer" data-page="${page + 1}">Suivant ></a>
+           <a href="#" class="pageLink avancer-reculer" data-page="${nbPages}">>|</a>`
+        : `<span class="avancer-reculer disabled">Suivant ></span>
+           <span class="avancer-reculer disabled">>|</span>`;
+
+    return pagHTML;
+}
+
 function afficherPointsSurCarte(idVendeursActifs = null, fitmap = true) {
     let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
     group.clearLayers();
@@ -727,15 +750,17 @@ map.on('moveend zoomend', function() {
     if (vendeursActifs.length === 0) {
         listeArticle.innerHTML = '<h1>Aucun produit disponible dans cette zone</h1>';
         resultat.textContent = '0 résultat';
-        paginationDiv.innerHTML = '';
         return;
     }
 
     const idVendeursVisibles = vendeursActifs.join(',');
+
+    const pageToLoad = 1;
     fetch(`../../controllers/filtrerProduits.php?page=1&search=${encodeURIComponent(searchQuery)}&minPrice=${sliderMin.value}&maxPrice=${sliderMax.value}&sortOrder=${sortOrder}&minNote=${noteInput.value}&categorie=${encodeURIComponent(categorieSelect.value)}&vendeurs=${encodeURIComponent(idVendeursVisibles)}&mapActive=true`)
         .then(res => res.json())
         .then(data => {
             listeArticle.innerHTML = data.html;
+            currentPage = pageToLoad;
             resultat.textContent = `${data.totalProduits} résultat${data.totalProduits > 1 ? 's' : ''}`;
 
             const newUrl = `?page=${page}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`;
@@ -758,30 +783,7 @@ map.on('moveend zoomend', function() {
                 afficherPointsSurCarte(data.idVendeurs, false);
             }
 
-            let pagHTML = '';
-            if (data.nbPages > 1) {
-                if (page > 1) {
-                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="1">|<</a>`;
-                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page - 1}">< Précédent</a>`;
-                } else {
-                    pagHTML += `<span class="avancer-reculer disabled">|<</span>`;
-                    pagHTML += `<span class="avancer-reculer disabled">< Précédent</span>`;
-                }
-
-                for (let i = 1; i <= data.nbPages; i++) {
-                    pagHTML += `<a href="#" class="pageLink lien-page-numero ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
-                }
-
-                if (page < data.nbPages) {
-                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page + 1}">Suivant ></a>`;
-                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${data.nbPages}">>|</a>`;
-                } else {
-                    pagHTML += `<span class="avancer-reculer disabled">Suivant ></span>`;
-                    pagHTML += `<span class="avancer-reculer disabled">>|</span>`;
-                }
-            }
-
-            paginationDiv.innerHTML = pagHTML;
+            paginationDiv.innerHTML = buildPaginationHTML(pageToLoad, data.nbPages);
             pagination();
             reattacherAjouterPanier();
             isFiltering = true;
@@ -893,6 +895,12 @@ function loadProduits(page = 1) {
     const mapEstActive = carteAffiche.classList.contains('active');
     let idVendeur = vendeur.value !== "" ? parseInt(vendeur.value) : "";
 
+    let vendeursParam = "";
+    if (mapEstActive) {
+        const vendeursInBounds = getVendeursInBounds();
+        vendeursParam = `&vendeurs=${encodeURIComponent(vendeursInBounds.join(','))}`;
+    }
+
     fetch(`../../controllers/filtrerProduits.php?page=${page}&search=${encodeURIComponent(searchQuery)}&minPrice=${min}&maxPrice=${max}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${encodeURIComponent(catValue)}&vendeur=${idVendeur}&mapActive=${mapEstActive}`)
         .then(res => res.json())
         .then(data => {
@@ -920,34 +928,11 @@ function loadProduits(page = 1) {
                 afficherPointsSurCarte(data.idVendeurs, false);
             }
 
-            let pagHTML = '';
-            if (data.nbPages > 1) {
-                if (page > 1) {
-                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="1">|<</a>`;
-                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page - 1}">< Précédent</a>`;
-                } else {
-                    pagHTML += `<span class="avancer-reculer disabled">|<</span>`;
-                    pagHTML += `<span class="avancer-reculer disabled">< Précédent</span>`;
-                }
-
-                for (let i = 1; i <= data.nbPages; i++) {
-                    pagHTML += `<a href="#" class="pageLink lien-page-numero ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
-                }
-
-                if (page < data.nbPages) {
-                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${page + 1}">Suivant ></a>`;
-                    pagHTML += `<a href="#" class="pageLink avancer-reculer" data-page="${data.nbPages}">>|</a>`;
-                } else {
-                    pagHTML += `<span class="avancer-reculer disabled">Suivant ></span>`;
-                    pagHTML += `<span class="avancer-reculer disabled">>|</span>`;
-                }
-            }
-
-            paginationDiv.innerHTML = pagHTML;
+            paginationDiv.innerHTML = buildPaginationHTML(page, data.nbPages);
             pagination();
             reattacherAjouterPanier();
             isFiltering = true;
-        });
+    });
 }
 
 // Events listeners sur les sliders
