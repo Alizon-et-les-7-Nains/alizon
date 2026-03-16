@@ -54,7 +54,7 @@
                 <label for="toutSelectionner">Tout Sélectionner</label>
 
                 <input type="submit" value="Générer le catalogue" id="btn-genererCatalogue">
-            </form>
+            
 
             <h1>Produits en Vente</h1>
             <div class = "ligneProduit">
@@ -256,6 +256,7 @@
                 $enRemise = !empty($remiseActive) && $tauxRemise > 0;
                 $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
             ?>
+            </form>
                 
             <section>
                 <article>
