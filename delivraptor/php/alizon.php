@@ -58,7 +58,7 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
     foreach ($produits as $produit) {
         $list += "$produit, ";
     }
-    $list = rtrim($list, ',');
+    $list = substr($list, 0, -1);
 
     // Confirmation de commande pour le client
     try {
