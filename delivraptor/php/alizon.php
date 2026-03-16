@@ -232,6 +232,12 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             throw new Exception("Erreur lors de la mise à jour du stock.");
         }
 
+        try {
+            notifCommande($pdo, $idCommande, $idClient, $idPanier);
+        } catch (Exception $e) {
+            throw new Exception("Erreur lors de l'envoi des notifications de commande : " . $e->getMessage());
+        }
+
         $stmtVider = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier = ?");
         if (!$stmtVider->execute([$idPanier])) {
             throw new Exception("Erreur lors du vidage du panier.");
