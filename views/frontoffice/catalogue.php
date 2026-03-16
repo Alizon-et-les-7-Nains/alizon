@@ -680,7 +680,6 @@ function afficherPointsSurCarte(idVendeursActifs = null, fitMap = true) {
 
     if (group.getLayers().length > 0) {
         if (fitMap) {
-            pendingMoveFromCode++;
             map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
         }
         const nb = group.getLayers().length;
@@ -707,13 +706,8 @@ function getVendeursInBounds() {
 }
 
 
-// Dans afficherPointsSurCarte(), avant fitBounds :
 map.on('moveend zoomend', function() {
-    // Ignorer les events déclenchés par notre propre fitBounds
-    if (pendingMoveFromCode > 0) {
-        pendingMoveFromCode--;
-        return;
-    }
+
 
     if (!carteAffiche.classList.contains('active')) return;
 
