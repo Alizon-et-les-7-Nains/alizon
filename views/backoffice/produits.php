@@ -46,8 +46,20 @@
 
         <main class="produitBackOffice">
 
-            <h1>Produits en Vente</h1>
-            <div class = "ligneProduit">
+            <h1>Générer un catalogue</h1>
+            
+            <div class="genererCatalogue">
+                <input type="checkbox" name="toutDeselectionner" id="toutDeselectionner">
+                <label for="toutDeselectionner">Tout désélectionner</label>
+
+                <input type="checkbox" name="toutSelectionner" id="toutSelectionner">
+                <label for="toutSelectionner">Tout sélectionner</label>
+
+                <button type="button">Générer le catalogue</button>
+
+                <h1>Produits en Vente</h1>
+                <div class = "ligneProduit">
+            </div>
 
             <?php 
             //on parcourt les produits en vente
@@ -78,6 +90,8 @@
                 
             <section>
                 <article>
+                    <input type="checkbox" name="selection" id="selection">
+                    
                     <img class="produit" src="<?php echo $produitEnVente[$i]['url'];?>" alt="">
 
                     <div class="nomEtEvaluation">

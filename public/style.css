@@ -1995,6 +1995,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: column;
   align-items: center;
 }
+.produitBackOffice article input[type=checkbox] {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+}
 .produitBackOffice .nomEtEvaluation {
   display: flex;
   flex-direction: row;
@@ -7948,7 +7955,6 @@ dialog.reassort form input {
   font-size: 20px;
   font-weight: 500;
   transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 4px rgba(39, 52, 105, 0.2);
 }
 .pageCatalogue .lien-page-numero.active {
   background-color: #fffefa;
@@ -7956,7 +7962,6 @@ dialog.reassort form input {
   border: 2px solid #273469;
   font-weight: bold;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(39, 52, 105, 0.25);
   cursor: default;
   pointer-events: none;
 }
@@ -9030,26 +9035,24 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.btnCoeur {
-  height: 40px;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
 .listeDeSouhait {
   font-family: "Lora", serif;
   color: #273469;
 }
 .listeDeSouhait main {
   padding: 10px 40px;
-  min-height: 64vh;
 }
 .listeDeSouhait .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: fit-content;
+}
+.listeDeSouhait .btnCoeur {
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 .listeDeSouhait .produit {
   display: flex;
