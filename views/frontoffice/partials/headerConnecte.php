@@ -52,6 +52,7 @@ $listeCategories = $query->fetchAll(PDO::FETCH_ASSOC);
         <div id="triangle-codeHeader"></div>
         <a href="../frontoffice/compteClient.php">Mon compte</a>
         <a href="../frontoffice/commandes.php">Mes commandes</a>
+        <a href="../frontoffice/listeDeSouhait.php">Liste de souhaits</a>
         <a href="../frontoffice/notifications.php">Mes notifications</a>
         <a href="../frontoffice/mesAvis.php">Mes commentaires</a>
         <a href="../frontoffice/legalesConnecte.php" class="separation">Mentions légales</a>
@@ -76,14 +77,14 @@ const searchbar = document.getElementById('searchbar');
 // Redirection vers la page catalogue avec le terme de recherche
 loupe.addEventListener('click', () => {
     searchQuery = searchbar.value.trim();
-    window.location.href = `catalogue.php?search=${encodeURIComponent(searchQuery)}`;
+    window.location.href = `catalogue.php?page=1&search=${encodeURIComponent(searchQuery)}`;
 });
 
 // Cliquer sur "entrée" dans la barre de recherche déclenche la recherche
 window.addEventListener("keydown", function(event) {
     if (event.key === "Enter" && document.activeElement === searchbar) {
         searchQuery = searchbar.value.trim();
-        window.location.href = `catalogue.php?search=${encodeURIComponent(searchQuery)}`;
+        window.location.href = `catalogue.php?page=1&search=${encodeURIComponent(searchQuery)}`;
     }
 });
 </script>

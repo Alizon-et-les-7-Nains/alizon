@@ -9,10 +9,6 @@
         padding: 10px 40px;
     }
 
-    .ensembleProduits {
-        column-count: 2;
-    }
-
     .container {
         display: flex;
         align-items: center;
@@ -24,6 +20,7 @@
         height: 40px;
         background: none;
         border: none;
+        cursor: pointer;
     }
     
     .produit {
@@ -36,7 +33,7 @@
         padding: 15px 10px;
         margin: 25px;
         height: 170px;
-        overflow: auto;
+        overflow: hidden;
         h1, h3, p {
             margin: 0;
         }

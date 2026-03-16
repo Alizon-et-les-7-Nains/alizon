@@ -23,6 +23,10 @@
 @font-face {
   font-family: "open-sans-bold-italic";
   src: url(../../public/fonts/open-sans/static/OpenSans-BoldItalic.ttf);
+  @font-face {
+    font-family: "roboto";
+    src: url(../../public/fonts/Roboto/static/Roboto-Regular.ttf);
+  }
 }
 html,
 body {
@@ -1974,6 +1978,25 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-family: "lora";
   font-size: 40px;
 }
+.produitBackOffice #genererCatalogue label {
+  font-size: 16px;
+  margin-left: 0.25em;
+  margin-right: 1em;
+  font-family: "open-sans";
+  color: #273469;
+  font-weight: bold;
+}
+.produitBackOffice input[type=submit] {
+  transition: all 0.2s ease;
+  margin-left: 1em;
+  padding: 1em;
+  border-radius: 16px;
+  border: none;
+  background-color: #273469;
+  color: #fffefa;
+  font-size: 15px;
+  cursor: pointer;
+}
 .produitBackOffice section {
   display: flex;
   flex-direction: column;
@@ -1990,6 +2013,14 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.produitBackOffice article .select {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 .produitBackOffice .nomEtEvaluation {
   display: flex;
@@ -7925,12 +7956,11 @@ dialog.reassort form input {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   padding: 1em;
-  width: fit-content;
-  margin-left: 30%;
+  width: 100%;
 }
-.pageCatalogue .pagination a, .pageCatalogue .pagination span {
+.pageCatalogue .lien-page-numero {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7939,15 +7969,45 @@ dialog.reassort form input {
   min-height: 45px;
   background-color: #273469;
   color: #fffefa;
-  border: 2px solid #000000;
-  border-radius: 50%;
+  border-radius: 8px;
   text-decoration: none;
-  font-size: 26px;
-  font-family: "berkshire", serif;
+  font-family: "roboto", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+.pageCatalogue .lien-page-numero.active {
+  background-color: #fffefa;
+  color: #273469;
+  border: 2px solid #273469;
+  font-weight: bold;
+  transform: translateY(-2px);
+  cursor: default;
+  pointer-events: none;
+}
+.pageCatalogue .avancer-reculer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3em 0;
+  min-width: 45px;
+  min-height: 45px;
+  color: #273469;
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: "roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+.pageCatalogue .avancer-reculer.disabled {
+  color: #6c6c6c;
+  cursor: not-allowed;
 }
 .pageCatalogue .pagination span.disabled {
-  background-color: #cccccc;
-  color: #666666;
+  color: #6c6c6c;
+  cursor: not-allowed;
 }
 .pageCatalogue .btnToggleFilters {
   display: none;
@@ -9002,9 +9062,6 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 .listeDeSouhait main {
   padding: 10px 40px;
 }
-.listeDeSouhait .ensembleProduits {
-  column-count: 2;
-}
 .listeDeSouhait .container {
   display: flex;
   align-items: center;
@@ -9015,6 +9072,7 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   height: 40px;
   background: none;
   border: none;
+  cursor: pointer;
 }
 .listeDeSouhait .produit {
   display: flex;
@@ -9026,7 +9084,7 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   padding: 15px 10px;
   margin: 25px;
   height: 170px;
-  overflow: auto;
+  overflow: hidden;
 }
 .listeDeSouhait .produit h1, .listeDeSouhait .produit h3, .listeDeSouhait .produit p {
   margin: 0;

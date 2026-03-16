@@ -108,7 +108,7 @@ $wishlist = getWishlist($pdo, $idClient);
     <main>
         <h1 class="titre">Liste de souhaits</h1>
 
-        <section class="ensembleProduits">
+        <?php if (count($wishlist) > 1) echo '<section class="ensembleProduits" style="column-count: 2;">'; else echo '<section class="ensembleProduits">' ?>
             <?php if ($wishlist) : ?>
                 <?php foreach ($wishlist as $item) : ?>
                     <?php if (isset($item['idProduit'])) : ?>
@@ -145,7 +145,7 @@ $wishlist = getWishlist($pdo, $idClient);
                                 <form method="POST" action="">
                                     <input type="hidden" name="idProduit" value="<?= $item['idProduit'] ?>">
                                     <button type="submit" name="toggleWishlist" class="btnCoeur">
-                                        <img src="../../public/images/coeurRempli.svg" alt="Supprimer de la liste de souhaits" class="coeur">
+                                        <img src="../../public/images/coeurVide.svg" alt="Supprimer de la liste de souhaits" class="coeur">
                                     </button>
                                 </form>                            
                             </div>

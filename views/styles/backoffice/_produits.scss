@@ -11,6 +11,8 @@
     margin: 0;
 }
 
+
+
 .produitBackOffice{
 
     a{
@@ -30,6 +32,29 @@
         }
     }
 
+    #genererCatalogue{
+        label{
+            font-size: 16px;
+            margin-left: 0.25em;
+            margin-right: 1em;
+            font-family: "open-sans";
+            color: $color-blue;
+            font-weight: bold;
+        }
+    }
+
+    input[type = "submit"]{
+        transition: all 0.2s ease;
+        margin-left: 1em;
+        padding: 1em;
+        border-radius: 16px;
+        border: none;
+        background-color: $color-blue;
+        color: $color-white;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
     section{
         display: flex;
         flex-direction: column;
@@ -47,6 +72,15 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        .select{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
     }
 
     .nomEtEvaluation{
@@ -193,6 +227,8 @@
         display: flex;
         justify-content: space-between;
     }
+
+    
 
     
 }

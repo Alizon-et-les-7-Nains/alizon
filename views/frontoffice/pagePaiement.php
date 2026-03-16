@@ -111,46 +111,6 @@ function getVendeursForCart($pdo, $cart) {
     return $vendeurs;
 }
 
-
-/**
- * Met à jour le stock des produits après la création d'une commande
- *
- * Cette fonction récupère tous les produits du panier et diminue leur stock
- * en fonction de la quantité commandée.
- *
- * Parametres :
- *     $pdo L'instance de connexion à la base de données PDO
- *     $idPanier L'ID du panier dont les produits ont été commandés
- *
- * Retourne :
- *     true si la mise à jour s'est déroulée avec succès
- *     false en cas d'erreur
- */
-function updateStockAfterOrder($pdo, $idPanier) {
-    try {
-        // Récupère tous les produits du panier avec leurs quantités
-        $sql = "SELECT pap.idProduit, pap.quantiteProduit 
-                FROM _produitAuPanier pap 
-                WHERE pap.idPanier = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$idPanier]);
-        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        // Pour chaque produit, diminue le stock de la quantité commandée
-        foreach ($items as $item) {
-            $updateSql = "UPDATE _produit SET stock = stock - ? WHERE idProduit = ?";
-            $updateStmt = $pdo->prepare($updateSql);
-            $updateStmt->execute([$item['quantiteProduit'], $item['idProduit']]);
-        }
-        
-        return true;
-    } catch (Exception $e) {
-        // Enregistre l'erreur dans les logs du serveur
-        error_log("Erreur mise à jour stock: " . $e->getMessage());
-        return false;
-    }
-}
-
 /**
  * Enregistre l'adresse de facturation d'un client dans la base de données.
  *

@@ -360,7 +360,6 @@ $cart = getCurrentCart($pdo, $idClient);
                             $total = str_replace(',', '.', $total);
                             $total = preg_replace('/[^0-9.]/', '', $total);
 
-                            //$totalTTC = (float)$total*1.2;
                             $totalTTC = (float)$total;
                             $totalTTC = round($totalTTC, 2);
                             ?>
