@@ -116,7 +116,7 @@ unset($_SESSION['form_data']);
 
                     <div class="col-md-12">
                         <label>Complément d'adresse</label>
-                        <input type="text" name="complAdresse"
+                        <input type="text" name="complAdresse" required class="form-control"
                             value="<?= htmlspecialchars($complAdresse) ?>">
                     </div>
 
