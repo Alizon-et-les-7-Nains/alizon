@@ -903,7 +903,7 @@ if (toutSelectionnerOuPas.checked) {
         });
     });
 } else {
-    document.querySelector("#genererCatalogue label").value = "Tout Désélectionner";
+    document.querySelector("#genererCatalogue label").innerHTML = "Tout Désélectionner";
         toutSelectionnerOuPas.addEventListener("change", () => {
         const checkboxes = document.querySelectorAll(".select");
         checkboxes.forEach(checkbox => {
@@ -911,3 +911,19 @@ if (toutSelectionnerOuPas.checked) {
         });
     });
 }
+
+const checkboxes = document.querySelectorAll(".select");
+
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", () => {
+        const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+        if (allChecked) {
+            toutSelectionnerOuPas.checked = true;
+            document.querySelector("#genererCatalogue label").innerHTML = "Tout Désélectionner";
+        }
+        else {
+            toutSelectionnerOuPas.checked = false;
+            document.querySelector("#genererCatalogue label").innerHTML = "Tout Sélectionner";
+        } 
+    });
+});
