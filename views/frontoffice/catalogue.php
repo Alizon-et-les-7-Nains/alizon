@@ -894,8 +894,8 @@ function loadProduits(page = 1) {
         vendeursParam = `&vendeurs=${encodeURIComponent(vendeursInBounds.join(','))}`;
     }
 
-    fetch(`../../controllers/filtrerProduits.php?page=${page}&search=${encodeURIComponent(searchQuery)}&minPrice=${min}&maxPrice=${max}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${encodeURIComponent(catValue)}&vendeur=${idVendeur}&mapActive=${mapEstActive}`)
-        .then(res => res.json())
+    fetch(`../../controllers/filtrerProduits.php?page=1&search=${encodeURIComponent(searchQuery)}&minPrice=${sliderMin.value}&maxPrice=${sliderMax.value}&sortOrder=${sortOrder}&minNote=${noteInput.value}&categorie=${encodeURIComponent(categorieSelect.value)}&vendeurs=${encodeURIComponent(idVendeursVisibles)}&mapActive=true`)        .then(res => res.json())
+        .then(res => res.json())    
         .then(data => {
             listeArticle.innerHTML = data.html;
             currentPage = page;
