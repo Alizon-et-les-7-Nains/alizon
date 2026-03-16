@@ -892,8 +892,12 @@ function loadProduits(page = 1) {
 
     let vendeursParam = "";
     if (mapEstActive) {
-        const vendeursInBounds = getVendeursInBounds();
-        vendeursParam = `&vendeurs=${encodeURIComponent(vendeursInBounds.join(','))}`;
+        if (idVendeur !== "") {
+            vendeursParam = "";
+        } else {
+            const vendeursInBounds = getVendeursInBounds();
+            vendeursParam = `&vendeurs=${encodeURIComponent(vendeursInBounds.join(','))}`;
+        }
     }
 
     fetch(`../../controllers/filtrerProduits.php?page=${page}&search=${encodeURIComponent(searchQuery)}&minPrice=${min}&maxPrice=${max}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${encodeURIComponent(catValue)}&vendeur=${idVendeur}${vendeursParam}&mapActive=${mapEstActive}`)
