@@ -750,37 +750,31 @@ map.on('moveend zoomend', function() {
 
     const pageToLoad = 1;
     fetch(`../../controllers/filtrerProduits.php?page=1&search=${encodeURIComponent(searchQuery)}&minPrice=${sliderMin.value}&maxPrice=${sliderMax.value}&sortOrder=${sortOrder}&minNote=${noteInput.value}&categorie=${encodeURIComponent(categorieSelect.value)}&vendeurs=${encodeURIComponent(idVendeursVisibles)}&mapActive=true`)
-        .then(res => res.json())
-        .then(data => {
-            listeArticle.innerHTML = data.html;
-            currentPage = pageToLoad;
-            resultat.textContent = `${data.totalProduits} résultat${data.totalProduits > 1 ? 's' : ''}`;
+    .then(res => res.json())
+    .then(data => {
+        listeArticle.innerHTML = data.html;
+        currentPage = pageToLoad;
+        resultat.textContent = `${data.totalProduits} résultat${data.totalProduits > 1 ? 's' : ''}`;
 
-            const newUrl = `?page=${page}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`;
-            history.pushState(null, '', newUrl);
+        const newUrl = `?page=${pageToLoad}&search=${encodeURIComponent(searchQuery)}&mapActive=true`;
+        history.pushState(null, '', newUrl);
 
-            if (mapEstActive) {
-                carteAffiche.classList.add('active');
-                barreResultat.classList.add('active');
-                barreVerticale.classList.add('active');
-                setTimeout(() => map.invalidateSize(), 100);
-                listeArticle.style.marginLeft = '0px';
-            } else {
-                carteAffiche.classList.remove('active');
-                barreResultat.classList.remove('active');
-                barreVerticale.classList.remove('active');
-            }
+        carteAffiche.classList.add('active');
+        barreResultat.classList.add('active');
+        barreVerticale.classList.add('active');
+        setTimeout(() => map.invalidateSize(), 100);
+        listeArticle.style.marginLeft = '0px';
 
-            if (data.idVendeurs) {
-                listeIdVendeurs = data.idVendeurs;
-                afficherPointsSurCarte(data.idVendeurs, false);
-            }
+        if (data.idVendeurs) {
+            listeIdVendeurs = data.idVendeurs;
+            afficherPointsSurCarte(data.idVendeurs, false);
+        }
 
-            paginationDiv.innerHTML = buildPaginationHTML(pageToLoad, data.nbPages);
-            pagination();
-            reattacherAjouterPanier();
-            isFiltering = true;
-        });
+        paginationDiv.innerHTML = buildPaginationHTML(pageToLoad, data.nbPages);
+        pagination();
+        reattacherAjouterPanier();
+        isFiltering = true;
+    });
 });
 
 const btnCarte = document.getElementById('btnCarte');
@@ -894,8 +888,8 @@ function loadProduits(page = 1) {
         vendeursParam = `&vendeurs=${encodeURIComponent(vendeursInBounds.join(','))}`;
     }
 
-    fetch(`../../controllers/filtrerProduits.php?page=1&search=${encodeURIComponent(searchQuery)}&minPrice=${sliderMin.value}&maxPrice=${sliderMax.value}&sortOrder=${sortOrder}&minNote=${noteInput.value}&categorie=${encodeURIComponent(categorieSelect.value)}&vendeurs=${encodeURIComponent(idVendeursVisibles)}&mapActive=true`)        .then(res => res.json())
-        .then(res => res.json())    
+    fetch(`../../controllers/filtrerProduits.php?page=${page}&search=${encodeURIComponent(searchQuery)}&minPrice=${min}&maxPrice=${max}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${encodeURIComponent(catValue)}&vendeur=${idVendeur}${vendeursParam}&mapActive=${mapEstActive}`)
+        .then(res => res.json())
         .then(data => {
             listeArticle.innerHTML = data.html;
             currentPage = page;
