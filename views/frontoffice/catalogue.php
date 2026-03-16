@@ -646,6 +646,7 @@ function buildPaginationHTML(page, nbPages) {
     return pagHTML;
 }
 
+
 function afficherPointsSurCarte(idVendeursActifs = null, fitMap = true) {
     let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
     group.clearLayers();
@@ -705,10 +706,14 @@ function getVendeursInBounds() {
     return vendeursActifs;
 }
 
+let ignoreMoveEnd = false;
 
 map.on('moveend zoomend', function() {
-
-
+    
+    if (ignoreMoveEnd) {
+        ignoreMoveEnd = false;
+        return;
+    }
     if (!carteAffiche.classList.contains('active')) return;
 
     const vendeursActifs = getVendeursInBounds();
@@ -720,11 +725,13 @@ map.on('moveend zoomend', function() {
         if (lat && lng && vendeursActifs.includes(String(vendeurs[i].codeVendeur))) {
             const marker = L.marker([lat, lng]);
             marker.on('click', () => {
+                ignoreMoveEnd = true;
                 if (vendeur.value == vendeurs[i].codeVendeur) {
                     vendeur.value = "";
                 } else {
                     vendeur.value = vendeurs[i].codeVendeur;
                 }
+                
                 loadProduits(1);
             });
             marker.bindTooltip(vendeurs[i].raisonSocial, {
