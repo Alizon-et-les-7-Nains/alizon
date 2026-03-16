@@ -49,10 +49,8 @@
             <h1>Générer un catalogue</h1>
             
             <form  action="../../controllers/genererCatalogue.php" method="post" id="genererCatalogue">
-                <input type="checkbox" name="toutDeselectionner" id="toutDeselectionner">
-                <label for="toutDeselectionner">Tout désélectionner</label>
 
-                <input type="checkbox" name="toutSelectionner" id="toutSelectionner">
+                <input type="checkbox" name="toutSelectionnerOuPas" id="toutSelectionnerOuPas">
                 <label for="toutSelectionner">Tout sélectionner</label>
 
                 <input type="submit" value="Générer le catalogue" id="btn-genererCatalogue">
