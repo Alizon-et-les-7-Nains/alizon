@@ -86,7 +86,7 @@ if (empty($errors)) {
         ]);
 
         $_SESSION['message'] = "Votre compte vendeur a été créé avec succès.";
-        header('Location: ../views/backoffice/connexion.php');
+        header('Location: ../views/backoffice/accueil.php');
         exit;
 
     } catch (PDOException $e) {
