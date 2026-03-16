@@ -136,22 +136,78 @@ if ($etape == 1 || $etape == 2) {
     $sql = "UPDATE _commande SET etatLivraison = 'En cours de préparation' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
+
+    // Ajout notification
+    $sqlNotif = "INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), ?)";
+    // Récupérer idClient
+    $stmtClient = $pdo->prepare("SELECT idClient FROM _commande WHERE idCommande = ?");
+    $stmtClient->execute([$idCommande]);
+    $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
+    $idClientNotif = $rowClient ? $rowClient['idClient'] : null;
+    $titre = "Colis en préparation";
+    $contenu = "Votre colis est en cours de préparation.";
+    $stmtNotif = $pdo->prepare($sqlNotif);
+    $stmtNotif->execute([$idClientNotif, $titre, $contenu, 0]);
 } else if ($etape == 3 || $etape == 4){
     $sql = "UPDATE _commande SET etatLivraison = 'Prise en charge du colis' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
+
+    // Ajout notification
+    $sqlNotif = "INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), ?)";
+    $stmtClient = $pdo->prepare("SELECT idClient FROM _commande WHERE idCommande = ?");
+    $stmtClient->execute([$idCommande]);
+    $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
+    $idClientNotif = $rowClient ? $rowClient['idClient'] : null;
+    $titre = "Colis pris en charge";
+    $contenu = "Votre colis a été pris en charge par le transporteur.";
+    $stmtNotif = $pdo->prepare($sqlNotif);
+    $stmtNotif->execute([$idClientNotif, $titre, $contenu, 0]);
 } else if ($etape == 5 || $etape == 6){
     $sql = "UPDATE _commande SET etatLivraison = 'Arriver à la plateforme Régional' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
+
+    // Ajout notification
+    $sqlNotif = "INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), ?)";
+    $stmtClient = $pdo->prepare("SELECT idClient FROM _commande WHERE idCommande = ?");
+    $stmtClient->execute([$idCommande]);
+    $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
+    $idClientNotif = $rowClient ? $rowClient['idClient'] : null;
+    $titre = "Colis arrivé à la plateforme régionale";
+    $contenu = "Votre colis est arrivé à la plateforme régionale.";
+    $stmtNotif = $pdo->prepare($sqlNotif);
+    $stmtNotif->execute([$idClientNotif, $titre, $contenu, 0]);
 } else if ($etape == 7 || $etape == 8){
     $sql = "UPDATE _commande SET etatLivraison = 'Arriver à la plateforme local' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
+
+    // Ajout notification
+    $sqlNotif = "INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), ?)";
+    $stmtClient = $pdo->prepare("SELECT idClient FROM _commande WHERE idCommande = ?");
+    $stmtClient->execute([$idCommande]);
+    $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
+    $idClientNotif = $rowClient ? $rowClient['idClient'] : null;
+    $titre = "Colis arrivé à la plateforme locale";
+    $contenu = "Votre colis est arrivé à la plateforme locale.";
+    $stmtNotif = $pdo->prepare($sqlNotif);
+    $stmtNotif->execute([$idClientNotif, $titre, $contenu, 0]);
 } else if ($etape == 9 ){
     $sql = "UPDATE _commande SET etatLivraison = 'Colis livré' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
+
+    // Ajout notification
+    $sqlNotif = "INSERT INTO _notification (idClient, titreNotif, contenuNotif, dateNotif, est_vendeur) VALUES (?, ?, ?, NOW(), ?)";
+    $stmtClient = $pdo->prepare("SELECT idClient FROM _commande WHERE idCommande = ?");
+    $stmtClient->execute([$idCommande]);
+    $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
+    $idClientNotif = $rowClient ? $rowClient['idClient'] : null;
+    $titre = "Colis livré";
+    $contenu = "Votre colis a été livré.";
+    $stmtNotif = $pdo->prepare($sqlNotif);
+    $stmtNotif->execute([$idClientNotif, $titre, $contenu, 0]);
 }
 
 
