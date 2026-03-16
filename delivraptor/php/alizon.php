@@ -44,6 +44,41 @@ function updateStockAfterOrder($pdo, $idPanier)
     }
 }
 
+function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
+    // Confirmation de commande pour le client
+    try {
+        $notifClientSTMT = $pdo->prepare('
+            insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
+            values (:idClient, :contenuNotif, :titreNotif, NOW(), 0)
+        ');
+        $notifClientSTMT->execute([':idClient' => $idClient, ':contenuNotif' => "Votre commande n°$idCommande a été passée avec succès.", ':titreNotif' => "Confirmation de commande"]);
+    } catch (PDOException $e) {
+        throw new Exception("Erreur lors de l'envoi de la notification au client : " . $e->getMessage());
+    }
+
+    // Fetch des vendeurs
+    $vendeurIdsSTMT = $pdo->prepare('
+        select distinct idVendeur
+        from _produitAuPanier pap join _produit prd on pap.idProduit = prd.idProduit
+        where idPanier = :idPanier
+    ');
+    $vendeurIdsSTMT->execute([':idPanier' => $idPanier]);
+    $vendeurIds = $vendeurIdsSTMT->fetchAll(PDO::FETCH_COLUMN);
+
+    // Confirmation de commande pour les vendeurs
+    foreach ($vendeurIds as $vendeurId) {
+        try {
+            $notifVendeurSTMT = $pdo->prepare('
+                insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
+                values (:idClient, :contenuNotif, :titreNotif, NOW(), 1)
+            ');
+            $notifVendeurSTMT->execute([':idClient' => $vendeurId, ':contenuNotif' => "Une nouvelle commande n°$idCommande a été passée.", ':titreNotif' => "Nouvelle commande"]);
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de l'envoi de la notification au vendeur : " . $e->getMessage());
+        }
+    }
+}
+
 function chiffrerCodeCarte($code) {
     return password_hash($code, PASSWORD_DEFAULT);
 }
@@ -195,6 +230,12 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
 
         if (!updateStockAfterOrder($pdo, $idPanier)) {
             throw new Exception("Erreur lors de la mise à jour du stock.");
+        }
+
+        try {
+            notifCommande($pdo, $idCommande, $idClient, $idPanier);
+        } catch (Exception $e) {
+            throw new Exception("Erreur lors de l'envoi des notifications de commande : " . $e->getMessage());
         }
 
         $stmtVider = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier = ?");

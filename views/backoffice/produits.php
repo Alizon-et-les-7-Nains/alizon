@@ -46,6 +46,16 @@
 
         <main class="produitBackOffice">
 
+            <h1>Générer un catalogue</h1>
+            
+            <form  action="../../controllers/genererCatalogue.php" method="post" id="genererCatalogue">
+
+                <input type="checkbox" name="toutSelectionnerOuPas" id="toutSelectionnerOuPas">
+                <label for="toutSelectionner">Tout Sélectionner</label>
+
+                <input type="submit" value="Générer le catalogue" id="btn-genererCatalogue">
+            </form>
+
             <h1>Produits en Vente</h1>
             <div class = "ligneProduit">
 
@@ -78,6 +88,8 @@
                 
             <section>
                 <article>
+                    <input type="checkbox" name="selection" class="select">
+                    
                     <img class="produit" src="<?php echo $produitEnVente[$i]['url'];?>" alt="">
 
                     <div class="nomEtEvaluation">
