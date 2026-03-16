@@ -1,20 +1,12 @@
 @use "../colors" as *;
 @use "../fonts" as *;
 
-.btnCoeur {
-    height: 40px;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
 .listeDeSouhait {
     font-family: "Lora", serif;
     color: #273469;
 
     main {
         padding: 10px 40px;
-        min-height: 64vh;
     }
 
     .container {
@@ -22,6 +14,13 @@
         align-items: center;
         justify-content: space-between;
         width: fit-content;
+    }
+
+    .btnCoeur {
+        height: 40px;
+        background: none;
+        border: none;
+        cursor: pointer;
     }
     
     .produit {

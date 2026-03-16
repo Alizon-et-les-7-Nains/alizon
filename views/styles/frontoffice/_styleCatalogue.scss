@@ -386,13 +386,12 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        gap: 10px;
+        gap: 15px;
         padding: 1em;
-        width: fit-content;
-        margin-left: 30%;
+        width: 100%;
     }
 
-    .pagination a, .pagination span {
+    .lien-page-numero {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -401,18 +400,50 @@
         min-height: 45px;
         background-color: $color-blue;
         color: $color-white;
-        border: 2px solid #000000;
-        border-radius: 50%;
+        border-radius: 8px;
         text-decoration: none;
-        font-size: 26px;
-        font-family: $font-berkshire;
+        font-family: $font-roboto;
+        font-size: 20px;
+        font-weight: 500;
+        transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+
+        &.active {
+            background-color: $color-white;
+            color: $color-blue;
+            border: 2px solid $color-blue;
+            font-weight: bold;
+            transform: translateY(-2px);
+            cursor: default;
+            pointer-events: none;
+        }
+    }
+
+    .avancer-reculer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.3em 0;
+        min-width: 45px;
+        min-height: 45px;
+        color: $color-blue;
+        border-radius: 8px;
+        text-decoration: none;
+        font-family: $font-roboto;
+        font-size: 18px;
+        font-weight: 600;
+        border: 2px solid transparent;
+        transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .avancer-reculer.disabled {
+        color: #6c6c6c;
+        cursor: not-allowed;
     }
 
     .pagination span.disabled {
-        background-color: #cccccc;
-        color: #666666;
+        color: #6c6c6c;
+        cursor: not-allowed;
     }
-
     .btnToggleFilters {
         display: none;
     }

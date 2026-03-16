@@ -145,7 +145,7 @@ $wishlist = getWishlist($pdo, $idClient);
                                 <form method="POST" action="">
                                     <input type="hidden" name="idProduit" value="<?= $item['idProduit'] ?>">
                                     <button type="submit" name="toggleWishlist" class="btnCoeur">
-                                        <img src="../../public/images/coeurRempli.svg" alt="Supprimer de la liste de souhaits" class="coeur">
+                                        <img src="../../public/images/coeurVide.svg" alt="Supprimer de la liste de souhaits" class="coeur">
                                     </button>
                                 </form>                            
                             </div>
