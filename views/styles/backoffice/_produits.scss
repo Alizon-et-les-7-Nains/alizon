@@ -32,6 +32,16 @@
         }
     }
 
+    #genererCatalogue{
+        label{
+            font-size: 16px;
+            margin-left: 0.25em;
+            margin-right: 1em;
+            font-family: "open-sans";
+            color: $color-blue;
+        }
+    }
+
     input[type = "submit"]{
         transition: all 0.2s ease;
         margin-left: 1em;
@@ -68,6 +78,7 @@
             right: 10px;
             width: 20px;
             height: 20px;
+            cursor: pointer;
         }
     }
 
