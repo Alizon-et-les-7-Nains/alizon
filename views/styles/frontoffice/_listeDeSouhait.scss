@@ -29,11 +29,12 @@
         justify-content: space-evenly;
         border: 2px solid #273469;
         border-radius: 20px;
-        width: 650px;
+        width: min(650px, 100%);
         padding: 15px 10px;
         margin: 25px;
         height: 170px;
         overflow: hidden;
+
         h1, h3, p {
             margin: 0;
         }
@@ -52,13 +53,52 @@
             }
         }
     }
-    main .titre {
-        font-size: 48px;
+
+    .ensembleProduits {
+        column-count: 1;
+        
+        @media (min-width: 1400px) {
+            column-count: 2;
+        }
     }
+
+    main .titre {
+        font-size: clamp(28px, 4vw, 48px);
+    }
+
     .descProd {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         height: 150px;
+    }
+
+    @media (max-width: 768px) {
+        main {
+            padding: 10px 16px;
+        }
+
+        .produit {
+            flex-direction: column;
+            height: auto;
+            margin: 15px 0;
+            padding: 15px;
+
+            img {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 12px;
+                height: 180px;
+            }
+
+            .descProd {
+                height: auto;
+                gap: 10px;
+            }
+        }
+
+        .container {
+            width: 100%;
+        }
     }
 }

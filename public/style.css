@@ -9053,7 +9053,7 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   justify-content: space-evenly;
   border: 2px solid #273469;
   border-radius: 20px;
-  width: 650px;
+  width: min(650px, 100%);
   padding: 15px 10px;
   margin: 25px;
   height: 170px;
@@ -9076,14 +9076,46 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 .listeDeSouhait .produit .info h2 {
   margin: 0;
 }
+.listeDeSouhait .ensembleProduits {
+  column-count: 1;
+}
+@media (min-width: 1400px) {
+  .listeDeSouhait .ensembleProduits {
+    column-count: 2;
+  }
+}
 .listeDeSouhait main .titre {
-  font-size: 48px;
+  font-size: clamp(28px, 4vw, 48px);
 }
 .listeDeSouhait .descProd {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 150px;
+}
+@media (max-width: 768px) {
+  .listeDeSouhait main {
+    padding: 10px 16px;
+  }
+  .listeDeSouhait .produit {
+    flex-direction: column;
+    height: auto;
+    margin: 15px 0;
+    padding: 15px;
+  }
+  .listeDeSouhait .produit img {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 12px;
+    height: 180px;
+  }
+  .listeDeSouhait .produit .descProd {
+    height: auto;
+    gap: 10px;
+  }
+  .listeDeSouhait .container {
+    width: 100%;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
