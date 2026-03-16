@@ -1965,18 +1965,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   margin: 0;
 }
 
-#btn-genererCatalogue {
-  transition: all 0.2s ease;
-  margin-left: 1em;
-  padding: 1em;
-  border-radius: 16px;
-  border: none;
-  background-color: #273469;
-  color: #fffefa;
-  font-size: 15px;
-  cursor: pointer;
-}
-
 .produitBackOffice a {
   text-decoration: none;
   color: #fffefa;
@@ -2007,7 +1995,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: column;
   align-items: center;
 }
-.produitBackOffice article input[type=checkbox] {
+.produitBackOffice article .selection {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -2136,6 +2124,17 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .produitBackOffice .iconeTexte {
   display: flex;
   justify-content: space-between;
+}
+.produitBackOffice #btn-genererCatalogue {
+  transition: all 0.2s ease;
+  margin-left: 1em;
+  padding: 1em;
+  border-radius: 16px;
+  border: none;
+  background-color: #273469;
+  color: #fffefa;
+  font-size: 15px;
+  cursor: pointer;
 }
 
 .overlaypopUpPromouvoir {
