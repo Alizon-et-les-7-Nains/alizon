@@ -662,6 +662,7 @@ function afficherPointsSurCarte(idVendeursActifs = null, fitMap = true) {
         if (lat && lng && _listeIdVendeurs.includes(String(vendeurs[i].codeVendeur))) {
             const marker = L.marker([lat, lng]);
             marker.on('click', () => {
+                ignoreMoveEnd = true;
                 if (vendeur.value == vendeurs[i].codeVendeur) {
                     vendeur.value = "";
                 } else {
