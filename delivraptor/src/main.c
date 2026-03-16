@@ -26,7 +26,7 @@ struct ServerConfig *global_config = NULL;
 #define BUFFER_SIZE 1024
 #define MAX_LINE_LENGTH 256
 #define MAX_LOG_MESSAGE 512
-#define PORT_SERVER_DEFAULT 8080
+#define PORT_SERVER_DEFAULT 80
 
 // Structure pour stocker l'état d'une session client
 // Chaque client connecté au serveur a sa propre session associée

@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../controllers/pdo.php';
 $tabIdDestination = $_SESSION['tabIdDestination'];
 
 $host = 'web';
-$port = 8080;
+$port = 80;
 
 // Connexion au socket
 $socket = @fsockopen($host, $port, $errno, $errstr, 5);
