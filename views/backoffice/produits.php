@@ -90,7 +90,7 @@
                 
             <section>
                 <article>
-                    <input type="checkbox" name="selection" id="selection">
+                    <input type="checkbox" name="selection">
                     
                     <img class="produit" src="<?php echo $produitEnVente[$i]['url'];?>" alt="">
 
