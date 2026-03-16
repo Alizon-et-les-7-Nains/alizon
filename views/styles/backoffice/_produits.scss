@@ -11,6 +11,18 @@
     margin: 0;
 }
 
+#btn-genererCatalogue {
+    transition: all 0.2s ease;
+    margin-left: 1em;
+    padding: 1em;
+    border-radius: 16px;
+    border: none;
+    background-color: $color-blue;
+    color: $color-white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
 .produitBackOffice{
 
     a{
