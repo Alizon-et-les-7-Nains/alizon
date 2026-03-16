@@ -19,6 +19,13 @@ $raisonSocial = trim($_POST['raisonSocial'] ?? '');
 $mdp_clair = $_POST['mdp'] ?? '';
 $confirmer_mdp = $_POST['confirmer_mdp'] ?? '';
 $adresse = $_POST['idAdresse'] ?? '';
+$ville = $_POST['ville'] ?? '';
+$region = $_POST['region'] ?? '';
+$complAdresse = $_POST['complAdresse'] ?? '';
+$codePostal = $_POST['codePostal'] ?? '';
+$pays = $_POST['pays'] ?? '';
+
+
 $lat = $_POST['lat'] !== '' ? (float)$_POST['lat'] : null;
 $lng = $_POST['lng'] !== '' ? (float)$_POST['lng'] : null;
 
@@ -55,10 +62,10 @@ if (empty($errors)) {
 if (empty($errors)) {
     $mdp_hash = password_hash($mdp_clair, PASSWORD_DEFAULT);
     try {
-        $sql_adresse = "INSERT INTO _adresseVendeur(adresse, latitude, longitude) VALUES (?, ?, ?)";
+        $sql_adresse = "INSERT INTO _adresseVendeur(adresse, region, codePostal, ville, pays, complementAdresse latitude, longitude) 
+        VALUEs (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt_adresse = $pdo->prepare($sql_adresse);
-        $stmt_adresse->execute([$adresse, $lat, $lng]);
-
+        $stmt_adresse->execute([$adresse, $region, $codePostal, $ville, $pays, $complAdresse, $lat, $lng]);
         $idAdr = $pdo->lastInsertId(); 
 
         $sql_insert = "INSERT INTO _vendeur (nom, prenom, email, noTelephone, pseudo, 

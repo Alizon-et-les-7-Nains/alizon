@@ -12,7 +12,7 @@ $offset = ($page - 1) * $produitsParPage;
 $idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
 $categoryQuery = isset($_GET['categorie']) ? trim(str_replace('_', ' ', $_GET['categorie'])) : "";
-$mapActive = isset($_GET['mapActive']) && $_GET['mapActive'] === 'true';
+$mapActive = isset($_GET['mapActive']) && $_GET['mapActive'] === 'false';
 
 $conditions = [];
 $params = [];
@@ -398,7 +398,7 @@ $cart = getCurrentCart($pdo, $idClient);
     <div id="vertical-bar" style="width: 5px; background-color: black;"></div>
 
     <div class="products-section">
-        <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : ' dans le catalogue' ?></p>
+        <p id="resultat"><?= $totalProduits ?> résultat<?= $totalProduits > 1 ? 's' : '' ?><?= !empty($searchQuery) ? ' pour "' . htmlspecialchars($searchQuery) . '"' : '"' ?></p>
         <button id="toggleFilters" class="btnToggleFilters"><img id='img-filtre' src="../../public/images/icone-filtres.png" alt="Filtres">Filtres</button> 
         <section class="listeArticle">
             <?php 
@@ -500,17 +500,21 @@ $cart = getCurrentCart($pdo, $idClient);
         <div class="pagination">
             <?php if ($nbPages > 1): ?>
                 <?php if ($page > 1){ ?>
-                    <a href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">« Précédent</a>
+                    <a class="avancer-reculer" href="?page=1&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">|<</a>
+                    <a class="avancer-reculer" href="?page=<?= $page-1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><   Précédent</a>
                 <?php } else { ?>
-                    <span class="disabled">« Précédent</span>
+                    <a class="avancer-reculer" class="disabled">|<</a>
+                    <span class="avancer-reculer" class="disabled"><   Précédent</span>
                 <?php } ?>
                 <?php for ($i = 1; $i <= $nbPages; $i++): ?>
-                    <a <?php if($i == $page) echo 'style="class: active;"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><?= $i ?></a>
+                    <a class="lien-page-numero" <?php if($i == $page) echo 'class="lien-page-numero active"'; ?> href="?page=<?= $i ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>"><?= $i ?></a>
                 <?php endfor; ?>
                 <?php if ($page < $nbPages) { ?>
-                    <a href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">Suivant »</a>
+                    <a class="avancer-reculer" href="?page=<?= $page+1 ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">Suivant   ></a>
+                    <a class="avancer-reculer" href="?page=<?= $nbPages ?>&search=<?= $searchQuery ?>&mapActive=<?= $mapActive ? 'true' : 'false' ?>">>|</a>
                 <?php } else { ?>
-                    <span class="disabled">Suivant »</span>
+                    <span class="avancer-reculer" class="disabled">Suivant   ></span>
+                    <a class="avancer-reculer" class="disabled">>|</a>
                 <?php } ?>
             <?php endif; ?>
         </div>
@@ -548,6 +552,7 @@ const noteInput = document.getElementById('note');
 const vendeur = document.getElementById('vendeur');
 let currentPage = <?= $page ?>;
 let isFiltering = false;
+let fitMap = true;
 
 let products = <?= json_encode($allProducts) ?>;
 let vendeurs = <?= json_encode($vendeurs) ?>;
@@ -612,9 +617,37 @@ function getListeAdressesVendeurs(idVendeursActifs = null) {
 let messageErreur = null;
 let nbVendeurs = 0;
 
-function afficherPointsSurCarte(idVendeursActifs = null) {
-    let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
 
+let mapMoveFromCode = false;
+
+
+let pendingMoveFromCode = 0;
+
+function buildPaginationHTML(page, nbPages) {
+    let pagHTML = '';
+    if (nbPages <= 1) return pagHTML;
+
+    pagHTML += page > 1
+        ? `<a href="#" class="pageLink avancer-reculer" data-page="1">|<</a>
+           <a href="#" class="pageLink avancer-reculer" data-page="${page - 1}">< Précédent</a>`
+        : `<span class="avancer-reculer disabled">|<</span>
+           <span class="avancer-reculer disabled">< Précédent</span>`;
+
+    for (let i = 1; i <= nbPages; i++) {
+        pagHTML += `<a href="#" class="pageLink lien-page-numero ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
+    }
+
+    pagHTML += page < nbPages
+        ? `<a href="#" class="pageLink avancer-reculer" data-page="${page + 1}">Suivant ></a>
+           <a href="#" class="pageLink avancer-reculer" data-page="${nbPages}">>|</a>`
+        : `<span class="avancer-reculer disabled">Suivant ></span>
+           <span class="avancer-reculer disabled">>|</span>`;
+
+    return pagHTML;
+}
+
+function afficherPointsSurCarte(idVendeursActifs = null, fitMap = true) {
+    let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
     group.clearLayers();
 
     if (messageErreur) {
@@ -644,17 +677,111 @@ function afficherPointsSurCarte(idVendeursActifs = null) {
             group.addLayer(marker);
         }
     }
+
     if (group.getLayers().length > 0) {
-        map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
+        if (fitMap) {
+            map.fitBounds(group.getBounds(), { padding: [30, 30], maxZoom: 8 });
+        }
         const nb = group.getLayers().length;
-        document.querySelector('.nb-vendeurs-control').innerHTML =`<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`;
+        document.querySelector('.nb-vendeurs-control').innerHTML =
+            `<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`;
     } else {
         document.querySelector('.nb-vendeurs-control').innerHTML = '<b>-------------</b>';
         map.setView([48.174838642366915, -2.7538102129824145], 9);
     }
 }
-
 afficherPointsSurCarte();
+
+function getVendeursInBounds() {
+    const bounds = map.getBounds();
+    const vendeursActifs = [];
+    for (let i = 0; i < adresses.length; i++) {
+        const lat = adresses[i].latitude;
+        const lng = adresses[i].longitude;
+        if (lat && lng && bounds.contains([lat, lng])) {
+            vendeursActifs.push(String(vendeurs[i].codeVendeur));
+        }
+    }
+    return vendeursActifs;
+}
+
+
+map.on('moveend zoomend', function() {
+
+
+    if (!carteAffiche.classList.contains('active')) return;
+
+    const vendeursActifs = getVendeursInBounds();
+
+    group.clearLayers();
+    for (let i = 0; i < adresses.length; i++) {
+        const lat = adresses[i].latitude;
+        const lng = adresses[i].longitude;
+        if (lat && lng && vendeursActifs.includes(String(vendeurs[i].codeVendeur))) {
+            const marker = L.marker([lat, lng]);
+            marker.on('click', () => {
+                if (vendeur.value == vendeurs[i].codeVendeur) {
+                    vendeur.value = "";
+                } else {
+                    vendeur.value = vendeurs[i].codeVendeur;
+                }
+                loadProduits(1);
+            });
+            marker.bindTooltip(vendeurs[i].raisonSocial, {
+                permanent: true, direction: 'top',
+                offset: [0, -10], className: 'vendor-label'
+            });
+            group.addLayer(marker);
+        }
+    }
+
+    const nb = vendeursActifs.length;
+    document.querySelector('.nb-vendeurs-control').innerHTML = nb > 0
+        ? `<b>${nb} vendeur${nb > 1 ? 's' : ''} trouvé${nb > 1 ? 's' : ''}</b>`
+        : '<b>Aucun vendeur visible</b>';
+
+    if (vendeursActifs.length === 0) {
+        listeArticle.innerHTML = '<h1>Aucun produit disponible dans cette zone</h1>';
+        resultat.textContent = '0 résultat';
+        return;
+    }
+
+    const idVendeursVisibles = vendeursActifs.join(',');
+
+    const pageToLoad = 1;
+    fetch(`../../controllers/filtrerProduits.php?page=1&search=${encodeURIComponent(searchQuery)}&minPrice=${sliderMin.value}&maxPrice=${sliderMax.value}&sortOrder=${sortOrder}&minNote=${noteInput.value}&categorie=${encodeURIComponent(categorieSelect.value)}&vendeurs=${encodeURIComponent(idVendeursVisibles)}&mapActive=true`)
+        .then(res => res.json())
+        .then(data => {
+            listeArticle.innerHTML = data.html;
+            currentPage = pageToLoad;
+            resultat.textContent = `${data.totalProduits} résultat${data.totalProduits > 1 ? 's' : ''}`;
+
+            const newUrl = `?page=${page}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`;
+            history.pushState(null, '', newUrl);
+
+            if (mapEstActive) {
+                carteAffiche.classList.add('active');
+                barreResultat.classList.add('active');
+                barreVerticale.classList.add('active');
+                setTimeout(() => map.invalidateSize(), 100);
+                listeArticle.style.marginLeft = '0px';
+            } else {
+                carteAffiche.classList.remove('active');
+                barreResultat.classList.remove('active');
+                barreVerticale.classList.remove('active');
+            }
+
+            if (data.idVendeurs) {
+                listeIdVendeurs = data.idVendeurs;
+                afficherPointsSurCarte(data.idVendeurs, false);
+            }
+
+            paginationDiv.innerHTML = buildPaginationHTML(pageToLoad, data.nbPages);
+            pagination();
+            reattacherAjouterPanier();
+            isFiltering = true;
+        });
+});
 
 const btnCarte = document.getElementById('btnCarte');
 
@@ -742,6 +869,17 @@ document.querySelectorAll('.pagination a').forEach(link => {
     });
 });
 
+
+function pagination() {
+    document.querySelectorAll('.pageLink').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const newPage = parseInt(link.dataset.page);
+            loadProduits(newPage);
+        });
+    });
+}
+
 function loadProduits(page = 1) {
     const min = parseInt(sliderMin.value);
     const max = parseInt(sliderMax.value);
@@ -750,7 +888,13 @@ function loadProduits(page = 1) {
     const mapEstActive = carteAffiche.classList.contains('active');
     let idVendeur = vendeur.value !== "" ? parseInt(vendeur.value) : "";
 
-    fetch(`../../controllers/produit-ajax.php?page=${page}&search=${encodeURIComponent(searchQuery)}&minPrice=${min}&maxPrice=${max}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${encodeURIComponent(catValue)}&vendeur=${idVendeur}&mapActive=${mapEstActive}`)
+    let vendeursParam = "";
+    if (mapEstActive) {
+        const vendeursInBounds = getVendeursInBounds();
+        vendeursParam = `&vendeurs=${encodeURIComponent(vendeursInBounds.join(','))}`;
+    }
+
+    fetch(`../../controllers/filtrerProduits.php?page=${page}&search=${encodeURIComponent(searchQuery)}&minPrice=${min}&maxPrice=${max}&sortOrder=${sortOrder}&minNote=${notemin}&categorie=${encodeURIComponent(catValue)}&vendeur=${idVendeur}&mapActive=${mapEstActive}`)
         .then(res => res.json())
         .then(data => {
             listeArticle.innerHTML = data.html;
@@ -760,7 +904,6 @@ function loadProduits(page = 1) {
             const newUrl = `?page=${page}&search=${encodeURIComponent(searchQuery)}&mapActive=${mapEstActive}`;
             history.pushState(null, '', newUrl);
 
-            // ✅ CORRECTION : ré-appliquer l'état de la carte après rechargement AJAX
             if (mapEstActive) {
                 carteAffiche.classList.add('active');
                 barreResultat.classList.add('active');
@@ -775,23 +918,14 @@ function loadProduits(page = 1) {
 
             if (data.idVendeurs) {
                 listeIdVendeurs = data.idVendeurs;
-                afficherPointsSurCarte(data.idVendeurs);
+                afficherPointsSurCarte(data.idVendeurs, false);
             }
 
-            let pagHTML = '';
-            if (data.nbPages > 1) {
-                if (page > 1) pagHTML += `<a href="#" class="pageLink" data-page="${page-1}">« Précédent</a>`;
-                for (let i = 1; i <= data.nbPages; i++) {
-                    pagHTML += `<a href="#" class="pageLink ${i === page ? 'active' : ''}" data-page="${i}">${i}</a>`;
-                }
-                if (page < data.nbPages) pagHTML += `<a href="#" class="pageLink" data-page="${page+1}">Suivant »</a>`;
-            }
-
-            paginationDiv.innerHTML = pagHTML;
+            paginationDiv.innerHTML = buildPaginationHTML(page, data.nbPages);
             pagination();
             reattacherAjouterPanier();
             isFiltering = true;
-        });
+    });
 }
 
 // Events listeners sur les sliders

@@ -23,6 +23,10 @@
 @font-face {
   font-family: "open-sans-bold-italic";
   src: url(../../public/fonts/open-sans/static/OpenSans-BoldItalic.ttf);
+  @font-face {
+    font-family: "roboto";
+    src: url(../../public/fonts/Roboto/static/Roboto-Regular.ttf);
+  }
 }
 html,
 body {
@@ -7932,12 +7936,11 @@ dialog.reassort form input {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   padding: 1em;
-  width: fit-content;
-  margin-left: 30%;
+  width: 100%;
 }
-.pageCatalogue .pagination a, .pageCatalogue .pagination span {
+.pageCatalogue .lien-page-numero {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7946,15 +7949,47 @@ dialog.reassort form input {
   min-height: 45px;
   background-color: #273469;
   color: #fffefa;
-  border: 2px solid #000000;
-  border-radius: 50%;
+  border-radius: 8px;
   text-decoration: none;
-  font-size: 26px;
-  font-family: "berkshire", serif;
+  font-family: "roboto", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(39, 52, 105, 0.2);
+}
+.pageCatalogue .lien-page-numero.active {
+  background-color: #fffefa;
+  color: #273469;
+  border: 2px solid #273469;
+  font-weight: bold;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(39, 52, 105, 0.25);
+  cursor: default;
+  pointer-events: none;
+}
+.pageCatalogue .avancer-reculer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3em 0;
+  min-width: 45px;
+  min-height: 45px;
+  color: #273469;
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: "roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+.pageCatalogue .avancer-reculer.disabled {
+  color: #6c6c6c;
+  cursor: not-allowed;
 }
 .pageCatalogue .pagination span.disabled {
-  background-color: #cccccc;
-  color: #666666;
+  color: #6c6c6c;
+  cursor: not-allowed;
 }
 .pageCatalogue .btnToggleFilters {
   display: none;
@@ -9002,24 +9037,26 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
+.btnCoeur {
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 .listeDeSouhait {
   font-family: "Lora", serif;
   color: #273469;
 }
 .listeDeSouhait main {
   padding: 10px 40px;
+  min-height: 64vh;
 }
 .listeDeSouhait .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: fit-content;
-}
-.listeDeSouhait .btnCoeur {
-  height: 40px;
-  background: none;
-  border: none;
-  cursor: pointer;
 }
 .listeDeSouhait .produit {
   display: flex;

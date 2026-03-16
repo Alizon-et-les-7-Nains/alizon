@@ -15,6 +15,11 @@ $pseudo = $form_data['pseudo'] ?? '';
 $dateNaissance = $form_data['dateNaissance'] ?? '';
 $noSiren = $form_data['noSiren'] ?? '';
 $idAdresse = $form_data['idAdresse'] ?? '';
+$complAdresse = $form_data['complAdresse'] ?? '';
+$ville = $form_data['ville'] ?? '';
+$pays = $form_data['pays'] ?? '';
+$region = $form_data['region'] ?? '';
+$codepostal = $form_data['codepostal'] ?? '';
 $raisonSocial = $form_data['raisonSocial'] ?? '';
 
 // Nettoyer les données de session après utilisation
@@ -107,6 +112,36 @@ unset($_SESSION['form_data']);
                         </div>
                         <input type="text" name="idAdresse" id="idAdresse" required class="form-control"
                             value="<?= htmlspecialchars($idAdresse) ?>" placeholder="Ex: 12 Rue de la Fonderie, 72100 Le Mans, France">
+                    </div>
+
+                    <div class="col-md-12">
+                        <label>Complément d'adresse</label>
+                        <input type="text" name="complAdresse"
+                            value="<?= htmlspecialchars($complAdresse) ?>">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Pays</label>
+                        <input type="text" name="pays" required class="form-control"
+                            value="<?= htmlspecialchars($pays) ?>">
+                    </div>
+
+                     <div class="col-md-6">
+                        <label>Région</label>
+                        <input type="text" name="region" required class="form-control"
+                            value="<?= htmlspecialchars($region) ?>">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Ville</label>
+                        <input type="text" name="ville" required class="form-control"
+                            value="<?= htmlspecialchars($ville) ?>">
+                    </div>
+
+                     <div class="col-md-6">
+                        <label>Code postal</label>
+                        <input type="text" name="codepostal" required class="form-control"
+                            value="<?= htmlspecialchars($codepostal) ?>">
                     </div>
 
                     <div class="col-md-12">
