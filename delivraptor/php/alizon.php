@@ -58,7 +58,7 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
 
     // Fetch des vendeurs
     $vendeurIdsSTMT = $pdo->prepare('
-        select distinct codeVendeur
+        select distinct idVendeur
         from _produitAuPanier pap join _produit prd on pap.idProduit = prd.idProduit
         where idPanier = :idPanier
     ');

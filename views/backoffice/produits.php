@@ -51,7 +51,7 @@
             <form  action="../../controllers/genererCatalogue.php" method="post" id="genererCatalogue">
 
                 <input type="checkbox" name="toutSelectionnerOuPas" id="toutSelectionnerOuPas">
-                <label for="toutSelectionner">Tout sélectionner</label>
+                <label for="toutSelectionner">Tout Sélectionner</label>
 
                 <input type="submit" value="Générer le catalogue" id="btn-genererCatalogue">
             </form>
