@@ -11,17 +11,7 @@
     margin: 0;
 }
 
-#btn-genererCatalogue {
-    transition: all 0.2s ease;
-    margin-left: 1em;
-    padding: 1em;
-    border-radius: 16px;
-    border: none;
-    background-color: $color-blue;
-    color: $color-white;
-    font-size: 15px;
-    cursor: pointer;
-}
+
 
 .produitBackOffice{
 
@@ -42,6 +32,18 @@
         }
     }
 
+    input[type = "submit"]{
+        transition: all 0.2s ease;
+        margin-left: 1em;
+        padding: 1em;
+        border-radius: 16px;
+        border: none;
+        background-color: $color-blue;
+        color: $color-white;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
     section{
         display: flex;
         flex-direction: column;
@@ -60,7 +62,7 @@
         flex-direction: column;
         align-items: center;
 
-        input[type="checkbox"] {
+        input[type = "checkbox"]{
             position: absolute;
             top: 10px;
             right: 10px;
@@ -213,6 +215,8 @@
         display: flex;
         justify-content: space-between;
     }
+
+    
 
     
 }
