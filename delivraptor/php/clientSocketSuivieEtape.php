@@ -144,7 +144,7 @@ if ($etape == 1 || $etape == 2) {
     $stmtClient->execute([$idCommande]);
     $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
     $idClientNotif = $rowClient ? $rowClient['idClient'] : null;
-    $titre = "Colis en préparation";
+    $titre = "📦 Colis en préparation";
     $contenu = "Votre colis est en cours de préparation.";
     $stmtNotif = $pdo->prepare($sqlNotif);
     $stmtNotif->execute([$idClientNotif, $titre, $contenu, 0]);
@@ -159,7 +159,7 @@ if ($etape == 1 || $etape == 2) {
     $stmtClient->execute([$idCommande]);
     $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
     $idClientNotif = $rowClient ? $rowClient['idClient'] : null;
-    $titre = "Colis pris en charge";
+    $titre = "⏳ Colis pris en charge";
     $contenu = "Votre colis a été pris en charge par le transporteur.";
     $stmtNotif = $pdo->prepare($sqlNotif);
     $stmtNotif->execute([$idClientNotif, $titre, $contenu, 0]);
@@ -174,7 +174,7 @@ if ($etape == 1 || $etape == 2) {
     $stmtClient->execute([$idCommande]);
     $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
     $idClientNotif = $rowClient ? $rowClient['idClient'] : null;
-    $titre = "Colis arrivé à la plateforme régionale";
+    $titre = "📍 Colis arrivé à la plateforme régionale";
     $contenu = "Votre colis est arrivé à la plateforme régionale.";
     $stmtNotif = $pdo->prepare($sqlNotif);
     $stmtNotif->execute([$idClientNotif, $titre, $contenu, 0]);
@@ -189,7 +189,7 @@ if ($etape == 1 || $etape == 2) {
     $stmtClient->execute([$idCommande]);
     $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
     $idClientNotif = $rowClient ? $rowClient['idClient'] : null;
-    $titre = "Colis arrivé à la plateforme locale";
+    $titre = "🏡 Colis arrivé à la plateforme locale";
     $contenu = "Votre colis est arrivé à la plateforme locale.";
     $stmtNotif = $pdo->prepare($sqlNotif);
     $stmtNotif->execute([$idClientNotif, $titre, $contenu, 0]);
@@ -204,7 +204,7 @@ if ($etape == 1 || $etape == 2) {
     $stmtClient->execute([$idCommande]);
     $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
     $idClientNotif = $rowClient ? $rowClient['idClient'] : null;
-    $titre = "Colis livré";
+    $titre = "📫 Colis livré";
     $contenu = "Votre colis a été livré.";
     $stmtNotif = $pdo->prepare($sqlNotif);
     $stmtNotif->execute([$idClientNotif, $titre, $contenu, 0]);
