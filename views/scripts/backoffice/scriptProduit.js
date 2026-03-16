@@ -896,6 +896,7 @@ function popUpConfirmerRetrait(id, nom) {
 const toutSelectionnerOuPas = document.getElementById("toutSelectionnerOuPas");
 
 if (toutSelectionnerOuPas.checked) {
+    document.querySelector("#genererCatalogue label").innerHTML = "Tout Sélectionner";
     toutSelectionnerOuPas.addEventListener("change", () => {
         const checkboxes = document.querySelectorAll(".select");
         checkboxes.forEach(checkbox => {
