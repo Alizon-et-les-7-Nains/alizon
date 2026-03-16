@@ -902,15 +902,15 @@ if (toutSelectionnerOuPas.checked) {
             checkbox.checked = toutSelectionnerOuPas.checked;
         });
     });
-} else {
-    document.querySelector("#genererCatalogue label").innerHTML = "Tout Désélectionner";
-        toutSelectionnerOuPas.addEventListener("change", () => {
-        const checkboxes = document.querySelectorAll(".select");
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = toutSelectionnerOuPas.checked;
-        });
-    });
-}
+} //else {
+//     document.querySelector("#genererCatalogue label").innerHTML = "Tout Désélectionner";
+//         toutSelectionnerOuPas.addEventListener("change", () => {
+//         const checkboxes = document.querySelectorAll(".select");
+//         checkboxes.forEach(checkbox => {
+//             checkbox.checked = toutSelectionnerOuPas.checked;
+//         });
+//     });
+// }
 
 const checkboxes = document.querySelectorAll(".select");
 
