@@ -51,7 +51,7 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
         from _produitAuPanier pap join _porduit prd on pap.idProduit = prd.idProduit
         where idPanier = :idPanier
     ');
-    $produitsSTMT->execute([$idPanier]);
+    $produitsSTMT->execute([':idPanier' => $idPanier]);
     $produits = $produitsSTMT->fetchAll(PDO::FETCH_COLUMN);
 
     $list = '';
