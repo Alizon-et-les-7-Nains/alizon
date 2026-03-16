@@ -45,13 +45,28 @@ function updateStockAfterOrder($pdo, $idPanier)
 }
 
 function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
+    // Fetch des produits
+    $produitsSTMT = $pdo->prepare('
+        select distinct prd.nom
+        from _produitAuPanier pap join _porduit prd on pap.idProduit = prd.idProduit
+        where idPanier = :idPanier
+    ');
+    $produitsSTMT->execute([$idPanier]);
+    $produits = $produitsSTMT->fetchAll(PDO::FETCH_COLUMN);
+
+    $list = '';
+    foreach ($produits as $produit) {
+        $list += "$produit, ";
+    }
+    $list = rtrim($list, ',');
+
     // Confirmation de commande pour le client
     try {
         $notifClientSTMT = $pdo->prepare('
             insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
             values (:idClient, :contenuNotif, :titreNotif, NOW(), 0)
         ');
-        $notifClientSTMT->execute([':idClient' => $idClient, ':contenuNotif' => "Votre commande n°$idCommande a été passée avec succès.", ':titreNotif' => "Confirmation de commande"]);
+        $notifClientSTMT->execute([':idClient' => $idClient, ':contenuNotif' => "Votre commande n°$idCommande a été passée avec succès.\n$list", ':titreNotif' => "Confirmation de commande"]);
     } catch (PDOException $e) {
         throw new Exception("Erreur lors de l'envoi de la notification au client : " . $e->getMessage());
     }
@@ -72,7 +87,7 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
                 insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
                 values (:idClient, :contenuNotif, :titreNotif, NOW(), 1)
             ');
-            $notifVendeurSTMT->execute([':idClient' => $vendeurId, ':contenuNotif' => "Une nouvelle commande n°$idCommande a été passée.", ':titreNotif' => "Nouvelle commande"]);
+            $notifVendeurSTMT->execute([':idClient' => $vendeurId, ':contenuNotif' => "Une nouvelle commande n°$idCommande a été passée.\n$list", ':titreNotif' => "Nouvelle commande"]);
         } catch (PDOException $e) {
             throw new Exception("Erreur lors de l'envoi de la notification au vendeur : " . $e->getMessage());
         }
