@@ -116,20 +116,20 @@ unset($_SESSION['form_data']);
 
                     <div class="col-md-12">
                         <label>Complément d'adresse</label>
-                        <input type="text" name="complAdresse" required class="form-control"
+                        <input type="text" name="complAdresse"
                             value="<?= htmlspecialchars($complAdresse) ?>">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Pays</label>
+                        <input type="text" name="pays" required class="form-control"
+                            value="<?= htmlspecialchars($pays) ?>">
                     </div>
 
                      <div class="col-md-6">
                         <label>Région</label>
                         <input type="text" name="region" required class="form-control"
                             value="<?= htmlspecialchars($region) ?>">
-                    </div>
-
-                     <div class="col-md-6">
-                        <label>Pays</label>
-                        <input type="text" name="pays" required class="form-control"
-                            value="<?= htmlspecialchars($pays) ?>">
                     </div>
 
                     <div class="col-md-6">
