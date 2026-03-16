@@ -86,6 +86,9 @@ if (empty($errors)) {
         ]);
 
         $_SESSION['message'] = "Votre compte vendeur a été créé avec succès.";
+        $_SESSION['session_id'] = session_id();
+        $_SESSION['id'] = $vendeur['codeVendeur'];
+        $_SESSION['pass'] = $hashPassword['mdp'];
         header('Location: ../views/backoffice/accueil.php');
         exit;
 
