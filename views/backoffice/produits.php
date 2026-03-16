@@ -88,7 +88,7 @@
                 
             <section>
                 <article>
-                    <input type="checkbox" name="selection" class="select">
+                    <input type="checkbox" name="produits[]" value="<?php echo $idProduit; ?>" class="select">
                     
                     <img class="produit" src="<?php echo $produitEnVente[$i]['url'];?>" alt="">
 
