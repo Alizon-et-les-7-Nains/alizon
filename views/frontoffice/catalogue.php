@@ -646,7 +646,7 @@ function buildPaginationHTML(page, nbPages) {
     return pagHTML;
 }
 
-function afficherPointsSurCarte(idVendeursActifs = null, fitmap = true) {
+function afficherPointsSurCarte(idVendeursActifs = null, fitMap = true) {
     let _listeIdVendeurs = getListeAdressesVendeurs(idVendeursActifs);
     group.clearLayers();
 
@@ -719,7 +719,6 @@ map.on('moveend zoomend', function() {
 
     const vendeursActifs = getVendeursInBounds();
 
-    // Redessiner les marqueurs SANS fitBounds pour ne pas re-déclencher l'event
     group.clearLayers();
     for (let i = 0; i < adresses.length; i++) {
         const lat = adresses[i].latitude;
