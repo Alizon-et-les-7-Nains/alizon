@@ -62,8 +62,8 @@ if (empty($errors)) {
 if (empty($errors)) {
     $mdp_hash = password_hash($mdp_clair, PASSWORD_DEFAULT);
     try {
-        $sql_adresse = "INSERT INTO _adresseVendeur(adresse, region, codePostal, ville, pays, complementAdresse latitude, longitude) 
-        VALUEs (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql_adresse = "INSERT INTO _adresseVendeur(adresse, region, codePostal, ville, pays, complementAdresse, latitude, longitude) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt_adresse = $pdo->prepare($sql_adresse);
         $stmt_adresse->execute([$adresse, $region, $codePostal, $ville, $pays, $complAdresse, $lat, $lng]);
         $idAdr = $pdo->lastInsertId(); 
