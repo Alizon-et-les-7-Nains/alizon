@@ -1,6 +1,7 @@
 <?php
     session_start();
     require_once "pdo.php";
+    require('../lib/fpdf/fpdf.php');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Location: ../views/backoffice/produits.php');
@@ -25,6 +26,27 @@
     $stmt->execute($produits);
     $produitsCatalogue = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    print_r($produitsCatalogue);
+    print_r($produitsCatalogue);    
+
+    $pdf = new FPDF();
+    $pdf->AddPage();
+    $pdf->SetFont('Arial','B',16);
+
+    $pdf->Cell(0,10,'Catalogue produits',0,1);
+
+    foreach($produitsCatalogue as $produit){
+
+        $pdf->SetFont('Arial','B',12);
+        $pdf->Cell(0,10,$produit['nom'],0,1);
+
+        $pdf->Image($produit['url'],10,$pdf->GetY(),40);
+
+        $pdf->Ln(30);
+
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(0,10,"Prix : ".$produit['prix']." €",0,1);
+
+        $pdf->Ln(10);
+    }
 
 ?>
