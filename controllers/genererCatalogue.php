@@ -18,13 +18,13 @@
     $placeholders = implode(',', array_fill(0, count($produits), '?'));
 
     $stmt = $pdo->prepare("
-        SELECT  nom, prix, URL, note FROM _produit 
+        SELECT  nom, prix, url, note FROM _produit 
         WHERE idProduit IN ($placeholders)
     ");
 
     $stmt->execute($produits);
     $produitsCatalogue = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     print_r($produitsCatalogue);
 
 ?>
