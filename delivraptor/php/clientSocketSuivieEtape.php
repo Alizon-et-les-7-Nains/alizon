@@ -13,7 +13,12 @@ if (!isset($_GET['idCommande'])) {
 $idCommande = intval($_GET['idCommande']);
 
 // Vérifier que la commande existe
-$checkCommande = $pdo->prepare("SELECT idCommande, idClient FROM _commande WHERE idCommande = ?");
+$checkCommande = $pdo->prepare("
+    SELECT c.idCommande, p.idClient 
+    FROM _commande c
+    JOIN _panier p ON c.idPanier = p.idPanier
+    WHERE c.idCommande = ?
+");
 $checkCommande->execute([$idCommande]);
 $commandeData = $checkCommande->fetch(PDO::FETCH_ASSOC);
 
