@@ -39,7 +39,7 @@
         $pdf->SetFont('Arial','B',12);
         $pdf->Cell(0,10,$produit['nom'],0,1);
 
-        $pdf->Image($produit['url'],10,$pdf->GetY(),40);
+        $pdf->Image($produit['URL'],10,$pdf->GetY(),40);
 
         $pdf->Ln(30);
 
