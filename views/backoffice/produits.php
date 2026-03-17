@@ -90,6 +90,8 @@
                 <article>
                     <input type="checkbox" name="produits[]" value="<?php echo $idProduit; ?>" class="select">
                     
+                    </form>
+                    
                     <img class="produit" src="<?php echo $produitEnVente[$i]['url'];?>" alt="">
 
                     <div class="nomEtEvaluation">
@@ -256,7 +258,7 @@
                 $enRemise = !empty($remiseActive) && $tauxRemise > 0;
                 $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
             ?>
-            </form>
+            
                 
             <section>
                 <article>
