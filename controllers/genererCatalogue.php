@@ -18,8 +18,8 @@
     $placeholders = implode(',', array_fill(0, count($produits), '?'));
 
     $stmt = $pdo->prepare("
-        SELECT  nom, prix, url, note FROM _produit 
-        WHERE idProduit IN ($placeholders)
+        SELECT nom, prix, URL, note FROM _produit INNER JOIN _imageDeProduit ON  _produit.idProduit = _imageDeProduit.idProduit 
+        WHERE _produit.idProduit IN ($placeholders)
     ");
 
     $stmt->execute($produits);
