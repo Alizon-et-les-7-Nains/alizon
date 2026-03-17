@@ -29,6 +29,13 @@ $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":idCommande" => $idCommande]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$result || empty($result['noBordereau'])) {
+    fclose($socket);
+    echo "ERREUR: Commande introuvable ou sans numéro de bordereau\n";
+    exit(1);
+}
+
 $bordereau = trim($result['noBordereau']);
 
 // On demande le Status de notre commande en envoyant notre numero de bordereau
