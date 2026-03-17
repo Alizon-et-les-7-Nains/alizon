@@ -17,20 +17,20 @@ if (!$socket) {
 }
 
 //Authentification avec le mdp hashé d'alizon
-fwrite($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e");
+fwrite($socket, "AUTH admin e10adc3949ba59abbe56e057f20f883e\n");
 $auth_response = fgets($socket, 1024);
 
 //Création d'un numéro de bordereau avec notre numéro de commande et notre destination
-fwrite($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"]);
+fwrite($socket, "CREATE " . $tabIdDestination[0]["idCommande"] . " " . $tabIdDestination[0]["destination"] . "\n");
 $create_response = fgets($socket, 1024);
 //On reçoit une réponse du service qui nous renvoie un numéro de bordereau unique associé à notre commande 
 //On ajoute ce dernier dans notre table _commande
 $sql = "UPDATE _commande SET noBordereau = :noBordereau WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
-$stmt->execute([":noBordereau" => $create_response, ":idCommande" => $tabIdDestination[0]["idCommande"]]);
+$stmt->execute([":noBordereau" => trim($create_response), ":idCommande" => $tabIdDestination[0]["idCommande"]]);
 
 // Fermeture de la connexion
-fwrite($socket, "QUIT");
+fwrite($socket, "QUIT\n");
 fclose($socket);
 
 header('Location: ../../views/frontoffice/commandes.php');
