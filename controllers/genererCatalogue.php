@@ -78,28 +78,18 @@
     function getImageJpeg(string $cheminOriginal): ?string {
         if (!file_exists($cheminOriginal)) return null;
 
-        $info = @getimagesize($cheminOriginal);
-        if ($info === false) return null;
-
-        // Déjà un vrai JPEG, pas besoin de convertir
-        if ($info[2] === IMAGETYPE_JPEG) return $cheminOriginal;
-
-        $img = match($info[2]) {
-            IMAGETYPE_WEBP => @imagecreatefromwebp($cheminOriginal),
-            IMAGETYPE_PNG  => @imagecreatefrompng($cheminOriginal),
-            IMAGETYPE_GIF  => @imagecreatefromgif($cheminOriginal),
-            default        => null
-        };
-
-        if ($img === null) return null;
-
         $tempPath = sys_get_temp_dir() . '/' . uniqid('fpdf_', true) . '.jpg';
-        imagejpeg($img, $tempPath, 90);
-        imagedestroy($img);
+        
+        $cmd = "/usr/bin/convert " . escapeshellarg($cheminOriginal) . " jpg:" . escapeshellarg($tempPath) . " 2>&1";
+        exec($cmd, $output, $returnCode);
+
+        if ($returnCode !== 0 || !file_exists($tempPath)) {
+            error_log("ImageMagick échec : " . implode("\n", $output));
+            return null;
+        }
 
         return $tempPath;
     }
-
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->SetFont('Arial','B',16);
