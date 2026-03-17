@@ -48,17 +48,17 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
     // Fetch des produits
     $produitsSTMT = $pdo->prepare('
         select distinct prd.nom
-        from _produitAuPanier pap join _porduit prd on pap.idProduit = prd.idProduit
+        from _produitAuPanier pap join _produit prd on pap.idProduit = prd.idProduit
         where idPanier = :idPanier
     ');
-    $produitsSTMT->execute([$idPanier]);
+    $produitsSTMT->execute([':idPanier' => $idPanier]);
     $produits = $produitsSTMT->fetchAll(PDO::FETCH_COLUMN);
 
     $list = '';
     foreach ($produits as $produit) {
-        $list += "$produit, ";
+        $list .= "$produit, ";
     }
-    $list = rtrim($list, ',');
+    $list = substr($list, 0, -1);
 
     // Confirmation de commande pour le client
     try {
