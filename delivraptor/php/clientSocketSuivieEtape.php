@@ -29,13 +29,6 @@ $sql = "SELECT noBordereau FROM _commande WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([":idCommande" => $idCommande]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$result || empty($result['noBordereau'])) {
-    fclose($socket);
-    echo "ERREUR: Commande introuvable ou sans numéro de bordereau\n";
-    exit(1);
-}
-
 $bordereau = trim($result['noBordereau']);
 
 // On demande le Status de notre commande en envoyant notre numero de bordereau
@@ -141,45 +134,6 @@ if ($etape == '9' && $typeLivraison === 'ABSENT') {
     unset($_SESSION['photo']);
 }
 
-// Récupérer idClient pour les notifications
-$stmtClient = $pdo->prepare("SELECT idClient FROM _commande WHERE idCommande = ?");
-$stmtClient->execute([$idCommande]);
-$rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
-$idClientNotif = $rowClient ? $rowClient['idClient'] : null;
-
-// Ne créer une notification que si l'étape a changé
-if ($oldEtape != $etape) {
-    // Définir le titre et le contenu en fonction de l'étape
-    $titre = "";
-    $contenu = "";
-    
-    if ($etape == 1 || $etape == 2) {
-        $titre = "📦 Colis en préparation";
-        $contenu = "Votre colis est en cours de préparation.";
-    } else if ($etape == 3 || $etape == 4) {
-        $titre = "⏳ Colis pris en charge";
-        $contenu = "Votre colis a été pris en charge par le transporteur.";
-    } else if ($etape == 5 || $etape == 6) {
-        $titre = "📍 Colis arrivé à la plateforme régionale";
-        $contenu = "Votre colis est arrivé à la plateforme régionale.";
-    } else if ($etape == 7 || $etape == 8) {
-        $titre = "🏡 Colis arrivé à la plateforme locale";
-        $contenu = "Votre colis est arrivé à la plateforme locale.";
-    } else if ($etape == 9) {
-        $titre = "📫 Colis livré";
-        $contenu = "Votre colis a été livré.";
-    }
-    
-    // Insérer la notification si un titre a été défini
-    if (!empty($titre) && $idClientNotif) {
-        // Structure correcte de la table _notification : idNotif (auto), idClient, contenuNotif, titreNotif, dateNotif, est_vendeur
-        $sqlNotif = "INSERT INTO _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur) 
-                     VALUES (?, ?, ?, NOW(), ?)";
-        $stmtNotif = $pdo->prepare($sqlNotif);
-        $stmtNotif->execute([$idClientNotif, $contenu, $titre, 0]);
-    }
-}
-
 // Mettre à jour l'étape et l'état de livraison dans la table _commande
 $sql = "UPDATE _commande SET etape = :etape WHERE idCommande = :idCommande";
 $stmt = $pdo->prepare($sql);
@@ -190,22 +144,63 @@ if ($etape == 1 || $etape == 2) {
     $sql = "UPDATE _commande SET etatLivraison = 'En cours de préparation' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
+    
+    // Ajout notification
+    $titre = "📦 Colis en préparation";
+    $contenu = "Votre colis est en cours de préparation.";
 } else if ($etape == 3 || $etape == 4) {
     $sql = "UPDATE _commande SET etatLivraison = 'Prise en charge du colis' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
+    
+    // Ajout notification
+    $titre = "⏳ Colis pris en charge";
+    $contenu = "Votre colis a été pris en charge par le transporteur.";
 } else if ($etape == 5 || $etape == 6) {
     $sql = "UPDATE _commande SET etatLivraison = 'Arriver à la plateforme Régional' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
+    
+    // Ajout notification
+    $titre = "📍 Colis arrivé à la plateforme régionale";
+    $contenu = "Votre colis est arrivé à la plateforme régionale.";
 } else if ($etape == 7 || $etape == 8) {
     $sql = "UPDATE _commande SET etatLivraison = 'Arriver à la plateforme local' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
+    
+    // Ajout notification
+    $titre = "🏡 Colis arrivé à la plateforme locale";
+    $contenu = "Votre colis est arrivé à la plateforme locale.";
 } else if ($etape == 9) {
     $sql = "UPDATE _commande SET etatLivraison = 'Colis livré' WHERE idCommande = :idCommande";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([":idCommande" => $idCommande]);
+    
+    // Ajout notification
+    $titre = "📫 Colis livré";
+    $contenu = "Votre colis a été livré.";
+}
+
+// Récupérer idClient pour les notifications (uniquement si l'étape a changé)
+if (isset($titre) && $oldEtape != $etape) {
+    $stmtClient = $pdo->prepare("SELECT idClient FROM _commande WHERE idCommande = ?");
+    $stmtClient->execute([$idCommande]);
+    $rowClient = $stmtClient->fetch(PDO::FETCH_ASSOC);
+    
+    if ($rowClient && !empty($rowClient['idClient'])) {
+        $idClientNotif = $rowClient['idClient'];
+        
+        // Structure correcte de la table _notification : idNotif (auto), idClient, contenuNotif, titreNotif, dateNotif, est_vendeur
+        $sqlNotif = "INSERT INTO _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur) 
+                     VALUES (?, ?, ?, NOW(), ?)";
+        $stmtNotif = $pdo->prepare($sqlNotif);
+        $stmtNotif->execute([$idClientNotif, $contenu, $titre, 0]);
+        
+        error_log("Notification créée pour la commande $idCommande : $titre");
+    } else {
+        error_log("Impossible de créer la notification : idClient non trouvé pour la commande $idCommande");
+    }
 }
 
 $_SESSION['typeLivraison'] = $typeLivraison;
