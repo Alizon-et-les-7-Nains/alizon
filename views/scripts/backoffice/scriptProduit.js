@@ -926,3 +926,24 @@ checkboxes.forEach(checkbox => {
 
     });
 });
+
+function soumettreSelection() {
+    const checkboxes = document.querySelectorAll(".select");
+    const selectedIds = Array.from(checkboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+    if (selectedIds.length === 0) {
+        alert("Veuillez sélectionner au moins un produit.");
+        return;
+    }
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "../../controllers/genererCatalogue.php";
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "selectedIds";
+    input.value = JSON.stringify(selectedIds);
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+}

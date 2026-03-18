@@ -1986,7 +1986,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   color: #273469;
   font-weight: bold;
 }
-.produitBackOffice input[type=submit] {
+.produitBackOffice button {
   transition: all 0.2s ease;
   margin-left: 1em;
   padding: 1em;

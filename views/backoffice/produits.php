@@ -48,15 +48,12 @@
 
             <h1>Générer un catalogue</h1>
             
-            <form  action="../../controllers/genererCatalogue.php" method="post" id="genererCatalogue">
+                <div id="genererCatalogue">
+                    <input type="checkbox" name="toutSelectionnerOuPas" id="toutSelectionnerOuPas">
+                    <label for="toutSelectionner">Tout Sélectionner</label>
 
-                <input type="checkbox" name="toutSelectionnerOuPas" id="toutSelectionnerOuPas">
-                <label for="toutSelectionner">Tout Sélectionner</label>
-
-                <input type="submit" value="Générer le catalogue" id="btn-genererCatalogue">
-            
-            </form>
-
+                    <button onclick="soumettreSelection()">Générer le catalogue</button>
+                </div>
             <h1>Produits en Vente</h1>
             <div class = "ligneProduit">
 
