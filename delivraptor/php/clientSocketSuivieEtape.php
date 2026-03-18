@@ -91,11 +91,13 @@ if (count($status_parts) < 7) {
     exit;
 }
 
+$status_parts = array_map('trim', $status_parts);
+
 $bordereau_recu = $status_parts[0];
 $commande = $status_parts[1];
 $destination = $status_parts[2];
 $localisation = $status_parts[3];
-$etape = $status_parts[4];
+$etape = (int) $status_parts[4];
 $date_etape = $status_parts[5];
 $typeLivraison = $status_parts[6] ?? '';
 
@@ -104,7 +106,7 @@ $sqlOld = "SELECT etape FROM _commande WHERE idCommande = :idCommande";
 $stmtOld = $pdo->prepare($sqlOld);
 $stmtOld->execute([":idCommande" => $idCommande]);
 $oldResult = $stmtOld->fetch(PDO::FETCH_ASSOC);
-$oldEtape = $oldResult ? $oldResult['etape'] : null;
+$oldEtape = ($oldResult && $oldResult['etape'] !== null) ? (int) $oldResult['etape'] : null;
 
 // Si la commande est à l'étape 9 et que le type de livraison est ABSENT 
 // Alors il va falloir lire l'image de la boîte aux lettres qu'on a reçue en binaire
@@ -184,33 +186,33 @@ $etatLivraison = "";
 
 if ($etape == 1 || $etape == 2) {
     $etatLivraison = 'En cours de préparation';
-    $titre = "📦 Colis en préparation";
+    $titre = "Colis en préparation";
     $contenu = "Votre colis pour la commande n°$idCommande est en cours de préparation.";
 } else if ($etape == 3 || $etape == 4) {
     $etatLivraison = 'Prise en charge du colis';
-    $titre = "⏳ Colis pris en charge";
+    $titre = "Colis pris en charge";
     $contenu = "Votre colis pour la commande n°$idCommande a été pris en charge par le transporteur.";
 } else if ($etape == 5 || $etape == 6) {
     $etatLivraison = 'Arrivé à la plateforme régionale';
-    $titre = "📍 Colis arrivé à la plateforme régionale";
+    $titre = "Colis arrivé à la plateforme régionale";
     $contenu = "Votre colis pour la commande n°$idCommande est arrivé à la plateforme régionale.";
 } else if ($etape == 7 || $etape == 8) {
     $etatLivraison = 'Arrivé à la plateforme locale';
-    $titre = "🏡 Colis arrivé à la plateforme locale";
+    $titre = "Colis arrivé à la plateforme locale";
     $contenu = "Votre colis pour la commande n°$idCommande est arrivé à la plateforme locale.";
 } else if ($etape == 9) {
     // Adapter le message selon le type de livraison
     if ($typeLivraison === 'ABSENT') {
         $etatLivraison = 'Colis non distribué - Absent';
-        $titre = "📫 Colis non distribué";
+        $titre = "Colis non distribué";
         $contenu = "Votre colis pour la commande n°$idCommande n'a pas pu être distribué (destinataire absent). Une photo a été prise.";
     } else if ($typeLivraison === 'REFUSE') {
         $etatLivraison = 'Colis refusé';
-        $titre = "📫 Colis refusé";
+        $titre = "Colis refusé";
         $contenu = "Votre colis pour la commande n°$idCommande a été refusé.";
     } else {
         $etatLivraison = 'Colis livré';
-        $titre = "📫 Colis livré";
+        $titre = "Colis livré";
         $contenu = "Votre colis pour la commande n°$idCommande a été livré avec succès.";
     }
 }
@@ -223,7 +225,7 @@ if (!empty($etatLivraison)) {
 }
 
 // Créer une notification UNIQUEMENT si l'étape a changé
-if (!empty($titre) && $oldEtape != $etape) {
+if (!empty($titre) && ($oldEtape === null || $oldEtape !== $etape)) {
     try {
         $idClient = $commandeData['idClient'];
         
@@ -255,7 +257,7 @@ if (!empty($titre) && $oldEtape != $etape) {
     } catch (Exception $e) {
         error_log("❌ Exception générale lors de la création de la notification : " . $e->getMessage());
     }
-} else if ($oldEtape == $etape) {
+} else if ($oldEtape !== null && $oldEtape === $etape) {
     error_log("ℹ️ Pas de nouvelle notification pour la commande $idCommande (étape inchangée: $etape)");
 }
 
