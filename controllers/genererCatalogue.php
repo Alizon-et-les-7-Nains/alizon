@@ -4,6 +4,8 @@
     require_once "pdo.php";
     require('../lib/fpdf/fpdf.php');
 
+    var_dump($_POST);
+
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Location: ../views/backoffice/produits.php');
         exit;
