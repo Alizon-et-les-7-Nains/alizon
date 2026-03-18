@@ -45,7 +45,8 @@
     $pdf->AddPage();
     $pdf->SetAutoPageBreak(true, 10);
 
-    $pdf->SetFont('Arial','B',16);
+    $pdf->AddFont('open-sans','');
+    $pdf->SetFont('open-sans','B',16);
     $pdf->Cell(0,10,'Catalogue produits de ' . $raisonSociale ,0,1, 'C');
 
     $largeurColonne = 65; // largeur pour 3 colonnes
