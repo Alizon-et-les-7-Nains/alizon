@@ -55,6 +55,7 @@
 
                 <input type="submit" value="Générer le catalogue" id="btn-genererCatalogue">
             
+            </form>
 
             <h1>Produits en Vente</h1>
             <div class = "ligneProduit">
@@ -90,7 +91,7 @@
                 <article>
                     <input type="checkbox" name="produits[]" value="<?php echo $idProduit; ?>" class="select">
                     
-                    </form>
+                    
                     
                     <img class="produit" src="<?php echo $produitEnVente[$i]['url'];?>" alt="">
 
