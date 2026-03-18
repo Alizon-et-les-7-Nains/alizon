@@ -65,7 +65,7 @@
         $pdf->SetXY($x, $y);
 
         $pdf->SetFont('Arial','B',12);
-        $pdf->MultiCell($largeurColonne, 6, $produit['nom'], 0, 'C');
+        $pdf->MultiCell($largeurColonne, 10, $produit['nom'], 0, 'C');
 
         $currentY = $pdf->GetY();
 
@@ -82,7 +82,7 @@
 
         $pdf->SetXY($x, $currentY);
         $pdf->SetFont('Arial','',10);
-        $pdf->MultiCell($largeurColonne, 6, "Prix : ".$produit['prix']." euros", 0, 'C');
+        $pdf->MultiCell($largeurColonne, 20, "Prix : ".$produit['prix']." euros", 0, 'C');
 
         $compteur++;
 
