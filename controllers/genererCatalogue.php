@@ -43,7 +43,7 @@
 
     $pdf = new FPDF();
     $pdf->AddPage();
-    $pdf->SetAutoPageBreak(true, 0);
+    $pdf->SetAutoPageBreak(true, 10);
     $pdf->SetFont('Arial','B',16);
     $pdf->Cell(0,10,'Catalogue produits de ' . $raisonSociale ,0,1, 'C');
 
