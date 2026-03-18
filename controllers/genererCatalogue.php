@@ -11,7 +11,7 @@
         exit;
     }
 
-    $produits = json_decode($_POST['selectedIds'], true);
+    $produits = explode(',', $_POST['selectedIds']);
     print_r($produits);
     var_dump($produits);
 
