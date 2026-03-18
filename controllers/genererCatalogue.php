@@ -9,10 +9,7 @@
         exit;
     }
 
-    //$produits = explode(',', $_POST['selectedIds']);
     $produits = json_decode($_POST['selectedIds'], true);
-
-    print_r($produits);
 
     $placeholders = implode(',', array_fill(0, count($produits), '?'));
 
@@ -23,8 +20,6 @@
 
     $stmt->execute($produits);
     $produitsCatalogue = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    print_r($produitsCatalogue);
 
     function getImageJpeg(string $cheminOriginal): ?string {
         if (!file_exists($cheminOriginal)) return null;
