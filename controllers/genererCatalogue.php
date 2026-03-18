@@ -45,7 +45,7 @@
     $pdf->AddPage();
     $pdf->SetAutoPageBreak(true, 10);
 
-    $pdf->SetFont('Helvetica ','B',16);
+    $pdf->SetFont('Arial','B',16);
     $pdf->Cell(0,10,'Catalogue produits de ' . $raisonSociale ,0,1, 'C');
 
     $largeurColonne = 65; // largeur pour 3 colonnes
@@ -64,12 +64,12 @@
 
         $pdf->SetXY($x, $y);
 
-        $pdf->SetFont('Helvetica ','B',12);
-        $pdf->MultiCell($largeurColonne, 10, $produit['nom'], 0, 'C');
+        $pdf->SetFont('Arial','B',12);
+        $pdf->MultiCell($largeurColonne, 10, utf8_decode($produit['nom']), 0, 'C');
 
         $currentY = $pdf->GetY();
 
-        $imagePath = '/var/www/html' . $produit['URL'];
+        $imagePath = '/var/www/html' . utf8_decode($produit['URL']);
         $imageTemp = getImageJpeg($imagePath);
 
         if ($imageTemp !== null) {
@@ -81,8 +81,8 @@
         }
 
         $pdf->SetXY($x, $currentY);
-        $pdf->SetFont('Helvetica ','',10);
-        $pdf->MultiCell($largeurColonne, 30, "Prix : ".$produit['prix']." euros", 0, 'C');
+        $pdf->SetFont('Arial','',10);
+        $pdf->MultiCell($largeurColonne, 30, "Prix : ".utf8_decode($produit['prix'])." euros", 0, 'C');
 
         $compteur++;
 
