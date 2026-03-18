@@ -6,9 +6,10 @@ session_start();
 $userId = $_SESSION['user_id'] ?? null;
 
 if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
-    updateWishlist($pdo, $userId, intval($_POST['idProduit']));
+    $idProduitToggle = intval($_POST['idProduit']);
+    updateWishlist($pdo, $userId, $idProduitToggle);
     // Redirection pour éviter la re-soumission du formulaire au refresh
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $idProduitToggle);
     exit;
 }
 
@@ -25,22 +26,7 @@ function isInWishlist($pdo, $userId, $idProduit) {
     return $stmt->fetchColumn() !== false;
 }
 
-// Traitement du toggle wishlist
-if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
-    $idProduitToggle = intval($_POST['idProduit']);
-    $inWishlist = isInWishlist($pdo, $userId, $idProduitToggle);
 
-    if ($inWishlist) {
-        $stmt = $pdo->prepare("DELETE FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
-        $stmt->execute([intval($userId), $idProduitToggle]);
-    } else {
-        $stmt = $pdo->prepare("INSERT INTO _listeDeSouhait (idClient, idProduit, dateAjout) VALUES (?, ?, ?)");
-        $stmt->execute([intval($userId), $idProduitToggle, date('Y-m-d H:i:s')]);
-    }
-
-    header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $idProduitToggle);
-    exit;
-}
 function getWishlist($pdo, $userId) {
     $stmt = $pdo->prepare("SELECT * FROM _listeDeSouhait WHERE idClient = ? ORDER BY dateAjout DESC");
     $stmt->execute([intval($userId)]);
