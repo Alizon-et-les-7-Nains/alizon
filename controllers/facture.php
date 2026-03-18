@@ -154,8 +154,9 @@ ob_start();
 
     <?php foreach ($prodVend as $prod): 
         $totalLigneHT = $prod['prix'] * $prod['quantite'];
-        $totalLigneTTC = $data['montantCommandeTTC'] * $prod['quantite'];
         $montantTVA = $totalLigneHT * ($prod['pourcentageTva'] / 100);
+        $totalLigneTTC = $totalLigneHT + $montantTVA;
+
     ?>
     <tr>
         <td><?= htmlspecialchars($prod['idProduit']) ?></td>
