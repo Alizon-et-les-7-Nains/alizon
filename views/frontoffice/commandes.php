@@ -307,7 +307,6 @@ $cart = getCurrentCart($pdo, $idClient);
             foreach ($commandesAffichees as $commande): ?>
                 <section class="commande" id="<?php echo $commande['id'] ?>">
                     <?php
-                    var_dump($commande);
                     $nombreProduits = count($commande['produits']);
                     // Affichage de chaque produit de la commande
                     foreach ($commande['produits'] as $index => $produit):
