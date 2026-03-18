@@ -52,7 +52,7 @@
                     <input type="checkbox" name="toutSelectionnerOuPas" id="toutSelectionnerOuPas">
                     <label for="toutSelectionner">Tout Sélectionner</label>
 
-                    <button onclick="soumettreSelection()">Générer le catalogue</button>
+                    <button id="btn-submit" onclick="soumettreSelection()">Générer le catalogue</button>
                 </div>
             <h1>Produits en Vente</h1>
             <div class = "ligneProduit">
