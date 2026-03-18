@@ -943,7 +943,7 @@ function soumettreSelection() {
     const input = document.createElement("input");
     input.type = "hidden";
     input.name = "selectedIds";
-    input.value = JSON.stringify(selectedIds);
+    input.value = selectedIds;
     form.appendChild(input);
     document.body.appendChild(form);
     form.submit();
