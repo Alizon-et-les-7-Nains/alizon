@@ -64,8 +64,7 @@
         }
 
         $pdf->SetFont('Arial','',10);
-        $pdf->Cell(0,30,"Prix : ".$produit['prix']." euros",0,1);
-        $pdf->Ln(10);
+        $pdf->Cell(0,20,"Prix : ".$produit['prix']." euros",0,1);
     }
 
     $pdf->Output('I', 'catalogue.pdf');
