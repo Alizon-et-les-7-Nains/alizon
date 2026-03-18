@@ -4,8 +4,6 @@
     require_once "pdo.php";
     require('../lib/fpdf/fpdf.php');
 
-    var_dump($_POST);
-
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Location: ../views/backoffice/produits.php');
         exit;
@@ -13,7 +11,6 @@
 
     $produits = explode(',', $_POST['selectedIds']);
     print_r($produits);
-    var_dump($produits);
 
     $placeholders = implode(',', array_fill(0, count($produits), '?'));
 
