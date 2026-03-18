@@ -82,7 +82,7 @@
 
         $pdf->SetXY($x, $currentY);
         $pdf->SetFont('Arial','',10);
-        $pdf->MultiCell($largeurColonne, 20, "Prix : ".$produit['prix']." euros", 0, 'C');
+        $pdf->MultiCell($largeurColonne, 30, "Prix : ".$produit['prix']." euros", 0, 'C');
 
         $compteur++;
 
