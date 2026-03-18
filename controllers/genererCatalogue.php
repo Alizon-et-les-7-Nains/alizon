@@ -14,12 +14,16 @@
     $placeholders = implode(',', array_fill(0, count($produits), '?'));
 
     $stmt = $pdo->prepare("
-        SELECT nom, prix, URL, note FROM _produit INNER JOIN _imageDeProduit ON _produit.idProduit = _imageDeProduit.idProduit 
+        SELECT nom, prix, URL, note, idVendeur FROM _produit INNER JOIN _imageDeProduit ON _produit.idProduit = _imageDeProduit.idProduit 
         WHERE _produit.idProduit IN ($placeholders)
     ");
 
     $stmt->execute($produits);
     $produitsCatalogue = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $pdo->prepare("SELECT raisonSocial FROM _vendeur WHERE idVendeur = ?");
+    $stmt->execute([$produitsCatalogue[0]['idVendeur']]);
+    $raisonSociale = $stmt->fetch(PDO::FETCH_COLUMN);
 
     function getImageJpeg(string $cheminOriginal): ?string {
         if (!file_exists($cheminOriginal)) return null;
@@ -40,7 +44,7 @@
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->SetFont('Arial','B',16);
-    $pdf->Cell(0,10,'Catalogue produits',0,1);
+    $pdf->Cell(0,10,'Catalogue produits de ' . $raisonSociale ,0,1, 'C');
 
     foreach($produitsCatalogue as $produit){
 
