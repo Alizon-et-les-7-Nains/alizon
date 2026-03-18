@@ -10,6 +10,8 @@
     }
 
     $produits = json_decode($_POST['selectedIds'], true);
+    print_r($produits);
+    var_dump($produits);
 
     $placeholders = implode(',', array_fill(0, count($produits), '?'));
 
