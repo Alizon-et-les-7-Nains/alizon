@@ -9,11 +9,6 @@
         exit;
     }
 
-    if (!isset($_POST['produits'])) {
-        echo "Aucun produit sélectionné";
-        exit;
-    }
-
     $produits = $_POST['produits'];
 
     $placeholders = implode(',', array_fill(0, count($produits), '?'));

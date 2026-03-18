@@ -939,7 +939,7 @@ function soumettreSelection() {
     }
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = "../../controllers/genererCatalogue.php";
+    form.action = "../../../controllers/genererCatalogue.php";
     const input = document.createElement("input");
     input.type = "hidden";
     input.name = "selectedIds";
