@@ -75,26 +75,43 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
     $button = "<a href='/backoffice/commandes#$idCommande'>Afficher la commande</a>";
 
     // Fetch des vendeurs
-    $vendeurIdsSTMT = $pdo->prepare('
-        select distinct idVendeur
-        from _produitAuPanier pap join _produit prd on pap.idProduit = prd.idProduit
-        where idPanier = :idPanier
-    ');
-    $vendeurIdsSTMT->execute([':idPanier' => $idPanier]);
-    $vendeurIds = $vendeurIdsSTMT->fetchAll(PDO::FETCH_COLUMN);
 
-    // Confirmation de commande pour les vendeurs
-    foreach ($vendeurIds as $vendeurId) {
-        try {
-            $notifVendeurSTMT = $pdo->prepare('
-                insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
-                values (:idClient, :contenuNotif, :titreNotif, NOW(), 1)
-            ');
-            $notifVendeurSTMT->execute([':idClient' => $vendeurId, ':contenuNotif' => "Une nouvelle commande n°$idCommande a été passée.<br/><br/>Commande :<br/>$list<br/>$button", ':titreNotif' => "Nouvelle commande"]);
-        } catch (PDOException $e) {
-            throw new Exception("Erreur lors de l'envoi de la notification au vendeur : " . $e->getMessage());
-        }
+$vendeurProduitsSTMT = $pdo->prepare('
+    select distinct prd.idVendeur, prd.nom
+    from _produitAuPanier pap join _produit prd on pap.idProduit = prd.idProduit
+    where idPanier = :idPanier
+');
+$vendeurProduitsSTMT->execute([':idPanier' => $idPanier]);
+$vendeurProduits = $vendeurProduitsSTMT->fetchAll(PDO::FETCH_ASSOC);
+
+// Regrouper les produits par vendeur
+$produitsParVendeur = [];
+foreach ($vendeurProduits as $row) {
+    $produitsParVendeur[$row['idVendeur']][] = $row['nom'];
+}
+
+$button = "<a href='/backoffice/commandes#$idCommande'>Afficher la commande</a>";
+
+foreach ($produitsParVendeur as $vendeurId => $produitsVendeur) {
+    $listVendeur = '';
+    foreach ($produitsVendeur as $nom) {
+        $listVendeur .= "- $nom<br/>";
     }
+
+    try {
+        $notifVendeurSTMT = $pdo->prepare('
+            insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
+            values (:idClient, :contenuNotif, :titreNotif, NOW(), 1)
+        ');
+        $notifVendeurSTMT->execute([
+            ':idClient'    => $vendeurId,
+            ':contenuNotif' => "Une nouvelle commande n°$idCommande a été passée.<br/><br/>Vos produits commandés :<br/>$listVendeur<br/>$button",
+            ':titreNotif'  => "Nouvelle commande"
+        ]);
+    } catch (PDOException $e) {
+        throw new Exception("Erreur lors de l'envoi de la notification au vendeur : " . $e->getMessage());
+    }
+}
 }
 
 function chiffrerCodeCarte($code) {
