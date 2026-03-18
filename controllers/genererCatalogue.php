@@ -65,11 +65,11 @@
         $pdf->SetXY($x, $y);
 
         $pdf->SetFont('Arial','B',12);
-        $pdf->MultiCell($largeurColonne, 10, utf8_encode($produit['nom']), 0, 'C');
+        $pdf->MultiCell($largeurColonne, 10, $produit['nom'], 0, 'C');
 
         $currentY = $pdf->GetY();
 
-        $imagePath = '/var/www/html' . utf8_encode($produit['URL']);
+        $imagePath = '/var/www/html' . $produit['URL'];
         $imageTemp = getImageJpeg($imagePath);
 
         if ($imageTemp !== null) {
@@ -82,7 +82,7 @@
 
         $pdf->SetXY($x, $currentY);
         $pdf->SetFont('Arial','',10);
-        $pdf->MultiCell($largeurColonne, 30, "Prix : ".utf8_encode($produit['prix'])." euros", 0, 'C');
+        $pdf->MultiCell($largeurColonne, 30, "Prix : ".$produit['prix']." euros", 0, 'C');
 
         $compteur++;
 
