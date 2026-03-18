@@ -64,7 +64,7 @@
         }
 
         $pdf->SetFont('Arial','',10);
-        $pdf->Cell(0,10,"Prix : ".$produit['prix']." €",0,1);
+        $pdf->Cell(0,30,"Prix : ".$produit['prix']." euros",0,1);
         $pdf->Ln(10);
     }
 
