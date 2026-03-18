@@ -53,8 +53,7 @@ $notifs = getNotifications($pdo, $id_client, 0);
             <section class="ensembleNotif">
                 <div class="sidebarNotif">
                 <?php foreach($notifs as $notif) { 
-                    $contenuNotif = $notif['contenuNotif'];
-                    $contenuNotif = substr($contenuNotif, 0, 50) . "...";?>
+                    $contenuNotif = mb_substr(strip_tags($notif['contenuNotif']), 0, 50) . "..."; ?>
                     <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick='afficherContenu(this, <?= json_encode($notif["titreNotif"]) ?>,
                         <?= json_encode($notif["dateNotif"]) ?>,
                         <?= json_encode($notif["contenuNotif"]) ?>)'>
@@ -77,7 +76,7 @@ $notifs = getNotifications($pdo, $id_client, 0);
                             <small><?= htmlspecialchars($notif['dateNotif']) ?></small>
                         </div>
                         <div class="corpsNotif" style="margin-top: 15px;">
-                            <p><?= nl2br(htmlspecialchars($notif['contenuNotif'])) ?></p>
+                            <p><?= $notif['contenuNotif'] ?></p>
                         </div>
                     </article>
                 <?php } ?>
@@ -110,7 +109,7 @@ $notifs = getNotifications($pdo, $id_client, 0);
         // Fonction mettant en jour les informations dans la fenetre d'affichage du contenu de la notification
         function afficherContenu(el, t, d, c) {
             if (titreContent) titreContent.innerText = t;
-            if (contenuContent) contenuContent.innerText = d;
+            if (contenuContent) contenuContent.innerHTML = d;
             if (dateContent) dateContent.innerText = c;
 
             const mobileContent = el.nextElementSibling;
