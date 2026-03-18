@@ -21,7 +21,7 @@
     $stmt->execute($produits);
     $produitsCatalogue = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmt = $pdo->prepare("SELECT raisonSocial FROM _vendeur WHERE idVendeur = ?");
+    $stmt = $pdo->prepare("SELECT raisonSocial FROM _vendeur WHERE codeVendeur = ?");
     $stmt->execute([$produitsCatalogue[0]['idVendeur']]);
     $raisonSociale = $stmt->fetch(PDO::FETCH_COLUMN);
 
