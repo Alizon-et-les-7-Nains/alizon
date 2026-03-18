@@ -43,6 +43,7 @@
 
     $pdf = new FPDF();
     $pdf->AddPage();
+    $pdf->SetAutoPageBreak(true, 20);
     $pdf->SetFont('Arial','B',16);
     $pdf->Cell(0,10,'Catalogue produits de ' . $raisonSociale ,0,1, 'C');
 
@@ -64,7 +65,7 @@
         }
 
         $pdf->SetFont('Arial','',10);
-        $pdf->Cell(0,20,"Prix : ".$produit['prix']." euros",0,1);
+        $pdf->Cell(0,25,"Prix : ".$produit['prix']." euros",0,1);
     }
 
     $pdf->Output('I', 'catalogue.pdf');
