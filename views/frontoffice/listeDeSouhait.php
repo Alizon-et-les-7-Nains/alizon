@@ -126,10 +126,10 @@ $wishlist = getWishlist($pdo, $idClient);
                                             $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';   
                                             
                                             $titre = $productDetails['nom'];
-                                            $titre = substr($titre, 0, 17) . "...";
+                                            $titre = substr($titre, 0, 25) . "...";
 
                                             $desc = $productDetails['description'];
-                                            $desc = substr($desc, 0, 50) . "...";
+                                            $desc = substr($desc, 0, 80) . "...";
                                         ?>
                                         <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>" class="imgProd">
                                     </div>
