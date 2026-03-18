@@ -39,7 +39,7 @@
 
     $pdf = new FPDF();
     $pdf->AddPage();
-    $pdf->SetFont('Open-Sans','B',16);
+    $pdf->SetFont('Arial','B',16);
     $pdf->Cell(0,10,'Catalogue produits',0,1);
 
     foreach($produitsCatalogue as $produit){
