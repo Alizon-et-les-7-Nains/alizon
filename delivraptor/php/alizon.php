@@ -60,7 +60,7 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
     }
     $list = substr($list, 0, -2);
 
-    $button = "<a href='/commandes#$idCommande'>Afficher la commande</a>";
+    $button = "<a href='./commandes.php#$idCommande'>Afficher la commande</a>";
 
     // Confirmation de commande pour le client
     try {
@@ -68,7 +68,7 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
             insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
             values (:idClient, :contenuNotif, :titreNotif, NOW(), 0)
         ');
-        $notifClientSTMT->execute([':idClient' => $idClient, ':contenuNotif' => "Votre commande n°$idCommande a été passée avec succès.\n$list\n$button", ':titreNotif' => "Confirmation de commande"]);
+        $notifClientSTMT->execute([':idClient' => $idClient, ':contenuNotif' => "Votre commande n°$idCommande a été passée avec succès.<br>$list<br>$button", ':titreNotif' => "Confirmation de commande"]);
     } catch (PDOException $e) {
         throw new Exception("Erreur lors de l'envoi de la notification au client : " . $e->getMessage());
     }
