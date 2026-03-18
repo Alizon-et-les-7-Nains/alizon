@@ -10,7 +10,9 @@ $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $produitsParPage;
 
 $idClient = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : "";
+$searchQuery1 = isset($_GET['search']) ? trim($_GET['search']) : "";
+$searchQuery2 = isset($_GET['search']) ? trim($_GET['search']) : "";
+
 $categoryQuery = isset($_GET['categorie']) ? trim(str_replace('_', ' ', $_GET['categorie'])) : "";
 $mapActive = isset($_GET['mapActive']) && $_GET['mapActive'] === 'false';
 
@@ -18,8 +20,9 @@ $conditions = [];
 $params = [];
 
 if (!empty($searchQuery)) {
-    $conditions[] = "(p.nom LIKE :searchQuery OR p.description LIKE :searchQuery)";
-    $params[':searchQuery'] = '%' . $searchQuery . '%';
+    $conditions[] = "(p.nom LIKE :searchQuery1 OR p.description LIKE :searchQuery2)";
+    $params[':searchQuery1'] = '%' . $searchQuery . '%';
+    $params[':searchQuery2'] = '%' . $searchQuery . '%';
 }
 
 if (!empty($categoryQuery)) {
