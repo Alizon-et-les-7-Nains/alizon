@@ -11,6 +11,8 @@
 
     $produits = explode(',', $_POST['selectedIds']);
 
+    print_r($produits);
+
     $placeholders = implode(',', array_fill(0, count($produits), '?'));
 
     $stmt = $pdo->prepare("
