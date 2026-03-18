@@ -55,6 +55,7 @@
 
                 <input type="submit" value="Générer le catalogue" id="btn-genererCatalogue">
             
+            </form>
 
             <h1>Produits en Vente</h1>
             <div class = "ligneProduit">
@@ -89,6 +90,8 @@
             <section>
                 <article>
                     <input type="checkbox" name="produits[]" value="<?php echo $idProduit; ?>" class="select">
+                    
+                    
                     
                     <img class="produit" src="<?php echo $produitEnVente[$i]['url'];?>" alt="">
 
@@ -256,7 +259,7 @@
                 $enRemise = !empty($remiseActive) && $tauxRemise > 0;
                 $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
             ?>
-            </form>
+            
                 
             <section>
                 <article>

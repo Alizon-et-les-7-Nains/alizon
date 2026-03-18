@@ -6,9 +6,10 @@ session_start();
 $userId = $_SESSION['user_id'] ?? null;
 
 if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
-    updateWishlist($pdo, $userId, intval($_POST['idProduit']));
+    $idProduitToggle = intval($_POST['idProduit']);
+    updateWishlist($pdo, $userId, $idProduitToggle);
     // Redirection pour éviter la re-soumission du formulaire au refresh
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $idProduitToggle);
     exit;
 }
 
@@ -25,22 +26,7 @@ function isInWishlist($pdo, $userId, $idProduit) {
     return $stmt->fetchColumn() !== false;
 }
 
-// Traitement du toggle wishlist
-if (isset($_POST['toggleWishlist']) && isset($_POST['idProduit'])) {
-    $idProduitToggle = intval($_POST['idProduit']);
-    $inWishlist = isInWishlist($pdo, $userId, $idProduitToggle);
 
-    if ($inWishlist) {
-        $stmt = $pdo->prepare("DELETE FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
-        $stmt->execute([intval($userId), $idProduitToggle]);
-    } else {
-        $stmt = $pdo->prepare("INSERT INTO _listeDeSouhait (idClient, idProduit, dateAjout) VALUES (?, ?, ?)");
-        $stmt->execute([intval($userId), $idProduitToggle, date('Y-m-d H:i:s')]);
-    }
-
-    header('Location: ' . $_SERVER['PHP_SELF'] . '?id=' . $idProduitToggle);
-    exit;
-}
 function getWishlist($pdo, $userId) {
     $stmt = $pdo->prepare("SELECT * FROM _listeDeSouhait WHERE idClient = ? ORDER BY dateAjout DESC");
     $stmt->execute([intval($userId)]);
@@ -551,13 +537,13 @@ if (isset($_SESSION['message_panier'])) {
             ?>
             <form method="POST" action="">
                 <input type="hidden" name="idProduit" value="<?= $productId ?>">
-                <button type="submit" name="toggleWishlist" class="btnCoeur" title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter à ma liste de souhaits' ?>">
+                <button style="background: none; border: none;" type="submit" name="toggleWishlist" class="btnCoeur" title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter à ma liste de souhaits' ?>">
                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg" 
                         alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter à la liste de souhaits' ?>" 
                         class="coeur">
                 </button>
             </form>
-            <p><?= $dejaEnWishlist ? 'Produit déjà dans la liste de souhaits' : 'Ajouter à ma liste de souhaits' ?></p>
+            <p><?= $dejaEnWishlist ? 'Produit dans la liste de souhaits' : 'Ajouter à ma liste de souhaits' ?></p>
         </div>
     <hr>
     <br>
