@@ -21,6 +21,8 @@
     $stmt->execute($produits);
     $produitsCatalogue = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    print_r($produitsCatalogue);
+
     function getImageJpeg(string $cheminOriginal): ?string {
         if (!file_exists($cheminOriginal)) return null;
 
