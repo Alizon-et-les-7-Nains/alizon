@@ -32,7 +32,18 @@
         }
     }
 
-    input[type = "submit"]{
+    #genererCatalogue{
+        label{
+            font-size: 16px;
+            margin-left: 0.25em;
+            margin-right: 1em;
+            font-family: "open-sans";
+            color: $color-blue;
+            font-weight: bold;
+        }
+    }
+
+    #btn-submit{
         transition: all 0.2s ease;
         margin-left: 1em;
         padding: 1em;
@@ -62,12 +73,13 @@
         flex-direction: column;
         align-items: center;
 
-        input[type = "checkbox"]{
+        .select{
             position: absolute;
             top: 10px;
             right: 10px;
             width: 20px;
             height: 20px;
+            cursor: pointer;
         }
     }
 

@@ -1978,7 +1978,15 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   font-family: "lora";
   font-size: 40px;
 }
-.produitBackOffice input[type=submit] {
+.produitBackOffice #genererCatalogue label {
+  font-size: 16px;
+  margin-left: 0.25em;
+  margin-right: 1em;
+  font-family: "open-sans";
+  color: #273469;
+  font-weight: bold;
+}
+.produitBackOffice #btn-submit {
   transition: all 0.2s ease;
   margin-left: 1em;
   padding: 1em;
@@ -2006,12 +2014,13 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: column;
   align-items: center;
 }
-.produitBackOffice article input[type=checkbox] {
+.produitBackOffice article .select {
   position: absolute;
   top: 10px;
   right: 10px;
   width: 20px;
   height: 20px;
+  cursor: pointer;
 }
 .produitBackOffice .nomEtEvaluation {
   display: flex;

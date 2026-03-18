@@ -892,3 +892,59 @@ function popUpConfirmerRetrait(id, nom) {
         }
     });
 }
+
+const toutSelectionnerOuPas = document.getElementById("toutSelectionnerOuPas");
+const label = document.querySelector("#genererCatalogue label");
+const checkboxes = document.querySelectorAll(".select");
+
+toutSelectionnerOuPas.addEventListener("change", () => {
+
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = toutSelectionnerOuPas.checked;
+    });
+
+    if (toutSelectionnerOuPas.checked) {
+        label.innerHTML = "Tout Désélectionner";
+    } else {
+        label.innerHTML = "Tout Sélectionner";
+    }
+});
+
+
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", () => {
+
+        const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+        toutSelectionnerOuPas.checked = allChecked;
+
+        if (allChecked) {
+            label.innerHTML = "Tout Désélectionner";
+        } else {
+            label.innerHTML = "Tout Sélectionner";
+        }
+
+    });
+});
+
+function soumettreSelection() {
+    const checkboxes = document.querySelectorAll(".select");
+    const selectedIds = Array.from(checkboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+    console.log("IDs sélectionnés :", selectedIds);
+    if (selectedIds.length === 0) {
+        alert("Veuillez sélectionner au moins un produit.");
+        return;
+    }
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "../../../controllers/genererCatalogue.php";
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "selectedIds";
+    input.value = JSON.stringify(selectedIds);
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+}

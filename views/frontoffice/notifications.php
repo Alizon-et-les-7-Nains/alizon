@@ -55,9 +55,9 @@ $notifs = getNotifications($pdo, $id_client, 0);
                 <?php foreach($notifs as $notif) { 
                     $contenuNotif = $notif['contenuNotif'];
                     $contenuNotif = substr($contenuNotif, 0, 50) . "...";?>
-                    <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu(this, '<?= htmlspecialchars($notif['titreNotif'], ENT_QUOTES) ?>',
-                        '<?= htmlspecialchars($notif['dateNotif'], ENT_QUOTES) ?>',
-                        '<?= htmlspecialchars($notif['contenuNotif'], ENT_QUOTES) ?>')">
+                    <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick='afficherContenu(this, <?= json_encode($notif["titreNotif"]) ?>,
+                        <?= json_encode($notif["dateNotif"]) ?>,
+                        <?= json_encode($notif["contenuNotif"]) ?>)'>
                         <div>
                             <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                             <img id="focus" src="../../public/images/bellRingLight.svg" alt="Nouvelle notification">
@@ -133,3 +133,4 @@ $notifs = getNotifications($pdo, $id_client, 0);
 </script>
 
 </body>
+</html>

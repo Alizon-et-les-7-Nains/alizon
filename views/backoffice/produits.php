@@ -48,16 +48,12 @@
 
             <h1>Générer un catalogue</h1>
             
-            <form  action="../../controllers/genererCatalogue.php" method="post" id="genererCatalogue">
-                <input type="checkbox" name="toutDeselectionner" id="toutDeselectionner">
-                <label for="toutDeselectionner">Tout désélectionner</label>
+                <div id="genererCatalogue">
+                    <input type="checkbox" name="toutSelectionnerOuPas" id="toutSelectionnerOuPas">
+                    <label for="toutSelectionner">Tout Sélectionner</label>
 
-                <input type="checkbox" name="toutSelectionner" id="toutSelectionner">
-                <label for="toutSelectionner">Tout sélectionner</label>
-
-                <input type="submit" value="Générer le catalogue" id="btn-genererCatalogue">
-            </form>
-
+                    <button id="btn-submit" onclick="soumettreSelection()">Générer le catalogue</button>
+                </div>
             <h1>Produits en Vente</h1>
             <div class = "ligneProduit">
 
@@ -90,7 +86,9 @@
                 
             <section>
                 <article>
-                    <input type="checkbox" name="selection">
+                    <input type="checkbox" name="produits[]" value="<?php echo $idProduit; ?>" class="select">
+                    
+                    
                     
                     <img class="produit" src="<?php echo $produitEnVente[$i]['url'];?>" alt="">
 
@@ -258,6 +256,7 @@
                 $enRemise = !empty($remiseActive) && $tauxRemise > 0;
                 $prixRemise = $enRemise ? $prixOriginal * (1 - $tauxRemise/100) : $prixOriginal;
             ?>
+            
                 
             <section>
                 <article>
