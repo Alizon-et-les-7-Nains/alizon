@@ -9,7 +9,7 @@
         exit;
     }
 
-    $produits = explode(',', $_POST['selectedIds']);
+    $produits = json_decode($_POST['selectedIds'], true);
 
     $placeholders = implode(',', array_fill(0, count($produits), '?'));
 
