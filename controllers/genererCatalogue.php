@@ -65,7 +65,7 @@
         $pdf->SetXY($x, $y);
 
         $pdf->SetFont('Arial','B',12);
-        $pdf->MultiCell($largeurColonne, 6, $produit['nom'], 0, 'C');
+        $pdf->MultiCell($largeurColonne, 15, $produit['nom'], 0, 'C');
 
         $currentY = $pdf->GetY();
 
