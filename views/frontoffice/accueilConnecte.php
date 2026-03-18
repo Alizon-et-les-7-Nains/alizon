@@ -371,8 +371,11 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <button class="plus" 
                                         data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>"
                                         onclick="event.stopPropagation();">
-                                    <img 
-                                                                <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
+                                    <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                                </button>
+                            <?php } ?>
+
+                            <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
                             <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0;">
                                 <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
                                 <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
@@ -381,11 +384,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                         title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
                                         style="width: 26px; height: 26px;">
                                 </button>
-                            </form>src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                                </button>
-                            <?php } ?>
-
-
+                            </form>
                         </div>
                     </div>
                 </article>
@@ -463,7 +462,10 @@ $cart = getCurrentCart($pdo, $idClient);
                             <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
                         <div style="display: flex; align-items: center; gap: 8px;">
-                                                        <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
+                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                            </button>
+                            <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
                             <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0;">
                                 <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
                                 <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
@@ -473,10 +475,6 @@ $cart = getCurrentCart($pdo, $idClient);
                                         style="width: 26px; height: 26px;">
                                 </button>
                             </form>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
-                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                            </button>
-
                         </div>
                     </div>
                 </article>
@@ -554,7 +552,10 @@ $cart = getCurrentCart($pdo, $idClient);
                             <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
                         <div style="display: flex; align-items: center; gap: 8px;">
-                                                        <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
+                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
+                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                            </button>
+                            <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
                             <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0;">
                                 <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
                                 <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
@@ -564,10 +565,6 @@ $cart = getCurrentCart($pdo, $idClient);
                                         style="width: 26px; height: 26px;">
                                 </button>
                             </form>
-                            <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
-                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                            </button>
-
                         </div>
                     </div>
                 </article>
@@ -650,7 +647,10 @@ $cart = getCurrentCart($pdo, $idClient);
                             <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
                         <div style="display: flex; align-items: center; gap: 8px;">
-                                                        <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
+                            <button class="plus" data-id="<?= htmlspecialchars($produitRecent['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
+                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
+                            </button>
+                            <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
                             <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0;">
                                 <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
                                 <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
@@ -660,10 +660,6 @@ $cart = getCurrentCart($pdo, $idClient);
                                         style="width: 26px; height: 26px;">
                                 </button>
                             </form>
-                            <button class="plus" data-id="<?= htmlspecialchars($produitRecent['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
-                                <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
-                            </button>
-
                         </div>
                     </div>
                 </article>
