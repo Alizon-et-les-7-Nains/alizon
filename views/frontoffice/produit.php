@@ -537,7 +537,7 @@ if (isset($_SESSION['message_panier'])) {
             ?>
             <form method="POST" action="">
                 <input type="hidden" name="idProduit" value="<?= $productId ?>">
-                <button style="background: none; border: none;" type="submit" name="toggleWishlist" class="btnCoeur" title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter à ma liste de souhaits' ?>">
+                <button style="background: none; border: none; padding-left: 0px;" type="submit" name="toggleWishlist" class="btnCoeur" title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter à ma liste de souhaits' ?>">
                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg" 
                         alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter à la liste de souhaits' ?>" 
                         class="coeur">

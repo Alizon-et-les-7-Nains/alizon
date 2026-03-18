@@ -105,7 +105,7 @@ $wishlist = getWishlist($pdo, $idClient);
 <body class="listeDeSouhait">
     <?php include "../../views/frontoffice/partials/headerConnecte.php"; ?>
 
-    <main>
+    <main style="min-height: 64vh;">
         <h1 class="titre">Liste de souhaits</h1>
 
         <?php if (count($wishlist) > 1) echo '<section class="ensembleProduits" style="column-count: 2;">'; else echo '<section class="ensembleProduits">' ?>
