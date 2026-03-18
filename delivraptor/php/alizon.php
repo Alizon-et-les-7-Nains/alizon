@@ -58,7 +58,9 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
     foreach ($produits as $produit) {
         $list .= "$produit, ";
     }
-    $list = substr($list, 0, -1);
+    $list = substr($list, 0, -2);
+
+    $button = "<a href='/commandes#$idCommande'>Afficher la commande</a>";
 
     // Confirmation de commande pour le client
     try {
@@ -66,10 +68,12 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
             insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
             values (:idClient, :contenuNotif, :titreNotif, NOW(), 0)
         ');
-        $notifClientSTMT->execute([':idClient' => $idClient, ':contenuNotif' => "Votre commande n°$idCommande a été passée avec succès.\n$list", ':titreNotif' => "Confirmation de commande"]);
+        $notifClientSTMT->execute([':idClient' => $idClient, ':contenuNotif' => "Votre commande n°$idCommande a été passée avec succès.\n$list\n$button", ':titreNotif' => "Confirmation de commande"]);
     } catch (PDOException $e) {
         throw new Exception("Erreur lors de l'envoi de la notification au client : " . $e->getMessage());
     }
+
+    $button = "<a href='/backoffice/commandes#$idCommande'>Afficher la commande</a>";
 
     // Fetch des vendeurs
     $vendeurIdsSTMT = $pdo->prepare('
@@ -87,7 +91,7 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
                 insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
                 values (:idClient, :contenuNotif, :titreNotif, NOW(), 1)
             ');
-            $notifVendeurSTMT->execute([':idClient' => $vendeurId, ':contenuNotif' => "Une nouvelle commande n°$idCommande a été passée.\n$list", ':titreNotif' => "Nouvelle commande"]);
+            $notifVendeurSTMT->execute([':idClient' => $vendeurId, ':contenuNotif' => "Une nouvelle commande n°$idCommande a été passée.\n$list\n$button", ':titreNotif' => "Nouvelle commande"]);
         } catch (PDOException $e) {
             throw new Exception("Erreur lors de l'envoi de la notification au vendeur : " . $e->getMessage());
         }
