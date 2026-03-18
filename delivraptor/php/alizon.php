@@ -90,7 +90,7 @@ function notifCommande($pdo, $idCommande, $idClient, $idPanier) {
                 insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
                 values (:idClient, :contenuNotif, :titreNotif, NOW(), 1)
             ');
-            $notifVendeurSTMT->execute([':idClient' => $vendeurId, ':contenuNotif' => "Une nouvelle commande n°$idCommande a été passée.\n$list\n$button", ':titreNotif' => "Nouvelle commande"]);
+            $notifVendeurSTMT->execute([':idClient' => $vendeurId, ':contenuNotif' => "Une nouvelle commande n°$idCommande a été passée.<br/><br/>Commande :<br/>$list<br/>$button", ':titreNotif' => "Nouvelle commande"]);
         } catch (PDOException $e) {
             throw new Exception("Erreur lors de l'envoi de la notification au vendeur : " . $e->getMessage());
         }
