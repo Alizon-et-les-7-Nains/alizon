@@ -123,13 +123,19 @@ $wishlist = getWishlist($pdo, $idClient);
                                             $stmtImg = $pdo->prepare("SELECT URL FROM _imageDeProduit WHERE idProduit = :idProduit");
                                             $stmtImg->execute([':idProduit' => $idProduit]);
                                             $imageResult = $stmtImg->fetch(PDO::FETCH_ASSOC);
-                                            $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';    
+                                            $image = !empty($imageResult) ? $imageResult['URL'] : '../../public/images/defaultImageProduit.png';   
+                                            
+                                            $titre = $productDetails['nom'];
+                                            $titre = substr($titre, 0, 17) . "...";
+
+                                            $desc = $productDetails['description'];
+                                            $desc = substr($desc, 0, 50) . "...";
                                         ?>
                                         <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>" class="imgProd">
                                     </div>
                                     <div class="descProd">
-                                        <h1><?= $productDetails['nom'] ?></h1>
-                                        <p><?= $productDetails['description'] ?></p>
+                                        <h1><?= $titre ?></h1>
+                                        <p><?= $desc ?></p>
                                         <div class="info">
                                             <?php 
                                             if($productDetails['stock'] > 0) {
@@ -145,7 +151,7 @@ $wishlist = getWishlist($pdo, $idClient);
                                 <form method="POST" action="">
                                     <input type="hidden" name="idProduit" value="<?= $item['idProduit'] ?>">
                                     <button type="submit" name="toggleWishlist" class="btnCoeur">
-                                        <img src="../../public/images/coeurVide.svg" alt="Supprimer de la liste de souhaits" class="coeur">
+                                        <img src="../../public/images/coeurRempli.svg" alt="Supprimer de la liste de souhaits" class="coeur">
                                     </button>
                                 </form>                            
                             </div>
