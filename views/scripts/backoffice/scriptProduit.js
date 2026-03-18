@@ -932,6 +932,7 @@ function soumettreSelection() {
     const selectedIds = Array.from(checkboxes)
         .filter(cb => cb.checked)
         .map(cb => cb.value);
+    console.log("IDs sélectionnés :", selectedIds);
     if (selectedIds.length === 0) {
         alert("Veuillez sélectionner au moins un produit.");
         return;
