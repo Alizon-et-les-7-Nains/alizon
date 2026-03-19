@@ -12,8 +12,9 @@
     .container {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         width: fit-content;
+        justify-content: space-around;
+        width: 100%;
     }
 
     .btnCoeur {
@@ -67,18 +68,21 @@
         height: 150px;
     }
 
-    // ── Tablette ──────────────────────────────────────────────
     @media (max-width: 1600px) {
-        .ensembleProduits {
-            column-count: 1 !important;
-        }
-
         .produit {
             width: 500px;
         }
     }
 
-    // ── Mobile ────────────────────────────────────────────────
+    @media (max-width: 1285px) {
+        .ensembleProduits {
+            column-count: 1 !important;
+        }
+        .produit {
+            width: 500px;
+        }
+    }
+
     @media (max-width: 1000px) {
         .ensembleProduits {
             column-count: 1 !important;

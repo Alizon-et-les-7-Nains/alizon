@@ -9071,8 +9071,9 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 .listeDeSouhait .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: fit-content;
+  justify-content: space-around;
+  width: 100%;
 }
 .listeDeSouhait .btnCoeur {
   height: 40px;
@@ -9119,6 +9120,11 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   height: 150px;
 }
 @media (max-width: 1600px) {
+  .listeDeSouhait .produit {
+    width: 500px;
+  }
+}
+@media (max-width: 1285px) {
   .listeDeSouhait .ensembleProduits {
     column-count: 1 !important;
   }
