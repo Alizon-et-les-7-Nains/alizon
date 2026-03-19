@@ -130,13 +130,12 @@ require_once "../../controllers/prix.php";
                                 <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
                             </button> 
                         </div>
-                    </div>
-                    <div class="prixOpt">
-                        <p><?= number_format($panier['prix'] ?? 0, 2) ?> €</p>
-                        <!-- Bouton pour supprimer complètement le produit du panier -->
                         <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
                         <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
                         </button>
+                    </div>
+                    <div class="prixOpt">
+                        <p><?= number_format($panier['prix'] ?? 0, 2) ?> €</p>
                     </div>
                 </article> 
             <?php // Affichage d'un message si le panier est vide
