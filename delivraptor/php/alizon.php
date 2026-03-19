@@ -129,7 +129,7 @@ function notifStock($pdo, $idCommande) {
         $stockSTMT = $pdo->prepare('
             select stock, seuilAlerte, nom
             from _produit prd join _contient con on prd.idProduit = con.idProduit
-            where idProduit = :idProduit
+            where con.idProduit = :idProduit
         ');
         $stockSTMT->execute(['idProduit' => $produit]);
         $stock = $stockSTMT->fetch(PDO::FETCH_ASSOC);
