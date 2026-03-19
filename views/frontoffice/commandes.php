@@ -305,11 +305,9 @@ $cart = getCurrentCart($pdo, $idClient);
         <?php else: ?>
             <?php // Boucle d'affichage de toutes les commandes avec leurs produits
             foreach ($commandesAffichees as $commande): ?>
-                <section class="commande">
+                <section class="commande" id="<?php echo $commande['id'] ?>">
                     <?php
                     $nombreProduits = count($commande['produits']);
-                    echo "<script>console.log(" . json_encode($commande) . ");</script>";
-                    echo "<script>console.log(" . json_encode($commandesAffichees) . ");</script>";
                     // Affichage de chaque produit de la commande
                     foreach ($commande['produits'] as $index => $produit):
                         // Utilisation de l'image du produit ou image par défaut si non disponible
@@ -353,7 +351,7 @@ $cart = getCurrentCart($pdo, $idClient);
                         </div>
                         <div class="infoCommande">
                             <p>Total</p>
-                            
+
                             <?php
                             $total = $commande['total'] ?? 0;
                             $total = trim($total);
@@ -413,7 +411,13 @@ $cart = getCurrentCart($pdo, $idClient);
 
                             ?>
 
-                            <a onclick="popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>', '<?= $commande['montantHT'] ?>', '<?= $totalTTC ?>', '<?= $nomCarte['nom'] ?>')" href="#">Détails</a>
+                            <script>
+                                function show() {
+                                    popUpDetailsCommande('<?= $commande['id'] ?>', '<?= $commande['date'] ?>', '<?= addslashes($adresseFacturation) ?>', '<?= addslashes($adresseLivraison) ?>', '<?= $commande['statut'] ?>', '<?= $commande['transporteur'] ?>', '<?= $commande['montantHT'] ?>', '<?= $totalTTC ?>', '<?= $nomCarte['nom'] ?>');
+                                }
+                            </script>
+
+                            <a onclick="show()" href="#">Détails</a>
                             <span class="supprElem">|</span>
                             <a href="../../controllers/facture.php?id= <?php echo ($commande['id']); ?>">Facture</a>
                         </div>

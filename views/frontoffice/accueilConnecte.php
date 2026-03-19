@@ -94,6 +94,40 @@ function updateQuantityInDatabase($pdo, $idClient, $idProduit, $delta) {
 
 }
 
+// Fonctions de gestion de la liste de souhait
+function getWishlistProduct($pdo, $idClient, $idProduit) {
+    $stmt = $pdo->prepare("SELECT 1 FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
+    $stmt->execute([intval($idClient), intval($idProduit)]);
+    return $stmt->fetchColumn() !== false;
+}
+
+function updateWishlist($pdo, $idClient, $idProduit) {
+    $res = getWishlistProduct($pdo, $idClient, $idProduit);
+
+    if ($res) {
+        $stmt = $pdo->prepare("DELETE FROM _listeDeSouhait WHERE idClient = ? AND idProduit = ?");
+        return $stmt->execute([intval($idClient), intval($idProduit)]);
+    }
+
+    $stmt = $pdo->prepare("INSERT INTO _listeDeSouhait(idClient, idProduit, dateAjout) VALUES (?, ?, ?)");
+    return $stmt->execute([intval($idClient), intval($idProduit), date('Y-m-d H:i:s')]);
+}
+
+function isInWishlist($pdo, $idClient, $idProduit) {
+    return getWishlistProduct($pdo, $idClient, $idProduit);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggleWishlist']) && isset($_POST['idProduitWishlist'])) {
+    $idProduitWishlist = intval($_POST['idProduitWishlist']);
+
+    if ($idProduitWishlist > 0) {
+        updateWishlist($pdo, $idClient, $idProduitWishlist);
+    }
+
+    header('Location: ' . $_SERVER['REQUEST_URI']);
+    exit;
+}
+
 // ============================================================================
 // GESTION DES ACTIONS AJAX
 // ============================================================================
@@ -329,7 +363,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
                         
-                        <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
                             <?php // Si le produit à une quantité = 0 (= est hors stock) 
                             if(number_format($value['stock'], 1) == 0) { ?>
                                 <b style="color: red; margin-right: 5px;">Aucun stock</b>
@@ -340,6 +374,17 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                                 </button>
                             <?php } ?>
+
+                            <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
+                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0;">
+                                <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
+                                <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                    <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
+                                        alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
+                                        title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
+                                        style="width: 26px; height: 26px;">
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </article>
@@ -416,10 +461,20 @@ $cart = getCurrentCart($pdo, $idClient);
                             ?>
                             <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
-                        <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
                             <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
+                            <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
+                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0;">
+                                <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
+                                <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                    <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
+                                        alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
+                                        title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
+                                        style="width: 26px; height: 26px;">
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </article>
@@ -496,10 +551,20 @@ $cart = getCurrentCart($pdo, $idClient);
                             ?>
                             <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
-                        <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
                             <button class="plus" data-id="<?= htmlspecialchars($value['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
+                            <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
+                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0;">
+                                <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
+                                <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                    <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
+                                        alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
+                                        title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
+                                        style="width: 26px; height: 26px;">
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </article>
@@ -581,10 +646,20 @@ $cart = getCurrentCart($pdo, $idClient);
                             ?>
                             <h4 style="margin: 0;"><?php echo htmlspecialchars($prixAuKg); ?>€ / kg</h4>
                         </div>
-                        <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
                             <button class="plus" data-id="<?= htmlspecialchars($produitRecent['idProduit'] ?? '') ?>" onclick="event.stopPropagation();">
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
+                            <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
+                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0;">
+                                <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
+                                <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                    <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
+                                        alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
+                                        title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
+                                        style="width: 26px; height: 26px;">
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </article>
