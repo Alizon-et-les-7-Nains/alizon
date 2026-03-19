@@ -9112,5 +9112,47 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   justify-content: space-between;
   height: 150px;
 }
+@media (max-width: 1000px) {
+  .listeDeSouhait .ensembleProduits {
+    column-count: 1 !important;
+  }
+  .listeDeSouhait .produit {
+    width: 500px;
+  }
+}
+@media (max-width: 787px) {
+  .listeDeSouhait main {
+    padding: 10px 15px;
+  }
+  .listeDeSouhait main .titre {
+    font-size: 32px;
+  }
+  .listeDeSouhait .container {
+    width: 100%;
+    justify-content: center;
+  }
+  .listeDeSouhait .produit {
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    margin: 15px 0;
+    justify-content: center;
+    text-align: center;
+  }
+  .listeDeSouhait .produit img {
+    width: 140px;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  .listeDeSouhait .produit .info {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .listeDeSouhait .descProd {
+    height: auto;
+    gap: 8px;
+  }
+}
 
 /*# sourceMappingURL=style.css.map */

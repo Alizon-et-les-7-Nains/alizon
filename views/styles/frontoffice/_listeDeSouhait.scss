@@ -34,15 +34,18 @@
         margin: 25px;
         height: 170px;
         overflow: hidden;
+
         h1, h3, p {
             margin: 0;
         }
+
         img {
             width: 200px;
             object-fit: cover;
             margin-right: 20px;
             border-radius: 20px;
         }
+
         .info {
             display: flex;
             justify-content: space-between;
@@ -52,13 +55,68 @@
             }
         }
     }
+
     main .titre {
         font-size: 48px;
     }
+
     .descProd {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         height: 150px;
+    }
+
+    // ── Tablette ──────────────────────────────────────────────
+    @media (max-width: 1000px) {
+        .ensembleProduits {
+            column-count: 1 !important;
+        }
+
+        .produit {
+            width: 500px;
+        }
+    }
+
+    // ── Mobile ────────────────────────────────────────────────
+    @media (max-width: 787px) {
+        main {
+            padding: 10px 15px;
+        }
+
+        main .titre {
+            font-size: 32px;
+        }
+
+        .container {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .produit {
+            flex-wrap: wrap;
+            width: 100%;
+            height: auto;
+            margin: 15px 0;
+            justify-content: center;
+            text-align: center;
+
+            img {
+                width: 140px;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .info {
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+            }
+        }
+
+        .descProd {
+            height: auto;
+            gap: 8px;
+        }
     }
 }
