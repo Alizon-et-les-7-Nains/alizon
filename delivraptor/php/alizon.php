@@ -117,7 +117,7 @@ foreach ($produitsParVendeur as $vendeurId => $produitsVendeur) {
 function notifStock($pdo, $idCommande) {
     // Fetch des produits
     $produitsSTMT = $pdo->prepare('
-        select distinct idProduit
+        select distinct con.idProduit
         from _commande com join _contient con on com.idCommande = con.idCommande
         where com.idCommande = :idCommande
     ');
