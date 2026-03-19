@@ -376,7 +376,7 @@ $cart = getCurrentCart($pdo, $idClient);
                             <?php } ?>
 
                             <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
-                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0; position: relative; top: 10px; left: 10px;">
+                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0; position: relative; top: 10; left: 10;">
                                 <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
                                 <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
                                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
