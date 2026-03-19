@@ -2,7 +2,7 @@
 
     session_start();
     require_once "pdo.php";
-    require('../lib/fpdf/fpdf.php');
+    require('lib/tfpdf/tfpdf.php');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Location: ../views/backoffice/produits.php');
@@ -41,7 +41,7 @@
         return $tempPath;
     }
 
-    $pdf = new FPDF();
+    $pdf = new tFPDF();
     $pdf->AddPage();
     $pdf->SetAutoPageBreak(true, 10);
 
