@@ -46,7 +46,7 @@
     $pdf->AddPage();
     $pdf->SetAutoPageBreak(true, 10);
 
-    $pdf->AddFont('DejaVuSans','','DejaVuSans.ttf', true);
+    $pdf->AddFont('DejaVuSans','','/var/www/html/lib/tfpdf/font/unifont/DejaVuSans.ttf', true);
     $pdf->SetFont('DejaVuSans','',16);
     $pdf->Cell(0,10,'Catalogue produits de ' . $raisonSociale ,0,1, 'C');
 
