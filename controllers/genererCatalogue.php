@@ -2,6 +2,7 @@
 
     session_start();
     require_once "pdo.php";
+    require('/var/www/html/lib/tfpdf/ttfontfile.php');
     require('/var/www/html/lib/tfpdf/tfpdf.php');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
