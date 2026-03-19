@@ -2,7 +2,6 @@
 
     session_start();
     require_once "pdo.php";
-    require('/var/www/html/lib/tfpdf/ttfontfile.php');
     require('/var/www/html/lib/tfpdf/tfpdf.php');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -46,7 +45,7 @@
     $pdf->AddPage();
     $pdf->SetAutoPageBreak(true, 10);
 
-    $pdf->AddFont('DejaVuSans','','/var/www/html/lib/tfpdf/font/unifont/DejaVuSans.ttf', true);
+    $pdf->AddFont('DejaVuSans','','DejaVuSans.ttf', true);
     $pdf->SetFont('DejaVuSans','',16);
     $pdf->Cell(0,10,'Catalogue produits de ' . $raisonSociale ,0,1, 'C');
 
