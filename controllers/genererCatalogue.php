@@ -2,7 +2,7 @@
 
     session_start();
     require_once "pdo.php";
-    require('lib/tfpdf/tfpdf.php');
+    require('/var/www/html/lib/tfpdf/tfpdf.php');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Location: ../views/backoffice/produits.php');
