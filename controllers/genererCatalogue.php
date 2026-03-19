@@ -45,7 +45,8 @@
     $pdf->AddPage();
     $pdf->SetAutoPageBreak(true, 10);
 
-    $pdf->SetFont('Arial','B',16);
+    $pdf->AddFont('DejaVu','','DejaVuSans.ttf', true);
+    $pdf->SetFont('DejaVu','',16);
     $pdf->Cell(0,10,'Catalogue produits de ' . $raisonSociale ,0,1, 'C');
 
     $largeurColonne = 65; // largeur pour 3 colonnes
@@ -64,7 +65,7 @@
 
         $pdf->SetXY($x, $y);
 
-        $pdf->SetFont('Arial','B',12);
+        $pdf->SetFont('DejaVu','',14);
         $pdf->MultiCell($largeurColonne, 10, $produit['nom'], 0, 'C');
 
         $currentY = $pdf->GetY();
@@ -81,7 +82,7 @@
         }
 
         $pdf->SetXY($x, $currentY);
-        $pdf->SetFont('Arial','',10);
+        $pdf->SetFont('DejaVu','',10);
         $pdf->MultiCell($largeurColonne, 30, "Prix : ".$produit['prix']." euros", 0, 'C');
 
         $compteur++;
