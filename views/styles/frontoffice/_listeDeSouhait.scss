@@ -68,7 +68,7 @@
     }
 
     // ── Tablette ──────────────────────────────────────────────
-    @media (max-width: 1000px) {
+    @media (max-width: 1600px) {
         .ensembleProduits {
             column-count: 1 !important;
         }
@@ -79,7 +79,10 @@
     }
 
     // ── Mobile ────────────────────────────────────────────────
-    @media (max-width: 787px) {
+    @media (max-width: 1000px) {
+        .ensembleProduits {
+            column-count: 1 !important;
+        }
         main {
             padding: 10px 15px;
         }
