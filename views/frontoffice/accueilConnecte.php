@@ -382,7 +382,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
                                         alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
                                         title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
-                                        style="width: 26px;height: 26px;background: white;border-radius: 14px;padding: 5px;">
+                                        style="width: 26px; height: 26px;">
                                 </button>
                             </form>
                         </div>
@@ -472,7 +472,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
                                         alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
                                         title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
-                                        style="width: 26px;height: 26px;background: white;border-radius: 14px;padding: 5px;">
+                                        style="width: 26px; height: 26px;">
                                 </button>
                             </form>
                         </div>
@@ -562,7 +562,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
                                         alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
                                         title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
-                                        style="width: 26px;height: 26px;background: white;border-radius: 14px;padding: 5px;">
+                                        style="width: 26px; height: 26px;">
                                 </button>
                             </form>
                         </div>
@@ -657,7 +657,7 @@ $cart = getCurrentCart($pdo, $idClient);
                                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
                                         alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
                                         title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
-                                        style="width: 26px;height: 26px;background: white;border-radius: 14px;padding: 5px;">
+                                        style="width: 26px; height: 26px;">
                                 </button>
                             </form>
                         </div>

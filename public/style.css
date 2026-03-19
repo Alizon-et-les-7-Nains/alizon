@@ -213,7 +213,7 @@ body {
     width: 300px;
   }
 }
-@media (max-width: 580px) {
+@media (max-width: 670px) {
   .headerFront img {
     width: 30px;
     margin-right: 0px;
@@ -3925,6 +3925,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
 }
 @media (max-width: 530px) {
+  .panier .delBtnImg {
+    display: none;
+    visibility: hidden;
+  }
   .panier .listeProduit article img {
     max-height: 100px;
     max-width: 100px;
