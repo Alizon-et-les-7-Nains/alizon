@@ -3788,6 +3788,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   width: 300px;
   margin-left: 40px;
 }
+.panier .infoProduit .btns {
+  display: flex;
+  justify-content: space-between;
+}
 .panier .infoProduit img {
   max-width: 16px;
 }
@@ -3824,7 +3828,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   padding: 15px 40px;
   border-radius: 32px;
 }
-.panier .recapPanier h1, .panier .recapPanier .cardRecap {
+.panier .recapPanier h1,
+.panier .recapPanier .cardRecap {
   margin-bottom: 40px;
 }
 .panier .cardRecap {

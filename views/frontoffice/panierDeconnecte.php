@@ -119,20 +119,23 @@ require_once "../../controllers/prix.php";
                             <h2><?= htmlspecialchars($panier['nom'] ?? 'N/A') ?></h2>
                             <h4>En stock</h4>
                         </div>
-                        <div class="quantiteProduit">
-                            <!-- Bouton pour diminuer la quantité -->
-                            <button class="minus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
-                            <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
-                            </button>                            
-                            <p class="quantite"><?= htmlspecialchars($quantite ?? 'N/A') ?></p>
-                            <!-- Bouton pour augmenter la quantité -->
-                            <button class="plus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 1; ?>'">
-                                <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
-                            </button> 
+
+                        <div class="btns">
+                            <div class="quantiteProduit">
+                                <!-- Bouton pour diminuer la quantité -->
+                                <button class="minus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
+                                <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
+                                </button>                            
+                                <p class="quantite"><?= htmlspecialchars($quantite ?? 'N/A') ?></p>
+                                <!-- Bouton pour augmenter la quantité -->
+                                <button class="plus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 1; ?>'">
+                                    <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
+                                </button> 
+                            </div>
+                            <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
+                                <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
+                            </button>
                         </div>
-                        <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
-                        <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
-                        </button>
                     </div>
                     <div class="prixOpt">
                         <p><?= number_format($panier['prix'] ?? 0, 2) ?> €</p>
