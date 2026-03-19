@@ -3406,6 +3406,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
 }
 .acceuil article:hover {
   transform: translateY(-5px);
@@ -3747,7 +3748,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .panier .quantiteProduit {
   display: flex;
   border: 2px solid #273469;
-  border-radius: 15px;
+  border-radius: 50px;
   justify-content: center;
   padding: 5px;
 }
@@ -3764,7 +3765,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   margin: 0;
   font-size: 24px;
@@ -3787,11 +3788,15 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   width: 300px;
   margin-left: 40px;
 }
+.panier .infoProduit .btns {
+  display: flex;
+  justify-content: space-between;
+}
 .panier .infoProduit img {
   max-width: 16px;
 }
 .panier .infoProduit p {
-  margin: 0px 30px;
+  margin: 3px 30px 0 30px;
 }
 .panier h2 {
   margin-right: 0;
@@ -3823,7 +3828,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   padding: 15px 40px;
   border-radius: 32px;
 }
-.panier .recapPanier h1, .panier .recapPanier .cardRecap {
+.panier .recapPanier h1,
+.panier .recapPanier .cardRecap {
   margin-bottom: 40px;
 }
 .panier .cardRecap {

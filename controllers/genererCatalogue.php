@@ -2,7 +2,10 @@
 
     session_start();
     require_once "pdo.php";
-    require('../lib/fpdf/fpdf.php');
+    require_once '/var/www/html/lib/tfpdf/ttfontfile.php';
+    require('/var/www/html/lib/tfpdf/tfpdf.php');
+
+    define('FPDF_FONTPATH', '/var/www/html/lib/tfpdf/font/unifont/');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Location: ../views/backoffice/produits.php');
@@ -41,32 +44,55 @@
         return $tempPath;
     }
 
-    $pdf = new FPDF();
+    $pdf = new tFPDF();
     $pdf->AddPage();
-    $pdf->SetFont('Arial','B',16);
+    $pdf->SetAutoPageBreak(true, 10);
+
+    $pdf->AddFont('DejaVuSans','','DejaVuSans.ttf', true);
+    $pdf->SetFont('DejaVuSans','',16);
     $pdf->Cell(0,10,'Catalogue produits de ' . $raisonSociale ,0,1, 'C');
 
+    $largeurColonne = 65; // largeur pour 3 colonnes
+    $hauteurBloc = 60;    // hauteur d’un produit
+
+    $xStart = 10;
+    $yStart = $pdf->GetY();
+
+    $compteur = 0;
+
     foreach($produitsCatalogue as $produit){
+
+        $col = $compteur % 3;
+        $x = $xStart + ($col * $largeurColonne);
+        $y = $yStart;
+
+        $pdf->SetXY($x, $y);
+
+        $pdf->SetFont('DejaVuSans','',14);
+        $pdf->MultiCell($largeurColonne, 10, $produit['nom'], 0, 'C');
+
+        $currentY = $pdf->GetY();
 
         $imagePath = '/var/www/html' . $produit['URL'];
         $imageTemp = getImageJpeg($imagePath);
 
-        $pdf->SetFont('Arial','B',12);
-        $pdf->Cell(0,10,$produit['nom'],0,1);
-
         if ($imageTemp !== null) {
-            $pdf->Image($imageTemp, 10, $pdf->GetY(), 40, 0, 'JPG');
-            // Suppression du fichier temp si conversion effectuée
+            $pdf->Image($imageTemp, $x + 10, $currentY, 40, 0, 'JPG');
+
             if ($imageTemp !== $imagePath) unlink($imageTemp);
-            $pdf->Ln(30);
-        } else {
-            $pdf->Ln(5);
+
+            $currentY += 30;
         }
 
-        $pdf->SetFont('Arial','',10);
-        $pdf->Cell(0,10,"Prix : ".$produit['prix']." €",0,1);
-        $pdf->Ln(10);
-    }
+        $pdf->SetXY($x, $currentY);
+        $pdf->SetFont('DejaVuSans','',10);
+        $pdf->MultiCell($largeurColonne, 30, "Prix : ".$produit['prix']." euros", 0, 'C');
 
+        $compteur++;
+
+        if ($compteur % 3 == 0) {
+            $yStart += $hauteurBloc;
+        }
+    }
     $pdf->Output('I', 'catalogue.pdf');
 ?>

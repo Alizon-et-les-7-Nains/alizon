@@ -36,7 +36,7 @@ function getNotifications($pdo, $idClient, $est_vendeur) {
     return $notif; 
 }
 
-$notifs = getNotifications($pdo, $idVendeur, 1)
+$notifs = getNotifications($pdo, $idVendeur, 1);
 
 ?>
 
@@ -68,9 +68,13 @@ $notifs = getNotifications($pdo, $idVendeur, 1)
                 <?php foreach($notifs as $notif) { 
                     $contenuNotif = $notif['contenuNotif'];
                     $contenuNotif = substr($contenuNotif, 0, 50) . "...";?>
-                    <div class="apercuNotif" tabindex="0" data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>" onclick="afficherContenu(this, '<?= htmlspecialchars($notif['titreNotif'], ENT_QUOTES) ?>',
-                        '<?= htmlspecialchars($notif['dateNotif'], ENT_QUOTES) ?>',
-                        '<?= htmlspecialchars($notif['contenuNotif'], ENT_QUOTES) ?>')">
+                    <div class="apercuNotif" tabindex="0"
+                        data-id="<?= htmlspecialchars($notif['idNotif'] ?? '') ?>"
+                        data-titre="<?= htmlspecialchars(json_encode($notif['titreNotif']), ENT_QUOTES) ?>"
+                        data-date="<?= htmlspecialchars(json_encode($notif['dateNotif']), ENT_QUOTES) ?>"
+                        data-contenu="<?= htmlspecialchars(json_encode($notif['contenuNotif']), ENT_QUOTES) ?>"
+                        onclick="afficherContenu(this)">
+
                         <div>
                             <img id="regular" src="../../public/images/bellRingDark.svg" alt="Nouvelle notification">
                             <img id="focus" src="../../public/images/bellRingLight.svg" alt="Nouvelle notification">
@@ -122,10 +126,14 @@ $notifs = getNotifications($pdo, $idVendeur, 1)
         const dateContent = document.getElementById("date");
 
         // Fonction mettant en jour les informations dans la fenetre d'affichage du contenu de la notification
-        function afficherContenu(el, t, d, c) {
+        function afficherContenu(el) {
+            const t = JSON.parse(el.dataset.titre);
+            const d = JSON.parse(el.dataset.date);
+            const c = JSON.parse(el.dataset.contenu);
+
             if (titreContent) titreContent.innerText = t;
-            if (contenuContent) contenuContent.innerText = d;
-            if (dateContent) dateContent.innerText = c;
+            if (contenuContent) contenuContent.innerHTML = c; // innerHTML pour rendre le HTML
+            if (dateContent) dateContent.innerText = d;
 
             const mobileContent = el.nextElementSibling;
 
