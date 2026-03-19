@@ -3408,11 +3408,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
 }
-.acceuil article .coeur {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
 .acceuil article:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(39, 52, 105, 0.3);
