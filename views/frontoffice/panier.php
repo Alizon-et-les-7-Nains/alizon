@@ -372,6 +372,9 @@ $cart = getCurrentCart($pdo, $idClient);
                             <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
                         </button>
                     </div>
+                     <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
+                        <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
+                    </button>
                 </div>
                 <div class="prixOpt">
                     <div>
@@ -388,9 +391,6 @@ $cart = getCurrentCart($pdo, $idClient);
                             <p><?= formatPrice($item['prix']) ?></p>
                         <?php endif; ?>
                     </div>
-                    <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? '') ?>">
-                        <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
-                    </button>
                 </div>
             </article>
             <?php } if (empty($cart)) { ?>
