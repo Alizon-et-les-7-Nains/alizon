@@ -226,6 +226,12 @@ body {
     height: 40px;
   }
 }
+@media (max-width: 510px) {
+  .headerFront .logoNom h1 {
+    display: none;
+    visibility: none;
+  }
+}
 
 #burgerIcon {
   display: none;

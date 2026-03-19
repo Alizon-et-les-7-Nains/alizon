@@ -230,6 +230,13 @@ body {
     }
   }
 
+    @media (max-width: 510px) {
+      .logoNom h1 {
+        display: none;
+        visibility: none;
+      }
+    }
+
 }
 #burgerIcon {
   display: none;
