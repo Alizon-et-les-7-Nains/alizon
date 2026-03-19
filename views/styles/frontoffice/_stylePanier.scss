@@ -52,13 +52,18 @@
     padding: 0;
   }
   .infoProduit {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    height: 180px;
+    width: 300px;
+    margin-left: 40px;
+
+    .btns {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: space-around;
-      height: 180px;
-      width: 300px;
-      margin-left: 40px;
+      justify-content: space-between;
+    }
   }
   .infoProduit img {
     max-width: 16px;
@@ -96,7 +101,8 @@
       padding: 15px 40px;
       border-radius: 32px;
     }
-    h1, .cardRecap {
+    h1,
+    .cardRecap {
       margin-bottom: 40px;
     }
   }
@@ -144,7 +150,7 @@
       color: black;
     }
   }
-  .infoCommande section h2:nth-of-type(2) { 
+  .infoCommande section h2:nth-of-type(2) {
     font-family: "open-sans", sans-serif;
     font-weight: bold;
   }
@@ -152,26 +158,26 @@
     color: black;
   }
   @media (max-width: 1290px) {
-      main {
-        flex-direction: column;
-        justify-content: center;
-      }
-      .listeProduit article {
-        max-width: none;
-      }
-      .recapPanier {
-        align-items: stretch;
-      }
-      .infoProduit {
-        width: unset;
-      }
+    main {
+      flex-direction: column;
+      justify-content: center;
+    }
+    .listeProduit article {
+      max-width: none;
+    }
+    .recapPanier {
+      align-items: stretch;
+    }
+    .infoProduit {
+      width: unset;
+    }
   }
   @media (max-width: 767px) {
     .listeProduit article {
-        border: none;
-        padding: none;
+      border: none;
+      padding: none;
     }
-    .imgProduit input  {
+    .imgProduit input {
       display: none;
     }
     .listeProduit article img {
@@ -193,17 +199,17 @@
     }
   }
   @media (max-width: 530px) {
-      .listeProduit article img {
-        max-height: 100px;
-        max-width: 100px;
-        margin: 0px 10px;
+    .listeProduit article img {
+      max-height: 100px;
+      max-width: 100px;
+      margin: 0px 10px;
     }
     .listeProduit article {
       align-items: center;
       margin-bottom: 0;
     }
     .listeProduit div {
-        justify-content: center;
+      justify-content: center;
     }
     button .delete {
       margin-top: 20px;
