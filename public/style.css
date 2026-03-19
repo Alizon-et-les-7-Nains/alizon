@@ -3748,7 +3748,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .panier .quantiteProduit {
   display: flex;
   border: 2px solid #273469;
-  border-radius: 15px;
+  border-radius: 50px;
   justify-content: center;
   padding: 5px;
 }
@@ -3796,7 +3796,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   max-width: 16px;
 }
 .panier .infoProduit p {
-  margin: 0px 30px;
+  margin: 3px 30px 0 30px;
 }
 .panier h2 {
   margin-right: 0;
