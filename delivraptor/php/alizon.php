@@ -317,6 +317,12 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
             throw new Exception("Erreur lors du vidage du panier.");
         }
 
+        try {
+            notifStock($pdo, $idCommande);
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de l'envoi de la notification de stock : " . $e->getMessage());
+        }
+
         $pdo->commit();
         return $idCommande;
 
