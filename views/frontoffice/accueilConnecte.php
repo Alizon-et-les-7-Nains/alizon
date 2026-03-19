@@ -376,13 +376,13 @@ $cart = getCurrentCart($pdo, $idClient);
                             <?php } ?>
 
                             <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
-                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0; position: absolute; top: 10px; right: 10px;">
+                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0; position: absolute; top: 12px; right: 25px;">
                                 <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
                                 <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
                                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
                                         alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
                                         title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
-                                        style="width: 26px; height: 26px;">
+                                        style="width: 26px;height: 26px;background: white;border-radius: 14px;padding: 5px;">
                                 </button>
                             </form>
                         </div>
@@ -466,13 +466,13 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                             <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
-                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0; position: absolute; top: 10px; right: 10px;">
+                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0; position: absolute; top: 12px; right: 25px;">
                                 <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
                                 <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
                                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
                                         alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
                                         title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
-                                        style="width: 26px; height: 26px;">
+                                        style="width: 26px;height: 26px;background: white;border-radius: 14px;padding: 5px;">
                                 </button>
                             </form>
                         </div>
@@ -556,13 +556,13 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                             <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
-                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0; position: absolute; top: 10px; right: 10px;">
+                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0; position: absolute; top: 12px; right: 25px;">
                                 <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
                                 <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
                                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
                                         alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
                                         title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
-                                        style="width: 26px; height: 26px;">
+                                        style="width: 26px;height: 26px;background: white;border-radius: 14px;padding: 5px;">
                                 </button>
                             </form>
                         </div>
@@ -651,13 +651,13 @@ $cart = getCurrentCart($pdo, $idClient);
                                 <img src="../../public/images/btnAjoutPanier.svg" alt="Bouton ajout panier">
                             </button>
                             <?php $dejaEnWishlist = isInWishlist($pdo, $idClient, $idProduit); ?>
-                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0; position: absolute; top: 10px; right: 10px;">
+                            <form method="POST" action="" onclick="event.stopPropagation();" style="margin: 0; position: absolute; top: 12px; right: 25px;">
                                 <input type="hidden" name="idProduitWishlist" value="<?= htmlspecialchars($idProduit ?? '') ?>">
                                 <button type="submit" name="toggleWishlist" class="btnCoeur" style="background: none; border: none; padding: 0; cursor: pointer;">
                                     <img src="../../public/images/<?= $dejaEnWishlist ? 'coeurRempli' : 'coeurVide' ?>.svg"
                                         alt="<?= $dejaEnWishlist ? 'Retirer de la liste de souhaits' : 'Ajouter a la liste de souhaits' ?>"
                                         title="<?= $dejaEnWishlist ? 'Retirer de ma liste de souhaits' : 'Ajouter a ma liste de souhaits' ?>"
-                                        style="width: 26px; height: 26px;">
+                                        style="width: 26px;height: 26px;background: white;border-radius: 14px;padding: 5px;">
                                 </button>
                             </form>
                         </div>
