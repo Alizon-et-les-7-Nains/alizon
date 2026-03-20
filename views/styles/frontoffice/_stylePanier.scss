@@ -14,7 +14,7 @@
     max-width: 800px;
     margin-bottom: 40px;
     gap: 30px;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
   }
   .quantiteProduit {
@@ -36,22 +36,14 @@
   .prixOpt {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-start;
-    gap: 15px;
+    align-items: flex-start;
+    justify-content: center;
     margin: 0;
     font-size: 24px;
     font-weight: bold;
   }
   .prixOpt p {
     margin: 0;
-  }
-  .headerProduit {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-    width: 100%;
   }
 
   .listeProduit div {
@@ -65,17 +57,29 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
-    height: auto;
+    justify-content: space-around;
+    height: 180px;
     flex: 1;
     min-width: 280px;
+  }
+  .btns {
+    display: flex;
+    align-items: center;
     gap: 15px;
-
-    .btns {
-      display: flex;
-      justify-content: flex-start;
-      width: 100%;
-    }
+    justify-content: center;
+  }
+  .btns .quantiteProduit {
+    display: flex;
+    border: 2px solid $color-blue;
+    border-radius: 50px;
+    justify-content: center;
+    padding: 5px;
+  }
+  .btns .delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
   }
   .infoProduit img {
     max-width: 16px;
@@ -176,21 +180,12 @@
     }
     .listeProduit article {
       max-width: none;
-      flex-wrap: wrap;
     }
     .recapPanier {
       align-items: stretch;
     }
     .infoProduit {
-      width: 100%;
-      flex: unset;
-    }
-    .headerProduit {
-      flex-direction: column;
-      gap: 10px;
-    }
-    .prixOpt {
-      align-items: flex-start;
+      width: unset;
     }
   }
   @media (max-width: 767px) {
@@ -198,7 +193,6 @@
       border: none;
       padding: none;
       flex-wrap: wrap;
-      gap: 15px;
     }
     .imgProduit input {
       display: none;
@@ -206,7 +200,6 @@
     .listeProduit article img {
       max-height: 180px;
       margin: 0px 10px;
-      width: 100%;
     }
     .infoProduit div h2 {
       font-size: 15px;
@@ -221,19 +214,6 @@
     main {
       margin: 10px 10px;
     }
-    .headerProduit {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .prixOpt {
-      flex-direction: row;
-      gap: 15px;
-      align-items: center;
-    }
-    .prixOpt button {
-      flex-shrink: 0;
-    }
   }
   @media (max-width: 530px) {
     .delBtnImg {
@@ -246,30 +226,15 @@
       margin: 0px 10px;
     }
     .listeProduit article {
-      align-items: flex-start;
+      align-items: center;
       margin-bottom: 0;
-      flex-direction: column;
-    }
-    .imgProduit {
-      width: 100% !important;
+      flex-wrap: wrap;
     }
     .listeProduit div {
       justify-content: center;
     }
     button .delete {
       margin-top: 20px;
-    }
-    .headerProduit {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-      width: 100%;
-    }
-    .prixOpt {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
     }
   }
   button {
