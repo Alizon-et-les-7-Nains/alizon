@@ -198,7 +198,7 @@ require_once "../../controllers/prix.php";
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
 
-    <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
+    <?php include "../../views/frontoffice/partials/footerDeconnecte.php"; ?>
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>

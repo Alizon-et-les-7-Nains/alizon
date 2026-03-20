@@ -213,7 +213,7 @@ body {
     width: 300px;
   }
 }
-@media (max-width: 580px) {
+@media (max-width: 670px) {
   .headerFront img {
     width: 30px;
     margin-right: 0px;
@@ -224,6 +224,12 @@ body {
   .headerFront .search-wrapper input[type=search] {
     width: 200px;
     height: 40px;
+  }
+}
+@media (max-width: 510px) {
+  .headerFront .logoNom h1 {
+    display: none;
+    visibility: none;
   }
 }
 
@@ -3748,7 +3754,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .panier .quantiteProduit {
   display: flex;
   border: 2px solid #273469;
-  border-radius: 15px;
+  border-radius: 50px;
   justify-content: center;
   padding: 5px;
 }
@@ -3796,7 +3802,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   max-width: 16px;
 }
 .panier .infoProduit p {
-  margin: 0px 30px;
+  margin: 3px 30px 0 30px;
 }
 .panier h2 {
   margin-right: 0;
@@ -3925,6 +3931,10 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
 }
 @media (max-width: 530px) {
+  .panier .delBtnImg {
+    display: none;
+    visibility: hidden;
+  }
   .panier .listeProduit article img {
     max-height: 100px;
     max-width: 100px;
@@ -9071,8 +9081,9 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 .listeDeSouhait .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: fit-content;
+  justify-content: space-around;
+  width: 100%;
 }
 .listeDeSouhait .btnCoeur {
   height: 40px;
@@ -9117,6 +9128,57 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   flex-direction: column;
   justify-content: space-between;
   height: 150px;
+}
+@media (max-width: 1600px) {
+  .listeDeSouhait .produit {
+    width: 500px;
+  }
+}
+@media (max-width: 1285px) {
+  .listeDeSouhait .ensembleProduits {
+    column-count: 1 !important;
+  }
+  .listeDeSouhait .produit {
+    width: 850px;
+  }
+}
+@media (max-width: 1000px) {
+  .listeDeSouhait .ensembleProduits {
+    column-count: 1 !important;
+  }
+  .listeDeSouhait main {
+    padding: 10px 15px;
+  }
+  .listeDeSouhait main .titre {
+    font-size: 32px;
+    text-align: center;
+  }
+  .listeDeSouhait .container {
+    width: 100%;
+    justify-content: center;
+  }
+  .listeDeSouhait .produit {
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    margin: 15px 0;
+    justify-content: center;
+    text-align: center;
+  }
+  .listeDeSouhait .produit img {
+    width: 140px;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  .listeDeSouhait .produit .info {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .listeDeSouhait .descProd {
+    height: auto;
+    gap: 8px;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
