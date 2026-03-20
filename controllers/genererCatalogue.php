@@ -5,7 +5,7 @@
     require_once '/var/www/html/lib/tfpdf/ttfontfile.php';
     require('/var/www/html/lib/tfpdf/tfpdf.php');
 
-    define('FPDF_FONTPATH', '/var/www/html/lib/tfpdf/font/unifont/');
+    define('FPDF_FONTPATH', '/var/www/html/lib/tfpdf/font/');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Location: ../views/backoffice/produits.php');
