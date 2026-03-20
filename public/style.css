@@ -3748,6 +3748,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   flex-wrap: nowrap;
   max-width: 800px;
   margin-bottom: 40px;
+  gap: 30px;
   align-items: center;
   justify-content: space-around;
 }
@@ -3797,6 +3798,7 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .panier .infoProduit .btns {
   display: flex;
   justify-content: space-between;
+  width: 127%;
 }
 .panier .infoProduit img {
   max-width: 16px;
