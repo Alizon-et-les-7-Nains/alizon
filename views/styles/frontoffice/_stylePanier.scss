@@ -199,6 +199,10 @@
     }
   }
   @media (max-width: 530px) {
+    .delBtnImg {
+      display: none;
+      visibility: hidden;
+    }
     .listeProduit article img {
       max-height: 100px;
       max-width: 100px;

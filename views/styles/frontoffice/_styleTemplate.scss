@@ -216,7 +216,7 @@ body {
     }
   }
 
-  @media (max-width: 580px) {
+  @media (max-width: 670px) {
     img {
       width: 30px;
       margin-right: 0px;
@@ -229,6 +229,13 @@ body {
       height: 40px;
     }
   }
+
+    @media (max-width: 510px) {
+      .logoNom h1 {
+        display: none;
+        visibility: none;
+      }
+    }
 
 }
 #burgerIcon {

@@ -114,6 +114,60 @@ foreach ($produitsParVendeur as $vendeurId => $produitsVendeur) {
 }
 }
 
+function notifStock($pdo, $idCommande) {
+    // Fetch des produits
+    $produitsSTMT = $pdo->prepare('
+        select distinct con.idProduit
+        from _commande com join _contient con on com.idCommande = con.idCommande
+        where com.idCommande = :idCommande
+    ');
+    $produitsSTMT->execute(['idCommande' => $idCommande]);
+    $produits = $produitsSTMT->fetchAll(PDO::FETCH_COLUMN);
+
+    foreach ($produits as $produit) {
+        // Fetch du stock
+        $stockSTMT = $pdo->prepare('
+            select stock, seuilAlerte, nom
+            from _produit prd join _contient con on prd.idProduit = con.idProduit
+            where con.idProduit = :idProduit
+        ');
+        $stockSTMT->execute(['idProduit' => $produit]);
+        $stock = $stockSTMT->fetch(PDO::FETCH_ASSOC);
+
+        if ($stock['stock'] == 0) {
+            // Fetch du vendeur
+            $vendeurSTMT = $pdo->prepare('
+                select vd.codeVendeur
+                from _vendeur vd join _produit prd on vd.codeVendeur = prd.idVendeur
+                where idProduit = :idProduit
+            ');
+            $vendeurSTMT->execute(['idProduit' => $produit]);
+            $vendeur = $vendeurSTMT->fetch(PDO::FETCH_COLUMN);
+
+            $notifSTMT = $pdo->prepare('
+                insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
+                values (:id, :contenu, :titre, NOW(), 1)
+            ');
+            $notifSTMT->execute(['id' => $vendeur, 'contenu' => 'Le produit ' . $stock['nom'] . ' est épuisé.<br/>Faites un réassort pour continuer à vendre !<br/><br/><a href="/backoffice/stocks">Gérer le stock</a>', 'titre' => 'Stock épuisé !']);
+        } elseif ($stock['stock'] < $stock['seuilAlerte']) {
+            // Fetch du vendeur
+            $vendeurSTMT = $pdo->prepare('
+                select vd.codeVendeur
+                from _vendeur vd join _produit prd on vd.codeVendeur = prd.idVendeur
+                where idProduit = :idProduit
+            ');
+            $vendeurSTMT->execute(['idProduit' => $produit]);
+            $vendeur = $vendeurSTMT->fetch(PDO::FETCH_COLUMN);
+
+            $notifSTMT = $pdo->prepare('
+                insert into _notification (idClient, contenuNotif, titreNotif, dateNotif, est_vendeur)
+                values (:id, :contenu, :titre, NOW(), 1)
+            ');
+            $notifSTMT->execute(['id' => $vendeur, 'contenu' => 'Le produit ' . $stock['nom'] . ' est affaibli.<br/>Pensez à faire un réassort prochainement pour continuer à vendre !<br/><br/><a href="/backoffice/stocks">Gérer le stock</a>', 'titre' => 'Stock faible !']);
+        }
+    }
+}
+
 function chiffrerCodeCarte($code) {
     return password_hash($code, PASSWORD_DEFAULT);
 }
@@ -276,6 +330,12 @@ function createOrderInDatabase($pdo, $idClient, $adresseLivraison, $villeLivrais
         $stmtVider = $pdo->prepare("DELETE FROM _produitAuPanier WHERE idPanier = ?");
         if (!$stmtVider->execute([$idPanier])) {
             throw new Exception("Erreur lors du vidage du panier.");
+        }
+
+        try {
+            notifStock($pdo, $idCommande);
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de l'envoi de la notification de stock : " . $e->getMessage());
         }
 
         $pdo->commit();
