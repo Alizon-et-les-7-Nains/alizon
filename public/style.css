@@ -3749,8 +3749,8 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   max-width: 800px;
   margin-bottom: 40px;
   gap: 30px;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: space-around;
 }
 .panier .quantiteProduit {
   display: flex;
@@ -3772,21 +3772,12 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: flex-start;
-  gap: 15px;
+  justify-content: space-between;
+  align-items: center;
   margin: 0;
   font-size: 24px;
   font-weight: bold;
-}
-.panier .prixOpt p {
-  margin: 0;
-}
-.panier .headerProduit {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-  width: 100%;
+  margin-top: 15px;
 }
 .panier .listeProduit div {
   margin: 0px 0px;
@@ -3799,16 +3790,15 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  height: auto;
-  flex: 1;
-  min-width: 280px;
-  gap: 15px;
+  justify-content: space-around;
+  height: 180px;
+  width: 300px;
+  margin-left: 40px;
 }
 .panier .infoProduit .btns {
   display: flex;
-  justify-content: flex-start;
-  width: 100%;
+  justify-content: space-between;
+  width: 127%;
 }
 .panier .infoProduit img {
   max-width: 16px;
@@ -3908,29 +3898,18 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   }
   .panier .listeProduit article {
     max-width: none;
-    flex-wrap: wrap;
   }
   .panier .recapPanier {
     align-items: stretch;
   }
   .panier .infoProduit {
-    width: 100%;
-    flex: unset;
-  }
-  .panier .headerProduit {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .panier .prixOpt {
-    align-items: flex-start;
+    width: unset;
   }
 }
 @media (max-width: 767px) {
   .panier .listeProduit article {
     border: none;
     padding: none;
-    flex-wrap: wrap;
-    gap: 15px;
   }
   .panier .imgProduit input {
     display: none;
@@ -3938,7 +3917,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   .panier .listeProduit article img {
     max-height: 180px;
     margin: 0px 10px;
-    width: 100%;
   }
   .panier .infoProduit div h2 {
     font-size: 15px;
@@ -3953,19 +3931,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
   .panier main {
     margin: 10px 10px;
   }
-  .panier .headerProduit {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .panier .prixOpt {
-    flex-direction: row;
-    gap: 15px;
-    align-items: center;
-  }
-  .panier .prixOpt button {
-    flex-shrink: 0;
-  }
 }
 @media (max-width: 530px) {
   .panier .delBtnImg {
@@ -3978,30 +3943,14 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
     margin: 0px 10px;
   }
   .panier .listeProduit article {
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 0;
-    flex-direction: column;
-  }
-  .panier .imgProduit {
-    width: 100% !important;
   }
   .panier .listeProduit div {
     justify-content: center;
   }
   .panier button .delete {
     margin-top: 20px;
-  }
-  .panier .headerProduit {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    width: 100%;
-  }
-  .panier .prixOpt {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
   }
 }
 .panier button {

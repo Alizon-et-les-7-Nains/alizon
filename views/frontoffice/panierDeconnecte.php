@@ -115,17 +115,9 @@ require_once "../../controllers/prix.php";
                         <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($panier['nom'] ?? 'N/A') ?>">
                     </div>
                     <div class="infoProduit">
-                        <div class="headerProduit">
-                            <div>
-                                <h2><?= htmlspecialchars($panier['nom'] ?? 'N/A') ?></h2>
-                                <h4>En stock</h4>
-                            </div>
-                            <div class="prixOpt">
-                                <p><?= number_format($panier['prix'] ?? 0, 2) ?> €</p>
-                                <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
-                                    <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
-                                </button>
-                            </div>
+                        <div>
+                            <h2><?= htmlspecialchars($panier['nom'] ?? 'N/A') ?></h2>
+                            <h4>En stock</h4>
                         </div>
 
                         <div class="btns">
@@ -140,7 +132,13 @@ require_once "../../controllers/prix.php";
                                     <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
                                 </button> 
                             </div>
+                            <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
+                                <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
+                            </button>
                         </div>
+                    </div>
+                    <div class="prixOpt">
+                        <p><?= number_format($panier['prix'] ?? 0, 2) ?> €</p>
                     </div>
                 </article> 
             <?php // Affichage d'un message si le panier est vide
@@ -200,7 +198,7 @@ require_once "../../controllers/prix.php";
         <?php require_once '../backoffice/partials/retourEnHaut.php' ?>
     </main>
 
-    <?php include "../../views/frontoffice/partials/footerDeconnecte.php"; ?>
+    <?php include "../../views/frontoffice/partials/footerConnecte.php"; ?>
 
     <script src="../../public/amd-shim.js"></script>
     <script src="../../public/script.js"></script>
