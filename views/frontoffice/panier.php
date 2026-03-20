@@ -343,55 +343,57 @@ $cart = getCurrentCart($pdo, $idClient);
                     <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($item['nom'] ?? '') ?>" class="imgProd">
                 </div>
                 <div class="infoProduit">
-                    <div>
-                        <h2><a style="text-decoration: none;" href="./produit.php?id=<?php echo $idProduit ?>"><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></a></h2>
-                        <?php 
-                        // Vérification du stock disponible et affichage du statut
-                        if ($item['stock'] > 0) {
-                            echo '<h4 class="stockDisponible">En stock</h4>';
-                        } else {
-                            // Gestion de la rupture de stock : affichage de la date de réapprovisionnement ou suppression
-                            if ($item['dateReassort'] !== null) {
-                                echo '<h4 style="color: #ff4444;">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($item['dateReassort']) . '</h4>';
+                    <div class="headerProduit">
+                        <div>
+                            <h2><a style="text-decoration: none;" href="./produit.php?id=<?php echo $idProduit ?>"><?= htmlspecialchars($item['nom'] ?? 'N/A') ?></a></h2>
+                            <?php 
+                            // Vérification du stock disponible et affichage du statut
+                            if ($item['stock'] > 0) {
+                                echo '<h4 class="stockDisponible">En stock</h4>';
                             } else {
-                                echo '<h4 style="color: #ff4444;">Rupture de stock - Pas de réapprovisionnement prévu</h4>';
+                                // Gestion de la rupture de stock : affichage de la date de réapprovisionnement ou suppression
+                                if ($item['dateReassort'] !== null) {
+                                    echo '<h4 style="color: #ff4444;">Rupture de stock - Réapprovisionnement prévu le ' . htmlspecialchars($item['dateReassort']) . '</h4>';
+                                } else {
+                                    echo '<h4 style="color: #ff4444;">Rupture de stock - Pas de réapprovisionnement prévu</h4>';
+                                }
+                                removeFromCartInDatabase($pdo, $idClient, $idProduit);
+                                continue;
                             }
-                            removeFromCartInDatabase($pdo, $idClient, $idProduit);
-                            continue;
-                        }
-                        ?>
-                    </div>
-                    <div class="btns">
-                            <div class="quantiteProduit">
-                                <!-- Bouton pour diminuer la quantité -->
-                                <button class="minus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo -1; ?>'">
-                                <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
-                                </button>                            
-                                <p class="quantite"><?= htmlspecialchars($quantite ?? 'N/A') ?></p>
-                                <!-- Bouton pour augmenter la quantité -->
-                                <button class="plus" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 1; ?>'">
-                                    <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
-                                </button> 
+                            ?>
+                        </div>
+                        <div class="prixOpt">
+                            <div>
+                                <?php if ($estEnRemise): ?>
+                                    <p class="prix-remise">
+                                        <span class="prix-original" style="text-decoration: line-through; color: #999;">
+                                            <?= formatPrice($item['prix']) ?>
+                                        </span>
+                                        <span class="prix-actuel" style="color: #ff4444; font-weight: bold;">
+                                            <?= formatPrice($prixAvecRemise) ?>
+                                        </span>
+                                    </p>
+                                <?php else: ?>
+                                    <p><?= formatPrice($item['prix']) ?></p>
+                                <?php endif; ?>
                             </div>
-                            <button class="delete" data-id="<?= htmlspecialchars($panier['idProduit'] ?? 'N/A') ?>" onclick="window.location.href='?addPanier=<?php echo $idProduit; ?>&qty=<?php echo 0; ?>'">
+                            <button class="delete" data-id="<?= htmlspecialchars($item['idProduit'] ?? 'N/A') ?>" onclick="removeItemviaAjax(<?= htmlspecialchars($item['idProduit']) ?>)">
                                 <img src="../../public/images/binDarkBlue.svg" alt="Enlever produit" class="delBtnImg">
                             </button>
                         </div>
-                </div>
-                <div class="prixOpt">
-                    <div>
-                        <?php if ($estEnRemise): ?>
-                            <p class="prix-remise">
-                                <span class="prix-original" style="text-decoration: line-through; color: #999;">
-                                    <?= formatPrice($item['prix']) ?>
-                                </span>
-                                <span class="prix-actuel" style="color: #ff4444; font-weight: bold;">
-                                    <?= formatPrice($prixAvecRemise) ?>
-                                </span>
-                            </p>
-                        <?php else: ?>
-                            <p><?= formatPrice($item['prix']) ?></p>
-                        <?php endif; ?>
+                    </div>
+                    <div class="btns">
+                        <div class="quantiteProduit">
+                            <!-- Bouton pour diminuer la quantité -->
+                            <button class="minus" data-id="<?= htmlspecialchars($item['idProduit'] ?? 'N/A') ?>" onclick="updateQtyViaAjax(<?= htmlspecialchars($item['idProduit']) ?>, -1)">
+                            <img src="../../public/images/minusDarkBlue.svg" alt="Symbole moins">
+                            </button>                            
+                            <p class="quantite"><?= htmlspecialchars($item['qty'] ?? 'N/A') ?></p>
+                            <!-- Bouton pour augmenter la quantité -->
+                            <button class="plus" data-id="<?= htmlspecialchars($item['idProduit'] ?? 'N/A') ?>" onclick="updateQtyViaAjax(<?= htmlspecialchars($item['idProduit']) ?>, 1)">
+                                <img src="../../public/images/plusDarkBlue.svg" alt="Symbole plus">
+                            </button> 
+                        </div>
                     </div>
                 </div>
             </article>
