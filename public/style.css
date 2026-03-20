@@ -3798,7 +3798,6 @@ main.acceuilBackoffice section.produits article table tr:last-child td:last-chil
 .panier .infoProduit .btns {
   display: flex;
   justify-content: space-between;
-  width: 127%;
 }
 .panier .infoProduit img {
   max-width: 16px;
