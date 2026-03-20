@@ -9037,7 +9037,7 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
 .bodyPopupA2f .popupA2f button {
   width: 300px;
   color: #273469;
-  background-color: #E4D9FF;
+  background-color: #e4d9ff;
   border-radius: 32px;
   padding: 10px;
   border: none;
@@ -9063,13 +9063,17 @@ main.backoffice-stats ul.stats li:nth-child(2) article {
   left: 50%;
   width: 30px;
   height: 3px;
-  background-color: #BABABA;
+  background-color: #bababa;
 }
 .bodyPopupA2f .croixFermerLaPage div:first-of-type {
   transform: translate(-50%, -50%) rotate(45deg);
 }
 .bodyPopupA2f .croixFermerLaPage div:last-of-type {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+#erreurCodeA2F {
+  position: initial !important;
 }
 
 .listeDeSouhait {
